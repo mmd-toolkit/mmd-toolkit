@@ -1,0 +1,300 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: flowchart-no-redefined-subgraph >> invalid >>> docs/rules/flowchart-no-redefined-subgraph.md incorrect 1
+Filename: flowchart-no-redefined-subgraph-incorrect-1.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph S [One]
+  3 |     A
+  4 |   end
+  5 |   subgraph S [Two]
+    |               ^~~ [1]
+  6 |     B
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps the title of the first `subgraph` with id `S` and ignores this one.
+---
+
+
+Test: flowchart-no-redefined-subgraph >> invalid >>> invalid/flowchart/elk-header
+Filename: tests/fixtures/rules/flowchart-no-redefined-subgraph/invalid/flowchart/elk-header-input.mmd
+
+Code:
+  1 | flowchart-elk LR
+  2 | subgraph S [One]
+  3 | A
+  4 | end
+  5 | subgraph S [Two]
+    |             ^~~ [1]
+  6 | B
+  7 | end
+  8 |
+
+[1] mermaid.js keeps the title of the first `subgraph` with id `S` and ignores this one.
+---
+
+
+Test: flowchart-no-redefined-subgraph >> invalid >>> invalid/flowchart/first-implicit-title-changed
+Filename: tests/fixtures/rules/flowchart-no-redefined-subgraph/invalid/flowchart/first-implicit-title-changed-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S
+  3 | A
+  4 | end
+  5 | subgraph S [Two]
+    |             ^~~ [1]
+  6 | B
+  7 | end
+  8 |
+
+[1] mermaid.js keeps the title of the first `subgraph` with id `S` and ignores this one.
+---
+
+
+Test: flowchart-no-redefined-subgraph >> invalid >>> invalid/flowchart/first-title-remains-history
+Filename: tests/fixtures/rules/flowchart-no-redefined-subgraph/invalid/flowchart/first-title-remains-history-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S [One]
+  3 | A
+  4 | end
+  5 | subgraph S [Two]
+    |             ^~~ [1]
+  6 | B
+  7 | end
+  8 | subgraph S [Two]
+    |             ^~~ [2]
+  9 | C
+ 10 | end
+ 11 |
+
+[1] mermaid.js keeps the title of the first `subgraph` with id `S` and ignores this one.
+[2] mermaid.js keeps the title of the first `subgraph` with id `S` and ignores this one.
+---
+
+
+Test: flowchart-no-redefined-subgraph >> invalid >>> invalid/flowchart/frontmatter-comments-directive
+Filename: tests/fixtures/rules/flowchart-no-redefined-subgraph/invalid/flowchart/frontmatter-comments-directive-input.mmd
+
+Code:
+  1 | ---
+  2 | title: Diagram title
+  3 | ---
+  4 | %% before header
+  5 | flowchart LR
+  6 | subgraph S [One]
+  7 | A
+  8 | end
+  9 | %%{init: {}}%%
+ 10 | subgraph S [Two]
+    |             ^~~ [1]
+ 11 | %% member
+ 12 | B
+ 13 | end
+ 14 |
+
+[1] mermaid.js keeps the title of the first `subgraph` with id `S` and ignores this one.
+---
+
+
+Test: flowchart-no-redefined-subgraph >> invalid >>> invalid/flowchart/generated-id-is-not-title
+Filename: tests/fixtures/rules/flowchart-no-redefined-subgraph/invalid/flowchart/generated-id-is-not-title-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph a b
+  3 | A
+  4 | end
+  5 | subgraph subGraph0 [subGraph0]
+    |                     ^~~~~~~~~ [1]
+  6 | B
+  7 | end
+  8 |
+
+[1] mermaid.js keeps the title of the first `subgraph` with id `subGraph0` and ignores this one.
+---
+
+
+Test: flowchart-no-redefined-subgraph >> invalid >>> invalid/flowchart/graph-header
+Filename: tests/fixtures/rules/flowchart-no-redefined-subgraph/invalid/flowchart/graph-header-input.mmd
+
+Code:
+  1 | graph LR
+  2 | subgraph S [One]
+  3 | A
+  4 | end
+  5 | subgraph S [Two]
+    |             ^~~ [1]
+  6 | B
+  7 | end
+  8 |
+
+[1] mermaid.js keeps the title of the first `subgraph` with id `S` and ignores this one.
+---
+
+
+Test: flowchart-no-redefined-subgraph >> invalid >>> invalid/flowchart/nested-first-completes
+Filename: tests/fixtures/rules/flowchart-no-redefined-subgraph/invalid/flowchart/nested-first-completes-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S [Outer]
+    |             ^~~~~ [1]
+  3 | subgraph S [Inner]
+  4 | A
+  5 | end
+  6 | B
+  7 | end
+  8 |
+
+[1] mermaid.js keeps the title of the first `subgraph` with id `S` and ignores this one.
+---
+
+
+Test: flowchart-no-redefined-subgraph >> invalid >>> invalid/flowchart/nested-redeclaration
+Filename: tests/fixtures/rules/flowchart-no-redefined-subgraph/invalid/flowchart/nested-redeclaration-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph O
+  3 | subgraph S [One]
+  4 | A
+  5 | end
+  6 | end
+  7 | subgraph S [Two]
+    |             ^~~ [1]
+  8 | B
+  9 | end
+ 10 |
+
+[1] mermaid.js keeps the title of the first `subgraph` with id `S` and ignores this one.
+---
+
+
+Test: flowchart-no-redefined-subgraph >> invalid >>> invalid/flowchart/return-to-first-title
+Filename: tests/fixtures/rules/flowchart-no-redefined-subgraph/invalid/flowchart/return-to-first-title-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S [One]
+  3 | A
+  4 | end
+  5 | subgraph S [Two]
+    |             ^~~ [1]
+  6 | B
+  7 | end
+  8 | subgraph S [One]
+  9 | C
+ 10 | end
+ 11 |
+
+[1] mermaid.js keeps the title of the first `subgraph` with id `S` and ignores this one.
+---
+
+
+Test: flowchart-no-redefined-subgraph >> invalid >>> invalid/flowchart/same-line-declarations
+Filename: tests/fixtures/rules/flowchart-no-redefined-subgraph/invalid/flowchart/same-line-declarations-input.mmd
+
+Code:
+  1 | flowchart LR; subgraph S [One]; A; end; subgraph S [Two]; B; end
+    |                                                     ^~~ [1]
+  2 |
+
+[1] mermaid.js keeps the title of the first `subgraph` with id `S` and ignores this one.
+---
+
+
+Test: flowchart-no-redefined-subgraph >> invalid >>> invalid/flowchart/swimlane-header
+Filename: tests/fixtures/rules/flowchart-no-redefined-subgraph/invalid/flowchart/swimlane-header-input.mmd
+
+Code:
+  1 | swimlane-beta LR
+  2 | subgraph S [One]
+  3 | A
+  4 | end
+  5 | subgraph S [Two]
+    |             ^~~ [1]
+  6 | B
+  7 | end
+  8 |
+
+[1] mermaid.js keeps the title of the first `subgraph` with id `S` and ignores this one.
+---
+
+
+Test: flowchart-no-redefined-subgraph >> invalid >>> invalid/flowchart/title-differs-by-a-directive-part
+Filename: tests/fixtures/rules/flowchart-no-redefined-subgraph/invalid/flowchart/title-differs-by-a-directive-part-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph S ["x"]
+  3 |     A
+  4 |   end
+  5 |   subgraph S ["x %%{init: {}}%% y"]
+    |               ^~~~~~~~~~~~~~~~~~~~ [1]
+  6 |     B
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps the title of the first `subgraph` with id `S` and ignores this one.
+---
+
+
+Test: flowchart-no-redefined-subgraph >> invalid >>> invalid/flowchart/title-differs-by-a-line-break
+Filename: tests/fixtures/rules/flowchart-no-redefined-subgraph/invalid/flowchart/title-differs-by-a-line-break-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph S ["a
+  3 | b"]
+  4 |     A
+  5 |   end
+  6 |   subgraph S ["a b"]
+    |               ^~~~~ [1]
+  7 |     B
+  8 |   end
+  9 |
+
+[1] mermaid.js keeps the title of the first `subgraph` with id `S` and ignores this one.
+---
+
+
+Test: flowchart-no-redefined-subgraph >> invalid >>> invalid/flowchart/title-written-entity
+Filename: tests/fixtures/rules/flowchart-no-redefined-subgraph/invalid/flowchart/title-written-entity-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S [#35;]
+  3 | A
+  4 | end
+  5 | subgraph S [#]
+    |             ^ [1]
+  6 | B
+  7 | end
+  8 |
+
+[1] mermaid.js keeps the title of the first `subgraph` with id `S` and ignores this one.
+---
+
+
+Test: flowchart-no-redefined-subgraph >> invalid >>> invalid/flowchart/title-written-html-quotes
+Filename: tests/fixtures/rules/flowchart-no-redefined-subgraph/invalid/flowchart/title-written-html-quotes-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S [<b class="x">t</b>]
+  3 | A
+  4 | end
+  5 | subgraph S [<b class='x'>t</b>]
+    |             ^~~~~~~~~~~~~~~~~~ [1]
+  6 | B
+  7 | end
+  8 |
+
+[1] mermaid.js keeps the title of the first `subgraph` with id `S` and ignores this one.
+---

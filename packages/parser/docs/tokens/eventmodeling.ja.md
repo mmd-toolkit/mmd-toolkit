@@ -53,7 +53,8 @@ metadata の先行字下げはトークンにせず、 Db 導出時にソース�
 [fixture: eventmodeling/gram-common-leading-directive-both-sides]
 
 native YAML/directive は消費した閉じ LF を除く一つの RawText item です。
-共通 directive、コメント領域、選ばれた semicolon は RawText と String を切り、
+共通 directive と選ばれた semicolon は RawText と String を切ります。
+ソースが `maxTextSize` より長いときは、コメント領域も切ります。
 String の断片は StringFragment になります。
 keyword、identifier、数字列、->>、[[、]] の内部で切れると拒否します。
 書かれた構成要素の間での分割は許可されます。
@@ -67,6 +68,7 @@ keyword、identifier、数字列、->>、[[、]] の内部で切れると拒否�
 [fixture: eventmodeling/lex-semicolon-frame-id-inside]
 [fixture: eventmodeling/directive-qualified]
 [fixture: eventmodeling/directive-tag]
+[fixture: eventmodeling/comment-default-size-above]
 
 ## コメントと trivia
 
@@ -82,5 +84,18 @@ slash-block コメントは最初の閉じで終わり、
 [fixture: eventmodeling/comment-line-ps-body]
 [fixture: eventmodeling/detect-retained-bare-ls-line]
 [fixture: eventmodeling/detect-retained-bare-nbsp-header]
+
+ソースが `maxTextSize` より長くなければ、コメント行は除去しません。
+コメント行は native の percent コメントです。
+ブロック値、slash-block コメント、隠れた形の中では、そのテキストの一部です。
+[fixture: eventmodeling/comment-default-size-equal]
+[fixture: eventmodeling/comment-default-size-above]
+[fixture: eventmodeling/comment-block-data]
+[fixture: eventmodeling/comment-note-data]
+[fixture: eventmodeling/comment-line-entity-in-data]
+[fixture: eventmodeling/comment-line-ignored-semicolon-in-data]
+[fixture: eventmodeling/comment-line-inside-block-comment]
+[fixture: eventmodeling/comment-line-inside-hidden-yaml]
+[fixture: eventmodeling/comment-line-inside-hidden-directive]
 
 [ordered-units]: ../../../spec/docs/diagrams/eventmodeling.md#ordered-units

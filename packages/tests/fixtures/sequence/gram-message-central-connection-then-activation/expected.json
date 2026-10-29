@@ -6,6 +6,6 @@
   "accepted": false,
   "error": {
     "name": "Error",
-    "message": "Parse error on line 2:\n...quenceDiagramA()->>+B: x\n----------------------^\nExpecting '()', 'ACTOR', got '+'"
+    "message": "Parse error on line 2:\n...quenceDiagramA()->>+B: x\n----------------------^\nExpecting 'link', '()', 'ACTOR', got '+'"
   }
 }

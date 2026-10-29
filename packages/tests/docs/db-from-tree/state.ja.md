@@ -11,8 +11,8 @@ state 図の木から Db の要約を作る手順です。
 
 mermaid.js は、構文解析の間に、描くデータ、つまりノードの列と辺の列を作ります。
 出典は
-[`StateDB.extract`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDb.ts#L249-L302)、
-[`dataFetcher`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L241-L477)
+[`StateDB.extract`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/stateDb.ts#L249-L302)、
+[`dataFetcher`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L241-L477)
 です。
 要約は、そのデータと、クラスの定義と、リンクから取ります。
 値は、空白を含めて Db が持つとおりに保ちます。
@@ -197,9 +197,9 @@ id が空、`</choice>`、`</join></fork>` の状態は、ノードを作りま�
   一方、id を `root_start` や `root_end` と書いた別名は、
   通常の id と同じく初期の形が `rect` で、後の終端の訪れもそれを置き換えません。
   これは、
-  [`StateDB.docTranslator`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDb.ts#L331-L345)
+  [`StateDB.docTranslator`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/stateDb.ts#L331-L345)
   と、
-  [`dataFetcher`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L271-L338)
+  [`dataFetcher`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L271-L338)
   の、初回の訪れと説明の処理によります。
   [fixture: state/db-alias-blank-terminal-first]
   [fixture: state/db-alias-blank-terminal-nested]

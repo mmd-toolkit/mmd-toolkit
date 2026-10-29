@@ -8,8 +8,10 @@ import type {
 } from "./ast.ts"
 import type { PassedPart } from "./detection.ts"
 import { DiagramTextReader } from "./diagram-text.ts"
+import { findDirectives } from "./directives.ts"
 import { ParseError } from "./errors.ts"
 import type { PendingToken, SourceLexer } from "./source-lexer.ts"
+import { lineTerminatorEnd, nextOffset } from "./text-cursor.ts"
 
 /**
  * What a diagram's parser starts from: the shared lexer, which `parse()`
@@ -97,6 +99,34 @@ export function openDiagramText(input: DiagramInput): DiagramTextReader {
     )
   }
   return new DiagramTextReader(lexer, textStart)
+}
+
+/**
+ * common.md, mermaid.js and this specification: whether the lexer of a
+ * diagram type whose Db preserves comments when parsing (agentflow and
+ * eventmodeling) reads comment lines and leading whitespace itself. It does
+ * unless the text is longer than the default maxTextSize, 50000, counted in
+ * UTF-16 code units after the frontmatter, without directives, and with each
+ * line terminator counted as one.
+ */
+export function readsCommentLines(input: DiagramInput): boolean {
+  const { text, start } = input.lexer
+  const directives = findDirectives(text, start)
+  let index = 0
+  let size = 0
+  for (let offset = start; offset < text.length;) {
+    const directive = directives[index]
+    if (directive?.range[0] === offset) {
+      offset = directive.range[1]
+      index += 1
+    } else {
+      const end = lineTerminatorEnd(text, offset) ?? nextOffset(text, offset)
+      size += lineTerminatorEnd(text, offset) === null ? end - offset : 1
+      if (size > 50000) return false
+      offset = end
+    }
+  }
+  return true
 }
 
 /**

@@ -7,10 +7,10 @@
 [tests の要約](../../../tests/docs/db-summaries.ja.md#pie) にあります。
 
 字句と文法の規則は
-[pie.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium#L1-L20)
+[pie.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/pie/pie.langium#L1-L20)
 と、
 インポートする
-[common.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L1-L34)
+[common.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/common.langium#L1-L34)
 に従います。
 
 ## 検出
@@ -658,7 +658,7 @@ showData は pie の次の可視の単位として、1 回だけ置けます。
 どれかの区分の値を double に変換してゼロ未満になれば拒否します。
 ラベルが重複する場合も検査します。
 負の無限大は拒否しますが、負のゼロと負のゼロへ丸める負の小数は拒否しません。
-[addSection()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieDb.ts#L36-L46)
+[addSection()](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/pie/pieDb.ts#L36-L46)
 の条件であり、書かれた小数の正確な実数としての負かどうかではありません。
 [fixture: pie/number-negative] [fixture: pie/db-duplicate-negative]
 [fixture: pie/number-negative-overflow] [fixture: pie/number-negative-zero]

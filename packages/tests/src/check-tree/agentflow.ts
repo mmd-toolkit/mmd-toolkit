@@ -1,6 +1,6 @@
 import { appendItems } from "../collections.ts"
 import {
-  agentflowPreservesComments,
+  withinMaxTextSize,
   readAgentflowCharacters,
 } from "../db-from-tree/converted-text.ts"
 import { StringDelimiters } from "../db-from-tree/graph.ts"
@@ -1874,7 +1874,7 @@ function commentPadding(reading: Reading): (readonly [number, number])[] {
 /** Preserved comments are unavailable in data, calls, accessibility, names and initial strings. */
 function checkCommentContexts(reading: Reading): void {
   if (reading.root.comments.length === 0) return
-  const commonRegions = agentflowPreservesComments(reading.text, reading.root)
+  const commonRegions = withinMaxTextSize(reading.text, reading.root)
     ? []
     : scanSource(
         reading.text,

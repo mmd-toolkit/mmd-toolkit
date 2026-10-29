@@ -4,10 +4,10 @@
 
 mermaid.js の中の正しさの源:
 
-- [`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison)
-- [`stateDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDb.ts)
-- [`dataFetcher.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/dataFetcher.ts)
-- [`state/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state)
+- [`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison)
+- [`stateDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/stateDb.ts)
+- [`dataFetcher.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/dataFetcher.ts)
+- [`state/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state)
   のテスト（`*.spec.js`、 `*.spec.ts`）
 
 この文書は図種 `stateDiagram` を扱います。
@@ -21,7 +21,7 @@ mermaid.js の中の正しさの源:
 mermaid.js は、
 2 つのヘッダー `stateDiagram` と `stateDiagram-v2` に 1 つの検出器を持ち、
 どちらも同じ文法と同じ Db で読みます（mermaid.js の
-[`stateDetector-V2.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDetector-V2.ts#L7-L15)）。
+[`stateDetector-V2.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/stateDetector-V2.ts#L7-L15)）。
 [fixture: state/header-v1] [fixture: state/header-v2]
 
 その後、字句解析器はヘッダーを、大文字小文字を区別せずに、
@@ -632,7 +632,7 @@ state の文脈には `state` で入ります。
 mermaid.js は、この文脈の文字列の引用符にはトークンを返さず、
 そのテキストにだけ返すので、
 空の文字列を読みません（mermaid.js の
-[`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L128-L132)）。
+[`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L128-L132)）。
 木は、文法がそれを取るところで、
 それを StateIgnoredText
 として持ちます（[合成状態、別名、疑似状態](#合成状態別名疑似状態) を参照）。
@@ -691,7 +691,7 @@ state/lex-alias-id-ignored-percent-before-body]
 の単位（空でも、空白だけでもかまいません）、
 2 つ目の `:` からのテキストが `ignored-text` の単位で、
 mermaid.js はそれを読みません（mermaid.js の
-[`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L233-L243)）。
+[`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L233-L243)）。
 `alias-id` の後に、その行で、または、その行の改行と、
 行の空白とコメント行だけの後で `{` が続き、その間に、
 文法が本体の `{` の前に取る単位、つまり空の説明ブロック、
@@ -925,7 +925,7 @@ state/lex-note-position-then-dash]
 引用符は対になりません。
 mermaid.js は、ここで `"` にはトークンを返さず、
 ほかの文字の並びごとにトークンを返し（mermaid.js の
-[`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L143-L146)）、
+[`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L143-L146)）、
 その文法は `as` の前のテキストを 1 つだけ取ります。
 そのため浮いたノートは、`as` の前に、1 つ以上の `"` の単位、
 1 つの `floating-note-text`、1 つ以上の `"` の単位を持ちます。
@@ -1062,7 +1062,7 @@ id の中では、`#` は文字です。
 [fixture: state/lex-entity-in-id]
 
 mermaid.js の文書は、
-[Comments](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/stateDiagram.md#L307-L320)
+[Comments](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/stateDiagram.md#L307-L320)
 で、
 「any text after their start to the next newline will be treated as a
 comment」と書き、
@@ -1097,7 +1097,7 @@ issue は閉じられています。
 `string` は空でない `string` の単位を、
 `string-or-empty` は空でもよい `string` の単位を表します。
 文法は
-[`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L178-L352)
+[`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L178-L352)
 の文法を言い直したもので、同じ単位の並びを受理します。
 
 下の各規則は、

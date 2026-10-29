@@ -31,10 +31,11 @@ them is shown.
 The data type in backticks, such as `` `json` ``, is not compared, because
 mermaid.js does not show it. Content is compared as written, with LF, CRLF, and
 CR read as LF, so a later empty block or one differing only in a space is
-reported too. Comment lines in a block do not count as content, because
-mermaid.js removes them. mermaid.js converts character references such as `#35;`
-and HTML before showing a block, so content differing only in these ways may be
-shown alike and still be reported.
+reported too. Comment lines in a block count as content, because mermaid.js
+keeps them in the value of the block, so a later block that differs only in a
+comment line is reported too. mermaid.js converts character references such as
+`#35;` and HTML before showing a block, so content differing only in these ways
+may be shown alike and still be reported.
 
 Examples of **incorrect** code for this rule:
 
@@ -75,8 +76,8 @@ This rule has no options.
 
 ## Further Reading
 
-- [Event Modeling syntax: data block names](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L95-L97)
-- [Event Modeling syntax: data types](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L309-L311)
+- [Event Modeling syntax: data block names](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/eventmodeling.md#L97-L99)
+- [Event Modeling syntax: data types](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/eventmodeling.md#L323-L325)
 
 <!-- begin auto-generated rule resources -->
 

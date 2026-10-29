@@ -9,7 +9,7 @@
         "type": "EventmodelingAccDescrBlockStatement",
         "value": {
           "type": "EventmodelingLiteral",
-          "value": "\nfirst\n\nlast\n",
+          "value": "\nfirst\n%% comment\n\nlast\n",
           "range": [
             24,
             55
@@ -57,27 +57,7 @@
     }
   },
   "frontmatter": null,
-  "comments": [
-    {
-      "type": "Comment",
-      "mark": "%%",
-      "value": " comment",
-      "range": [
-        31,
-        41
-      ],
-      "loc": {
-        "start": {
-          "line": 3,
-          "column": 0
-        },
-        "end": {
-          "line": 3,
-          "column": 10
-        }
-      }
-    }
-  ],
+  "comments": [],
   "directives": [
     {
       "type": "Directive",
@@ -157,10 +137,10 @@
     },
     {
       "type": "RawText",
-      "value": "\nfirst\n",
+      "value": "\nfirst\n%% comment\n",
       "range": [
         24,
-        31
+        42
       ],
       "loc": {
         "start": {
@@ -168,7 +148,7 @@
           "column": 24
         },
         "end": {
-          "line": 3,
+          "line": 4,
           "column": 0
         }
       }

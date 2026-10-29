@@ -12,10 +12,10 @@ are in [db-summaries.md](../db-summaries.md#xychart).
 
 mermaid.js builds the Db while it parses: the grammar calls the Db for each
 statement as the statement ends
-([`statement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L98-L110)),
+([`statement`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L98-L110)),
 and the Db keeps state that later statements read: whether the axes were given a
 range or categories, and the range of the y axis that the plots have widened
-([`xychartDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L26-L38)).
+([`xychartDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L26-L38)).
 The summary is built the same way: the headers and then the statements are
 executed in source order, with the same state, and the summary is what the Db
 holds when the last one has run (see

@@ -108,6 +108,14 @@ const problems: TreeProblem[] = checkTree(text, tree)
   印 `%%` を持ちます。
   印のない断片は、コメント領域に続きます（parser/docs/tokens.md の Comment、
   [common.md](../../spec/docs/common.md#comment-lines) の Comment lines）。
+  原文のコメント行は、すべて木のコメントです。
+  ただし、
+  agentflow と eventmodeling でテキストが `maxTextSize` より長くないときは、
+  ヘッダーより後のコメント行を字句解析器自身が読むので、
+  木のコメントであることを求めるのはヘッダーより前のものだけで、
+  値のテキストの中のコメント行は、そのテキストの一部です。
+  [fixture: eventmodeling/comment-line-entity-in-data]
+  [fixture: eventmodeling/comment-default-size-equal]
   railroad の native comment は方言に応じて `/*`、`(*`、`;`、`#` も使います。
   eventmodeling は `/*` と `//` も使います。
   block comment は最初の必須の閉じを範囲に含み、値からは除きます。

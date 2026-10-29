@@ -15,6 +15,7 @@ import type {
   WardleyAccDescrBlockStatement,
 } from "@mmd-toolkit/parser"
 import type { MermaidSourceCode } from "../source-code.ts"
+import { normalizeLineTerminators } from "./acc-text.ts"
 import { textWithoutDirectives } from "./directive-free-text.ts"
 
 /**
@@ -76,16 +77,38 @@ function textIn(tokens: readonly Token[], from: number): boolean {
   return tokens.slice(from).some((token) => token.type !== "Directive")
 }
 
-/** The text before `token` on its line, without the directives that stand there. */
+/** The text before an offset on its physical line, without directives. */
 function lineBeforeWithoutDirectives(
   sourceCode: MermaidSourceCode,
-  token: Token,
+  index: number,
 ): string {
+  const line = sourceCode.getLocFromIndex(index).line
   return textWithoutDirectives(
     sourceCode,
-    token.range[0] - token.loc.start.column,
-    token.range[0],
+    sourceCode.getIndexFromLoc({ line, column: 0 }),
+    index,
   )
+}
+
+/** Keep the block's logical lines together while removing directives and their line breaks. */
+function descriptionLinesBefore(
+  sourceCode: MermaidSourceCode,
+  brace: Token,
+  end: number,
+): string[] {
+  return normalizeLineTerminators(
+    textWithoutDirectives(sourceCode, brace.range[1], end),
+  ).split("\n")
+}
+
+/** Comment lines may have indentation before their `%%`. */
+function startsCommentLine(text: string): boolean {
+  return text.trimStart().startsWith("%%")
+}
+
+interface DescriptionBlockOptions {
+  /** Whether comment lines are retained in the block's text instead of separate Comments. */
+  readonly commentLinesAreText?: boolean
 }
 
 /**
@@ -93,13 +116,22 @@ function lineBeforeWithoutDirectives(
  * `body` holds a `{` after the line of the block's `{` (a line is what
  * `braceLineOf` gives, which a directive may carry on). A `{` on the line of
  * the block's `{` is a `{` of the description. The closing `}` holds no `{`, so
- * it does not matter whether it is among the tokens of `body`.
+ * it does not matter whether it is among the tokens of `body`. Where comment
+ * lines are retained as text, their opening braces do not count.
  */
 export function holdsBraceAfterBraceLine(
   sourceCode: MermaidSourceCode,
   brace: Token,
   body: readonly Token[],
+  options: DescriptionBlockOptions = {},
 ): boolean {
+  if (options.commentLinesAreText) {
+    const last = body.at(-1)
+    if (last === undefined) return false
+    return descriptionLinesBefore(sourceCode, brace, last.range[1])
+      .slice(1)
+      .some((line) => !startsCommentLine(line) && line.includes("{"))
+  }
   const { end } = braceLineOf(sourceCode, brace, body)
   return body
     .filter((token) => token.type !== "Directive")
@@ -116,18 +148,26 @@ export function holdsBraceAfterBraceLine(
  * of the block's `{`, and the `}` that closes it (`closing`) does not stand
  * alone on its line: only whitespace and directives stand before it there,
  * whatever follows it. A `}` alone on its line is the author's: it closes the
- * block as written. `closing` is the last token of the block.
+ * block as written. `closing` is the last token of the block. Where comment
+ * lines are text, a closing brace on one of them is not blamed on a later statement.
  */
 export function closedByBraceOfOtherStatement(
   sourceCode: MermaidSourceCode,
   brace: Token,
   body: readonly Token[],
   closing: Token,
+  options: DescriptionBlockOptions = {},
 ): boolean {
-  if (lineBeforeWithoutDirectives(sourceCode, closing).trim() === "") {
+  const before = options.commentLinesAreText
+    ? (descriptionLinesBefore(sourceCode, brace, closing.range[0]).at(-1) ?? "")
+    : lineBeforeWithoutDirectives(sourceCode, closing.range[0])
+  if (
+    before.trim() === "" ||
+    (options.commentLinesAreText && startsCommentLine(before))
+  ) {
     return false
   }
-  return holdsBraceAfterBraceLine(sourceCode, brace, body)
+  return holdsBraceAfterBraceLine(sourceCode, brace, body, options)
 }
 
 /**

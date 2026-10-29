@@ -235,8 +235,8 @@ directive on a line of its own.
 
 Before it reads the diagram, mermaid.js removes every directive from the whole
 text with one textual replacement
-([`processDirectives`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L33-L45),
-[`removeDirectives`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L200-L202)).
+([`processDirectives`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L33-L45),
+[`removeDirectives`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L200-L202)).
 The lexer of each diagram type then reads the text that is left, and never sees
 where a directive was. That a keyword or an arrow can be split by a directive
 comes from the order of these steps.
@@ -557,9 +557,9 @@ cynefin/directive-native-directive-components] [fixture:
 cynefin/directive-every-field]
 
 The
-[pinned grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)
+[pinned grammar](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)
 and
-[public adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
+[public adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
 read the result of the common preprocessing/detection pipeline. The
 [Cynefin syntax](../diagrams/cynefin.md) states the direct rule and
 [tree](../ast/cynefin.md) retains its authored forms. [fixture:
@@ -588,7 +588,7 @@ eventmodeling/directive-qualified] [fixture: eventmodeling/directive-reference]
 eventmodeling/lex-hidden-yaml-fence-directive] [fixture:
 eventmodeling/comment-mark-directive]
 
-[event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
+[event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
 defines the units; [the diagram syntax](../diagrams/eventmodeling.md) defines
 their direct boundaries.
 
@@ -603,7 +603,7 @@ complete-component gaps remain allowed. A branch and each dash are separate
 components, so directives between them are allowed. The
 [diagram syntax](../diagrams/treeview.md#comments-and-boundaries) defines these
 boundaries from
-[treeView.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treeView/treeView.langium#L15-L64).
+[treeView.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/treeView/treeView.langium#L15-L64).
 [fixture: treeview/directive-header-inside] [fixture:
 treeview/directive-class-inside] [fixture:
 treeview/directive-description-inside] [fixture:
@@ -619,7 +619,7 @@ treeview/box-dash-directive-inside]
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
-  [directives](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/config/directives.md)
+  [directives](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/config/directives.md)
   shows every directive on a line of its own, and says nothing of a directive
   inside a token.
 - The tests of mermaid.js place every directive on a line of its own. Of the 37
@@ -627,21 +627,21 @@ treeview/box-dash-directive-inside]
   pinned version, 34 are in test inputs, and each of them is the first thing on
   its line of the input, after any indentation; the other 3 are in code comments
   of
-  [`agentflow-comments.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow-comments.spec.ts).
+  [`agentflow-comments.spec.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/parser/agentflow-comments.spec.ts).
   The test inputs are in
-  [`utils.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.spec.ts),
-  [`mermaidAPI.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.spec.ts),
-  [`comments.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.spec.ts),
-  [`config.appearance.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/config.appearance.spec.ts),
-  [`dagre/index.spec.js`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/rendering-util/layout-algorithms/dagre/index.spec.js),
-  [`sequenceDiagram.spec.js`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js),
-  [`radar.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/radar.spec.ts),
+  [`utils.spec.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.spec.ts),
+  [`mermaidAPI.spec.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.spec.ts),
+  [`comments.spec.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/comments.spec.ts),
+  [`config.appearance.spec.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/config.appearance.spec.ts),
+  [`dagre/index.spec.js`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/rendering-util/layout-algorithms/dagre/index.spec.js),
+  [`sequenceDiagram.spec.js`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js),
+  [`radar.spec.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/radar.spec.ts),
   and
-  [`exampleConfig.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/.vitepress/theme/exampleConfig.spec.ts).
+  [`exampleConfig.spec.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/.vitepress/theme/exampleConfig.spec.ts).
   The flowchart parser tests contain no directive at all.
 
 - The pinned
-  [C4 documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L148-L157)
+  [C4 documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/c4.md#L148-L157)
   shows calls and named arguments, but does not describe directives inside a
   header or call keyword. Searches of issues and pull requests in
   `mermaid-js/mermaid` on 2026-10-21 with `C4 directive`,
@@ -652,14 +652,14 @@ treeview/box-dash-directive-inside]
   diagram parsing for all diagram types.
 
 - The pinned
-  [venn documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
+  [venn documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/venn.md)
   shows complete keywords and names, but no directive inside them. Searches of
   issues and pull requests in `mermaid-js/mermaid` on 2026-10-21 with
   `venn directive in:title,body` found no report about a directive inside a venn
   keyword, name, or number.
 
 - The pinned
-  [Ishikawa documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/ishikawa.md#L11-L38)
+  [Ishikawa documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/ishikawa.md#L11-L38)
   shows a complete `ishikawa-beta` header and indented node text, but no
   directive inside the header.
   [Issue #4784](https://github.com/mermaid-js/mermaid/issues/4784) proposes
@@ -669,7 +669,7 @@ treeview/box-dash-directive-inside]
   an Ishikawa header.
 
 - The pinned
-  [usecase documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
+  [usecase documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
   describes native metadata and CSS. Searches of issues and pull requests in
   `mermaid-js/mermaid` on 2026-10-22 with `usecase directive` found no inspected
   report establishing a maintainer defect judgment for this acceptance behavior.
@@ -679,7 +679,7 @@ treeview/box-dash-directive-inside]
   not a claim that a bug label approves a grammar change.
 
 - For pie, the pinned
-  [syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/pie.md)
+  [syntax documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/pie.md)
   describes the header, sections and titles, without directives inside their
   spellings. [PR #4751](https://github.com/mermaid-js/mermaid/pull/4751), merged
   on 2024-02-11, introduced the Langium grammar and its ignored YAML, directives
@@ -689,7 +689,7 @@ treeview/box-dash-directive-inside]
   a direct syntax choice, not such a decision.
 
 For gitgraph,
-[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md)
+[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/gitgraph.md)
 documents the header and commands. Issue/PR searches on 2026-10-23 used
 `gitGraph`, `gitGraph directive`, `gitGraph YAML`, `gitGraph semicolon`,
 `gitGraph keyword`, `gitGraph duplicate` and `gitGraph cherry-pick`. No
@@ -700,7 +700,7 @@ Status: Approved; merged
 warning. These facts do not justify any additional divergence.
 
 - Info has no dedicated syntax page. The pinned
-  [syntax reference](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
+  [syntax reference](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/intro/syntax-reference.md)
   describes diagram declarations and percent comments. Searches of issues and
   pull requests on 2026-10-23 used `info showInfo`, `info directive`,
   `info semicolon` and `info accTitle`.
@@ -710,7 +710,7 @@ warning. These facts do not justify any additional divergence.
   to reject this syntax; this section follows the existing direct rule.
 
 - The pinned
-  [packet documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
+  [packet documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
   shows single positions, ranges and relative counts; it does not define this
   preprocessing boundary. Searches of the official repository's issues and pull
   requests on 2026-10-25 used `packet bitsPerRow`, `packet fractional` and
@@ -718,7 +718,7 @@ warning. These facts do not justify any additional divergence.
   this divergence.
 
 - The pinned
-  [architecture.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L21-L175)
+  [architecture.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/architecture.md#L21-L175)
   documents the header, declarations and edges, without defining this common
   preprocessing boundary. Searches of the official issues/PRs on 2026-10-25 used
   architecture group undefined, architecture quotes title, architecture reverse,
@@ -728,7 +728,7 @@ warning. These facts do not justify any additional divergence.
   ruling on this common boundary.
 
 - Radar:
-  [radar.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/radar.md#L66-L166)
+  [radar.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/radar.md#L66-L166)
   documents axes, curves and options. The official issues/PRs were searched on
   2026-10-25 for radar directive, radar semicolon and radar entries; no
   inspected result declares the boundaries above a defect.
@@ -738,7 +738,7 @@ warning. These facts do not justify any additional divergence.
   documentation examples; it does not add grammar support for a trailing comma.
 
 - Treemap: the pinned
-  [treemap documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
+  [treemap documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
   describes quoted rows, indentation and class definitions, without defining
   this common preprocessing boundary. Searches of the official repository's
   issues and pull requests on 2026-10-25 used `treemap directive`; no inspected
@@ -747,7 +747,7 @@ warning. These facts do not justify any additional divergence.
   and was merged on 2025-06-27; it is not a ruling on this boundary.
 
 - Railroad: the
-  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
   describes the four notations, EBNF exception, ABNF semicolon comments and PEG
   predicates. It does not define native retained YAML or HTML quote context
   across frontmatter. Searches of the official repository’s issues and pull
@@ -762,7 +762,7 @@ warning. These facts do not justify any additional divergence.
   establish that no other relevant issue exists.
 
 - Wardley: the
-  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)
   shows coordinates, decorations and flows without defining this common
   boundary. Searches of the official issues and pull requests on 2026-10-26 used
   wardley directive, wardley semicolon and wardley flow.
@@ -774,9 +774,9 @@ warning. These facts do not justify any additional divergence.
   defect decision for this boundary; the existing direct rule applies. The
   search is not claimed to be exhaustive.
 - Cynefin’s
-  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)
   describes fixed domains, quoted items and labeled transitions; its
-  [notes](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)
+  [notes](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)
   state that self transitions are ignored.
   [PR #7535](https://github.com/mermaid-js/mermaid/pull/7535) added the diagram
   and was merged. On 2026-10-26, searches for cynefin parser, cynefin directive,
@@ -789,7 +789,7 @@ warning. These facts do not justify any additional divergence.
 ### eventmodeling
 
 The pinned
-[eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L37-L322)
+[eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/eventmodeling.md#L37-L336)
 describes frames, data and tags without defining this shared preprocessing
 boundary. Searches of the official issues and pull requests on 2026-10-26 used
 eventmodeling title, eventmodeling parser, event modeling data, eventmodeling
@@ -802,7 +802,7 @@ existing direct rule applies. The search is not claimed to be exhaustive.
 ### Treeview
 
 The pinned
-[treeView.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277)
+[treeView.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277)
 describes indentation, quoted names, annotations and box drawing, without
 defining this common boundary. On 2026-10-26 the official issues/PRs were
 searched for `treeView quoted`, `treeView indentation`, `treeView box`,

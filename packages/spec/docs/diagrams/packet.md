@@ -6,15 +6,15 @@ This document defines `packet` and `packet-beta`. The
 [source tree](../ast/packet.md) preserves authored forms; derived values belong
 to the [tests summary](../../../tests/docs/db-summaries.md#packet). The syntax
 follows
-[packet.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/packet/packet.langium#L1-L21)
+[packet.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/packet/packet.langium#L1-L21)
 and
-[common.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L6-L34).
+[common.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/common.langium#L6-L34).
 [fixture: packet/gram-mixed] [fixture: packet/spec-packet-c4580507]
 
 ## Detection
 
 Entry 24 of [detection.md](../detection.md), the
-[packet detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/detector.ts#L7-L15),
+[packet detector](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/packet/detector.ts#L7-L15),
 selects the exact lowercase prefix `packet` without a suffix boundary, including
 `packet-beta`; both report diagram id `packet`. Detection alone does not accept
 `packetx`, `packet2`, or `packet-BETA`. `Packet` is not an alias. [fixture:
@@ -455,9 +455,9 @@ After complete lexical and grammatical acceptance, apply the following
 conditions in statement order. Any lexer/parser error or unread visible unit
 rejects the whole source, including after a valid prefix or recovery. Labels and
 common values introduce no additional semantic rejection. The
-[public wrapper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L134-L150)
+[public wrapper](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/parse.ts#L134-L150)
 and
-[packet adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/parser.ts#L11-L90)
+[packet adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/packet/parser.ts#L11-L90)
 are the sources of these gates. [fixture: packet/error-after-prefix] [fixture:
 packet/error-recovered-block] [fixture: packet/db-label-empty-double] [fixture:
 packet/gram-empty-description]

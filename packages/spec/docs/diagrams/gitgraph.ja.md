@@ -8,14 +8,14 @@
 [tests の要約](../../../tests/docs/db-summaries.md#gitgraph)にあります。
 
 構文の根拠は
-[gitGraph.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/gitGraph/gitGraph.langium)、
+[gitGraph.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/gitGraph/gitGraph.langium)、
 取り込まれる
-[common.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium)
+[common.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/common.langium)
 と、
-[reference.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/gitGraph/reference.langium)
+[reference.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/gitGraph/reference.langium)
 です。
 受理条件は
-[gitGraphAst.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts)
+[gitGraphAst.ts](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphAst.ts)
 にも従います。
 
 ## 検出
@@ -837,7 +837,7 @@ merge はその同一性と b の新しい先端を順に親として、新し�
 直接の親とは、元の同一性の現在の定義にある順序つきの親の列の要素です。
 祖先の探索は行いません。
 根拠は
-[gitGraphAst.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L49-L394)
+[gitGraphAst.ts](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L49-L394)
 です。 [fixture: gitgraph/db-merge-self]
 [fixture: gitgraph/db-cherry-pick-invalid-parent]
 [fixture: gitgraph/db-ordinary-parent-accepted]
@@ -1070,7 +1070,7 @@ tokenless-empty-forms は適用しません。
 [fixture: gitgraph/db-duplicate-id] [fixture: gitgraph/detect-lowercase]
 
 上流の
-[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md)
+[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/gitgraph.md)
 は、引用した id、分岐の順序、merge、cherry-pick、方向を説明します。
 2026-10-23 の確認では、
 [#4838](https://github.com/mermaid-js/mermaid/issues/4838) は終了済みで Status:

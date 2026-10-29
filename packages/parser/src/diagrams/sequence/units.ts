@@ -10,10 +10,10 @@ import {
   isWordCharacter,
 } from "../../character-classes.ts"
 import {
+  CHARACTER_TABULATION,
   COLON,
   COMMA,
   COMMERCIAL_AT,
-  EQUALS_SIGN,
   FULL_STOP,
   GREATER_THAN_SIGN,
   HYPHEN_MINUS,
@@ -383,6 +383,14 @@ const ID_RUN_CONTINUATION_EXCLUDED: readonly number[] = [
   LINE_FEED,
 ]
 
+/** The statement context, rule 11: whether `character` is a space or a tab. */
+function isSpaceOrTab(character: DiagramCharacter): boolean {
+  return (
+    character.codePoint === SPACE ||
+    character.codePoint === CHARACTER_TABULATION
+  )
+}
+
 /** The id context, rules 5 to 7: the characters that an id may not contain. */
 const ID_EXCLUDED: readonly number[] = [
   LESS_THAN_SIGN,
@@ -394,11 +402,32 @@ const ID_EXCLUDED: readonly number[] = [
   LINE_FEED,
 ]
 
-/** The id context, rule 4: the characters that an id before `@{` may not contain, besides whitespace. */
-const ID_BEFORE_DATA_EXCLUDED: readonly number[] = [
-  ...ID_EXCLUDED,
-  EQUALS_SIGN,
+/** The statement context, rule 11: the keywords that are a unit only before a word on their line. */
+const LINK_KEYWORDS: readonly UnitName[] = [
+  "links",
+  "link",
+  "properties",
+  "details",
+]
+
+/**
+ * The statement context, rule 11: the characters, besides whitespace, that
+ * may not stand after the spaces or tabs that follow a keyword of
+ * {@link LINK_KEYWORDS}.
+ */
+const LINK_KEYWORD_FOLLOWER_EXCLUDED: readonly number[] = [
+  SOLIDUS,
+  REVERSE_SOLIDUS,
+  PLUS_SIGN,
+  LEFT_PARENTHESIS,
+  RIGHT_PARENTHESIS,
+  LESS_THAN_SIGN,
+  GREATER_THAN_SIGN,
+  COLON,
+  COMMA,
+  SEMICOLON,
   HYPHEN_MINUS,
+  LINE_FEED,
 ]
 
 /** Text parts: the characters that end a text part, and the text after `:` and `title`. */
@@ -750,11 +779,27 @@ export class SequenceUnitLexer extends UnitLexer<Context, UnitName, Unit> {
     for (const { word, unit, enters } of STATEMENT_KEYWORDS) {
       const match = this.keyword(at, word)
       if (match === null) continue
+      if (LINK_KEYWORDS.includes(unit) && !this.wordFollows(match.end)) continue
       const keyword = this.read(unit, at, match.end)
       if (enters !== null) this.enter(enters, significantRangeOf(keyword))
       return true
     }
     return this.readNotePlacement(at)
+  }
+
+  /**
+   * The statement context, rule 11: whether one or more spaces or tabs
+   * follow from `position`, and then a character other than whitespace and
+   * those of {@link LINK_KEYWORD_FOLLOWER_EXCLUDED}, which are not read.
+   */
+  private wordFollows(position: DiagramPosition): boolean {
+    if (position === null || !isSpaceOrTab(position)) return false
+    const next = skipWhile(this.reader, position, isSpaceOrTab)
+    return (
+      next !== null &&
+      !isWhitespace(next.codePoint) &&
+      !LINK_KEYWORD_FOLLOWER_EXCLUDED.includes(next.codePoint)
+    )
   }
 
   /**
@@ -1032,19 +1077,23 @@ export class SequenceUnitLexer extends UnitLexer<Context, UnitName, Unit> {
 
   /**
    * The id context, rule 4: one or more characters other than those of
-   * {@link ID_BEFORE_DATA_EXCLUDED} and whitespace, followed directly by
-   * `@{`, which is not read: an `id` unit.
+   * {@link ID_EXCLUDED} and whitespace, followed by zero or more whitespace
+   * characters, line feeds included, and `@{`, which are not read: an `id`
+   * unit.
    */
   private readIdBeforeData(at: DiagramCharacter): boolean {
     const end = skipWhile(
       this.reader,
       at,
       (character) =>
-        !ID_BEFORE_DATA_EXCLUDED.includes(character.codePoint) &&
+        !ID_EXCLUDED.includes(character.codePoint) &&
         !isWhitespace(character.codePoint),
     )
     if (samePosition(end, at)) return false
-    if (matchWord(this.reader, end, "@{") === null) return false
+    const opening = skipWhile(this.reader, end, (character) =>
+      isWhitespace(character.codePoint),
+    )
+    if (matchWord(this.reader, opening, "@{") === null) return false
     this.read("id", at, end)
     return true
   }

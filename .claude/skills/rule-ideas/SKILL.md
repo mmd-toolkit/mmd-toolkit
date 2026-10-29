@@ -148,7 +148,7 @@ Dropped:
 | `link A: Dash@https://x.example` (the label is `Das`)                                                                                                                                                          | Looks like a mermaid bug: one missing space drops the last character of the label. Fact: the docs show the form `<label> @ <url>` only                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `subgraph a ` (whitespace at the end of the line makes the id subGraph0)                                                                                                                                       | Looks like a mermaid bug: invisible whitespace at the end of the line changes the id. Fact: its maintainers approved it as a bug in [#3252](https://github.com/mermaid-js/mermaid/issues/3252) (closed; Type: Bug / Error, Status: Approved, P1), and it still happens in 12.0.0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | `class 1A:::c` (a name that starts with a digit), `style C fill:red` before `class C`, `classDef fo` applied to the CSS class `foo`                                                                            | Outside the scope of this toolkit: whether a CSS class or a style is applied shows only in the drawn diagram, and this toolkit does not draw. Not judged as a mermaid bug, and not reported to mermaid                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `` class `a~b` `` (id `a` with the type `b`, drawn as `a<b>`)                                                                                                                                                  | A mermaid bug by its docs: backquotes escape special characters ([syntax/classDiagram.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/classDiagram.md#L161-L168)), but `~` inside them still starts a generic type. Rare in ordinary writing                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `` class `a~b` `` (id `a` with the type `b`, drawn as `a<b>`)                                                                                                                                                  | A mermaid bug by its docs: backquotes escape special characters ([syntax/classDiagram.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/classDiagram.md#L161-L168)), but `~` inside them still starts a generic type. Rare in ordinary writing                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `note for A~T~ "x"` after `class A~T~` (a note for a class written with its generic type)                                                                                                                      | Looks like a mermaid bug: the note keeps the name `A~T~`, the class is `A`, and the note is drawn without its line. `note for A "x"` finds the class                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `+foo(a(b)) int` (in the Db, the method name `foo(a` and the parameters `b)`)                                                                                                                                  | Nothing the user sees: the drawn diagram shows `+foo(a(b)) : int`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `A x-->B`, `A o-- t -->B` (a start marker different from the end marker)                                                                                                                                       | A mermaid bug, already recognized: mermaid-js/mermaid#1665 (open, approved) says that arrows with different markers at their ends do not work. `A x-->B` is a longer plain arrow, and `A o-- t -->B` is drawn as a plain arrow                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
@@ -169,7 +169,7 @@ Dropped:
 | In a requirement diagram, `id: 1 %% note` in a body (the id becomes `1 %% note`)                                                                                                                               | Comes from not knowing the syntax: the documentation of mermaid.js says that comments go on a line of their own, as for `subgraph S %% group` in a flowchart                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | In a mindmap, an icon line less indented than the node written last before it (`root`, `  child`, then `::icon(x)` at the indentation of `root`; the icon goes to `child`)                                     | The formatter makes it visible: it prints the icon line at the indentation of `child`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | In a mindmap, a node indented between earlier levels (`root`, `    a`, `      b`, `     c`; `c` becomes a child of `a`)                                                                                        | The documentation of mermaid.js explains this reading under "Unclear indentation", and the indentation does not tell what the author meant: a rule would also report intended writing                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| A line of only `%%` among lines commented out together (the vertex `%%`)                                                                                                                                       | mermaid.js draws the line, without an error, as a vertex with the id `%%`. Read as a comment that the flowchart documentation defines, "the text from the start of the comment to the next line break" ([syntax/flowchart.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L1217-L1219)), the vertex is a defect of mermaid.js, for which no rule is kept, for the reasons above ([#7008](https://github.com/mermaid-js/mermaid/pull/7008) is open). Read as writing outside that documentation, `%%` gives the vertex `%%` by the grammar, with nothing lost, and calling it a mistake needs the guess that a comment was meant. On either reading, no fact shows a mistake without a guess |
+| A line of only `%%` among lines commented out together (the vertex `%%`)                                                                                                                                       | mermaid.js draws the line, without an error, as a vertex with the id `%%`. Read as a comment that the flowchart documentation defines, "the text from the start of the comment to the next line break" ([syntax/flowchart.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/flowchart.md#L1217-L1219)), the vertex is a defect of mermaid.js, for which no rule is kept, for the reasons above ([#7008](https://github.com/mermaid-js/mermaid/pull/7008) is open). Read as writing outside that documentation, `%%` gives the vertex `%%` by the grammar, with nothing lost, and calling it a mistake needs the guess that a comment was meant. On either reading, no fact shows a mistake without a guess |
 | In a mindmap, `Write ::icon(fa fa-book)` or `Write:::urgent` on the line of a node                                                                                                                             | mermaid.js reads both by its grammar and loses nothing: the first is the node `Write ::icon` with the label `fa fa-book`, as `X(Foo)` shows `Foo` and not `X`, and the second is the label `Write:::urgent`. Calling either a mistake rests only on the guess that an icon or a class was meant                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | In a timeline, `#` in a period (`Sprint #3 : planning`: the period `Sprint `, and the comment `#3 : planning`, so the event is lost)                                                                           | A defect of mermaid.js, for the reasons above: the timeline documentation of mermaid.js calls a period and an event "simple text", names no comment `#`, and shows no other way of writing that keeps it (the entity `#35;` appears in the flowchart documentation only). Fact: [#5356](https://github.com/mermaid-js/mermaid/issues/5356) (closed, Type: Bug / Error) reports that `#` starts a comment                                                                                                                                                                                                                                                                                                                                                                          |
 | In a timeline, an event line after a section with no period of its own (`section B`, then `: y`; `y` goes to the last period of the section before)                                                            | mermaid.js reads it by its grammar and loses nothing; calling it a mistake needs the guess that the event was meant for section B. So for `section 2020 : a`, the section `2020 ` and an event of the period before                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
@@ -307,8 +307,8 @@ Dropped:
 | In a Wardley map, a YAML block after a comment or in the body, and an empty or a punctuation-only directive                                                                                                    | As in a pie chart above                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | In an Event Modeling diagram, a source of a type that the validator of mermaid.js forbids, and a frame that names itself as its source                                                                         | Nothing is lost: the relation is drawn as written; the public parse of mermaid.js does not run the validator, and the pairs it forbids are rules of the method (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | In an Event Modeling diagram, a source that names a frame declared later (no relation is drawn)                                                                                                                | The documentation says that the order of the numbers does not matter, and whether the author meant a relation against the order of the frames is not known; if meant, mermaid.js loses it as a defect (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| In an Event Modeling diagram, a frame number written twice (the relations of the later frame go to the box of the first)                                                                                       | A reset frame, or a frame that gets no relation, loses nothing, and telling these apart needs the swimlanes and the inferred relations of the drawing, which the tree does not hold (run); mermaid.js rejects the repetition after the pinned version                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| In an Event Modeling diagram, the sources of a reset frame (none is drawn, also when correct)                                                                                                                  | A defect of mermaid.js, fixed after the pinned version                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| In an Event Modeling diagram, a frame name written twice                                                                                                                                                       | mermaid.js gives an error for it, also when one of the two is a reset frame (read in `setAst`; run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| In an Event Modeling diagram, a comment line inside a data block, a note block, or an `accDescr` block (kept as its text)                                                                                      | A defect of mermaid.js, as in an agentflow above: the documentation of the other diagram types says that a comment line is ignored, and mermaid.js parses an Event Modeling diagram with its comment lines only to report positions in the source (read in `Diagram.ts`); eventmodeling-no-duplicate-description reports such a block where it replaces a description                                                                                                                                                                                                                                                                                                                                                                                                             |
 | In an Event Modeling diagram, `entity`, `note`, and `gwt`, the names they refer to, and `title` (none is drawn, also when correct)                                                                             | A defect of mermaid.js: the drawing does not implement the whole grammar                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | In an Event Modeling diagram, a data type in backticks, JSON that does not parse, and `accTitle:` or `accDescr` kept in the published value                                                                    | The documentation says that the drawing treats no data type in its own way; the keyword in the value is a defect of mermaid.js (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | In an Event Modeling diagram, the last character of inline data lost, and quoted inline data drawn empty                                                                                                       | A defect of mermaid.js: the author writes correct data                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
@@ -733,6 +733,7 @@ Decisions (with mermaid 12.0.0):
 | flowchart-no-redefined-vertex               | yes     |                                                                              |
 | flowchart-no-undef                          | yes     |                                                                              |
 | flowchart-no-duplicate-direction            | yes     |                                                                              |
+| flowchart-no-redefined-subgraph             | yes     |                                                                              |
 | no-unclosed-directive                       | yes     |                                                                              |
 | no-invalid-init-directive                   | yes     |                                                                              |
 | no-duplicate-init-key                       | yes     |                                                                              |
@@ -1061,11 +1062,34 @@ of a subgraph replaces the direction of the subgraph (run in `flowchart`,
 `flowchart-elk`, and `swimlane-beta`); two subgraphs of one id are drawn as one
 with the direction of the first (read in `getData`, which gives the layout the
 subgraphs from the last to the first, and the layout keeps one node for an id),
-so a different direction in a later one is lost and reported, although the Db
-keeps both; `TD` and `TB` are one direction, as the documentation says; (2)
-none; (3) the searches of the direction rules above; (4) write one `direction`
-statement for each subgraph. agentflow-no-duplicate-direction reports the same
-fact.
+so a different direction in a later one is lost and reported; the Db merges the
+declarations of an id into the first, which keeps its title, direction, and
+position (read in `addSubGraph`; run); `TD` and `TB` are one direction, as the
+documentation says; (2) none; (3) the searches of the direction rules above; (4)
+write one `direction` statement for each subgraph.
+agentflow-no-duplicate-direction reports the same fact.
+
+flowchart-no-redefined-subgraph: (1) the declarations of one subgraph id are
+merged into the first, which keeps its title, direction, and position, so a
+title written in a later declaration is lost (read in `addSubGraph`; run:
+`subgraph S [One]` and `subgraph S [Two]` give one subgraph `S` titled `One`
+with the members of both, and `subgraph S` and `subgraph S [Two]` one titled
+`S`); (2) none: a later declaration without a title, or with the title that the
+subgraph has, adds members and loses nothing; the title that the subgraph has is
+the title written in its first declaration, or, when that declaration writes
+none, the name that it writes, which mermaid.js shows as the title, not an id
+that mermaid.js generates (run: `subgraph S` has the title `S`, and
+`subgraph a b`, whose id is `subGraph0`, the title `a b`); titles are compared
+as written, as the labels of flowchart-no-redefined-vertex. Fixtures:
+`subgraph a b`, then `subgraph subGraph0 [a b]` (not reported: the title stays
+`a b`), and `subgraph a b`, then `subgraph subGraph0 [subGraph0]` (reported:
+`subGraph0` is lost; run); (3) "duplicate subgraph", "subgraph same id",
+"subgraph redeclare", "subgraph title overwritten":
+[#8326](https://github.com/mermaid-js/mermaid/issues/8326) (closed) and
+[#8337](https://github.com/mermaid-js/mermaid/pull/8337) (merged, in the pinned
+version) make every layout merge the declarations, as dagre and 11.x did, so
+writing a subgraph again to add members is a way of writing; (4) write the title
+in the first declaration, or use another id.
 
 class-no-redefined-class: (1) the earlier label is lost; (2) none; (3) "class
 label redefine"; (4) use another name, or write the label once.
@@ -1130,8 +1154,12 @@ Error) reports that a `#` empties the texts of a sequence diagram; (4) write a
 JSON object.
 
 sequence-no-link-without-separator: (1) the label loses its last two characters,
-and `link A:` gives an empty link; (2) none; (3) "link @ sequence menu", "link
-sequence"; (4) the document names the form `label @ url`.
+and `link A:` gives an empty link; (2) none: `link` used as a participant id, as
+in `link->>B: x`, is a message, not a link statement, and is not reported
+(`packages/spec/docs/diagrams/sequence.md`, rule 11 of the statement context:
+`link` is a keyword only before spaces or tabs and a character outside
+`/\+()<>:,;-` and whitespace); (3) "link @ sequence menu", "link sequence"; (4)
+the document names the form `label @ url`.
 
 class-no-bare-class-name: (1) the statement declares nothing; (2) none; (3)
 "classDiagram direction lowercase", "classDiagram title", "class diagram title";
@@ -1616,7 +1644,7 @@ merges of more parents), the layout, and clicks.
   does not show, so the input is accepted silently, as for flowchart-no-undef,
   whose warning [#7441](https://github.com/mermaid-js/mermaid/pull/7441) added;
   the railroad example of the
-  [documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md#L481-L500)
+  [documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/gitgraph.md#L481-L500)
   writes `commit id:"Boston"` twice, and the second replaces the first, the
   behavior that #4838 reported, so it is no way of writing that the
   documentation shows on purpose; (2) none: the last `id:` of a statement is its
@@ -1686,7 +1714,7 @@ and labels of the rings.
   left (read in `drawCurves`; run); (2) none: every axis counts, and a curve
   with axis names is left to the other rules; (4) give one value for each axis.
 - radar-no-duplicate-option: (1) the last value of each option is used (read in
-  [`setOptions`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L93-L117);
+  [`setOptions`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/db.ts#L93-L117);
   run); (2) none: a value given again is not reported, and a `ticks` above 32 is
   compared as 32, since mermaid.js draws at most 32 rings; (4) give each option
   one value.
@@ -1745,8 +1773,7 @@ The Cynefin rules have these notes; the searches were "cynefin", "cynefin
 domain", "cynefin title", and "cynefin duplicate", and found nothing that
 changes the readings: [#7922](https://github.com/mermaid-js/mermaid/pull/7922)
 (open) changes the center and the boundaries of the framework and leaves the
-storing of domains and the common values as they are (read in its changes by the
-drafting session).
+storing of domains and the common values as they are (read in its changes).
 
 - cynefin-no-redefined-domain: (1) the Db stores the items of a domain under its
   name over the items stored before, so an item that a later statement does not
@@ -1813,11 +1840,11 @@ The Event Modeling rules have these notes; the searches were "eventmodeling",
 "eventmodeling source frame", and "eventmodeling duplicate", and found nothing
 that changes the readings:
 [#8288](https://github.com/mermaid-js/mermaid/issues/8288) (closed) and
-[#8296](https://github.com/mermaid-js/mermaid/pull/8296) (merged after the
-pinned version) concern the sources of a reset frame;
+[#8296](https://github.com/mermaid-js/mermaid/pull/8296) (merged, in the pinned
+version) draw the explicit sources of a reset frame;
 [#8287](https://github.com/mermaid-js/mermaid/issues/8287) (closed) and
-[#8297](https://github.com/mermaid-js/mermaid/pull/8297) (merged after the
-pinned version) reject a frame number written twice;
+[#8297](https://github.com/mermaid-js/mermaid/pull/8297) (merged, in the pinned
+version) reject a frame name written twice;
 [#7935](https://github.com/mermaid-js/mermaid/issues/7935) (open) is the last
 character of inline data;
 [#8290](https://github.com/mermaid-js/mermaid/issues/8290) (open) proposes other
@@ -1830,18 +1857,22 @@ validator, which the public parse does not run.
   reference that names no data block shows no data, or the inline data in place
   of the block (read in `getState` and `calculateTextProps`; run); (2) none: a
   frame or a block declared after counts, names are compared as written, and the
-  sources of a reset frame and the frames that `note` and `gwt` name are not
-  checked, since mermaid.js draws none of them; a reference beside inline data
-  is reported too, since the reference has no effect and names nothing; (4)
+  frames that `note` and `gwt` name are not checked, since mermaid.js draws none
+  of them; the sources of a reset frame are checked as those of a time frame,
+  since mermaid.js draws a relation from each explicit source that names a frame
+  and none from one that names no frame (read in `decidePositionRelation`),
+  while a reset frame without sources infers none; a reference beside inline
+  data is reported too, since the reference has no effect and names nothing; (4)
   correct the name.
 - eventmodeling-no-redefined-data: (1) a frame shows the first data block of the
   name, and a later block of the name is never shown (read in
   `calculateTextProps`; run); (2) none: a name that no frame references and the
   same content are not reported, and the data type is not compared; contents are
-  compared as written, also a later empty block and a difference of spaces,
-  since mermaid.js shows the spaces and the lines as written, and character
-  references are a limit that the document states; (4) give each content its own
-  name.
+  compared as written, comment lines included, since mermaid.js keeps a comment
+  line in the value of a block (run), also a later empty block and a difference
+  of spaces, since mermaid.js shows the spaces and the lines as written, and
+  character references are a limit that the document states; (4) give each
+  content its own name.
 - eventmodeling-no-duplicate-title, eventmodeling-no-duplicate-description: (1)
   the parser keeps the last `accTitle` and the last `accDescr`, and
   `populateCommonDb` sets them, since mermaid.js keeps the whole statement with
@@ -1849,18 +1880,34 @@ validator, which the public parse does not run.
   `populateCommonDb`; run); (2) none: an empty earlier text loses nothing, and
   texts are compared by their words, with the shared helper, so the line form
   and the block form of one text are one description, though mermaid.js keeps
-  the keyword in the value; `title` is not compared, since mermaid.js does not
-  draw it (run); (4) keep one statement.
+  the keyword in the value; a comment line in a block is text of the description
+  and is compared with it, so a block of only a comment line sets that line as
+  the description: after `accDescr: First`, such a block replaces it and a later
+  `accDescr: Second` replaces the block, and both are reported (run); `title` is
+  not compared, since mermaid.js does not draw it (run); (4) keep one statement.
 - eventmodeling-no-empty-description-block: (1) the block sets the text of the
   statement, as `accDescr {}`, as the description, and removes an earlier one
-  (run); (2) none: a block with a comment in it is not reported, as in the other
-  diagram types; (4) write the description, or remove the block.
+  (run); (2) none: a block with a comment line in it is not reported: mermaid.js
+  keeps the comment line as the text of the description (run), so the block is
+  not empty; a comment line between `accDescr` and its `{` is rejected
+  (`packages/spec/docs/diagrams/eventmodeling.md`, common statements), so that
+  form is no input of the rule, and a comment after the `}` on its line, as
+  `accDescr {} %% later`, is a comment and does not prevent a report (run); (4)
+  write the description, or remove the block.
 - eventmodeling-no-unclosed-description-block: a frame with inline data holds a
   `}` on its line, so a block left unclosed is closed by it and takes the frames
   up to it (run), which the rule reports with the condition of the usecase rule
   and is not enabled for the same reason; the `}` of a data block stands alone
   on its line, and a block that it closes is not reported, which the document
-  states.
+  states. A `{` in a comment line does not count, as in usecase: the author does
+  not mean a comment to open what a later `}` closes (`accDescr { first`,
+  `%% see {x`, `second }`, and a frame with inline data close at `second }`, and
+  the frame is read as written; not reported; run). Unlike usecase, a `}` in a
+  comment line closes the block, since the comment line is text of the block
+  (`accDescr { first`, `%% note }`, and a frame give the description up to that
+  `}`, and the frame is read as written; run); such a block is not reported,
+  since nothing after it is taken, and the comment text kept in the description
+  is the defect in the table above.
 
 The tree view rules have these notes; the searches were "treeView", "treeview
 annotation", "treeview icon", "treeview accDescr", "treeview description",
@@ -1995,8 +2042,8 @@ changes, the conditions under which it is offered, how mermaid.js reads the
 result, what it may make visible, why a rule offers none, and the permalinks to
 the source of mermaid.js that explain it are recorded in this section; the
 implementation follows this record, and the tests of the rule check it. The
-readings were checked with mermaid 12.0.0 on the invalid fixtures of each rule
-(run).
+readings were checked with mermaid 12.0.0 on the invalid fixtures of each rule,
+and with 12.2.0, the pinned version, where 12.2.0 reads differently (run).
 
 ### The kinds of edits
 
@@ -2037,11 +2084,11 @@ without a directive (offered).
   statement before it ends before that space. There, the statement is removed
   with the spaces and tabs before it, up to the end of its line and without the
   line terminator, when nothing follows it on its line; with a `%%` after it, it
-  gets none. All 51 such statements in the invalid fixtures of the two rules,
-  removed so, leave a text that the parser and mermaid.js accept and that
-  mermaid.js reads as before apart from the title and the description (run).
-  Fixtures: after the header (offered), after a frame (offered), and with a
-  comment after it (none).
+  gets none. All 102 such statements in the invalid fixtures of the rules and in
+  the corpus of eventmodeling, removed so, leave a text that the parser and
+  mermaid.js accept and that mermaid.js reads as before apart from the title and
+  the description (run). Fixtures: after the header (offered), after a frame
+  (offered), and with a comment after it (none).
 - Remove a part of a statement (gitgraph-no-duplicate-option,
   radar-no-duplicate-option, quadrant-no-duplicate-style,
   venn-no-duplicate-style, usecase-no-duplicate-metadata,
@@ -2089,13 +2136,13 @@ without a directive (offered).
   have another statement after it
   (`eventmodeling accDescr {} tf 01 evt Bought`). There, the block is removed
   with the spaces and tabs before it on its line, and what follows it stays. All
-  19 such blocks in the invalid fixtures of the rule, the corpus of
-  eventmodeling, and inputs written for the question (after the header, after a
-  frame, with a frame, an `accTitle:`, or a comment after it, at the end of the
-  text, and a block that spans lines), removed so, leave a text that the parser
-  and mermaid.js accept and that mermaid.js reads as before apart from the
-  description (run). Fixtures: an empty block alone on its line (offered), and
-  one after a statement on its line, outside eventmodeling (none).
+  16 such blocks in the invalid fixtures of the rules and the corpus of
+  eventmodeling, and the 5 inputs written for the question (after the header,
+  after a frame, with a frame, an `accTitle:`, or a comment after it, at the end
+  of the text, and a block that spans lines), removed so, leave a text that the
+  parser and mermaid.js accept and that mermaid.js reads as before apart from
+  the description (run). Fixtures: an empty block alone on its line (offered),
+  and one after a statement on its line, outside eventmodeling (none).
 - Close a block at the end of the text: a line `}` after the last line, where a
   block without its `}` is accepted (agentflow, flowchart, sequence, state, and
   xychart), only when the block has text on a line after the line of the `{`.
@@ -2181,7 +2228,8 @@ above; a rule named with none offers nothing.
 - flowchart: flowchart-no-ignored-text gets none (criterion 3: the split gives
   back lines). flowchart-no-redefined-vertex gets none: the likely fix is a new
   id (criterion 1). flowchart-no-undef gets none: which id was meant is not
-  known (criterion 1).
+  known (criterion 1). flowchart-no-redefined-subgraph gets none: the likely fix
+  is one title or another id (criterion 1).
 - flowchart, agentflow, and usecase: the three
   `<diagram>-no-duplicate-direction` rules remove this statement or the one
   whose direction it differs from (in flowchart, in a later subgraph of an id,

@@ -17,7 +17,11 @@ parser の結果の記録が決める。
 1. **変換した原文。**
    与えられた原文と木から、
    共有の [変換した形](../db-from-tree.ja.md#変換した形)を読む。
-   共通 directive、comment region、選ばれた semicolon を除き、
+   共通 directive と選ばれた semicolon を除き、
+   comment region は原文が `maxTextSize` より長いときだけ除く。
+   そうでなければ、agentflow と同じく comment 行を残す。
+   値の外の comment 行は共有の Comment で、 block の値、note、`accDescr {…}`、
+   隠れた形の中の comment 行は、そのテキストの一部になる。
    CR/CRLF を正規化し、
    実際の frontmatter より後の原文全体で HTML 属性の引用符を変換し、
    entity の placeholder を保つ。
@@ -38,7 +42,10 @@ parser の結果の記録が決める。
    除いた directive や選ばれた semicolon の両側の空白をつなぐ。
    たとえば選ばれた semicolon は、
    ` \t; accDescr: D` を ` \t accDescr: D` に変える。
+   原文が `maxTextSize` より長いときは、
    comment region 自身の字下げと終わりの LF は除く。
+   そうでなければ、comment 行自身の字下げは comment の一部で、
+   その後の LF は残る。
    閉じた共通 directive だけの除去、空行、選ばれた semicolon は LF を残す。
    LF、LS、PS は水平の連なりの外にある。
    受理済みの木は
@@ -92,13 +99,14 @@ parser の結果の記録が決める。
    [fixture: eventmodeling/frontmatter-title]
    [fixture: eventmodeling/config-security-level-other]
 4. **Frame。**
-   time/reset frame の文を宣言順に読み、同名の重複も残す。
+   time/reset frame の文を宣言順に読む。
+   同名の frame は mermaid.js が拒否するので、受理した木には現れない。
+   [fixture: eventmodeling/db-frame-duplicates]
    kind は `time` または `reset`、name は書かれた数字列、
    modelEntityType は書かれた語のまま、entityIdentifier は修飾名をつなぐ。
    sourceFrames は書かれた数字列の集合を文字列順にソートして公開する。
    未定義・前方・自己参照も解決せず、先頭のゼロを区別する。
    [fixture: eventmodeling/db-frame-order]
-   [fixture: eventmodeling/db-frame-duplicates]
    [fixture: eventmodeling/db-all-aliases]
    [fixture: eventmodeling/db-qualified-names]
    [fixture: eventmodeling/db-source-order]

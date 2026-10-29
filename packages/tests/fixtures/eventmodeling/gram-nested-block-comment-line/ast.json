@@ -150,7 +150,7 @@
           "textBeforeValue": [],
           "value": {
             "type": "EventmodelingLiteral",
-            "value": "\na\nb\n",
+            "value": "\na\n%% comment\nb\n",
             "range": [
               40,
               56
@@ -213,27 +213,7 @@
     }
   },
   "frontmatter": null,
-  "comments": [
-    {
-      "type": "Comment",
-      "mark": "%%",
-      "value": " comment",
-      "range": [
-        43,
-        53
-      ],
-      "loc": {
-        "start": {
-          "line": 3,
-          "column": 0
-        },
-        "end": {
-          "line": 3,
-          "column": 10
-        }
-      }
-    }
-  ],
+  "comments": [],
   "directives": [],
   "tokens": [
     {
@@ -436,33 +416,15 @@
     },
     {
       "type": "RawText",
-      "value": "\na\n",
+      "value": "\na\n%% comment\nb\n",
       "range": [
         40,
-        43
+        56
       ],
       "loc": {
         "start": {
           "line": 1,
           "column": 40
-        },
-        "end": {
-          "line": 3,
-          "column": 0
-        }
-      }
-    },
-    {
-      "type": "RawText",
-      "value": "b\n",
-      "range": [
-        54,
-        56
-      ],
-      "loc": {
-        "start": {
-          "line": 4,
-          "column": 0
         },
         "end": {
           "line": 5,

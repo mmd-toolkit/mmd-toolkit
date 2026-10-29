@@ -13,15 +13,15 @@ timeline 図の Db の要約を、その木から作る手順です。
 mermaid.js は、構文解析しながら Db を作ります。
 文法は、文が終わるたびに、その文のために Db のメソッドを呼びます。
 出典は
-[`statement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L71-L85)
+[`statement`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L71-L85)
 です。
 Db は、メソッドに渡されたものを持ちます。
 出典は
-[`setDirection`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L21-L23)、
-[`addSection`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L29-L32)、
-[`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L52-L63)、
-[`addEvent`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L65-L70)、
-[`setDiagramTitle`、`setAccTitle`、`setAccDescription`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L16-L30)
+[`setDirection`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L21-L23)、
+[`addSection`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L29-L32)、
+[`addTask`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L52-L63)、
+[`addEvent`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L65-L70)、
+[`setDiagramTitle`、`setAccTitle`、`setAccDescription`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/commonDb.ts#L16-L30)
 です。
 要約も同じに作ります。
 文をソースの順に実行し、Db が持つ一覧が要約です。

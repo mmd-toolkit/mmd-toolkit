@@ -4,10 +4,10 @@ Japanese version: [journey.ja.md](./journey.ja.md)
 
 Source of truth in mermaid.js:
 
-- [`journey.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison)
-- [`journeyDb.js`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js)
+- [`journey.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison)
+- [`journeyDb.js`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/journeyDb.js)
 - the tests (`*.spec.js`) in
-  [`user-journey/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey)
+  [`user-journey/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey)
 
 This document covers the diagram type `journey`, the user journey diagram. The
 nodes of the tree are defined in [ast/journey.md](../ast/journey.md).
@@ -16,7 +16,7 @@ nodes of the tree are defined in [ast/journey.md](../ast/journey.md).
 
 Entry 21 of [detection.md](../detection.md) selects this grammar: the text
 starts with `journey`, after whitespace, in exactly this case
-([`journeyDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDetector.ts#L9-L11)).
+([`journeyDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/journeyDetector.ts#L9-L11)).
 `JOURNEY` is no journey diagram and matches no detector. [fixture:
 journey/header-only] [fixture: journey/header-leading-whitespace] [fixture:
 journey/header-upper-case]
@@ -534,7 +534,7 @@ its own, right after the header, right after a description block, and after the
 header and whitespace on its line, where it takes the rest of the line. The
 lexer of mermaid.js for this diagram has no rule for `%%{`, as the lexer of
 gantt has
-([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L18-L18)),
+([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L18-L18)),
 so whatever whitespace stands before it, a `%%{ }%%` where a unit starts is a
 comment in both: after the header or a description block and two spaces, after a
 line feed and two spaces, and after an empty line. The mark is found in the text
@@ -608,7 +608,7 @@ The grammar uses the notation of [common.md](../common.md#notation), over units
 instead of characters. A unit name, such as `task-text`, stands for one unit
 with that name, and text in double quotes stands for the unit named by that
 text, such as `"title"` or `":"`. The grammar is a restatement of the grammar in
-[`journey.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison#L44-L67)
+[`journey.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison#L44-L67)
 and accepts the same sequences of units, except for the empty description block,
 for which mermaid.js reads no token (see
 [Empty description blocks](#empty-description-blocks)).
@@ -671,7 +671,7 @@ journey/lex-task-colon-at-end] [fixture: journey/lex-task-text-only] [fixture:
 journey/lex-task-data-only]
 
 The data is divided by its colons, as
-[`addTask()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)
+[`addTask()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)
 divides it; the first colon of the data is the `:` unit after the description:
 
 - The **score part** runs from the first colon to the second colon or the end of
@@ -787,9 +787,9 @@ journey/gram-empty-description-block-then-percent-glued]
 ### Rejections outside the grammar
 
 None. The Db of mermaid.js throws for no input that its grammar accepts:
-[`addSection()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L26-L29)
+[`addSection()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L26-L29)
 and
-[`addTask()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)
+[`addTask()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)
 only store their texts, and a score that is no number, a task before the first
 section, and a section that repeats are accepted. [fixture:
 journey/db-task-score-not-a-number] [fixture: journey/db-task-before-section]

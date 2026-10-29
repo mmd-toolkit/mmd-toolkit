@@ -13,12 +13,12 @@ quadrant chart の図の木から Db の要約を作る手順です。
 mermaid.js は、構文解析のあいだに Db を作ります。
 文法は、文が終わるたびに Db を呼びます。
 出典は
-[`statement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L125-L136)
+[`statement`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L125-L136)
 です。
 Db は、あとの文が変える状態を持ちます。
 象限と軸のテキスト、点、クラスです。
 出典は
-[`quadrantDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L30-L110)
+[`quadrantDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L30-L110)
 です。
 要約も同じように作ります。
 文をソースの順に、同じ状態で実行し、最後の文を実行したときに、

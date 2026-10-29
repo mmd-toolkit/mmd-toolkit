@@ -40,7 +40,8 @@ export default [
       "packages/eslint-plugin/tests/fixtures/",
       ".claude/worktrees/",
       ".work/",
-      // Working files that are deleted before the release.
+      // Candidate reports to mermaid.js, kept apart from the documents of the
+      // packages and not linted.
       "tmp/",
       "!.github/",
     ],

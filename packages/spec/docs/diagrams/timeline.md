@@ -4,10 +4,10 @@ Japanese version: [timeline.ja.md](./timeline.ja.md)
 
 Source of truth in mermaid.js:
 
-- [`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison)
-- [`timelineDb.js`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js)
+- [`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison)
+- [`timelineDb.js`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/timelineDb.js)
 - the tests (`*.spec.js`) in
-  [`timeline/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline)
+  [`timeline/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline)
 
 This document covers the diagram type `timeline`. The nodes of the tree are
 defined in [ast/timeline.md](../ast/timeline.md).
@@ -16,7 +16,7 @@ defined in [ast/timeline.md](../ast/timeline.md).
 
 Entry 18 of [detection.md](../detection.md) selects this grammar: the text
 starts with `timeline`, after whitespace, in exactly this case
-([`detector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/detector.ts#L9-L11)).
+([`detector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/detector.ts#L9-L11)).
 `Timeline` and `TIMELINE` match no detector. [fixture: timeline/db-header-only]
 [fixture: timeline/header-indented] [fixture: timeline/header-after-blank-lines]
 [fixture: timeline/header-capitalized] [fixture: timeline/header-upper-case]
@@ -671,7 +671,7 @@ The grammar uses the notation of [common.md](../common.md#notation), over units
 instead of characters. A unit name, such as `period-text`, stands for one unit
 with that name, and text in double quotes stands for the unit named by that
 text, such as `"title"` or `":"`. The grammar is a restatement of the grammar in
-[`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L49-L85)
+[`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L49-L85)
 and accepts the same sequences of units, except for the empty description block,
 for which mermaid.js reads no token (see
 [Empty description blocks](#empty-description-blocks)). It groups the events
@@ -832,7 +832,7 @@ timeline/gram-empty-description-block-in-section]
 
 The Db of mermaid.js throws for one kind of input, which is rejected: an event
 statement before the first period, which
-[`addEvent()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L65-L70)
+[`addEvent()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L65-L70)
 has no period to give to. So `: e` right after the header, `timeline : b` and
 `timeline: x`, `timeline TD: x`, `: e` after a title or a section and no period,
 and `section S : x` before any period are rejected. [fixture:

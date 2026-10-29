@@ -105,7 +105,7 @@ flowchart では、`A@{ ... }@{ ... }` のように間を空けずに続くブ�
 1 つと数えます。
 文法がそれらの中身を連結して、 1 回の呼び出しで渡すためです。
 出典は
-[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L396-L401)
+[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L396-L401)
 です。
 
 kanban の 1 つのノードに隣り合う `@{ ... }` ブロックは、
@@ -141,38 +141,38 @@ JSON の内部を読み直しません。
 ### 記録のしかた
 
 flowchart の Db のパッチが、
-[`FlowDB.addVertex`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L127-L277)
+[`FlowDB.addVertex`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L127-L277)
 を包んで記録します。
 文法はブロックを、要素を作る呼び出しの後に、
 それだけの `addVertex` の呼び出しで渡します。
 パッチは、その呼び出しの前後ですべての要素の要約を比べます。
 出典は
-[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L464-L465)、
-[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L403-L421)
+[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L464-L465)、
+[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L403-L421)
 です。
 ブロックの中身も、それについての mermaid.js の規則も読みません。
 
 sequence の Db のパッチは、
-[`SequenceDB.addActor`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L155-L231)
+[`SequenceDB.addActor`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L155-L231)
 を包んで記録します。
 文法は参加者のブロックを、その参加者を足すのと同じ呼び出しで渡します。
 そのため、パッチはその呼び出しを、まずブロックなしで 1 回実行し、
 すべての actor と box の要約を取っておきます。
 出典は
-[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L358-L367)、
-[`SequenceDB.apply`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L578-L580)
+[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L358-L367)、
+[`SequenceDB.apply`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L578-L580)
 です。
 次に Db の一覧を元に戻し、mermaid.js が行ったとおりの呼び出しを実行します。
 2 回の実行で違う欄が、ブロックの効果です。
 ブロックの中身も、それについての mermaid.js の規則も読みません。
 
 kanban の Db のパッチは
-[`addNode()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L99-L165)
+[`addNode()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L99-L165)
 を包みます。
 文法はノードを追加する同じ呼び出しにブロックを渡します。
 その呼び出しをブロックなしとありで実行した後のノードの要約を比べます。
 出典は
-[`kanban.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/parser/kanban.jison#L126-L133)
+[`kanban.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/kanban/parser/kanban.jison#L126-L133)
 です。
 共有 Db の状態はモジュール変数にあるため、 Db を消去し、
 元のノード追加と装飾の呼び出しでそれまでの状態を復元します。

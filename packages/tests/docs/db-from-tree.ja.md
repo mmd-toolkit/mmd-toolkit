@@ -240,10 +240,10 @@ Db の値のうち、ノードが直接は与えない範囲のテキストを�
 
 mermaid.js は、
 Db が持つテキストをそれぞれ
-[`sanitizeText`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L85-L97)
+[`sanitizeText`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/common.ts#L85-L97)
 に通します。
 コーパスの実行器は DOMPurify を無効にするので、残るのは、
-[`sanitizeMore`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L70-L83)
+[`sanitizeMore`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/common.ts#L70-L83)
 です。
 [expected-results.ja.md](./expected-results.ja.md) の「残る処理」を参照。
 その処理は設定だけで決まり、

@@ -145,7 +145,7 @@ nothing else that starts with `%%{`.
 
 The first rule of the lexer of mermaid.js for this diagram reads `%%{` and
 enters a state named `open_directive`
-([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L18-L18)),
+([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L18-L18)),
 which the lexer does not declare, and returns a token that the grammar does not
 take; the rule is a remnant of the time when the lexer read directives itself,
 before mermaid.js removed them from the text. mermaid.js removes every directive
@@ -154,14 +154,14 @@ and the input is rejected. The rule is tried only where the lexer stands
 directly at the `%%{`. Where one character that is not `}` stands right before
 it, a line feed, a space, or a character of a text, a later rule reads that
 character, the `%`, and the rest of the line as one comment
-([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L29-L29)),
+([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L29-L29)),
 and the input is accepted. The lexer stands directly at the `%%{` after a unit
 that ends right before it, after the one whitespace character that leaves its
 click state, after a run of two or more whitespace characters, which its rules
 for line feeds and for whitespace read as a whole unless exactly one character
 is left after the leading line feeds, and after the line feeds that a `%`
 comment takes when the lexer reaches it so
-([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L30-L30)).
+([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L30-L30)).
 
 ## The rule of this specification, and why
 
@@ -178,7 +178,7 @@ that mermaid.js rejects for this reason are the divergence.
 ## The documentation of mermaid.js and its issues
 
 - The documentation of Gantt charts of mermaid.js says, under
-  [Comments](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gantt.md#L319-L322),
+  [Comments](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/gantt.md#L319-L322),
   that comments "need to be on their own line and must be prefaced with `%%`",
   and says nothing about `%%{`.
 - On 2026-10-08, the issues and pull requests of mermaid-js/mermaid were

@@ -7,7 +7,7 @@ This document defines the tokens of `usecase`; nodes are defined in
 [tokens.md](../tokens.md). The lexical order and contexts follow
 [diagrams/usecase.md](../../../spec/docs/diagrams/usecase.md#lexical-structure),
 whose source reference is
-[`usecase.tokens.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.tokens.ts#L1-L410).
+[`usecase.tokens.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/parser/usecase.tokens.ts#L1-L410).
 
 ## Tokens
 

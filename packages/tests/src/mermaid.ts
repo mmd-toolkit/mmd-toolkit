@@ -229,10 +229,12 @@ interface MermaidDiagramRegistry {
  * merged into the site configuration, and the usual converted frontmatter
  * title. A configuration-derivation failure stays a rejection.
  *
- * The pinned bundle keeps its registry in this chunk. Loading its actual
- * definitions avoids reproducing the configuration pipeline or needing a
- * separate sample input for every diagram. The parser is restored while this
- * call still holds the shared queue, including after a rejection.
+ * The pinned bundle keeps its registry in this chunk (its name changes with
+ * each version: it is the file of `dist/chunks/mermaid.core/` that exports
+ * `getDiagramLoader`). Loading its actual definitions avoids reproducing the
+ * configuration pipeline or needing a separate sample input for every diagram.
+ * The parser is restored while this call still holds the shared queue,
+ * including after a rejection.
  */
 export function readMermaidConfiguration(
   text: string,
@@ -250,7 +252,7 @@ export function readMermaidConfiguration(
       pathToFileURL(
         path.join(
           path.dirname(mermaidPackageJsonPath),
-          "dist/chunks/mermaid.core/chunk-O7XYJQB3.mjs",
+          "dist/chunks/mermaid.core/chunk-DSNLSHJZ.mjs",
         ),
       ).href
     )) as MermaidDiagramRegistry
@@ -688,8 +690,11 @@ async function neutralizeDomPurify(): Promise<void> {
 }
 
 // The two functions below mirror `cleanupText` in mermaid's `preprocess.ts` and
-// `extractFrontMatter` in `diagram-api/frontmatter.ts` (mermaid@12.0.0). mermaid
-// does not export them.
+// `extractFrontMatter` in `diagram-api/frontmatter.ts` (mermaid@12.2.0). mermaid
+// does not export them. Since mermaid@12.1.0, `extractFrontMatter` finds the
+// block with `matchFrontMatter()`, a linear scan that gives the result of
+// `frontMatterRegex` (which mermaid keeps), so the regular expression below
+// gives the same result and is only slower on adversarial text.
 //
 // Their regular expressions are mermaid's, with the `u` flag added. The flag
 // does not change what they match: they use no case-insensitive matching, and

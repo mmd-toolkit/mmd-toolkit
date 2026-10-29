@@ -173,7 +173,7 @@ mermaid.js がつなぐ、コメントで 2 つの行に分かれた文は、
 
 mermaid.js の字句解析器は、
 コメントを 1 つの規則で読みます（mermaid.js の
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)）。
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)）。
 `%%`、行の残り、その後に続く改行のすべてです。
 この規則は、それだけの行のコメントに合っていて、その行を改行ごと除きます。
 文の後では、文を終える改行を除くので、文法は次の行を同じ文の一部として見ます。
@@ -188,14 +188,14 @@ class/lex-comment-then-indented-directive-line]
 ただし mermaid.js は、字句解析器がテキストを読む前に、 `%%` の後に文字のある、
 ディレクティブでないコメント行を、
 すぐ前の空白だけの行と一緒に除きます（mermaid.js の
-[`cleanupComments`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)）。
+[`cleanupComments`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)）。
 そのようなコメント行のすぐ前の空白の行はなくなり、何も止めません。
 `A --> B %% c`、空白の行、`%% x`、`A : +int age` は、例 3 と同じく、
 mermaid.js では、ラベル `+int age` を持つ A から `BA` への 1 つの関係です。
 [fixture: class/div-comment-then-spaces-line-then-comment-line]
 gantt の字句解析器は、
 単独の `%` で始まるコメントに同じ形の規則を持ち（mermaid.js の
-[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L30-L30)）、
+[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L30-L30)）、
 `%` に直接立つところでだけそれにたどり着きます。
 `%%` の規則と、前に文字のある `%` の規則は改行を取りません。
 
@@ -221,11 +221,11 @@ mermaid.js が次の行をつなぐのは、その字句の規則の作りから
 ## mermaid.js の文書と issue
 
 - mermaid.js の class 図の文書は、
-  [Comments](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/classDiagram.md#L573-L575)
+  [Comments](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/classDiagram.md#L573-L575)
   で「Comments need to be on their own line」と書いています。
-  [flowchart](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L1219-L1219)
+  [flowchart](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/flowchart.md#L1219-L1219)
   と、
-  [sequence 図](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L682-L682)
+  [sequence 図](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L682-L682)
   の文書も同じです。
 - [Issue #6401](https://github.com/mermaid-js/mermaid/issues/6401) 「Inline
   comments cause errors when compiling」は、
@@ -245,7 +245,7 @@ mermaid.js が次の行をつなぐのは、その字句の規則の作りから
   ラベル `Type: Bug / Error` と `Status: Approved` などを持ち、closed です。
 
 - 固定した版の
-  [C4 の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L7-L17)
+  [C4 の文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/c4.md#L7-L17)
   は見出しと呼び出しを別の行に置き、
   行の途中のコメントが後続の改行を取る規則を示していません。
   `mermaid-js/mermaid` の issue と pull request を、

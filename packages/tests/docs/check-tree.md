@@ -96,16 +96,23 @@ const problems: TreeProblem[] = checkTree(text, tree)
   `#`, `%%`, and `%`, a timeline diagram the same marks, a mindmap diagram, an
   xychart diagram, a C4 diagram, and a quadrant chart the mark `%%`; a fragment
   without a mark follows a comment region (parser/docs/tokens.md, Comment;
-  [common.md](../../spec/docs/common.md#comment-lines), Comment lines).
-  Railroad's native comments also use `/*`, `(*`, `;` and `#` as their dialect
-  permits; eventmodeling also uses `/*` and `//`. A block comment includes its
-  first required closer in its range and excludes it from its value, including
-  in the last fragment after a common comment region. [fixture:
-  eventmodeling/comment-native] [fixture: railroad/ir-tail-comment] [fixture:
-  railroad/ebnf-comment-iso] [fixture: railroad/abnf-comment-semicolon-ls]
-  [fixture: railroad/peg-comment-hash-ps] Marks and closers are checked in the
-  text after common removals; directives inside them remain shared records.
-  [fixture: railroad/ir-comment-block-common-region] [fixture:
+  [common.md](../../spec/docs/common.md#comment-lines), Comment lines). Every
+  comment line of the source is a comment of the tree, except in agentflow and
+  eventmodeling when the text is not longer than `maxTextSize`: there the lexer
+  reads the comment lines after the header itself, so only those before the
+  header are required to be comments of the tree, and a comment line inside the
+  text of a value is a part of that text. [fixture:
+  eventmodeling/comment-line-entity-in-data] [fixture:
+  eventmodeling/comment-default-size-equal] Railroad's native comments also use
+  `/*`, `(*`, `;` and `#` as their dialect permits; eventmodeling also uses `/*`
+  and `//`. A block comment includes its first required closer in its range and
+  excludes it from its value, including in the last fragment after a common
+  comment region. [fixture: eventmodeling/comment-native] [fixture:
+  railroad/ir-tail-comment] [fixture: railroad/ebnf-comment-iso] [fixture:
+  railroad/abnf-comment-semicolon-ls] [fixture: railroad/peg-comment-hash-ps]
+  Marks and closers are checked in the text after common removals; directives
+  inside them remain shared records. [fixture:
+  railroad/ir-comment-block-common-region] [fixture:
   railroad/ebnf-comment-iso-common-region] [fixture:
   railroad/ir-comment-c-open-mark-directive] [fixture:
   railroad/ebnf-comment-c-open-mark-directive] [fixture:

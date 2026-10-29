@@ -813,8 +813,9 @@ export async function recordSpecFile(
     "diagram-api/diagram-orchestration.js": { addDiagrams: () => undefined },
   }
 
-  // The pie and railroad renderer specs read drawing state after parsing.
-  // Supply empty drawing reads, without executing the renderer or a real DOM.
+  // The pie and railroad renderer specs read drawing state after parsing, and
+  // the eventmodeling spec sets a method on `SVGElement.prototype`. Supply empty
+  // drawing reads, without executing the renderer or a real DOM.
   const drawingGlobals =
     path.relative(mermaidSource, file) ===
     path.join("diagrams", "pie", "pieRenderer.spec.ts")
@@ -835,7 +836,12 @@ export async function recordSpecFile(
             },
             SVGElement: { prototype: {} },
           }
-        : {}
+        : path.relative(mermaidSource, file) ===
+            path.join("diagrams", "eventmodeling", "eventmodeling.spec.ts")
+          ? // Its hooks give `SVGElement.prototype` a `getBBox` for the renderer
+            // tests, which pass no text to the parser.
+            { SVGElement: { prototype: {} } }
+          : {}
 
   // Most test files use vitest's functions as globals, without importing them.
   const saved = Object.fromEntries(

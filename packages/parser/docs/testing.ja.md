@@ -351,15 +351,20 @@ fixture の入力と並べて `packages/tests/fixtures/<diagram>/<fixture 名>/`
 
 ### fixture を足した後
 
-`@mmd-toolkit/tests` が足した fixture には、パーサーのテストを走らせるまで、
+`@mmd-toolkit/tests` が足した fixture には、結果を記録するまで、
 どちらのファイルもありません。
-CI の外では、fixture のテストが足りないファイルを書いて通ります。
-CI（`CI` が設定されている）では、ファイルがないとテストが失敗します。
+ファイルがないと、fixture のテストは失敗します。
+パッケージの設定とリポジトリのルートの設定が `update: "none"` なので、
+CI かどうかによらず、求めない限り、テストを走らせても記録は書かれません。
+ファイルを書くのは、`packages/parser` で走らせる 2 つのコマンドだけです。
+`pnpm run test:record` は、fixture のテストだけを `--update=new` 付きで走らせ、
+足りないファイルを書きます。
+`pnpm run test:update` は、`-u` 付きで走らせ、すべてを書き直します。
 
 そのため、fixture を足した人は次のようにします。
 
-1. `packages/parser` で、fixture のテストを 1 回走らせる。
-   `pnpm run test tests/fixtures.test.ts` である。
+1. `packages/parser` で、足りないファイルを 1 回書く。
+   `pnpm run test:record` である。
 2. 新しい `ast.json` と `parse-error.json` を読み、
    木とエラーが仕様どおりであることを確かめる。
 3. `packages/tests` で、記録した木へのコーパスの確かめを回す。

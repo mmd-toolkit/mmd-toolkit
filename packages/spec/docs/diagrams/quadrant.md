@@ -4,10 +4,10 @@ Japanese version: [quadrant.ja.md](./quadrant.ja.md)
 
 Source of truth in mermaid.js:
 
-- [`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison)
-- [`quadrantDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts)
+- [`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison)
+- [`quadrantDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts)
 - the tests (`*.spec.ts`) in
-  [`quadrant-chart/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart)
+  [`quadrant-chart/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart)
 
 This document covers the diagram type `quadrantChart`. The nodes of the tree are
 defined in [ast/quadrant.md](../ast/quadrant.md).
@@ -16,7 +16,7 @@ defined in [ast/quadrant.md](../ast/quadrant.md).
 
 Entry 22 of [detection.md](../detection.md) selects this grammar: the text
 starts with `quadrantChart`, after whitespace, in exactly this case
-([`quadrantDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDetector.ts#L9-L11)).
+([`quadrantDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDetector.ts#L9-L11)).
 `QUADRANTCHART`, `quadrantchart`, and `QuadrantChart` match no detector.
 [fixture: quadrant/header-upper-case] [fixture: quadrant/header-lower-case]
 [fixture: quadrant/header-capitalized]
@@ -1456,7 +1456,7 @@ The grammar uses the notation of [common.md](../common.md#notation), over units
 instead of characters. A unit name, such as `word`, stands for one unit with
 that name, and text in double quotes stands for the unit named by that text,
 such as `"title"` or `","`. The grammar is a restatement of the grammar in
-[`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L83-L189)
+[`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L83-L189)
 and accepts the same sequences of units, but for the known divergences.
 
 Each rule below makes a node of the tree, defined in

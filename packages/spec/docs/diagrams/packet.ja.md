@@ -6,15 +6,15 @@
 [木](../ast/packet.md)は書かれた形を保持し、
 導出値は [tests の要約](../../../tests/docs/db-summaries.md#packet)で定める。
 構文の根拠は、
-[packet.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/packet/packet.langium#L1-L21)
+[packet.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/packet/packet.langium#L1-L21)
 と、
-[common.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L6-L34)
+[common.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/common.langium#L6-L34)
 である。 [fixture: packet/gram-mixed] [fixture: packet/spec-packet-c4580507]
 
 ## 検出
 
 [detection.md](../detection.md) の 24 番、
-[packet の detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/detector.ts#L7-L15)
+[packet の detector](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/packet/detector.ts#L7-L15)
 は、接尾辞境界なしで小文字の接頭辞 `packet` を選ぶ。
 `packet-beta` も含み、どちらの図種 id も `packet` である。
 検出だけで `packetx`、`packet2`、`packet-BETA` を受理することにはならない。
@@ -519,9 +519,9 @@ lexer/parser の error または未消費の可視単位があれば、
 有効な接頭辞や回復があってもソース全体を拒否する。
 label と共通値は追加の意味上の拒否を起こさない。
 根拠は、
-[public wrapper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L134-L150)
+[public wrapper](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/parse.ts#L134-L150)
 と、
-[packet adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/parser.ts#L11-L90)
+[packet adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/packet/parser.ts#L11-L90)
 である。 [fixture: packet/error-after-prefix]
 [fixture: packet/error-recovered-block] [fixture: packet/db-label-empty-double]
 [fixture: packet/gram-empty-description]

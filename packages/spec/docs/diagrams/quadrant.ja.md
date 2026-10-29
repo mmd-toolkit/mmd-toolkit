@@ -4,9 +4,9 @@
 
 mermaid.js の正となるソース：
 
-- [`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison)
-- [`quadrantDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts)
-- [`quadrant-chart/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart)
+- [`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison)
+- [`quadrantDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts)
+- [`quadrant-chart/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart)
   の中のテスト（`*.spec.ts`）
 
 この文書は図種 `quadrantChart` を扱います。
@@ -17,7 +17,7 @@ mermaid.js の正となるソース：
 [detection.ja.md](../detection.ja.md) の項目 22 がこの文法を選びます。
 テキストが、空白の後、
 ちょうどこの大文字小文字の `quadrantChart` で始まるときです（mermaid.js の
-[`quadrantDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDetector.ts#L9-L11)）。
+[`quadrantDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDetector.ts#L9-L11)）。
 `QUADRANTCHART`、`quadrantchart`、 `QuadrantChart` はどの検出器にも合いません。
 [fixture: quadrant/header-upper-case] [fixture: quadrant/header-lower-case]
 [fixture: quadrant/header-capitalized]
@@ -1620,7 +1620,7 @@ mermaid.js は、1 文字の単位にくっついたコメントを、その文�
 二重引用符の中のテキストは、`"title"` や `","` のように、
 そのテキストを名前とする単位を表します。
 この文法は
-[`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L83-L189)
+[`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L83-L189)
 の文法を言い直したもので、既知の差異を除いて、同じ単位の並びを受理します。
 
 下の各規則は、

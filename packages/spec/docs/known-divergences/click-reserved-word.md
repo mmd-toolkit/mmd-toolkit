@@ -137,7 +137,7 @@ flowchart/gram-subgraph-name-string-click]
 
 The lexer of mermaid.js enters its click context at every `click` followed by
 whitespace
-([`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L112-L114)),
+([`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L112-L114)),
 without checking that a click statement can start there. The rule returns no
 token. In the click context, it reads what follows as click ids, up to the next
 whitespace, or reads nothing when only strings and whitespace follow; its

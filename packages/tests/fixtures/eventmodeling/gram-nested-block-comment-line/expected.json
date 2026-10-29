@@ -17,7 +17,7 @@
         "sourceFrames": [],
         "data": {
           "kind": "block",
-          "value": "{\na\nb\n}\n"
+          "value": "{\na\n%% comment\nb\n}\n"
         }
       }
     ]

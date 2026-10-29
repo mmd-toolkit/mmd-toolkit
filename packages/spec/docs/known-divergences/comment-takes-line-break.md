@@ -166,7 +166,7 @@ comment, which mermaid.js joins, is rejected by this specification.
 ## Why mermaid.js reads it so
 
 The lexer of mermaid.js reads a comment with one rule
-([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)):
+([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)):
 `%%`, the rest of the line, and every line feed that follows it, one after
 another. The rule fits a comment on a line of its own, which it removes with its
 line break. After a statement, it removes the line break that ends the
@@ -181,14 +181,14 @@ relation and the class C. [fixture: class/div-comment-then-directive-line]
 the text, though, mermaid.js removes each comment line with text after its `%%`,
 other than a directive, together with the lines of only whitespace right before
 it
-([`cleanupComments`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)).
+([`cleanupComments`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)).
 A line of spaces right before such a comment line is then gone, and stops
 nothing: `A --> B %% c`, a line of spaces, `%% x`, and `A : +int age` is one
 relation from A to `BA` with the label `+int age` in mermaid.js, as in
 example 3. [fixture: class/div-comment-then-spaces-line-then-comment-line] The
 lexer of gantt has a rule of the same shape for a comment that starts with a
 single `%`
-([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L30-L30)),
+([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L30-L30)),
 which it reaches only where it stands directly at the `%`; its rule for `%%`,
 and its rule for a `%` with a character before it, take no line feed.
 
@@ -212,11 +212,11 @@ second of the reasons for a known divergence (see
 ## The documentation of mermaid.js and its issues
 
 - The documentation of class diagrams of mermaid.js says, under
-  [Comments](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/classDiagram.md#L573-L575):
+  [Comments](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/classDiagram.md#L573-L575):
   "Comments need to be on their own line". The documentation of
-  [flowcharts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L1219-L1219)
+  [flowcharts](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/flowchart.md#L1219-L1219)
   and of
-  [sequence diagrams](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L682-L682)
+  [sequence diagrams](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L682-L682)
   says the same.
 - [Issue #6401](https://github.com/mermaid-js/mermaid/issues/6401), "Inline
   comments cause errors when compiling", reports a comment after a statement in
@@ -234,7 +234,7 @@ second of the reasons for a known divergence (see
   the labels `Type: Bug / Error` and `Status: Approved` among others.
 
 - The pinned
-  [C4 documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L7-L17)
+  [C4 documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/c4.md#L7-L17)
   puts the header and calls on separate lines and gives no rule for an inline
   comment taking the following line break. Searches of issues and pull requests
   in `mermaid-js/mermaid` on 2026-10-21 with `C4 comment in:title,body`,

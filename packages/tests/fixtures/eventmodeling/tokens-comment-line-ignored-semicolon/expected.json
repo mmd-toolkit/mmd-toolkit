@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md, style and classDef lines: for eventmodeling, comment regions are not left out, so the rule applies to the top-level comment line; its last ; ends the line."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

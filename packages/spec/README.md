@@ -13,8 +13,8 @@ not published to npm; the specification is the set of documents under
 
 ## mermaid.js version
 
-The specification follows mermaid 12.0.0, at the commit
-[`98a0945`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b).
+The specification follows mermaid 12.2.0, at the commit
+[`1fb7869`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b).
 Where the specification and that version disagree, mermaid.js is right and the
 specification has a bug, except for the deliberate differences listed under
 [Known divergences](./docs/known-divergences.md).

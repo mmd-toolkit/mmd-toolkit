@@ -4,10 +4,10 @@
 
 mermaid.js での正解の出どころ:
 
-- [`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison)
-- [`flowParser.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flowParser.ts)
-- [`flowDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts)
-- [`parser/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser)
+- [`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison)
+- [`flowParser.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flowParser.ts)
+- [`flowDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts)
+- [`parser/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser)
   の中のテスト（`*.spec.js`）
 
 この文書は、図種 `flowchart-v2`、`flowchart-elk`、`swimlane` を扱います。
@@ -217,7 +217,7 @@ flowchart/header-direction-trailing-space]
 この空白は図のテキストのものなので、
 その中のコメント領域とディレクティブは除きます。
 mermaid.js は、文法がテキストを読む前に、
-[`flowParser.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flowParser.ts#L6-L10)
+[`flowParser.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flowParser.ts#L6-L10)
 でこの置き換えを行います。
 
 そのため、その空白の中にディレクティブがあっても、結果は mermaid.js と同じです。
@@ -1140,7 +1140,7 @@ flowchart/header-space-before-empty-string] [fixture: flowchart/header-string]
 ### Unicode の文字
 
 `letter` の単位は、次の範囲の 1 文字です。
-[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L211-L272)
+[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L211-L272)
 が挙げる文字です: U+00AA, U+00B5, U+00BA, U+00C0–U+00D6, U+00D8–U+00F6,
 U+00F8–U+02C1, U+02C6–U+02D1, U+02E0–U+02E4, U+02EC, U+02EE, U+0370–U+0374,
 U+0376, U+0377, U+037A–U+037D, U+0386, U+0388–U+038A, U+038C, U+038E–U+03A1,
@@ -1227,7 +1227,7 @@ U+FFC2–U+FFC7, U+FFCA–U+FFCF, U+FFD2–U+FFD7, U+FFDA–U+FFDC。
 繰り返しを最後まで進められない場合、その繰り返しは取られず、
 規則はその後に続くものへ進みます。
 この文法は
-[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L302-L633)
+[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L302-L633)
 の文法を述べ直したもので、同じ単位の並びを受理します。
 
 次の各規則が、
@@ -1560,7 +1560,7 @@ shape = "[" label "]"
 名前は、
 mermaid.js がデータブロック `A@{ shape: … }`
 で同じ形に受け付ける語です（mermaid.js の
-[`shapesDefs`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/rendering-util/rendering-elements/shapes.ts#L107-L534)）。
+[`shapesDefs`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/rendering-util/rendering-elements/shapes.ts#L107-L534)）。
 それらの語のうち、形そのものを表し、省略していない語です。
 `process`、`decision`、`subroutine` のような用途の語や、 `rect`、`diam`、
 `fr-rect` のような省略した語は採りません。
@@ -1737,7 +1737,7 @@ id は生成された `subGraph0`、タイトルは `end` で、`;` はメンバ
 mermaid.js の flowchart の文書は、冒頭で、
 小文字だけの語 `end` は flowchart を壊すと警告し、
 語かその文字のどれかを大文字にするよう勧めています（mermaid.js の
-[flowchart.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L9-L11)）。
+[flowchart.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/flowchart.md#L9-L11)）。
 その警告は、
 [issue #1444](https://github.com/mermaid-js/mermaid/issues/1444) 「Some node
 names break the diagrams」の回避策にリンクしています。
@@ -1946,9 +1946,9 @@ mermaid.js は、文法が受理する入力の一部を、Db を作る途中で
   `linkStyle 00 stroke:red` と、指すリンクより前にある `linkStyle` は、
   `interpolate` があってもなくても拒否されます。
   mermaid.js は、
-  [`updateLink()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L391-L413)
+  [`updateLink()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L391-L413)
   と、
-  [`updateLinkInterpolate()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L377-L386)
+  [`updateLinkInterpolate()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L377-L386)
   の `TypeError` で、これらを拒否します。
   どちらも、テキストとして受け取った番号を確かめないからです。
   [fixture: flowchart/linkstyle-index-out-of-range] [fixture:
@@ -2077,7 +2077,7 @@ mermaid.js は、文法が受理する入力の一部を、Db を作る途中で
   [fixture: flowchart/gram-subgraph-member-has-own-property-nested-blocks-glued]
   この名前は、ほかのどこでも予約されていません。
   mermaid.js は、
-  [`addSubGraph()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L685-L707)
+  [`addSubGraph()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L685-L707)
   で、見たメンバーを素のオブジェクトのキーとして持ち、
   各メンバーについてそのオブジェクトの `hasOwnProperty` 関数に尋ねます。
   メンバー `hasOwnProperty` を残すと、その関数が `true` に置き換わるので、

@@ -7,10 +7,10 @@
 導出した値の要約は
 [tests パッケージ](../../../tests/docs/db-summaries.ja.md#info) にあります。
 構文は、
-[info.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/info/info.langium#L1-L9)
+[info.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/info/info.langium#L1-L9)
 と、
 インポート先の
-[common.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L1-L34)
+[common.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/common.langium#L1-L34)
 に従います。 [fixture: info/header-lf] [fixture: info/common-all]
 
 ## 検出
@@ -492,9 +492,9 @@ eol = newline+ | end-of-text
 
 字句エラー、構文エラー、未消費の可視の単位があれば、
 回復した木や正しい接頭が存在しても入力全体を拒否します。
-[公開の解析ラッパー](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L134-L150)
+[公開の解析ラッパー](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/parse.ts#L134-L150)
 は両方のエラー一覧を検査します。
-[info のアダプター](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoParser.ts#L6-L11)
+[info のアダプター](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/info/infoParser.ts#L6-L11)
 は意味による拒否を加えません。
 共通の検出と埋め込みデータの規則は引き続き適用されます。
 [fixture: info/error-after-prefix] [fixture: info/error-after-common]

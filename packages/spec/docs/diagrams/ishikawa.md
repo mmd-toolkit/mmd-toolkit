@@ -4,9 +4,9 @@ Japanese version: [ishikawa.ja.md](./ishikawa.ja.md)
 
 Source of truth in mermaid.js:
 
-- [`ishikawa.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/parser/ishikawa.jison#L1-L56)
-- [`ishikawaDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L20-L96)
-- [`ishikawaDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/ishikawaDetector.ts#L7-L11)
+- [`ishikawa.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/ishikawa/parser/ishikawa.jison#L1-L56)
+- [`ishikawaDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L20-L96)
+- [`ishikawaDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/ishikawa/ishikawaDetector.ts#L7-L11)
 
 This document covers the diagram type `ishikawa`. The tree is defined in
 [ast/ishikawa.md](../ast/ishikawa.md). The

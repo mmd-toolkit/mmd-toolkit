@@ -47,7 +47,7 @@ pnpm --filter @mmd-toolkit/docs test
 新しい図種を追加しても、サイト設定への項目の追加は不要です。
 表示順は、
 Mermaidの
-[`sidebarSyntax()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/.vitepress/config.ts#L160-L207)
+[`sidebarSyntax()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/.vitepress/config.ts#L160-L207)
 に合わせ、 `.vitepress/documents.js`に定義しています。
 順序をまだ定義していない図種も、末尾にファイル名順で表示します。
 

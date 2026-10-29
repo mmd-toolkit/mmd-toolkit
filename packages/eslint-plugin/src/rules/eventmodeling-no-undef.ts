@@ -5,7 +5,7 @@ import {
   eventmodelingNameText,
 } from "../utils/eventmodeling-declarations.ts"
 
-/** Forward declarations count; reset-frame sources, notes and GWT are not checked. */
+/** Forward declarations count for both frame kinds; notes and GWT are not checked. */
 export const eventmodelingNoUndef: MermaidRuleDefinition<{
   RuleOptions: []
   MessageIds: "undef"
@@ -28,16 +28,14 @@ export const eventmodelingNoUndef: MermaidRuleDefinition<{
       EventmodelingDiagram(diagram) {
         const declarations = eventmodelingDeclarationsOf(diagram)
         for (const frame of declarations.frames) {
-          if (frame.type === "EventmodelingTimeFrameStatement") {
-            for (const source of frame.sourceFrames) {
-              const name = eventmodelingNameText(source.frame)
-              if (!declarations.frameNames.has(name)) {
-                context.report({
-                  node: source.frame,
-                  messageId: "undef",
-                  data: { name, kind: "frame" },
-                })
-              }
+          for (const source of frame.sourceFrames) {
+            const name = eventmodelingNameText(source.frame)
+            if (!declarations.frameNames.has(name)) {
+              context.report({
+                node: source.frame,
+                messageId: "undef",
+                data: { name, kind: "frame" },
+              })
             }
           }
           if (frame.dataReference !== null) {

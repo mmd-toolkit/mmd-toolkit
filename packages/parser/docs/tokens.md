@@ -263,18 +263,19 @@ tokens are, as if a `;` that the line rule ignores were not there (see
 comment lie on both sides of it, and otherwise it is an `IgnoredSemicolon`
 token. At the end of `A->>B: x #style:#x;` in sequence, the comment is
 `#style:#x`, and the `;` after it is an `IgnoredSemicolon` token. In every
-diagram but agentflow, a comment line never holds such a `;`, because the line
-rule leaves comment regions out of its line segments (see
+diagram but agentflow and eventmodeling, a comment line never holds such a `;`,
+because the line rule leaves comment regions out of its line segments (see
 [`style` and `classDef` lines](../../spec/docs/common.md#style-and-classdef-lines)).
-[fixture: sequence/tokens-comment-then-ignored-semicolon] A diagram whose Db
-sets
-[`preserveCommentsWhenParsing`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L66-L76)
-(agentflow in the pinned mermaid.js) sees comment lines in its parser input; its
-document says how the tree represents them. A `%%` that is not a comment line,
-such as a trailing `%%` after a statement or a line containing only `%%`, is
-[diagram text](../../spec/docs/common.md#reading-a-source), which the diagram's
-lexer reads: it is part of a token, or a diagram comment where the diagram's
-document makes it one, as a line of only `%%` in class. [fixture:
+[fixture: sequence/tokens-comment-then-ignored-semicolon] [fixture:
+eventmodeling/tokens-comment-line-ignored-semicolon] [fixture:
+eventmodeling/tokens-comment-line-semicolon-before-text] A diagram whose Db sets
+[`preserveCommentsWhenParsing`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/Diagram.ts#L66-L76)
+(agentflow and eventmodeling in the pinned mermaid.js) sees comment lines in its
+parser input; its document says how the tree represents them. A `%%` that is not
+a comment line, such as a trailing `%%` after a statement or a line containing
+only `%%`, is [diagram text](../../spec/docs/common.md#reading-a-source), which
+the diagram's lexer reads: it is part of a token, or a diagram comment where the
+diagram's document makes it one, as a line of only `%%` in class. [fixture:
 common/comment-mid-line-style] [fixture: common/comment-bare] [fixture:
 class/lex-bare-percent-line-between-statements] Before the header, such a line
 is a bare `%%` line, which detection passes and the diagram's lexer does not

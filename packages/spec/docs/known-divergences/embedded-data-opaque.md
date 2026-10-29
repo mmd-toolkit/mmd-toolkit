@@ -169,10 +169,10 @@ are these:
   YAML whose value is null, such as only a line break, only a comment, `null`,
   `~`, or a document marker alone: mermaid.js reads content with a line break as
   a YAML document, and content without one as a mapping between braces
-  ([`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L143-L151)),
+  ([`addVertex()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L143-L151)),
   and then reads the shape of the value, which fails with a `TypeError` when
   there is none
-  ([`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L235-L236)).
+  ([`addVertex()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L235-L236)).
   `A@{`, a line break, and `}` is rejected there, while `A@{ }` and `A@{ # c }`,
   on one line, are accepted by both, and so is the same block of an edge id, for
   which mermaid.js reads no shape. In sequence, mermaid.js reads the content of
@@ -300,9 +300,9 @@ usecase/div-gram-json-trailing-comma] [fixture: usecase/div-gram-json-u2028]
 usecase/db-json-duplicate-order] [fixture: usecase/div-frontmatter-malformed]
 
 Mermaid validates the JSON text and obtains its decoded value with
-[`JSON.parse()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseJson.ts#L345-L378).
+[`JSON.parse()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/parser/usecaseJson.ts#L345-L378).
 For a validated object root, it then gathers source property order with
-[`PropertyOrderCollector.collect()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseJson.ts#L373-L377).
+[`PropertyOrderCollector.collect()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/parser/usecaseJson.ts#L373-L377).
 The collector can also help locate a JSON error; it does not replace JSON
 validation. The native metadata property grammar does not use this JSON reader.
 [fixture: usecase/db-json-integer-order] [fixture:
@@ -571,9 +571,9 @@ cynefin/div-invalid-keeps-config] [fixture:
 cynefin/detect-retained-yaml-properties]
 
 The
-[pinned grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)
+[pinned grammar](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)
 and
-[public adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
+[public adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
 read the result of the common preprocessing/detection pipeline. The
 [Cynefin syntax](../diagrams/cynefin.md) states the direct rule and
 [tree](../ast/cynefin.md) retains its authored forms. [fixture:
@@ -600,7 +600,7 @@ eventmodeling/div-invalid-keeps-config] [fixture:
 eventmodeling/prefix-directive-opaque] [fixture:
 eventmodeling/prefix-yaml-opaque] [fixture: eventmodeling/data-all-types]
 
-[event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
+[event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
 defines the units; [the diagram syntax](../diagrams/eventmodeling.md) defines
 their direct boundaries.
 
@@ -612,7 +612,7 @@ retained in the comparison. Invalid YAML, nonstring fontFamily, invalid common
 theme data and primitive init combined with wrap can reject in Mermaid while the
 opaque reading accepts. Preserve valid neighboring title/configuration when
 forming that reference. The
-[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/parser.ts#L11-L57)
+[adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treeView/parser.ts#L11-L57)
 and [diagram syntax](../diagrams/treeview.md#semantic-acceptance-conditions) add
 no hidden semantic gate. [fixture: treeview/div-frontmatter-invalid] [fixture:
 treeview/config-frontmatter-fontfamily-number] [fixture:
@@ -626,7 +626,7 @@ treeview/config-frontmatter-cannot-reject]
 ## The documentation of mermaid.js and its issues
 
 - The pinned
-  [C4 documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L159-L171)
+  [C4 documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/c4.md#L159-L171)
   shows valid YAML frontmatter configuring `c4.wrap`, but states no policy for
   malformed embedded YAML. Searches of issues and pull requests in
   `mermaid-js/mermaid` on 2026-10-21 with `C4 YAML in:title,body`,
@@ -636,7 +636,7 @@ treeview/config-frontmatter-cannot-reject]
   or pull request about acceptance of invalid YAML in C4 frontmatter was found.
 
 - The pinned
-  [venn documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
+  [venn documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/venn.md)
   shows valid YAML frontmatter, but states no acceptance rule for malformed
   YAML. Searches of issues and pull requests in `mermaid-js/mermaid` on
   2026-10-21 with `venn YAML in:title,body`,
@@ -644,7 +644,7 @@ treeview/config-frontmatter-cannot-reject]
   found no report about accepting invalid YAML in venn frontmatter.
 
 - The pinned
-  [Ishikawa documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/ishikawa.md#L11-L38)
+  [Ishikawa documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/ishikawa.md#L11-L38)
   describes node text and indentation, but states no acceptance rule for
   malformed embedded YAML. Searches of issues and pull requests in
   `mermaid-js/mermaid` on 2026-10-21 with `ishikawa`,
@@ -653,7 +653,7 @@ treeview/config-frontmatter-cannot-reject]
   invalid YAML in Ishikawa frontmatter.
 
 - The pinned
-  [Agentflow metadata documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/agentflow.md#L233-L268)
+  [Agentflow metadata documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/agentflow.md#L233-L268)
   describes YAML blocks on nodes, edges, and containers, including preservation
   of unknown keys and removal of prototype-shaped keys. It states no acceptance
   policy for malformed YAML. Searches of issues and pull requests in
@@ -665,7 +665,7 @@ treeview/config-frontmatter-cannot-reject]
   Agentflow YAML.
 
 - The pinned
-  [usecase documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
+  [usecase documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
   describes JSON tables. Searches of issues and pull requests in
   `mermaid-js/mermaid` on 2026-10-22 with `usecase JSON` found no inspected
   report establishing a maintainer defect judgment for this acceptance behavior.
@@ -677,14 +677,14 @@ treeview/config-frontmatter-cannot-reject]
 - For pie, [PR #4751](https://github.com/mermaid-js/mermaid/pull/4751), merged
   on 2024-02-11, introduced a hidden YAML rule, separate from global leading
   frontmatter extraction. The pinned
-  [syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/pie.md)
+  [syntax documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/pie.md)
   does not define validation of these hidden bodies. Searches on 2026-10-23 for
   `pie`, `pie YAML` and `pie frontmatter` found no maintainer decision that
   requires those bodies to be validated. This specification applies the shared
   opaque-data policy to leading frontmatter.
 
 For gitgraph,
-[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md)
+[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/gitgraph.md)
 documents the header and commands. Issue/PR searches on 2026-10-23 used
 `gitGraph`, `gitGraph directive`, `gitGraph YAML`, `gitGraph semicolon`,
 `gitGraph keyword`, `gitGraph duplicate` and `gitGraph cherry-pick`. No
@@ -695,7 +695,7 @@ Status: Approved; merged
 warning. These facts do not justify any additional divergence.
 
 - Info has no dedicated syntax page. The pinned
-  [syntax reference](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
+  [syntax reference](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/intro/syntax-reference.md)
   describes diagram declarations and percent comments. Searches of issues and
   pull requests on 2026-10-23 used `info showInfo`, `info directive`,
   `info semicolon` and `info accTitle`.
@@ -705,7 +705,7 @@ warning. These facts do not justify any additional divergence.
   to reject this syntax; this section follows the existing direct rule.
 
 - The pinned
-  [packet documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
+  [packet documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
   shows single positions, ranges and relative counts; it does not define this
   preprocessing boundary. Searches of the official repository's issues and pull
   requests on 2026-10-25 used `packet bitsPerRow`, `packet fractional` and
@@ -713,7 +713,7 @@ warning. These facts do not justify any additional divergence.
   this divergence.
 
 - The pinned
-  [architecture.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L21-L175)
+  [architecture.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/architecture.md#L21-L175)
   documents the header, declarations and edges, without defining this common
   preprocessing boundary. Searches of the official issues/PRs on 2026-10-25 used
   architecture group undefined, architecture quotes title, architecture reverse,
@@ -723,7 +723,7 @@ warning. These facts do not justify any additional divergence.
   ruling on this common boundary.
 
 - Radar:
-  [radar.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/radar.md#L66-L166)
+  [radar.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/radar.md#L66-L166)
   documents axes, curves and options. The official issues/PRs were searched on
   2026-10-25 for radar directive, radar semicolon and radar entries; no
   inspected result declares the boundaries above a defect.
@@ -733,7 +733,7 @@ warning. These facts do not justify any additional divergence.
   documentation examples; it does not add grammar support for a trailing comma.
 
 - Treemap: the pinned
-  [treemap documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
+  [treemap documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
   describes quoted rows, indentation and class definitions, without defining
   this common preprocessing boundary. Searches of the official repository's
   issues and pull requests on 2026-10-25 used `treemap frontmatter`; no
@@ -742,7 +742,7 @@ warning. These facts do not justify any additional divergence.
   and was merged on 2025-06-27; it is not a ruling on this boundary.
 
 - Railroad: the
-  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
   describes the four notations, EBNF exception, ABNF semicolon comments and PEG
   predicates. It does not define native retained YAML or HTML quote context
   across frontmatter. Searches of the official repository’s issues and pull
@@ -757,7 +757,7 @@ warning. These facts do not justify any additional divergence.
   establish that no other relevant issue exists.
 
 - Wardley: the
-  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)
   shows coordinates, decorations and flows without defining this common
   boundary. Searches of the official issues and pull requests on 2026-10-26 used
   wardley directive, wardley semicolon and wardley flow.
@@ -769,9 +769,9 @@ warning. These facts do not justify any additional divergence.
   defect decision for this boundary; the existing direct rule applies. The
   search is not claimed to be exhaustive.
 - Cynefin’s
-  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)
   describes fixed domains, quoted items and labeled transitions; its
-  [notes](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)
+  [notes](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)
   state that self transitions are ignored.
   [PR #7535](https://github.com/mermaid-js/mermaid/pull/7535) added the diagram
   and was merged. On 2026-10-26, searches for cynefin parser, cynefin directive,
@@ -784,7 +784,7 @@ warning. These facts do not justify any additional divergence.
 ### eventmodeling
 
 The pinned
-[eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L37-L322)
+[eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/eventmodeling.md#L37-L336)
 describes frames, data and tags without defining this shared preprocessing
 boundary. Searches of the official issues and pull requests on 2026-10-26 used
 eventmodeling title, eventmodeling parser, event modeling data, eventmodeling
@@ -797,7 +797,7 @@ existing direct rule applies. The search is not claimed to be exhaustive.
 ### Treeview
 
 The pinned
-[treeView.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277)
+[treeView.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277)
 describes indentation, quoted names, annotations and box drawing, without
 defining this common boundary. On 2026-10-26 the official issues/PRs were
 searched for `treeView quoted`, `treeView indentation`, `treeView box`,

@@ -64,6 +64,7 @@ import { flowchartNoDuplicateDirection } from "./flowchart-no-duplicate-directio
 import { flowchartNoDuplicateTitle } from "./flowchart-no-duplicate-title.ts"
 import { flowchartNoEmptyDescriptionBlock } from "./flowchart-no-empty-description-block.ts"
 import { flowchartNoIgnoredText } from "./flowchart-no-ignored-text.ts"
+import { flowchartNoRedefinedSubgraph } from "./flowchart-no-redefined-subgraph.ts"
 import { flowchartNoRedefinedVertex } from "./flowchart-no-redefined-vertex.ts"
 import { flowchartNoUnclosedDescriptionBlock } from "./flowchart-no-unclosed-description-block.ts"
 import { flowchartNoUndef } from "./flowchart-no-undef.ts"
@@ -262,6 +263,7 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "flowchart-no-duplicate-title": flowchartNoDuplicateTitle,
   "flowchart-no-empty-description-block": flowchartNoEmptyDescriptionBlock,
   "flowchart-no-ignored-text": flowchartNoIgnoredText,
+  "flowchart-no-redefined-subgraph": flowchartNoRedefinedSubgraph,
   "flowchart-no-redefined-vertex": flowchartNoRedefinedVertex,
   "flowchart-no-unclosed-description-block":
     flowchartNoUnclosedDescriptionBlock,

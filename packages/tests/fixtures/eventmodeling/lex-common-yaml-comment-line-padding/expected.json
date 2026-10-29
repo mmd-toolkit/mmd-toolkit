@@ -3,11 +3,9 @@
     "kind": "authored",
     "note": "eventmodeling.md Common statements: Does removing a common comment line together with its LF preserve claimable indentation after native YAML?"
   },
-  "accepted": true,
-  "diagramType": "eventmodeling",
-  "db": {
-    "accTitle": "accTitle: A",
-    "accDescr": "",
-    "frames": []
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 6, column 10: unexpected character: ->:<- at offset: 38, skipped 1 characters. Parse error on line 6, column 2: Expecting token of type 'EOF' but found `accTitle`."
   }
 }

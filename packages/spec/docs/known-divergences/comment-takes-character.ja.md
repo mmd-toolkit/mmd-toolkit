@@ -328,7 +328,7 @@ mmd-toolkit のパーサーは、文を書かれたとおりに読みます。
 
 mermaid.js の字句解析器には、
 この仕様と違う 2 つの規則があります（mermaid.js の
-[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L29-L30)）。
+[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L29-L30)）。
 文の状態で、数と id の規則より前に、
 `}` 以外の文字に `%%` と行の残りが続くものを、
 1 つのコメントとして読む規則を試します。
@@ -336,19 +336,19 @@ mermaid.js の字句解析器には、
 ある規則が `%%` のすぐ前の文字で一致を始めるはずの場所では、
 コメントの規則が先に当たり、`%%` のすぐ前の数は数として読まれません。
 gantt の字句解析器は単独の `%` で同じコメントの規則を持ち（mermaid.js の
-[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L29-L29)）、
+[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L29-L29)）、
 タスクのテキストとタスクのデータのコロンの規則より前に試します。
 journey の字句解析器は `%%` で同じコメントの規則を持ち（mermaid.js の
-[`journey.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison#L15-L15)）、
+[`journey.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison#L15-L15)）、
 改行、空白、タスクのテキスト、タスクのデータの規則より前に試します。
 timeline の字句解析器も同じ規則を持ち（mermaid.js の
-[`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L15-L15)）、
+[`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L15-L15)）、
 改行、空白、キーワード、event、period の規則より前に試します。
 xychart の字句解析器も同じ規則を持ち（mermaid.js の
-[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L16-L16)）、
+[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L16-L16)）、
 単位が始まるところの `%%` のコメントの規則を除く、すべての規則より前に試します。
 quadrant の字句解析器も同じ規則を持ち（mermaid.js の
-[`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L17-L17)）、
+[`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L17-L17)）、
 同じ位置で試します。
 
 ## この仕様の規則と、その理由
@@ -373,7 +373,7 @@ mermaid.js の字句解析器の規則の順から生じるもので、
 ## mermaid.js の文書と issue
 
 - mermaid.js の sequence 図の文書は、
-  [Comments](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L680-L682)
+  [Comments](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L680-L682)
   で「Comments need to be on their own line」と書いています。
 - [Issue #6401](https://github.com/mermaid-js/mermaid/issues/6401) 「Inline
   comments cause errors when compiling」は、

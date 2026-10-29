@@ -270,11 +270,11 @@ Comments with text after `%%` may stand anywhere.
 ## Why mermaid.js reads it so
 
 The lexer of
-[`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L21-L30)
+[`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L21-L30)
 reads `\s*%%.*`, a comment with the whitespace and the line feeds before it, as
 one token, and `[\s]+[\n]`, a run of whitespace up to its last line feed, as the
 same token, `SPACELINE`. Its grammar
-([`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L82-L108))
+([`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L82-L108))
 takes a `SPACELINE` as a statement of its own or as the end of the statement
 before it, and an end may be followed by line feeds only. So the tokens after a
 statement pair up as an end and a statement in turn, and a `SPACELINE` that is
@@ -284,7 +284,7 @@ starts the other way round.
 
 The kanban lexical rules and grammar pair whitespace and statements in the same
 way
-([`kanban.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/parser/kanban.jison#L48-L138)).
+([`kanban.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/kanban/parser/kanban.jison#L48-L138)).
 The pairing changes nothing held by the tree. The same direct rule applies.
 [fixture: kanban/gram-grid-comment-line-header-line] [fixture:
 kanban/gram-grid-directive-line-header-line] [fixture:
@@ -309,7 +309,7 @@ kanban/div-between-real-comments-ls-node] [fixture:
 kanban/div-between-real-comments-ps-node]
 
 Ishikawa has the same pairing in
-[`ishikawa.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/parser/ishikawa.jison#L6-L55):
+[`ishikawa.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/ishikawa/parser/ishikawa.jison#L6-L55):
 whitespace and diagram comments are both `SPACELINE`, used as a statement and as
 a statement end. Neither is a node: whitespace and line terminators are trivia,
 and comments are already held as comments. No node can preserve an acceptance
@@ -345,13 +345,13 @@ mindmap/div-two-comments-line-separator-between-nodes]
 ## The documentation of mermaid.js and its issues
 
 - The
-  [mindmap syntax](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/mindmap.md)
+  [mindmap syntax](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/mindmap.md)
   says nothing of empty lines or comments between the lines of a mindmap.
 - No issue or pull request about it was found (searched on 2026-10-15 for
   `mindmap empty line`, `mindmap blank line`, `mindmap comment`,
   `mindmap newline`, `mindmap parse`, and `mindmap error`).
 - The
-  [kanban syntax](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/kanban.md)
+  [kanban syntax](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/kanban.md)
   says nothing of empty lines or comments between the lines of a kanban diagram;
   it says only that the indentation matters.
 - No issue or pull request about it was found (searched on 2026-10-21 for
@@ -360,7 +360,7 @@ mindmap/div-two-comments-line-separator-between-nodes]
   found are about other things, such as `style` statements (#8118), `:::`
   classes (#8119), and `accTitle` (#8120).
 - The pinned
-  [Ishikawa syntax](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/ishikawa.md#L1-L41)
+  [Ishikawa syntax](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/ishikawa.md#L1-L41)
   describes indentation but states no blank-line or comment-pairing rule.
   Searches of issues and pull requests on 2026-10-21 with `ishikawa blank`,
   `ishikawa comment`, and `ishikawa header` found no report about these four

@@ -138,7 +138,7 @@ id と、省略可能なラベル、形、スタイル、プロパティを取�
    一方、`class` の文は頂点を加えず `props` を作らないので、
    その後の `A[|__proto__:x|text]` が `__proto__` を持つ `props` を作ります。
    mermaid.js は、
-   [`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L229-L233)
+   [`addVertex()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L229-L233)
    で、既存の `props` にプロパティを、素のオブジェクトへの代入で加えます。
    そこでは `__proto__` はキーになりません。 [fixture: flowchart/db-props-merge]
    [fixture:
@@ -155,9 +155,9 @@ id と、省略可能なラベル、形、スタイル、プロパティを取�
 
 **クラスの手順。**
 id とクラス名を取ります。
-それぞれの id の頂点、その id を持つ最初の辺、
-その id で最後に加えた subgraph のクラスに、クラス名を加えます。
-[fixture: flowchart/db-class-on-edge-and-subgraph] [fixture:
+それぞれの id の頂点、その id を持つ最初の辺、その id の subgraph のクラスに、
+クラス名を加えます。 [fixture: flowchart/db-class-on-edge-and-subgraph]
+[fixture:
 flowchart/db-class-vertex-id-with-comma]
 そのクラスを既に持つものにも、もう一度加えます。
 同じ id の頂点、辺、subgraph には、どれにも加えます。
@@ -310,6 +310,12 @@ flowchart/db-arrow-dotted-closing-start-marker]
 **subgraph。**
 subgraph の文は、その本体の文の後に subgraph を加えます。
 そのため、入れ子の subgraph は、それを囲む subgraph より先に来ます。
+先の subgraph が同じ id を持つときは、加えません。
+そのメンバーは、次の段落が定めるとおり、先の subgraph のメンバーの後に加わり、
+先の subgraph はタイトル、向き、一覧での位置を保ちます。
+[fixture: flowchart/db-class-last-subgraph-with-id]
+[fixture: flowchart/db-data-block-last-subgraph-with-id]
+[fixture: flowchart/spec-subgraph-57671598]
 そのメンバーは、
 [文法の外での拒否](../../../spec/docs/diagrams/flowchart.ja.md#文法の外での拒否)
 の **subgraph のメンバー** が定めるもので、
@@ -323,6 +329,9 @@ mermaid.js は見たメンバーを素のオブジェクトのキーとして持
 `__proto__` はそのキーにならないからです。
 その後、先に加えた subgraph が既に持つメンバーは、
 `__proto__` も含めて除きます。
+subgraph 自身の id も除きます。
+subgraph は自分自身のメンバーにならないからです。
+[fixture: flowchart/db-subgraph-body-data-block-own-id]
 [fixture: flowchart/db-subgraph-member-empty-statement] [fixture:
 flowchart/db-subgraph-member-empty-statement-end] [fixture:
 flowchart/db-subgraph-member-acc-title] [fixture:
@@ -346,10 +355,12 @@ subgraph は次のものを持ちます。
   の **subgraph のメンバー** が定める id で、
   そこで定める名前のテキストから作ります。
   生成した id は、`subGraph` に、
-  それより前に加えた subgraph の数を続けたものです。
+  それより前の subgraph の文の数を続けたものです。
+  先の id を繰り返した subgraph も数えます。
   入れ子の 2 つの subgraph がどちらも生成した id を持つなら、
   外側の番号のほうが大きくなります。 [fixture: flowchart/db-subgraph-counter]
   [fixture: flowchart/db-subgraph-counter-nested]
+  [fixture: flowchart/db-subgraph-counter-repeated-id]
 - `title`: タイトルの値を変換した形を trim したもの、
   タイトルがなければ名前のテキストを trim したもの。
   [fixture: flowchart/db-subgraph-title-trimmed]
@@ -569,7 +580,7 @@ flowchart/db-acc-descr-empty-block-after-block]
 `A`、`B`、`C`、`D` の件で、この順です。
 [fixture: flowchart/db-data-block-entries-source-order]
 上に挙げた位置で、次の 1 件を適用します。
-その欄を、頂点の id で最後に加えた subgraph があればそれに、
+その欄を、頂点の id の subgraph があればそれに、
 なければその id を持つ最初の辺があればそれに、
 なければ頂点の手順が既に加えたその id の頂点に設定します。
 [fixture: flowchart/gram-data-consecutive-blocks]

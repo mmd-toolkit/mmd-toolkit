@@ -2,15 +2,8 @@ import type { FlowchartLink, FlowchartShape } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { normalizeLineTerminators } from "../utils/acc-text.ts"
+import { flowchartLabelText } from "../utils/flowchart-labels.ts"
 import { flowchartLinkIdsOf } from "../utils/flowchart-links.ts"
-
-/**
- * The written label without exterior whitespace, with CRLF and CR read as LF.
- * HTML attribute quotes and character references keep their written spelling.
- */
-function labelText(shape: FlowchartShape): string {
-  return normalizeLineTerminators(shape.label.value).trim()
-}
 
 /**
  * The rule `flowchart-no-redefined-vertex`, described in
@@ -55,7 +48,8 @@ export const flowchartNoRedefinedVertex: MermaidRuleDefinition<{
         if (
           previous !== undefined &&
           (previous.name !== node.shape.name ||
-            labelText(previous) !== labelText(node.shape))
+            flowchartLabelText(previous.label) !==
+              flowchartLabelText(node.shape.label))
         ) {
           context.report({
             node: node.shape,

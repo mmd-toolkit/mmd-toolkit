@@ -583,22 +583,22 @@ for (const row of [
   },
   {
     source: "%% c\n%%{\n%% gap\nwrap}%%\n%%\n\u2029eventmodeling",
-    parts: [["%%{\n%% gap\nwrap}%%", "directive", ["%%{\n", "wrap}%%"]]],
-    comments: ["%% c", "%% gap", "%%"],
+    parts: [["%%{\n%% gap\nwrap}%%", "directive"]],
+    comments: ["%% c", "%%"],
   },
   {
     source: "%%{\n%% c\nwrap}%%\n\u00a0eventmodeling",
-    parts: [["%%{\n%% c\nwrap}%%", "directive", ["%%{\n", "wrap}%%"]]],
-    comments: ["%% c"],
+    parts: [["%%{\n%% c\nwrap}%%", "directive"]],
+    comments: [],
   },
   {
     source:
       "%% c\n---\nx\n---\n%%\n\u2028%%{\n%% gap\nwrap}%%\n%%\n\ufeffeventmodeling",
     parts: [
       ["---\nx\n---", "yaml-block"],
-      ["%%{\n%% gap\nwrap}%%", "directive", ["%%{\n", "wrap}%%"]],
+      ["%%{\n%% gap\nwrap}%%", "directive"],
     ],
-    comments: ["%% c", "%%", "%% gap", "%%"],
+    comments: ["%% c", "%%", "%%"],
   },
 ] as const)
   it(`keeps the pre-header detection exception for ${JSON.stringify(row.source)}`, () => {
@@ -719,15 +719,13 @@ it("reports splitting a native block Comment without a common region", () => {
   )
 })
 
-it("keeps a native block Comment's explicit fragments around a common comment region", () => {
+it("keeps a comment line inside a native block Comment as a part of its value", () => {
   const source = "eventmodeling /* A\n%% c\nB */ tf 01 evt A"
   const built = buildEventmodeling(source, (k) => {
-    k.comment("/*", "/* A")
-    k.comment("%%", "%% c")
-    k.comment(null, "B */")
+    k.comment("/*", "/* A\n%% c\nB */")
     return [frame(k, "01", "evt", () => qualified(k, "A"))]
   })
-  setField(built.tree.comments[2], "value", "B ")
+  setField(built.tree.comments[0], "value", " A\n%% c\nB ")
   expect(checkTree(source, built.tree)).toEqual([])
 })
 

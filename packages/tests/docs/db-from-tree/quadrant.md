@@ -12,10 +12,10 @@ are in [db-summaries.md](../db-summaries.md#quadrant).
 
 mermaid.js builds the Db while it parses: the grammar calls the Db for each
 statement as the statement ends
-([`statement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L125-L136)),
+([`statement`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L125-L136)),
 and the Db keeps the state that later statements change: the texts of the
 quadrants and of the axes, the points, and the classes
-([`quadrantDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L30-L110)).
+([`quadrantDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L30-L110)).
 The summary is built the same way: the statements are executed in source order,
 with the same state, and the summary is what the Db holds when the last one has
 run (see [db-summaries.md](../db-summaries.md#quadrant) for what the summary

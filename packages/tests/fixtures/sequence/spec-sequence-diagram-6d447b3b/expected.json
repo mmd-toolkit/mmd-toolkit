@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.2.0",
+    "path": "packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js",
+    "line": 2511,
+    "test": "sequence db class > when parsing extended participant syntax > should parse a participant config object separated from the name by whitespace"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Gina",
+        "description": "Gina",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "database",
+        "nextActor": "Harry"
+      },
+      {
+        "name": "Harry",
+        "description": "Harry",
+        "wrap": false,
+        "prevActor": "Gina",
+        "links": {},
+        "properties": {},
+        "type": "database"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "Gina",
+        "set": {
+          "type": "database"
+        }
+      },
+      {
+        "id": "Harry",
+        "set": {
+          "type": "database"
+        }
+      }
+    ]
+  }
+}

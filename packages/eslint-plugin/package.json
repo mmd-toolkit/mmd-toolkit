@@ -37,7 +37,7 @@
     "update": "node tools/update-rules.ts && node tools/update-docs.ts",
     "update:docs": "node tools/update-docs.ts",
     "check:docs": "node tools/update-rules.ts --check && node tools/update-docs.ts --check",
-    "test:update": "rimraf --glob \"tests/**/__snapshots__\" && vitest run"
+    "test:update": "rimraf --glob \"tests/**/__snapshots__\" && UPDATE_SNAPSHOTS=true vitest run"
   },
   "peerDependencies": {
     "eslint": "^10.0.0"

@@ -13,7 +13,9 @@ implementations follow it.
   structure and the values of what it stands for, and holds its child nodes in
   named fields, such as `Root.body`. No node has a generic list of children.
   Punctuation and keywords are units that no node holds; the fields of a node
-  name what they say.
+  name what they say. Whitespace and line terminators are not nodes either, as
+  in ESTree and in the trees that Prettier prints from: the source text and the
+  ranges give them back.
 
 - **Diagram-agnostic root.** The root holds the parts shared by all diagrams.
   The body node type depends on the diagram type.
@@ -208,7 +210,7 @@ not dedented, and the tree does not parse the YAML.
 Child fields: `body`. `frontmatter` and `directives` are not child fields.
 
 `diagramType` is the id that
-[`mermaid.parse()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L96-L117)
+[`mermaid.parse()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L96-L117)
 reports as `diagramType`, because fixtures record the same ids. The `graph` and
 `flowchart` headers both give `flowchart-v2`; `flowchart-elk` gives
 `flowchart-elk`; `swimlane-beta` gives `swimlane`.
@@ -229,7 +231,7 @@ so an input it selects is always rejected. No tree has it, and it is not a
 DiagramType. This specification defines the set of DiagramType ids. The list
 includes `flowchart-elk`, `mindmap`, and `architecture`, which mermaid.js
 registers only when
-[`includeLargeFeatures`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L85-L87)
+[`includeLargeFeatures`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L85-L87)
 is true; it is true in the default entry point of the npm package.
 
 **DiagramBody** is an `ErrorDiagram` or one of the body node types defined in
@@ -449,7 +451,7 @@ sequence/db-autonumber-step-overflow]
 
 At a treemap leaf value, the position permits digits, underscores, dots and
 commas rather than only conventional decimal spellings. Its value follows
-[TreemapValueConverter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treemap/valueConverter.ts#L13-L15):
+[TreemapValueConverter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/treemap/valueConverter.ts#L13-L15):
 the double read from the decimal prefix after removing commas, stopping at the
 first underscore or extra dot; if no decimal prefix can be read, value is NaN.
 The prefix must contain at least one digit and at most one dot; a leading dot

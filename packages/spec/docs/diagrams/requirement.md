@@ -4,10 +4,10 @@ Japanese version: [requirement.ja.md](./requirement.ja.md)
 
 Source of truth in mermaid.js:
 
-- [`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison)
-- [`requirementDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts)
+- [`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison)
+- [`requirementDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/requirement/requirementDb.ts)
 - the tests (`*.spec.js`, `*.spec.ts`) in
-  [`requirement/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement)
+  [`requirement/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/requirement)
 
 This document covers the diagram type `requirement`, the requirement diagram.
 The nodes of the tree are defined in
@@ -17,7 +17,7 @@ The nodes of the tree are defined in
 
 Entry 14 of [detection.md](../detection.md) selects this grammar: the text
 starts with `requirement`, after whitespace, in exactly this case
-([`requirementDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDetector.ts#L9-L11)).
+([`requirementDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/requirement/requirementDetector.ts#L9-L11)).
 `REQUIREMENTDIAGRAM` and `RequirementDiagram` match no detector. [fixture:
 requirement/header-only] [fixture:
 requirement/docs-syntax-requirement-diagram-7919bd6c] [fixture:
@@ -745,7 +745,7 @@ instead of characters. A unit name, such as `unquoted-text`, stands for one unit
 with that name, and text in double quotes stands for the unit named by that
 text, such as `"element"` or `"{"`. The grammar is a restatement of the grammar
 in
-[`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L107-L267)
+[`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L107-L267)
 and accepts the same sequences of units.
 
 Each rule below makes a node of the tree, defined in

@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md, Entities: for eventmodeling, comment regions are not left out, so the entity in the comment line inside the data block is read as its placeholder in the data value."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": {
+          "kind": "block",
+          "value": "{\n%% aﬂ°amp¶ßb\n}\n"
+        }
+      }
+    ]
+  }
+}

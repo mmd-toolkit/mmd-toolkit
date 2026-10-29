@@ -1,0 +1,68 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A subgraph that repeats an earlier id still counts for the generated id of a later subgraph, since mermaid.js counts the subgraph statements, not the subgraphs in the list."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "C",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A",
+          "B"
+        ],
+        "title": "S",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "subGraph2",
+        "nodes": [
+          "C"
+        ],
+        "title": "a b",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

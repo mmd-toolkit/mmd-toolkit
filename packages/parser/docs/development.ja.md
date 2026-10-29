@@ -32,7 +32,7 @@
 - `style` と `classDef` の行の規則
 - 実体参照
 - テキストの終わり
-- 図種の検出（mermaid.js 12.0.0 のすべての図種）
+- 図種の検出（mermaid.js 12.2.0 のすべての図種）
 
 図の本体は、今のところ `error` 疑似図種と、 flowchart（`flowchart-v2`、
 `flowchart-elk`、`swimlane`）と、シーケンス図（`sequence`）と、
@@ -212,13 +212,26 @@ data・shape・callback などの共通生成規則には、
 
 frontmatter と directive の除去後、
 正規化した長さが UTF-16 で 50000 単位以下なら、
+agentflow と eventmodeling では、
 SourceLexer は共通コメント領域を除去せずに行区間を読みます。
-agentflow が先頭の trivia と独自のコメントを読みます。
-上限を超える場合は共通のコメント除去経路を使います。
+先頭の trivia と独自のコメントは、その図の字句解析器が読みます。
+上限を超える場合は、どちらも共通のコメント除去経路を使います。
 [fixture: agentflow/comment-default-size-equal-crlf]
 [fixture: agentflow/comment-default-size-above-crlf]
 [fixture: agentflow/comment-default-size-equal-inline-directive]
 [fixture: agentflow/comment-default-size-above-frontmatter]
+[fixture: eventmodeling/comment-default-size-equal]
+[fixture: eventmodeling/comment-default-size-above]
+[fixture: eventmodeling/comment-default-size-equal-crlf]
+[fixture: eventmodeling/comment-default-size-above-crlf]
+[fixture: eventmodeling/comment-default-size-equal-inline-directive]
+[fixture: eventmodeling/comment-default-size-above-inline-directive]
+[fixture: eventmodeling/comment-default-size-equal-frontmatter]
+[fixture: eventmodeling/comment-default-size-above-frontmatter]
+[fixture: eventmodeling/frontmatter-extra-trivia-below]
+[fixture: eventmodeling/frontmatter-extra-trivia-boundary]
+[fixture: eventmodeling/frontmatter-extra-trivia-above]
+[fixture: eventmodeling/frontmatter-extra-whitespace-line-boundary]
 
 usecase の字句解析器は、通常の規則を仕様の順で試し、
 JSON とステレオタイプには排他的な文脈を使います。

@@ -61,6 +61,34 @@ sequence/div-invalid-frontmatter-preserves-wrap-directive] Keep a missing
 comparison Db explicit rather than inventing one or treating mermaid.js's
 rejection as the specification's rejection.
 
+## Special characters in the inputs
+
+An input holds the characters that the syntax cares about as they are, not as an
+escape or a stand-in that a loader turns back: U+2028, U+2029, U+0085, U+00A0,
+U+FEFF, U+3000 and the other characters that `scripts/check-invisible-chars.mjs`
+names, control characters including NUL, a lone CR and CRLF, whitespace at the
+end of a line, and a missing line break at the end. `expected.json` and
+`ast.json` hold them as JSON writes them (`JSON.stringify` keeps U+2028 and
+U+2029 as they are). The name of a fixture says which character it is about,
+such as `lex-nul`. A fixture with NUL shows as binary in a `git diff`.
+
+Two settings in the root of the repository keep these bytes from changing: the
+`.gitattributes` lines `packages/*/tests/fixtures/** -text` stop Git from
+converting line endings, and the sections for the fixture directories in
+`.editorconfig` stop editors from changing line endings, final line breaks,
+trailing whitespace and indentation. `scripts/check-invisible-chars.mjs` skips
+the fixtures of this package and checks everything else.
+
+The reason is that an input is a file that can hold the characters, and that
+corpora of inputs that are files do the same. test262, Babel and tree-sitter put
+the characters as they are into their files, with a comment that names the code
+point where it helps, and TypeScript and Prettier protect such files with
+settings in the root of the repository. An escape or a stand-in is used where
+the input is a string inside a program or a data format (ESLint tests,
+html5lib-tests), or the file cannot hold the character (a tab in the CommonMark
+specification, NUL in the tests of Git), or editors break it (yaml-test-suite).
+So the loader reads `input.mmd` as it is, and a test compares bytes.
+
 ## Names
 
 Fixture names are lowercase kebab-case, `<prefix>-<topic>`, with the first 8

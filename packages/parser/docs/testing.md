@@ -308,14 +308,17 @@ in `packages/tests/fixtures/<diagram>/<fixture name>/`, and
 
 ### After adding fixtures
 
-A fixture that `@mmd-toolkit/tests` adds has neither file until the parser tests
-run. Outside CI, the fixture test writes the missing file and passes. In CI
-(`CI` set), a missing file fails the test.
+A fixture that `@mmd-toolkit/tests` adds has neither file until its result is
+recorded, and a missing file fails the fixture test: the configurations of the
+package and of the root of the repository set `update: "none"`, so a run, in CI
+or not, writes no record unless one is asked for. Only two commands, run in
+`packages/parser`, write the files: `pnpm run test:record` runs the fixture test
+alone with `--update=new` and writes the missing files, and
+`pnpm run test:update` runs it with `-u` and writes them all anew.
 
 Whoever adds fixtures therefore:
 
-1. runs the fixture test once, in `packages/parser`:
-   `pnpm run test tests/fixtures.test.ts`;
+1. writes the missing files once, in `packages/parser`: `pnpm run test:record`;
 2. reads the new `ast.json` and `parse-error.json` files to see that the trees
    and the errors are what the specification says;
 3. runs the checks of the corpus on the recorded trees, in `packages/tests`:

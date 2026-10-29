@@ -1,0 +1,759 @@
+{
+  "type": "Root",
+  "diagramType": "packet",
+  "body": {
+    "type": "PacketDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "PacketRangeBlockStatement",
+        "start": {
+          "type": "NumericLiteral",
+          "value": 0,
+          "raw": "0",
+          "range": [
+            96,
+            97
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 0
+            },
+            "end": {
+              "line": 9,
+              "column": 1
+            }
+          }
+        },
+        "textBeforeDash": [],
+        "textBeforeEnd": [],
+        "end": {
+          "type": "NumericLiteral",
+          "value": 7,
+          "raw": "7",
+          "range": [
+            98,
+            99
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 2
+            },
+            "end": {
+              "line": 9,
+              "column": 3
+            }
+          }
+        },
+        "textBeforeColon": [],
+        "textBeforeLabel": [],
+        "label": {
+          "type": "StringLiteral",
+          "value": "DATA",
+          "raw": "\"DATA\"",
+          "closed": true,
+          "range": [
+            101,
+            107
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 5
+            },
+            "end": {
+              "line": 9,
+              "column": 11
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          96,
+          107
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 0
+          },
+          "end": {
+            "line": 9,
+            "column": 11
+          }
+        }
+      },
+      {
+        "type": "PacketRangeBlockStatement",
+        "start": {
+          "type": "NumericLiteral",
+          "value": 8,
+          "raw": "8",
+          "range": [
+            108,
+            109
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 0
+            },
+            "end": {
+              "line": 10,
+              "column": 1
+            }
+          }
+        },
+        "textBeforeDash": [],
+        "textBeforeEnd": [],
+        "end": {
+          "type": "NumericLiteral",
+          "value": 11,
+          "raw": "11",
+          "range": [
+            110,
+            112
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 2
+            },
+            "end": {
+              "line": 10,
+              "column": 4
+            }
+          }
+        },
+        "textBeforeColon": [],
+        "textBeforeLabel": [],
+        "label": {
+          "type": "StringLiteral",
+          "value": "TYPE",
+          "raw": "\"TYPE\"",
+          "closed": true,
+          "range": [
+            114,
+            120
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 6
+            },
+            "end": {
+              "line": 10,
+              "column": 12
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          108,
+          120
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 0
+          },
+          "end": {
+            "line": 10,
+            "column": 12
+          }
+        }
+      },
+      {
+        "type": "PacketSingleBlockStatement",
+        "start": {
+          "type": "NumericLiteral",
+          "value": 12,
+          "raw": "12",
+          "range": [
+            121,
+            123
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 0
+            },
+            "end": {
+              "line": 11,
+              "column": 2
+            }
+          }
+        },
+        "textBeforeColon": [],
+        "textBeforeLabel": [],
+        "label": {
+          "type": "StringLiteral",
+          "value": "EN",
+          "raw": "\"EN\"",
+          "closed": true,
+          "range": [
+            125,
+            129
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 4
+            },
+            "end": {
+              "line": 11,
+              "column": 8
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          121,
+          129
+        ],
+        "loc": {
+          "start": {
+            "line": 11,
+            "column": 0
+          },
+          "end": {
+            "line": 11,
+            "column": 8
+          }
+        }
+      },
+      {
+        "type": "PacketRangeBlockStatement",
+        "start": {
+          "type": "NumericLiteral",
+          "value": 13,
+          "raw": "13",
+          "range": [
+            130,
+            132
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 0
+            },
+            "end": {
+              "line": 12,
+              "column": 2
+            }
+          }
+        },
+        "textBeforeDash": [],
+        "textBeforeEnd": [],
+        "end": {
+          "type": "NumericLiteral",
+          "value": 15,
+          "raw": "15",
+          "range": [
+            133,
+            135
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 3
+            },
+            "end": {
+              "line": 12,
+              "column": 5
+            }
+          }
+        },
+        "textBeforeColon": [],
+        "textBeforeLabel": [],
+        "label": {
+          "type": "StringLiteral",
+          "value": "RESERVED",
+          "raw": "\"RESERVED\"",
+          "closed": true,
+          "range": [
+            137,
+            147
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 7
+            },
+            "end": {
+              "line": 12,
+              "column": 17
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          130,
+          147
+        ],
+        "loc": {
+          "start": {
+            "line": 12,
+            "column": 0
+          },
+          "end": {
+            "line": 12,
+            "column": 17
+          }
+        }
+      }
+    ],
+    "range": [
+      89,
+      147
+    ],
+    "loc": {
+      "start": {
+        "line": 8,
+        "column": 0
+      },
+      "end": {
+        "line": 12,
+        "column": 17
+      }
+    }
+  },
+  "frontmatter": {
+    "type": "Frontmatter",
+    "value": "config:\n  packet:\n    showBits: true\n    bitOrder: descending\n    bitsPerRow: 16",
+    "valueRange": [
+      4,
+      84
+    ],
+    "range": [
+      0,
+      88
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 7,
+        "column": 3
+      }
+    }
+  },
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        0,
+        3
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "config:\n  packet:\n    showBits: true\n    bitOrder: descending\n    bitsPerRow: 16",
+      "range": [
+        4,
+        84
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        85,
+        88
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "packet",
+      "range": [
+        89,
+        95
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0",
+      "range": [
+        96,
+        97
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-",
+      "range": [
+        97,
+        98
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 1
+        },
+        "end": {
+          "line": 9,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "7",
+      "range": [
+        98,
+        99
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 2
+        },
+        "end": {
+          "line": 9,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        99,
+        100
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 3
+        },
+        "end": {
+          "line": 9,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"DATA\"",
+      "range": [
+        101,
+        107
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 5
+        },
+        "end": {
+          "line": 9,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "8",
+      "range": [
+        108,
+        109
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 0
+        },
+        "end": {
+          "line": 10,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-",
+      "range": [
+        109,
+        110
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 1
+        },
+        "end": {
+          "line": 10,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "11",
+      "range": [
+        110,
+        112
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 2
+        },
+        "end": {
+          "line": 10,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        112,
+        113
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 4
+        },
+        "end": {
+          "line": 10,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"TYPE\"",
+      "range": [
+        114,
+        120
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 6
+        },
+        "end": {
+          "line": 10,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "12",
+      "range": [
+        121,
+        123
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 0
+        },
+        "end": {
+          "line": 11,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        123,
+        124
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 2
+        },
+        "end": {
+          "line": 11,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"EN\"",
+      "range": [
+        125,
+        129
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 4
+        },
+        "end": {
+          "line": 11,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "13",
+      "range": [
+        130,
+        132
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 0
+        },
+        "end": {
+          "line": 12,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-",
+      "range": [
+        132,
+        133
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 2
+        },
+        "end": {
+          "line": 12,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "15",
+      "range": [
+        133,
+        135
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 3
+        },
+        "end": {
+          "line": 12,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        135,
+        136
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 5
+        },
+        "end": {
+          "line": 12,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"RESERVED\"",
+      "range": [
+        137,
+        147
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 7
+        },
+        "end": {
+          "line": 12,
+          "column": 17
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    148
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 13,
+      "column": 0
+    }
+  }
+}

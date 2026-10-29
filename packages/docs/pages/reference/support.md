@@ -1,6 +1,6 @@
 # Diagram support
 
-mmd-toolkit supports **every diagram type in Mermaid 12.0.0**. The parser,
+mmd-toolkit supports **every diagram type in Mermaid 12.2.0**. The parser,
 formatter, and linter share the same syntax definition.
 
 ## Using the tools
@@ -19,7 +19,7 @@ examples are explained in the
 
 ## Compatibility scope
 
-The compatibility reference is mermaid.js **12.0.0**. This scope covers the
+The compatibility reference is mermaid.js **12.2.0**. This scope covers the
 diagram text syntax of that version. Rendering and layout are handled by
 Mermaid.
 

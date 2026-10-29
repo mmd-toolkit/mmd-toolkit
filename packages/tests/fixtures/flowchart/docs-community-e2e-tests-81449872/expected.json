@@ -1,0 +1,135 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.2.0",
+    "path": "packages/mermaid/src/docs/community/e2e-tests.md",
+    "line": 30
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "d_pr",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "pr-check/<br/>*.mmd fixtures",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "d_nightly",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "nightly-check/<br/>*.mmd fixtures",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "d_visual",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "visual-check/<br/>*.mmd fixtures",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "r_pr",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "pr-check/<br/>*.spec.ts",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "r_nightly",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "nightly-check/<br/>*.spec.ts",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "r_visual",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "visual-check/<br/>*.spec.ts",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "runner",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "e2e/rendering/mmd-snapshots.spec.ts<br/>(global fixture runner)",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "diagrams",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "diagrams",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "diagrams",
+        "end": "runner",
+        "type": "arrow_point",
+        "text": "discovered & rendered by",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_diagrams_runner_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "diagrams",
+        "nodes": [
+          "d_pr",
+          "d_nightly",
+          "d_visual"
+        ],
+        "title": "e2e/diagrams/<diagram-type>/",
+        "classes": [],
+        "dir": "LR",
+        "labelType": "string"
+      },
+      {
+        "id": "rendering",
+        "nodes": [
+          "r_pr",
+          "r_nightly",
+          "r_visual"
+        ],
+        "title": "e2e/rendering/<diagram-type>/",
+        "classes": [],
+        "dir": "LR",
+        "labelType": "string"
+      }
+    ],
+    "tooltips": []
+  }
+}

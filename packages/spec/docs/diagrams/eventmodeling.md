@@ -21,8 +21,24 @@ eventmodeling/header-unicode] [fixture: eventmodeling/header-punctuation]
 [fixture: eventmodeling/header-double]
 
 Apply [common source reading](../common.md#reading-a-source): line conversion,
-HTML attribute quotes, real leading frontmatter, global directives, comment
-regions, leading trivia, entities and selected semicolons. The
+HTML attribute quotes, real leading frontmatter, global directives, entities and
+selected semicolons. Comment regions and leading whitespace are left out for
+detection only: the eventmodeling Db sets `preserveCommentsWhenParsing`, so the
+lexer reads comment lines and leading whitespace itself, unless the source is
+longer than `maxTextSize` (see
+[mermaid.js and this specification](../common.md#mermaidjs-and-this-specification)).
+[fixture: eventmodeling/comment-default-size-equal] [fixture:
+eventmodeling/comment-default-size-above] [fixture:
+eventmodeling/comment-default-size-equal-crlf] [fixture:
+eventmodeling/comment-default-size-above-crlf] [fixture:
+eventmodeling/comment-default-size-equal-inline-directive] [fixture:
+eventmodeling/comment-default-size-above-inline-directive] [fixture:
+eventmodeling/comment-default-size-equal-frontmatter] [fixture:
+eventmodeling/comment-default-size-above-frontmatter] [fixture:
+eventmodeling/frontmatter-extra-trivia-below] [fixture:
+eventmodeling/frontmatter-extra-trivia-boundary] [fixture:
+eventmodeling/frontmatter-extra-trivia-above] [fixture:
+eventmodeling/frontmatter-extra-whitespace-line-boundary] The
 [preprocessor][preprocess] and [detection scan][detect-type] run before the
 diagram grammar. Real frontmatter is a shared Frontmatter record. The earlier C4
 detector is subject to c4-keyword-anywhere. [fixture:
@@ -309,27 +325,29 @@ eventmodeling/common-quoted-values]
 
 These composite forms precede native whitespace but follow identifier. They can
 claim a leading ASCII space/tab run at the current position. Judge LF and
-padding after common removals: global directives, common comment regions and the
-semicolons selected by the common line rule. A common comment region, including
-its padding and terminating LF, is removed. Removing a closed global directive
-alone leaves the LF outside it; removing a selected semicolon leaves any LF as
-well. A blank line also leaves LF. Whether a form can claim indentation on the
-next line then depends on whether the preceding unit consumed the remaining LF.
-If it did, the indentation begins at the current position and can enable the
-composite before native whitespace. If it did not, native whitespace starts at
-LF and consumes the indentation, leaving identifier to win at the keyword.
-Block-data, hidden-yaml and hidden-directive consume their closing LF; without
-indentation, identifier still wins on the following line. Common CRLF conversion
-leaves the same LF case. LS and PS after these closers are not consumed: native
-whitespace starts there and takes the padding before a common form. On the same
-physical line, a surviving ASCII space/tab run can enable the composite,
-including across an inline global directive or a selected semicolon. An
-unselected semicolon is not whitespace and rejects in that gap. An empty
-description block remains a statement; it leaves its following LF unconsumed,
-but a common form can claim padding directly after its closing brace on the same
-line. In a name position, padded title can steal the position as a composite,
-whereas unpadded title can be an identifier. accTitle and accDescr without their
-required delimiters are identifiers. [fixture:
+padding after common removals: global directives and the semicolons selected by
+the common line rule. A comment line is not removed: it is a native
+percent-comment, which ends before its LF, so the LF stays and native whitespace
+takes the indentation of the next line, and a comment line followed by an
+indented title, accTitle or accDescr is rejected. Removing a closed global
+directive alone leaves the LF outside it; removing a selected semicolon leaves
+any LF as well. A blank line also leaves LF. Whether a form can claim
+indentation on the next line then depends on whether the preceding unit consumed
+the remaining LF. If it did, the indentation begins at the current position and
+can enable the composite before native whitespace. If it did not, native
+whitespace starts at LF and consumes the indentation, leaving identifier to win
+at the keyword. Block-data, hidden-yaml and hidden-directive consume their
+closing LF; without indentation, identifier still wins on the following line.
+Common CRLF conversion leaves the same LF case. LS and PS after these closers
+are not consumed: native whitespace starts there and takes the padding before a
+common form. On the same physical line, a surviving ASCII space/tab run can
+enable the composite, including across an inline global directive or a selected
+semicolon. An unselected semicolon is not whitespace and rejects in that gap. An
+empty description block remains a statement; it leaves its following LF
+unconsumed, but a common form can claim padding directly after its closing brace
+on the same line. In a name position, padded title can steal the position as a
+composite, whereas unpadded title can be an identifier. accTitle and accDescr
+without their required delimiters are identifiers. [fixture:
 eventmodeling/common-line-keywords] [fixture:
 eventmodeling/lex-common-no-padding-after-brace] [fixture:
 eventmodeling/common-inline] [fixture:
@@ -404,11 +422,12 @@ eventmodeling/line-common-values] [fixture:
 eventmodeling/gram-empty-payload-after-removals] [fixture:
 eventmodeling/gram-description-block-empty-after-removal]
 
-In the keyword-to-brace gap, global directives and comment regions are left out
-before matching whitespace; blank lines are allowed. Native comments cannot be
-inserted into a composite unit. Native-looking slash comments or YAML inside an
-already matched metadata value are its text, not separate hidden forms.
-[fixture: eventmodeling/common-description-comment-gap] [fixture:
+In the keyword-to-brace gap, global directives are left out before matching
+whitespace; blank lines are allowed. Native comments, comment lines included,
+cannot be inserted into a composite unit, so a comment line in this gap is
+rejected. Native-looking slash comments or YAML inside an already matched
+metadata value are its text, not separate hidden forms. [fixture:
+eventmodeling/common-description-comment-gap] [fixture:
 eventmodeling/common-description-directive-gap] [fixture:
 eventmodeling/common-description-empty-gap] [fixture:
 eventmodeling/lex-common-block-slash-text] [fixture:
@@ -462,13 +481,25 @@ eventmodeling/hidden-directive-native] [fixture:
 eventmodeling/hidden-directive-no-boundary]
 
 If hidden-directive fails, try percent-comment: %% through before CR/LF or end
-of text, including a bare %%. A one-line failed native directive can therefore
-become a comment that swallows a following apparent frame; multiline leftover
-text can still reject. Earlier inline, block and common-value units instead
-enclose native-looking text as content. Hidden-yaml and hidden-directive become
-EventmodelingIgnoredText; comments use shared Comment records. [fixture:
-eventmodeling/lex-native-directive-one-line-fallback] [fixture:
-eventmodeling/lex-native-directive-object-glued] [fixture:
+of text, including a bare %%. Comment lines are read by this rule too, since
+they are not removed before the lexer reads the text; inside a block value, a
+slash block comment or a hidden form, a comment line is part of that text. A
+comment line ends only at CR or LF: a U+2028 or U+2029 in it does not end it, so
+`%% a`, a U+2028, and `tf 01 evt A` is all one comment. A global directive in a
+comment line is removed, as everywhere, and the rest of the line stays in the
+comment: in `%% a %%{init: {}}%% tf 09 evt Z` the frame is part of the comment,
+and inside a data block the line `%% c %%{init: {}}%% d` leaves `%% c`, two
+spaces, and `d` in the value. [fixture:
+eventmodeling/comment-line-line-separator] [fixture:
+eventmodeling/comment-line-paragraph-separator] [fixture:
+eventmodeling/comment-line-directive] [fixture:
+eventmodeling/comment-line-directive-in-data] A one-line failed native directive
+can therefore become a comment that swallows a following apparent frame;
+multiline leftover text can still reject. Earlier inline, block and common-value
+units instead enclose native-looking text as content. Hidden-yaml and
+hidden-directive become EventmodelingIgnoredText; comments use shared Comment
+records. [fixture: eventmodeling/lex-native-directive-one-line-fallback]
+[fixture: eventmodeling/lex-native-directive-object-glued] [fixture:
 eventmodeling/comment-eof] [fixture: eventmodeling/comment-header] [fixture:
 eventmodeling/hidden-data-yaml-text] [fixture:
 eventmodeling/lex-inline-double-embedded-slash] [fixture:
@@ -480,8 +511,8 @@ requiring closure; its body may contain LF, LS and PS. Slash-line-comment reads
 are `/*` and `//`, their values exclude the marks and the block closer, and
 outside padding is not content. Comments can occupy complete-unit gaps but do
 not join identifier fragments. Global directives can lie inside comment text or
-between the mark characters; shared comment-region removal still applies first.
-[fixture: eventmodeling/comment-native] [fixture:
+between the mark characters; a comment line inside a slash block comment is part
+of its text. [fixture: eventmodeling/comment-native] [fixture:
 eventmodeling/comment-between-id] [fixture: eventmodeling/comment-block-open]
 [fixture: eventmodeling/comment-block-nearest-close] [fixture:
 eventmodeling/comment-line-ls-body] [fixture:
@@ -490,6 +521,10 @@ eventmodeling/comment-mark-directive] [fixture:
 eventmodeling/comment-block-open-mark-directive] [fixture:
 eventmodeling/comment-block-close-mark-directive] [fixture:
 eventmodeling/comment-inline-data] [fixture: eventmodeling/comment-block-data]
+[fixture: eventmodeling/comment-note-data] [fixture:
+eventmodeling/comment-line-inside-block-comment] [fixture:
+eventmodeling/comment-line-inside-hidden-yaml] [fixture:
+eventmodeling/comment-line-inside-hidden-directive]
 
 ### Authored component boundaries
 
@@ -625,7 +660,8 @@ eventmodeling/gram-gwt-next-top-level]
 Within GWT, a global-directive-only line, a selected semicolon, a comment line,
 a blank line, LS or PS can separate items. An empty description block there does
 not become a GWT item and rejects. Within a data block, the corresponding forms
-are text subject to common removals, not nested statements; LS, PS and an
+are text, not nested statements: a global-directive-only line and a selected
+semicolon are removed, and a comment line stays in the text; LS, PS and an
 empty-description-looking line remain content. [fixture:
 eventmodeling/gram-nested-gwt-global-directive-line] [fixture:
 eventmodeling/lex-native-directive-in-gwt] [fixture:
@@ -658,14 +694,23 @@ eventmodeling/gram-gwt-item-ls] [fixture: eventmodeling/gram-gwt-item-ps]
 The [public parse gate][parse] rejects every lexer or parser error, including
 errors on a recovered tree. [Validator registration][validator] does not run
 validation or reference linking through that wrapper. No extra semantic gate
-rejects unknown, forward or self references, duplicate definitions or
+rejects unknown, forward or self references, duplicate data definitions or
 source-type combinations. [The adapter][adapter] stores the AST and publishes
-common metadata; [setAst][store] only stores it. Rendering and getState are
-outside acceptance. [fixture: eventmodeling/error-start] [fixture:
+common metadata. [setAst][store] rejects an input in which two frames, time
+frames or reset frames in any combination and wherever they stand, have the same
+name as written, and otherwise only stores the AST: `tf 01` followed by `tf 01`
+or `rf 01`, and `rf 01` followed by `tf 01`, are rejected, and so is `tf 01`,
+`tf 02`, and `tf 01`, while `tf 01` and `tf 1` are accepted. Rendering and
+getState are outside acceptance. [fixture: eventmodeling/error-start] [fixture:
 eventmodeling/error-recovered] [fixture: eventmodeling/error-after-prefix]
 [fixture: eventmodeling/db-source-missing] [fixture:
 eventmodeling/db-source-forward] [fixture: eventmodeling/db-source-self]
 [fixture: eventmodeling/db-frame-duplicates] [fixture:
+eventmodeling/db-frame-duplicate-reset-frame] [fixture:
+eventmodeling/db-frame-duplicate-reset-frames] [fixture:
+eventmodeling/db-frame-duplicate-reset-then-time] [fixture:
+eventmodeling/db-frame-duplicate-not-adjacent] [fixture:
+eventmodeling/db-frame-same-number-other-spelling] [fixture:
 eventmodeling/db-data-first] [fixture: eventmodeling/db-entities-notes-gwt]
 [fixture: eventmodeling/link-note-forward] [fixture:
 eventmodeling/link-gwt-forward] [fixture:
@@ -679,14 +724,13 @@ eventmodeling/validator-multiple-invalid]
 
 ### Preserving occurrences
 
-Keep every statement and reference occurrence in source order, including
-repeated frames, later same-name data declarations, unused entities, notes and
-GWT. Preserve the entity-type word of each GWT item even though the upstream
-unassigned grammar call omits it from its model. Do not resolve references, sort
-or deduplicate source references, replace a reference with selected data, or
-discard authored inline data when referenced data exists. Empty data/common
-forms remain nodes. Semantic misreadings with a place in the tree remain
-accepted. [fixture: eventmodeling/db-frame-duplicates] [fixture:
+Keep every statement and reference occurrence in source order, including later
+same-name data declarations, unused entities, notes and GWT. Preserve the
+entity-type word of each GWT item even though the upstream unassigned grammar
+call omits it from its model. Do not resolve references, sort or deduplicate
+source references, replace a reference with selected data, or discard authored
+inline data when referenced data exists. Empty data/common forms remain nodes.
+Semantic misreadings with a place in the tree remain accepted. [fixture:
 eventmodeling/db-data-first] [fixture: eventmodeling/db-data-unused] [fixture:
 eventmodeling/db-entities-notes-gwt] [fixture:
 eventmodeling/gram-gwt-unassigned-type] [fixture: eventmodeling/db-source-order]
@@ -763,46 +807,46 @@ eventmodeling/c4-component-header-lf] [fixture: eventmodeling/bare-before-ls]
 eventmodeling/common-description-repeat]
 
 [grammar]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L1-L70
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L1-L70
 [entry]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L49
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L49
 [names]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L24-L55
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L24-L55
 [data]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L17-L22
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L17-L22
 [data-terminals]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L57-L58
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L57-L58
 [metadata]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L60-L62
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L60-L62
 [hidden]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L64-L70
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L64-L70
 [module]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/module.ts#L31-L62
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/module.ts#L31-L62
 [token-builder]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/tokenBuilder.ts#L1-L7
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/tokenBuilder.ts#L1-L7
 [common-token-builder]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/tokenBuilder.ts#L6-L29
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/tokenBuilder.ts#L6-L29
 [converter]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L6-L81
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/valueConverter.ts#L6-L81
 [parse]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L133-L150
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/parse.ts#L133-L150
 [validator]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling-validator.ts#L12-L66
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling-validator.ts#L12-L66
 [adapter]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/parser.ts#L8-L14
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/parser.ts#L8-L14
 [store]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L50-L141
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L50-L151
 [renderer]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/renderer.ts#L128-L167
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/renderer.ts#L128-L167
 [detector]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/detector.ts#L4-L8
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/detector.ts#L4-L8
 [preprocess]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L6-L65
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L6-L65
 [detect-type]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/detectType.ts#L36-L48
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/detectType.ts#L36-L51
 [docs]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L1-L322
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/eventmodeling.md#L1-L336
 [parser-tests]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/tests/eventmodeling.test.ts#L1-L339
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/tests/eventmodeling.test.ts#L1-L339
 [mermaid-tests]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/eventmodeling.spec.ts#L1-L79
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/eventmodeling.spec.ts#L1-L133

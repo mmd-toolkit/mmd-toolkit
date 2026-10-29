@@ -240,7 +240,7 @@ whitespace at the end of its line.
 ## Why mermaid.js reads it so
 
 The lexer of
-[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L17-L73)
+[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L17-L73)
 enters the state `axis_data` at `x-axis` and `y-axis`, and the state `data` at
 `line` and `bar`, each on top of the state it is in. It leaves the state on top
 at a line feed that the rule `(\r?\n)` of that state reads, and at no other
@@ -251,7 +251,7 @@ state; the rule for a comment, `[^\}]%%[^\n]*`, comes before the rule for a line
 feed and reads a line feed right before `%%` with the comment; and a comment
 line is removed, with its line feed and with the empty lines before it, before
 the lexer reads the text
-([`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)).
+([`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)).
 In `axis_data`, the rule for a number, `[+-]?(?:\d+(?:\.\d+)?|\.\d+)`, comes
 before the rules for words, so a title read in that state stops at its first
 digit, and the grammar rejects the number that follows it. The state `data`
@@ -274,7 +274,7 @@ xychart/db-title-digit-after-axis-plot-lines]
 ## The documentation of mermaid.js and its issues
 
 - The
-  [XY chart syntax](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/xyChart.md)
+  [XY chart syntax](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/xyChart.md)
   writes each statement on a line of its own and says nothing of `;` or of
   digits in the title of the chart.
 - No issue or pull request about it was found (searched on 2026-10-15 for

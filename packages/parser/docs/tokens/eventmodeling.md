@@ -50,11 +50,11 @@ eventmodeling/lex-inline-empty] [fixture:
 eventmodeling/gram-common-leading-directive-both-sides]
 
 Native YAML/directive forms are whole RawText items without their consumed
-closing LF. Shared directives, comment regions and selected semicolons cut
-RawText and String items; String pieces become StringFragment. A cut inside an
-atomic keyword, identifier, digit string, ->>, [[ or ]] rejects. Cuts between
-authored components remain permitted. [fixture:
-eventmodeling/hidden-yaml-after-frame] [fixture:
+closing LF. Shared directives and selected semicolons cut RawText and String
+items, and so do comment regions when the source is longer than `maxTextSize`;
+String pieces become StringFragment. A cut inside an atomic keyword, identifier,
+digit string, ->>, [[ or ]] rejects. Cuts between authored components remain
+permitted. [fixture: eventmodeling/hidden-yaml-after-frame] [fixture:
 eventmodeling/lex-native-directive-object-eof] [fixture:
 eventmodeling/directive-string-middle] [fixture:
 eventmodeling/directive-block-middle] [fixture: eventmodeling/style-every-text]
@@ -62,6 +62,7 @@ eventmodeling/directive-block-middle] [fixture: eventmodeling/style-every-text]
 eventmodeling/directive-reference-close-inside] [fixture:
 eventmodeling/lex-semicolon-frame-id-inside] [fixture:
 eventmodeling/directive-qualified] [fixture: eventmodeling/directive-tag]
+[fixture: eventmodeling/comment-default-size-above]
 
 ## Comments and trivia
 
@@ -77,3 +78,15 @@ eventmodeling/comment-line-ls-body] [fixture:
 eventmodeling/comment-line-ps-body] [fixture:
 eventmodeling/detect-retained-bare-ls-line] [fixture:
 eventmodeling/detect-retained-bare-nbsp-header]
+
+Unless the source is longer than `maxTextSize`, comment lines are not removed: a
+comment line is a native percent comment, and inside a block value, a
+slash-block comment or a hidden form it is part of that text. [fixture:
+eventmodeling/comment-default-size-equal] [fixture:
+eventmodeling/comment-default-size-above] [fixture:
+eventmodeling/comment-block-data] [fixture: eventmodeling/comment-note-data]
+[fixture: eventmodeling/comment-line-entity-in-data] [fixture:
+eventmodeling/comment-line-ignored-semicolon-in-data] [fixture:
+eventmodeling/comment-line-inside-block-comment] [fixture:
+eventmodeling/comment-line-inside-hidden-yaml] [fixture:
+eventmodeling/comment-line-inside-hidden-directive]

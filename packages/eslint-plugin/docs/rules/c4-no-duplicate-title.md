@@ -25,7 +25,7 @@ Repeating the same value is not reported. After `title First` and
 
 Quotes and whitespace after the first separator are significant, so
 `title "Banking"` differs from `title Banking`. `accTitle:` is not reported and
-ends comparison with the preceding `title`. mermaid 12.0.0 incorrectly uses this
+ends comparison with the preceding `title`. mermaid.js incorrectly uses this
 form as a visible title. The rule does not report that accessibility defect as
 an author mistake.
 

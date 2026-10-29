@@ -26,8 +26,10 @@ text is not empty. Line and block forms are compared with each other.
 
 After a nonempty text, an empty or whitespace-only `accDescr:` is reported,
 because mermaid.js keeps the whole statement, `accDescr:` included, as the
-description. A block containing only comment lines is reported too, because
-mermaid.js removes the comments. Going back to an earlier description is
+description. A comment line in a block is text of the description and is
+compared with it: a block containing only a comment line sets that line as the
+description, so it is reported after a description, and a later `accDescr` that
+differs from it is reported too. Going back to an earlier description is
 reported: after `accDescr: a` and `accDescr: b`, a third `accDescr: a` is
 reported. An empty block, such as `accDescr {}`, or one containing only
 directives is reported instead by

@@ -531,9 +531,8 @@ skeleton that reports nothing.
 
 ## 8. Removing or moving a document
 
-- Use `rm` and plain `mv`. When the working tree is shared with other work, do
-  not use git for this (`git mv`, `git rm`, or any change to the staging area),
-  so that what others have staged stays as they left it.
+- Use `rm` and plain `mv`. Do not use git for this (`git mv`, `git rm`, or any
+  change to the staging area): the user stages.
 - When a document moves, its rule is renamed (section 6): change the sentence of
   Rule Details that names the diagram types and its relative links, and run
   `update`, which writes its title and its row in the index.

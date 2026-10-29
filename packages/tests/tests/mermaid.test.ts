@@ -39,7 +39,7 @@ function subgraphs(
 
 describe("runMermaid", () => {
   it("uses the pinned mermaid", () => {
-    expect(mermaidVersion).toBe("12.0.0")
+    expect(mermaidVersion).toBe("12.2.0")
   })
 
   it("reaches mermaid's own DOMPurify instance, so labels are kept unsanitized", async () => {

@@ -271,6 +271,7 @@
   },
   "mindmap": {
     "useMaxWidth": true,
+    "colorBy": "branch",
     "padding": 10,
     "maxNodeWidth": 200,
     "layoutAlgorithm": "cose-bilkent"
@@ -507,6 +508,7 @@
     "bitWidth": 32,
     "bitsPerRow": 32,
     "showBits": true,
+    "bitOrder": "ascending",
     "paddingX": 5,
     "paddingY": 5
   },
@@ -619,7 +621,8 @@
     "layeringLayerBound": 4,
     "forceNodeModelOrder": false,
     "considerModelOrder": "NODES_AND_EDGES",
-    "keepEntryNodeOnTop": false
+    "keepEntryNodeOnTop": false,
+    "orientFeedbackEdges": true
   },
   "themeVariables": {
     "background": "white",

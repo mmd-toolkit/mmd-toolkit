@@ -4,10 +4,10 @@ Japanese version: [sequence.ja.md](./sequence.ja.md)
 
 Source of truth in mermaid.js:
 
-- [`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison)
-- [`sequenceDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts)
+- [`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison)
+- [`sequenceDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts)
 - the tests in
-  [`sequenceDiagram.spec.js`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js)
+  [`sequenceDiagram.spec.js`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js)
 
 This document covers the diagram type `sequence`. The nodes of the tree are
 defined in [ast/sequence.md](../ast/sequence.md).
@@ -202,17 +202,47 @@ In the statement context, the lexer tries these rules in order:
     sequence/db-block-alt] [fixture: sequence/db-block-par] [fixture:
     sequence/db-block-par-over] [fixture: sequence/db-block-critical] [fixture:
     sequence/db-block-break]
-11. The keywords `end`, `links`, `link`, `properties`, `details`, `over`, and
-    `note`: a unit named by the keyword. The keyword `left of` or `right of`,
-    with one space between the two words: a `left` or `right` unit and an `of`
-    unit. With two spaces or a tab between the words, the input is rejected. The
-    space is counted in the diagram text, and a directive or an ignored `;` next
-    to it lies between two units: `Note left%%{init: {}}%% of A: t`,
-    `Note left %%{init: {}}%%of A: t`, and `Note right%%{init: {}}%% of A: t`
-    are notes, and so is `Note left; of A: t` on a line that matches the `style`
-    rule, while `Note left %%{init: {}}%% of A: t` has two spaces and is
-    rejected, all as in mermaid.js. [fixture:
-    sequence/lex-note-position-two-spaces] [fixture:
+11. The keywords `end`, `over`, and `note`: a unit named by the keyword. The
+    keywords `links`, `link`, `properties`, and `details`, `links` before
+    `link`, when one or more spaces or tabs follow and then a character other
+    than `/`, `\`, `+`, `(`, `)`, `<`, `>`, `:`, `,`, `;`, `-`, whitespace, and
+    line feed, which are not read: a unit named by the keyword. Elsewhere these
+    four words start an id run (rule 21): `link->>B: x` and `link ->>B: x` are
+    messages from the participant `link`, and so is `link <<->>B: x`;
+    `links->>B: x`, `properties->>B: x`, and `details->>B: x` are messages from
+    the participants of these names; `A->>link: x` and `A->>link : x` are
+    messages to `link`, `note over link, A: x` is a note over `link` and A, and
+    `note over link : x` a note over `link`. `link`, a tab, and `A: x`, `link`,
+    two spaces, and `A: x`, and `link%%{init: {}}%% A: x` are link statements,
+    and in `link %%{init: {}}%%->>B: x` the word is the participant `link`.
+    `link`, a U+2028, and `A: x` is an id run followed by a text, and is
+    rejected, and so is a line `link %% c`: a space and `%` follow `link`, so it
+    is the keyword, and no id follows it. [fixture:
+    sequence/lex-link-word-before-arrow] [fixture:
+    sequence/lex-link-word-space-before-arrow] [fixture:
+    sequence/lex-link-word-space-before-reverse-arrow] [fixture:
+    sequence/lex-links-word-before-arrow] [fixture:
+    sequence/lex-properties-word-before-arrow] [fixture:
+    sequence/lex-details-word-before-arrow] [fixture:
+    sequence/lex-link-word-message-target] [fixture:
+    sequence/lex-link-word-note-over-comma] [fixture:
+    sequence/lex-link-word-message-target-space-colon] [fixture:
+    sequence/lex-link-word-note-over-space-colon] [fixture:
+    sequence/lex-link-keyword-tab] [fixture:
+    sequence/lex-link-keyword-two-spaces] [fixture:
+    sequence/lex-link-keyword-directive] [fixture:
+    sequence/lex-link-word-space-directive-before-arrow] [fixture:
+    sequence/lex-link-word-line-separator] [fixture:
+    sequence/lex-link-keyword-before-comment] The keyword `left of` or
+    `right of`, with one space between the two words: a `left` or `right` unit
+    and an `of` unit. With two spaces or a tab between the words, the input is
+    rejected. The space is counted in the diagram text, and a directive or an
+    ignored `;` next to it lies between two units:
+    `Note left%%{init: {}}%% of A: t`, `Note left %%{init: {}}%%of A: t`, and
+    `Note right%%{init: {}}%% of A: t` are notes, and so is `Note left; of A: t`
+    on a line that matches the `style` rule, while
+    `Note left %%{init: {}}%% of A: t` has two spaces and is rejected, all as in
+    mermaid.js. [fixture: sequence/lex-note-position-two-spaces] [fixture:
     sequence/lex-note-position-tab] [fixture:
     sequence/lex-directive-between-left-and-of] [fixture:
     sequence/lex-directive-between-space-and-of] [fixture:
@@ -395,10 +425,12 @@ The id context is entered by `participant`, `actor`, `destroy`, `activate`, and
    sequence/lex-id-context-hash-comment]
 3. `@{`: a `@{` unit; enters the data context. [fixture:
    sequence/gram-data-block-line-break-only]
-4. One or more characters other than `<`, `=`, `>`, `-`, `:`, `,`, `;`, `@`,
-   whitespace, and line feed, followed directly by `@{`, which is not read: an
-   `id` unit. [fixture: sequence/db-data-block-create-participant] [fixture:
-   sequence/lex-id-before-data-dash]
+4. One or more characters other than `<`, `>`, `:`, `,`, `;`, `@`, whitespace,
+   and line feed, followed by zero or more whitespace characters, line feeds
+   included, and `@{`, which are not read: an `id` unit. [fixture:
+   sequence/db-data-block-create-participant] [fixture:
+   sequence/lex-id-before-data-dash] [fixture:
+   sequence/lex-id-space-before-data]
 5. One or more characters other than `<`, `>`, `:`, `,`, `;`, `@`, whitespace,
    and line feed, followed by whitespace, the keyword `as`, and one whitespace
    character, which are not read: an `id` unit; enters the alias context.
@@ -428,10 +460,21 @@ sequence/lex-id-context-two-hashes-before-invalid]
 So an id after `participant` may contain whitespace, `#`, and `=`, and it ends
 at the end of the line, at `;`, or before `as`: `participant A B` has the id
 `A B`, `participant A=B` the id `A=B`, and `activate A B` the id `A B`. An id
-before `@{` cannot contain whitespace, `-`, or `=`:
-`participant A-B@{ "type": "queue" }` is rejected. An id that contains `:` or
-`<` is rejected, and so is `participant` at the end of a line, because no rule
-reads the line feed. [fixture: sequence/lex-id-context-space] [fixture:
+before `@{` cannot contain whitespace, and whitespace may stand between the id
+and `@{`: `participant A-B@{ "type": "queue" }` has the id `A-B` and
+`participant A=B@{ "type": "queue" }` the id `A=B`, and `participant A` followed
+by a space, a tab, a U+2028, or a directive and a space, and then
+`@{ "type": "queue" }`, has the id `A`, while
+`participant A B@{ "type": "queue" }` is rejected, and so is a line break before
+`@{`, which no rule of the id context reads. [fixture:
+sequence/lex-id-equals-before-data] [fixture: sequence/lex-id-space-before-data]
+[fixture: sequence/lex-id-tab-before-data] [fixture:
+sequence/lex-id-line-separator-before-data] [fixture:
+sequence/lex-id-space-directive-before-data] [fixture:
+sequence/lex-id-two-words-before-data] [fixture:
+sequence/lex-id-line-feed-before-data] An id that contains `:` or `<` is
+rejected, and so is `participant` at the end of a line, because no rule reads
+the line feed. [fixture: sequence/lex-id-context-space] [fixture:
 sequence/lex-id-context-equals] [fixture: sequence/lex-activate-id-space]
 [fixture: sequence/lex-id-before-data-dash] [fixture:
 sequence/lex-id-context-colon] [fixture: sequence/lex-id-context-line-break]
@@ -585,8 +628,14 @@ instead of characters. A unit name, such as `id`, stands for one unit with that
 name, and text in double quotes stands for the unit named by that text, such as
 `"participant"` or `"+"`. `end-of-text` stands for the end of the text. The
 grammar is a restatement of the grammar in
-[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L136-L419)
-and accepts the same sequences of units.
+[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L136-L422)
+and accepts the same inputs. The jison grammar also takes a `link` unit where it
+takes an id. The lexer never makes such a unit where it would complete a
+statement, because rule 11 reads `link` as a unit only before spaces or tabs and
+a character with which no unit that may follow an id starts, so the grammar
+below leaves it out: in `A->>link B: x`, `link` is a `link` unit, and `B` stands
+where the text must start, so the input is rejected. [fixture:
+sequence/gram-link-keyword-message-target]
 
 Each rule below makes a node of the tree, defined in
 [ast/sequence.md](../ast/sequence.md):
@@ -830,7 +879,7 @@ Each is decided from the statements in source order:
 For the messages after `create` and `destroy`, two places are kept while the
 statements are applied, each empty or holding one id: the **participant awaiting
 creation** and the **participant awaiting destruction** (see
-[`sequenceDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L581-L645)).
+[`sequenceDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L581-L645)).
 Both start empty.
 
 - A statement with `create`, a destroy statement with `create` included, puts

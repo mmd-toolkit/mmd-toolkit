@@ -4,10 +4,10 @@ Japanese version: [er.ja.md](./er.ja.md)
 
 Source of truth in mermaid.js:
 
-- [`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/parser/erDiagram.jison)
-- [`erDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/erDb.ts)
+- [`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/er/parser/erDiagram.jison)
+- [`erDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/er/erDb.ts)
 - the tests (`*.spec.js`) in
-  [`er/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er)
+  [`er/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/er)
 
 This document covers the diagram type `er`, the entity relationship diagram. The
 nodes of the tree are defined in [ast/er.md](../ast/er.md).
@@ -16,7 +16,7 @@ nodes of the tree are defined in [ast/er.md](../ast/er.md).
 
 Entry 10 of [detection.md](../detection.md) selects this grammar: the text
 starts with `erDiagram`, after whitespace, in exactly this case
-([`erDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/erDetector.ts#L9-L11)).
+([`erDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/er/erDetector.ts#L9-L11)).
 [fixture: er/header-only] [fixture: er/header-leading-whitespace]
 
 The lexer then reads the header again, case-insensitively and not followed by a
@@ -922,7 +922,7 @@ The grammar uses the notation of [common.md](../common.md#notation), over units
 instead of characters. A unit name, such as `name`, stands for one unit with
 that name, and text in double quotes stands for the unit named by that text,
 such as `"subgraph"` or `"{"`. The grammar is a restatement of the grammar in
-[`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L102-L334)
+[`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L102-L334)
 and accepts the same sequences of units.
 
 Each rule below makes a node of the tree, defined in [ast/er.md](../ast/er.md):
@@ -980,7 +980,7 @@ er/gram-acc-title-after-name] [fixture: er/gram-classdef-after-name-one-line]
 [fixture: er/gram-style-after-name-one-line] [fixture:
 er/gram-relationship-then-name-one-line] The grammar of mermaid.js has a rule
 for a `title` statement, but its lexer makes no unit for it
-([`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L188)),
+([`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L188)),
 so `title T` is the two entities `title` and `T`. [fixture:
 er/gram-title-words-as-names]
 

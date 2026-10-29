@@ -18,7 +18,7 @@ const documentDirectories = [
  * families use their specification filenames; other entries use diagram ids.
  * The sidebar omits agentflow, info and railroad; they follow it in name
  * order.
- * https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/.vitepress/config.ts#L160-L207
+ * https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/.vitepress/config.ts#L160-L207
  */
 export const diagramOrder = [
   "flowchart",

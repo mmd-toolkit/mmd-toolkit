@@ -11,12 +11,12 @@ are in [db-summaries.md](../db-summaries.md#sankey).
 
 mermaid.js builds the Db while it parses: the grammar calls the Db for each
 record as the record ends
-([`record`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L51-L58)),
+([`record`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L51-L58)),
 and the Db keeps what it is given
-([`findOrCreateNode()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L48-L58),
-[`addLink()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L40-L42),
+([`findOrCreateNode()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L48-L58),
+[`addLink()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L40-L42),
 and
-[`setDiagramTitle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L16-L30)).
+[`setDiagramTitle`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/commonDb.ts#L16-L30)).
 The summary is built the same way: the records are executed in source order, and
 the lists the Db holds are the summary. The summary reads the graph once (see
 [db-summaries.md](../db-summaries.md#sankey)), so each record of the tree is one
@@ -63,7 +63,7 @@ sankey/db-two-links] [fixture: sankey/db-node-order]
 **Ids.** The id that a source or a target gives is the converted form of its
 field without the whitespace at its ends, in a string also with each run of line
 feeds as one line feed (the whole text has them so before it is read, see
-[`prepareTextForParsing()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyUtils.ts#L1-L8)),
+[`prepareTextForParsing()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyUtils.ts#L1-L8)),
 and with each `""` as one `"`, then with the replacement of characters (see
 below). A field of whitespace only, and a string of whitespace only, give the
 empty id. [fixture: sankey/db-fields-trimmed] [fixture:

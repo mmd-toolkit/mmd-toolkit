@@ -4,7 +4,7 @@ Japanese version: [README.ja.md](./README.ja.md)
 
 Fixtures and tools for testing an implementation of the Mermaid diagram syntax
 against mermaid.js. Every fixture records what the pinned mermaid.js
-(`mermaid@12.0.0`) does with its input.
+(`mermaid@12.2.0`) does with its input.
 
 This is a third-party project, unrelated to mermaid-js.
 
@@ -265,7 +265,7 @@ they are listed in
 
 ## Guarantees and limits
 
-- Every result is what `mermaid@12.0.0` does, run in Node. When the pinned
+- Every result is what `mermaid@12.2.0` does, run in Node. When the pinned
   mermaid.js changes, regenerating the fixtures shows each changed result as a
   difference in `expected.json`.
 - Labels and other texts are what mermaid.js holds before HTML sanitization, and

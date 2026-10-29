@@ -94,7 +94,7 @@ ids with the blocks the implementation finds.
 In a flowchart, blocks written one right after another, as in
 `A@{ ... }@{ ... }`, count as one: the grammar joins their contents and passes
 them in one call
-([`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L396-L401)).
+([`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L396-L401)).
 
 Adjacent `@{ ... }` blocks of one kanban node are read as one suffix whose
 contents are concatenated, and one effect is recorded for the group. [fixture:
@@ -127,29 +127,29 @@ usecase/db-native-metadata-not-yaml]
 ### How it is recorded
 
 The flowchart Db patch records it by wrapping
-[`FlowDB.addVertex`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L127-L277).
+[`FlowDB.addVertex`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L127-L277).
 The grammar passes a block to `addVertex` in a call of its own
-([`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L403-L421)),
+([`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L403-L421)),
 after the call that creates the element
-([`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L464-L465)).
+([`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L464-L465)).
 The patch compares the summaries of all elements before and after that call. It
 reads neither the block nor mermaid.js's rules for it.
 
 The sequence Db patch records it by wrapping
-[`SequenceDB.addActor`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L155-L231).
+[`SequenceDB.addActor`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L155-L231).
 The grammar passes the block of a participant in the same call that adds the
 participant
-([`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L358-L367),
-[`SequenceDB.apply`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L578-L580)),
+([`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L358-L367),
+[`SequenceDB.apply`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L578-L580)),
 so the patch runs that call once without the block, keeps the summaries of all
 actors and boxes, puts the Db's lists back as they were, and runs the call as
 mermaid.js made it. The fields that differ between the two runs are the block's
 effect. It reads neither the block nor mermaid.js's rules for it.
 
 The kanban Db patch wraps
-[`addNode()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L99-L165),
+[`addNode()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L99-L165),
 which also receives the block in the call that adds the node
-([`kanban.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/parser/kanban.jison#L126-L133)).
+([`kanban.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/kanban/parser/kanban.jison#L126-L133)).
 It compares the node summaries after that call without and with the block;
 because the shared Db keeps its state in module variables, it restores the
 prefix by clearing the Db and replaying the original node and decoration calls.

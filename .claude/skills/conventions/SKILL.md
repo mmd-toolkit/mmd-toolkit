@@ -30,8 +30,8 @@ The procedures of a package are in the skill of that package.
   `eslint --fix`. Known dangerous autofix: `regexp/no-missing-g-flag` rewrites
   `new RegExp(re)` to `new RegExp(re, "g")` and drops the original flags
   (`new RegExp(re.source, re.flags)` is not reported).
-- A performance fix (of a report under `tmp/review`, in the parser, the printer
-  or elsewhere) keeps readability first: a fast shape that only its author
+- A performance fix (from a performance review, in the parser, the printer or
+  elsewhere) keeps readability first: a fast shape that only its author
   understands is not the proper form. Write the reason for a structure that
   exists for speed in one comment at its place. Make the decision to skip or
   walk in one place (the entry that advances units), not as an unwritten promise

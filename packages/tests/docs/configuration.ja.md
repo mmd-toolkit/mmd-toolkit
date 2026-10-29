@@ -26,13 +26,13 @@ Db の値を検査する側は、 mermaid.js 自身の関数で設定を求め�
 この仕様は、そのような入力を受理します。
 
 求め方は、
-[`preprocessDiagram()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L58-L91)、
-[`detectInit()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L98-L130)
+[`preprocessDiagram()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L58-L91)、
+[`detectInit()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L98-L130)
 と、
-[`detectDirective()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L159-L198)、
-[`addDirective()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/config.ts#L277-L290)、
-[`updateCurrentConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/config.ts#L109-L143)、
-[`sanitizeDirective()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils/sanitizeDirective.ts#L38-L98)
+[`detectDirective()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L159-L198)、
+[`addDirective()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/config.ts#L277-L290)、
+[`updateCurrentConfig()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/config.ts#L109-L143)、
+[`sanitizeDirective()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils/sanitizeDirective.ts#L38-L98)
 に従います。
 
 設定の値は JSON の値です。
@@ -55,7 +55,7 @@ null の要素は空文字列になります。
 
 ### フロントマターの本文の読み方
 
-[`extractFrontMatter()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L69)
+[`extractFrontMatter()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L69)
 は、本文から字下げを取り除き、その結果を YAML 1.2 として、
 pin した mermaid.js に同梱された js-yaml 4.3.0 がその JSON
 スキーマで読むのと同じように読みます。
@@ -95,7 +95,7 @@ pin した mermaid.js に同梱された js-yaml 4.3.0 がその JSON
 
 ### フロントマターの設定
 
-[`processFrontmatter()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L19-L31)
+[`processFrontmatter()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L19-L31)
 は、フロントマターのマッピングを次のように使います。
 フロントマターがなければ、フロントマターのマッピングは空です。
 
@@ -104,13 +104,13 @@ pin した mermaid.js に同梱された js-yaml 4.3.0 がその JSON
   タイトルは設定ではなく Db の値で、設定に依存する Db の値と同じく、
   木からは出ません。
   Db の値を検査する側が、mermaid.js 自身の関数で求めます。
-  [`renderDiagram()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L577-L579)
+  [`renderDiagram()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L577-L579)
   は、タイトルを図のタイトルとして Db に渡します。
   Db がそれをどう持つかは、各図の文書で述べます。
   `title: [1, 2]` はタイトル `1,2` に、`title: 1.0` は `1` に、
   `title: {a: 1}` は `[object Object]` になります。
   mermaid.js は、
-  [`cleanupText()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L6-L17)
+  [`cleanupText()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L6-L17)
   が HTML タグの中の `="..."` を書き換えた後の本文を読むので、
   `title: <b class="x">T</b>` はタイトル `<b class='x'>T</b>` になります。
   一方、`title: "<a b=\"c\">"` のタグには `="` がないので、
@@ -158,7 +158,7 @@ mermaid.js は、図を設定するディレクティブを、
 `Directive` のトリビアを見つける走査ではなく、専用の走査で見つけます。
 この走査は、フロントマターの後のソースから始めます。
 行終端は `\n` に正規化し、HTML タグの中の `="..."` は、
-[`cleanupText()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L6-L17)
+[`cleanupText()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L6-L17)
 と同じく、フロントマターを含むソース全体で `='...'` に書き換えた状態です。
 そこから、次の順に準備します。
 このうち、見つかるディレクティブを変えうるのは 2 番目だけです。
@@ -296,7 +296,7 @@ common/directive-primitive-init-two-wrap-substrings]
 ### テキストの設定
 
 **テキストの設定**は、空のマッピングに、
-[`cleanAndMerge()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L861-L863)
+[`cleanAndMerge()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L861-L863)
 がフロントマターの設定を、次にディレクティブの設定を、
 **深い合成**（es-toolkit の `merge`）で合成したものです。
 入れ物でない合成元は、何ももたらしません。
@@ -326,7 +326,7 @@ common/config-primitive-replaces-frontmatter-mapping]
 その後、テキストの設定を 3 つの段階で処理します。
 
 **1. キーの絞り込み**
-（[`sanitizeDirective()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils/sanitizeDirective.ts#L38-L98)）。
+（[`sanitizeDirective()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils/sanitizeDirective.ts#L38-L98)）。
 テキストの設定に適用し、リストには各要素に適用することで適用します。
 マッピングでは、各項目を順に見ます。
 
@@ -335,13 +335,13 @@ common/config-primitive-replaces-frontmatter-mapping]
   ある名前が、pin した mermaid.js の既定の設定のどこかの深さで、
   リストでない値のキーとして現れるとき、その名前は**設定のキー**です。
   設定のキーの集合は
-  [`configKeys`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/defaultConfig.ts#L346-L356)
+  [`configKeys`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/defaultConfig.ts#L347-L357)
   で、
-  [既定の設定](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/defaultConfig.ts#L18-L343)
+  [既定の設定](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/defaultConfig.ts#L18-L344)
   から求めたものです。
   既定の設定は、
   値を
-  [`config.schema.yaml`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/schemas/config.schema.yaml)
+  [`config.schema.yaml`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/schemas/config.schema.yaml)
   と既定のテーマの変数から取ります。
 - 値が入れ物なら、それにも絞り込みを適用します。
   キー `nodeColors`、`filenameIcons`、
@@ -377,7 +377,7 @@ mermaid.js は入力を `TypeError` で拒否します。
 [fixture: common/config-theme-variables-string-rejected]
 
 **2. フォントファミリー**
-（[`addDirective()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/config.ts#L277-L290)）。
+（[`addDirective()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/config.ts#L277-L290)）。
 テキストの設定の `fontFamily` が空でなく、
 テキストの設定の `themeVariables` が空でない `fontFamily` を持たないとき、
 `themeVariables` は新しいマッピングになります。
@@ -387,7 +387,7 @@ mermaid.js は入力を `TypeError` で拒否します。
 リストならその要素を位置ごとに並べたもので、その他の値なら何もありません。
 
 **3. 安全のための絞り込み**
-（[`sanitize()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/config.ts#L235-L270)）。
+（[`sanitize()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/config.ts#L235-L270)）。
 テキストの設定の中のすべての入れ物に、上から順に適用します。
 それぞれで、まずキー `secure` と、
 サイト設定の `secure` の項目に挙げられたキーを取り除き、
@@ -395,20 +395,20 @@ mermaid.js は入力を `TypeError` で拒否します。
 `url(data:` のどれかを含む文字列の値をすべて取り除きます。
 リストから取り除いた文字列は、その位置を空けたままにし、
 後の合成はその位置を飛ばします。
-[既定の `secure` の一覧](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/schemas/config.schema.yaml#L334-L347)
+[既定の `secure` の一覧](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/schemas/config.schema.yaml#L343-L356)
 は、 `secure`、`securityLevel`、`startOnLoad`、`maxTextSize`、
 `suppressErrorRendering`、`maxEdges` です。
 `secure` 自身が含まれるので、テキストはこの一覧を変えられません。
 [fixture: common/config-secure-key-ignored]
 
 その結果がテキストの設定です。
-[`mermaid.parse()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L96-L117)
+[`mermaid.parse()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L96-L117)
 が `config` として返すものと同じです。
 
 ### 有効な設定
 
 **サイト設定**は、pin した mermaid.js の既定の設定に、
-[`mermaid.initialize()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L702-L740)
+[`mermaid.initialize()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L704-L742)
 に渡した設定を加えたものです。
 サイト設定が必要な fixture は、
 それを `expected.json` の `config` 欄に記録します。
@@ -416,7 +416,7 @@ mermaid.js は入力を `TypeError` で拒否します。
 **有効な設定**は、サイト設定の複製に、
 テキストの設定を**深さを限った合成**で合成したものです。
 出典は
-[`assignWithDepth()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/assignWithDepth.ts#L30-L91)
+[`assignWithDepth()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/assignWithDepth.ts#L30-L91)
 です。
 まずテキストの設定を空のマッピングに合成し、その結果を複製に合成します。
 合成元の値を合成先の値に、深さ（2 から始まります）を付けて合成するには、
@@ -457,7 +457,7 @@ mermaid.js は `themeVariables` から色の値を読み、
 `%%{init: {"themeVariables": {"primaryColor": "notacolor"}}}%%` がその例です。
 [fixture: common/config-theme-colour-rejected]
 
-[`renderDiagram()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L477-L680)
+[`renderDiagram()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L477-L682)
 は、解析の前にテキストの設定とタイトルを適用します。
 `mermaid.parse()` は同じ設定を適用しますが、タイトルは適用しません。
 fixture は `renderDiagram()` に従います。

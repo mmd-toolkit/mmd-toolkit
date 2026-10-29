@@ -486,7 +486,7 @@ x
 
 共通文の原文全体、直前の ASCII space・tab の連なり、
 読みを成立させる先行単位との接続を保ちます。
-global directive、選ばれた semicolon、common comment region を挟む場合は、
+global directive と選ばれた semicolon を挟む場合は、
 除去によってつながる空白が決まるため、間の原文区間全体を保ちます。
 失った連なりを後で再構築しません。
 ここでは共有 accessibility layout を通しません。
@@ -502,10 +502,6 @@ accTitle の setter が一部の前置空白を落としても、
 [fixture: eventmodeling/common-boundaries/accdescr-prefix-significant]
 
 [fixture: eventmodeling/common-boundaries/common-after-empty-description-keep-adjacency]
-
-[fixture: eventmodeling/common-boundaries/common-comment-region-join]
-
-[fixture: eventmodeling/common-boundaries/hidden-consuming-lf-comment-line-removed-keep-metadata]
 
 [fixture: eventmodeling/common-boundaries/native-comment-separates-common-requires-following-padding]
 
@@ -686,7 +682,8 @@ x
 同じ comment を図種の間で同じように扱うため、共有の置き方を使います。
 mark、内容、末尾空白、block comment の継続列を保ちます。
 native の `//` と `%%` は LS・PS を越えて物理 LF まで読みます。
-common comment-region の join は原文区間全体と後続の列を保ちます。
+data block、note、`accDescr` block、slash block comment、
+hidden 形の内部の `%%` のコメント行は、その text の一部で、列を保ちます。
 metadata や required `title` の境界を優先します。
 検出が拒否するため、slash comment を見出し前へ移しません。
 
@@ -702,7 +699,29 @@ metadata や required `title` の境界を優先します。
 
 [fixture: eventmodeling/comments/do-not-move-slash-comment-before-header]
 
-[test: eventmodeling/comments/comment-region-ls-join-unchanged]
+[test: eventmodeling/comments/comment-after-ls-gap-ends-at-lf]
+
+[fixture: eventmodeling/comments/comment-line-inside-data-block-kept]
+
+[fixture: eventmodeling/comments/comment-line-inside-note-block-kept]
+
+[fixture: eventmodeling/comments/comment-line-inside-accdescr-block-kept]
+
+[fixture: eventmodeling/comments/comment-line-inside-slash-block-comment-kept]
+
+[fixture: eventmodeling/comments/comment-line-inside-hidden-yaml-kept]
+
+[corpus fixture: eventmodeling/comment-line-directive-in-data]
+
+[corpus fixture: eventmodeling/comment-line-ignored-semicolon-in-data]
+
+[corpus fixture: eventmodeling/comment-line-entity-in-data]
+
+[corpus fixture: eventmodeling/comment-line-line-separator]
+
+[corpus fixture: eventmodeling/comment-line-paragraph-separator]
+
+[corpus fixture: eventmodeling/comment-line-directive]
 
 [test: eventmodeling/comments/ps-native-line-comment-remains-owned]
 
@@ -722,6 +741,42 @@ eventmodeling
   tf 01 evt A
   /*c*/ tf 02 evt B
 ```
+
+### Default size branches
+
+Eventmodeling の Db は、
+source が `maxTextSize` （既定は UTF-16 コード単位で
+50000）を超えるときにコメント行を除くので、超えないときはコメント行を残します。
+この点で flowchart と異なります。
+agentflow も同じ上限を持ちます（詳しくは、
+[Default size branches](./agentflow.ja.md#default-size-branches) を参照）。
+frontmatter、その後ろの空白だけの行、directive を除いた後で測り、
+CRLF は 1 単位、サロゲートペアは 2 単位と数えます。
+[fixture: default-size-branches/size-frontmatter-not-counted]
+[fixture: default-size-branches/size-frontmatter-trivia-not-counted]
+[fixture: default-size-branches/size-directive-not-counted]
+[fixture: default-size-branches/size-utf16-surrogate]
+50000 以上のときは、図の text 全体とその終わりを保ちます。
+[fixture: default-size-branches/size-preserving-to-fallback-unsafe]
+それ未満のときは、印字する計画の長さも 50000 未満に収まる場合だけ、
+通常の整形を行い、そうでなければ図の text 全体とその終わりを保ちます。
+[fixture: default-size-branches/size-below-planned-crossing]
+字下げや末尾の改行で上限を越えると、
+値の中のコメント行が除かれて Db が変わるので、それを防ぎます。
+境界そのものは corpus が、CRLF、行の中の directive、
+frontmatter の場合も含めて確かめます。
+[corpus fixture: eventmodeling/comment-default-size-equal]
+[corpus fixture: eventmodeling/comment-default-size-above]
+[corpus fixture: eventmodeling/comment-default-size-equal-crlf]
+[corpus fixture: eventmodeling/comment-default-size-above-crlf]
+[corpus fixture: eventmodeling/comment-default-size-equal-inline-directive]
+[corpus fixture: eventmodeling/comment-default-size-above-inline-directive]
+[corpus fixture: eventmodeling/comment-default-size-equal-frontmatter]
+[corpus fixture: eventmodeling/comment-default-size-above-frontmatter]
+[corpus fixture: eventmodeling/frontmatter-extra-trivia-below]
+[corpus fixture: eventmodeling/frontmatter-extra-trivia-boundary]
+[corpus fixture: eventmodeling/frontmatter-extra-trivia-above]
+[corpus fixture: eventmodeling/frontmatter-extra-whitespace-line-boundary]
 
 ### Global directives
 
@@ -813,7 +868,7 @@ eventmodeling tf 01 evt Alpha "style:#x" ;rf 02 cmd Beta
 文・item 間の普通の ASCII 空行は最大 1 行、文書・本文の端は削除します。
 無制限に広げず区切りを残すためです。
 普通の空白だけの行は空にします。
-data、description、hidden、directive の内部、保持 prefix、 comment-region join、
+data、description、hidden、directive の内部、保持 prefix、
 共通文の消費 LF 境界は原文どおりです。
 
 [fixture: eventmodeling/blank-lines/ordinary-blanks-bounded]

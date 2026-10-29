@@ -19,9 +19,9 @@ pin した版は [`@mmd-toolkit/tests`](../../tests) に記録されています
 
 ## pin した mermaid.js
 
-pin した版は mermaid 12.0.0 です。
+pin した版は mermaid 12.2.0 です。
 そのタグはコミット
-[`98a0945418c76238f15df2afaddbba4272656c3b`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b)
+[`1fb7869866dd619168d840291c9c54b4f129758b`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b)
 を指し、この仕様が mermaid.js のソースを参照するときは、
 すべてこのコミットへのリンクにします。
 
@@ -75,21 +75,21 @@ treeview の定義は、[構文](./diagrams/treeview.ja.md) と、
 
 仕様は、mermaid.js のリポジトリにある次の 3 つを元にしています。
 
-- [`diagrams/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams)
+- [`diagrams/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams)
   の下の各図のディレクトリにある文法とその字句状態（例:
-  [`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison)）。
+  [`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison)）。
   Langium の図では、
-  [language/](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language)
+  [language/](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language)
   の下の文法とインポート先。
   例は、
-  [pie.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium)
+  [pie.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/pie/pie.langium)
   と、
-  [common.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium)。
+  [common.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/common.langium)。
 - 各図の `Db` クラス。
   解析の一部はここで行われます（例:
-  [`flowDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts)
+  [`flowDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts)
   の、
-  [`destructLink()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L915-L946)）。
+  [`destructLink()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L928-L959)）。
 - パーサーのテスト（`*.spec.js`）。
   適合性の fixture として [`@mmd-toolkit/tests`](../../tests) に取り込みます。
 
@@ -186,10 +186,10 @@ treeview の定義は、[構文](./diagrams/treeview.ja.md) と、
   pin したコミット（[pin した mermaid.js](#pin-した-mermaidjs)
   を参照）へのリンクで参照する。
   形式は
-  `https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/<パス>#L<開始>-L<終了>`
+  `https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/<パス>#L<開始>-L<終了>`
   です。
   リンクの文字列は関数名かファイル名にする（例:
-  [`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)）。
+  [`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)）。
   行の範囲は、指す内容にちょうど合わせ、
   書く前にそのコミットのファイルで確かめる。
   ファイル全体やディレクトリへのリンクには行の範囲を付けない。

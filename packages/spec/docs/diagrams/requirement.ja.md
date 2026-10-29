@@ -4,9 +4,9 @@
 
 mermaid.js の正となるソース：
 
-- [`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison)
-- [`requirementDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts)
-- [`requirement/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement)
+- [`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison)
+- [`requirementDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/requirement/requirementDb.ts)
+- [`requirement/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/requirement)
   の中のテスト（`*.spec.js`、 `*.spec.ts`）
 
 この文書は、図種 `requirement`、要求図を扱います。
@@ -17,7 +17,7 @@ mermaid.js の正となるソース：
 [detection.ja.md](../detection.ja.md) の項目 14 がこの文法を選びます。
 テキストが、空白の後、
 ちょうどこの大文字小文字の `requirement` で始まるときです（mermaid.js の
-[`requirementDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDetector.ts#L9-L11)）。
+[`requirementDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/requirement/requirementDetector.ts#L9-L11)）。
 `REQUIREMENTDIAGRAM` と `RequirementDiagram` はどの検出器にも合いません。
 [fixture: requirement/header-only] [fixture:
 requirement/docs-syntax-requirement-diagram-7919bd6c] [fixture:
@@ -822,7 +822,7 @@ requirement/lex-style-hash-after-style]
 二重引用符の中のテキストは、`"element"` や `"{"` のように、
 そのテキストが名付ける単位を表します。
 文法は
-[`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L107-L267)
+[`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L107-L267)
 の文法を言い直したもので、同じ単位の並びを受理します。
 
 以下の各規則は、

@@ -106,6 +106,14 @@ Other values of the summary:
   it is one of `strict`, `loose`, `antiscript`, and `sandbox`. [fixture:
   flowchart/config-security-level-loose-click-call] [fixture:
   flowchart/config-security-level-loose-click-link-javascript]
+- A subgraph with the id of an earlier subgraph is not added to the list: its
+  members are added to the earlier one, which keeps its title, direction and
+  place, and a class or a data block for the id applies to the earlier one. A
+  subgraph is never its own member, so its id written in its own body is not in
+  `nodes`. [fixture: flowchart/db-class-last-subgraph-with-id] [fixture:
+  flowchart/db-data-block-last-subgraph-with-id] [fixture:
+  flowchart/db-subgraph-body-data-block-own-id] [fixture:
+  flowchart/spec-subgraph-57671598]
 - `icon`, `form`, `pos`, `img`, `constraint`, `assetWidth` and `assetHeight` of
   vertices, `animate` and `animation` of edges, and `metadata` of subgraphs are
   set only by `@{ ... }` data blocks; see
@@ -172,13 +180,30 @@ Other values of the summary:
   it, so the whitespace is not dropped.
 - The links and properties of an actor are the keys an author wrote in JSON.
   `SequenceDB` copies them into the actor key by key
-  ([`insertLinks`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L488-L496),
-  [`insertProperties`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L512-L520)),
+  ([`insertLinks`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L488-L496),
+  [`insertProperties`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L512-L520)),
   so a key `__proto__` sets the prototype of the object instead of adding an
   entry, and mermaid.js then reads the prototype's entries too. The summary
   records such a prototype as a first entry `__proto__`.
 - An actor's `type` and description can be set by its `@{ ... }` data block. See
   [embedded-data.md](./embedded-data.md).
+- A participant id may be `link` (`participant link as Channel`,
+  `link->>A: message`, `link link: Help @ https://example.com/channel`). The
+  words `link`, `links`, `properties` and `details` begin a statement only when
+  spaces or tabs follow them and then a character other than `/`, `\`, `+`, `(`,
+  `)`, `<`, `>`, `:`, `,`, `;`, `-`, whitespace and line feed (rule 11 of
+  [The statement context](../../spec/docs/diagrams/sequence.md#the-statement-context));
+  elsewhere they start an id, so `link->>A` is a message from the participant
+  `link`, and `A->>link : x` is a message to it. An id may contain `-` or `=`
+  and may be followed by spaces or tabs before its `@{ ... }` data block
+  (`participant A-B@{ "type": "queue" }`). [fixture:
+  sequence/spec-sequence-diagram-106df33f] [fixture:
+  sequence/spec-sequence-diagram-4c18d4c4] [fixture:
+  sequence/spec-sequence-diagram-cd0728ae] [fixture:
+  sequence/spec-sequence-diagram-22f2f841] [fixture:
+  sequence/lex-id-before-data-dash] [fixture:
+  sequence/lex-id-equals-before-data] [fixture:
+  sequence/lex-id-space-before-data] [fixture: sequence/lex-id-tab-before-data]
 
 ## class
 
@@ -225,7 +250,7 @@ reason given:
 - `notes[].index`: the number in the note's id.
 - The class definitions (`classDef`): the Db keeps them in a private map that
   nothing reads
-  ([`ClassDB`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L40-L40));
+  ([`ClassDB`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classDb.ts#L40-L40));
   what they change shows in `classes[].styles`.
 - Click callbacks: the Db keeps the function name and arguments only inside
   closures, and only under `securityLevel: loose`. The summary has them as
@@ -243,11 +268,11 @@ Other values of the summary:
 
 - `classes[].text` is kept, although it is built from the label and the type:
   `addClass` writes the type as `&lt;T&gt;` and a label statement as `<T>`
-  ([`addClass`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L112-L137)),
+  ([`addClass`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classDb.ts#L112-L137)),
   so the label and the type alone do not give it.
 - `classes[].haveCallback` is kept: unlike flowchart, `setClickEvent` sets it
   under every `securityLevel`
-  ([`setClickEvent`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L434-L444)).
+  ([`setClickEvent`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classDb.ts#L434-L444)).
   [fixture: class/config-security-level-loose-click]
 - `classes[].link` is the URL as written (trimmed), and `classes[].linkTarget`
   the target as written, or `_blank`, under every `securityLevel` (see
@@ -280,12 +305,12 @@ and `tooltip`.
 `normalizeState()` (`src/normalizers/state.ts`) summarizes the Db of
 `stateDiagram`, which mermaid.js detects for both `stateDiagram` and
 `stateDiagram-v2`. Its source is the layout data that the renderer draws,
-[`getData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDb.ts#L763-L778),
+[`getData`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/stateDb.ts#L763-L778),
 which mermaid.js builds from the statements while it parses. The Db holds two
 other forms, and neither is summarized: the statement tree keeps statements that
 change nothing (a `classDef`, `class` or `style` inside a composite state, a
 floating note, `scale`), and the table of states holds the top level only, since
-[`extract`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDb.ts#L249-L272)
+[`extract`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/stateDb.ts#L249-L272)
 reads only the statements of the top level.
 
 The summary keeps, in the order of the layout data:
@@ -294,7 +319,7 @@ The summary keeps, in the order of the layout data:
   `description`, the composite state or region it lies in (`parentId`), and the
   direction of a composite state or region (`dir`). `classes` and `styles` are
   those that the table of states gives the node's id, which is where
-  [`dataFetcher`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L250-L254)
+  [`dataFetcher`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L250-L254)
   takes them; a state without an entry has none.
 - `notes`: each note, with the state it belongs to, its `position` and its
   `text`.
@@ -304,7 +329,7 @@ The summary keeps, in the order of the layout data:
   quotes included.
 - `direction`: the direction the renderer uses, from the last `direction`
   statement of the top level
-  ([`getDir`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L185-L195));
+  ([`getDir`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L185-L195));
   `getDirection()`, which takes the first one, is not read by the renderer.
 - `title`, `accTitle` and `accDescr`.
 
@@ -321,7 +346,7 @@ It drops the following, each for the reason given:
 
 The region after the last `--` of a composite state gets an id that mermaid.js
 makes at random
-([`docTranslator`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDb.ts#L366-L375)).
+([`docTranslator`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/stateDb.ts#L366-L375)).
 It is recorded as `generated-region-1`, `generated-region-2`, ... in the order
 of the nodes, wherever it appears: in the node's id, in the ids and labels of
 the start and end states of that region, in `parentId`, and in transitions. A
@@ -364,7 +389,7 @@ definition has `id` and `styles`. A subgraph has `id`, `title`, `nodes`,
 `normalizeEr()` (`src/normalizers/er.ts`) summarizes the Db of `er`. It keeps
 what `ErDB` holds in its own lists, in the order it holds them. It does not take
 the layout data of
-[`getData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/erDb.ts#L377-L459),
+[`getData`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/er/erDb.ts#L377-L459),
 which leaves out what the renderer does not draw (a class definition that no
 entity uses, an entity that has the id of a subgraph) and adds values made from
 the others. The Db reads no browser feature, no time and no random value, and
@@ -427,7 +452,7 @@ Values of the summary, by field:
 
 - `attributes` are in the written order. The grammar builds the list of a block
   backwards and
-  [`addAttributes`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/erDb.ts#L95-L110)
+  [`addAttributes`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/er/erDb.ts#L95-L110)
   reads it backwards, so the summary has the written order. A name written twice
   is kept twice. [fixture: er/db-attribute-order] [fixture:
   er/db-attribute-keys]
@@ -694,7 +719,7 @@ Values of the summary, by field:
   er/db-whitespace-line]
 
 Values are recorded as the Db holds them. mermaid.js passes four texts through
-[`sanitizeText`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/erDb.ts#L351-L353):
+[`sanitizeText`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/er/erDb.ts#L351-L353):
 `title`, `accTitle`, `accDescr`, and the title of a subgraph, and no other text
 of the Db: names, aliases, attributes, roles, ids, nodes, classes, and styles
 are as written. The summary is the same under `look` (`classic`, `handDrawn`,
@@ -748,18 +773,18 @@ them, `id`, `active`, `done`, `crit`, `milestone`, and `vert`. `raw` has
 
 `normalizeGantt()` (`src/normalizers/gantt.ts`) summarizes the Db of `gantt`.
 The Db is
-[one object](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDiagram.ts#L8-L10)
+[one object](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDiagram.ts#L8-L10)
 that every gantt diagram shares, and its state is variables of the module that
 `clear()` resets before each parse, so its patch (`patchGanttDb()`) is applied
 to the object and not to a class. The patch keeps what the Db does not give back
 or gives back changed:
 
 - The tasks. The Db keeps them in a private array that only
-  [`getTasks()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L169-L181)
+  [`getTasks()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L169-L181)
   returns, and it computes the dates of the tasks first (see below). The patch
   takes the array right after `clear()`, when it is empty, and the summary reads
   the tasks as
-  [`addTask()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L557-L591)
+  [`addTask()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L596-L630)
   made them.
 - The ids of the tasks. `clear()` resets the tasks but not the table from an id
   to the position of its task, so an id that a text does not define would find
@@ -782,7 +807,7 @@ or gives back changed:
   gantt/config-security-level-antiscript-click-call]
 
 `weekend` has no getter. It is read through
-[`isInvalidDate()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L183-L201),
+[`isInvalidDate()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L183-L201),
 the method that uses it: given a Friday and `weekends` as the excluded tokens,
 it answers true only when the weekend starts on Friday.
 
@@ -792,14 +817,14 @@ It drops the following, each for the reason given:
   fields that only say how far they are computed (`processed`, `manualEndTime`).
   The renderer computes them when it draws the diagram, not while the text is
   parsed:
-  [`getTasks()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L169-L181)
+  [`getTasks()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L169-L181)
   does, and the result depends on the time zone of the process; on the day on
   which it runs, since a start after an id that is no task, and an end until
   one, is
-  [today](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L320-L322);
+  [today](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L345-L347);
   and on how `dayjs` reads `dateFormat`. It also throws for a start that is no
   date
-  ([`Invalid date`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L346-L346)),
+  ([`Invalid date`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L371-L371)),
   although the text is accepted. What the text determines is how the dates are
   given, which is `raw`; it does not determine the dates. The summary is
   therefore the same on every day and in every time zone. [fixture:
@@ -810,7 +835,7 @@ It drops the following, each for the reason given:
   data, of which `raw`, `id`, and the tags are the reading.
 - `topAxis`: only the method `enableTopAxis()` sets it, but the statement
   `topAxis` calls
-  [`yy.TopAxis()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L141-L141),
+  [`yy.TopAxis()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L141-L141),
   which the Db does not have, so mermaid.js rejects the statement with a
   `TypeError` and no accepted text sets the flag. [fixture:
   gantt/db-top-axis-statement]
@@ -845,7 +870,7 @@ Values of the summary, by field:
   gantt/db-tick-interval] [fixture: gantt/db-today-marker] [fixture:
   gantt/db-today-marker-off]
 - `includes` and `excludes` are lists of tokens, which
-  [`mergeTokens`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L133-L139)
+  [`mergeTokens`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L133-L139)
   makes: the text of each statement in lower case, split at whitespace and
   commas, added to the tokens of the earlier statements, a token only once, at
   its first place. [fixture: gantt/db-excludes-tokens] [fixture:
@@ -888,7 +913,7 @@ Values of the summary, by field:
   gantt/db-task-description-spaces]
 - The data after the colon is split at commas into items, after the tags (see
   below), and
-  [`parseData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L497-L551)
+  [`parseData`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L536-L590)
   reads one item as the end, two as the start and the end, and three as the id,
   the start, and the end. With one item the start is `prevTaskEnd`, with the id
   of the task before, and without an id for the first task. [fixture:
@@ -901,12 +926,12 @@ Values of the summary, by field:
   gantt/db-task-after-ids] [fixture: gantt/db-task-end-until] [fixture:
   gantt/db-task-end-date]
 - A task without an id is
-  [numbered](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L430-L436)
+  [numbered](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L469-L475)
   `task1`, `task2`, ... among the tasks without one, from one in each text.
   [fixture: gantt/db-task-id-numbered]
 - A tag is one of `active`, `done`, `crit`, `milestone`, and `vert`, written in
   lower case, and
-  [taken from the front](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L846-L860)
+  [taken from the front](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L885-L899)
   of the items as long as the first item is one; it sets its flag, once for a
   repeated tag, and is not an item. A tag in another place, or in another case,
   is an item. [fixture: gantt/db-task-tags] [fixture: gantt/db-task-tag-case]
@@ -955,14 +980,14 @@ A task has `section`, `task`, `people`, and `score`.
 syntax has no links, so the summary needs no patch of the Db. It is one object
 that every journey diagram shares, whose state `clear()` resets before each
 parse.
-[`getTasks()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L35-L47)
+[`getTasks()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L35-L47)
 appends the tasks to its list every time it is called, so the summary reads the
 list once and empties it again, which leaves the Db as it was. It drops the
 following, each for the reason given:
 
 - `tasks[].type`: the section again.
 - `getActors()`
-  ([`updateActors`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L49-L59)):
+  ([`updateActors`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L49-L59)):
   the people of the tasks, without repeats and sorted, made from the tasks
   alone.
 
@@ -1007,7 +1032,7 @@ Values of the summary, by field:
   before the colon; the whitespace before the text is not part of it. [fixture:
   journey/db-task-description-spaces] [fixture:
   journey/lex-whitespace-ideographic-space-around-task]
-- [`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)
+- [`addTask`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)
   splits the text after the first colon at each colon. `score` is the number
   that JavaScript makes of the first piece, so a decimal, a hexadecimal number,
   an exponent, and a negative number are numbers, the spaces around the number
@@ -1065,7 +1090,7 @@ A class definition has `id` and `styles`.
 the syntax has no links, so the summary needs no patch of the Db. It reads the
 Db's own lists (`getRequirements()`, `getElements()`, `getRelationships()`,
 `getClasses()`), not the layout data of
-[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L292-L342):
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L292-L342):
 that function sets more fields on the stored objects of the requirements and
 elements, and makes the edges, all from the lists. It drops the following, each
 for the reason given:
@@ -1250,10 +1275,10 @@ is, in source order.
 `normalizeMindmap()` (`src/normalizers/mindmap.ts`) summarizes the Db of
 `mindmap`. The Db reads no browser feature, no time and no random value (the
 random id belongs to
-[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L345-L408)),
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L355-L418)),
 and the syntax has no links, so the summary needs no patch of the Db. It reads
 the tree that
-[`getMindmap()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L71-L73)
+[`getMindmap()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L71-L73)
 returns, which holds every node once with its children, and not the layout data
 of `getData()`, which numbers the sections of the nodes and makes new nodes from
 them. It drops the following, each for the reason given:
@@ -1424,9 +1449,9 @@ A task has `section`, `task`, and `events`.
 `timeline`. The Db reads no browser feature, no time and no random value, and
 the syntax has no links, so the summary needs no patch of the Db. It is one
 module that every timeline diagram shares, whose state
-[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L12-L19)
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L12-L19)
 resets before each parse, but for the counter of the tasks.
-[`getTasks()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L38-L50)
+[`getTasks()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L38-L50)
 appends the tasks to its list every time it is called, so the summary reads the
 list once and empties it again, which leaves the Db as it was. It drops the
 following, each for the reason given:
@@ -1436,9 +1461,9 @@ following, each for the reason given:
   order of the tasks is their order in the list.
 - `tasks[].type`: the section again.
 - `tasks[].score`: always 0, since
-  [the grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L35)
+  [the grammar](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L35)
   adds every task with the score 0
-  ([`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L52-L63)).
+  ([`addTask`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L52-L63)).
 
 Values of the summary, by field:
 
@@ -1485,7 +1510,7 @@ Values of the summary, by field:
   timeline/header-directive-after-header] [fixture: timeline/header-twice]
   [fixture: timeline/header-twice-with-directions]
 - `title` is the text of a
-  [`title` statement](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L23),
+  [`title` statement](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L23),
   after the keyword and one whitespace character, to the end of the line. The
   keyword is read in any case. The whitespace at its ends stays: `title  T`,
   with two spaces, has the title ` T`, and the spaces at the end stay. A `:`, a
@@ -1519,7 +1544,7 @@ Values of the summary, by field:
   timeline/gram-title-keyword-trailing-space] [fixture:
   timeline/gram-title-word-suffix] [fixture: timeline/gram-title-colon-glued]
 - The title of the frontmatter is not the title of the diagram:
-  [the Diagram](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L52-L54)
+  [the Diagram](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/Diagram.ts#L52-L54)
   gives it to a Db that has `setDiagramTitle`, and the Db of the timeline has no
   such method. A `title` statement is the title in either case. [fixture:
   timeline/db-title-frontmatter] [fixture:
@@ -1553,7 +1578,7 @@ Values of the summary, by field:
   timeline/db-acc-all-statements]
 - The text of a description in a block runs to the first `}`, and a description
   is changed by
-  [`setAccDescription`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L22-L24):
+  [`setAccDescription`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/commonDb.ts#L22-L24):
   the line feed and the whitespace after it, of any kind (a tab, a no-break
   space, a U+3000, a U+2028, a U+FEFF), become one line feed, so that the
   indentation of the lines and the empty lines inside the block are left out;
@@ -1591,7 +1616,7 @@ Values of the summary, by field:
 - The keywords `accTitle` and `accDescr` alone on a line, with no colon or
   brace, are periods. [fixture: timeline/db-period-acc-keywords-alone]
 - `sections` has the text of each
-  [`section` statement](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L31)
+  [`section` statement](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L31)
   without the keyword and the one whitespace character after it, also when a
   text repeats. The text runs to a `:` or the end of the line, so a `#` and `%%`
   are part of it, and so is the whitespace at its ends, a text of one space
@@ -1635,7 +1660,7 @@ Values of the summary, by field:
   timeline/db-tab-indentation] [fixture: timeline/db-names-of-object-prototype]
   [fixture: timeline/db-period-cjk]
 - An
-  [event](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L34)
+  [event](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L34)
   is the text after a `:` and one whitespace character, of the task before it,
   up to the next `:` that has whitespace after it, or the end of the line. A `:`
   that has no whitespace after it is part of the event; one that has whitespace
@@ -1735,7 +1760,7 @@ Values of the summary, by field:
   [fixture: timeline/db-event-single-percent]
 - `%%` after a period and whitespace is part of the period. `%%` glued to a
   period of one character starts a comment that takes that character, since the
-  [rule of the comment](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L15)
+  [rule of the comment](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L15)
   takes one character of any kind but `}` before the `%%`, at the start of a
   token: the task is lost. After two characters or more, or after a `}`, it is
   part of the period. [fixture: timeline/db-comment-percent-after-period]
@@ -1873,9 +1898,9 @@ or `"-Infinity"`, since JSON has no such number.
 The Db reads no browser feature, no time and no random value, and the syntax has
 no links to follow, so the summary needs no patch of the Db. It is one module
 that every sankey diagram shares, whose state
-[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L20-L25)
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L20-L25)
 resets before each parse. The summary reads
-[`getGraph()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L63-L70),
+[`getGraph()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L63-L70),
 which lists the nodes and the links by id, and the title. It drops the
 following, each for the reason given:
 
@@ -1885,16 +1910,16 @@ following, each for the reason given:
   id again.
 
 Values of the summary, by field. The text is first cleaned by
-[`prepareTextForParsing()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyUtils.ts#L1-L8),
+[`prepareTextForParsing()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyUtils.ts#L1-L8),
 which
-[the diagram](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDiagram.ts#L9-L10)
+[the diagram](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyDiagram.ts#L9-L10)
 calls before the parser: it removes the whitespace at the two ends of the whole
 text, and it replaces every run of line feeds and carriage returns, anywhere in
 the text, by one line feed. The comment lines, the directives, and the
 frontmatter are removed before it, as for every diagram.
 
 - The header is `sankey` or `sankey-beta`.
-  [The detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDetector.ts#L5-L7)
+  [The detector](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyDetector.ts#L5-L7)
   reads it in lower case only, and the lexer reads the `-beta` in any case. The
   whitespace before the header is removed, and so are empty lines, comment
   lines, and directive lines before it. A word, a dash, or a character outside
@@ -1961,7 +1986,7 @@ frontmatter are removed before it, as for every diagram.
   [fixture: sankey/gram-tab-after-value-before-record]
 - A field that is not in quotes runs to the next comma or line end, and the
   spaces around it are no part of it. It may hold the characters of
-  [the lexer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L25)
+  [the lexer](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L25)
   other than the comma and the quote: the space and the characters from `!` to
   `~`, so that `;`, `#`, `<`, `>`, `&`, `'`, a slash, a backslash, and `%%`
   inside the text are characters of the field, but for the `;` that the next
@@ -2027,7 +2052,7 @@ frontmatter are removed before it, as for every diagram.
   sankey/gram-entity-in-quoted-field] [fixture:
   sankey/gram-entity-in-quoted-value]
 - A field in quotes
-  ([`escaped`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L65))
+  ([`escaped`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L65))
   may hold commas, and two quotes in it are one quote of the field. The quotes
   around it are no part of it. The quotes are read from left to right: a quote
   that is not followed by a quote closes the field, so that five quotes after a
@@ -2076,7 +2101,7 @@ frontmatter are removed before it, as for every diagram.
   sankey/gram-quoted-then-trailing-comma] [fixture:
   sankey/gram-quoted-unclosed-at-end-of-text]
 - A record has exactly three fields, as
-  [the grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L51-L58)
+  [the grammar](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L51-L58)
   says: fewer, more, a comma after the third field, and an empty field are
   rejected. [fixture: sankey/gram-two-columns] [fixture: sankey/gram-one-column]
   [fixture: sankey/gram-four-columns] [fixture: sankey/gram-trailing-comma]
@@ -2086,7 +2111,7 @@ frontmatter are removed before it, as for every diagram.
   sankey/gram-short-line-after-record] [fixture:
   sankey/gram-one-field-after-record]
 - `value` is
-  [`parseFloat()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L55)
+  [`parseFloat()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L55)
   of the third field, after the trim, so that the number is read as the
   beginning of the text: a sign, a decimal point, an exponent, and a leading dot
   are read, and anything after the number is dropped (`1abc`, `1 2`, `1_000`,
@@ -2121,7 +2146,7 @@ frontmatter are removed before it, as for every diagram.
   `"-Infinity"`. [fixture: sankey/db-value-infinity] [fixture:
   sankey/db-value-negative-infinity] [fixture: sankey/db-value-overflow]
 - A node is
-  [found or created](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L48-L58)
+  [found or created](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L48-L58)
   by its id after the trim and the replacement of two quotes by one. Ids are
   case-sensitive, and the same text with quotes or without is one node. A node
   is first named by the source of its first link, then by the target. A link
@@ -2206,12 +2231,12 @@ number (`"Infinity"`, `"-Infinity"`), since JSON has no such number, and `-0` is
 `xychart`. The Db reads no browser feature, no time and no random value while it
 parses, so the summary needs no patch of the Db. It is one module that every
 xychart diagram shares, whose state
-[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L223-L232)
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L223-L232)
 resets before each parse. The summary reads the title and the accessibility
 texts of the common Db, the orientation of
-[`getChartConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L215-L217),
+[`getChartConfig()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L215-L217),
 and
-[`getXYChartData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L219-L221).
+[`getXYChartData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L219-L221).
 It drops the following, each for the reason given:
 
 - `plots[].strokeFill`, `plots[].strokeWidth`, and `plots[].fill`: the colour
@@ -2221,24 +2246,24 @@ It drops the following, each for the reason given:
   the colours of the theme and the settings of the renderer, which the site
   gives.
 - `getXYChartData().title`: set only when the chart is drawn
-  ([`getDrawableElem()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L203-L209)),
+  ([`getDrawableElem()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L203-L209)),
   so it is the empty text when the text is parsed; the title is that of the
   common Db.
 
 The ranges of the axes and the x of the pairs of a plot follow from the values
 and the axes, but the Db computes them where each statement is executed
-([`transformDataWithoutCategory()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L125-L164),
-[`setYAxisRangeFromPlotData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L112-L123)),
+([`transformDataWithoutCategory()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L125-L164),
+[`setYAxisRangeFromPlotData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L112-L123)),
 from the state at that point, so a statement after a plot does not change what
 the plot made. They are kept as the Db holds them.
 
 Values of the summary, by field. The text is read by
-[the lexer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L15-L75)
+[the lexer](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L15-L75)
 and
-[the grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L83-L175).
+[the grammar](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L83-L175).
 
 - The header is `xychart` or `xychart-beta`.
-  [The detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDetector.ts#L9-L11)
+  [The detector](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/xychartDetector.ts#L9-L11)
   reads it in lower case only, so that `XYCHART` and `Xychart-Beta` are
   rejected, while the lexer reads it in any case. A word, a dash and a digit, or
   a character outside ASCII glued to the header is not the header. A colon, a
@@ -3100,20 +3125,20 @@ number (`"Infinity"`), since JSON has no such number.
 `quadrantChart`. The Db reads no browser feature, no time and no random value
 while it parses. It is one object that every quadrant chart shares, whose state
 is in a `QuadrantBuilder` that only its own methods reach, and
-[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L147-L150)
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L147-L150)
 resets it before each parse. The only way to read what the text gave is
-[`getQuadrantData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L120-L145),
+[`getQuadrantData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L120-L145),
 which lays the chart out
-([`build()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantBuilder.ts#L604-L623)),
+([`build()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantBuilder.ts#L604-L623)),
 so the summary takes from it what the layout keeps as the Db holds it: the texts
 of the quadrants, of the axes, and of the points. The layout does not keep the
 class name of a point, the coordinates as written, the styles as written, or the
 classes, so a patch of the Db (`patchQuadrantDb()`) records what
-[`addPoint()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L95-L106)
+[`addPoint()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L95-L106)
 and
-[`addClass()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L108-L110)
+[`addClass()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L108-L110)
 receive, after the Db has accepted it, with the styles that
-[`parseStyles()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L64-L93)
+[`parseStyles()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L64-L93)
 makes of the written ones. The patch is applied to the Db itself, since there is
 one Db, and `clear()` starts the recording over.
 
@@ -3121,7 +3146,7 @@ The layout lists a label of an axis only for a text that is not empty, so a
 single label is the first text of its axis when the layout puts it at `left`,
 which it does where the second text is empty, and the second text when it puts
 it at `center`, which it does where the second text is not empty
-([`getAxisLabels()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantBuilder.ts#L286-L382)).
+([`getAxisLabels()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantBuilder.ts#L286-L382)).
 A setting of the site that hides the labels of an axis would lose a text that
 the Db holds, so the patch also records, in the setters of the texts of the
 axes, which texts the text set, and the summary throws a
@@ -3138,16 +3163,16 @@ It drops the following, each for the reason given:
   point and of its class are kept as the text wrote them.
 
 Values of the summary, by field. The text is read by
-[the lexer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L15-L77)
+[the lexer](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L15-L77)
 and
-[the grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L83-L189),
+[the grammar](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L83-L189),
 and the styles by
-[`parseStyles()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L64-L93),
+[`parseStyles()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L64-L93),
 which rejects what it does not know
-([`validateNumber()` and the others](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/utils.ts#L8-L18)).
+([`validateNumber()` and the others](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/utils.ts#L8-L18)).
 
 - The header is `quadrantChart`.
-  [The detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDetector.ts#L9-L11)
+  [The detector](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDetector.ts#L9-L11)
   reads it with this exact case, so `QUADRANTCHART`, `quadrantchart`, and
   `QuadrantChart` are not detected. A word, a dash and a word, a digit, or a
   character outside ASCII glued to the header is a text where no statement
@@ -5168,13 +5193,13 @@ The fields of the summary:
 `normalizeBlock()` (`src/normalizers/block.ts`) summarizes the Db of `block`.
 The Db is one object that every block diagram shares, with its state in module
 variables, and
-[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDB.ts#L197-L209)
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/blockDB.ts#L197-L209)
 resets it before each parse. It reads no browser feature and no time while it
 parses. The grammar builds a list of statements, and only when the whole text is
 parsed does
-[`setHierarchy()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDB.ts#L305-L309)
+[`setHierarchy()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/blockDB.ts#L305-L309)
 call
-[`populateBlockDatabase()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDB.ts#L105-L192),
+[`populateBlockDatabase()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/blockDB.ts#L105-L192),
 which walks the list in the order of the text, one list of children at a time,
 and fills the Db: a table of blocks by id, the lists of edges, and the classes.
 The summary is read from the Db when that is done.
@@ -5188,7 +5213,7 @@ the statements; `styles` are the styles of the last `style` statement for it,
 split at each `,`; and a composite has `children`, the blocks of its own list in
 the order of the text. The Db makes up an id for a `block` with no id and for
 each `space`, with
-[`generateId()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDB.ts#L300-L303),
+[`generateId()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/blockDB.ts#L300-L303),
 which holds a random part, so the summary has no `id` for such a block, and no
 `label` for a `space`, whose label is the id the Db made up. The block that
 holds the diagram is `root`, a block like the others but for its `id`.
@@ -5239,7 +5264,7 @@ settings of the site, but for the replaced characters of the labels under a
 Values of the summary, by field.
 
 - The header is `block-beta` or `block`.
-  [The detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDetector.ts#L6-L6)
+  [The detector](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/blockDetector.ts#L6-L6)
   reads any text that starts, after white space, with `block`, in this exact
   case, so `Block-beta`, `BLOCK-BETA`, and `Block` are not detected, and
   `block-Beta` and `block-BETA` are the header `block` followed by text that no
@@ -5953,7 +5978,7 @@ Values of the summary, by field.
   the line, split at each `,` and not trimmed, so the spaces around a comma stay
   in the styles, and a style that starts with a space is another style for the
   renderer than one that starts with `color:`
-  ([`getStylesFromArray()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L443-L459)).
+  ([`getStylesFromArray()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L443-L459)).
   A `style` replaces the styles of an earlier `style` for the node, a `style`
   with no styles or with spaces only changes nothing, and a `,` alone gives two
   empty styles. The white space at the two ends of the rest of the line is
@@ -7767,7 +7792,7 @@ Values of the summary, by field.
 ## kanban
 
 `normalizeKanban()` (`src/normalizers/kanban.ts`) reads
-[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L54-L97),
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L54-L97),
 the form the renderer consumes, rather than merging it with the separate
 internal section list. [fixture: kanban/db-metadata-all] [fixture:
 kanban/db-decoration-class-item] [fixture: kanban/db-decoration-icon-section]
@@ -7795,12 +7820,12 @@ The indentation decides the structure: a tab counts as one character, the first
 node establishes the section indentation, a node with an equal indentation
 starts a section, and every other node is attached to the most recent section.
 The summary does not keep the indentation itself (`level`):
-[the renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/kanbanRenderer.ts#L16-L73)
+[the renderer](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/kanban/kanbanRenderer.ts#L16-L73)
 tells a section from an item by `isGroup` and `parentId` and does not read
 `level`. [fixture: kanban/db-indent-tabs] [fixture: kanban/db-indent-unindented]
 [fixture: kanban/db-indent-deeper] [fixture: kanban/db-indent-shallower-last]
 
-[`getSection()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L25-L48)
+[`getSection()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L25-L48)
 checks already stored nodes for indentation below the first section level, so a
 final shallower item is accepted and a further node then causes rejection.
 [fixture: kanban/db-indent-shallower-last] [fixture:
@@ -7827,7 +7852,7 @@ Both sections and items keep `ticket`, while only items expose `assigned`,
 kanban/db-metadata-section-assigned] [fixture:
 kanban/db-metadata-section-priority] [fixture: kanban/db-metadata-section-icon]
 
-[`addNode()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L99-L165)
+[`addNode()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L99-L165)
 reads metadata with YAML's JSON schema, applies only truthy values, converts
 `ticket`, `assigned`, and `icon` with `toString()`, and retains `priority` as
 its YAML value without checking the documented priority enumeration. [fixture:
@@ -10582,23 +10607,23 @@ kanban/db-metadata-shape-spaces] [fixture: kanban/db-metadata-shape-upper-key]
 after parsing, before rendering. [fixture: c4/db-all-fields]
 
 The summary keeps `type` from
-[`getC4Type()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L76-L78).
+[`getC4Type()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/c4/c4Db.ts#L76-L78).
 [fixture: c4/db-all-fields]
 
 The summary keeps `title` from
-[`getTitle()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L722-L724).
+[`getTitle()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/c4/c4Db.ts#L722-L724).
 [fixture: c4/db-all-fields]
 
 The summary keeps `accTitle` from
-[`getAccTitle()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L20-L20).
+[`getAccTitle()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/commonDb.ts#L20-L20).
 [fixture: c4/db-acc-title]
 
 The summary keeps `accDescr` from
-[`getAccDescription()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L26-L26).
+[`getAccDescription()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/commonDb.ts#L26-L26).
 [fixture: c4/db-all-fields]
 
 `shapes`, `boundaries`, and `rels` are the complete own attribute bags from
-[`getC4ShapeArray()`, `getBoundaries()`, and `getRels()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L684-L720),
+[`getC4ShapeArray()`, `getBoundaries()`, and `getRels()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/c4/c4Db.ts#L684-L720),
 in first-insertion order. [fixture: c4/db-shape-three-definitions] [fixture:
 c4/db-boundary-three-definitions] [fixture: c4/db-rel-three-definitions]
 
@@ -11073,7 +11098,7 @@ c4/db-grid-style-rule-index-argument-quoted] [fixture:
 c4/db-grid-tab-index-argument-quoted] [fixture:
 c4/db-grid-vt-index-argument-quoted]
 
-[`UpdateElementStyle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L494-L590)
+[`UpdateElementStyle`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/c4/c4Db.ts#L494-L590)
 updates the first matching shape, or the first matching boundary when no shape
 matches, and a missing target changes nothing. [fixture:
 c4/gram-boundary-reused-alias] [fixture: c4/db-style-boundary] [fixture:
@@ -13711,31 +13736,31 @@ c4/db-grid-quote-layout-argument-quoted]
 ## venn
 
 `normalizeVenn()` (`src/normalizers/venn.ts`) summarizes the shared Db in
-[vennDB.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L22-L133).
+[vennDB.ts](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/venn/vennDB.ts#L22-L133).
 [fixture: venn/db-all-fields]
 
 The summary keeps `title` from
-[`getDiagramTitle()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L32-L32).
+[`getDiagramTitle()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/commonDb.ts#L32-L32).
 [fixture: venn/db-all-fields] [fixture: venn/db-frontmatter-title]
 
 The summary keeps `accTitle` from
-[`getAccTitle()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L20-L20).
+[`getAccTitle()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/commonDb.ts#L20-L20).
 [fixture: venn/db-frontmatter-accessibility] [fixture: venn/header-only]
 
 The summary keeps `accDescr` from
-[`getAccDescription()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L26-L26).
+[`getAccDescription()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/commonDb.ts#L26-L26).
 [fixture: venn/db-frontmatter-accessibility] [fixture: venn/header-only]
 
 `subsets` comes from
-[`getSubsetData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L38-L40).
+[`getSubsetData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/venn/vennDB.ts#L38-L40).
 [fixture: venn/db-all-fields]
 
 `texts` comes from
-[`getTextData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L88-L90).
+[`getTextData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/venn/vennDB.ts#L88-L90).
 [fixture: venn/db-all-fields]
 
 `styles` comes from
-[`getStyleData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L72-L74).
+[`getStyleData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/venn/vennDB.ts#L72-L74).
 [fixture: venn/db-all-fields]
 
 The three arrays retain declaration order, including duplicate declarations.
@@ -13772,7 +13797,7 @@ labels are omitted. [fixture: venn/db-form-set] [fixture: venn/db-form-style-id]
 [fixture: venn/db-form-text-id] [fixture: venn/db-label-empty]
 
 The summary drops
-[`getConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L100-L102)
+[`getConfig()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/venn/vennDB.ts#L100-L102)
 because it supplies drawing settings, and the known-set table, current sets,
 indentation mode, and temporary indent flag because they are parsing state; it
 adds no renderer geometry, palette values, generated ids, or implied pairwise
@@ -13780,9 +13805,9 @@ overlaps. [fixture: venn/db-form-union] [fixture: venn/db-indent-width]
 [fixture: venn/db-union-repeated-member]
 
 The Db's
-[`customClear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L104-L112)
+[`customClear()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/venn/vennDB.ts#L104-L112)
 calls the common
-[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L10-L14)
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/commonDb.ts#L10-L14)
 and resets declarations and parsing state. [fixture: venn/db-all-fields]
 [fixture: venn/header-only]
 
@@ -15660,7 +15685,7 @@ Double quotes of the HTML attribute become single quotes: `html-attribute`.
 ## agentflow
 
 `normalizeAgentflow()` (`src/normalizers/agentflow.ts`) summarizes
-[`AgentFlowDB`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L213-L265).
+[`AgentFlowDB`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L213-L265).
 The header `agentflow-beta` has the detector id `agentflow`. [fixture:
 agentflow/header-lf] [fixture: agentflow/header-without-beta] [fixture:
 agentflow/detect-letter-suffix]
@@ -15680,22 +15705,22 @@ agentflow/detect-letter-suffix]
 
 The summary reuses flowchart's record normalizer and Db patch because their
 getters, record shapes and metadata-call argument positions agree.
-[`draw()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/renderer.ts#L17-L61)
+[`draw()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/renderer.ts#L17-L61)
 reads `direction` for layout and `title` for title insertion; the common
-[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L626-L628)
+[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L628-L630)
 reads `accTitle` and `accDescr` for accessibility. [fixture:
 agentflow/db-all-fields]
 
 A vertex keeps `id`, `text`, `labelType`, `type`, `styles`, `classes`, `props`,
 and optional `dir`, `link`, `linkTarget`, `metadata`, `isConnector`.
-[`addNodeFromVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1613-L1664)
+[`addNodeFromVertex()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1613-L1664)
 reads the id for node/parent lookup, text and label type for labels,
 styles/classes for CSS, direction for layout, and link/target for node links;
-[`getTypeFromVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1571-L1587)
+[`getTypeFromVertex()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1571-L1587)
 chooses the shape from `type`. The map order determines node order.
 `isConnector` preserves the declaration kind needed to reconstruct the
 connector-id index that
-[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
 uses for palette selection; drawing does not read that boolean itself. [fixture:
 agentflow/db-all-fields] [fixture: agentflow/gram-connector-all-forms]
 
@@ -15710,7 +15735,7 @@ agentflow/gram-props-repeated]
 An edge keeps `start`, `end`, `type`, `stroke`, `length`, `text`, `labelType`,
 `classes`, `id`, and optional `interpolate`, `style`, `animate`, `animation`,
 `metadata`.
-[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
 uses endpoints and order to connect layout edges, `type` for arrowheads,
 `stroke` for pattern/thickness, `length` for minimum length, text/type for
 labels, classes for compiled CSS, and interpolation/style/animation fields for
@@ -15721,22 +15746,22 @@ agentflow/gram-three-edge-kinds] [fixture: agentflow/gram-edge-id] [fixture:
 agentflow/gram-linkstyle-interpolate-default]
 
 `classDefs.id` and `styles`, in definition order, supply
-[`getClasses()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/renderer.ts#L10-L16)
+[`getClasses()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/renderer.ts#L10-L16)
 and
-[`getCompiledStyles()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1666-L1678).
+[`getCompiledStyles()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1666-L1678).
 `tooltips.id` and `text` supply
-[`setTooltip()` / `getTooltip()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L945-L1023)
+[`setTooltip()` / `getTooltip()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L945-L1023)
 and node tooltip binding; the summary preserves the Map's first-id order.
 `clickCalls` records authored names, arguments and source order before secure
 settings discard browser callback closures; the closures are consumed by
-[`setClickFun()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L955-L1001)
+[`setClickFun()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L955-L1001)
 and post-render binding, rather than drawing reading the summary's `clickCalls`
 array. [fixture: agentflow/db-all-fields] [fixture:
 agentflow/db-click-missing-id]
 
 A container keeps `id`, `title`, `labelType`, `type`, `nodes`, `classes`, and
 optional `dir`, `metadata`.
-[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
 uses ids/membership for nesting and collapsed ancestry, completion order for
 traversal/palette order, title/type for the group label and shape, classes for
 CSS, direction for layout, and `metadata.view` for collapsed view. `global`
@@ -15761,7 +15786,7 @@ agentflow/db-connector-whitespace-title] [fixture: agentflow/db-flow-collapse]
 
 The summary takes stored records rather than layout data, which hides
 descendants, redirects boundary endpoints and drops induced self-loops, or
-[`getSemanticModel()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L2017-L2145),
+[`getSemanticModel()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L2017-L2145),
 which drops presentation metadata, class definitions and interactivity.
 [fixture: agentflow/db-flow-collapse] [fixture:
 agentflow/db-data-block-presentation-metadata]
@@ -15772,12 +15797,12 @@ metadata to layout nodes, and `getData()` copies edge metadata to layout edges;
 copying does not mean that drawing uses every key. Shape/label metadata effects
 already appear in type/text; `getData()` reads flow `view` for collapse and
 derives layout `containerType` from the flow type. The shared elk
-[`buildSubgraphLayoutOptions()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/rendering-util/layout-algorithms/elk/render.ts#L369-L501)
+[`buildSubgraphLayoutOptions()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/rendering-util/layout-algorithms/elk/render.ts#L370-L502)
 reads `algorithm`; the shared
-[`collapsedGroup()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/rendering-util/rendering-elements/shapes/collapsedGroup.ts#L76-L190)
+[`collapsedGroup()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/rendering-util/rendering-elements/shapes/collapsedGroup.ts#L76-L190)
 shape reads that derived `containerType`. The patch records before/after effects
 of
-[`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L347-L565)
+[`addVertex()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L347-L565)
 in `dataBlockEffects`, without reading YAML or reproducing routing. `animate`
 and `animation` are block-only promoted fields; icon/image controls remain
 metadata without flowchart's promoted asset fields. See
@@ -15834,17 +15859,17 @@ YAML anchors and shared aliases are accepted: both occurrences of the anchored
 mapping are kept as values in metadata and `dataBlockEffects`. The alias making
 `custom.deep` refer to its own mapping instead throws a `RangeError` in
 Mermaid's recursive
-[`stripPrototypeKeys()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L124-L139)
+[`stripPrototypeKeys()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L124-L139)
 before summary extraction; the same rejection occurs without the Db
 instrumentation. [fixture: agentflow/db-metadata-yaml-shared-alias] [fixture:
 agentflow/div-metadata-yaml-self-alias]
 
 Shape aliases resolve before storage. The six domain aliases and `round` are
 defined by
-[`SHAPE_ALIASES`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/shapes.ts#L16-L24);
+[`SHAPE_ALIASES`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/shapes.ts#L16-L24);
 `round` stores `rect`, which drawing normalizes to `roundedRect`. Metadata shape
 checks occur in
-[`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L347-L565)
+[`addVertex()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L347-L565)
 before drawing. Authored camel-case or underscore names reject, even when an
 internal resolved name or removed-shape entry has that spelling. `ellipse` and
 `connector` reject through the shape catalogue although inline ellipse syntax
@@ -15869,7 +15894,7 @@ agentflow/db-shape-lined-document] [fixture: agentflow/db-shape-hexagon]
 
 A removed shape that passes metadata validation still parses: its raw
 type/metadata stay, while
-[`normaliseNodeShapes()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/shapes.ts#L113-L147)
+[`normaliseNodeShapes()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/shapes.ts#L113-L147)
 emits `SHAPE_REMOVED` and substitutes `roundedRect` in layout data. This
 includes `doublecircle`, document/terminal/circle/trapezoid variants,
 lean-left/in-out/odd/procs, and the removed instance shapes. [fixture:
@@ -15898,10 +15923,10 @@ Another known but unsupported shape emits `SHAPE_UNSUPPORTED` and draws as
 `roundedRect`; neither shape diagnostic rejects parsing, and collapsed
 descendants are not checked. Unknown metadata shapes instead throw during
 parsing. A containment cycle emits `CONTAINMENT_VIOLATION` while
-[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
 omits the parent assignment closing the cycle; raw membership stays in the
 summary. The
-[`PARSER_EMITTED_DIAGNOSTICS` and `RESERVED_DIAGNOSTICS` definitions](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/diagnostics.ts#L155-L169)
+[`PARSER_EMITTED_DIAGNOSTICS` and `RESERVED_DIAGNOSTICS` definitions](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/diagnostics.ts#L155-L169)
 distinguish these checks from external semantic checks: reference labels,
 missing connector references and flows without inputs do not emit the reserved
 ids here. Diagnostic records are outputs, not inputs to drawing, and are
@@ -16215,7 +16240,7 @@ agentflow/lex-direction-after-ls] [fixture: agentflow/lex-direction-after-ps]
 agentflow/lex-direction-in-tooltip]
 
 Agentflow detection precedes C4 in
-[`addDiagrams()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L44-L126):
+[`addDiagrams()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L44-L126):
 C4 words in ids, plain/quoted labels, comments, frontmatter and directives do
 not change the diagram id. A leading semicolon prevents detection. [fixture:
 agentflow/lex-detect-c4-container-label] [fixture:
@@ -16368,18 +16393,18 @@ agentflow/lex-ignored-semicolon-in-pipe-boundary]
 ## ishikawa
 
 `normalizeIshikawa()` (`src/normalizers/ishikawa.ts`) summarizes
-[`IshikawaDB`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L20-L96).
+[`IshikawaDB`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L20-L96).
 Both headers, `ishikawa` and `ishikawa-beta`, use the diagram id `ishikawa`.
 [fixture: ishikawa/gram-root-eof] [fixture: ishikawa/spec-ishikawa-36b2cea5]
 
 `root` is the ordered tree from
-[`getRoot()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L38-L40),
+[`getRoot()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L38-L40),
 or `null` when absent. [fixture: ishikawa/header-only-lf] [fixture:
 ishikawa/header-beta-only-lf] [fixture: ishikawa/gram-whitespace-only-document]
 
 Each node keeps exactly `text` and `children`, recursively, including repeated
 labels and the order of siblings. This is the representation the
-[`draw()`, `drawBranch()` and `flattenTree()` functions](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/ishikawaRenderer.ts#L36-L445)
+[`draw()`, `drawBranch()` and `flattenTree()` functions](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/ishikawa/ishikawaRenderer.ts#L36-L445)
 read: root text draws the head, root children are causes, and descendants draw
 the smaller branches. No second representation of the nodes is needed. [fixture:
 ishikawa/db-all-fields] [fixture: ishikawa/db-three-definitions] [fixture:
@@ -16390,9 +16415,9 @@ ishikawa/demo-ishikawa-224017d7] [fixture: ishikawa/demo-ishikawa-6040395b]
 ishikawa/demo-ishikawa-6d142918]
 
 The summary keeps `title`, `accTitle` and `accDescr` through the
-[`Db getters`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L73-L95).
+[`Db getters`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L73-L95).
 The generic rendering path reads both accessibility getters in
-[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L626-L628).
+[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L628-L630).
 The first node sets `title` to its sanitized label, replacing a frontmatter
 title set before parsing; with no node, a nonempty frontmatter title remains.
 [fixture: ishikawa/db-frontmatter-title] [fixture:
@@ -16408,7 +16433,7 @@ ishikawa/frontmatter-whitespace-title-rootless] A numeric frontmatter title of
 ishikawa/frontmatter-numeric-title-rootless]
 
 The grammar calls only
-[`addNode()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/parser/ishikawa.jison#L50-L55).
+[`addNode()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/ishikawa/parser/ishikawa.jison#L50-L55).
 Accessibility-looking lines and blocks are ordinary node text, and frontmatter
 accessibility keys do not set the common getters, so `accTitle` and `accDescr`
 stay empty for these inputs. [fixture: ishikawa/db-acctitle-is-node] [fixture:
@@ -16436,9 +16461,9 @@ and drops the following:
   none of them. [fixture: ishikawa/config-drawing-only]
 
 Node text is trimmed by the grammar and then passed through the common
-[`sanitizeText`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L85-L97);
+[`sanitizeText`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/common.ts#L85-L97);
 the common
-[`setDiagramTitle()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L28-L30)
+[`setDiagramTitle()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/commonDb.ts#L28-L30)
 sanitizes the root label again. DOMPurify is disabled as described in
 [expected-results.md](./expected-results.md). Internal whitespace and literal
 quotes remain. [fixture: ishikawa/gram-root-trailing-space] [fixture:
@@ -16458,7 +16483,7 @@ In root `R; ;` and child `A; ;` text, the separated semicolons remain literal.
 [fixture: ishikawa/gram-after-root-spaced-semicolons] [fixture:
 ishikawa/gram-after-child-spaced-semicolons] Before text reaches the Db, the
 shared
-[`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L916)
+[`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L895-L916)
 preprocessing removes the last semicolon after a hash when a `style` or
 `classDef` fragment, in that exact case, precedes a colon and a hash on its line
 with no whitespace between the colon and hash. [fixture:
@@ -16507,16 +16532,16 @@ ishikawa/db-invalid-data-block-is-text] A multiline form produces ordinary nodes
 from its text lines and their indentation, without parsing the apparent YAML.
 [fixture: ishikawa/db-data-block-multiline-is-nodes] No node id, random value,
 clock value or time zone enters the summary. [fixture: ishikawa/db-all-fields]
-[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L31-L36)
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L31-L36)
 resets the tree, parsing state and common strings between calls. [fixture:
 ishikawa/db-all-fields] [fixture: ishikawa/header-only-lf]
 
 ## usecase
 
 `normalizeUsecase()` (`src/normalizers/usecase.ts`) summarizes the stored
-[`db`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L35-L116).
+[`db`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L35-L116).
 The header `usecase-beta` has the detector id `usecase`; the
-[`detector`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDetector.ts#L7-L11)
+[`detector`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDetector.ts#L7-L11)
 requires whitespace or end of text after the keyword. [fixture:
 usecase/spec-usecase-parser-7ae00acb] [fixture: usecase/header-letter-suffix]
 [fixture: usecase/header-semicolon] [fixture: usecase/header-spaced-semicolon]
@@ -16543,7 +16568,7 @@ Actors keep `id`, `label`, `labelType`, `type`, `business`, `classes`, `styles`
 and optional `icon`, `stereotype`, `parentId`. Use cases keep `id`, `label`,
 `labelType`, `shape`, `business`, `classes`, `styles` and optional `stereotype`,
 `parentId`. The actor/use-case loops of
-[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L337-L387)
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L337-L387)
 use ids for endpoints, labels/types for text, type/shape/business/icon for
 geometry, stereotypes for visible and accessible names, parent ids for grouping,
 and classes/styles for presentation. Map order supplies layout node order.
@@ -16551,7 +16576,7 @@ and classes/styles for presentation. Map order supplies layout node order.
 
 Boundary records keep `id`, `label`, `labelType`, `type`, `classes`, `styles`.
 The
-[`boundary loop`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L427-L447)
+[`boundary loop`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L427-L447)
 uses these for group identity, title, rect/package geometry and CSS. `members`
 is omitted: drawing reads each actor/use case's `parentId` instead, and the
 member list adds a second representation of containment. [fixture:
@@ -16560,9 +16585,9 @@ usecase/db-all-fields] [fixture: usecase/db-boundary-three-definitions]
 Relationships keep `source`, `target`, `type`, `arrowType`, `minlen`, `classes`,
 `styles`, `animate`, optional `animation`, `label`, `labelType`, and `id` only
 for an explicit edge id. The
-[`relationship conversion`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L254-L283)
+[`relationship conversion`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L254-L283)
 selects solid/dotted patterns, arrow markers and semantic labels; the
-[`edge loop`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L449-L481)
+[`edge loop`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L449-L481)
 reads endpoints, labels, length, CSS and animation. Explicit ids are authored
 class/style/metadata targets. Anonymous ids and `explicitId` are omitted; the
 presence of `id` already identifies an explicit id. [fixture: usecase/db-arrows]
@@ -16570,19 +16595,19 @@ presence of `id` already identifies an explicit id. [fixture: usecase/db-arrows]
 [fixture: usecase/db-edge-id-style]
 
 Notes retain their target and text/type for the
-[`note node loop`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L389-L409).
+[`note node loop`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L389-L409).
 The
-[`note connector loop`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L483-L508)
+[`note connector loop`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L483-L508)
 uses the same targets. Generated note ids and derived dotted connector edges are
 omitted. [fixture: usecase/db-note-order]
 
 JSON tables retain values and source property order because the
-[`JSON row conversion`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L139-L219)
+[`JSON row conversion`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L139-L219)
 reads both; JavaScript key order alone would reorder integer-like keys. Classes
 and styles feed the
-[`table loop`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L411-L425).
+[`table loop`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L411-L425).
 Class definitions feed
-[`getCompiledStyles()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L118-L134).
+[`getCompiledStyles()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L118-L134).
 Rows and compiled CSS are derived and omitted. The shared number conversion
 writes non-finite JSON numbers as text and negative zero as zero. [fixture:
 usecase/db-json-integer-order] [fixture: usecase/db-json-duplicate-order]
@@ -16590,11 +16615,11 @@ usecase/db-json-integer-order] [fixture: usecase/db-json-duplicate-order]
 usecase/db-classdef-replace]
 
 `direction` is the layout direction from
-[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L525-L545).
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L525-L545).
 `title` is read by
-[`draw()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseRenderer.ts#L287-L295).
+[`draw()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseRenderer.ts#L287-L295).
 The common accessibility getters are consumed by
-[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L626-L628).
+[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L628-L630).
 [fixture: usecase/db-all-fields] [fixture: usecase/db-direction-td]
 
 The remaining model state is omitted: `symbols` is a resolution index;
@@ -16617,7 +16642,7 @@ interior opaquely, so `dbFromTree` consumes these effects without a JSON reader.
 [fixture: usecase/db-json-source-map-order] [fixture: usecase/gram-json-empty]
 
 The
-[`metadata rules`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.parser.ts#L418-L460)
+[`metadata rules`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/parser/usecase.parser.ts#L418-L460)
 parse a closed native property grammar, not opaque YAML, and produce no data
 block effects. Parsing requires no browser stand-in, URL sanitizer patch, time
 or random-id replacement. [fixture: usecase/gram-metadata-comma] [fixture:
@@ -16639,9 +16664,9 @@ usecase/config-security-other-root-true] [fixture:
 usecase/config-security-other-root-false] [fixture: usecase/config-drawing-only]
 
 At this pin, the parser calls
-[`db.clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.chevrotain.ts#L10-L12)
+[`db.clear()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/parser/usecase.chevrotain.ts#L10-L12)
 after the outer
-[`Diagram.fromText()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L47-L54)
+[`Diagram.fromText()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/Diagram.ts#L47-L54)
 sets a frontmatter title. Consequently `title` is empty even for nonempty,
 whitespace-only and numeric frontmatter titles; `embedded.title` still records
 the supplied title. The normalizer preserves that result. [fixture:
@@ -17046,7 +17071,7 @@ retained. [fixture: usecase/gram-json-double-backslash-before-quote]
 ## pie
 
 `normalizePie()` (`src/normalizers/pie.ts`) summarizes the stored
-[`db`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieDb.ts#L18-L71).
+[`db`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/pie/pieDb.ts#L18-L71).
 The header `pie` has detector id `pie`. [fixture: pie/header-only]
 
 | Field                   | Content                                             |
@@ -17057,15 +17082,15 @@ The header `pie` has detector id `pie`. [fixture: pie/header-only]
 | `sections`              | `label`, `value` in first-label insertion order.    |
 
 The renderer's
-[`createPieArcs()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L12-L23)
+[`createPieArcs()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L12-L23)
 reads values for slice proportions and preserves section order. Its
-[`legend`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L149-L180)
+[`legend`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L149-L180)
 reads every label and value, including zero and small sections omitted from the
 arcs; `showData` selects whether values are appended to labels. The summary
 therefore keeps every stored section without sorting or filtering. [fixture:
 pie/db-slice-order] [fixture: pie/db-small-slice] [fixture: pie/db-all-fields]
 
-[`addSection()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieDb.ts#L36-L48)
+[`addSection()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/pie/pieDb.ts#L36-L48)
 keeps the first value of each converted label, using a Map. Prototype-shaped
 labels are ordinary keys. Non-finite numbers use the shared summary convention:
 text `"Infinity"`; negative zero becomes zero. [fixture:
@@ -17078,11 +17103,11 @@ leaves it in place and the summary records zero. [fixture:
 pie/db-duplicate-negative-zero] [fixture: pie/db-duplicate-first-negative-zero]
 
 The renderer reads `title` for its
-[`title text`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L142-L147).
+[`title text`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L142-L147).
 The common accessibility getters supply
-[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L626-L628).
+[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L628-L630).
 Frontmatter supplies a title before the parsed statements populate the Db;
-[`populateCommonDb()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14)
+[`populateCommonDb()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14)
 applies only nonempty final AST strings. The summary takes these getters rather
 than the AST or source positions. [fixture: pie/db-all-fields] [fixture:
 pie/frontmatter-title] [fixture: pie/frontmatter-title-overridden] [fixture:
@@ -17092,7 +17117,7 @@ The remaining drawing inputs are omitted from the Db summary:
 
 - `config`: the Db's `getConfig()` returns a clone of fixed defaults. The
   renderer
-  [merges configuration](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L33-L65)
+  [merges configuration](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L33-L65)
   separately, including `textPosition`, `donutHole`, `legendPosition` and
   `highlightSlice`. Site settings and text configuration are already recorded as
   `config` and `embedded.config`; none changes stored sections or `showData`.
@@ -17118,18 +17143,18 @@ No Db patch, browser stand-in beyond the shared sanitizer setup, data-block
 recording, generated-id replacement or time-dependent normalization is needed.
 
 These readings follow the
-[pie grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium#L1-L20),
+[pie grammar](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/pie/pie.langium#L1-L20),
 the
-[common terminals and EOL](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L6-L34),
+[common terminals and EOL](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/common.langium#L6-L34),
 and
-[preprocessDiagram()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L58-L65).
+[preprocessDiagram()](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L58-L65).
 
 ### Directives before and during lexing
 
 Global
-[directive removal](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L199-L202)
+[directive removal](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L199-L202)
 uses the
-[directive pattern](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L9-L10);
+[directive pattern](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/regexes.ts#L12-L13);
 the hidden terminal is a separate lexer rule.
 
 Global directive removal can join `accTitle` to its colon and `accDescr` to its
@@ -17281,7 +17306,7 @@ pie/review-showdata-trailing-space-eof] [fixture: pie/review-eol-header-space]
 
 ### Leading frontmatter and body YAML
 
-[extractFrontMatter()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L68)
+[extractFrontMatter()](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L68)
 reads only leading frontmatter, before body lexing.
 
 Malformed YAML in a delimited leading frontmatter block is rejected, while the
@@ -17361,7 +17386,7 @@ pie/div-review-frontmatter-html-invalid-yaml]
 ### Stored values and conversion
 
 The
-[common converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L43-L70)
+[common converter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/valueConverter.ts#L43-L70)
 treats line and block values separately.
 
 A section can follow `pie showData` on the same line, separated from `showData`
@@ -17469,9 +17494,9 @@ description or section. [fixture: pie/review-accdescr-empty-block-first]
 
 ### Entity preprocessing in each text field
 
-[encodeEntities()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L916)
+[encodeEntities()](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L895-L916)
 runs on body text in
-[Diagram.fromText()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L49-L83),
+[Diagram.fromText()](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/Diagram.ts#L49-L83),
 before parsing.
 
 Its two semicolon-removal patterns are `style.*:\S*#.*;` and
@@ -17568,7 +17593,7 @@ pie/review-style-frontmatter-title]
 ## gitgraph
 
 `normalizeGitgraph()` (`src/normalizers/gitgraph.ts`) summarizes the shared
-[`db`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L28-L68).
+[`db`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L28-L68).
 The detector id is `gitGraph`. [fixture: gitgraph/header-only]
 
 | Field                           | Content                                                                                                                             |
@@ -17579,10 +17604,10 @@ The detector id is `gitGraph`. [fixture: gitgraph/header-only]
 | `branches`                      | `{ name }` in renderer order.                                                                                                       |
 
 The renderer reads
-[commit ids, types and tags](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L331-L423),
-[parents and sequence](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L546-L610),
+[commit ids, types and tags](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L331-L423),
+[parents and sequence](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L546-L610),
 and
-[branch order and direction](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L1002-L1011).
+[branch order and direction](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L1002-L1011).
 Commit messages, branch tips, HEAD and the selected branch are omitted because
 the renderer reads none of them. Earlier branch selection is reflected in later
 commits' parents and creating branch; a final checkout adds no summary field.
@@ -17603,7 +17628,7 @@ gitgraph/config-main-order-negative] [fixture: gitgraph/frontmatter-config]
 ### Publication and generated ids
 
 The
-[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphParser.ts#L21-L112)
+[adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphParser.ts#L21-L112)
 publishes common values, direction, then statements in source order. A normal
 commit gets type 0, 1 or 2 for NORMAL, REVERSE or HIGHLIGHT; tags append in
 source order, while repeated id and type options take the final value. An empty
@@ -17617,7 +17642,7 @@ id's first Map position. The value carries its later sequence and parents, which
 can include its own id. Three definitions can leave sequence gaps and change the
 sequence order used for commit positioning. Maps keep prototype-shaped ids and
 branch names normally.
-[`commit()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L114-L147)
+[`commit()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L114-L147)
 [fixture: gitgraph/db-duplicate-id] [fixture: gitgraph/db-three-definitions]
 [fixture: gitgraph/db-prototype-ids] [fixture:
 gitgraph/db-converted-duplicate-id]
@@ -17626,7 +17651,7 @@ Commit positioning sorts by `seq`, but arrow drawing reads the `getCommits()`
 Map keys in first-id insertion order. The summary keeps that Map order together
 with each commit's latest `seq`; the derived sorting of `getCommitsArray()` is
 not recorded separately.
-[drawArrows()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L851-L865)
+[drawArrows()](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L851-L865)
 [fixture: gitgraph/db-three-definitions]
 
 A publication-only object patch observes which ids Mermaid generates, without
@@ -17640,9 +17665,9 @@ ordering, not a run-dependent counter. [fixture: gitgraph/db-generated-ids]
 [fixture: gitgraph/db-generated-name-collision] [fixture:
 gitgraph/db-random-shaped-custom-id] [fixture: gitgraph/db-three-definitions]
 
-[`branch()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L149-L164)
+[`branch()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L149-L164)
 and
-[`checkout()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L369-L394)
+[`checkout()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L369-L394)
 create/select branches for later commit publication, including empty branches;
 `switch` is the same operation as checkout. Branches sort by numeric order,
 defaulting to zero for authored branches, with creation order breaking ties.
@@ -17652,7 +17677,7 @@ gitgraph/gram-branch-order-tie] [fixture: gitgraph/gram-branch-empty] [fixture:
 gitgraph/gram-branch-whitespace] [fixture: gitgraph/gram-switch] [fixture:
 gitgraph/config-main-empty-name] [fixture: gitgraph/config-main-html]
 
-[`merge()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L166-L258)
+[`merge()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L166-L258)
 creates type 3 with ordered current/source parents, optional custom type and a
 custom-id flag. Repeated scalar options take the last value; an empty id
 generates an id with `customId: false`. [fixture: gitgraph/gram-merge-options]
@@ -17672,7 +17697,7 @@ gitgraph/db-duplicate-converted-branch] [fixture: gitgraph/db-checkout-unknown]
 [fixture: gitgraph/db-switch-unknown] [fixture:
 gitgraph/db-merge-unknown-generated-prefix]
 
-[`cherryPick()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L261-L376)
+[`cherryPick()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L261-L376)
 creates type 4 with a generated id and current/source parents. Without authored
 tags its tag names the source, and for a merge source its parent; explicit tags
 suppress this default and filter empty strings. Scalar options use their last
@@ -17695,7 +17720,7 @@ gitgraph/db-cherry-pick-merge-no-parent]
 ### Lexer and common values
 
 The
-[entry and statement rules](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/gitGraph/gitGraph.langium#L1-L56)
+[entry and statement rules](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/gitGraph/gitGraph.langium#L1-L56)
 allow `gitGraph`, `gitGraph:`, a separated colon, or LR/TB/BT with a required
 colon. A statement or common value may start on the header line; ordinary body
 statements require NEWLINE or EOF, not semicolons. A lone CR and CRLF are
@@ -17757,7 +17782,7 @@ gitgraph/eol-title-ps] [fixture: gitgraph/eol-title-semicolons] [fixture:
 gitgraph/eol-title-tab] [fixture: gitgraph/eol-title-two-semicolons]
 
 Keywords are case sensitive. The
-[token builder](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/gitGraph/tokenBuilder.ts#L1-L7)
+[token builder](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/gitGraph/tokenBuilder.ts#L1-L7)
 adds JavaScript-whitespace/EOF-or-percent-pair lookahead only to `gitGraph`, not
 to `gitGraph:`. Other keyword prefixes can yield a longer REFERENCE alternative;
 there is no general longest-match rule. Detection itself tests only the exact
@@ -17836,7 +17861,7 @@ gitgraph/number-overflow] [fixture: gitgraph/db-duplicate-order-negative-zero]
 [fixture: gitgraph/db-duplicate-order-negative-zero-first]
 
 The installed
-[common converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L26-L81)
+[common converter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/valueConverter.ts#L26-L81)
 leaves REFERENCE unchanged and decodes STRING escapes: matching single or double
 quotes close the string; raw line breaks are allowed, but a backslash escape
 cannot cross LF, CR, LS or PS. The escapes b/f/n/r/t/v/0 become control
@@ -17885,7 +17910,7 @@ gitgraph/eol-title-semicolons] [fixture: gitgraph/eol-acctitle-semicolons]
 [fixture: gitgraph/eol-block-semicolon] [fixture: gitgraph/eol-block-colon]
 
 The
-[public parse gate](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L134-L150)
+[public parse gate](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/parse.ts#L134-L150)
 rejects any lexer or parser error, even after recovery or a valid prefix.
 Missing required arguments, unsupported statements/options and separated option
 colons are rejected before Db publication. [fixture:
@@ -17903,7 +17928,7 @@ gitgraph/gram-commit-colon-space]
 ### Hidden forms and preprocessing
 
 The imported
-[hidden terminals](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L25-L34)
+[hidden terminals](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/common.langium#L25-L34)
 are separate from global directive removal and real leading frontmatter. Hidden
 YAML does not parse its contents or apply title/configuration; detection can
 skip one retained nonleading frontmatter-shaped block, which gitgraph then
@@ -18310,7 +18335,7 @@ gitgraph/lex-reference-boolean-spellings]
 
 The summary is `{}` for every accepted info input. The optional `showInfo`
 keyword does not create an AST field, and
-[infoParser.parse()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoParser.ts#L6-L11)
+[infoParser.parse()](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/info/infoParser.ts#L6-L11)
 only logs the parsed AST; it publishes no common title or accessibility values.
 [fixture: info/header-lf] [fixture: info/header-inline-flag] [fixture:
 info/common-all] [fixture: info/common-flag-all]
@@ -18319,9 +18344,9 @@ The upstream minimal header and header-with-flag examples also produce the empty
 summary. [fixture: info/spec-info-06271baf] [fixture: info/spec-info-df27ef00]
 
 The version returned by
-[getVersion()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoDb.ts#L3-L11)
+[getVersion()](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/info/infoDb.ts#L3-L11)
 is a build constant, including the optional tiny-build suffix. The
-[renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoRenderer.ts#L13-L28)
+[renderer](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/info/infoRenderer.ts#L13-L28)
 displays its version argument and reads no Db field. Version, fixed dimensions,
 font settings and SVG positions are omitted because the input determines none of
 them. Frontmatter title/configuration stays in the shared embedded reading; info
@@ -18334,7 +18359,7 @@ adding Db fields. [fixture: info/directive-config]
 ### Entry and keyword boundaries
 
 The
-[entry rule](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/info/info.langium#L1-L9)
+[entry rule](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/info/info.langium#L1-L9)
 takes `info`, an optional `showInfo`, and an optional common fragment, in that
 order. Newlines may precede the header and surround the flag; the first common
 form may share the header or flag line. A repeated header, repeated flag, flag
@@ -18345,9 +18370,9 @@ info/header-repeated] [fixture: info/header-repeated-flag] [fixture:
 info/header-flag-before] [fixture: info/header-common-then-flag]
 
 The
-[detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoDetector.ts#L7-L11)
+[detector](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/info/infoDetector.ts#L7-L11)
 matches the lowercase prefix `info`, but the
-[token builder](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/info/tokenBuilder.ts#L1-L7)
+[token builder](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/info/tokenBuilder.ts#L1-L7)
 requires JavaScript whitespace, EOF or `%%` after both keywords. A letter,
 digit, underscore, hyphen, Unicode letter or colon suffix rejects; header case
 variants and a split header reject too. [fixture: info/detect-lower-suffix]
@@ -18375,9 +18400,9 @@ info/spec-info-1b111b64]
 ### Common forms and endings
 
 The imported
-[common terminals](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L6-L34)
+[common terminals](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/common.langium#L6-L34)
 and
-[CommonValueConverter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L45-L81)
+[CommonValueConverter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/valueConverter.ts#L45-L81)
 accept title text after one ASCII space/tab, accessibility line values after an
 ASCII-space/tab colon gap, and description blocks after JavaScript whitespace.
 Empty values, third assignments, whitespace-only final values and either quote
@@ -18701,12 +18726,12 @@ and `packet-beta` headers.
 | `packet`   | Published rows in order, each an array of blocks in order. Each block keeps `start`, `end` (inclusive bit positions) and `label`. An empty diagram has no rows. |
 
 The source is
-[`PacketDB.getPacket()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/db.ts#L18-L52),
+[`PacketDB.getPacket()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/packet/db.ts#L18-L52),
 the rows that the
-[renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/renderer.ts#L8-L90)
+[renderer](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/packet/renderer.ts#L8-L109)
 reads. Rows and blocks are copied without sorting or merging adjacent labels.
 The
-[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/parser.ts#L18-L90)
+[adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/packet/parser.ts#L18-L90)
 fills omitted endpoints and splits blocks at `packet.bitsPerRow` boundaries
 before publishing them; the summary keeps those endpoints and repeated labels.
 An exact boundary creates no empty final row. [fixture: packet/gram-mixed]
@@ -18717,7 +18742,7 @@ The summary drops `bits`, which the renderer never reads. In particular, the
 adapter's split-block counts need not equal `end - start + 1`; the normalizer
 does not correct or retain them. It also drops parsing state (`lastBit`, `row`,
 the working word and the fixed row cap), and the configuration returned by
-[`getConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/db.ts#L16-L29).
+[`getConfig()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/packet/db.ts#L16-L29).
 Drawing dimensions and `showBits` do not change the summary. The row width's
 effect remains in the published rows, and configuration travels through the
 existing site and embedded-value fields. [fixture: packet/db-row-split]
@@ -18748,7 +18773,7 @@ packet/config-init-row-null] [fixture: packet/config-init-row-integer]
 YAML `.inf` is infinite, while YAML `1e400` remains a string; JSON `1e400` in
 init is infinite. All three let a finite range fit one row. Bare `.nan` and
 `.inf` are invalid JSON in init, so
-[`detectDirective()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L175-L203)
+[`detectDirective()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L175-L203)
 ignores those arguments and the default width remains. Quoting either value in
 init instead supplies a nonnumeric string and publishes no rows. [fixture:
 packet/config-frontmatter-row-infinity] [fixture:
@@ -18770,12 +18795,12 @@ packet/error-cap-following-noncontiguous] [fixture: packet/db-overflow-wide]
 [fixture: packet/db-frontmatter-infinite-endpoint]
 
 The
-[common publication helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+[common publication helper](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
 sets only truthy final AST values. Repeated common assignments keep the last
 one, including an empty final value that suppresses earlier body assignments. An
 empty final title leaves a frontmatter title in place. Accessibility fields are
 consumed by the
-[common rendering path](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628).
+[common rendering path](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L626-L630).
 Empty labels are published and retained. There are no random ids or diagram
 patches. [fixture: packet/title-repeat] [fixture: packet/title-repeat-empty]
 [fixture: packet/acctitle-repeat-empty] [fixture: packet/accdescr-block-repeat]
@@ -18797,9 +18822,9 @@ packet/frontmatter-invalid-keeps-config]
 ## architecture
 
 `normalizeArchitecture()` summarizes the `architecture` detector id. The
-[detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDetector.ts#L7-L11)
+[detector](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/architecture/architectureDetector.ts#L7-L11)
 recognizes the `architecture` prefix, while the
-[grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/architecture/architecture.langium#L5-L13)
+[grammar](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/architecture/architecture.langium#L5-L13)
 requires `architecture-beta`. [fixture: architecture/header-beta] [fixture:
 architecture/header-bare-rejected]
 
@@ -18813,12 +18838,12 @@ architecture/header-bare-rejected]
 | `layoutHints` | Published alignment constraints: `direction` and the ordered `members` array.                                              |
 
 The
-[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureParser.ts#L9-L19)
+[adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/architecture/architectureParser.ts#L9-L19)
 publishes groups, services, junctions, edges and alignments in that order,
 preserving source order within each kind. The normalizer reads
-[`getNodes()`, `getGroups()` and `getEdges()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L148-L261),
+[`getNodes()`, `getGroups()` and `getEdges()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L148-L261),
 and
-[`getLayoutHints()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L263-L288),
+[`getLayoutHints()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L263-L288),
 without sorting. Optional absent values are omitted; published false flags and
 empty strings remain. Repeated edges and alignment declarations remain. The `in`
 references express the hierarchy without a second list of children. An empty
@@ -18828,23 +18853,23 @@ architecture/db-empty-values] [fixture: architecture/db-duplicate-edges]
 architecture/db-junction-order] [fixture: architecture/header-beta]
 
 The
-[renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureRenderer.ts#L40-L152)
+[renderer](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/architecture/architectureRenderer.ts#L40-L152)
 uses node and group identities, parents, labels and icons, and edge endpoints,
 ports, arrow flags, group-boundary flags and labels. Service `iconText` is read
 by
-[`drawServices()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/svgDraw.ts#L277-L359).
+[`drawServices()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/architecture/svgDraw.ts#L277-L359).
 Icon names remain names: iconify lookup and sanitization happen during drawing.
 Alignment direction and member order feed the renderer's
-[alignment and relative-placement constraints](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureRenderer.ts#L261-L320).
+[alignment and relative-placement constraints](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/architecture/architectureRenderer.ts#L261-L320).
 Accessibility fields feed the
-[common rendering path](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628).
+[common rendering path](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L626-L630).
 [fixture: architecture/db-mixed] [fixture: architecture/db-unknown-icon]
 [fixture: architecture/lex-string-conversion]
 
 The summary drops the following:
 
 - The diagram title. The common adapter publishes it, but architecture's
-  [`draw()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureRenderer.ts#L610-L642)
+  [`draw()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/architecture/architectureRenderer.ts#L610-L642)
   explicitly leaves title drawing unimplemented and never reads it. Frontmatter
   title remains available in `embedded.title`. [fixture:
   architecture/frontmatter-title] [fixture:
@@ -18856,13 +18881,13 @@ The summary drops the following:
   ordinary IDs. [fixture: architecture/db-prototype-ids] [fixture:
   architecture/db-prototype-services]
 - `dataStructures`: adjacency lists, spatial maps and group alignments
-  [derived from nodes and edges](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L290-L384)
+  [derived from nodes and edges](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L290-L384)
   when drawing starts. The normalizer never calls `getDataStructures()`.
 - `elements`, `diagramId`, DOM ids, coordinates, widths, heights and resolved
   icon SVGs. They are drawing state, depend on configuration or measurement, or
   are derived from the retained fields.
 - The Db's
-  [configuration getters](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L395-L405).
+  [configuration getters](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L395-L405).
   Configuration stays in site and embedded configuration, outside the summary.
   No architecture setting is read during publication, and no Db patch or data
   block recorder is needed. [fixture: architecture/config-drawing-only]
@@ -18880,9 +18905,9 @@ architecture/lex-title-conversion] [fixture: architecture/lex-string-conversion]
 ## radar
 
 `normalizeRadar()` summarizes the `radar` detector id, whose
-[detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/detector.ts#L7-L11)
+[detector](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/detector.ts#L7-L11)
 recognizes `radar-beta`. The
-[grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/radar/radar.langium#L4-L17)
+[grammar](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/radar/radar.langium#L4-L17)
 also permits `radar-beta:` and `radar-beta :`. [fixture:
 radar/spec-radar-test-ts-f0c0291e] [fixture: radar/header-colon-inline]
 [fixture: radar/header-separated-colon]
@@ -18897,21 +18922,21 @@ radar/spec-radar-test-ts-f0c0291e] [fixture: radar/header-colon-inline]
 | `options`  | Published `showLegend`, `ticks`, `max`, `min` and `graticule`.                |
 
 The
-[renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L8-L45)
+[renderer](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/renderer.ts#L8-L45)
 reads the title and all three collections. Axis labels feed
-[`drawAxes()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L95-L132),
+[`drawAxes()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/renderer.ts#L95-L132),
 curve entries feed
-[`drawCurves()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L135-L173),
+[`drawCurves()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/renderer.ts#L135-L173),
 and curve labels feed
-[`drawLegend()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L209-L243).
+[`drawLegend()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/renderer.ts#L209-L243).
 Accessibility values feed the
-[common rendering path](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628).
+[common rendering path](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L626-L630).
 [fixture: radar/db-all-fields]
 
 The
-[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/parser.ts#L8-L21)
+[adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/parser.ts#L8-L21)
 publishes all axes before all curves, regardless of their statement order. The
-[Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L56-L91)
+[Db](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/db.ts#L56-L91)
 uses the name as a label only when the label is absent; an empty label remains
 empty. Repeated axes and curves remain in order. Positional entries retain
 written order and need not match the axis count: the renderer can skip such a
@@ -18926,10 +18951,10 @@ radar/db-extra-detailed-entry] [fixture: radar/error-reference-missing]
 [fixture: radar/error-reference-no-axes]
 
 The last occurrence of each option wins. The
-[defaults](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L23-L40)
+[defaults](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/db.ts#L23-L40)
 are `showLegend: true`, `ticks: 5`, `max: null`, `min: 0` and
 `graticule: "circle"`.
-[`setOptions()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L93-L117)
+[`setOptions()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/db.ts#L93-L117)
 caps the final tick value at 32; zero and fractional values remain. The summary
 keeps a null maximum rather than calculating the renderer's automatic maximum,
 and does not clip entries to the bounds. [fixture: radar/db-options-repeat]
@@ -18949,7 +18974,7 @@ radar/number-nan] [fixture: radar/number-infinity] [fixture:
 radar/number-exponent]
 
 The common
-[publication helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+[publication helper](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
 sets only truthy final AST values. An empty final common assignment suppresses
 earlier body values, and an empty final title leaves a frontmatter title in
 place. [fixture: radar/common-repeat] [fixture: radar/common-repeat-empty]
@@ -18964,7 +18989,7 @@ The summary drops the following:
 - The original detailed entries and references, which the Db replaces with the
   published numeric array. [fixture: radar/db-extra-detailed-entry]
 - The configuration returned by
-  [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L42-L54).
+  [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/db.ts#L42-L54).
   Publication never reads it. `radar.width`, `height`, margins,
   `axisScaleFactor`, `axisLabelFactor`, `curveTension` and `useMaxWidth` affect
   drawing only. Even configuration keys named `showLegend`, `ticks`, `max`,
@@ -18976,16 +19001,16 @@ The summary drops the following:
   radar/config-frontmatter-drawing] [fixture: radar/config-init-drawing]
   [fixture: radar/config-invalid-cannot-rescue]
 - The automatic maximum, radius, coordinates, paths, viewBox and CSS classes
-  [derived while drawing](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L21-L173),
+  [derived while drawing](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/renderer.ts#L21-L173),
   and colors
-  [derived from theme variables](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/styles.ts#L8-L46).
+  [derived from theme variables](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/styles.ts#L8-L46).
   There are no generated identities, browser-dependent publication calls or Db
   patches. [fixture: radar/config-drawing-only]
 
 ## treemap
 
 `normalizeTreemap()` summarizes detector id `treemap`, shared by the
-[`treemap` and `treemap-beta` headers](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treemap/treemap.langium#L44-L49).
+[`treemap` and `treemap-beta` headers](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/treemap/treemap.langium#L44-L49).
 [fixture: treemap/header-beta] [fixture: treemap/spec-treemap-test-ts-892fa294]
 
 | Field       | Content                                                                                 |
@@ -18997,12 +19022,12 @@ The summary drops the following:
 | `classDefs` | Classes in first-definition order, each with `id` and `styles`.                         |
 
 The summary takes the children of
-[`getRoot()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/db.ts#L37-L48),
+[`getRoot()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/db.ts#L37-L48),
 which the
-[renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/renderer.ts#L24-L30)
+[renderer](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/renderer.ts#L24-L30)
 reads, rather than repeating the same nodes in `getNodes()`. The adapter builds
 their hierarchy with
-[`buildHierarchy()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/utils.ts#L25-L66)
+[`buildHierarchy()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/utils.ts#L25-L66)
 before adding them to the Db. Order and duplicate names stay as published.
 Sections have `children`, including an empty array; leaves have `value` and no
 `children`. The summary keeps multiple outer nodes and empty names. [fixture:
@@ -19016,9 +19041,9 @@ class definition. A section's trailing whitespace can make an unindented node on
 the next line its child; a leaf's trailing whitespace can keep the next node
 under the leaf's enclosing section. If the next line also has indentation of its
 own, Mermaid rejects the two separate whitespace runs. This follows the
-[row grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treemap/treemap.langium#L57-L70)
+[row grammar](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/treemap/treemap.langium#L57-L70)
 and the
-[published indentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/parser.ts#L34-L55).
+[published indentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/parser.ts#L34-L55).
 [fixture: treemap/db-section-tail-no-space] [fixture:
 treemap/db-section-tail-space] [fixture: treemap/db-section-tail-tab] [fixture:
 treemap/db-leaf-tail-no-space] [fixture: treemap/db-leaf-tail-space] [fixture:
@@ -19035,8 +19060,8 @@ treemap/gram-class-tail-space-next-indent] [fixture:
 treemap/gram-class-tail-tab-next-indent]
 
 The adapter publishes
-[all classes before nodes](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/parser.ts#L27-L55).
-[`addClass()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/db.ts#L50-L77)
+[all classes before nodes](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/parser.ts#L27-L55).
+[`addClass()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/db.ts#L50-L77)
 appends styles on redefinition without moving the class. An unused class and an
 unresolved selector remain in the summary. Prototype names are ordinary Map
 keys. Class styles replace `\,` with `§§§`, remaining commas with `;`, then
@@ -19053,7 +19078,7 @@ treemap/space-style-all-trailing] [fixture: treemap/db-class-style-marker]
 [fixture: treemap/db-class-style-marker-four] [fixture:
 treemap/db-class-style-marker-escaped-comma]
 
-[`NUMBER2` conversion](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treemap/valueConverter.ts#L17-L29)
+[`NUMBER2` conversion](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/treemap/valueConverter.ts#L17-L29)
 removes commas and calls `parseFloat()`: `1,234.5` becomes 1234.5, `1_234.50`
 becomes 1, and `1.2.3` becomes 1.2. A dot alone becomes NaN. Finite values stay
 numbers; `numberOrText()` records non-finite values as `"NaN"`, `"Infinity"` or
@@ -19070,11 +19095,11 @@ treemap/number-nan] [fixture: treemap/number-infinity] [fixture:
 treemap/lex-string-conversion]
 
 The common
-[publication helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+[publication helper](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
 sets only truthy final AST values. An empty final common value suppresses the
 previous body assignment; an empty final title leaves the frontmatter title.
 Accessibility values go to the
-[common rendering path](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628).
+[common rendering path](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L626-L630).
 [fixture: treemap/common-repeat] [fixture: treemap/common-repeat-empty]
 [fixture: treemap/frontmatter-empty-body-title]
 
@@ -19085,11 +19110,11 @@ The summary drops:
   already holds the hierarchy once.
 - Node `cssCompiledStyles` and class `textStyles`, derived from the selector and
   class definitions. Drawing reads the compiled styles through
-  [`styles2String()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/renderer.ts#L210-L240),
+  [`styles2String()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/renderer.ts#L210-L240),
   and exposes classes through
-  [`getClasses()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/renderer.ts#L529-L535).
+  [`getClasses()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/renderer.ts#L529-L535).
   [fixture: treemap/db-class-forward] [fixture: treemap/db-class-repeat]
-- [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/db.ts#L28-L35).
+- [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/db.ts#L28-L35).
   Publication reads no treemap settings. Padding, dimensions, value display and
   formatting, and `useMaxWidth` affect drawing only. The renderer does not read
   `borderWidth`, `valueFontSize` or `labelFontSize`. Settings stay in site or
@@ -19100,9 +19125,9 @@ The summary drops:
   treemap/config-init-cannot-rescue]
 - Aggregated section values, sorted drawing order, coordinates, dimensions,
   colours and drawing ids. The renderer derives
-  [sums, sorting and layout](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/renderer.ts#L141-L175)
+  [sums, sorting and layout](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/renderer.ts#L141-L175)
   and
-  [theme colours](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/renderer.ts#L79-L126)
+  [theme colours](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/renderer.ts#L79-L126)
   when drawing. [fixture: treemap/db-all-fields]
 
 The Db needs no patch: publication reads no browser globals, time or random
@@ -19112,7 +19137,7 @@ values, and has no links or data blocks.
 
 `normalizeRailroad()` summarizes `railroad`, `railroadEbnf`, `railroadAbnf` and
 `railroadPeg` in one shape. The four
-[diagram definitions](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadDiagram.ts#L12-L17)
+[diagram definitions](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/railroadDiagram.ts#L12-L17)
 share the same Db and renderer. `diagramType` keeps the detected id. [fixture:
 railroad/ir-header-only] [fixture: railroad/ebnf-header-only] [fixture:
 railroad/abnf-header-only] [fixture: railroad/peg-header-only]
@@ -19124,9 +19149,9 @@ railroad/abnf-header-only] [fixture: railroad/peg-header-only]
 | `rules`    | Rules in declaration order, each with `name` and `definition`. |
 
 The summary uses
-[`getRules()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadDb.ts#L71-L102),
+[`getRules()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/railroadDb.ts#L71-L102),
 which the
-[renderer reads](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L647-L657).
+[renderer reads](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L647-L657).
 Repeated names remain separate rules; the private `ruleMap` replaces its lookup
 entry but does not replace or move a declaration in the array. The summary drops
 that duplicate index. [fixture: railroad/ir-db-duplicates] [fixture:
@@ -19135,7 +19160,7 @@ railroad/peg-db-duplicates]
 
 An expression has `type` and the fields in the following table, recursively.
 Array order stays as published. The
-[expression renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L504-L525)
+[expression renderer](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L504-L525)
 reads every listed field except `max`. That upper bound remains because the ABNF
 syntax independently determines it; it is neither derived from `min` nor parsing
 or validation state. [fixture: railroad/ir-db-all-fields] [fixture:
@@ -19154,19 +19179,19 @@ railroad/peg-db-all-fields]
 
 The four adapters publish these values:
 
-- [IR](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/parser/railroadParser.ts#L28-L80):
+- [IR](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/parser/railroadParser.ts#L28-L80):
   constructors map to the corresponding expression kinds. A single-element
   sequence or choice collapses to its element. `zeroOrMore` and `oneOrMore` give
   minimum 0 and 1, respectively, with maximum Infinity. [fixture:
   railroad/ir-db-singletons] [fixture: railroad/ir-db-all-fields]
-- [EBNF](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/parser/ebnfParser.ts#L30-L156):
+- [EBNF](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/parser/ebnfParser.ts#L30-L156):
   single-element sequences, choices and groups collapse. Brackets and postfix
   `?` give `optional`; braces and `*` give repetition from 0, and `+` from 1,
   with maximum Infinity. Postfixes fold in source order. An exception `A - B`
   becomes a sequence of A, terminal `-`, and B. [fixture:
   railroad/ebnf-db-singletons] [fixture: railroad/ebnf-db-all-fields] [fixture:
   railroad/ebnf-db-postfix-order]
-- [ABNF](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/parser/abnfParser.ts#L26-L120):
+- [ABNF](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/parser/abnfParser.ts#L26-L120):
   single-element concatenations, alternatives and groups collapse. Numeric
   terminals remain strings such as `%x41`. Repeat bounds use decimal `parseInt`;
   a converted lower bound of 0 and upper bound of 1 give `optional`; all other
@@ -19180,7 +19205,7 @@ The four adapters publish these values:
   railroad/abnf-db-repeat-reversed] [fixture: railroad/abnf-db-repeat-precision]
   [fixture: railroad/abnf-db-repeat-overflow] [fixture:
   railroad/abnf-db-repeat-max-overflow]
-- [PEG](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/parser/pegParser.ts#L27-L148):
+- [PEG](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/parser/pegParser.ts#L27-L148):
   single-element sequences, choices and groups collapse. Suffix `?`, `*` and `+`
   give the same optional and repetition forms. Dot becomes special text `.`. A
   predicate becomes special text starting with `&` or `!`, followed by its
@@ -19195,27 +19220,27 @@ The four adapters publish these values:
   railroad/peg-db-predicate-quote-newline]
 
 The string converters for
-[IR](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/railroad/valueConverter.ts#L5-L34),
-[EBNF](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/railroad-ebnf/valueConverter.ts#L5-L34)
+[IR](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/railroad/valueConverter.ts#L5-L34),
+[EBNF](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/railroad-ebnf/valueConverter.ts#L5-L34)
 and
-[PEG](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/railroad-peg/valueConverter.ts#L5-L34)
+[PEG](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/railroad-peg/valueConverter.ts#L5-L34)
 remove the surrounding single or double quotes, decode `\n`, `\r` and `\t` to
 their control characters, and turn every other backslash escape `\x` into `x`.
 [fixture: railroad/ir-lex-string-conversion] [fixture:
 railroad/ebnf-lex-string-conversion] [fixture:
 railroad/peg-lex-string-conversion]
-[ABNF strings](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/railroad-abnf/valueConverter.ts#L26-L33)
+[ABNF strings](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/railroad-abnf/valueConverter.ts#L26-L33)
 use double quotes and drop only the surrounding quotes, keeping backslashes
 without interpreting escapes. [fixture: railroad/abnf-lex-string-conversion]
-[EBNF special text](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/railroad-ebnf/valueConverter.ts#L66-L68)
+[EBNF special text](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/railroad-ebnf/valueConverter.ts#L66-L68)
 drops its surrounding `?` and trims whitespace from both ends. [fixture:
 railroad/ebnf-special-whitespace]
 
 The
-[common publication helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+[common publication helper](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
 sets accessibility values only when the final AST value is truthy. An empty
 final assignment suppresses previous body values. The
-[Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadDb.ts#L107-L135)
+[Db](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/railroadDb.ts#L107-L135)
 further removes leading whitespace from the accessibility title and whitespace
 following LF in the description. [fixture: railroad/ir-common-repeat] [fixture:
 railroad/ir-common-repeat-empty] [fixture: railroad/ebnf-common-repeat-empty]
@@ -19225,29 +19250,29 @@ railroad/peg-common-repeat-empty]
 The summary also drops:
 
 - The diagram title. The adapters publish body titles, but railroad's
-  [`draw()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L637-L667)
+  [`draw()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L637-L667)
   never reads them. The
-  [common rendering path](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628)
+  [common rendering path](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L626-L630)
   reads only accessibility metadata. Written titles remain in the syntax tree;
   frontmatter title remains available in `embedded.title`. Each adapter clears
   the Db at parse entry, after
-  [`Diagram.fromText()` sets the frontmatter title](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L49-L54),
+  [`Diagram.fromText()` sets the frontmatter title](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/Diagram.ts#L49-L54),
   so that title is already absent from the Db before normalization. [fixture:
   railroad/ir-db-all-fields] [fixture: railroad/ir-frontmatter-empty-body-title]
   [fixture: railroad/ebnf-frontmatter-empty-body-title] [fixture:
   railroad/abnf-frontmatter-empty-body-title] [fixture:
   railroad/peg-frontmatter-empty-body-title]
 - Rule `comment` and repetition `separator`: declared in the
-  [types](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadTypes.ts#L33-L69),
+  [types](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/railroadTypes.ts#L33-L69),
   but none of the adapters assigns them and the renderer does not read them.
 - Railroad configuration, consumed by
-  [drawing](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L637-L667)
+  [drawing](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L637-L667)
   and
-  [style construction](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/styles.ts#L1-L44).
+  [style construction](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/styles.ts#L1-L44).
   The Db and adapters read no `railroad.*` options. Settings remain in site or
   embedded configuration. A numeric embedded `railroad.fontFamily` does reject
   during recursive
-  [configuration sanitization](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils/sanitizeDirective.ts#L65-L85),
+  [configuration sanitization](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils/sanitizeDirective.ts#L65-L85),
   before publication; those fixtures carry `embedded-data-opaque`. No railroad
   semantic acceptance key needs removal from otherwise valid configuration.
   [fixture: railroad/ir-config-drawing-site] [fixture:
@@ -19258,7 +19283,7 @@ The summary also drops:
   railroad/ir-config-frontmatter-fontfamily-number] [fixture:
   railroad/ebnf-config-init-fontfamily-number]
 - Measurements, coordinates, SVG paths, dimensions and drawing ids, computed
-  [while rendering](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L535-L624).
+  [while rendering](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L535-L624).
 
 Publication needs no Db patch: it reads no browser globals, time or random
 values, and has no links or data blocks.
@@ -19266,7 +19291,7 @@ values, and has no links or data blocks.
 ## wardley
 
 `normalizeWardley()` summarizes the `wardley` diagram id. It reads the
-[builder's published data](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L187-L207)
+[builder's published data](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L187-L207)
 once, before drawing. Empty collections remain arrays; absent optional fields
 are omitted, and absent evolution settings give `axes: {}`. [fixture:
 wardley/header-only]
@@ -19287,20 +19312,20 @@ wardley/header-only]
 | `size`                           | Optional `width`, `height`.                                                                                     |
 
 The renderer reads the
-[title and size](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L72-L82)
+[title and size](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L72-L82)
 and actually
-[draws the title](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L164-L181).
+[draws the title](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L164-L181).
 Accessibility texts go to the
-[common rendering path](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628).
+[common rendering path](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L626-L630).
 The
-[common publication helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+[common publication helper](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
 sets only truthy final AST values: an empty final assignment suppresses earlier
 body values, while an empty final body title leaves the frontmatter title.
 [fixture: wardley/db-all-fields] [fixture: wardley/common-repeat] [fixture:
 wardley/common-repeat-empty] [fixture: wardley/frontmatter-empty-body-title]
 
 The
-[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L92-L171)
+[adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L92-L171)
 publishes anchors before components, then pipeline children. Within each group,
 source order stays. Nodes use their name as both id and label; pipeline child
 ids are the deterministic `${parent}_${name}` and their labels are the child
@@ -19311,7 +19336,7 @@ first, then the first matching label, otherwise keeping the unresolved name.
 wardley/db-pipeline-forward-parent] [fixture: wardley/db-pipeline-nested-parent]
 
 The builder's
-[Map updates](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L92-L133)
+[Map updates](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L92-L133)
 replace nodes, trends and pipelines without moving their first insertion slot. A
 repeated node keeps earlier label offsets when the new definition omits them;
 other published undefined fields, including strategy, overwrite earlier values.
@@ -19325,20 +19350,20 @@ wardley/db-pipeline-collision] [fixture: wardley/db-pipeline-label-inheritance]
 [fixture: wardley/db-prototype-names] [fixture: wardley/db-zero-first] [fixture:
 wardley/db-zero-last]
 
-[Links](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L173-L187)
+[Links](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L173-L187)
 keep duplicates, self links and unresolved endpoints. Dashed arrows set
 `dashed`; a source port takes priority over a target port, then the arrow's
 flow. A flow-arrow label, even an empty one, takes priority over the semicolon
 label. [fixture: wardley/db-link-forms] [fixture:
 wardley/db-link-unresolved-duplicates]
 
-[Coordinate conversion](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L9-L30)
+[Coordinate conversion](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L9-L30)
 uses evolution as `x` and visibility as `y`. Coordinates are converted to double
 before comparison: values at most 1 are multiplied by 100; larger values stay as
 percentages. The resulting double must be between 0 and 100. This also swaps the
 two written values of annotation coordinates and force positions. Label offsets
 keep their signed integer values. These values precede the renderer's
-[screen projection](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L183-L184).
+[screen projection](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L183-L184).
 [fixture: wardley/db-all-fields] [fixture: wardley/db-coordinate-boundary]
 [fixture: wardley/db-coordinate-rounding] [fixture:
 wardley/db-coordinate-double-one] [fixture:
@@ -19347,7 +19372,7 @@ wardley/gram-replaced-invalid-node] [fixture:
 wardley/number-offset-negative-zero]
 
 The
-[remaining publication](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L189-L226)
+[remaining publication](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L189-L226)
 keeps notes, annotations, accelerators and deaccelerators in their respective
 source order, including duplicates and empty texts. An evolve of a missing id
 publishes nothing, without checking its target range. Size and evolution use
@@ -19357,7 +19382,7 @@ wardley/db-empty-texts] [fixture: wardley/db-empty-pipeline-names] [fixture:
 wardley/db-trend-missing] [fixture: wardley/db-singletons-last] [fixture:
 wardley/db-later-invalid-box]
 
-[Evolution publication](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L76-L90)
+[Evolution publication](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L76-L90)
 trims stage names and joins a truthy second name with a slash surrounded by one
 space on each side. It keeps only written boundaries, in stage order, without
 filling gaps or validating their range or order. The renderer decides whether to
@@ -19376,18 +19401,18 @@ The summary drops:
 
 - Node `inPipeline`, which the renderer never reads, and `isPipelineParent`,
   which is determined by `pipelines[].nodeId`. The builder
-  [sets those flags](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L112-L133).
+  [sets those flags](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L112-L133).
   [fixture: wardley/db-pipeline-duplicates]
 - Trend `targetY`, copied from its node after all nodes are published. The
-  [adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L189-L197)
+  [adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L189-L197)
   never changes nodes afterward. [fixture: wardley/db-all-fields]
 - Axis `xLabel` and `yLabel`, which the adapter never assigns; default stage
   names and equal stage widths are
-  [drawing defaults](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L205-L256).
+  [drawing defaults](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L205-L256).
   [fixture: wardley/header-only]
 - Configuration, colours, drawing ids, screen coordinates and dimensions, and
   the renderer's repositioning of pipeline parents. The renderer reads
-  [`wardley-beta` options and theme](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L32-L63);
+  [`wardley-beta` options and theme](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L32-L63);
   neither the adapter nor the builder reads `wardley.*` or `wardley-beta.*`.
   These settings change no Wardley acceptance condition or published value. A
   numeric embedded `wardley.fontFamily` does reject during common recursive
@@ -19409,7 +19434,7 @@ has no external links or data blocks.
 ## cynefin
 
 `normalizeCynefin()` summarizes the `cynefin` diagram id. It reads the
-[published Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L17-L69)
+[published Db](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L17-L69)
 before drawing. Empty collections remain arrays; absent transition labels are
 omitted. [fixture: cynefin/header-only] [fixture: cynefin/db-empty-texts]
 
@@ -19421,11 +19446,11 @@ omitted. [fixture: cynefin/header-only] [fixture: cynefin/db-empty-texts]
 | `transitions`          | Published transitions, each with `from`, `to`, and optional `label`, in source order. |
 
 The renderer
-[draws the title](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L423-L433)
+[draws the title](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L423-L433)
 and
-[accessibility texts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L102-L109).
+[accessibility texts](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L102-L109).
 The
-[common publication helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+[common publication helper](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
 publishes only truthy final AST assignments. A final empty value suppresses an
 earlier body value; a final empty body title leaves the frontmatter title.
 [fixture: cynefin/db-all-fields] [fixture: cynefin/common-repeat] [fixture:
@@ -19433,10 +19458,10 @@ cynefin/common-repeat-empty] [fixture: cynefin/common-empty-interleaved]
 [fixture: cynefin/frontmatter-empty-body-title]
 
 Domains appear in the renderer's
-[lookup order](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L233-L246):
+[lookup order](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L233-L246):
 `complex`, `complicated`, `chaotic`, `clear`, `confusion`. Only domains with at
 least one item are included: the renderer
-[skips undeclared domains and empty item lists in the same branch](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L235-L238),
+[skips undeclared domains and empty item lists in the same branch](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L235-L238),
 so an empty domain declaration has no effect on drawing. The Map's insertion
 order is not consumed. A repeated domain replaces its entire item list; if its
 final block is empty, the domain is omitted from the summary. Item order,
@@ -19450,21 +19475,21 @@ cynefin/db-domain-empty-last] [fixture: cynefin/db-empty-texts] [fixture:
 cynefin/gram-inline-items]
 
 The
-[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
+[adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
 publishes all domains, then all transitions. Transition duplicates and
 references to undeclared domains remain; self loops are discarded by the
-[Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L48-L69).
+[Db](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L48-L69).
 An empty transition label becomes absent; a whitespace-only label remains.
 [fixture: cynefin/gram-transition-first] [fixture:
 cynefin/db-transition-duplicates] [fixture: cynefin/db-self-loops] [fixture:
 cynefin/db-self-loop-empty-label] [fixture: cynefin/db-empty-texts]
 
 Diagram strings use the injected
-[common converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/module.ts#L30-L37)'s
+[common converter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/cynefin/module.ts#L30-L37)'s
 default STRING conversion, whereas common metadata uses its
-[line and block conversion](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L46-L70).
+[line and block conversion](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/valueConverter.ts#L46-L70).
 Cynefin's
-[reachable value rules](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/cynefin.langium#L19-L31)
+[reachable value rules](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/cynefin/cynefin.langium#L19-L31)
 include no numeric terminal: numeric spellings in strings remain text, and
 unquoted numbers are rejected before conversion. There are no numeric comparison
 or rounding boundaries to normalize. [fixture: cynefin/lex-string-conversion]
@@ -19478,11 +19503,11 @@ cynefin/number-suffix]
 The summary drops:
 
 - Configuration returned by
-  [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L71-L77),
+  [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L71-L77),
   theme colours, SVG ids, measured text sizes and screen coordinates. The
-  [renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L73-L118)
+  [renderer](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L73-L118)
   reads drawing settings and derives the geometry; the
-  [boundary helpers](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinBoundaries.ts#L31-L79)
+  [boundary helpers](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinBoundaries.ts#L31-L79)
   use the drawing id or configured seed only during rendering. Neither the
   adapter nor publication reads `cynefin.*`; valid diagram drawing settings
   change neither acceptance nor published values. [fixture:
@@ -19491,7 +19516,7 @@ The summary drops:
   cynefin/config-frontmatter-cannot-rescue] [fixture:
   cynefin/config-init-cannot-rescue]
 - Fixed domain subtitles, display limits and overflow labels. These are
-  [drawing constants](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L23-L29)
+  [drawing constants](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L23-L29)
   or derived from the retained item list. [fixture: cynefin/db-all-fields]
 - The Map key as a second identity alongside `domains[].name`, and insertion
   positions, because the renderer looks domains up by name. [fixture:
@@ -19516,18 +19541,18 @@ browser globals, time or randomness, and has no links or data blocks.
 ## eventmodeling
 
 The
-[`parser.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/parser.ts#L8-L14)
+[`parser.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/parser.ts#L8-L14)
 adapter stores the complete AST through `setAst`. The Db has no getter for that
 AST; a patch observes `setAst` and `clear` without changing them. The summary
 reads that published object, without calling the DOM-dependent
-[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L143)
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L153)
 builder. [fixture: eventmodeling/header-only] [fixture:
 eventmodeling/db-all-fields]
 
 | Field                       | Content                                                                                |
 | --------------------------- | -------------------------------------------------------------------------------------- |
 | `accTitle`, `accDescr`      | The common Db's accessibility strings.                                                 |
-| `frames`                    | Frames in declaration order, including duplicate names.                                |
+| `frames`                    | Frames in declaration order; a repeated frame name is rejected.                        |
 | `frames[].kind`             | `"time"` or `"reset"`.                                                                 |
 | `frames[].name`             | The authored digit string, including leading zeroes.                                   |
 | `frames[].modelEntityType`  | The authored entity type, including its short or long spelling.                        |
@@ -19535,37 +19560,43 @@ eventmodeling/db-all-fields]
 | `frames[].sourceFrames`     | The distinct reference strings in ascending string order.                              |
 | `frames[].data`             | `null`, or an object with kind (inline / block) and value (the selected raw terminal). |
 
-[`mermaidAPI.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L626-L628)
+[`mermaidAPI.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L628-L630)
 consumes the common getters. EM terminal names do not match the
-[`valueConverter.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L6-L41)'s
+[`valueConverter.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/valueConverter.ts#L6-L41)'s
 `TITLE`, `ACC_TITLE` and `ACC_DESCR` cases: the fallback leaves their entire
 terminal text, including keyword and delimiter prefixes. The
-[`commonDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L16-L24)
+[`commonDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/commonDb.ts#L16-L24)
 setters remove leading whitespace from the accessibility title and whitespace
 after LF from the description. Repeated assignments keep the final terminal,
 including an empty payload whose raw terminal is nonempty.
 
 A reachable terminal has leading ASCII spaces/tabs at its own unit position.
-Judge indentation in the body after common removals: global directives, common
-comment regions and selected semicolons. A common comment region is removed
-together with its padding and terminating LF. Removing a closed global directive
-alone leaves the LF outside it; directive-only lines and blank lines therefore
-leave LF. Removing a selected semicolon also leaves LF. Whether next-line
-indentation is available then depends on whether the preceding unit consumed the
-remaining LF immediately before that indentation. If so, the common form can
-claim that indentation as part of its terminal value; without indentation,
-`EM_ID` wins. If the LF remains, a whitespace token consumes it and the
-indentation, so `EM_ID` wins at the keyword. Block-data, hidden YAML and hidden
-directives consume an immediately following LF, whereas LS and PS remain for the
-whitespace token. If removing a selected semicolon places LF immediately after a
-native directive closer, that directive can consume the LF; horizontal padding
-between the closer and LF prevents that consumption. On the same line, surviving
-ASCII spaces/tabs can enable a common form across an inline global directive or
-selected semicolon. An unselected semicolon is not whitespace and rejects in
-that gap. An empty description block remains a statement and leaves its
-following LF unconsumed; a common form can claim padding immediately after its
-closing brace on the same line. These terminal rules are in
-[`event-modeling.langium`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L1-L70).
+Judge indentation in the body after common removals: global directives and
+selected semicolons. A `%%` comment is not removed, because the Db sets
+`preserveCommentsWhenParsing`:
+[`Diagram.fromText()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/Diagram.ts#L55-L76)
+gives the parser the text with its comments in place, or the comment-stripped
+text when the text with comments is longer than `maxTextSize`. The hidden
+terminal `EM_SINGLE_LINE_COMMENT` takes the comment's own padding and its text
+up to the line terminator, so the LF after a comment remains. Removing a closed
+global directive alone leaves the LF outside it; directive-only lines,
+comment-only lines and blank lines therefore leave LF. Removing a selected
+semicolon also leaves LF. Whether next-line indentation is available then
+depends on whether the preceding unit consumed the remaining LF immediately
+before that indentation. If so, the common form can claim that indentation as
+part of its terminal value; without indentation, `EM_ID` wins. If the LF
+remains, a whitespace token consumes it and the indentation, so `EM_ID` wins at
+the keyword. Block-data, hidden YAML and hidden directives consume an
+immediately following LF, whereas LS and PS remain for the whitespace token. If
+removing a selected semicolon places LF immediately after a native directive
+closer, that directive can consume the LF; horizontal padding between the closer
+and LF prevents that consumption. On the same line, surviving ASCII spaces/tabs
+can enable a common form across an inline global directive or selected
+semicolon. An unselected semicolon is not whitespace and rejects in that gap. An
+empty description block remains a statement and leaves its following LF
+unconsumed; a common form can claim padding immediately after its closing brace
+on the same line. These terminal rules are in
+[`event-modeling.langium`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L1-L70).
 [fixture: eventmodeling/common-inline] [fixture:
 eventmodeling/common-whitespace] [fixture: eventmodeling/common-repeat]
 [fixture: eventmodeling/common-repeat-empty] [fixture:
@@ -19600,14 +19631,14 @@ The public `EM_*` values include leading horizontal padding, keywords and
 delimiters. Count the immediately preceding ASCII space/tab run after all the
 common removals above. Spaces and tabs on both sides of a removed global
 directive or selected semicolon join into one run: ` \t; accDescr: D` becomes
-` \t accDescr: D` when that semicolon is selected. A common comment region's own
-padding and terminating LF are removed, retaining only the surviving prefix. The
-LF outside a removed closed directive, on a blank line or after a selected
-semicolon remains; LF, LS and PS are not part of the horizontal run, and the
-terminal must still satisfy the indentation conditions above. An unselected
-semicolon rejects in that gap, and an empty description block remains a
-statement boundary. Do not join padding across either as if it were removed.
-[fixture: eventmodeling/gram-common-leading-directive-both-sides] [fixture:
+` \t accDescr: D` when that semicolon is selected. A comment's own padding
+belongs to the comment, and the LF after it remains. The LF outside a removed
+closed directive, on a blank line, after a comment or after a selected semicolon
+remains; LF, LS and PS are not part of the horizontal run, and the terminal must
+still satisfy the indentation conditions above. An unselected semicolon rejects
+in that gap, and an empty description block remains a statement boundary. Do not
+join padding across either as if it were removed. [fixture:
+eventmodeling/gram-common-leading-directive-both-sides] [fixture:
 eventmodeling/gram-common-leading-directive-before-padding] [fixture:
 eventmodeling/gram-common-leading-directive-after-padding] [fixture:
 eventmodeling/gram-common-leading-directive-after-header] [fixture:
@@ -19624,14 +19655,18 @@ eventmodeling/lex-common-after-block-ps-indented] [fixture:
 eventmodeling/gram-common-leading-empty-description-boundary]
 
 The
-[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L143)
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L153)
 builder iterates frames in declaration order. Lane and colour helpers in
-[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L179-L318)
-read the entity type and qualified name; reset frames suppress incoming
-relations in the
-[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L531-L601)
-builder. Names are strings rather than numbers, so `1`, `01` and `001` are
-distinct. A repeated name does not replace a frame. [fixture:
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L189-L328)
+read the entity type and qualified name; a reset frame that names no source
+frame gets no incoming relation in the
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L541-L614)
+builder, while a reset frame that names a source frame gets the relation from
+it, like any other frame. Names are strings rather than numbers, so `1`, `01`
+and `001` are distinct. A repeated name is rejected:
+[`setAst()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L139-L150)
+throws `Duplicate event modeling frame ID "01" on line 3` before the Db keeps
+the AST, so the parse fails with an `Error`. [fixture:
 eventmodeling/db-all-aliases] [fixture: eventmodeling/db-qualified-names]
 [fixture: eventmodeling/db-frame-order] [fixture:
 eventmodeling/db-frame-duplicates] [fixture:
@@ -19647,7 +19682,7 @@ eventmodeling/db-source-order-control] [fixture:
 eventmodeling/db-source-missing] [fixture: eventmodeling/db-source-forward]
 [fixture: eventmodeling/db-source-self]
 
-[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L320-L368)
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L330-L378)
 uses the first data declaration whose name equals the frame's reference string.
 A match overrides inline data; an unresolved reference leaves inline data, or no
 data. The summary stores the selected terminal once per frame, preserving its
@@ -19660,13 +19695,14 @@ eventmodeling/db-data-unresolved-inline] [fixture:
 eventmodeling/db-data-unresolved] [fixture: eventmodeling/db-data-unused]
 
 The
-[`parse.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L134-L150)
+[`parse.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/parse.ts#L134-L150)
 gate rejects lexer and parser errors. It does not run the registered
-[`event-modeling-validator.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling-validator.ts#L12-L25)
+[`event-modeling-validator.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling-validator.ts#L12-L25)
 or link references. Invalid source-type pairs, missing references, forward
-references and duplicate definitions therefore do not reject public parse.
-Entity declarations, notes and GWT statements are stored in the AST but the
-[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L143)
+references and duplicate data definitions therefore do not reject public parse;
+a repeated frame name does, as above. Entity declarations, notes and GWT
+statements are stored in the AST but the
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L153)
 builder never reads them. [fixture: eventmodeling/error-start] [fixture:
 eventmodeling/error-recovered] [fixture: eventmodeling/error-after-prefix]
 [fixture: eventmodeling/frame-missing-name] [fixture:
@@ -19682,11 +19718,11 @@ eventmodeling/link-note-forward] [fixture: eventmodeling/link-gwt-forward]
 Dropped:
 
 - The diagram title: publication stores it, but
-  [`renderer.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/renderer.ts#L128-L171)
+  [`renderer.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/renderer.ts#L128-L171)
   never draws it. Accessibility strings remain separately. [fixture:
   eventmodeling/common-title-only] [fixture: eventmodeling/frontmatter-title]
 - Data-type tags:
-  [`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L320-L368)
+  [`db.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L330-L378)
   selection and drawing do not inspect them or parse their contents as JSON,
   Markdown, HTML or another declared type. These are native text terminals, not
   opaque `@{ ... }` data blocks, and have no `dataBlockEffects`. [fixture:
@@ -19696,9 +19732,9 @@ Dropped:
   GWT and unused data: none supplies another drawing input. [fixture:
   eventmodeling/db-all-fields] [fixture: eventmodeling/db-entities-notes-gwt]
 - Coordinates, dimensions, HTML, colours, swimlanes and inferred relations:
-  [`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L143)
+  [`db.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L153)
   and
-  [`renderer.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/renderer.ts#L128-L171)
+  [`renderer.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/renderer.ts#L128-L171)
   derive them from the retained fields, measurements, constants and
   configuration. The summary does not invoke those computations. [fixture:
   eventmodeling/config-drawing-site] [fixture:
@@ -19726,11 +19762,11 @@ eventmodeling/div-invalid-keeps-config] [fixture:
 eventmodeling/config-security-level-other]
 
 Terminal values are those published after common preprocessing and
-[`utils.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L924),
+[`utils.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L895-L924),
 including internal markers for numeric character references. [fixture:
 eventmodeling/entity-texts] [fixture: eventmodeling/entity-common]
 
-[`Diagram.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L77-L83)
+[`Diagram.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/Diagram.ts#L77-L83)
 appends LF before parsing. A data block closed at EOF can include that appended
 LF in its published terminal; the summary keeps it. Closing whitespace can
 instead provide the lookahead boundary without consuming LF. [fixture:
@@ -19740,7 +19776,7 @@ eventmodeling/data-block-close-space]
 ## treeview
 
 `normalizeTreeview()` summarizes Mermaid's `treeView` detector id, whose
-[case-sensitive header](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/detector.ts#L4-L8)
+[case-sensitive header](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treeView/detector.ts#L4-L8)
 is `treeView-beta`. [fixture: treeview/header-only] [fixture:
 treeview/header-lower]
 
@@ -19753,9 +19789,9 @@ treeview/header-lower]
 | `children`                        | Child nodes in published order, including an empty array for leaves. |
 
 The summary takes the children of
-[`getRoot()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/db.ts#L40-L75),
+[`getRoot()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treeView/db.ts#L40-L75),
 which the renderer
-[visits recursively](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/renderer.ts#L140-L182).
+[visits recursively](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treeView/renderer.ts#L140-L182).
 It preserves hierarchy, order, duplicate names and empty names. Files can have
 children too. The Db pops ancestors whose indentation is at least the new node's
 indentation, then appends to the last remaining node. [fixture:
@@ -19764,7 +19800,7 @@ treeview/db-file-parent] [fixture: treeview/db-duplicate-names] [fixture:
 treeview/db-empty-names]
 
 The
-[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/parser.ts#L11-L39)
+[adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treeView/parser.ts#L11-L39)
 removes one final `/` from the converted name and publishes `"directory"`;
 otherwise it publishes `"file"`. An empty `icon()` publishes `"none"`, while an
 absent icon stays absent. An empty converted description is unpublished.
@@ -19774,18 +19810,18 @@ treeview/db-description-empty] [fixture: treeview/db-repeat-class] [fixture:
 treeview/db-repeat-icon] [fixture: treeview/db-repeat-icon-empty-first]
 
 The diagram's
-[grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treeView/treeView.langium#L1-L64)
+[grammar](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/treeView/treeView.langium#L1-L64)
 does not import `common.langium`. Its own common terminals still pass through
 the common converter because they are named `TITLE`, `ACC_TITLE` and
 `ACC_DESCR`. Prefixes are removed and whitespace is normalized. The common
-[publication helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+[publication helper](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
 sets only truthy final values. Accessibility strings feed the
-[common SVG rendering path](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628).
+[common SVG rendering path](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L626-L630).
 [fixture: treeview/common-whitespace] [fixture: treeview/common-repeat]
 [fixture: treeview/common-repeat-empty]
 
 The custom
-[converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treeView/valueConverter.ts#L10-L38)
+[converter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/treeView/valueConverter.ts#L10-L38)
 counts each space or tab as one indentation unit, removes quote delimiters
 without interpreting escapes, and trims only trailing ASCII spaces and tabs from
 bare names. Trailing indentation after a quoted node can become the next node's
@@ -19795,13 +19831,13 @@ treeview/db-bare-internal-space] [fixture: treeview/db-quoted-tail-space]
 [fixture: treeview/db-quoted-tail-tab]
 
 Before parsing,
-[`preprocessBoxDrawing()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/boxDrawingPreprocessor.ts#L67-L208)
+[`preprocessBoxDrawing()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treeView/boxDrawingPreprocessor.ts#L67-L208)
 processes LF-delimited physical lines after the common
-[directive and comment removal](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L33-L65)
+[directive and comment removal](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L33-L65)
 and
-[selected-semicolon removal and character-reference encoding](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L919),
+[selected-semicolon removal and character-reference encoding](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L895-L919),
 before
-[Diagram.fromText](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L77-L83)
+[Diagram.fromText](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/Diagram.ts#L77-L83)
 calls the adapter. A box character removed with an inline directive or a
 directive-only line cannot select box mode. A numeric reference such as `#9500;`
 does not become a branch character; literal dashes beside it can still select
@@ -19871,14 +19907,14 @@ The summary drops:
   original indentation widths. The hierarchy already holds each authored node
   once. [fixture: treeview/header-only] [fixture: treeview/db-all-fields]
 - The diagram title: the adapter stores it, but the
-  [renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/renderer.ts#L218-L240)
+  [renderer](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treeView/renderer.ts#L218-L240)
   does not draw it. Frontmatter title remains in embedded values. [fixture:
   treeview/db-all-fields] [fixture: treeview/frontmatter-title]
 - Configuration returned by `getConfig()`, resolved icon references and SVG,
   `BBox`, coordinates, dimensions and colours. These are drawing inputs or
   drawing-derived values. Explicit authored icons remain in the summary;
   defaults and filename/extension mappings are resolved by
-  [`getNodeIcon()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/icons.ts#L77-L100)
+  [`getNodeIcon()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treeView/icons.ts#L77-L100)
   during drawing. No `treeView.*` key affects parsing or publication, so none is
   an opaque-data acceptance key. [fixture: treeview/config-drawing-site]
   [fixture: treeview/config-frontmatter-drawing] [fixture:

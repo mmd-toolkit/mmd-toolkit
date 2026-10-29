@@ -4,9 +4,9 @@
 
 mermaid.js での正本:
 
-- [`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison)
-- [`ganttDb.js`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js)
-- [`gantt/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt)
+- [`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison)
+- [`ganttDb.js`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js)
+- [`gantt/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt)
   のテスト（`*.spec.js`）
 
 この文書は、図種 `gantt`、ガントチャートを扱います。
@@ -17,7 +17,7 @@ mermaid.js での正本:
 [detection.ja.md](../detection.ja.md) の項目 11 がこの文法を選びます。
 テキストが、空白の後、
 ちょうどこの大文字小文字の `gantt` で始まるときです（mermaid.js の
-[`ganttDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDetector.ts#L9-L11)）。
+[`ganttDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDetector.ts#L9-L11)）。
 `GANTT` はガントチャートではなく、どの検出器にも合いません。
 [fixture: gantt/header-only] [fixture: gantt/header-leading-whitespace]
 [fixture: gantt/header-upper-case]
@@ -1029,7 +1029,7 @@ gantt/lex-percent-brace-in-task-data] [fixture:
 gantt/lex-percent-brace-glued-in-title-text]
 
 mermaid.js の文書は
-[Comments](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gantt.md#L319-L322)
+[Comments](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/gantt.md#L319-L322)
 で、
 コメントは「need to be on their own line and must be prefaced with
 `%%`」と書いています。
@@ -1042,7 +1042,7 @@ mermaid.js の文書は
 二重引用符の中のテキストは、`"title"` や `":"` のように、
 そのテキストを名前とする単位を表します。
 文法は
-[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L107-L173)
+[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L107-L173)
 の文法の言い換えで、 mermaid.js がトークンを読まない、
 空の形（[空の説明ブロック](#空の説明ブロック) と、
 [空の href と空の call](#空の-href-と空の-call) を参照）を除いて、
@@ -1150,11 +1150,11 @@ gantt/gram-task-empty-items] [fixture: gantt/gram-task-empty-items-no-spaces]
 gantt/gram-task-empty-middle-item] [fixture: gantt/gram-task-empty-item-first]
 
 mermaid.js は項目を
-[`parseData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L497-L551)
+[`parseData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L536-L590)
 のとおりに読み、木は項目を書かれたとおりに示します。
 mermaid.js がそれをどう読むかは、tests パッケージの要約にあります。
 **タグ**は前から取ります（mermaid.js の
-[`getTaskTags()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L846-L860)）。
+[`getTaskTags()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L885-L899)）。
 残りの最初の項目が、ちょうどこの大文字小文字の語 `active`、`done`、`crit`、
 `milestone`、`vert` のどれかであるかぎり、それはタグで、繰り返しても、
 そのフラグを立てます。
@@ -1289,7 +1289,7 @@ gantt/config-security-level-loose-click-call] [fixture:
 gantt/config-security-level-strict-click-href]
 
 mermaid.js の文書は 2 つの部分を
-[Interaction](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gantt.md#L450-L458)
+[Interaction](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/gantt.md#L450-L458)
 で説明しています。
 
 ### 設定
@@ -1511,14 +1511,14 @@ mermaid.js の文法が受理し、その Db が拒否する入力が 2 つあ�
 
 - `top-axis-statement`。
   文法は
-  [`yy.TopAxis()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L141-L141)
+  [`yy.TopAxis()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L141-L141)
   を呼びますが、 Db にはそれがないので、`topAxis` の文を持つテキストは、
   ほかに何を持っていても、 `TypeError` で拒否されます。
   [fixture: gantt/db-top-axis-statement] [fixture:
   gantt/lex-topaxis-upper-case] [fixture: gantt/lex-topaxis-then-title]
 - データがタグだけのタスク。
   タグを取った後、
-  [`getTaskTags()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L846-L860)
+  [`getTaskTags()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L885-L899)
   が空のリストの最初の項目を読み、テキストは `TypeError` で拒否されます。
   [fixture: gantt/gram-task-tags-only] [fixture:
   gantt/gram-task-tags-only-two]

@@ -4,10 +4,10 @@ Japanese version: [block.ja.md](./block.ja.md)
 
 Source of truth in mermaid.js:
 
-- [`block.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/parser/block.jison)
-- [`blockDB.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDB.ts)
+- [`block.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/parser/block.jison)
+- [`blockDB.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/blockDB.ts)
 - the tests (`*.spec.ts`) in
-  [`block/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block)
+  [`block/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block)
 
 This document covers the diagram type `block`. The nodes of the tree are defined
 in [ast/block.md](../ast/block.md). How mermaid.js reads an accepted text into
@@ -18,7 +18,7 @@ in the summary of the tests package.
 
 Entry 26 of [detection.md](../detection.md) selects this grammar: the text
 starts with `block`, after whitespace, in exactly this case
-([`blockDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDetector.ts#L6-L6)).
+([`blockDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/blockDetector.ts#L6-L6)).
 The lexer then reads the header, `block-beta` or `block`, in this case and not
 followed by a word character (see
 [The statement context](#the-statement-context)): `Block-beta` and `BLOCK` match
@@ -1122,7 +1122,7 @@ The grammar uses the notation of [common.md](../common.md#notation), over units
 instead of characters. A unit name, such as `id`, stands for one unit with that
 name, and text in double quotes stands for the unit named by that text. The
 grammar is a restatement of the grammar in
-[`block.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/parser/block.jison#L168-L291)
+[`block.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/parser/block.jison#L168-L291)
 and accepts the same sequences of units, but for the known divergences.
 
 Each rule below makes a node of the tree, defined in

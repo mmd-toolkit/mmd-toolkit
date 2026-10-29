@@ -103,7 +103,7 @@ const normalizers: ReadonlyMap<string, Normalizer> = new Map<
  * - make a sanitizer the Db calls (`@braintree/sanitize-url` through
  *   `utils.formatUrl()`) have no effect, since summaries record values with
  *   the sanitizers disabled. Needed for every Db that calls `formatUrl()`:
- *   flowchart, class and agentflow in mermaid@12.0.0;
+ *   flowchart, class and agentflow in mermaid@12.2.0;
  * - record a value that a site setting changes as the other settings give it
  *   (the link target of class under `securityLevel: sandbox`), since summaries
  *   are the same under every `securityLevel`;

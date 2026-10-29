@@ -35,7 +35,11 @@ export const eventmodelingNoUnclosedDescriptionBlock: MermaidRuleDefinition<{
         })
         if (keyword === null || brace === null || closing === null) return
         const body = sourceCode.getTokensBetween(brace, closing)
-        if (closedByBraceOfOtherStatement(sourceCode, brace, body, closing)) {
+        if (
+          closedByBraceOfOtherStatement(sourceCode, brace, body, closing, {
+            commentLinesAreText: true,
+          })
+        ) {
           context.report({
             loc: { start: keyword.loc.start, end: brace.loc.end },
             messageId: "closedByOtherBrace",

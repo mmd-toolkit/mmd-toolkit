@@ -5,10 +5,9 @@ import {
   commentsBeforeHeader,
   finishDiagram,
   openDiagramText,
+  readsCommentLines,
 } from "../../diagram-parsing.ts"
-import { findDirectives } from "../../directives.ts"
 import { SourceLexer } from "../../source-lexer.ts"
-import { lineTerminatorEnd, nextOffset } from "../../text-cursor.ts"
 import { AgentflowText } from "./agentflow-text.ts"
 import { AgentflowGrammar } from "./grammar.ts"
 import type { AgentflowLexing } from "./units.ts"
@@ -20,31 +19,10 @@ export interface AgentflowUnits extends AgentflowLexing {
   readonly lexer: SourceLexer
 }
 
-/** common.md, default maxTextSize: count normalized UTF-16 after frontmatter, excluding directives. */
-function preservesComments(input: DiagramInput): boolean {
-  const { text, start } = input.lexer
-  const directives = findDirectives(text, start)
-  let index = 0
-  let size = 0
-  for (let offset = start; offset < text.length;) {
-    const directive = directives[index]
-    if (directive?.range[0] === offset) {
-      offset = directive.range[1]
-      index += 1
-    } else {
-      const end = lineTerminatorEnd(text, offset) ?? nextOffset(text, offset)
-      size += lineTerminatorEnd(text, offset) === null ? end - offset : 1
-      if (size > 50000) return false
-      offset = end
-    }
-  }
-  return true
-}
-
 /** diagrams/agentflow.md: read its own units; not public API. */
 export function lexAgentflow(input: DiagramInput): AgentflowUnits {
   const before = commentsBeforeHeader(input)
-  const preserve = preservesComments(input)
+  const preserve = readsCommentLines(input)
   const lexer = preserve
     ? new SourceLexer(input.lexer.text, input.lexer.start, true)
     : input.lexer

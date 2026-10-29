@@ -203,10 +203,10 @@ AST）は、埋め込まれたデータを書かれたとおりに持ちます�
   mermaid.js は、改行を持つ中身を YAML の文書として、
   改行を持たない中身を波括弧の間のマッピングとして読み（
 
-[`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L143-L151)）、
+[`addVertex()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L143-L151)）、
 その後で値の形を読むので、値がないと `TypeError` で失敗します（
 
-[`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L235-L236)）。
+[`addVertex()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L235-L236)）。
 `A@{`、改行、`}` はそこで拒否されますが、
 1 行の `A@{ }` と `A@{ # c }` は両方が受理し、
 mermaid.js が形を読まない辺の id の同じブロックも同じです。
@@ -346,11 +346,11 @@ mermaid 独自の JSON reader は、裸のキー、不正 escape、末尾コン�
 [fixture: usecase/div-frontmatter-malformed]
 
 mermaid は
-[`JSON.parse()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseJson.ts#L345-L378)
+[`JSON.parse()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/parser/usecaseJson.ts#L345-L378)
 で JSON の妥当性を検証し、復号した値を得ます。
 検証を通った object root では、
 続いて
-[`PropertyOrderCollector.collect()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseJson.ts#L373-L377)
+[`PropertyOrderCollector.collect()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/parser/usecaseJson.ts#L373-L377)
 でソースのプロパティ順序を集めます。
 collector は JSON エラーの位置の特定にも使いますが、
 JSON の検証の代わりにはしません。
@@ -650,9 +650,9 @@ retained な native YAML は代わりに CynefinIgnoredText である。
 [fixture: cynefin/div-invalid-keeps-config]
 [fixture: cynefin/detect-retained-yaml-properties]
 
-[pin の文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)
+[pin の文法](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)
 と、
-[公開の adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
+[公開の adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
 は、共通の前処理と検出の結果を読みます。
 [Cynefin の構文](../diagrams/cynefin.ja.md)に直接の規則を定め、
 [木](../ast/cynefin.ja.md)に書かれた形を保ちます。
@@ -681,7 +681,7 @@ opaque な設定 block ではありません。
 [fixture: eventmodeling/prefix-yaml-opaque]
 [fixture: eventmodeling/data-all-types]
 
-[event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
+[event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
 が単位を、 [図の構文](../diagrams/eventmodeling.ja.md)が直接の境目を定義します。
 
 ### Treeview
@@ -693,7 +693,7 @@ frontmatter と directive の本文は書かれた opaque data とし、
 primitive な init と wrap の組合せは、
 Mermaid が拒否して opaque な読みが受理する場合があります。
 その参照を作るときも隣の有効な title・設定を保ちます。
-[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/parser.ts#L11-L57)
+[adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treeView/parser.ts#L11-L57)
 と、 [図の構文](../diagrams/treeview.ja.md) には、
 隠れた意味の gate はありません。 [fixture: treeview/div-frontmatter-invalid]
 [fixture: treeview/config-frontmatter-fontfamily-number]
@@ -709,7 +709,7 @@ Mermaid が拒否して opaque な読みが受理する場合があります。
 
 - 固定した版の
 
-[C4 の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L159-L171)
+[C4 の文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/c4.md#L159-L171)
 は `c4.wrap` を設定する正しい YAML のフロントマターを示し、
 不正な埋め込み YAML の扱いは述べていません。
 `mermaid-js/mermaid` の issue と pull request を、
@@ -724,7 +724,7 @@ issue や pull request は見つかりませんでした。
 
 - ピン留めした
 
-[venn の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
+[venn の文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/venn.md)
 は正しい YAML frontmatter を示しますが、不正な YAML の受理条件は述べていません。
 2026-10-21 に `mermaid-js/mermaid` の issue と PR を `venn YAML in:title,body`、
 `venn "invalid YAML" in:title,body`、
@@ -733,7 +733,7 @@ venn の frontmatter 内の不正な YAML の受理に関する報告は見つ�
 
 - ピン留めした
 
-[Ishikawa の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/ishikawa.md#L11-L38)
+[Ishikawa の文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/ishikawa.md#L11-L38)
 は節点のテキストと字下げを説明しますが、
 不正な埋め込み YAML の受理条件は述べていません。
 2026-10-21 に `mermaid-js/mermaid` の issue と PR を `ishikawa`、
@@ -744,7 +744,7 @@ Ishikawa の frontmatter 内の不正な YAML の受理に関する報告は、
 
 - 固定版の
 
-[Agentflow の metadata の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/agentflow.md#L233-L268)
+[Agentflow の metadata の文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/agentflow.md#L233-L268)
 はノード、辺、コンテナーの YAML ブロックと、
 未知のキーの保持や prototype の形のキーの除去を説明します。
 不正な YAML の受理方針は述べていません。
@@ -757,7 +757,7 @@ ELK の配置設定を提案する
 どちらも Agentflow の不正な YAML の受理を報告するものではありません。
 
 - pin の
-  [usecase 文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
+  [usecase 文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
   は JSON の表を説明します。
   2026-10-22 に mermaid-js/mermaid の issue と PR を `usecase JSON` で検索し、
   この受理挙動を保守者が欠陥と判断したと示す報告は、
@@ -773,14 +773,14 @@ ELK の配置設定を提案する
   [PR #4751](https://github.com/mermaid-js/mermaid/pull/4751) が、
   共通の先頭フロントマターの抽出とは別の、隠れた YAML の規則を導入しました。
   pin した
-  [構文文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/pie.md)
+  [構文文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/pie.md)
   は、この隠れた本文の検証を定めません。
   2026-10-23 に `pie`、`pie YAML`、`pie frontmatter` で検索しましたが、
   その本文の検証を必要とする保守者の判断は見つかりませんでした。
   この仕様は、共通の不透明なデータの方針を先頭のフロントマターに適用します。
 
 gitgraph の
-[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md)
+[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/gitgraph.md)
 は、見出しと各コマンドを説明します。
 2026-10-23 に issue・PR を `gitGraph`、`gitGraph directive`、 `gitGraph YAML`、
 `gitGraph semicolon`、`gitGraph keyword`、 `gitGraph duplicate`、
@@ -794,7 +794,7 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
 
 - info には専用の構文ページがなく、
   pin した
-  [構文の参照](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
+  [構文の参照](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/intro/syntax-reference.md)
   は図種の宣言と percent コメントを説明します。
   2026-10-23 に `info showInfo`、`info directive`、`info semicolon`、
   `info accTitle` で issue と PR を検索しました。
@@ -804,7 +804,7 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
   この節は既存の直接の規則に従います。
 
 - pin の
-  [packet の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
+  [packet の文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
   は単一位置・範囲・相対 count を示します。
   この前処理の境界については定めていません。
   2026-10-25 に `packet bitsPerRow`、`packet fractional`、
@@ -812,7 +812,7 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
   ここでの差異に関する maintainer の判断を示す結果は見つかりませんでした。
 
 - pinned の
-  [architecture.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L21-L175)
+  [architecture.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/architecture.md#L21-L175)
   は見出し・宣言・辺を説明するが、この共通の前処理の境界を定義しない。
   2026-10-25 に公式の issue/PR を architecture group undefined、
   architecture quotes title、architecture reverse、architecture unclosed、
@@ -822,7 +822,7 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
   今回の共通境界に対する maintainer の判断とはしない。
 
 - Radar:
-  [radar.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/radar.md#L66-L166)
+  [radar.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/radar.md#L66-L166)
   は軸・曲線・option を説明します。
   2026-10-25 に公式の issue/PR を radar directive、radar semicolon、
   radar entries で調べましたが、
@@ -834,7 +834,7 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
   末尾 comma の文法上の対応を追加したものではありません。
 
 - Treemap: pin した
-  [treemap の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
+  [treemap の文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
   は引用した row・字下げ・class 定義を説明し、
   この共通の前処理の境界は定めていません。
   2026-10-25 に公式 repository の issue・PR を `treemap frontmatter`
@@ -844,7 +844,7 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
   2025-06-27 に merge された PR で、この境界を判断したものではありません。
 
 - Railroad:
-  [pin した構文の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
+  [pin した構文の文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
   は 4 記法、 EBNF の例外、ABNF のセミコロンの comment、
   PEG の predicate を説明します。
   native の残る YAML と frontmatter を跨ぐ HTML の引用符の文脈は定義しません。
@@ -860,7 +860,7 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
   調べた結果だけで、ほかに関連する issue がないとは断定しません。
 
 - Wardley: pin した
-  [構文の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)
+  [構文の文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)
   は座標・装飾・flow を示しますが、この共通の境界を定義しません。
   2026-10-26 に公式 repository の issue/PR を wardley directive、
   wardley semicolon、wardley flow で検索しました。
@@ -873,9 +873,9 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
   既存の直接の規則を適用します。
   検索の網羅性は主張しません。
 - Cynefin の
-  [pin の構文文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)
+  [pin の構文文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)
   は固定の領域、引用符つきの項目、ラベルつきの遷移を説明し、
-  [注記](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)
+  [注記](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)
   は自己遷移を無視すると述べます。
   [PR #7535](https://github.com/mermaid-js/mermaid/pull/7535) は図を加えて merge
   されました。
@@ -889,7 +889,7 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
 ### eventmodeling
 
 pin した
-[eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L37-L322)
+[eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/eventmodeling.md#L37-L336)
 は frame、 data、tag を説明しますが、共有の前処理の境目を定義しません。
 2026-10-26 に公式 issue と PR を eventmodeling title、eventmodeling parser、
 event modeling data、eventmodeling accTitle、
@@ -903,7 +903,7 @@ eventmodeling validator で検索しました。
 ### Treeview
 
 固定版の
-[treeView.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277)
+[treeView.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277)
 は字下げ・引用名・注釈・罫線を説明します。
 この共通の境目を定義してはいません。
 2026-10-26 に公式 issue/PR を `treeView quoted`、`treeView indentation`、

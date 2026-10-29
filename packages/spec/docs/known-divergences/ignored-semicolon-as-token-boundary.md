@@ -250,7 +250,7 @@ matches the `style` rule with its `;`, or write no `;` inside a word.
 
 Before it reads the diagram, mermaid.js removes the `;` from the text of the
 line
-([`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L917)).
+([`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L895-L917)).
 The lexer of each diagram type then reads the text that is left, and never sees
 where the `;` was. That a name or an arrow can be split by such a `;` comes from
 the order of these steps.
@@ -525,9 +525,9 @@ cynefin/selected-string-interior] [fixture: cynefin/selected-title-components]
 [fixture: cynefin/selected-native-directive-closer]
 
 The
-[pinned grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)
+[pinned grammar](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)
 and
-[public adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
+[public adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
 read the result of the common preprocessing/detection pipeline. The
 [Cynefin syntax](../diagrams/cynefin.md) states the direct rule and
 [tree](../ast/cynefin.md) retains its authored forms. [fixture:
@@ -558,7 +558,7 @@ eventmodeling/lex-semicolon-after-tag] [fixture:
 eventmodeling/tail-frame-semicolon] [fixture:
 eventmodeling/style-two-semicolons]
 
-[event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
+[event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
 defines the units; [the diagram syntax](../diagrams/eventmodeling.md) defines
 their direct boundaries.
 
@@ -586,7 +586,7 @@ treeview/semicolon-header-inside]
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
-  [flowcharts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L1237-L1237)
+  [flowcharts](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/flowchart.md#L1237-L1237)
   shows a `;` only at the end of a `style`, `classDef`, or `linkStyle` line, and
   says nothing of a `;` inside a name or an arrow.
 - [Issue #1666](https://github.com/mermaid-js/mermaid/issues/1666), "Flowchart:
@@ -605,7 +605,7 @@ treeview/semicolon-header-inside]
   `classDef semicolon`, and `semicolon entity`, on 2026-10-03.
 
 - The pinned
-  [C4 documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L43-L49)
+  [C4 documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/c4.md#L43-L49)
   shows `UpdateElementStyle` and `UpdateRelStyle` calls without semicolons, and
   does not describe a semicolon removed from inside a call keyword. Searches of
   issues and pull requests in `mermaid-js/mermaid` on 2026-10-21 with
@@ -616,20 +616,20 @@ treeview/semicolon-header-inside]
   semicolon inside a C4 keyword was found.
 
 - The pinned
-  [venn documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
+  [venn documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/venn.md)
   uses comma-separated properties and shows no semicolon inside a keyword, name,
   or number. Searches of issues and pull requests in `mermaid-js/mermaid` on
   2026-10-21 with `venn semicolon in:title,body` returned no results.
 
 - The pinned
-  [Agentflow documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/agentflow.md#L108-L118)
+  [Agentflow documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/agentflow.md#L108-L118)
   describes node declarations as flowchart syntax and shows bracket labels. It
   does not describe a selected semicolon removed from inside a keyword, id, or
   arrow. Searches of issues and pull requests in `mermaid-js/mermaid` on
   2026-10-22 with `agentflow semicolon in:title,body` returned no results.
 
 - The pinned
-  [usecase documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
+  [usecase documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
   describes statement syntax. Searches of issues and pull requests in
   `mermaid-js/mermaid` on 2026-10-22 with `usecase semicolon` found no inspected
   report establishing a maintainer defect judgment for this acceptance behavior.
@@ -639,14 +639,14 @@ treeview/semicolon-header-inside]
   not a claim that a bug label approves a grammar change.
 
 - For pie, the pinned
-  [syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/pie.md)
+  [syntax documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/pie.md)
   has no `style` or `classDef` statement. Searches on 2026-10-23 for `pie`,
   `pie semicolon` and `pie classDef` found no maintainer decision about a
   selected semicolon joining parts of a pie atom. This follows the shared
   boundary rule, not an asserted defect classification.
 
 For gitgraph,
-[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md)
+[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/gitgraph.md)
 documents the header and commands. Issue/PR searches on 2026-10-23 used
 `gitGraph`, `gitGraph directive`, `gitGraph YAML`, `gitGraph semicolon`,
 `gitGraph keyword`, `gitGraph duplicate` and `gitGraph cherry-pick`. No
@@ -657,7 +657,7 @@ Status: Approved; merged
 warning. These facts do not justify any additional divergence.
 
 - Info has no dedicated syntax page. The pinned
-  [syntax reference](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
+  [syntax reference](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/intro/syntax-reference.md)
   describes diagram declarations and percent comments. Searches of issues and
   pull requests on 2026-10-23 used `info showInfo`, `info directive`,
   `info semicolon` and `info accTitle`.
@@ -667,7 +667,7 @@ warning. These facts do not justify any additional divergence.
   to reject this syntax; this section follows the existing direct rule.
 
 - The pinned
-  [packet documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
+  [packet documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
   shows single positions, ranges and relative counts; it does not define this
   preprocessing boundary. Searches of the official repository's issues and pull
   requests on 2026-10-25 used `packet bitsPerRow`, `packet fractional` and
@@ -675,7 +675,7 @@ warning. These facts do not justify any additional divergence.
   this divergence.
 
 - The pinned
-  [architecture.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L21-L175)
+  [architecture.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/architecture.md#L21-L175)
   documents the header, declarations and edges, without defining this common
   preprocessing boundary. Searches of the official issues/PRs on 2026-10-25 used
   architecture group undefined, architecture quotes title, architecture reverse,
@@ -685,7 +685,7 @@ warning. These facts do not justify any additional divergence.
   ruling on this common boundary.
 
 - Radar:
-  [radar.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/radar.md#L66-L166)
+  [radar.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/radar.md#L66-L166)
   documents axes, curves and options. The official issues/PRs were searched on
   2026-10-25 for radar directive, radar semicolon and radar entries; no
   inspected result declares the boundaries above a defect.
@@ -695,7 +695,7 @@ warning. These facts do not justify any additional divergence.
   documentation examples; it does not add grammar support for a trailing comma.
 
 - Treemap: the pinned
-  [treemap documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
+  [treemap documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
   describes quoted rows, indentation and class definitions, without defining
   this common preprocessing boundary. Searches of the official repository's
   issues and pull requests on 2026-10-25 used `treemap semicolon`; no inspected
@@ -704,7 +704,7 @@ warning. These facts do not justify any additional divergence.
   and was merged on 2025-06-27; it is not a ruling on this boundary.
 
 - Railroad: the
-  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
   describes the four notations, EBNF exception, ABNF semicolon comments and PEG
   predicates. It does not define native retained YAML or HTML quote context
   across frontmatter. Searches of the official repository’s issues and pull
@@ -719,7 +719,7 @@ warning. These facts do not justify any additional divergence.
   establish that no other relevant issue exists.
 
 - Wardley: the
-  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)
   shows coordinates, decorations and flows without defining this common
   boundary. Searches of the official issues and pull requests on 2026-10-26 used
   wardley directive, wardley semicolon and wardley flow.
@@ -731,9 +731,9 @@ warning. These facts do not justify any additional divergence.
   defect decision for this boundary; the existing direct rule applies. The
   search is not claimed to be exhaustive.
 - Cynefin’s
-  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)
   describes fixed domains, quoted items and labeled transitions; its
-  [notes](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)
+  [notes](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)
   state that self transitions are ignored.
   [PR #7535](https://github.com/mermaid-js/mermaid/pull/7535) added the diagram
   and was merged. On 2026-10-26, searches for cynefin parser, cynefin directive,
@@ -746,7 +746,7 @@ warning. These facts do not justify any additional divergence.
 ### eventmodeling
 
 The pinned
-[eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L37-L322)
+[eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/eventmodeling.md#L37-L336)
 describes frames, data and tags without defining this shared preprocessing
 boundary. Searches of the official issues and pull requests on 2026-10-26 used
 eventmodeling title, eventmodeling parser, event modeling data, eventmodeling
@@ -759,7 +759,7 @@ existing direct rule applies. The search is not claimed to be exhaustive.
 ### Treeview
 
 The pinned
-[treeView.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277)
+[treeView.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277)
 describes indentation, quoted names, annotations and box drawing, without
 defining this common boundary. On 2026-10-26 the official issues/PRs were
 searched for `treeView quoted`, `treeView indentation`, `treeView box`,

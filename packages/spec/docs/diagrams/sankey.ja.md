@@ -4,10 +4,10 @@
 
 mermaid.js の正となるソース：
 
-- [`sankey.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison)
-- [`sankeyUtils.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyUtils.ts)
-- [`sankeyDB.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts)
-- [`sankey/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey)
+- [`sankey.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison)
+- [`sankeyUtils.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyUtils.ts)
+- [`sankeyDB.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts)
+- [`sankey/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey)
   の中のテスト（`*.spec.ts`）
 
 この文書は図種 `sankey` を扱います。
@@ -18,7 +18,7 @@ mermaid.js の正となるソース：
 [detection.ja.md](../detection.ja.md) の項目 23 がこの文法を選びます。
 テキストが、空白の後、
 ちょうどこの大文字小文字の `sankey` で始まるときです（mermaid.js の
-[`sankeyDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDetector.ts#L5-L7)）。
+[`sankeyDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyDetector.ts#L5-L7)）。
 `Sankey` と `SANKEY` はどの検出器にも合いません。
 ヘッダーの前の U+FEFF は空白です。 [fixture: sankey/db-link-basic]
 [fixture: sankey/header-indented] [fixture: sankey/header-tab-indented]
@@ -351,7 +351,7 @@ sankey/db-quoted-two-quotes-at-end] [fixture: sankey/db-id-quote-and-comma]
 二重引用符の中のテキストは、`","` のように、
 そのテキストが名付ける単位を表します。
 文法は
-[`sankey.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L45-L67)
+[`sankey.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L45-L67)
 の文法を言い直したもので、同じ単位の並びを受理します。
 
 以下の各規則は、
@@ -426,9 +426,9 @@ tests パッケージの要約にあります。 [fixture: sankey/db-fields-trim
 
 ありません。
 mermaid.js の Db は、その文法が受理するどの入力でも例外を投げません。
-[`findOrCreateNode()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L48-L58)
+[`findOrCreateNode()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L48-L58)
 と、
-[`addLink()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L40-L42)
+[`addLink()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L40-L42)
 は、テキストを持つだけで、空の id、数でない値、繰り返すリンクは受理されます。
 [fixture: sankey/db-spaces-only-source-id]
 [fixture: sankey/db-value-not-a-number] [fixture: sankey/db-duplicate-link]

@@ -129,11 +129,11 @@ the same way, start such a name or type with another character.
 
 The lexer of mermaid.js reads the text of a backquoted name and of a generic
 type in states of its own
-([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)).
+([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)).
 Some of its rules apply in every state: the keywords, `<<`, and `>>`
-([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L89-L104)),
+([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L89-L104)),
 the start of a string
-([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L62-L62)),
+([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L62-L62)),
 and the start of a generic type. The lexer tries the rules in the order of the
 file and takes the first that matches, and these rules come before the rule for
 the text of a backquoted name, and all but the last before the rule for the text
@@ -158,10 +158,10 @@ below).
 ## The documentation of mermaid.js and its issues
 
 - The documentation of class diagrams of mermaid.js says, under
-  [Class labels](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/classDiagram.md#L161-L168),
+  [Class labels](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/classDiagram.md#L161-L168),
   "You can also use backticks to escape special characters in the label", and
   describes generic types under
-  [Generic Types](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/classDiagram.md#L215-L217).
+  [Generic Types](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/classDiagram.md#L215-L217).
   Neither says that the text cannot start with a keyword.
 - [Issue #4590](https://github.com/mermaid-js/mermaid/issues/4590), "Note "note"
   throws an error", reported that a note whose string is `note` is rejected. A

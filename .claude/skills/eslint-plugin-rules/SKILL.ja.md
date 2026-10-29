@@ -168,9 +168,11 @@ description:
   この場合はコーパスを読まない。
   行末の空白は、そのような文字ではない。
   fixture のファイルに置き、`.editorconfig` が保つ。
-- 出力を意図して変えたときは、`test:update`（`CI=true` なしで）を使う。
+- 出力を意図して変えたときは、`test:update` を使う。
   差を読み、各差を説明する。
   ケースを足すときは、既存のスナップショットを保ち、足りないものだけを足す。
+  パッケージで `UPDATE_SNAPSHOTS=true npx vitest run <テストファイル>`
+  を実行する。
 
 ### 回すテスト
 
@@ -224,12 +226,14 @@ SKILL `conventions` の決まり（テストの実行）に従う。
 - 作業の完了を報告する前に、次の検査を 1 回動かし、変更による失敗でないものは、
   そう言う（作業の途中は、上の表のとおり、変更が影響しうるものだけを回す）。
   - `packages/eslint-plugin` の中で、
-    `CI=true npx vitest run`（テストの全体）と `pnpm run check:docs`。
+    `npx vitest run`（テストの全体）と `pnpm run check:docs`。
   - リポジトリのルートから、
     `npx eslint packages/eslint-plugin` （パッケージの中で動かす ESLint は、
     ルートの設定を読まない）、 `pnpm run lint:docs`、`pnpm run lint:chars`、
     `pnpm run format:check`、 `npx tsc --noEmit`。
-- 共有の作業ツリーで、コミットも push も、ステージの変更もしない。
+- コミットも push も、ステージの変更もしない。
+  コミットと push はユーザーの言葉を待ち、
+  ステージはユーザーが行う（`git mv` と `git rm` はステージを変える）。
   `rm` と `mv` をそのまま使う。
   作業用のファイルはリポジトリの外に置く。
 

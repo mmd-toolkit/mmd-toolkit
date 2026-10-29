@@ -4,9 +4,9 @@
 
 mermaid.js の正となるソース：
 
-- [`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison)
-- [`xychartDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts)
-- [`xychart/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart)
+- [`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison)
+- [`xychartDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/xychartDb.ts)
+- [`xychart/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart)
   の中のテスト（`*.spec.ts`）
 
 この文書は図種 `xychart` を扱います。
@@ -17,7 +17,7 @@ mermaid.js の正となるソース：
 [detection.ja.md](../detection.ja.md) の項目 25 がこの文法を選びます。
 テキストが、空白の後、
 ちょうどこの大文字小文字の `xychart` で始まるときです（mermaid.js の
-[`xychartDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDetector.ts#L9-L11)）。
+[`xychartDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/xychartDetector.ts#L9-L11)）。
 `XYCHART` と `Xychart-Beta` はどの検出器にも合いません。
 ヘッダーの前の U+FEFF と U+00A0 は空白です。 [fixture: xychart/db-header-plain]
 [fixture: xychart/db-header-beta-only] [fixture: xychart/header-indented]
@@ -1099,7 +1099,7 @@ mermaid.js は、1 文字の単位にくっついたコメントを、その文�
 `"title"` や `","` のような二重引用符の中のテキストは、
 そのテキストの名前の単位を表します。
 文法は
-[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L83-L175)
+[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L83-L175)
 の文法の言い直しで、既知の差異を除いて、同じ単位の並びを受理します。
 
 以下の各規則は、

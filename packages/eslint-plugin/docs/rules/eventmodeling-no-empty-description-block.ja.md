@@ -27,9 +27,9 @@ mermaid.js は `accDescr {}` のような文の文字を説明として設定し
 ディレクティブは説明の文字ではないので、
 ディレクティブだけのブロックも報告するが、mermaid.js はその設定を当てる。
 
-括弧の間にコメント行を持つブロックは報告しない。
-コメント行だけのブロックは前の説明を取り除き、
-説明の後では
+括弧の間にコメント行を持つブロックは、
+mermaid.js がそのコメント行を説明の文字として保つので、報告しない。
+説明の後では、そのようなブロックが前の説明を置き換え、
 [eventmodeling-no-duplicate-description](./eventmodeling-no-duplicate-description.ja.md)
 が報告する。
 `accDescr {} %% later` のような括弧の外のコメントは、報告を防がない。

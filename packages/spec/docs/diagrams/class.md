@@ -4,11 +4,11 @@ Japanese version: [class.ja.md](./class.ja.md)
 
 Source of truth in mermaid.js:
 
-- [`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison)
-- [`classDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts)
-- [`classTypes.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classTypes.ts)
+- [`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison)
+- [`classDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classDb.ts)
+- [`classTypes.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classTypes.ts)
 - the tests (`*.spec.ts`) in
-  [`class/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class)
+  [`class/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class)
 
 This document covers the diagram type `classDiagram`. The nodes of the tree are
 defined in [ast/class.md](../ast/class.md).
@@ -472,8 +472,8 @@ class/lex-member-edge-state-then-text] [fixture: class/lex-member-open-brace]
 
 mermaid.js reads a member line as one text and divides it into its parts when it
 adds the member
-([`addMember`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L277-L297),
-[`ClassMember`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classTypes.ts#L80-L134)).
+([`addMember`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classDb.ts#L277-L297),
+[`ClassMember`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classTypes.ts#L80-L134)).
 The division depends on the text alone, so the lexer makes it, and each part is
 a unit. The whitespace at the ends of the line belongs to no unit; a line of
 only whitespace makes a `blank-member` unit, which no node holds. The rest, the
@@ -699,7 +699,7 @@ In its backquote and generic states, the lexer of mermaid.js tries the rules for
 `"`, for `~` (in a backquote), for `<<` and `>>`, and for the keywords
 `cssClass`, `callback`, `link`, `click`, `note`, and `href` before its rule for
 the text
-([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L89-L112)).
+([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L89-L112)).
 Where the text starts with one of these, which for a keyword means that no word
 character follows it, mermaid.js reads that unit instead of a name, and reads
 the text only after it. These inputs are the known divergence
@@ -766,7 +766,7 @@ such as `"class"` or `"{"`. `string` stands for a `string` unit that is not
 empty, and `string-or-empty` for a `string` unit that may be empty.
 `end-of-text` stands for the end of the text. The grammar is a restatement of
 the grammar in
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L221-L438)
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L221-L438)
 and accepts the same sequences of units.
 
 Each rule below makes a node of the tree, defined in
@@ -915,7 +915,7 @@ class name, and a namespace name too, has one of three forms, each of which a
 class name may end with a generic type: name parts; a backquoted name; and name
 parts followed by a backquoted name, as in ``class A.`b c` ``, which declares
 `A.b c`, and ``class A`b c` ``, which declares `Ab c`
-([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L244-L258)).
+([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L244-L258)).
 A backquoted name ends the name: ``class `b c`A `` and a name of two backquoted
 names are rejected. [fixture: class/gram-name-prefix-backquoted] [fixture:
 class/gram-name-word-then-backquoted] [fixture:
@@ -1059,7 +1059,7 @@ this specification:
 
 - An annotation statement for a class that does not exist: `<<interface>> A`
   before any statement that adds A is rejected
-  ([`addAnnotation`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L263-L266)),
+  ([`addAnnotation`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classDb.ts#L263-L266)),
   while the same after `class A` is accepted. A class is **added** by a class
   statement, a member statement with a label, and a relation statement, for each
   of its class names, also in the body of a namespace; the name on the `()` side
@@ -1164,7 +1164,7 @@ class diagrams, and show in them as follows.
   read the two statements, unless a comment line with text after its `%%` comes
   right after that line: mermaid.js removes such a comment line together with
   the lines of only whitespace right before it before it reads the text
-  ([`cleanupComments`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)),
+  ([`cleanupComments`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)),
   and then joins the next line again. `A --> B %% c`, a line of spaces, `%% x`,
   and `A : +int age` is a relation from A to `BA` in mermaid.js, while with a
   line `%%` in place of `%% x`, or with another line of spaces after `%% x`,

@@ -4,9 +4,9 @@
 
 mermaid.js の正となるソース：
 
-- [`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison)
-- [`mindmapDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts)
-- [`mindmap/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap)
+- [`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison)
+- [`mindmapDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts)
+- [`mindmap/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/mindmap)
   の中のテスト（`*.spec.ts`、 `*.test.ts`）
 
 この文書は、図種 `mindmap`、マインドマップを扱います。
@@ -17,7 +17,7 @@ mermaid.js の正となるソース：
 [detection.ja.md](../detection.ja.md) の項目 4 がこの文法を選びます。
 テキストが、空白の後、
 ちょうどこの大文字小文字の `mindmap` で始まるときです（mermaid.js の
-[`detector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/detector.ts#L8-L10)）。
+[`detector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/mindmap/detector.ts#L8-L10)）。
 `MINDMAP` と `Mindmap` はどの検出器にも合いません。
 ヘッダーの前の空行と空白だけの行は何も変えません。
 [fixture: mindmap/db-header-only] [fixture: mindmap/db-header-indented]
@@ -392,7 +392,7 @@ mindmap/db-comment-after-node-text] [fixture: mindmap/lex-percent-in-shape-text]
 単位の名前はその名前の 1 つの単位を表し、二重引用符の中のテキストは、
 そのテキストが名付ける単位を表します。
 文法は
-[`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L66-L127)
+[`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L66-L127)
 の文法を言い直したものです。
 ただし [空行](#空行) が別に言うところは除きます。
 

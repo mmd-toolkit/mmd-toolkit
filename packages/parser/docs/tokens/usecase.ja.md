@@ -8,7 +8,7 @@
 字句規則の順序と文脈は
 [diagrams/usecase.md](../../../spec/docs/diagrams/usecase.ja.md) に従います。
 その出典は
-[`usecase.tokens.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.tokens.ts#L1-L410)
+[`usecase.tokens.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/parser/usecase.tokens.ts#L1-L410)
 です。
 
 ## トークン

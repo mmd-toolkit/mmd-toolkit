@@ -4,9 +4,9 @@
 
 mermaid.js での正解の出どころ:
 
-- [`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison)
-- [`sequenceDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts)
-- [`sequenceDiagram.spec.js`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js)
+- [`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison)
+- [`sequenceDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts)
+- [`sequenceDiagram.spec.js`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js)
   のテスト
 
 この文書は、図種 `sequence` を扱います。
@@ -234,8 +234,44 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
     [fixture: sequence/db-block-alt] [fixture: sequence/db-block-par]
     [fixture: sequence/db-block-par-over] [fixture: sequence/db-block-critical]
     [fixture: sequence/db-block-break]
-11. キーワード `end`、`links`、`link`、`properties`、`details`、`over`、
-    `note`: キーワードを名前とする単位。
+11. キーワード `end`、`over`、`note`: キーワードを名前とする単位。
+    キーワード `links`、`link`、`properties`、
+    `details`（`links` を `link` より先に試す）で、
+    その後に 1 個以上の空白かタブと、 `/`、`\`、`+`、`(`、`)`、`<`、`>`、`:`、
+    `,`、`;`、`-`、空白、
+    改行以外の文字が続くもの（それらは読まない）: キーワードを名前とする単位。
+    それ以外の所では、この 4 つの語は id の並びを始めます（規則 21）。
+    `link->>B: x` と `link ->>B: x` は参加者 `link` からのメッセージで、
+    `link <<->>B: x` も同じです。
+    `links->>B: x`、`properties->>B: x`、`details->>B: x` は、
+    それぞれの名前の参加者からのメッセージです。
+    `A->>link: x` と `A->>link : x` は `link` へのメッセージで、
+    `note over link, A: x` は `link` と A の上のノートで、
+    `note over link : x` は `link` の上のノートです。
+    `link`、タブ、`A: x` と、`link`、空白 2 個、`A: x` と、
+    `link%%{init: {}}%% A: x` はリンクの文で、
+    `link %%{init: {}}%%->>B: x` ではこの語は参加者 `link` です。
+    `link`、U+2028、`A: x` は、id の並びの後にテキストが続くもので、
+    拒否されます。
+    行 `link %% c` も拒否されます。
+    `link` の後に空白と `%` が続くのでキーワードで、
+    その後に id が続かないからです。
+    [fixture: sequence/lex-link-word-before-arrow]
+    [fixture: sequence/lex-link-word-space-before-arrow]
+    [fixture: sequence/lex-link-word-space-before-reverse-arrow]
+    [fixture: sequence/lex-links-word-before-arrow]
+    [fixture: sequence/lex-properties-word-before-arrow]
+    [fixture: sequence/lex-details-word-before-arrow]
+    [fixture: sequence/lex-link-word-message-target]
+    [fixture: sequence/lex-link-word-note-over-comma]
+    [fixture: sequence/lex-link-word-message-target-space-colon]
+    [fixture: sequence/lex-link-word-note-over-space-colon]
+    [fixture: sequence/lex-link-keyword-tab]
+    [fixture: sequence/lex-link-keyword-two-spaces]
+    [fixture: sequence/lex-link-keyword-directive]
+    [fixture: sequence/lex-link-word-space-directive-before-arrow]
+    [fixture: sequence/lex-link-word-line-separator]
+    [fixture: sequence/lex-link-keyword-before-comment]
     2 語の間が空白 1 個のキーワード `left of` か `right of`: `left` か `right`
     の単位と、`of` の単位。
     語の間が空白 2 個かタブなら、入力は拒否されます。
@@ -450,10 +486,11 @@ id の文脈には、 `participant`、`actor`、`destroy`、`activate`、
    [fixture: sequence/lex-id-context-hash-comment]
 3. `@{`: `@{` の単位。
    データの文脈に入ります。 [fixture: sequence/gram-data-block-line-break-only]
-4. `<`、`=`、`>`、`-`、`:`、`,`、`;`、`@`、空白、改行以外の 1 個以上の文字で、
-   直後に `@{` が続くもの（`@{` は読まない）: `id` の単位。
-   [fixture: sequence/db-data-block-create-participant]
+4. `<`、`>`、`:`、`,`、`;`、`@`、空白、改行以外の 1 個以上の文字で、
+   その後に 0 個以上の空白（改行を含む）と `@{` が続くもの（それらは読まない）:
+   `id` の単位。 [fixture: sequence/db-data-block-create-participant]
    [fixture: sequence/lex-id-before-data-dash]
+   [fixture: sequence/lex-id-space-before-data]
 5. `<`、`>`、`:`、`,`、`;`、`@`、空白、改行以外の 1 個以上の文字で、
    その後に空白、キーワード `as`、
    1 個の空白が続くもの（それらは読まない）: `id` の単位。
@@ -485,8 +522,21 @@ sequence/lex-id-context-two-hashes-before-invalid]
 `;`、`as` の前で終わります。
 `participant A B` は id `A B` を、`participant A=B` は id `A=B` を、
 `activate A B` は id `A B` を持ちます。
-`@{` の前の id は、空白、`-`、`=` を含められません。
-`participant A-B@{ "type": "queue" }` は拒否されます。
+`@{` の前の id は空白を含められず、id と `@{` の間には空白を置けます。
+`participant A-B@{ "type": "queue" }` は id `A-B` を、
+`participant A=B@{ "type": "queue" }` は id `A=B` を持ちます。
+`participant A` の後に、空白、タブ、U+2028、またはディレクティブと空白が続き、
+その後に `@{ "type": "queue" }` が続くものは、 id `A` を持ちます。
+一方、`participant A B@{ "type": "queue" }` は拒否され、
+`@{` の前の改行も拒否されます。
+id の文脈には改行を読む規則がないからです。
+[fixture: sequence/lex-id-equals-before-data]
+[fixture: sequence/lex-id-space-before-data]
+[fixture: sequence/lex-id-tab-before-data]
+[fixture: sequence/lex-id-line-separator-before-data]
+[fixture: sequence/lex-id-space-directive-before-data]
+[fixture: sequence/lex-id-two-words-before-data]
+[fixture: sequence/lex-id-line-feed-before-data]
 `:` や `<` を含む id は拒否され、行の終わりの `participant` も拒否されます。
 改行を読む規則がないからです。 [fixture: sequence/lex-id-context-space]
 [fixture:
@@ -661,8 +711,16 @@ sequence/db-box-wrap-without-colour]
 そのテキストを名前とする単位を表します。
 `end-of-text` はテキストの終わりを表します。
 この文法は
-[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L136-L419)
-の文法を述べ直したもので、同じ単位の並びを受理します。
+[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L136-L422)
+の文法を述べ直したもので、同じ入力を受理します。
+jison の文法は、id を取る所で `link` の単位も取ります。
+字句解析器は、文を完成させる所でその単位を作りません。
+規則 11 は、空白かタブと、id の後に来うる単位が始まらない文字が続くときだけ、
+`link` を単位として読むからです。
+そのため、下の文法はそれを含めません。
+`A->>link B: x` では `link` は `link` の単位で、
+テキストが始まるべき所に `B` があるので、入力は拒否されます。
+[fixture: sequence/gram-link-keyword-message-target]
 
 次の各規則が、[ast/sequence.ja.md](../ast/sequence.ja.md) で定める、
 木のノードを作ります。
@@ -928,7 +986,7 @@ mermaid.js は、文法が受理する入力の一部を、Db を作る間に拒
 2 つの場所を保ちます。
 どちらも空か、1 つの id を持ちます。
 **作られるのを待つ参加者**と、**destroy されるのを待つ参加者**です。
-[`sequenceDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L581-L645)
+[`sequenceDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L581-L645)
 を参照してください。
 どちらも空から始まります。
 

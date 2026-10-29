@@ -30,7 +30,9 @@ time frame（`tf`、`timeframe`）も reset frame（`rf`、`resetframe`）も、
 mermaid.js が示さないので比べない。
 中身は、LF、CRLF、CR を LF として、書いたとおりに比べるので、
 後の空のブロックも、空白 1 つだけが違うものも報告する。
-ブロックの中のコメント行は、mermaid.js が取り除くので中身として数えない。
+ブロックの中のコメント行は、mermaid.js がブロックの値に保つので、
+中身として数える。
+コメント行だけが違う後のブロックも報告する。
 mermaid.js は、
 ブロックを示す前に `#35;` のような文字参照と HTML を変換するので、
 それらだけが違う中身は、同じに示されても報告することがある。
@@ -74,8 +76,8 @@ second
 
 ## 参考
 
-- [Event Modeling の構文: データブロックの名前](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L95-L97)
-- [Event Modeling の構文: データの型](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L309-L311)
+- [Event Modeling の構文: データブロックの名前](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/eventmodeling.md#L97-L99)
+- [Event Modeling の構文: データの型](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/eventmodeling.md#L323-L325)
 
 <!-- begin auto-generated rule resources -->
 

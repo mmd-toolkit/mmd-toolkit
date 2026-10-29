@@ -11,6 +11,11 @@ by the comparison Db. [fixture: eventmodeling/gram-written-tree] [fixture:
 eventmodeling/db-data-first] [fixture: eventmodeling/db-entities-notes-gwt]
 [fixture: eventmodeling/db-source-order]
 
+In this tree, the common trivia that a value omits are global directives and
+selected semicolons. A comment line is diagram text for eventmodeling (see
+[Reading a source](../common.md#reading-a-source)): between units it is a shared
+Comment, and inside a value or a hidden form it is part of the text.
+
 Identifier holds a single identifier segment or frame-name in its authored
 spelling. A digit-only frame name is an identity, not a NumericLiteral: 1, 01
 and 001 stay distinct. Quoted inline values use shared StringLiteral: value is
@@ -68,15 +73,15 @@ The four common statement nodes below hold authored payloads. Their public
 The payload alone cannot hold those separately written parts, and ordinary
 preceding whitespace is not a node. Db derivation therefore reads the complete
 form and its immediately preceding ASCII space/tab run from the source reading
-after [common removals](../common.md#reading-a-source): global directives,
-common comment regions and selected semicolons. Count the run after all these
-removals. Spaces and tabs on both sides of a removed global directive or
-selected semicolon join into one run. A common comment region is omitted
-together with its own padding and terminating LF, retaining only the surviving
-prefix. Removing a closed directive alone does not remove the LF outside it; a
-blank line and the LF after a selected semicolon remain as well. LF, LS and PS
-are not part of the ASCII space/tab run; whether a common statement exists after
-them follows
+after [common removals](../common.md#reading-a-source): global directives and
+selected semicolons. Comment lines are not removed for eventmodeling. Count the
+run after these removals. Spaces and tabs on both sides of a removed global
+directive or selected semicolon join into one run. A comment line is a native
+comment that ends before its LF, so the run before a common statement on the
+next line starts after that LF. Removing a closed directive alone does not
+remove the LF outside it; a blank line and the LF after a selected semicolon
+remain as well. LF, LS and PS are not part of the ASCII space/tab run; whether a
+common statement exists after them follows
 [Common statements](../diagrams/eventmodeling.md#common-statements). An
 unselected semicolon is rejected in this gap, and an empty description block
 remains a statement boundary: do not join padding across either as if it were
@@ -500,13 +505,16 @@ eventmodeling/gram-written-tree]
 
 No child fields. Range: the first through last character of the payload
 specified by its parent, spanning any internal common trivia. value omits common
-directives, comment regions and selected semicolons, retaining every other
-source character, including owned padding, line endings, entity spellings,
+directives and selected semicolons, retaining every other source character,
+comment lines included, including owned padding, line endings, entity spellings,
 quotes and backslashes. Data braces belong to the parent syntax. Do not create
 an empty literal for a null field. Block-data always has at least its opening LF
 inside its braces; metadata and inline braces may instead have null payloads. No
 raw field is needed for this unquoted text. [fixture:
-eventmodeling/line-block-values] [fixture:
+eventmodeling/line-block-values] [fixture: eventmodeling/comment-block-data]
+[fixture: eventmodeling/comment-note-data] [fixture:
+eventmodeling/common-block-comments] [fixture:
+eventmodeling/gram-nested-block-comment-line] [fixture:
 eventmodeling/lex-block-empty-whitespace] [fixture:
 eventmodeling/common-whitespace] [fixture:
 eventmodeling/lex-common-block-whitespace-only] [fixture:
@@ -525,11 +533,14 @@ No child fields. Range: the first opening dash or percent through the last
 closing dash or percent; exclude preceding horizontal padding and any consumed
 following LF. kind is yaml-block for hidden-yaml and directive for
 hidden-directive. value includes native delimiters and internal whitespace,
-under the shared written-text rule that omits common trivia. Neither content is
-parsed as YAML/JSON or published as configuration. A failed native directive
+under the shared written-text rule that omits common directives and selected
+semicolons; a comment line inside the form is part of its value. Neither content
+is parsed as YAML/JSON or published as configuration. A failed native directive
 that becomes a comment is a shared Comment, not this node. Owned gaps and
 body/textBeforeHeader keep each whole form exactly once. [fixture:
 eventmodeling/hidden-yaml-unit-gap] [fixture:
+eventmodeling/comment-line-inside-hidden-yaml] [fixture:
+eventmodeling/comment-line-inside-hidden-directive] [fixture:
 eventmodeling/hidden-yaml-after-frame] [fixture:
 eventmodeling/hidden-yaml-after-frame-space] [fixture:
 eventmodeling/lex-native-directive-object] [fixture:
@@ -572,46 +583,46 @@ the empty description block has null value. No declaration, source or tag is
 synthesized or discarded. [fixture: eventmodeling/gram-written-tree]
 
 [grammar]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L1-L70
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L1-L70
 [entry]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L49
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L49
 [names]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L24-L55
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L24-L55
 [data]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L17-L22
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L17-L22
 [data-terminals]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L57-L58
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L57-L58
 [metadata]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L60-L62
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L60-L62
 [hidden]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L64-L70
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L64-L70
 [module]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/module.ts#L31-L62
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/module.ts#L31-L62
 [token-builder]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/tokenBuilder.ts#L1-L7
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/tokenBuilder.ts#L1-L7
 [common-token-builder]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/tokenBuilder.ts#L6-L29
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/tokenBuilder.ts#L6-L29
 [converter]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L6-L81
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/valueConverter.ts#L6-L81
 [parse]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L133-L150
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/parse.ts#L133-L150
 [validator]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling-validator.ts#L12-L66
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling-validator.ts#L12-L66
 [adapter]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/parser.ts#L8-L14
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/parser.ts#L8-L14
 [store]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L50-L141
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L50-L151
 [renderer]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/renderer.ts#L128-L167
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/renderer.ts#L128-L167
 [detector]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/detector.ts#L4-L8
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/detector.ts#L4-L8
 [preprocess]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L6-L65
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L6-L65
 [detect-type]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/detectType.ts#L36-L48
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/detectType.ts#L36-L51
 [docs]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L1-L322
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/eventmodeling.md#L1-L336
 [parser-tests]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/tests/eventmodeling.test.ts#L1-L339
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/tests/eventmodeling.test.ts#L1-L339
 [mermaid-tests]:
-  https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/eventmodeling.spec.ts#L1-L79
+  https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/eventmodeling.spec.ts#L1-L133

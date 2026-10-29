@@ -4,10 +4,10 @@ Japanese version: [xychart.ja.md](./xychart.ja.md)
 
 Source of truth in mermaid.js:
 
-- [`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison)
-- [`xychartDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts)
+- [`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison)
+- [`xychartDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/xychartDb.ts)
 - the tests (`*.spec.ts`) in
-  [`xychart/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart)
+  [`xychart/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart)
 
 This document covers the diagram type `xychart`. The nodes of the tree are
 defined in [ast/xychart.md](../ast/xychart.md).
@@ -16,7 +16,7 @@ defined in [ast/xychart.md](../ast/xychart.md).
 
 Entry 25 of [detection.md](../detection.md) selects this grammar: the text
 starts with `xychart`, after whitespace, in exactly this case
-([`xychartDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDetector.ts#L9-L11)).
+([`xychartDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/xychartDetector.ts#L9-L11)).
 `XYCHART` and `Xychart-Beta` match no detector; U+FEFF and U+00A0 before the
 header are whitespace. [fixture: xychart/db-header-plain] [fixture:
 xychart/db-header-beta-only] [fixture: xychart/header-indented] [fixture:
@@ -958,7 +958,7 @@ The grammar uses the notation of [common.md](../common.md#notation), over units
 instead of characters. A unit name, such as `word`, stands for one unit with
 that name, and text in double quotes stands for the unit named by that text,
 such as `"title"` or `","`. The grammar is a restatement of the grammar in
-[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L83-L175)
+[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L83-L175)
 and accepts the same sequences of units, but for the known divergences.
 
 Each rule below makes a node of the tree, defined in

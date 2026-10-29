@@ -7,7 +7,7 @@
   "diagramType": "eventmodeling",
   "db": {
     "accTitle": "",
-    "accDescr": " accDescr {\nfirst\nlast\n}",
+    "accDescr": " accDescr {\nfirst\n%% comment\nlast\n}",
     "frames": []
   }
 }

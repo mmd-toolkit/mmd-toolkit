@@ -115,7 +115,7 @@ property:
    `class` statement adds no vertex and does not make them, so a later
    `A[|__proto__:x|text]` makes them with `__proto__`. mermaid.js adds a
    property to existing `props` in
-   [`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L229-L233)
+   [`addVertex()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L229-L233)
    by assigning it to a plain object, where `__proto__` does not become a key.
    [fixture: flowchart/db-props-merge] [fixture:
    flowchart/db-props-existing-vertex] [fixture: flowchart/db-props-replaced]
@@ -131,11 +131,10 @@ property:
 
 **The class step,** with ids and a class name: the class name is appended to the
 classes of the vertex with each id, of the first edge with that id, and of the
-last subgraph added with that id. [fixture:
-flowchart/db-class-on-edge-and-subgraph] [fixture:
-flowchart/db-class-vertex-id-with-comma] An item that has the class already gets
-it again, and a vertex, an edge, and a subgraph with the same id all get it.
-[fixture: flowchart/db-class-vertex-and-subgraph-same-id] [fixture:
+subgraph with that id. [fixture: flowchart/db-class-on-edge-and-subgraph]
+[fixture: flowchart/db-class-vertex-id-with-comma] An item that has the class
+already gets it again, and a vertex, an edge, and a subgraph with the same id
+all get it. [fixture: flowchart/db-class-vertex-and-subgraph-same-id] [fixture:
 flowchart/db-class-last-subgraph-with-id] [fixture:
 flowchart/db-class-vertex-and-edge-same-id] [fixture:
 flowchart/db-class-applied-twice] It adds no vertex, so an id that no vertex has
@@ -250,8 +249,14 @@ flowchart/db-arrow-opening-cross-closing-double-cross] [fixture:
 flowchart/db-arrow-dotted-closing-start-marker]
 
 **Subgraphs.** A subgraph statement adds a subgraph after the statements of its
-body, so a nested subgraph comes before the one around it. Its members are those
-that **Subgraph members** in
+body, so a nested subgraph comes before the one around it. A subgraph whose id
+an earlier subgraph has is not added: its members, as the next paragraph defines
+them, are added after the members of the earlier one, which keeps its title,
+direction and place in the list. [fixture:
+flowchart/db-class-last-subgraph-with-id] [fixture:
+flowchart/db-data-block-last-subgraph-with-id] [fixture:
+flowchart/spec-subgraph-57671598] Its members are those that **Subgraph
+members** in
 [Rejections outside the grammar](../../../spec/docs/diagrams/flowchart.md#rejections-outside-the-grammar)
 defines, the value of an accessibility statement as it is (the line feeds of a
 description are not collapsed here); an empty statement outside a subgraph
@@ -260,7 +265,9 @@ that are empty or all whitespace are left out. Of the others, only the first of
 equal members is kept, except that every member `__proto__` is kept, because
 mermaid.js keeps the members it has seen as the keys of a plain object, where
 `__proto__` does not become a key. Then a member that a subgraph added earlier
-already has is left out, `__proto__` included. [fixture:
+already has is left out, `__proto__` included, and so is the id of the subgraph
+itself, since a subgraph is never its own member. [fixture:
+flowchart/db-subgraph-body-data-block-own-id] [fixture:
 flowchart/db-subgraph-member-empty-statement] [fixture:
 flowchart/db-subgraph-member-empty-statement-end] [fixture:
 flowchart/db-subgraph-member-acc-title] [fixture:
@@ -281,9 +288,11 @@ The subgraph has:
 - `id`: the id that **Subgraph members** in
   [Rejections outside the grammar](../../../spec/docs/diagrams/flowchart.md#rejections-outside-the-grammar)
   defines, from the name text defined there; the generated id is `subGraph`
-  followed by the number of subgraphs added before it, so of two nested
-  subgraphs with generated ids, the outer one has the larger number. [fixture:
-  flowchart/db-subgraph-counter] [fixture: flowchart/db-subgraph-counter-nested]
+  followed by the number of subgraph statements before it, one that repeats an
+  earlier id included, so of two nested subgraphs with generated ids, the outer
+  one has the larger number. [fixture: flowchart/db-subgraph-counter] [fixture:
+  flowchart/db-subgraph-counter-nested] [fixture:
+  flowchart/db-subgraph-counter-repeated-id]
 - `title`: the value of the title in converted form, trimmed, or the name text
   trimmed when there is no title. [fixture: flowchart/db-subgraph-title-trimmed]
 - `labelType`: the kind of the title; without a title, `markdown` when the
@@ -473,10 +482,10 @@ one after another count as one entry. The entries are in source order (see
 `A@{ label: a } & B@{ label: b } --> C@{ label: c } & D@{ label: d }` are those
 of `A`, `B`, `C`, and `D`, in this order. [fixture:
 flowchart/db-data-block-entries-source-order] At the position given above, the
-next entry is applied: its fields are set on the subgraph added last with the
-vertex's id, if there is one; otherwise on the first edge with that id, if there
-is one; otherwise on the vertex with that id, which the vertex step has already
-added. [fixture: flowchart/gram-data-consecutive-blocks] [fixture:
+next entry is applied: its fields are set on the subgraph with the vertex's id,
+if there is one; otherwise on the first edge with that id, if there is one;
+otherwise on the vertex with that id, which the vertex step has already added.
+[fixture: flowchart/gram-data-consecutive-blocks] [fixture:
 flowchart/db-data-block-subgraph-over-edge] [fixture:
 flowchart/db-data-block-last-subgraph-with-id] [fixture:
 flowchart/db-data-block-edge-over-vertex]

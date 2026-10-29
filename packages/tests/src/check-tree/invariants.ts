@@ -1,4 +1,4 @@
-import { agentflowPreservesComments } from "../db-from-tree/converted-text.ts"
+import { preservesCommentLines } from "../db-from-tree/converted-text.ts"
 import {
   isLineTerminatorCode,
   isWhitespace,
@@ -1016,16 +1016,14 @@ export function checkInvariants(
 ): void {
   const nodes = nodesOf(root)
   const found = scanSource(text, root.frontmatter?.range[1] ?? 0)
-  const scan =
-    root.body.type === "AgentflowDiagram" &&
-    agentflowPreservesComments(text, root)
-      ? {
-          ...found,
-          commentLines: found.commentLines.filter(
-            (line) => line.commentStart < root.body.range[0],
-          ),
-        }
-      : found
+  const scan = preservesCommentLines(text, root)
+    ? {
+        ...found,
+        commentLines: found.commentLines.filter(
+          (line) => line.commentStart < root.body.range[0],
+        ),
+      }
+    : found
   const records: Placed[] = [
     ...(root.frontmatter === null ? [] : [root.frontmatter]),
     ...root.comments,

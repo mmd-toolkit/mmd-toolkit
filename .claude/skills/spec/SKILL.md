@@ -328,9 +328,10 @@ Every link from the specification is a permalink to the commit recorded in
    spreading, rewrites with regular expressions, the places that throw
    (rejections outside the grammar), and the values that depend on the browser
    rather than on the text, such as `window.CSS` or `document` (sequence: the
-   colour of a box). Such a value is not decided by the tree; tell tests, whose
-   `docs/db-from-tree/<diagram>.md` says that it is supplied from outside, as a
-   site configuration is.
+   colour of a box). Such a value is not decided by the tree:
+   `docs/db-from-tree/<diagram>.md` of `@mmd-toolkit/tests` says that it is
+   supplied from outside, as a site configuration is, and is written with the
+   steps of the tests SKILL.
 4. Check the order of the preprocessing (Reading a source in common.md) and the
    detection (detection.md).
 
@@ -479,7 +480,8 @@ Write `docs/diagrams/<diagram>.md` and its `.ja.md` with the four sections of
 
 The Db summary of a diagram type and how it is built from the tree are documents
 of `@mmd-toolkit/tests` (`docs/db-summaries.md` and
-`docs/db-from-tree/<diagram>.md`), written by tests; tell tests what they need.
+`docs/db-from-tree/<diagram>.md`); what they need is written there with the
+steps of the tests SKILL.
 
 ### 3.3 Adding the nodes of the tree
 
@@ -521,10 +523,11 @@ Use the diagram names and node prefixes defined by
    mermaid.js reads it (Nodes and Tokens in ast.md): a sequence title, a class
    generic type, and a flowchart style after its `,` keep their whitespace. Only
    where no token can hold what mermaid.js reads, because it runs across other
-   nodes, say why in the field's description in `ast/<diagram>.md`, and tell
-   tests, whose `docs/db-from-tree/<diagram>.md` says that the Db reads it from
-   the source. Flowchart example: the whitespace between the empty description
-   blocks right after the name of a subgraph.
+   nodes, say why in the field's description in `ast/<diagram>.md`;
+   `docs/db-from-tree/<diagram>.md` of `@mmd-toolkit/tests` says that the Db
+   reads it from the source, written with the steps of the tests SKILL.
+   Flowchart example: the whitespace between the empty description blocks right
+   after the name of a subgraph.
 
 ### 3.4 Matching claims with fixtures
 
@@ -680,10 +683,10 @@ each check in the output (3.6).
    summary, tally over all fixtures of the diagram type the three cases: the key
    is missing, the value is empty, the value is set. Each case that occurs is
    explained, with a fixture, by a sentence of `docs/db-from-tree/<diagram>.md`
-   of the tests package; a case that no sentence explains goes to tests. Look in
-   the Db class for what is set only on the first visit, what accumulates, and
-   what an update leaves as it was (`Object.assign` keeps the keys that the new
-   object does not have).
+   of the tests package; a sentence for a case that no sentence explains is
+   written with the steps of the tests SKILL. Look in the Db class for what is
+   set only on the first visit, what accumulates, and what an update leaves as
+   it was (`Object.assign` keeps the keys that the new object does not have).
 8. **What the Db reads beyond the values.** The tree holds what changes the Db:
    as values (whitespace that mermaid.js reads, also a value that is all
    whitespace), as null elements of a list (an empty item between `,`), or as

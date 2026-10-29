@@ -17,7 +17,7 @@
         "sourceFrames": [],
         "data": {
           "kind": "block",
-          "value": "{\n/* block */\n// line\n}\n"
+          "value": "{\n%% percent\n/* block */\n// line\n}\n"
         }
       }
     ]

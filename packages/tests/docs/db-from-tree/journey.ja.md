@@ -13,13 +13,13 @@ journey 図の木から Db の要約を作る手順です。
 mermaid.js は、構文解析の間に Db を作ります。
 文法は、文が終わるたびに Db のメソッドを呼びます。
 出典は
-[`statement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison#L60-L67)
+[`statement`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison#L60-L67)
 です。
 Db は、メソッドに渡されたものを保ちます。
 出典は
-[`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)、
-[`addSection`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L26-L29)、
-[`setDiagramTitle`、`setAccTitle`、`setAccDescription`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L16-L30)
+[`addTask`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)、
+[`addSection`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L26-L29)、
+[`setDiagramTitle`、`setAccTitle`、`setAccDescription`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/commonDb.ts#L16-L30)
 です。
 要約も同じように作ります。
 文を出現順に実行し、Db が持つ列がそのまま要約です。

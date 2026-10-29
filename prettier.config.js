@@ -14,7 +14,7 @@ export default {
       // and with "always" it joins the lines of Japanese text that are written
       // apart. So the line breaks of the Japanese documents are kept as their
       // authors write them.
-      files: ["*.ja.md", "tmp/*.md"],
+      files: ["*.ja.md"],
       options: { proseWrap: "preserve" },
     },
   ],

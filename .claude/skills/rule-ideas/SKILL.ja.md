@@ -155,7 +155,7 @@ description:
 | `link A: Dash@https://x.example`（ラベルが `Das` になる）                                                                                                                                 | mermaid の不具合のように見える。空白が 1 つないだけで、ラベルの最後の文字が落ちる。事実: 文書は `<ラベル> @ <URL>` の形だけを示す                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | `subgraph a `（行末の空白で id が subGraph0 になる）                                                                                                                                      | mermaid の不具合のように見える。見えない行末の空白で id が変わる。事実: 保守者は [#3252](https://github.com/mermaid-js/mermaid/issues/3252)（closed。Type: Bug / Error、Status: Approved、P1）で不具合と認めており、12.0.0 でも起きる                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | `class 1A:::c`（数字で始まる名前）、`class C` より前の `style C fill:red`、CSS クラス `foo` に効く `classDef fo`                                                                          | この道具の範囲の外。CSS クラスやスタイルが付くかどうかは描かれた図にしか現れず、この道具は図を描かない。mermaid の不具合かどうかは判定せず、mermaid にも報告しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `` class `a~b` ``（id `a`、型 `b`。図では `a<b>`）                                                                                                                                        | 文書から見て mermaid の不具合。バッククォートは特別な文字を逃がすとされる（[syntax/classDiagram.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/classDiagram.md#L161-L168)）が、その中の `~` も総称型を始める。ふつうの書き方ではまれ                                                                                                                                                                                                                                                                                                                                              |
+| `` class `a~b` ``（id `a`、型 `b`。図では `a<b>`）                                                                                                                                        | 文書から見て mermaid の不具合。バッククォートは特別な文字を逃がすとされる（[syntax/classDiagram.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/classDiagram.md#L161-L168)）が、その中の `~` も総称型を始める。ふつうの書き方ではまれ                                                                                                                                                                                                                                                                                                                                              |
 | `class A~T~` の後の `note for A~T~ "x"`（総称型つきで書いたクラスへのノート）                                                                                                             | mermaid の不具合のように見える。ノートは名前 `A~T~` を持ち、クラスは `A` なので、線なしで描かれる。`note for A "x"` ならクラスが見つかる                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | `+foo(a(b)) int`（Db ではメソッドの名前が `foo(a`、引数が `b)`）                                                                                                                          | 利用者に見える誤りがない。描かれた図は `+foo(a(b)) : int` を示す                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `A x-->B`、`A o-- t -->B`（始まりの印が終わりの印と違う）                                                                                                                                 | mermaid の不具合で、すでに認められている。mermaid-js/mermaid#1665（Open、Approved）が、両端の印が違う矢印は動かないとしている。`A x-->B` は長いふつうの矢印、`A o-- t -->B` はふつうの矢印として描かれる                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
@@ -176,7 +176,7 @@ description:
 | requirement の図で、本体の中の `id: 1 %% note`（id が `1 %% note` になる）                                                                                                                | 構文を知らないことから起きる。mermaid.js の文書は、コメントを行にひとりで書くと言う。flowchart の `subgraph S %% group` と同じ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | mindmap の図で、その前に最後に書いたノードより浅い icon の行（`root`、`  child` の後、`root` の字下げの `::icon(x)`。icon は `child` に付く）                                             | 整形で見える。フォーマッターは icon の行を `child` の字下げで印字する                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | mindmap の図で、前の段の間の字下げのノード（`root`、`    a`、`      b`、`     c` で、`c` が `a` の子になる）                                                                              | mermaid.js の文書が「Unclear indentation」でこの読み方を説明し、字下げは書き手の意図を示さない。規則は意図した書き方も報告することになる                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| 複数行のコメントアウトの中の `%%` だけの行（頂点 `%%`）                                                                                                                                   | mermaid.js は、その行をエラーなしに id `%%` の頂点として描く。flowchart の文書が定める「コメントの始まりから次の改行までの文字」（[syntax/flowchart.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L1217-L1219)）のコメントと読むなら、頂点は mermaid.js の不具合であり、上の理由で規則にしない（[#7008](https://github.com/mermaid-js/mermaid/pull/7008) が open）。その文書の範囲外の書き方と読むなら、`%%` は文法どおりに頂点 `%%` を作り、何も失われず、誤りと言うにはコメントのつもりだったという推定が要る。どちらの読みでも、推定なしに誤りと言える事実がない |
+| 複数行のコメントアウトの中の `%%` だけの行（頂点 `%%`）                                                                                                                                   | mermaid.js は、その行をエラーなしに id `%%` の頂点として描く。flowchart の文書が定める「コメントの始まりから次の改行までの文字」（[syntax/flowchart.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/flowchart.md#L1217-L1219)）のコメントと読むなら、頂点は mermaid.js の不具合であり、上の理由で規則にしない（[#7008](https://github.com/mermaid-js/mermaid/pull/7008) が open）。その文書の範囲外の書き方と読むなら、`%%` は文法どおりに頂点 `%%` を作り、何も失われず、誤りと言うにはコメントのつもりだったという推定が要る。どちらの読みでも、推定なしに誤りと言える事実がない |
 | mindmap の図で、ノードの行の `Write ::icon(fa fa-book)` や `Write:::urgent`                                                                                                               | mermaid.js はどちらも文法どおりに読み、何も失わない。前者は、`X(Foo)` が `X` でなく `Foo` を表示するのと同じく、ラベル `fa fa-book` を持つノード `Write ::icon` であり、後者はラベル `Write:::urgent` である。どちらを誤りと言うにも、icon や class のつもりだったという推定しか根拠がない                                                                                                                                                                                                                                                                                                                                                                  |
 | timeline の図で、年の中の `#`（`Sprint #3 : planning` は年 `Sprint ` とコメント `#3 : planning` になり、出来事が失われる）                                                                | 上の理由による mermaid.js の不具合。mermaid.js の timeline の文書は年と出来事を「simple text」と言い、`#` のコメントを挙げず、それを保つほかの書き方も示していない（実体 `#35;` は flowchart の文書にしかない）。事実: [#5356](https://github.com/mermaid-js/mermaid/issues/5356)（closed、Type: Bug / Error）は、`#` がコメントを始めると報告している                                                                                                                                                                                                                                                                                                      |
 | timeline の図で、自分の年のない section の後の出来事の行（`section B` の後の `: y`。`y` は前の section の最後の年に付く）                                                                 | mermaid.js は文法どおりに読み、何も失わない。誤りと言うには、section B のための出来事だったという推定が要る。`section 2020 : a` も同じで、section `2020 ` と、前の年の出来事になる                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
@@ -314,8 +314,8 @@ description:
 | wardley で、コメントの後や本体の中の YAML のブロックと、空か記号だけの指示子                                                                                                              | 上の pie と同じ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | Event Modeling の図で、mermaid.js の validator が禁じる型の source と、自分を source として名指すフレーム                                                                                 | 何も失われない。関係は書いたとおりに描かれる。mermaid.js の公開の parse は validator を走らせず、それが禁じる組は方法論の規則である（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | Event Modeling の図で、後に宣言したフレームを名指す source（関係は描かれない）                                                                                                            | 文書は番号の順は関係ないと述べ、書き手がフレームの順に逆らう関係のつもりかは分からない。そのつもりなら、mermaid.js が不具合として失う（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| Event Modeling の図で、2 度書いたフレームの番号（後のフレームの関係は最初の箱へ行く）                                                                                                     | reset frame や関係を得ないフレームは何も失わず、それを見分けるには描画のスイムレーンと推した関係が要り、木はそれを持たない（実行）。固定版より後の mermaid.js は繰り返しを受理しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| Event Modeling の図で、reset frame の source（正しくてもどれも描かれない）                                                                                                                | mermaid.js の不具合であり、固定版より後で直った                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| Event Modeling の図で、2 度書いたフレームの名前                                                                                                                                           | 一方が reset frame でも、mermaid.js がエラーを出す（`setAst` を読んだ。実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| Event Modeling の図で、データブロック、note のブロック、`accDescr` のブロックの中のコメント行（その文字として残る）                                                                       | 上の agentflow と同じく mermaid.js の不具合である。ほかの図種の文書はコメント行が無視されると書き、mermaid.js が Event Modeling の図をコメント行ごと読むのは、元のテキストでの位置を報告するためだけである（`Diagram.ts` を読んだ）。説明を置き換えるところでは、eventmodeling-no-duplicate-description がそうしたブロックを報告する                                                                                                                                                                                                                                                                                                                        |
 | Event Modeling の図で、`entity`、`note`、`gwt`、それが参照する名前、`title`（正しくてもどれも描かれない）                                                                                 | mermaid.js の不具合である。描画は文法の全体を実装していない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | Event Modeling の図で、逆引用符の中のデータの型、読めない JSON、公開する値に残る `accTitle:` や `accDescr`                                                                                | 文書は、描画がどのデータの型も特別に扱わないと述べる。値の中のキーワードは mermaid.js の不具合である（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | Event Modeling の図で、インラインのデータの最後の文字が失われることと、引用符のインラインのデータが空に描かれること                                                                       | mermaid.js の不具合である。書き手は正しいデータを書く                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
@@ -743,6 +743,7 @@ mermaid.js はそのテキストも捨てるので、報告は事実であり（
 | flowchart-no-redefined-vertex               | 入れる   |                                                                          |
 | flowchart-no-undef                          | 入れる   |                                                                          |
 | flowchart-no-duplicate-direction            | 入れる   |                                                                          |
+| flowchart-no-redefined-subgraph             | 入れる   |                                                                          |
 | no-unclosed-directive                       | 入れる   |                                                                          |
 | no-invalid-init-directive                   | 入れる   |                                                                          |
 | no-duplicate-init-key                       | 入れる   |                                                                          |
@@ -1109,11 +1110,42 @@ subgraph の方向を置き換える（`flowchart`、`flowchart-elk`、
 最初のものの方向で 1 つとして描かれる（`getData` を読んだ）。
 `getData` は、subgraph を最後のものから最初のものの順にレイアウトに与え、
 レイアウトは id ごとに 1 つの節点を保つ。
-そのため、Db は両方を保つが、後のものの違う方向は失われ、報告する。
+そのため、後のものの違う方向は失われ、報告する。
+Db は、同じ id の宣言を最初のものに合わせ、最初のものがその題、方向、
+位置を保つ（`addSubGraph` を読んだ。実行）。
 文書が言うとおり、`TD` と `TB` は 1 つの方向である。
 (2) なし。
 (3) 上の方向の規則の検索。
 (4) subgraph ごとに `direction` 文を 1 つ書く。
+
+flowchart-no-redefined-subgraph: (1) 同じ subgraph の id の宣言は、
+最初のものに合わさる。
+最初のものがその題、方向、位置を保つので、
+後の宣言に書いた題は失われる（`addSubGraph` を読んだ。実行）。
+`subgraph S [One]` と `subgraph S [Two]` は、
+両方のメンバーを持つ題 `One` の subgraph `S` 1 つになり、
+`subgraph S` と `subgraph S [Two]` は題 `S` の 1 つになる。
+(2) なし。
+題のない後の宣言と、subgraph が持つ題と同じ題の後の宣言は、メンバーを足し、
+何も失わない。
+subgraph が持つ題は、最初の宣言に書いた題、その宣言が題を書かないときは、
+それが書く名前である。
+mermaid.js はその名前を題として示し、
+mermaid.js が生成する id ではない（実行。`subgraph S` は題 `S` を持ち、
+id が `subGraph0` になる `subgraph a b` は題 `a b` を持つ）。
+題は、flowchart-no-redefined-vertex のラベルと同じく、書いたとおりに比べる。
+fixture: `subgraph a b` の後の `subgraph subGraph0 [a b]`（報告しない。題は
+`a b` のまま）と、
+`subgraph a b` の後の `subgraph subGraph0 [subGraph0]`（報告する。`subGraph0`
+が失われる。実行）。
+(3) 「duplicate subgraph」「subgraph same id」「subgraph redeclare」「subgraph
+title overwritten」。
+[#8326](https://github.com/mermaid-js/mermaid/issues/8326)（closed）と
+[#8337](https://github.com/mermaid-js/mermaid/pull/8337)（merged、
+固定版に入っている）は、dagre と 11.x と同じく、
+どのレイアウトでも宣言を合わせる。
+そのため、メンバーを足すために subgraph をもう一度書くのは、1 つの書き方である。
+(4) 題を最初の宣言に書くか、別の id を使う。
 agentflow-no-duplicate-direction も同じ事実を報告する。
 
 class-no-redefined-class: (1) 前のラベルは失われる。
@@ -1197,6 +1229,10 @@ Type: Bug / Error）は、 `#` が sequence 図のテキストを空にすると
 sequence-no-link-without-separator: (1) ラベルは最後の 2 文字を失い、
 `link A:` は空のリンクを与える。
 (2) なし。
+`link->>B: x` のように参加者の id に使った `link` はメッセージで、
+リンクの文ではないので報告しない（`packages/spec/docs/diagrams/sequence.ja.md`
+の文の文脈の規則 11。`link` がキーワードになるのは、後に空白かタブと、
+`/\+()<>:,;-` と空白のほかの文字が続くときだけである）。
 (3) 「link @ sequence menu」「link sequence」。
 (4) 文書は `label @ url` の形を挙げている。
 
@@ -1795,7 +1831,7 @@ parent」「gitGraph message」「gitGraph tag」「gitGraph title」で、
   その入力は黙って受理される。
   [#7441](https://github.com/mermaid-js/mermaid/pull/7441) が警告を足した
   flowchart-no-undef と同じである。
-  [文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md#L481-L500)
+  [文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/gitgraph.md#L481-L500)
   の鉄道の例は `commit id:"Boston"` を 2 度書き、 2 つ目が 1 つ目を置き換える。
   これは #4838 が報告した振る舞いであり、文書が意図して示す書き方ではない。
   (2) なし。
@@ -1876,7 +1912,7 @@ min max」「radar title」「radar accDescr」「radar axis」で、
   すべての軸を数え、軸の名前を持つ曲線はほかの規則に任せる。
   (4) 軸ごとに値を 1 つ与える。
 - radar-no-duplicate-option: (1) オプションごとに最後の値が使われる（読んだのは
-  [`setOptions`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L93-L117)
+  [`setOptions`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/db.ts#L93-L117)
   で、実行して確かめた）。
   (2) なし。
   もう一度与えた同じ値は報告せず、 mermaid.js は輪を 32 までしか描かないので、
@@ -1946,7 +1982,7 @@ cynefin の規則の注は次のとおりである。
 読み方を変えるものはなかった。
 [#7922](https://github.com/mermaid-js/mermaid/pull/7922)（open）は、
 枠組みの中心と境界を変え、
-領域の保ち方と共通の値はそのままにする（下書きのセッションがその変更を読んだ）。
+領域の保ち方と共通の値はそのままにする（その変更を読んだ）。
 
 - cynefin-no-redefined-domain: (1) Db は領域の項目をその名前の下に、
   前に保った項目の上から保つので、
@@ -2020,11 +2056,11 @@ Event Modeling の規則の注は次のとおりである。
 accTitle」「eventmodeling data block」「eventmodeling source
 frame」「eventmodeling duplicate」で、読み方を変えるものはなかった。
 [#8288](https://github.com/mermaid-js/mermaid/issues/8288)（closed）と、
-[#8296](https://github.com/mermaid-js/mermaid/pull/8296)（固定版より後に
-merge）は、 reset frame の source に関するものである。
+[#8296](https://github.com/mermaid-js/mermaid/pull/8296)（merged、
+固定版に入っている）は、reset frame の明示した source を描く。
 [#8287](https://github.com/mermaid-js/mermaid/issues/8287)（closed）と、
-[#8297](https://github.com/mermaid-js/mermaid/pull/8297)（固定版より後に
-merge）は、 2 度書いたフレームの番号を受理しない。
+[#8297](https://github.com/mermaid-js/mermaid/pull/8297)（merged、
+固定版に入っている）は、2 度書いたフレームの名前を受理しない。
 [#7935](https://github.com/mermaid-js/mermaid/issues/7935)（open）は、
 インラインのデータの最後の文字に関するものである。
 [#8290](https://github.com/mermaid-js/mermaid/issues/8290)（open）は、
@@ -2039,8 +2075,12 @@ merge）は、 2 度書いたフレームの番号を受理しない。
   を読んだ。実行）。
   (2) なし。
   後に宣言したフレームやブロックも数え、名前は書いたとおりに比べ、
-  reset frame の source と `note` と `gwt` が名指すフレームは、
-  mermaid.js がどれも描かないので調べない。
+  `note` と `gwt` が名指すフレームは、mermaid.js がどれも描かないので調べない。
+  reset frame の source は time frame のものと同じく調べる。
+  mermaid.js は、フレームを名指す明示した source からは関係を描き、
+  どのフレームも名指さない source
+  からは描かないからである（`decidePositionRelation` を読んだ）。
+  source のない reset frame は関係を推さない。
   インラインのデータのある参照も、参照が効果を持たず何も名指さないので報告する。
   (4) 名前を直す。
 - eventmodeling-no-redefined-data: (1)
@@ -2049,7 +2089,9 @@ merge）は、 2 度書いたフレームの番号を受理しない。
   を読んだ。実行）。
   (2) なし。
   どのフレームも参照しない名前と同じ中身は報告せず、データの型は比べない。
-  mermaid.js は空白と行を書いたとおりに示すので、中身は書いたとおりに比べ、
+  mermaid.js は空白と行を書いたとおりに示すので、
+  中身はコメント行も含めて書いたとおりに比べ（mermaid.js
+  はブロックの値にコメント行を保つ。実行）、
   後の空のブロックも空白の違いも報告し、文字参照は文書が述べる限界である。
   (4) 中身ごとに名前を与える。
 - eventmodeling-no-duplicate-title、
@@ -2063,12 +2105,24 @@ merge）は、 2 度書いたフレームの番号を受理しない。
   文字は共通の helper で語として比べるので、
   1 つの文字の行の形とブロックの形は 1 つの説明であり、
   mermaid.js が値にキーワードを保つことは比べない。
+  ブロックの中のコメント行は説明の文字であり、一緒に比べる。
+  そのため、コメント行だけのブロックはその行を説明にする。
+  `accDescr: First` の後では、そのブロックがそれを置き換え、
+  後の `accDescr: Second` がブロックを置き換え、どちらも報告する（実行）。
   mermaid.js は `title` を描かないので、それは比べない（実行）。
   (4) 文は 1 つにする。
 - eventmodeling-no-empty-description-block: (1) ブロックは `accDescr {}`
   のような文の文字を説明として設定し、前の説明を取り除く（実行）。
   (2) なし。
-  ほかの図種と同じく、コメントを入れたブロックは報告しない。
+  コメント行を持つブロックは報告しない。
+  mermaid.js はコメント行を説明の文字として保つので（実行）、
+  ブロックは空でないからである。
+  `accDescr` とその `{` の間のコメント行は拒まれ、
+  その形はこの規則の入力にならない。
+  そのことは `packages/spec/docs/diagrams/eventmodeling.ja.md`
+  の共通の文が書いている。
+  `accDescr {} %% later` のように行で `}` の後にあるコメントはコメントであり、
+  報告を防がない（実行）。
   (4) 説明を書くか、ブロックを取り除く。
 - eventmodeling-no-unclosed-description-block: フレームのインラインのデータは、
   その行に `}` を持つので、閉じ忘れたブロックはそれに閉じられ、
@@ -2076,6 +2130,18 @@ merge）は、 2 度書いたフレームの番号を受理しない。
   規則はそれを usecase の規則の条件で報告し、同じ理由で有効にしない。
   データブロックの `}` は行に単独であり、
   それが閉じるブロックは報告しないことを文書が述べる。
+  usecase と同じく、コメント行の中の `{` は数えない。
+  書き手は、
+  後の `}`
+  が閉じるものをコメントで開くつもりはないからである（`accDescr { first`、
+  `%% see {x`、`second }`、インラインのデータを持つフレームの順では、
+  `second }` で閉じ、フレームは書いたとおりに読まれる。報告しない。実行）。
+  usecase と違い、コメント行の中の `}` はブロックを閉じる。
+  コメント行はブロックの文字だからである（`accDescr { first`、`%% note }`、
+  フレームの順では、説明はその `}` までになり、
+  フレームは書いたとおりに読まれる。実行）。
+  そうしたブロックは、後の何も取らないので報告しない。
+  説明に残るコメントの文字は、上の表の不具合である。
 
 ツリービューの規則の注は次のとおりである。
 検索は「treeView」「treeview annotation」「treeview icon」「treeview
@@ -2225,8 +2291,8 @@ mermaid.js がそれをつもりどおりに読む。
 何を見えるようにしうるか、規則が提案を付けない理由、
 それを説明する mermaid.js のソースへのパーマリンクは、この節に記録する。
 実装はこの記録に従い、規則のテストがそれを確かめる。
-読み方は、mermaid 12.0.0 で、
-各規則の invalid の fixture について確かめた（実行）。
+読み方は、mermaid 12.0.0 で各規則の invalid の fixture について確かめ、
+12.2.0 が違う読み方をするところは、固定版の 12.2.0 で確かめた（実行）。
 
 ### 書き換えの種類
 
@@ -2271,8 +2337,8 @@ fixture: 上の sankey の値（出さない）と、
   そこでは、行でその文の後に何もないとき、その文を、前の空白とタブと一緒に、
   行終端を除いて行末まで消す。
   後に `%%` があるときは出さない。
-  2 つの規則の invalid の fixture にある、そうした文 51 個をそう消すと、
-  どれもパーサーと mermaid.js が受理し、
+  規則の invalid の fixture と eventmodeling のコーパスにある、
+  そうした文 102 個をそう消すと、どれもパーサーと mermaid.js が受理し、
   mermaid.js はタイトルと説明のほかを前と同じに読む（実行）。
   fixture: ヘッダーの後（出す）、frame の後（出す）、
   後にコメントがあるもの（出さない）。
@@ -2324,10 +2390,11 @@ fixture: 上の sankey の値（出さない）と、
   行の始めのブロックは拒否される（実行）。
   ただし `---` のブロックの後では行を独り占めし、文の条件が当たる。
   そこでは、ブロックを行で前にある空白とタブと一緒に消し、後にあるものは残す。
-  この規則の invalid の fixture、eventmodeling のコーパス、
-  問いから書いた入力（ヘッダーの後、frame の後、後に frame、`accTitle:`、
-  コメントがあるもの、テキストの終わり、行をまたぐブロック）にある、
-  そうしたブロック 19 個をそう消すと、どれもパーサーと mermaid.js が受理し、
+  規則の invalid の fixture と eventmodeling のコーパスにある 16 個と、
+  問いから書いた 5 つの入力（ヘッダーの後、frame の後、後に frame、`accTitle:`、
+  コメントがあるもの、テキストの終わり、
+  行をまたぐブロック）のブロックをそう消すと、
+  どれもパーサーと mermaid.js が受理し、
   mermaid.js は説明のほかを前と同じに読む（実行）。
   fixture: それだけの行の空のブロック（出す）と、eventmodeling のほかで、
   行で文の後にあるもの（出さない）。
@@ -2438,6 +2505,8 @@ fixture: 上の sankey の値（出さない）と、
   ありうる直しは新しい id である（基準 1）。
   flowchart-no-undef は提案を付けない。
   どの id のつもりかが分からない（基準 1）。
+  flowchart-no-redefined-subgraph は提案を付けない。
+  ありうる直しは 1 つの題か別の id である（基準 1）。
 - flowchart、agentflow、usecase: 3 つの `<diagram>-no-duplicate-direction` は、
   この文か、方向が違う相手の文を消す（flowchart の、
   同じ id の後の subgraph では、最初の subgraph の最後のもの）。

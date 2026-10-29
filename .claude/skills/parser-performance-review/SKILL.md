@@ -33,10 +33,10 @@ itself create an exception. Use the authorization for the current review, and do
 not ask again for an exception already granted for it.
 
 Keep unconfirmed probes and logs outside the working tree. Write confirmed
-reports to the requested location, normally `tmp/review`. This reporting request
-does not authorize production fixes, fixture changes, commits, or staging
-changes. Record the source state used for measurements, including relevant local
-changes; another task's edits can invalidate an earlier result.
+reports to the location that the request names. This reporting request does not
+authorize production fixes, fixture changes, commits, or staging changes. Record
+the source state used for measurements, including relevant local changes;
+another task's edits can invalidate an earlier result.
 
 ## Find candidates from the actual parsing path
 
@@ -109,13 +109,13 @@ Db comparisons, warm-up, assertions, sorting, and logging stay outside timing.
 Do not substitute direct internal-helper calls, monkey patches, work counters,
 or arbitrary operation budgets for a complete-diagram runtime reproduction.
 
-Run performance measurements serially, coordinating with other agents and
-avoiding competing heavy checks. Keep every sample, the median, size-to-size
-ratios, total UTF-16 source length, the growing dimensions, runtime version,
-pinned Mermaid version, command, source entry or built entry, and nondefault
-options. Distinguish validation-helper stack requirements from parser behavior.
-Setting a validation option does not prove that the API enforces it or that it
-was needed for acceptance; check that path before claiming either effect.
+Run performance measurements serially, while no other heavy check runs on the
+machine. Keep every sample, the median, size-to-size ratios, total UTF-16 source
+length, the growing dimensions, runtime version, pinned Mermaid version,
+command, source entry or built entry, and nondefault options. Distinguish
+validation-helper stack requirements from parser behavior. Setting a validation
+option does not prove that the API enforces it or that it was needed for
+acceptance; check that path before claiming either effect.
 
 Analyze repeated work in the source independently of the timings. Finite ratios
 are not an asymptotic proof and need not be exactly four when input doubles.
@@ -209,10 +209,10 @@ another benchmark if the complete input values and measurement logic are
 verified unchanged.
 
 Check English/Japanese correspondence, local source links, invisible characters,
-Japanese width, and formatting. Tools may ignore `tmp/review`; explicitly check
-the report files without changing tracked check configuration. Run checks
-appropriate to the actual changes, not an unrelated package suite for
-report-only work.
+Japanese width, and formatting. A check can skip the location of the report;
+then check the report files explicitly, without changing tracked check
+configuration. Run checks appropriate to the actual changes, not an unrelated
+package suite for report-only work.
 
 Notify the user as each finding is complete, with its report link and a concise
 statement of the executed evidence. Keep unconfirmed candidates and unmeasured
@@ -237,12 +237,12 @@ establish the reason for a particular notice or confirm a false positive.
   continued without interruption. Do not promise to prevent the notice or keep
   working uninterrupted.
 - Preserve completed reports, raw samples, commands, source state, and the last
-  verified step. On resumption, inspect saved files, log completion, owned
-  execution sessions, and other agents' measurement status before retrying.
-  Compare current inputs and source with the recorded state. Continue the
-  original authorized review, with incomplete checks marked pending. Partial
-  output is not completed evidence; avoid starting a duplicate benchmark while
-  an earlier run is still active.
+  verified step. On resumption, inspect saved files, log completion, and the
+  measurements still running on the machine before retrying. Compare current
+  inputs and source with the recorded state. Continue the original authorized
+  review, with incomplete checks marked pending. Partial output is not completed
+  evidence; avoid starting a duplicate benchmark while an earlier run is still
+  active.
 - Do not promise that changing models will clear the notice or grant Daybreak
   access;
   [approval has its own requirements](https://learn.chatgpt.com/docs/cyber-safety#trusted-access-for-cyber).

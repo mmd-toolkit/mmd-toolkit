@@ -16,14 +16,17 @@ eventmodeling/validator-command-invalid]
 
 1. **Converted source.** Use the shared
    [converted form](../db-from-tree.md#the-converted-form) for the supplied
-   source and tree: omit common directives, comment regions and selected
-   semicolons; normalize CR/CRLF, convert source-wide HTML attribute quotes
-   after real frontmatter, and retain entity placeholders. Read name segments
-   separately and join qualified names with dots. Native ignored forms do not
-   publish configuration. [fixture: eventmodeling/entity-texts] [fixture:
-   eventmodeling/entity-common] [fixture: eventmodeling/html-common] [fixture:
-   eventmodeling/line-block-values] [fixture:
-   eventmodeling/space-qualified-name] [fixture:
+   source and tree: omit common directives and selected semicolons, and the
+   comment regions only when the source is longer than `maxTextSize` (comment
+   lines are otherwise left in the text, as for agentflow; those outside any
+   value are shared Comments, and those inside a block value, a note, an
+   `accDescr {…}` or a hidden form are part of its text); normalize CR/CRLF,
+   convert source-wide HTML attribute quotes after real frontmatter, and retain
+   entity placeholders. Read name segments separately and join qualified names
+   with dots. Native ignored forms do not publish configuration. [fixture:
+   eventmodeling/entity-texts] [fixture: eventmodeling/entity-common] [fixture:
+   eventmodeling/html-common] [fixture: eventmodeling/line-block-values]
+   [fixture: eventmodeling/space-qualified-name] [fixture:
    eventmodeling/directive-qualified] [fixture:
    eventmodeling/lex-hidden-yaml-fence-directive]
 2. **Whole common terminals.** The tree's common value fields hold payloads
@@ -32,10 +35,12 @@ eventmodeling/validator-command-invalid]
    [Common statement values](../../../spec/docs/ast/eventmodeling.md#common-statement-values)
    defines. Count that run after every common removal: spaces on both sides of a
    removed directive or selected semicolon join. For example, a selected
-   semicolon changes ` \t; accDescr: D` to ` \t accDescr: D`. A comment region
-   loses its own padding and terminating LF. A closed global directive alone, a
-   blank line and a selected semicolon leave LF; LF, LS and PS are outside the
-   horizontal run. The accepted tree already satisfies the
+   semicolon changes ` \t; accDescr: D` to ` \t accDescr: D`. When the source is
+   longer than `maxTextSize`, a comment region loses its own padding and
+   terminating LF; otherwise a comment line's own padding belongs to the comment
+   and its LF remains. A closed global directive alone, a blank line and a
+   selected semicolon leave LF; LF, LS and PS are outside the horizontal run.
+   The accepted tree already satisfies the
    [indentation conditions](../../../spec/docs/diagrams/eventmodeling.md#common-statements):
    judge LF consumption after removals, including a semicolon removal exposing
    LF directly after a native directive closer. An unselected semicolon remains
@@ -82,16 +87,16 @@ eventmodeling/validator-command-invalid]
    eventmodeling/common-whitespace] [fixture: eventmodeling/common-title-only]
    [fixture: eventmodeling/frontmatter-title] [fixture:
    eventmodeling/config-security-level-other]
-4. **Frames.** Read time/reset frame statements in declaration order, including
-   repeated names. Publish kind `time` or `reset`, the written digit name,
-   unchanged modelEntityType spelling and joined qualified entityIdentifier.
-   Publish sourceFrames as a lexically sorted set of the written digit names; do
-   not resolve missing, forward or self references. Leading zeros remain
-   distinct. [fixture: eventmodeling/db-frame-order] [fixture:
-   eventmodeling/db-frame-duplicates] [fixture: eventmodeling/db-all-aliases]
-   [fixture: eventmodeling/db-qualified-names] [fixture:
-   eventmodeling/db-source-order] [fixture:
-   eventmodeling/db-source-leading-zero] [fixture:
+4. **Frames.** Read time/reset frame statements in declaration order. A repeated
+   name is rejected by mermaid.js, so an accepted tree has none. [fixture:
+   eventmodeling/db-frame-duplicates] Publish kind `time` or `reset`, the
+   written digit name, unchanged modelEntityType spelling and joined qualified
+   entityIdentifier. Publish sourceFrames as a lexically sorted set of the
+   written digit names; do not resolve missing, forward or self references.
+   Leading zeros remain distinct. [fixture: eventmodeling/db-frame-order]
+   [fixture: eventmodeling/db-all-aliases] [fixture:
+   eventmodeling/db-qualified-names] [fixture: eventmodeling/db-source-order]
+   [fixture: eventmodeling/db-source-leading-zero] [fixture:
    eventmodeling/db-source-missing] [fixture: eventmodeling/db-source-forward]
    [fixture: eventmodeling/db-source-self]
 5. **Data selection and text.** Index the first data declaration of each name

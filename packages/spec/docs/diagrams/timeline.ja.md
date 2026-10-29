@@ -4,9 +4,9 @@
 
 mermaid.js の正となるソース：
 
-- [`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison)
-- [`timelineDb.js`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js)
-- [`timeline/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline)
+- [`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison)
+- [`timelineDb.js`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/timelineDb.js)
+- [`timeline/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline)
   の中のテスト（`*.spec.js`）
 
 この文書は図種 `timeline` を扱います。
@@ -17,7 +17,7 @@ mermaid.js の正となるソース：
 [detection.ja.md](../detection.ja.md) の項目 18 がこの文法を選びます。
 テキストが、空白の後、
 ちょうどこの大文字小文字の `timeline` で始まるときです（mermaid.js の
-[`detector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/detector.ts#L9-L11)）。
+[`detector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/detector.ts#L9-L11)）。
 `Timeline` と `TIMELINE` はどの検出器にも合いません。
 [fixture: timeline/db-header-only] [fixture: timeline/header-indented]
 [fixture: timeline/header-after-blank-lines]
@@ -776,7 +776,7 @@ timeline/lex-hash-before-percent]
 二重引用符の中のテキストは、`"title"` や `":"` のように、
 そのテキストが名付ける単位を表します。
 文法は
-[`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L49-L85)
+[`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L49-L85)
 の文法を言い直したもので、同じ単位の並びを受理します。
 ただし、mermaid.js がトークンを読まない空の説明ブロックは除きます。
 [空の説明ブロック](#空の説明ブロック) を参照してください。
@@ -951,7 +951,7 @@ period、event、タイトルのテキスト、section のテキストの中で�
 
 mermaid.js の Db は 1 種類の入力で例外を投げ、それは拒否されます。
 最初の period より前の event の文で、
-[`addEvent()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L65-L70)
+[`addEvent()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L65-L70)
 がそれを与える period を持たないからです。
 そのため、ヘッダー直後の `: e`、`timeline : b` と `timeline: x`、
 `timeline TD: x`、period のないタイトルや section の後の `: e`、

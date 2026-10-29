@@ -13,10 +13,11 @@
  * `JSON.stringify(root, null, 2)`, locations included, in `ast.json`; for an
  * input that it rejects, the `message`, `range`, and `loc` of the
  * `ParseError`, in `parse-error.json`; for a diagram type that it does not
- * support yet, neither. Outside CI a missing file is written; `vitest -u`
- * (`pnpm run test:update`) writes the files anew. Only this test writes
- * these two files; the other files of a fixture belong to
- * `@mmd-toolkit/tests`.
+ * support yet, neither. A missing file fails the test (`update: "none"` in
+ * `vitest.config.ts`); `vitest --update=new` (`pnpm run test:record`) writes
+ * the missing files, and `vitest -u` (`pnpm run test:update`) writes the
+ * files anew. Only this test writes these two files; the other files of a
+ * fixture belong to `@mmd-toolkit/tests`.
  *
  * The parser does not tell a known divergence apart; the `knownDivergence`
  * mark of a fixture alone decides what acceptance is expected.

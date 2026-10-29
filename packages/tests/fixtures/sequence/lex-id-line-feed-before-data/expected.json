@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "diagrams/sequence.md, The id context, rule 4: the id `A` is read, and no rule of the id context reads the line feed before `@{`; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...iagramparticipant A@{ \"type\": \"queue\" \n----------------------^"
+  }
+}

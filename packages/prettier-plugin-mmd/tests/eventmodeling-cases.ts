@@ -96,12 +96,12 @@ export const eventmodelingCases: readonly EventmodelingCase[] = [
     output: "eventmodeling accTitle: A\u00a0\ufeff\u3000\n",
   },
   {
-    name: "eventmodeling/comments/comment-region-ls-join-unchanged",
+    name: "eventmodeling/comments/comment-after-ls-gap-ends-at-lf",
     input:
       "eventmodeling tf 01 evt Alpha\u2028%% common region\n rf 02 cmd Beta",
     options: {},
     output:
-      "eventmodeling\n  tf 01 evt Alpha\u2028%% common region\n rf 02 cmd Beta\n",
+      "eventmodeling\n  tf 01 evt Alpha %% common region\n  rf 02 cmd Beta\n",
   },
   {
     name: "eventmodeling/comments/ps-native-line-comment-remains-owned",

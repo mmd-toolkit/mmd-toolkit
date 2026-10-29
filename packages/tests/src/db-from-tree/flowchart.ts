@@ -283,6 +283,9 @@ class FlowchartDbBuilder {
 
   private readonly subgraphs: Subgraph[] = []
 
+  /** The number of subgraph statements applied so far, repeated ids included. */
+  private subgraphCount = 0
+
   private readonly tooltips = new Map<string, string>()
 
   private readonly clickCalls: {
@@ -618,7 +621,7 @@ class FlowchartDbBuilder {
     )
   }
 
-  /** The subgraph added last with the id `id`, if there is one. */
+  /** The subgraph with the id `id`, if there is one. */
   private lastSubgraphWithId(id: string): Subgraph | undefined {
     return lastGraphWithId(this.subgraphs, id)
   }
@@ -626,7 +629,7 @@ class FlowchartDbBuilder {
   /**
    * The class step, with ids and a class name: appended to the classes of
    * the vertex with each id, of the first edge with that id, and of the
-   * last subgraph added with that id.
+   * subgraph with that id.
    */
   private classStep(ids: readonly string[], cssClass: string): void {
     applyGraphClass(ids, cssClass, this.vertices, this.edges, this.subgraphs)
@@ -636,7 +639,7 @@ class FlowchartDbBuilder {
    * Data blocks in the Db: the next entry of `dataBlockEffects`, for the
    * data blocks `blocks` of the vertex with the id `id`, written one after
    * another, which count as one entry. Its fields are set on the subgraph
-   * added last with that id, if there is one; otherwise on the first edge
+   * with that id, if there is one; otherwise on the first edge
    * with that id, if there is one; otherwise on the vertex.
    */
   private applyDataBlocks(
@@ -810,21 +813,23 @@ class FlowchartDbBuilder {
     const members: string[] = []
     for (const inner of statement.body)
       appendItems(members, this.applyStatement(inner))
+    const { name, title } = statement
+    const nameText = this.nameTextOf(statement)
+    const id = subgraphIdOf(nameText, title !== null, this.subgraphCount)
+    this.subgraphCount += 1
     const nodes: string[] = []
     for (const member of members) {
       if (isBlank(member)) continue
       // Only the first of equal members is kept, except that every
       // `__proto__` is kept; a member that an earlier subgraph has is left
-      // out, `__proto__` included.
+      // out, `__proto__` included; a subgraph is never its own member.
       if (member !== "__proto__" && nodes.includes(member)) continue
       if (this.subgraphs.some((subgraph) => subgraph.nodes.includes(member))) {
         continue
       }
+      if (member === id) continue
       nodes.push(member)
     }
-    const { name, title } = statement
-    const nameText = this.nameTextOf(statement)
-    const id = subgraphIdOf(nameText, title !== null, this.subgraphs.length)
     const subgraph: Subgraph = {
       id,
       nodes,
@@ -848,7 +853,11 @@ class FlowchartDbBuilder {
     } else if (this.inheritDir) {
       subgraph.dir = this.direction
     }
-    this.subgraphs.push(subgraph)
+    // A subgraph with the id of an earlier one gives its members to that one,
+    // which keeps its title, direction and place.
+    const earlier = this.subgraphs.find((candidate) => candidate.id === id)
+    if (earlier === undefined) this.subgraphs.push(subgraph)
+    else appendItems(earlier.nodes, nodes)
     return id
   }
 

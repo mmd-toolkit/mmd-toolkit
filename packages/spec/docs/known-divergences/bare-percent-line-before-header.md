@@ -243,15 +243,15 @@ header.
 
 ## Why mermaid.js reads it so
 
-[`detectType()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/detectType.ts#L36-L48)
+[`detectType()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/detectType.ts#L36-L51)
 removes every `%%` that has a line break somewhere after it, with the rest of
 its line
-([`stripAnyComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L46-L73)),
+([`stripAnyComments()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/regexes.ts#L49-L76)),
 and finds the header in what is left. The lexer of the detected diagram receives
 the text from
-[`preprocessDiagram()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L58-L91),
+[`preprocessDiagram()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L58-L91),
 whose
-[`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)
+[`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)
 removes only comment lines with at least one character after the `%%`, so the
 bare `%%` lines reach the lexer. The flowchart lexer reads `%%` as an id, the
 state lexer reads `%%` as ignored text and has no rule for a `{` there, the
@@ -520,9 +520,9 @@ cynefin/retained-directive-between-bares] [fixture:
 cynefin/prefix-yaml-unicode-no-bare]
 
 The
-[pinned grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)
+[pinned grammar](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)
 and
-[public adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
+[public adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
 read the result of the common preprocessing/detection pipeline. The
 [Cynefin syntax](../diagrams/cynefin.md) states the direct rule and
 [tree](../ast/cynefin.md) retains its authored forms. [fixture:
@@ -551,7 +551,7 @@ treeview/detect-block-after-directive]
 ## The documentation of mermaid.js and its issues
 
 - The
-  [syntax reference](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
+  [syntax reference](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/intro/syntax-reference.md)
   says that line comments can ignore anything on the line after `%% `, and that
   all diagram definitions begin with a declaration of the diagram type. It says
   nothing of a line of `%%` alone.
@@ -562,7 +562,7 @@ treeview/detect-block-after-directive]
   `detectType comment`, `stripAnyComments`, and `UnknownDiagramError comment`).
 
 - The pinned
-  [C4 documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L7-L17)
+  [C4 documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/c4.md#L7-L17)
   starts its examples with a C4 header and does not describe a bare `%%` line
   before it. Searches of issues and pull requests in `mermaid-js/mermaid` on
   2026-10-21 with `C4 comment header in:title,body`,
@@ -574,7 +574,7 @@ treeview/detect-block-after-directive]
   spaces-only line before a C4 header was found.
 
 - The pinned
-  [Agentflow declaration documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/agentflow.md#L98-L108)
+  [Agentflow declaration documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/agentflow.md#L98-L108)
   starts diagrams with agentflow-beta and does not describe a non-directive
   percent-brace line before the header. Searches of issues and pull requests in
   `mermaid-js/mermaid` on 2026-10-22 with `agentflow comment in:title,body`
@@ -583,7 +583,7 @@ treeview/detect-block-after-directive]
   percent-brace line before an Agentflow header was found.
 
 - The pinned
-  [usecase documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
+  [usecase documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
   describes one statement per line. Searches of issues and pull requests in
   `mermaid-js/mermaid` on 2026-10-22 with `usecase comment` found no inspected
   report establishing a maintainer defect judgment for this acceptance behavior.
@@ -593,7 +593,7 @@ treeview/detect-block-after-directive]
   not a claim that a bug label approves a grammar change.
 
 - The pinned
-  [pie documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/pie.md)
+  [pie documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/pie.md)
   starts its examples with pie and does not describe Unicode whitespace between
   a bare percent line and the header.
   [Issue #8196](https://github.com/mermaid-js/mermaid/issues/8196) reports
@@ -601,7 +601,7 @@ treeview/detect-block-after-directive]
   establish a pie-specific maintainer defect judgment for this case.
 
 For gitgraph,
-[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md)
+[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/gitgraph.md)
 documents the header and commands. Issue/PR searches on 2026-10-23 used
 `gitGraph`, `gitGraph directive`, `gitGraph YAML`, `gitGraph semicolon`,
 `gitGraph keyword`, `gitGraph duplicate` and `gitGraph cherry-pick`. No
@@ -612,7 +612,7 @@ Status: Approved; merged
 warning. These facts do not justify any additional divergence.
 
 - Info has no dedicated syntax page. The pinned
-  [syntax reference](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
+  [syntax reference](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/intro/syntax-reference.md)
   describes diagram declarations and percent comments. Searches of issues and
   pull requests on 2026-10-23 used `info showInfo`, `info directive`,
   `info semicolon` and `info accTitle`.
@@ -622,7 +622,7 @@ warning. These facts do not justify any additional divergence.
   to reject this syntax; this section follows the existing direct rule.
 
 - The pinned
-  [packet documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
+  [packet documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
   shows single positions, ranges and relative counts; it does not define this
   preprocessing boundary. Searches of the official repository's issues and pull
   requests on 2026-10-25 used `packet bitsPerRow`, `packet fractional` and
@@ -630,7 +630,7 @@ warning. These facts do not justify any additional divergence.
   this divergence.
 
 - The pinned
-  [architecture.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L21-L175)
+  [architecture.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/architecture.md#L21-L175)
   documents the header, declarations and edges, without defining this common
   preprocessing boundary. Searches of the official issues/PRs on 2026-10-25 used
   architecture group undefined, architecture quotes title, architecture reverse,
@@ -640,7 +640,7 @@ warning. These facts do not justify any additional divergence.
   ruling on this common boundary.
 
 - Radar:
-  [radar.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/radar.md#L66-L166)
+  [radar.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/radar.md#L66-L166)
   documents axes, curves and options. The official issues/PRs were searched on
   2026-10-25 for radar directive, radar semicolon and radar entries; no
   inspected result declares the boundaries above a defect.
@@ -650,7 +650,7 @@ warning. These facts do not justify any additional divergence.
   documentation examples; it does not add grammar support for a trailing comma.
 
 - Treemap: the pinned
-  [treemap documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
+  [treemap documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
   describes quoted rows, indentation and class definitions, without defining
   this common preprocessing boundary. Searches of the official repository's
   issues and pull requests on 2026-10-25 used `treemap comment`; no inspected
@@ -659,7 +659,7 @@ warning. These facts do not justify any additional divergence.
   and was merged on 2025-06-27; it is not a ruling on this boundary.
 
 - Railroad: the
-  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
   describes the four notations, EBNF exception, ABNF semicolon comments and PEG
   predicates. It does not define native retained YAML or HTML quote context
   across frontmatter. Searches of the official repository’s issues and pull
@@ -674,7 +674,7 @@ warning. These facts do not justify any additional divergence.
   establish that no other relevant issue exists.
 
 - Wardley: the
-  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)
   shows coordinates, decorations and flows without defining this common
   boundary. Searches of the official issues and pull requests on 2026-10-26 used
   wardley directive, wardley semicolon and wardley flow.
@@ -686,9 +686,9 @@ warning. These facts do not justify any additional divergence.
   defect decision for this boundary; the existing direct rule applies. The
   search is not claimed to be exhaustive.
 - Cynefin’s
-  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)
   describes fixed domains, quoted items and labeled transitions; its
-  [notes](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)
+  [notes](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)
   state that self transitions are ignored.
   [PR #7535](https://github.com/mermaid-js/mermaid/pull/7535) added the diagram
   and was merged. On 2026-10-26, searches for cynefin parser, cynefin directive,
@@ -701,7 +701,7 @@ warning. These facts do not justify any additional divergence.
 ### Treeview
 
 The pinned
-[treeView.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277)
+[treeView.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277)
 describes indentation, quoted names, annotations and box drawing, without
 defining this common boundary. On 2026-10-26 the official issues/PRs were
 searched for `treeView quoted`, `treeView indentation`, `treeView box`,

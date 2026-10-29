@@ -68,6 +68,38 @@ Mermaid の frontmatter タイトルや、 `wrap` など Db に効く設定も�
 比較 Db がないことを明示し、Db を作り出したり、
 mermaid.js の拒否を仕様の拒否と扱ったりしません。
 
+## 入力の特殊文字
+
+入力は、構文が関わる文字を、そのまま持ちます。
+loader が読み出しで戻す escape や代わりの印にはしません。
+U+2028、U+2029、U+0085、U+00A0、U+FEFF、U+3000 と、
+`scripts/check-invisible-chars.mjs` が挙げるその他の文字、 NUL を含む制御文字、
+単独の CR と CRLF、行末の空白、末尾の改行がないことが、これに当たります。
+`expected.json` と `ast.json` は、
+それらを JSON が書くとおりに持ちます（`JSON.stringify` は U+2028 と U+2029
+をそのまま書く）。
+fixture の名前は、どの文字を扱うかを示します（たとえば `lex-nul`）。
+NUL を持つ fixture は、`git diff` では binary と表示されます。
+
+リポジトリのルートの 2 つの設定が、これらのバイトが変わらないようにします。
+`.gitattributes` の `packages/*/tests/fixtures/** -text` は、
+Git が改行を変換しないようにします。
+`.editorconfig` の fixture のディレクトリの節は、エディタが改行、末尾の改行、
+行末の空白、字下げを変えないようにします。
+`scripts/check-invisible-chars.mjs` は、このパッケージの fixture を検査せず、
+ほかはすべて検査します。
+
+理由は、入力がその文字を保てるファイルで、
+入力がファイルであるコーパスも同じにしているからです。
+test262、Babel、tree-sitter は、文字をそのままファイルに置き、
+必要なときはコードポイントを示すコメントを添えます。
+TypeScript と Prettier は、そのようなファイルをルートの設定で守ります。
+escape や代わりの印を使うのは、
+入力がプログラムやデータ形式の中の文字列であるとき（ESLint のテスト、
+html5lib-tests）、ファイルがその文字を保てないとき（CommonMark の仕様の tab、
+Git のテストの NUL）、エディタが壊すとき（yaml-test-suite）です。
+そのため loader は `input.mmd` をそのまま読み、テストはバイトを比べます。
+
 ## 名前
 
 fixture の名前は、小文字のケバブケースで `<接頭辞>-<話題>` です。

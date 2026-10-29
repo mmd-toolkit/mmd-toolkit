@@ -3,7 +3,7 @@
 英語版: [README.md](./README.md)
 
 Mermaid 記法の実装を、mermaid.js と比べてテストするための fixture と道具です。
-どの fixture も、pin した mermaid.js（`mermaid@12.0.0`）が、
+どの fixture も、pin した mermaid.js（`mermaid@12.2.0`）が、
 その入力をどう扱ったかを記録しています。
 
 mermaid-js とは関係のない、第三者のプロジェクトです。
@@ -299,7 +299,7 @@ pin した mermaid.js を Node で動かします。
 
 ## 保証と制限
 
-- どの結果も、`mermaid@12.0.0` を Node で動かした結果です。
+- どの結果も、`mermaid@12.2.0` を Node で動かした結果です。
   pin した mermaid.js が変わると、fixture を作り直したときに、
   変わった結果が `expected.json` の差分として現れます。
 - ラベルなどのテキストは、mermaid.js が HTML の無害化をする前の値です。

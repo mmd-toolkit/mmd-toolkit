@@ -168,10 +168,17 @@ things follow:
 - `vitest -u` does not update the snapshots: the tester reads `--update` from
   `process.argv`, which does not reach the workers of vitest. The script
   `test:update` deletes every `__snapshots__` directory under `tests/` and runs
-  the tests again, and the tester writes the snapshots that are missing. Run it
-  without `CI=true`.
-- With `CI=true`, a missing snapshot fails the test, and so does a snapshot that
-  no test case uses any more.
+  the tests again with `UPDATE_SNAPSHOTS=true`, and the tester writes the
+  snapshots that are missing.
+- Any other run writes no snapshot, whether it starts in the package or at the
+  root of the repository, and whatever `CI` the shell has: `tests/setup.ts` sets
+  `CI=true` for the tester unless `UPDATE_SNAPSHOTS=true`. A missing snapshot
+  fails the test. A snapshot that no test case uses any more is neither reported
+  nor removed by such a run; `test:update` drops it, because it writes every
+  snapshot again.
+- To write only the snapshots that are missing, for a case that was added, run
+  `UPDATE_SNAPSHOTS=true npx vitest run <test file>` in the package: the
+  snapshots that exist are kept and compared.
 
 The tester has three more limits, which decide where an input is tested:
 

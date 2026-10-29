@@ -149,9 +149,9 @@ read the same. [fixture: pie/frontmatter-html]
 ## Why mermaid.js reads it so
 
 mermaid.js replaces the `"` inside every tag with `'` in
-[`cleanupText`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L6-L17),
+[`cleanupText`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L6-L17),
 over the whole source, before it removes the frontmatter in
-[`preprocessDiagram`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L58-L65).
+[`preprocessDiagram`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L58-L65).
 The replacement does not know where the frontmatter ends, so a tag that starts
 in it is matched with a `>` in the text.
 
@@ -383,9 +383,9 @@ cynefin/div-html-frontmatter-value] [fixture: cynefin/html-body-double-control]
 [fixture: cynefin/html-body-single-control]
 
 The
-[pinned grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)
+[pinned grammar](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)
 and
-[public adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
+[public adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
 read the result of the common preprocessing/detection pipeline. The
 [Cynefin syntax](../diagrams/cynefin.md) states the direct rule and
 [tree](../ast/cynefin.md) retains its authored forms. [fixture:
@@ -408,7 +408,7 @@ eventmodeling/html-body-double-control] [fixture:
 eventmodeling/html-body-mismatch-control] [fixture:
 eventmodeling/prefix-yaml-html] [fixture: eventmodeling/prefix-directive-html]
 
-[event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
+[event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
 defines the units; [the diagram syntax](../diagrams/eventmodeling.md) defines
 their direct boundaries.
 
@@ -429,9 +429,9 @@ treeview/div-html-frontmatter-value]
 ## The documentation of mermaid.js and its issues
 
 - The pinned
-  [C4 documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L7-L17)
+  [C4 documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/c4.md#L7-L17)
   uses `<br/>` inside a quoted description and
-  [shows YAML frontmatter for wrapping configuration](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L159-L171).
+  [shows YAML frontmatter for wrapping configuration](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/c4.md#L159-L171).
   It does not describe a tag starting in frontmatter and continuing into a C4
   argument. Searches of issues and pull requests in `mermaid-js/mermaid` on
   2026-10-21 with `C4 frontmatter in:title,body`,
@@ -439,14 +439,14 @@ treeview/div-html-frontmatter-value]
   `C4 frontmatter tag in:title,body` found no report about that form.
 
 - The pinned
-  [venn documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
+  [venn documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/venn.md)
   shows YAML frontmatter and quoted labels, but no HTML tag crossing the
   frontmatter boundary. Searches of issues and pull requests in
   `mermaid-js/mermaid` on 2026-10-21 with `venn frontmatter in:title,body` and
   `venn HTML in:title,body` found no report about that form.
 
 - The pinned
-  [Ishikawa documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/ishikawa.md#L11-L38)
+  [Ishikawa documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/ishikawa.md#L11-L38)
   shows indented node text, but no frontmatter or HTML tag crossing its
   boundary. Searches of issues and pull requests in `mermaid-js/mermaid` on
   2026-10-21 with `ishikawa`, `ishikawa frontmatter in:title,body`, and
@@ -454,7 +454,7 @@ treeview/div-html-frontmatter-value]
   frontmatter and continuing into Ishikawa node text.
 
 - The pinned
-  [Agentflow frontmatter example](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/agentflow.md#L67-L90)
+  [Agentflow frontmatter example](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/agentflow.md#L67-L90)
   combines YAML configuration with quoted body labels; it does not describe an
   HTML tag crossing that boundary. Searches of issues and pull requests in
   `mermaid-js/mermaid` on 2026-10-22 with `agentflow frontmatter in:title,body`
@@ -463,7 +463,7 @@ treeview/div-html-frontmatter-value]
   a tag continuing into body quotes.
 
 - The pinned
-  [usecase documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
+  [usecase documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
   describes quoted labels and JSON. Searches of issues and pull requests in
   `mermaid-js/mermaid` on 2026-10-22 with `usecase title` found no inspected
   report establishing a maintainer defect judgment for this acceptance behavior.
@@ -473,14 +473,14 @@ treeview/div-html-frontmatter-value]
   not a claim that a bug label approves a grammar change.
 
 - For pie, the pinned
-  [syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/pie.md)
+  [syntax documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/pie.md)
   does not describe an HTML tag crossing the frontmatter fence. Searches on
   2026-10-23 for `pie`, `pie frontmatter` and `pie HTML` found no maintainer
   decision on this cross-fence rewriting. The shared exclusion of opaque
   frontmatter determines the difference.
 
 For gitgraph,
-[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md)
+[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/gitgraph.md)
 documents the header and commands. Issue/PR searches on 2026-10-23 used
 `gitGraph`, `gitGraph directive`, `gitGraph YAML`, `gitGraph semicolon`,
 `gitGraph keyword`, `gitGraph duplicate` and `gitGraph cherry-pick`. No
@@ -491,7 +491,7 @@ Status: Approved; merged
 warning. These facts do not justify any additional divergence.
 
 - The pinned
-  [packet documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
+  [packet documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
   shows single positions, ranges and relative counts; it does not define this
   preprocessing boundary. Searches of the official repository's issues and pull
   requests on 2026-10-25 used `packet bitsPerRow`, `packet fractional` and
@@ -499,7 +499,7 @@ warning. These facts do not justify any additional divergence.
   this divergence.
 
 - The pinned
-  [architecture.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L21-L175)
+  [architecture.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/architecture.md#L21-L175)
   documents the header, declarations and edges, without defining this common
   preprocessing boundary. Searches of the official issues/PRs on 2026-10-25 used
   architecture group undefined, architecture quotes title, architecture reverse,
@@ -509,7 +509,7 @@ warning. These facts do not justify any additional divergence.
   ruling on this common boundary.
 
 - Radar:
-  [radar.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/radar.md#L66-L166)
+  [radar.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/radar.md#L66-L166)
   documents axes, curves and options. The official issues/PRs were searched on
   2026-10-25 for radar directive, radar semicolon and radar entries; no
   inspected result declares the boundaries above a defect.
@@ -519,7 +519,7 @@ warning. These facts do not justify any additional divergence.
   documentation examples; it does not add grammar support for a trailing comma.
 
 - Treemap: the pinned
-  [treemap documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
+  [treemap documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
   describes quoted rows, indentation and class definitions, without defining
   this common preprocessing boundary. Searches of the official repository's
   issues and pull requests on 2026-10-25 used `treemap quotes`; no inspected
@@ -528,7 +528,7 @@ warning. These facts do not justify any additional divergence.
   and was merged on 2025-06-27; it is not a ruling on this boundary.
 
 - Railroad: the
-  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
   describes the four notations, EBNF exception, ABNF semicolon comments and PEG
   predicates. It does not define native retained YAML or HTML quote context
   across frontmatter. Searches of the official repository’s issues and pull
@@ -543,7 +543,7 @@ warning. These facts do not justify any additional divergence.
   establish that no other relevant issue exists.
 
 - Wardley: the
-  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)
   shows coordinates, decorations and flows without defining this common
   boundary. Searches of the official issues and pull requests on 2026-10-26 used
   wardley directive, wardley semicolon and wardley flow.
@@ -555,9 +555,9 @@ warning. These facts do not justify any additional divergence.
   defect decision for this boundary; the existing direct rule applies. The
   search is not claimed to be exhaustive.
 - Cynefin’s
-  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)
   describes fixed domains, quoted items and labeled transitions; its
-  [notes](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)
+  [notes](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)
   state that self transitions are ignored.
   [PR #7535](https://github.com/mermaid-js/mermaid/pull/7535) added the diagram
   and was merged. On 2026-10-26, searches for cynefin parser, cynefin directive,
@@ -570,7 +570,7 @@ warning. These facts do not justify any additional divergence.
 ### eventmodeling
 
 The pinned
-[eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L37-L322)
+[eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/eventmodeling.md#L37-L336)
 describes frames, data and tags without defining this shared preprocessing
 boundary. Searches of the official issues and pull requests on 2026-10-26 used
 eventmodeling title, eventmodeling parser, event modeling data, eventmodeling
@@ -583,7 +583,7 @@ existing direct rule applies. The search is not claimed to be exhaustive.
 ### Treeview
 
 The pinned
-[treeView.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277)
+[treeView.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277)
 describes indentation, quoted names, annotations and box drawing, without
 defining this common boundary. On 2026-10-26 the official issues/PRs were
 searched for `treeView quoted`, `treeView indentation`, `treeView box`,

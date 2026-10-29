@@ -164,9 +164,11 @@ Filename: tests/fixtures/rules/eventmodeling-no-undef/invalid/eventmodeling/rese
 Code:
   1 | eventmodeling
   2 | resetframe 001 cmd Buy ->> 99 [[Missing]] {fallback }
-    |                                 ^~~~~~~ [1]
+    |                            ^~   ^~~~~~~
+    |                            [1]  [2]
 
-[1] mermaid.js finds no data block named `Missing` for this reference.
+[1] mermaid.js finds no frame named `99` for this reference.
+[2] mermaid.js finds no data block named `Missing` for this reference.
 ---
 
 
@@ -221,6 +223,19 @@ Code:
     |                   ^~ [1]
 
 [1] mermaid.js finds no frame named `01` for this reference.
+---
+
+
+Test: eventmodeling-no-undef >> invalid >>> invalid/eventmodeling/source-long-reset-missing
+Filename: tests/fixtures/rules/eventmodeling-no-undef/invalid/eventmodeling/source-long-reset-missing-input.mmd
+
+Code:
+  1 | eventmodeling
+  2 | resetframe 01 evt Bought ->> 99
+    |                              ^~ [1]
+  3 |
+
+[1] mermaid.js finds no frame named `99` for this reference.
 ---
 
 
@@ -300,6 +315,19 @@ Code:
 
 [1] mermaid.js finds no frame named `99` for this reference.
 [2] mermaid.js finds no frame named `99` for this reference.
+---
+
+
+Test: eventmodeling-no-undef >> invalid >>> invalid/eventmodeling/source-reset-missing
+Filename: tests/fixtures/rules/eventmodeling-no-undef/invalid/eventmodeling/source-reset-missing-input.mmd
+
+Code:
+  1 | eventmodeling
+  2 | rf 01 evt Bought
+  3 | rf 02 rmo Cart ->> 99
+    |                    ^~ [1]
+
+[1] mermaid.js finds no frame named `99` for this reference.
 ---
 
 

@@ -117,20 +117,20 @@ empty form at the end, both then reject it.
 
 The lexer of mermaid.js reads `classDiagram` and `classDiagram-v2` as the header
 only where no word character follows
-([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L41-L42)),
+([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L41-L42)),
 so it reads `classDiagramX` as a class name, and a class name alone is a
 statement that changes nothing
-([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L332-L333)).
+([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L332-L333)).
 
 The grammar of mermaid.js has two starts
-([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L221-L232)):
+([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L221-L232)):
 the header, its statements, and a token `EOF`; or statements alone, with no
 header and no `EOF` token. The lexer ends every text with the `EOF` token
-([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L209-L209)),
+([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L209-L209)),
 so the second start never takes a whole text, with one exception. Some rules of
 the lexer can match the empty text: the values of `accTitle:` and `accDescr:`,
 the value of `accDescr {`, the name after `call`, and the content of a string
-([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L30-L61)).
+([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L30-L61)).
 When one of them matches the empty text at the end of the text, the lexer has
 already marked the end as reached, and it reports the end of the input instead
 of the `EOF` token. The start with a header then waits for a token that never

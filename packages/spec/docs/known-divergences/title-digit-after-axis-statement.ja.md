@@ -238,7 +238,7 @@ CRLF と単独の CR は 1 つの改行文字として、空行の改行文字�
 
 ## mermaid.js がそう読む理由
 
-[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L17-L73)
+[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L17-L73)
 の字句解析器は、 `x-axis` と `y-axis` で状態 `axis_data` に、
 `line` と `bar` で状態 `data` に入り、どちらも今の状態の上に積みます。
 一番上の状態を出るのは、
@@ -250,7 +250,7 @@ CRLF と単独の CR は 1 つの改行文字として、空行の改行文字�
 `%%` のすぐ前の改行文字をコメントとともに読みます。
 コメント行は、字句解析器がテキストを読む前に、
 その改行文字と前の空行とともに除かれます（mermaid.js の
-[`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)）。
+[`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)）。
 `axis_data` では、
 数の規則 `[+-]?(?:\d+(?:\.\d+)?|\.\d+)` が語の規則より先にあるので、
 その状態で読むタイトルは最初の数字で止まり、文法はそれに続く数を拒否します。
@@ -274,7 +274,7 @@ mermaid.js はそれを受理します。
 
 ## mermaid.js の文書と issue
 
-- [XY chart の構文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/xyChart.md)
+- [XY chart の構文](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/xyChart.md)
   は各文をそれだけの行に書き、 `;` についても、
   図のタイトルの数字についても何も述べていません。
 - これについての issue と pull request は見つかりませんでした（2026-10-15 に

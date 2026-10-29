@@ -4,11 +4,11 @@ Japanese version: [state.ja.md](./state.ja.md)
 
 Source of truth in mermaid.js:
 
-- [`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison)
-- [`stateDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDb.ts)
-- [`dataFetcher.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/dataFetcher.ts)
+- [`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison)
+- [`stateDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/stateDb.ts)
+- [`dataFetcher.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/dataFetcher.ts)
 - the tests (`*.spec.js`, `*.spec.ts`) in
-  [`state/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state)
+  [`state/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state)
 
 This document covers the diagram type `stateDiagram`. The nodes of the tree are
 defined in [ast/state.md](../ast/state.md).
@@ -19,7 +19,7 @@ Entry 20 of [detection.md](../detection.md) selects this grammar: the text
 starts with `stateDiagram`, after whitespace, in exactly this case. mermaid.js
 has one detector for both headers, `stateDiagram` and `stateDiagram-v2`, and
 reads both with the same grammar and the same Db
-([`stateDetector-V2.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDetector-V2.ts#L7-L15)).
+([`stateDetector-V2.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/stateDetector-V2.ts#L7-L15)).
 [fixture: state/header-v1] [fixture: state/header-v2]
 
 The lexer then reads the header again, case-insensitively and followed by
@@ -539,7 +539,7 @@ characters other than `"` are the text of the string. The string from `"` to `"`
 is one `string` unit; when the second `"` follows the first directly, it is an
 `empty-string` unit instead. mermaid.js returns no token for the quotes of a
 string in this context, only for its text, so it does not read an empty string
-([`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L128-L132)),
+([`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L128-L132)),
 and the tree holds it as a StateIgnoredText where the grammar takes it (see
 [Composite states, aliases, and pseudostates](#composite-states-aliases-and-pseudostates)).
 An empty string is still a unit, which ends the unit before it, as its quotes do
@@ -588,7 +588,7 @@ first `:`: the text before it is the `alias-id`, the `:` is a `:` unit, the text
 between it and the second `:`, or the end, is a `second-description` unit, which
 may be empty or all whitespace, and the text from the second `:` is an
 `ignored-text` unit, which mermaid.js does not read
-([`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L233-L243)).
+([`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L233-L243)).
 It has a body when a `{` follows the `alias-id`, on its line or after the line
 feed of its line and only line whitespace and comment lines, with only units
 between them that the grammar takes before the `{` of a body: empty description
@@ -793,7 +793,7 @@ The **floating note context**:
 
 The `"` after `note` is a `"` unit too. The quotes do not pair: mermaid.js
 returns no token for a `"` here and a token for each run of other characters
-([`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L143-L146)),
+([`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L143-L146)),
 and its grammar takes one text before `as`. So a floating note has one or more
 `"` units, one `floating-note-text`, and one or more `"` units before `as`:
 `note "x" as N`, `note ""x" as N`, `note "x"" as N`, and `note """x""" as N`
@@ -904,7 +904,7 @@ comment: `A --> B #amp; x` is a transition followed by the states `#amp;` and
 `x`. [fixture: state/lex-entity-in-id]
 
 The documentation of mermaid.js says, under
-[Comments](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/stateDiagram.md#L307-L320),
+[Comments](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/stateDiagram.md#L307-L320),
 that "any text after their start to the next newline will be treated as a
 comment" and that comments "can be on their own line or at the end of a
 statement"; after a description, a label, or a note text, `%%` is part of the
@@ -929,7 +929,7 @@ name, and text in double quotes stands for the unit named by that text, such as
 `"state"` or `"{"`. `end-of-text` stands for the end of the text. `string`
 stands for a `string` unit that is not empty, and `string-or-empty` for a
 `string` unit that may be empty. The grammar is a restatement of the grammar in
-[`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L178-L352)
+[`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L178-L352)
 and accepts the same sequences of units.
 
 Each rule below makes a node of the tree, defined in

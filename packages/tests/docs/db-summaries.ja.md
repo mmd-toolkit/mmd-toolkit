@@ -115,6 +115,16 @@ mermaid.js の Db の要約が何を持ち、図種ごとに何を捨てるか�
   `sandbox` のどれかである限り、要約は `securityLevel` に依存しない。
   [fixture: flowchart/config-security-level-loose-click-call]
   [fixture: flowchart/config-security-level-loose-click-link-javascript]
+- 前の subgraph と同じ id の subgraph は、一覧に加わらない。
+  そのメンバーは前の subgraph に加わり、前の subgraph はタイトル、向き、
+  位置を保つ。
+  その id への class やデータブロックは前の subgraph に付く。
+  subgraph は自分自身をメンバーに持たないので、
+  自分の本体に書いたその id は `nodes` に入らない。
+  [fixture: flowchart/db-class-last-subgraph-with-id]
+  [fixture: flowchart/db-data-block-last-subgraph-with-id]
+  [fixture: flowchart/db-subgraph-body-data-block-own-id]
+  [fixture: flowchart/spec-subgraph-57671598]
 - 節点の `icon`、`form`、`pos`、`img`、`constraint`、`assetWidth`、
   `assetHeight`、辺の `animate` と `animation`、subgraph の `metadata` は、
   `@{ ... }` のデータブロックだけが設定します。
@@ -190,12 +200,33 @@ actor の box は、`boxes` の中の位置で表します。
   オブジェクトのプロトタイプを置き換え、
   mermaid.js はそのプロトタイプの項目も読む。
   出典は
-  [`insertLinks`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L488-L496)、
-  [`insertProperties`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L512-L520)
+  [`insertLinks`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L488-L496)、
+  [`insertProperties`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L512-L520)
   です。
   要約は、そのようなプロトタイプを最初の項目 `__proto__` として記録する。
 - actor の `type` と説明は、その `@{ ... }` のデータブロックでも決まる。
   [embedded-data.ja.md](./embedded-data.ja.md) を参照。
+- participant の id は `link` でもよい（`participant link as Channel`、
+  `link->>A: message`、 `link link: Help @ https://example.com/channel`）。
+  `link`、`links`、`properties`、`details` は、後ろに space か tab が続き、
+  さらに `/`、`\`、`+`、`(`、`)`、`<`、`>`、`:`、`,`、`;`、`-`、空白、
+  LF 以外の文字が来るときだけ、
+  文を始める（[文の文脈](../../spec/docs/diagrams/sequence.ja.md#文の文脈)の規則
+  11）。
+  それ以外では id を始めるので、
+  `link->>A` は participant `link` からのメッセージで、
+  `A->>link : x` はその participant へのメッセージである。
+  id は `-` や `=` を含んでもよく、
+  `@{ ... }` のデータブロックの前に space や tab
+  があってもよい（`participant A-B@{ "type": "queue" }`）。
+  [fixture: sequence/spec-sequence-diagram-106df33f]
+  [fixture: sequence/spec-sequence-diagram-4c18d4c4]
+  [fixture: sequence/spec-sequence-diagram-cd0728ae]
+  [fixture: sequence/spec-sequence-diagram-22f2f841]
+  [fixture: sequence/lex-id-before-data-dash]
+  [fixture: sequence/lex-id-equals-before-data]
+  [fixture: sequence/lex-id-space-before-data]
+  [fixture: sequence/lex-id-tab-before-data]
 
 ## class
 
@@ -245,7 +276,7 @@ lollipop の関係が作るインターフェース（描画が描く）です�
 - `notes[].index`: ノートの id の番号と同じ。
 - class の定義（`classDef`）: Db は、何も読まない private の表に持つ。
   出典は
-  [`ClassDB`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L40-L40)
+  [`ClassDB`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classDb.ts#L40-L40)
   です。
   定義が変えるものは、`classes[].styles` に出る。
 - click のコールバック: Db は、関数の名前と引数を閉包の中にだけ、
@@ -266,12 +297,12 @@ lollipop の関係が作るインターフェース（描画が描く）です�
   ラベルと型から作られるが、 `addClass` は型を `&lt;T&gt;` と、
   ラベルの文は `<T>` と書くので、ラベルと型だけからは決まらない。
   出典は
-  [`addClass`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L112-L137)
+  [`addClass`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classDb.ts#L112-L137)
   です。
 - `classes[].haveCallback` は保つ。
   flowchart と違い、 `setClickEvent` はどの `securityLevel` でもこれを付ける。
   [fixture: class/config-security-level-loose-click]
-  [`setClickEvent`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L434-L444)
+  [`setClickEvent`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classDb.ts#L434-L444)
   を参照。
 - `classes[].link` は書かれたとおりの URL（trim 済み）、
   `classes[].linkTarget` は書かれた target か `_blank` で、
@@ -312,13 +343,13 @@ mermaid.js は、`stateDiagram` と `stateDiagram-v2` のどちらも、
 要約の元は、描画が描くレイアウトのデータで、 mermaid.js は構文解析の間に、
 文からこれを作ります。
 出典は
-[`getData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDb.ts#L763-L778)
+[`getData`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/stateDb.ts#L763-L778)
 です。
 Db はほかに 2 つの形を持ちますが、どちらも要約しません。
 文の木は、何も変えない文を持ちます（複合状態の中の `classDef`、`class`、
 `style`、浮いたノート、`scale`）。
 状態の表は最上位だけを持ちます。
-[`extract`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDb.ts#L249-L272)
+[`extract`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/stateDb.ts#L249-L272)
 が最上位の文だけを読むためです。
 
 要約は、レイアウトのデータの順に、次のものを保ちます。
@@ -327,7 +358,7 @@ Db はほかに 2 つの形を持ちますが、どちらも要約しません�
   `id`、`shape`、`label`、`description`、
   それが入る複合状態か領域（`parentId`）、複合状態と領域の向き（`dir`）を持つ。
   `classes` と `styles` は、状態の表がそのノードの id に与えるもの。
-  [`dataFetcher`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L250-L254)
+  [`dataFetcher`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L250-L254)
   もそこから取る。
   表に項目のない状態は、どちらも持たない。
 - `notes`: 各ノート。
@@ -341,7 +372,7 @@ Db はほかに 2 つの形を持ちますが、どちらも要約しません�
 - `direction`: 描画が使う向き。
   最上位の最後の `direction` の文から取る。
   出典は
-  [`getDir`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L185-L195)
+  [`getDir`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L185-L195)
   です。
   最初のものを取る `getDirection()` は、描画が読まない。
 - `title`、`accTitle`、`accDescr`。
@@ -362,7 +393,7 @@ Db はほかに 2 つの形を持ちますが、どちらも要約しません�
 これを、ノードの順に、 `generated-region-1`、`generated-region-2`、
 …… と記録します。
 出典は
-[`docTranslator`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDb.ts#L366-L375)
+[`docTranslator`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/stateDb.ts#L366-L375)
 です。
 ノードの id、その領域の開始と終了の状態の id とラベル、`parentId`、
 遷移の中など、現れるところすべてで同じです。
@@ -408,7 +439,7 @@ subgraph は、`id`、`title`、`nodes`、`classes`、`cssStyles` と、
 
 `normalizeEr()`（`src/normalizers/er.ts`）は、`er` の Db を要約します。
 `ErDB` が自分のリストに持つものを、持つ順のまま保ちます。
-[`getData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/erDb.ts#L377-L459)
+[`getData`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/er/erDb.ts#L377-L459)
 のレイアウトのデータは使いません。
 これは、描画が描かないもの（どのエンティティも使わないクラスの定義、
 subgraph の id を持つエンティティ）を除き、
@@ -480,7 +511,7 @@ Db は、ブラウザーの機能も、時刻も、乱数も読まず、
 
 - `attributes` は、書かれた順です。
   文法はブロックのリストを逆順に作り、
-  [`addAttributes`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/erDb.ts#L95-L110)
+  [`addAttributes`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/er/erDb.ts#L95-L110)
   がそれを逆順に読むので、要約は書かれた順になります。
   2 度書かれた名前は 2 つ残ります。 [fixture: er/db-attribute-order]
   [fixture: er/db-attribute-keys]
@@ -798,7 +829,7 @@ Db は、ブラウザーの機能も、時刻も、乱数も読まず、
 
 値は、Db が持つとおりに記録します。
 mermaid.js は 4 つのテキストを
-[`sanitizeText`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/erDb.ts#L351-L353)
+[`sanitizeText`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/er/erDb.ts#L351-L353)
 に通します。
 `title`、`accTitle`、`accDescr`、subgraph のタイトルです。
 Db のほかのテキストは通さず、名前、alias、属性、役割、id、node、クラス、
@@ -858,7 +889,7 @@ click の呼び出しは `id`、`name`、`args` を持ちます。
 `normalizeGantt()`（`src/normalizers/gantt.ts`）は、`gantt` の Db を要約します。
 Db は、
 すべての gantt 図が共有する
-[1 つのオブジェクト](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDiagram.ts#L8-L10)
+[1 つのオブジェクト](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDiagram.ts#L8-L10)
 で、状態はモジュールの変数です。
 `clear()` が、構文解析のたびにそれを初期化します。
 そのためパッチ（`patchGanttDb()`）は、クラスではなくこのオブジェクトに掛けます。
@@ -867,11 +898,11 @@ Db は、
 - タスク。
   Db はタスクを private な配列に持ち、
   その配列を返すのは
-  [`getTasks()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L169-L181)
+  [`getTasks()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L169-L181)
   だけです。
   `getTasks()` は、先にタスクの日付を計算します（後述）。
   パッチは、`clear()` の直後、配列が空のときにその配列を取り、要約は、
-  [`addTask()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L557-L591)
+  [`addTask()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L596-L630)
   が作ったままのタスクを読みます。
 - タスクの id。
   `clear()` はタスクを初期化しますが、
@@ -901,7 +932,7 @@ Db は、
 
 `weekend` には getter がありません。
 それを使うメソッド
-[`isInvalidDate()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L183-L201)
+[`isInvalidDate()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L183-L201)
 を通して読みます。
 金曜日と、除くトークンとしての `weekends` を渡したとき、
 週末が金曜日に始まる場合にだけ真を返します。
@@ -912,15 +943,15 @@ Db は、
   どこまで計算したかを示すだけの欄（`processed`、`manualEndTime`）。
   描画が図を描くときに計算するもので、テキストの構文解析中には計算しません。
   計算するのは
-  [`getTasks()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L169-L181)
+  [`getTasks()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L169-L181)
   で、結果は、プロセスのタイムゾーン、
   実行した日（タスクでない id の後ろの開始と、
   タスクでない id までの終了は
-  [今日](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L320-L322)
+  [今日](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L345-L347)
   になる）、 `dayjs` が `dateFormat` をどう読むかに依存します。
   また、日付でない開始に対しては例外を投げますが、テキストは受理されます。
   出典は
-  [`Invalid date`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L346-L346)
+  [`Invalid date`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L371-L371)
   です。
   テキストが決めるのは日付の与え方、つまり `raw` で、
   日付そのものではありません。
@@ -933,7 +964,7 @@ Db は、
   `raw.data`: data のテキストで、`raw`、`id`、タグがその読み。
 - `topAxis`: これを設定するのはメソッド `enableTopAxis()` だけですが、
   文 `topAxis` が呼ぶのは
-  [`yy.TopAxis()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L141-L141)
+  [`yy.TopAxis()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L141-L141)
   で、 Db にはありません。
   そのため mermaid.js はこの文を `TypeError` で拒否し、
   受理されるテキストでこのフラグを立てるものはありません。
@@ -969,7 +1000,7 @@ Db は、
   [fixture: gantt/db-tick-interval] [fixture: gantt/db-today-marker]
   [fixture: gantt/db-today-marker-off]
 - `includes` と `excludes` はトークンのリストで、
-  [`mergeTokens`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L133-L139)
+  [`mergeTokens`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L133-L139)
   が作ります。
   各文のテキストを小文字にし、空白とコンマで分け、前の文のトークンに加えます。
   トークンは最初の位置に 1 度だけ置きます。 [fixture: gantt/db-excludes-tokens]
@@ -1013,7 +1044,7 @@ Db は、
 - `task` は、コロンの前のテキストで、コロンの前の空白を含みます。
   [fixture: gantt/db-task-description-spaces]
 - コロンの後ろの data は、タグ（後述）を除いてからコンマで項目に分けます。
-  [`parseData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L497-L551)
+  [`parseData`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L536-L590)
   は、 1 項目を終了、2 項目を開始と終了、 3 項目を id、開始、終了と読みます。
   1 項目のとき開始は `prevTaskEnd` で、前のタスクの id を持ちます。
   最初のタスクには id がありません。 [fixture: gantt/db-task-id-written]
@@ -1026,12 +1057,12 @@ Db は、
   [fixture: gantt/db-task-end-until] [fixture: gantt/db-task-end-date]
 - id のないタスクは、
   id のないタスクの中で
-  [番号](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L430-L436)
+  [番号](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L469-L475)
   `task1`、`task2`、…を付けます。
   番号は各テキストで 1 から始まります。 [fixture: gantt/db-task-id-numbered]
 - タグは、小文字で書いた `active`、`done`、`crit`、`milestone`、
   `vert` のどれかで、先頭の項目がタグである間、
-  [先頭から取り除かれ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L846-L860)
+  [先頭から取り除かれ](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L885-L899)
   ます。
   タグは自分のフラグを立て（繰り返しても 1 回）、項目ではありません。
   ほかの位置のタグ、別の大文字小文字のタグは項目です。
@@ -1085,7 +1116,7 @@ Db は、ブラウザーの機能も、時刻も、乱数も読まず、構文�
 このため、要約に Db のパッチはいりません。
 Db は、すべての journey 図が共有する 1 つのオブジェクトで、 `clear()` が、
 構文解析のたびにその状態を初期化します。
-[`getTasks()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L35-L47)
+[`getTasks()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L35-L47)
 は、呼ぶたびに、タスクを自分の一覧に加えます。
 そのため要約は、一覧を 1 度だけ読み、空に戻します。
 こうして Db は、読む前のままになります。
@@ -1093,7 +1124,7 @@ Db は、すべての journey 図が共有する 1 つのオブジェクトで�
 
 - `tasks[].type`: section の繰り返し。
 - `getActors()`
-  （[`updateActors`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L49-L59)）:
+  （[`updateActors`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L49-L59)）:
   タスクの人たちから、重複を除いて並べ替えたもので、タスクだけから作る。
 
 値を、欄ごとに述べます。
@@ -1141,7 +1172,7 @@ Db は、すべての journey 図が共有する 1 つのオブジェクトで�
 - `task` は、最初のコロンの前のテキストで、コロンの前の空白を含みます。
   テキストの前の空白は含みません。 [fixture: journey/db-task-description-spaces]
   [fixture: journey/lex-whitespace-ideographic-space-around-task]
-- [`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)
+- [`addTask`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)
   は、最初のコロンの後ろのテキストを、各コロンで分けます。
   `score` は、最初の部分から JavaScript が作る数です。
   そのため、小数、16 進数、指数、負の数は数で、数の前後の空白は数に含まれず、
@@ -1207,7 +1238,7 @@ Db はブラウザの機能も、時刻も、乱数も読まず、構文にリ�
 読むのは Db 自身の一覧（`getRequirements()`、`getElements()`、
 `getRelationships()`、`getClasses()`）で、
 描画用のデータ
-[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L292-L342)
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L292-L342)
 ではありません。
 `getData()` は、保存された requirement と element のオブジェクトに欄を足し、
 辺を作りますが、どれも一覧から作れるものです。
@@ -1405,10 +1436,10 @@ Db はブラウザの機能も、時刻も、乱数も読まず、構文にリ�
 `mindmap` の Db を要約します。
 Db はブラウザの機能も、時刻も、
 乱数も読まず（乱数の id は
-[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L345-L408)
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L355-L418)
 にあります）、構文にリンクもないので、要約に Db のパッチは要りません。
 読むのは
-[`getMindmap()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L71-L73)
+[`getMindmap()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L71-L73)
 が返す木で、これはすべてのノードを子とともに 1 回ずつ持っています。
 `getData()` の描画用のデータは読みません。
 そちらはノードの section を数え、ノードから新しいノードを作ります。
@@ -1609,10 +1640,10 @@ Db はブラウザの機能も、時刻も、
 Db は、ブラウザーの機能も、時刻も、乱数も読まず、構文にリンクもありません。
 このため、要約に Db のパッチはいりません。
 Db は、すべての timeline 図が共有する 1 つのモジュールで、
-[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L12-L19)
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L12-L19)
 が、構文解析のたびにその状態を初期化します。
 ただしタスクの番号の数え上げは初期化しません。
-[`getTasks()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L38-L50)
+[`getTasks()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L38-L50)
 は、呼ぶたびに、タスクを自分の一覧に加えます。
 そのため要約は、一覧を 1 度だけ読み、空に戻します。
 こうして Db は、読む前のままになります。
@@ -1624,10 +1655,10 @@ Db は、すべての timeline 図が共有する 1 つのモジュールで、
   タスクの順は、一覧の順です。
 - `tasks[].type`: section の繰り返し。
 - `tasks[].score`: 常に 0 です。
-  [文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L35)
+  [文法](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L35)
   が、どのタスクも score 0 で加えるからです。
   出典は
-  [`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L52-L63)
+  [`addTask`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L52-L63)
   です。
 
 値を、欄ごとに述べます。
@@ -1686,7 +1717,7 @@ Db は、すべての timeline 図が共有する 1 つのモジュールで、
   [fixture: timeline/header-twice]
   [fixture: timeline/header-twice-with-directions]
 - `title` は、
-  [`title` の文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L23)
+  [`title` の文](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L23)
   の、キーワードと空白 1 文字の後ろから行末までのテキストです。
   キーワードは大文字小文字を問いません。
   両端の空白は残ります。
@@ -1725,7 +1756,7 @@ Db は、すべての timeline 図が共有する 1 つのモジュールで、
   [fixture: timeline/gram-title-word-suffix]
   [fixture: timeline/gram-title-colon-glued]
 - フロントマターのタイトルは、図のタイトルではありません。
-  [Diagram](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L52-L54)
+  [Diagram](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/Diagram.ts#L52-L54)
   は、 `setDiagramTitle` を持つ Db にだけタイトルを渡し、
   timeline の Db にはそのメソッドがないからです。
   `title` の文は、どちらの場合もタイトルです。
@@ -1767,7 +1798,7 @@ Db は、すべての timeline 図が共有する 1 つのモジュールで、
   [fixture: timeline/lex-acc-descr-line-separator-inside]
   [fixture: timeline/db-acc-all-statements]
 - ブロックの説明のテキストは最初の `}` までで、
-  [`setAccDescription`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L22-L24)
+  [`setAccDescription`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/commonDb.ts#L22-L24)
   が説明を変えます。
   改行とその後ろの空白は、どの種類の空白でも（タブ、ノーブレークスペース、
   U+3000、U+2028、U+FEFF）1 つの改行になり、
@@ -1809,7 +1840,7 @@ Db は、すべての timeline 図が共有する 1 つのモジュールで、
 - コロンもブレースもない、行の中の `accTitle` と `accDescr` だけのものは、
   period です。 [fixture: timeline/db-period-acc-keywords-alone]
 - `sections` は、
-  [`section` の文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L31)
+  [`section` の文](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L31)
   の、キーワードと空白 1 文字を除いたテキストで、
   テキストが繰り返されても同じです。
   テキストは `:` か行末までで、`#` と `%%` はテキストに入ります。
@@ -1862,7 +1893,7 @@ Db は、すべての timeline 図が共有する 1 つのモジュールで、
   [fixture: timeline/db-tab-indentation]
   [fixture: timeline/db-names-of-object-prototype]
   [fixture: timeline/db-period-cjk]
-- [event](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L34)
+- [event](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L34)
   は、 `:` と空白 1 文字の後ろのテキストで、その前のタスクのものです。
   後ろに空白がある次の `:` か、行末までです。
   後ろに空白のない `:` は event の文字です。
@@ -1969,7 +2000,7 @@ Db は、すべての timeline 図が共有する 1 つのモジュールで、
   [fixture: timeline/db-event-single-percent]
 - period と空白の後ろの `%%` は period の文字です。
   1 文字の period に続けた `%%` は、その 1 文字を取るコメントを始めます。
-  [コメントの規則](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L15)
+  [コメントの規則](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L15)
   が、トークンの先頭で、`}` 以外の 1 文字を `%%` の前に取るからで、
   タスクは失われます。
   2 文字以上の後ろや、`}` の後ろでは、 period の文字です。
@@ -2117,11 +2148,11 @@ Db は、ブラウザーの機能も、時刻も、乱数も読まず、
 構文にたどるリンクもありません。
 このため、要約に Db のパッチはいりません。
 Db は、すべての sankey 図が共有する 1 つのモジュールで、
-[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L20-L25)
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L20-L25)
 が、構文解析のたびにその状態を初期化します。
 要約は、
 ノードとリンクを id で並べる
-[`getGraph()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L63-L70)
+[`getGraph()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L63-L70)
 と、タイトルを読みます。
 次のものを、それぞれに書いた理由で捨てます。
 
@@ -2132,16 +2163,16 @@ Db は、すべての sankey 図が共有する 1 つのモジュールで、
 値を、欄ごとに述べます。
 テキストは、
 まず
-[`prepareTextForParsing()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyUtils.ts#L1-L8)
+[`prepareTextForParsing()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyUtils.ts#L1-L8)
 で整えられます。
-[この関数](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDiagram.ts#L9-L10)
+[この関数](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyDiagram.ts#L9-L10)
 は、構文解析の前に呼ばれ、テキスト全体の両端の空白を取り除き、
 テキストのどこでも、改行と復帰の連なりを 1 つの改行にします。
 コメント行、ディレクティブ、フロントマターは、どの図でも、
 これより前に取り除かれます。
 
 - ヘッダーは `sankey` か `sankey-beta` です。
-  [検出器](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDetector.ts#L5-L7)
+  [検出器](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyDetector.ts#L5-L7)
   は小文字だけを読み、字句解析は `-beta` を大文字小文字を問わず読みます。
   ヘッダーの前の空白は取り除かれ、その前の空行、コメント行、
   ディレクティブの行も取り除かれます。
@@ -2217,7 +2248,7 @@ Db は、すべての sankey 図が共有する 1 つのモジュールで、
   [fixture: sankey/gram-tab-after-value-before-record]
 - 引用符のない欄は、次のコンマか行末までです。
   欄の前後の空白は欄の一部ではありません。
-  [字句解析](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L25)
+  [字句解析](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L25)
   が許す文字のうち、コンマと引用符以外を含められます。
   許す文字は、空白と `!` から `~` までの文字です。
   このため `;`、`#`、`<`、`>`、`&`、`'`、スラッシュ、バックスラッシュ、
@@ -2295,7 +2326,7 @@ Db は、すべての sankey 図が共有する 1 つのモジュールで、
 - 引用符つきの欄は、コンマを含められ、その中の 2 つの引用符は、
   欄の 1 つの引用符です。
   文法の
-  [`escaped`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L65)
+  [`escaped`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L65)
   です。
   欄を囲む引用符は欄の一部ではありません。
   引用符は左から右へ読まれ、後ろに引用符が続かない引用符が欄を閉じます。
@@ -2351,7 +2382,7 @@ Db は、すべての sankey 図が共有する 1 つのモジュールで、
   [fixture: sankey/gram-quoted-then-trailing-comma]
   [fixture: sankey/gram-quoted-unclosed-at-end-of-text]
 - レコードは、ちょうど 3 つの欄を持ちます。
-  [文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L51-L58)
+  [文法](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L51-L58)
   がそう定めています。
   それより少ない行、多い行、3 つ目の欄の後ろのコンマ、空の欄は、拒否されます。
   [fixture: sankey/gram-two-columns] [fixture: sankey/gram-one-column]
@@ -2363,7 +2394,7 @@ Db は、すべての sankey 図が共有する 1 つのモジュールで、
   [fixture: sankey/gram-one-field-after-record]
 - `value` は、
   trim した 3 つ目の欄の
-  [`parseFloat()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L55)
+  [`parseFloat()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L55)
   です。
   数はテキストの先頭から読まれます。
   符号、小数点、指数、先頭の点が読まれ、数の後ろは捨てられます（`1abc`、`1 2`、
@@ -2406,7 +2437,7 @@ Db は、すべての sankey 図が共有する 1 つのモジュールで、
   [fixture: sankey/db-value-overflow]
 - ノードは、
   trim して 2 つの引用符を 1 つにした id で
-  [探すか作ります](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L48-L58)。
+  [探すか作ります](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L48-L58)。
   id は大文字小文字を区別し、
   引用符のあるなしにかかわらず同じテキストは 1 つのノードです。
   ノードは、最初のリンクの source、次に target の順で名前が出ます。
@@ -2505,12 +2536,12 @@ Db は、すべての sankey 図が共有する 1 つのモジュールで、
 Db は、構文解析のあいだ、ブラウザーの機能も、時刻も、乱数も読まないので、
 要約に Db のパッチはいりません。
 Db は、すべての xychart 図が共有する 1 つのモジュールで、
-[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L223-L232)
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L223-L232)
 が、構文解析のたびにその状態を初期化します。
 要約は、共通の Db のタイトルとアクセシビリティのテキスト、
-[`getChartConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L215-L217)
+[`getChartConfig()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L215-L217)
 の向き、
-[`getXYChartData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L219-L221)
+[`getXYChartData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L219-L221)
 を読みます。
 次のものを、それぞれに書いた理由で捨てます。
 
@@ -2522,7 +2553,7 @@ Db は、すべての xychart 図が共有する 1 つのモジュールで、
 - `getXYChartData().title`: 図を描くときにだけ設定されるので、
   テキストを解析した時点では空のテキストです。
   出典は
-  [`getDrawableElem()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L203-L209)
+  [`getDrawableElem()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L203-L209)
   です。
   タイトルは共通の Db のものです。
 
@@ -2530,20 +2561,20 @@ Db は、すべての xychart 図が共有する 1 つのモジュールで、
 Db は各文を実行する場所で、その時点の状態から計算します。
 このため、プロットの後ろの文は、プロットがすでに作ったものを変えません。
 出典は
-[`transformDataWithoutCategory()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L125-L164)、
-[`setYAxisRangeFromPlotData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L112-L123)
+[`transformDataWithoutCategory()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L125-L164)、
+[`setYAxisRangeFromPlotData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L112-L123)
 です。
 Db が持つとおりに保ちます。
 
 値を、欄ごとに述べます。
 テキストは
-[字句解析](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L15-L75)
+[字句解析](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L15-L75)
 と、
-[文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L83-L175)
+[文法](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L83-L175)
 が読みます。
 
 - ヘッダーは `xychart` か `xychart-beta` です。
-  [検出器](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDetector.ts#L9-L11)
+  [検出器](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/xychartDetector.ts#L9-L11)
   は小文字だけを読むので、 `XYCHART` と `Xychart-Beta` は拒否されますが、
   字句解析は大文字小文字を問わず読みます。
   ヘッダーに続けて書いた語、ダッシュと数字、ASCII の外の文字は、
@@ -3526,26 +3557,26 @@ JSON にそのような数がないので、数のテキスト（`"Infinity"`）
 Db は、構文解析のあいだ、ブラウザーの機能も、時刻も、乱数も読みません。
 Db は、すべての quadrant 図が共有する 1 つのオブジェクトで、状態は、
 自分のメソッドだけが触れる `QuadrantBuilder` にあり、
-[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L147-L150)
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L147-L150)
 が構文解析のたびに初期化します。
 テキストが与えたものを読む方法は、
 図を配置する
-[`getQuadrantData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L120-L145)
+[`getQuadrantData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L120-L145)
 だけです。
 配置そのものは
-[`build()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantBuilder.ts#L604-L623)
+[`build()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantBuilder.ts#L604-L623)
 が行います。
 そのため要約は、そこに配置が残すもの（象限、軸、
 点のテキスト）を Db が持つとおりに取ります。
 配置は、点のクラス名、書いたとおりの座標、書いたとおりのスタイル、
 クラスを残さないので、 Db のパッチ（`patchQuadrantDb()`）が、
-[`addPoint()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L95-L106)
+[`addPoint()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L95-L106)
 と、
-[`addClass()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L108-L110)
+[`addClass()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L108-L110)
 が受け取るものを、 Db が受理した後に記録します。
 スタイルは、
 書かれたものから
-[`parseStyles()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L64-L93)
+[`parseStyles()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L64-L93)
 が作ったものです。
 Db は 1 つなので、パッチは Db 自体に当てられ、
 `clear()` が記録を最初からやり直します。
@@ -3554,7 +3585,7 @@ Db は 1 つなので、パッチは Db 自体に当てられ、
 ラベルが 1 つだけのときは、
 配置がそれを `left` に置けば軸の最初のテキストで（2 つ目のテキストが空のとき）、
 `center` に置けば 2 つ目のテキストです（2 つ目のテキストが空でないとき。
-[`getAxisLabels()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantBuilder.ts#L286-L382)）。
+[`getAxisLabels()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantBuilder.ts#L286-L382)）。
 軸のラベルを隠すサイトの設定があると、Db が持つテキストが失われます。
 そのため、パッチは軸のテキストの setter でテキストが設定したテキストも記録し、
 配置がそれと違うラベルを並べたとき、
@@ -3571,21 +3602,21 @@ Db は 1 つなので、パッチは Db 自体に当てられ、
 
 値を、欄ごとに述べます。
 テキストは
-[字句解析](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L15-L77)
+[字句解析](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L15-L77)
 と、
-[文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L83-L189)
+[文法](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L83-L189)
 が読み、
 スタイルは
-[`parseStyles()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L64-L93)
+[`parseStyles()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L64-L93)
 が読みます。
 `parseStyles()` は、知らないものを拒否します。
 出典は
-[`validateNumber()` など](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/utils.ts#L8-L18)
+[`validateNumber()` など](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/utils.ts#L8-L18)
 です。
 
 - ヘッダーは `quadrantChart` です。
 
-  [検出器](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDetector.ts#L9-L11)
+  [検出器](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDetector.ts#L9-L11)
   はこの大文字小文字のとおりに読むので、 `QUADRANTCHART`、`quadrantchart`、
   `QuadrantChart` は検出されません。
   ヘッダーに続けて書いた語、ダッシュと語、数字、ASCII の外の文字は、
@@ -5811,13 +5842,13 @@ Db は 1 つなので、パッチは Db 自体に当てられ、
 Db は、すべての block 図が共有する 1 つのオブジェクトで、
 状態はモジュールの変数にあり、
 構文解析のたびに
-[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDB.ts#L197-L209)
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/blockDB.ts#L197-L209)
 がそれを初期状態に戻します。
 構文解析のあいだ、ブラウザの機能も時刻も読みません。
 文法は文の並びを作り、テキスト全体を読み終えたときに初めて、
-[`setHierarchy()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDB.ts#L305-L309)
+[`setHierarchy()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/blockDB.ts#L305-L309)
 が、
-[`populateBlockDatabase()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDB.ts#L105-L192)
+[`populateBlockDatabase()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/blockDB.ts#L105-L192)
 を呼びます。
 これは並びをテキストの順に、子の並びを 1 つずつたどって Db を埋めます。
 id ごとのブロックの表、辺の並び、クラスです。
@@ -5836,7 +5867,7 @@ composite は `children` を持ちます。
 自分の並びのブロックで、テキストの順です。
 `id` のない `block` と `space` ごとに、
 Db は
-[`generateId()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDB.ts#L300-L303)
+[`generateId()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/blockDB.ts#L300-L303)
 で id を作ります。
 これは乱数を含むので、要約はそのようなブロックに `id` を持たず、
 `space` に `label` も持ちません（`space` の label は Db が作った id です）。
@@ -5890,7 +5921,7 @@ Db は 1 つなので、パッチは Db そのものに当てます。
 要約の値を欄ごとに示します。
 
 - 見出しは `block-beta` か `block` です。
-  [検出器](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDetector.ts#L6-L6)
+  [検出器](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/blockDetector.ts#L6-L6)
   は、空白のあとに `block` で始まるテキストを、
   この大文字小文字のとおりに読みます。
   そのため、`Block-beta`、`BLOCK-BETA`、`Block` は検出されません。
@@ -6743,7 +6774,7 @@ Db は 1 つなので、パッチは Db そのものに当てます。
   空白で始まるスタイルは、
   `color:` で始まるスタイルとは別のものとして描画に渡されます。
   出典は
-  [`getStylesFromArray()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L443-L459)
+  [`getStylesFromArray()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L443-L459)
   です。
   `style` はその node への前の `style` のスタイルを置き換えます。
   スタイルのない `style` や空白だけの `style` は何も変えず、
@@ -8812,7 +8843,7 @@ Db は 1 つなので、パッチは Db そのものに当てます。
 
 `normalizeKanban()`（`src/normalizers/kanban.ts`）は、内部の列一覧と統合せず、
 描画側が使う
-[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L54-L97)
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L54-L97)
 を読む。 [fixture: kanban/db-metadata-all]
 [fixture: kanban/db-decoration-class-item]
 [fixture: kanban/db-decoration-icon-section]
@@ -8837,12 +8868,12 @@ Db は 1 つなので、パッチは Db そのものに当てます。
 インデントが構造を決め、タブも一文字と数え、最初のノードと同じ深さを列とし、
 他の深さは直前の列の項目にする。
 要約はインデントそのもの（`level`）を保持しない。
-[描画器](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/kanbanRenderer.ts#L16-L73)
+[描画器](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/kanban/kanbanRenderer.ts#L16-L73)
 は `isGroup` と `parentId` で列と項目を分け、 `level` を読まない。
 [fixture: kanban/db-indent-tabs] [fixture: kanban/db-indent-unindented]
 [fixture: kanban/db-indent-deeper] [fixture: kanban/db-indent-shallower-last]
 
-[`getSection()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L25-L48)
+[`getSection()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L25-L48)
 は既存ノードの深さを調べるため、最後の浅い項目は受理し、
 その後にノードがあると拒否する。 [fixture: kanban/db-indent-shallower-last]
 [fixture: kanban/gram-indent-shallower-followed]
@@ -8866,7 +8897,7 @@ Db は 1 つなので、パッチは Db そのものに当てます。
 [fixture: kanban/db-metadata-section-priority]
 [fixture: kanban/db-metadata-section-icon]
 
-[`addNode()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L99-L165)
+[`addNode()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L99-L165)
 は JSON schema の YAML を読み、真と評価する値だけを適用し、 `ticket`、
 `assigned`、 `icon` は `toString()` で文字列にする。
 [fixture: kanban/db-metadata-ticket-number]
@@ -11815,23 +11846,23 @@ Db が拒否する: shape 名に大文字か `_` が含まれる（`No such shap
 描画前の構文解析直後に共有 C4 Db を読み取る。 [fixture: c4/db-all-fields]
 
 `type` は
-[`getC4Type()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L76-L78)
+[`getC4Type()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/c4/c4Db.ts#L76-L78)
 の値を保持する。 [fixture: c4/db-all-fields]
 
 `title` は
-[`getTitle()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L722-L724)
+[`getTitle()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/c4/c4Db.ts#L722-L724)
 の値を保持する。 [fixture: c4/db-all-fields]
 
 `accTitle` は
-[`getAccTitle()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L20-L20)
+[`getAccTitle()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/commonDb.ts#L20-L20)
 の値を保持する。 [fixture: c4/db-acc-title]
 
 `accDescr` は
-[`getAccDescription()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L26-L26)
+[`getAccDescription()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/commonDb.ts#L26-L26)
 の値を保持する。 [fixture: c4/db-all-fields]
 
 `shapes`、`boundaries`、`rels` は、
-[`getC4ShapeArray()`、`getBoundaries()`、`getRels()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L684-L720)
+[`getC4ShapeArray()`、`getBoundaries()`、`getRels()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/c4/c4Db.ts#L684-L720)
 の完全な own 属性を、最初の追加順に保持する。
 [fixture: c4/db-shape-three-definitions] [fixture:
 c4/db-boundary-three-definitions] [fixture: c4/db-rel-three-definitions]
@@ -12313,7 +12344,7 @@ c4/db-grid-style-rule-index-argument-quoted] [fixture:
 c4/db-grid-tab-index-argument-quoted] [fixture:
 c4/db-grid-vt-index-argument-quoted]
 
-[`UpdateElementStyle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L494-L590)
+[`UpdateElementStyle`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/c4/c4Db.ts#L494-L590)
 は最初に一致する図形を更新し、図形がなければ最初に一致する境界を更新し、
 対象がなければ何も変更しない。 [fixture: c4/gram-boundary-reused-alias]
 [fixture: c4/db-style-boundary] [fixture: c4/db-style-before-definition]
@@ -14995,34 +15026,34 @@ c4/db-grid-quote-layout-argument-quoted]
 ## venn
 
 `normalizeVenn()`（`src/normalizers/venn.ts`）は、
-[vennDB.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L22-L133)
+[vennDB.ts](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/venn/vennDB.ts#L22-L133)
 の共有 Db を要約する。 [fixture: venn/db-all-fields]
 
 要約は
-[`getDiagramTitle()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L32-L32)
+[`getDiagramTitle()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/commonDb.ts#L32-L32)
 から `title` を得る。 [fixture: venn/db-all-fields]
 [fixture: venn/db-frontmatter-title]
 
 要約は
-[`getAccTitle()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L20-L20)
+[`getAccTitle()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/commonDb.ts#L20-L20)
 から `accTitle` を得る。 [fixture: venn/db-frontmatter-accessibility]
 [fixture: venn/header-only]
 
 要約は
-[`getAccDescription()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L26-L26)
+[`getAccDescription()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/commonDb.ts#L26-L26)
 から `accDescr` を得る。 [fixture: venn/db-frontmatter-accessibility]
 [fixture: venn/header-only]
 
 `subsets` は
-[`getSubsetData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L38-L40)
+[`getSubsetData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/venn/vennDB.ts#L38-L40)
 から得る。 [fixture: venn/db-all-fields]
 
 `texts` は
-[`getTextData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L88-L90)
+[`getTextData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/venn/vennDB.ts#L88-L90)
 から得る。 [fixture: venn/db-all-fields]
 
 `styles` は
-[`getStyleData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L72-L74)
+[`getStyleData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/venn/vennDB.ts#L72-L74)
 から得る。 [fixture: venn/db-all-fields]
 
 三つの配列は重複する宣言を含めて宣言順を保つ。
@@ -15063,17 +15094,17 @@ style の要素は `{ targets, styles }` を保ち、未定義のラベルは省
 [fixture: venn/db-form-text-id] [fixture: venn/db-label-empty]
 
 要約は描画設定の
-[`getConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L100-L102)
+[`getConfig()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/venn/vennDB.ts#L100-L102)
 と、解析状態である既知の集合の表、現在の集合、
 字下げモードと一時的な字下げフラグを省き、描画座標、配色、生成 id、
 暗黙の二集合の重なりを追加しない。 [fixture: venn/db-form-union]
 [fixture: venn/db-indent-width] [fixture: venn/db-union-repeated-member]
 
 Db の
-[`customClear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L104-L112)
+[`customClear()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/venn/vennDB.ts#L104-L112)
 は、
 共通の
-[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L10-L14)
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/commonDb.ts#L10-L14)
 を呼び、宣言と解析状態を消去する。 [fixture: venn/db-all-fields]
 [fixture: venn/header-only]
 
@@ -17132,7 +17163,7 @@ HTML 属性の二重引用符は単一引用符となる。
 ## agentflow
 
 `normalizeAgentflow()`（`src/normalizers/agentflow.ts`）は
-[`AgentFlowDB`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L213-L265)
+[`AgentFlowDB`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L213-L265)
 を要約する。
 ヘッダー `agentflow-beta` の検出器 id は `agentflow` である。
 [fixture: agentflow/header-lf] [fixture: agentflow/header-without-beta]
@@ -17153,23 +17184,23 @@ HTML 属性の二重引用符は単一引用符となる。
 
 getter、レコードの形、metadata 呼出しの引数位置が一致するため、
 flowchart のレコード正規化と Db パッチを再利用する。
-[`draw()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/renderer.ts#L17-L61)
+[`draw()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/renderer.ts#L17-L61)
 は `direction` をレイアウト、 `title` をタイトル挿入に使う。
 共通の
-[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L626-L628)
+[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L628-L630)
 が、 `accTitle` と `accDescr` をアクセシビリティに使う。
 [fixture: agentflow/db-all-fields]
 
 頂点は `id`、`text`、`labelType`、`type`、`styles`、`classes`、`props` と、
 省略可能な `dir`、`link`、`linkTarget`、`metadata`、`isConnector` を保持する。
-[`addNodeFromVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1613-L1664)
+[`addNodeFromVertex()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1613-L1664)
 は id を頂点と親の検索、テキストと種類をラベル、style と class を CSS、
 方向をレイアウト、 link と target をリンクに使う。
-[`getTypeFromVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1571-L1587)
+[`getTypeFromVertex()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1571-L1587)
 は `type` から形を選ぶ。
 Map の順序が頂点の順序を決める。
 `isConnector` は宣言の種類を保持し、
-[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
 が配色に使う connector-id 索引を再現できる。
 描画がこの真偽値自体を読むわけではない。 [fixture: agentflow/db-all-fields]
 [fixture: agentflow/gram-connector-all-forms]
@@ -17186,7 +17217,7 @@ Map の順序が頂点の順序を決める。
 辺は `start`、`end`、`type`、`stroke`、`length`、`text`、`labelType`、
 `classes`、`id` と、省略可能な `interpolate`、`style`、 `animate`、`animation`、
 `metadata` を保持する。
-[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
 は端点と順序で辺を結び、 `type` で矢印、`stroke` で線種と太さ、
 `length` で最小長を決める。
 テキストと種類はラベル、class はコンパイル済み CSS、補間、 style、
@@ -17198,24 +17229,24 @@ animation は共通の辺描画へ渡る。
 [fixture: agentflow/gram-linkstyle-interpolate-default]
 
 定義順の `classDefs.id` と `styles` は
-[`getClasses()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/renderer.ts#L10-L16)
+[`getClasses()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/renderer.ts#L10-L16)
 と、
-[`getCompiledStyles()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1666-L1678)
+[`getCompiledStyles()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1666-L1678)
 へ渡る。
 `tooltips.id` と `text` は
-[`setTooltip()` / `getTooltip()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L945-L1023)
+[`setTooltip()` / `getTooltip()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L945-L1023)
 と頂点の tooltip binding に使う。
 要約は Map の id の初出順を保持する。
 `clickCalls` は secure 設定がブラウザー用 closure を捨てる前に、書かれた名前、
 引数、呼出し順を記録する。
-[`setClickFun()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L955-L1001)
+[`setClickFun()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L955-L1001)
 と描画後の binding が closure を使うのであり、
 描画が要約の `clickCalls` 配列を読むわけではない。
 [fixture: agentflow/db-all-fields] [fixture: agentflow/db-click-missing-id]
 
 コンテナーは `id`、`title`、`labelType`、`type`、`nodes`、`classes` と、
 省略可能な `dir`、`metadata` を保持する。
-[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
 は id と所属を入れ子と折畳みの祖先、完了順を走査と配色順、
 タイトルと種類をグループのラベルと形に使う。
 class は CSS、方向はレイアウト、 `metadata.view` は折畳み表示に使う。
@@ -17247,7 +17278,7 @@ global の flow と connector の id は後のコンテナーの所属からも�
 それにより生じる自己ループを落とすレイアウトデータや、表示用 metadata、
 クラス定義、
 対話操作を落とす
-[`getSemanticModel()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L2017-L2145)
+[`getSemanticModel()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L2017-L2145)
 からは取らない。 [fixture: agentflow/db-flow-collapse]
 [fixture: agentflow/db-data-block-presentation-metadata]
 
@@ -17260,13 +17291,13 @@ shape と label の効果は既に type と text に現れる。
 `getData()` は flow の `view` を折畳みに読み、
 flow の種類からレイアウトの `containerType` を作る。
 共通の elk の
-[`buildSubgraphLayoutOptions()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/rendering-util/layout-algorithms/elk/render.ts#L369-L501)
+[`buildSubgraphLayoutOptions()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/rendering-util/layout-algorithms/elk/render.ts#L370-L502)
 が `algorithm` を読み、
 共通の shape の
-[`collapsedGroup()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/rendering-util/rendering-elements/shapes/collapsedGroup.ts#L76-L190)
+[`collapsedGroup()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/rendering-util/rendering-elements/shapes/collapsedGroup.ts#L76-L190)
 がその導出した `containerType` を読む。
 パッチは YAML や routing を再実装せず、
-[`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L347-L565)
+[`addVertex()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L347-L565)
 の前後の差を `dataBlockEffects` に記録する。
 `animate` と `animation` は block 専用の昇格フィールドである。
 icon と image の設定は metadata に残り、
@@ -17328,7 +17359,7 @@ anchor の mapping の両方の出現を metadata と `dataBlockEffects`
 の値として保持する。
 `custom.deep` が自分の mapping を参照する alias は、要約の抽出より前に、
 Mermaid の再帰的な
-[`stripPrototypeKeys()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L124-L139)
+[`stripPrototypeKeys()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L124-L139)
 で `RangeError` を投げる。
 Db の観測パッチを外しても同じ拒否になる。
 [fixture: agentflow/db-metadata-yaml-shared-alias]
@@ -17336,11 +17367,11 @@ Db の観測パッチを外しても同じ拒否になる。
 
 形の別名は保存前に解決する。
 六つの domain alias と `round` は
-[`SHAPE_ALIASES`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/shapes.ts#L16-L24)
+[`SHAPE_ALIASES`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/shapes.ts#L16-L24)
 が定義する。
 `round` は `rect` を保存し、描画時に `roundedRect` にする。
 metadata の形は描画前に
-[`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L347-L565)
+[`addVertex()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L347-L565)
 が検査する。
 書かれた名前に大文字や underscore があると、
 内部の解決済み名や removed 集合に同じ綴りがあっても拒否する。
@@ -17368,7 +17399,7 @@ metadata の canonical name `subproc`、`lean-right`、`lin-doc`、
 [fixture: agentflow/db-shape-hexagon] [fixture: agentflow/db-shape-hex]
 
 metadata の検査を通る removed shape は解析でき、生の type と metadata を残す。
-[`normaliseNodeShapes()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/shapes.ts#L113-L147)
+[`normaliseNodeShapes()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/shapes.ts#L113-L147)
 は `SHAPE_REMOVED` を出し、レイアウトデータで `roundedRect` に替える。
 `doublecircle`、document、terminal、circle、trapezoid の各種、lean-left、
 in-out、odd、procs と、削除済み instance shape が該当する。
@@ -17399,10 +17430,10 @@ in-out、odd、procs と、削除済み instance shape が該当する。
 どちらの形の診断も解析を拒否せず、折畳みで隠れる子孫は検査しない。
 未知の metadata の形は解析時に throw する。
 包含の循環は `CONTAINMENT_VIOLATION` を出し、
-[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
 は循環を閉じる親の割当てを省く。
 要約は生の所属を残す。
-[`PARSER_EMITTED_DIAGNOSTICS` と `RESERVED_DIAGNOSTICS` の定義](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/diagnostics.ts#L155-L169)
+[`PARSER_EMITTED_DIAGNOSTICS` と `RESERVED_DIAGNOSTICS` の定義](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/diagnostics.ts#L155-L169)
 がこれらの検査と外部の意味検査を区別する。
 reference のラベル、存在しない connector への参照、
 入力のない flow はここで予約済み id を出さない。
@@ -17759,7 +17790,7 @@ tooltip は行を消費した後に拒否する。
 [fixture: agentflow/lex-direction-in-data-label]
 [fixture: agentflow/lex-direction-in-tooltip]
 
-[`addDiagrams()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L44-L126)
+[`addDiagrams()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L44-L126)
 では agentflow の検出が C4 より先なので、 id、通常と引用符付きのラベル、
 コメント、frontmatter、 directive 内の C4 の語は図の id を変えない。
 先頭のセミコロンは検出を妨げる。
@@ -17920,13 +17951,13 @@ metadata のキーの内部のセミコロンは YAML が読む前に除く。
 ## ishikawa
 
 `normalizeIshikawa()`（`src/normalizers/ishikawa.ts`）は
-[`IshikawaDB`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L20-L96)
+[`IshikawaDB`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L20-L96)
 を要約する。
 ヘッダー `ishikawa` と `ishikawa-beta` の図種 ID は共に `ishikawa`。
 [fixture: ishikawa/gram-root-eof] [fixture: ishikawa/spec-ishikawa-36b2cea5]
 
 `root` は
-[`getRoot()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L38-L40)
+[`getRoot()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L38-L40)
 の順序付きの木で、存在しなければ `null` となる。
 [fixture: ishikawa/header-only-lf] [fixture: ishikawa/header-beta-only-lf]
 [fixture: ishikawa/gram-whitespace-only-document]
@@ -17934,7 +17965,7 @@ metadata のキーの内部のセミコロンは YAML が読む前に除く。
 各ノードは `text` と `children` だけを再帰的に保持する。
 ラベルの重複と兄弟の順序も保持する。
 これは
-[`draw()`、`drawBranch()`、`flattenTree()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/ishikawaRenderer.ts#L36-L445)
+[`draw()`、`drawBranch()`、`flattenTree()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/ishikawa/ishikawaRenderer.ts#L36-L445)
 が読む表現である。
 根の文字列が頭、根の子が原因、子孫が小さな枝となる。
 ノードの別表現は必要ない。 [fixture: ishikawa/db-all-fields]
@@ -17949,10 +17980,10 @@ metadata のキーの内部のセミコロンは YAML が読む前に除く。
 
 `title`、`accTitle`、
 `accDescr` は
-[`Db の getter`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L73-L95)
+[`Db の getter`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L73-L95)
 から保持する。
 共通の描画経路の
-[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L626-L628)
+[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L628-L630)
 は両方のアクセシビリティ getter を読む。
 最初のノードは、サニタイズ後のラベルを `title` に設定する。
 解析前に設定されたフロントマターのタイトルを上書きする。
@@ -17972,7 +18003,7 @@ metadata のキーの内部のセミコロンは YAML が読む前に除く。
 [fixture: ishikawa/frontmatter-numeric-title-rootless]
 
 文法が呼ぶのは
-[`addNode()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/parser/ishikawa.jison#L50-L55)
+[`addNode()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/ishikawa/parser/ishikawa.jison#L50-L55)
 だけである。
 アクセシビリティ構文に見える行とブロックは通常のノード文字列となる。
 フロントマターのアクセシビリティキーも共通の getter を設定しない。
@@ -18005,10 +18036,10 @@ private フィールドは `root`、`stack`、`baseLevel`。
 
 文法はノード文字列の両端を trim し、
 共通の
-[`sanitizeText`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L85-L97)
+[`sanitizeText`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/common.ts#L85-L97)
 に渡す。
 共通の
-[`setDiagramTitle()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L28-L30)
+[`setDiagramTitle()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/commonDb.ts#L28-L30)
 は根のラベルをもう一度サニタイズする。
 DOMPurify は [expected-results.md](./expected-results.md)
 の説明どおり無効にする。
@@ -18031,7 +18062,7 @@ U+0085（NEL）は、単独の行でもノードの文字列として保持さ�
 [fixture: ishikawa/gram-after-root-spaced-semicolons]
 [fixture: ishikawa/gram-after-child-spaced-semicolons]
 Db に渡す前の共通の
-[`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L916)
+[`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L895-L916)
 の前処理は、 hash の後の最後のセミコロンを取り除く。
 条件は、その行の前方に正確な大文字小文字の `style` または `classDef` があり、
 後続のコロンと hash の間に空白がないことである。
@@ -18087,7 +18118,7 @@ YAML に見える内容は解析しない。
 [fixture: ishikawa/db-data-block-multiline-is-nodes]
 ノード ID、乱数、時計の値、タイムゾーンは要約に入らない。
 [fixture: ishikawa/db-all-fields]
-[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L31-L36)
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L31-L36)
 は呼び出し間で木、解析状態、共通の文字列をリセットする。
 [fixture: ishikawa/db-all-fields] [fixture: ishikawa/header-only-lf]
 
@@ -18095,10 +18126,10 @@ YAML に見える内容は解析しない。
 
 `normalizeUsecase()`（`src/normalizers/usecase.ts`）は、
 保存済みの
-[`db`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L35-L116)
+[`db`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L35-L116)
 を要約します。
 ヘッダー `usecase-beta` の検出 ID は `usecase` です。
-[`検出器`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDetector.ts#L7-L11)
+[`検出器`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDetector.ts#L7-L11)
 は、キーワードの後に空白かテキストの終わりを要求します。
 [fixture: usecase/spec-usecase-parser-7ae00acb]
 [fixture: usecase/header-letter-suffix] [fixture: usecase/header-semicolon]
@@ -18127,7 +18158,7 @@ AST はモデルを複製してソースと文の範囲を加えます。
 `styles` と、省略可能な `icon`、`stereotype`、`parentId` を保持します。
 ユースケースは `id`、`label`、`labelType`、`shape`、`business`、 `classes`、
 `styles` と、省略可能な `stereotype`、`parentId` を保持します。
-[`getData()` のアクターとユースケースのループ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L337-L387)
+[`getData()` のアクターとユースケースのループ](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L337-L387)
 は ID を端点、ラベルと型をテキスト、型・形状・business・icon を図形に使います。
 ステレオタイプは表示名とアクセシブルな名前、親 ID はグループ化、
 クラスとスタイルは外観に使います。
@@ -18135,7 +18166,7 @@ Map の順序がレイアウトのノード順を与えます。 [fixture: useca
 [fixture: usecase/db-actor-variants]
 
 境界は `id`、`label`、`labelType`、`type`、`classes`、`styles` を保持します。
-[`境界のループ`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L427-L447)
+[`境界のループ`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L427-L447)
 はこれらをグループの識別、タイトル、rect/package の形状、CSS に使います。
 `members` は省きます。
 描画は各アクターとユースケースの `parentId` を読み、
@@ -18146,9 +18177,9 @@ Map の順序がレイアウトのノード順を与えます。 [fixture: useca
 関連は `source`、`target`、`type`、`arrowType`、`minlen`、 `classes`、`styles`、
 `animate` と、省略可能な `animation`、 `label`、`labelType` を保持します。
 明示された辺 ID がある場合だけ `id` も保持します。
-[`関連の変換`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L254-L283)
+[`関連の変換`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L254-L283)
 は実線・点線、矢印のマーカー、意味を示すラベルを選びます。
-[`辺のループ`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L449-L481)
+[`辺のループ`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L449-L481)
 は端点、ラベル、長さ、CSS、アニメーションを読みます。
 明示 ID は著者が書いたクラス・スタイル・メタデータの対象です。
 匿名 ID と `explicitId` は省きます。
@@ -18157,21 +18188,21 @@ Map の順序がレイアウトのノード順を与えます。 [fixture: useca
 [fixture: usecase/db-edge-id-style]
 
 注釈は対象、テキスト、型を保持します。
-[`注釈ノードのループ`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L389-L409)
+[`注釈ノードのループ`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L389-L409)
 がそれらを読みます。
-[`注釈の接続辺のループ`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L483-L508)
+[`注釈の接続辺のループ`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L483-L508)
 も同じ対象を使います。
 生成された ID と派生する点線の接続辺は省きます。
 [fixture: usecase/db-note-order]
 
 JSON 表は値とソースのプロパティ順を保持します。
-[`JSON 行への変換`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L139-L219)
+[`JSON 行への変換`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L139-L219)
 は両方を読み、 JavaScript のキー順だけでは整数風のキーが並び替わるためです。
 クラスとスタイルは
-[`表のループ`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L411-L425)
+[`表のループ`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L411-L425)
 へ渡ります。
 クラス定義は
-[`getCompiledStyles()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L118-L134)
+[`getCompiledStyles()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L118-L134)
 が読みます。
 表の行とコンパイル済み CSS は派生値なので省きます。
 共通の数値変換は有限でない JSON 数値をテキスト、負のゼロをゼロにします。
@@ -18180,13 +18211,13 @@ JSON 表は値とソースのプロパティ順を保持します。
 [fixture: usecase/db-json-overflow] [fixture: usecase/db-classdef-replace]
 
 `direction` は
-[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L525-L545)
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L525-L545)
 のレイアウト方向です。
 `title` は
-[`draw()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseRenderer.ts#L287-L295)
+[`draw()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseRenderer.ts#L287-L295)
 が読みます。
 共通のアクセシビリティ getter は
-[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L626-L628)
+[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L628-L630)
 が読みます。 [fixture: usecase/db-all-fields] [fixture: usecase/db-direction-td]
 
 残るモデル状態は省きます。
@@ -18214,7 +18245,7 @@ Db パッチは、
 この effect を消費します。 [fixture: usecase/db-json-source-map-order]
 [fixture: usecase/gram-json-empty]
 
-[`メタデータ規則`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.parser.ts#L418-L460)
+[`メタデータ規則`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/parser/usecase.parser.ts#L418-L460)
 は不透明な YAML ではなく、閉じた固有のプロパティ文法を読み、
 data block の effect を作りません。
 解析はブラウザーの代用、URL サニタイザーのパッチ、
@@ -18243,10 +18274,10 @@ usecase の描画設定は保存済みモデルを変えません。
 
 この固定版では、
 外側の
-[`Diagram.fromText()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L47-L54)
+[`Diagram.fromText()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/Diagram.ts#L47-L54)
 がフロントマターのタイトルを設定した後で、
 パーサーが
-[`db.clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.chevrotain.ts#L10-L12)
+[`db.clear()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/parser/usecase.chevrotain.ts#L10-L12)
 を呼びます。
 そのため、空でない文字列、空白だけの文字列、数値のタイトルでも、
 `title` は空になります。
@@ -18687,7 +18718,7 @@ JSON の閉じ引用符の前のバックスラッシュ二つは、一つのバ
 
 `normalizePie()`（`src/normalizers/pie.ts`）は、
 保存された
-[`db`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieDb.ts#L18-L71)
+[`db`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/pie/pieDb.ts#L18-L71)
 を要約する。
 ヘッダー `pie` の検出 id は `pie`。 [fixture: pie/header-only]
 
@@ -18699,16 +18730,16 @@ JSON の閉じ引用符の前のバックスラッシュ二つは、一つのバ
 | `sections`              | ラベルの初出順の `label`、`value`。        |
 
 描画の
-[`createPieArcs()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L12-L23)
+[`createPieArcs()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L12-L23)
 は値から扇形の割合を求め、区分の順序を保つ。
-[`凡例`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L149-L180)
+[`凡例`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L149-L180)
 は扇形から除かれるゼロや小さい区分も含め、全ラベルと値を読む。
 `showData` はラベルへ値を添えるかを選ぶ。
 このため要約は、保存された全区分を並べ替えも絞り込みもせず保つ。
 [fixture: pie/db-slice-order] [fixture: pie/db-small-slice]
 [fixture: pie/db-all-fields]
 
-[`addSection()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieDb.ts#L36-L48)
+[`addSection()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/pie/pieDb.ts#L36-L48)
 は Map を使い、変換後の各ラベルの最初の値を保つ。
 プロトタイプと同じ名前も通常のキーになる。
 非有限数は共通の要約規約でテキスト `"Infinity"` とし、負のゼロはゼロとする。
@@ -18722,13 +18753,13 @@ JSON の閉じ引用符の前のバックスラッシュ二つは、一つのバ
 [fixture: pie/db-duplicate-first-negative-zero]
 
 描画は `title` を
-[`タイトルのテキスト`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L142-L147)
+[`タイトルのテキスト`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L142-L147)
 として読む。
 共通のアクセシビリティ getter は
-[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L626-L628)
+[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L628-L630)
 へ値を渡す。
 解析された文を Db に反映する前に、frontmatter がタイトルを設定する。
-[`populateCommonDb()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14)
+[`populateCommonDb()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14)
 は AST の最後の文字列が空でない場合だけ反映する。
 要約は AST やソース位置ではなく、これらの getter を読む。
 [fixture: pie/db-all-fields] [fixture: pie/frontmatter-title]
@@ -18740,7 +18771,7 @@ JSON の閉じ引用符の前のバックスラッシュ二つは、一つのバ
 - `config`：Db の `getConfig()` は固定の既定値の複製を返す。
   描画は `textPosition`、`donutHole`、`legendPosition`、
   `highlightSlice` を含む
-  [設定を別途マージする](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L33-L65)。
+  [設定を別途マージする](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L33-L65)。
   サイトと入力の設定は `config` と `embedded.config` に記録済み。
   どれも保存された区分や `showData` を変えない。
   [fixture: pie/config-drawing-only] [fixture: pie/frontmatter-config]
@@ -18767,17 +18798,17 @@ Db のパッチ、共通サニタイザーの準備以外のブラウザー代�
 生成 id の置換、時刻依存の正規化は不要。
 
 これらの読み方は、
-[pie の生成規則](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium#L1-L20)、
-[共通の terminal と EOL](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L6-L34)、
-[preprocessDiagram()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L58-L65)
+[pie の生成規則](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/pie/pie.langium#L1-L20)、
+[共通の terminal と EOL](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/common.langium#L6-L34)、
+[preprocessDiagram()](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L58-L65)
 に従う。
 
 ### 字句解析前と字句解析中の directive
 
 global な
-[directive の除去](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L199-L202)
+[directive の除去](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L199-L202)
 は、
-[directive のパターン](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L9-L10)
+[directive のパターン](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/regexes.ts#L12-L13)
 を使い、 hidden terminal は別の字句規則となる。
 
 global な directive 除去は、`accTitle` とコロン、
@@ -18937,7 +18968,7 @@ EOF の前の空白または LF の前の TAB で終わる `showData` 付きヘ�
 
 ### 先頭の frontmatter と本文の YAML
 
-[extractFrontMatter()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L68)
+[extractFrontMatter()](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L68)
 は本文の字句解析前に、先頭の frontmatter だけを読む。
 
 区切りのある先頭の frontmatter 内の不正な YAML は拒否されるが、
@@ -19024,7 +19055,7 @@ HTML 属性の引用符の前処理は、frontmatter 内の未閉タグから後
 
 ### 保存される値と変換
 
-[共通の converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L43-L70)
+[共通の converter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/valueConverter.ts#L43-L70)
 は一行の値とブロックの値を別に扱う。
 
 `pie showData` と区分は、`showData` とラベルの間を ASCII 空白で区切り、
@@ -19138,9 +19169,9 @@ U+2029 は、ブロックの terminal の中で消費され得る。
 
 ### 各テキストフィールドの文字参照の前処理
 
-[encodeEntities()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L916)
+[encodeEntities()](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L895-L916)
 は、
-[Diagram.fromText()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L49-L83)
+[Diagram.fromText()](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/Diagram.ts#L49-L83)
 で、解析前の本文テキストに適用される。
 
 セミコロンを除く二つのパターンは `style.*:\S*#.*;` と `classDef.*:\S*#.*;`
@@ -19249,7 +19280,7 @@ style に見えるテキストのセミコロンをそのまま保つ。
 
 `normalizeGitgraph()`（`src/normalizers/gitgraph.ts`）は共有 Db を要約する。
 検出 id は `gitGraph`。
-[`db`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L28-L68)
+[`db`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L28-L68)
 [fixture: gitgraph/header-only]
 
 | フィールド                      | 内容                                                                                                       |
@@ -19264,9 +19295,9 @@ commit の message、ブランチの先端、 HEAD、
 選択中のブランチは renderer が読まないので省く。
 途中のブランチ選択は後の commit の親と作成元ブランチに表れ、
 最後の checkout は要約の field を増やさない。
-[commit ids, types and tags](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L331-L423)
-[parents and sequence](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L546-L610)
-[branch order and direction](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L1002-L1011)
+[commit ids, types and tags](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L331-L423)
+[parents and sequence](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L546-L610)
+[branch order and direction](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L1002-L1011)
 [fixture: gitgraph/gram-all-fields] [fixture: gitgraph/gram-checkout]
 [fixture: gitgraph/gram-cherry-pick] [fixture: gitgraph/gram-switch]
 
@@ -19288,7 +19319,7 @@ adapter は共通値、方向、文をソース順に登録する。
 tag はソース順に追加し、id と type の繰り返しは最後の値を取る。
 空 id は id を生成し、空 tag はそのまま保存する。
 message option は受理するが要約では省く。
-[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphParser.ts#L21-L112)
+[adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphParser.ts#L21-L112)
 [fixture: gitgraph/gram-commit-repeated-options]
 [fixture: gitgraph/gram-commit-empty-values]
 [fixture: gitgraph/gram-commit-space-values]
@@ -19297,7 +19328,7 @@ message option は受理するが要約では省く。
 値には後の連番と親が残り、自分自身の id を親に含むこともある。
 3 回の定義で連番に欠番が生じ、描画用の連番順が変わることがある。
 prototype 型の id とブランチ名も Map の通常のキー。
-[`commit()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L114-L147)
+[`commit()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L114-L147)
 [fixture: gitgraph/db-duplicate-id] [fixture: gitgraph/db-three-definitions]
 [fixture: gitgraph/db-prototype-ids]
 [fixture: gitgraph/db-converted-duplicate-id]
@@ -19306,7 +19337,7 @@ commit の位置は `seq` の昇順で計算するが、
 arrow は `getCommits()` の Map のキーを初回挿入順で読む。
 要約はこの Map 順と、各 commit の後の `seq` の両方を残す。
 `getCommitsArray()` の導出済みの並べ替えは別に保存しない。
-[drawArrows()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L851-L865)
+[drawArrows()](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L851-L865)
 [fixture: gitgraph/db-three-definitions]
 
 共有オブジェクトへの patch は登録時に生成 id を観測するだけで、
@@ -19330,8 +19361,8 @@ commit id と親の参照を置き換え、tag は保存されたまま写す。
 同値なら作成順を保つ。
 空文字列と空白だけの引用名もキーとして残す。
 設定による初期ブランチ名は直接保存する。
-[`branch()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L149-L164)
-[`checkout()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L369-L394)
+[`branch()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L149-L164)
+[`checkout()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L369-L394)
 [fixture: gitgraph/gram-branch-order] [fixture: gitgraph/gram-branch-order-tie]
 [fixture: gitgraph/gram-branch-empty] [fixture: gitgraph/gram-branch-whitespace]
 [fixture: gitgraph/gram-switch] [fixture: gitgraph/config-main-empty-name]
@@ -19341,7 +19372,7 @@ commit id と親の参照を置き換え、tag は保存されたまま写す。
 custom-id フラグを持つ。
 繰り返す単一値の option は最後を取り、
 空 id は生成 id と `customId: false` になる。
-[`merge()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L166-L258)
+[`merge()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L166-L258)
 [fixture: gitgraph/gram-merge-options]
 [fixture: gitgraph/gram-merge-repeated-options]
 [fixture: gitgraph/gram-merge-empty-id]
@@ -19364,7 +19395,7 @@ branch 作成は既存名を拒否し、 checkout/switch は未知の名を拒�
 明示 tag は既定 tag を抑え、空文字列を除く。
 単一値の option は最後の代入を使う。
 通常の元 commit に対して空 parent は未指定扱い。
-[`cherryPick()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L261-L376)
+[`cherryPick()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L261-L376)
 [fixture: gitgraph/gram-cherry-pick] [fixture: gitgraph/gram-cherry-pick-tags]
 [fixture: gitgraph/gram-cherry-pick-merge-parent]
 [fixture: gitgraph/gram-cherry-pick-repeated-options]
@@ -19389,7 +19420,7 @@ entry と statement の規則は `gitGraph`、`gitGraph:`、離したコロン�
 通常の本文の文には NEWLINE または EOF が必要で、セミコロンでは代用できない。
 単独 CR と CRLF は LF に正規化し、LS と PS は NEWLINE ではない。
 空行と ASCII space/TAB は許す。
-[entry and statement rules](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/gitGraph/gitGraph.langium#L1-L56)
+[entry and statement rules](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/gitGraph/gitGraph.langium#L1-L56)
 [fixture: gitgraph/header-only] [fixture: gitgraph/header-colon]
 [fixture: gitgraph/header-spaced-colon] [fixture: gitgraph/header-lr]
 [fixture: gitgraph/header-tb] [fixture: gitgraph/header-bt]
@@ -19460,7 +19491,7 @@ token builder は `gitGraph` だけに JavaScript の空白/EOF または percen
 一般的な最長一致ではない。
 検出自体は大文字小文字を区別する `gitGraph` の接頭辞だけを見るので、
 接尾辞付きでも検出後に字句・文法解析で失敗することがある。
-[token builder](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/gitGraph/tokenBuilder.ts#L1-L7)
+[token builder](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/gitGraph/tokenBuilder.ts#L1-L7)
 [fixture: gitgraph/detect-lowercase] [fixture: gitgraph/detect-uppercase]
 [fixture: gitgraph/detect-letter-suffix] [fixture: gitgraph/detect-digit-suffix]
 [fixture: gitgraph/detect-dash-suffix] [fixture: gitgraph/detect-unicode-suffix]
@@ -19551,7 +19582,7 @@ CR、LS、PS をまたげない。
 b/f/n/r/t/v/0 は制御文字になり、未知の escape は slash を落とすだけで、
 16 進や Unicode code の復号はしない。
 すべての文字列 option と引用したブランチ参照はこの分岐を通る。
-[common converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L26-L81)
+[common converter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/valueConverter.ts#L26-L81)
 [fixture: gitgraph/gram-commit-single-quotes]
 [fixture: gitgraph/lex-string-escapes] [fixture: gitgraph/lex-string-multiline]
 [fixture: gitgraph/lex-string-single-multiline]
@@ -19603,7 +19634,7 @@ block opener だけはキーワードと波括弧の間に LF や NBSP も含む
 lexer または parser の error があれば拒否する。
 必須引数の欠落、非対応の文・option、
 分離した option のコロンは Db に登録する前に拒否する。
-[public parse gate](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L134-L150)
+[public parse gate](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/parse.ts#L134-L150)
 [fixture: gitgraph/lex-error-before-statement]
 [fixture: gitgraph/lex-error-after-valid-prefix]
 [fixture: gitgraph/gram-error-recovered-statement]
@@ -19629,7 +19660,7 @@ hidden YAML は本文を解析せず、 title/configuration も適用しない�
 hidden opener は LF の前に space/TAB だけを許し、
 closer は LF または共通空白/EOF 境界を必要とする。
 すでに囲んでいる STRING と ACC_DESCR は内部の hidden opener より優先する。
-[hidden terminals](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L25-L34)
+[hidden terminals](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/common.langium#L25-L34)
 [fixture: gitgraph/lex-yaml-after-comment]
 [fixture: gitgraph/lex-yaml-invalid-body]
 [fixture: gitgraph/lex-yaml-empty-body]
@@ -20065,7 +20096,7 @@ FLOAT/NUMBER が lexer に到達しないため、bare 名 `1.5` は REFERENCE �
 infoParser.parse() は AST をログに出すだけで、
 共通の title や accessibility 値を Db に登録しない。
 根拠:
-[infoParser.parse()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoParser.ts#L6-L11)
+[infoParser.parse()](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/info/infoParser.ts#L6-L11)
 [fixture: info/header-lf] [fixture: info/header-inline-flag]
 [fixture: info/common-all] [fixture: info/common-flag-all]
 
@@ -20078,8 +20109,8 @@ version、固定寸法、font 設定、SVG の位置は入力から決まらな�
 frontmatter の title/config は共有の embedded reading に残り、
 info の Db には title setter がない。
 根拠:
-[getVersion()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoDb.ts#L3-L11)
-[renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoRenderer.ts#L13-L28)
+[getVersion()](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/info/infoDb.ts#L3-L11)
+[renderer](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/info/infoRenderer.ts#L13-L28)
 [fixture: info/frontmatter-title] [fixture: info/frontmatter-config]
 [fixture: info/frontmatter-html]
 
@@ -20094,7 +20125,7 @@ header の前や flag の前後には改行を置ける。
 header や flag の繰り返し、header より前の flag、
 共通形式の後の flag は拒否する。
 根拠:
-[entry rule](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/info/info.langium#L1-L9)
+[entry rule](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/info/info.langium#L1-L9)
 [fixture: info/header-blank-lines] [fixture: info/header-flag-next-line]
 [fixture: info/header-common-inline] [fixture: info/header-flag-common-inline]
 [fixture: info/header-repeated] [fixture: info/header-repeated-flag]
@@ -20106,8 +20137,8 @@ token builder は両キーワードの後に JavaScript の空白、EOF、
 letter、digit、underscore、hyphen、Unicode letter、colon の suffix、
 header の大文字小文字違い、分割した header は拒否する。
 根拠:
-[detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoDetector.ts#L7-L11)
-[token builder](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/info/tokenBuilder.ts#L1-L7)
+[detector](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/info/infoDetector.ts#L7-L11)
+[token builder](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/info/tokenBuilder.ts#L1-L7)
 [fixture: info/detect-lower-suffix] [fixture: info/detect-digit-suffix]
 [fixture: info/detect-underscore-suffix] [fixture: info/detect-dash-suffix]
 [fixture: info/detect-unicode-suffix] [fixture: info/detect-colon]
@@ -20139,8 +20170,8 @@ JavaScript の空白の後の description block を受理する。
 Db の値は登録しない。
 引用符と backslash は共通 text なので、行値の開き引用符は閉じなくてよい。
 根拠:
-[common terminals](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L6-L34)
-[CommonValueConverter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L45-L81)
+[common terminals](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/common.langium#L6-L34)
+[CommonValueConverter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/valueConverter.ts#L45-L81)
 [fixture: info/title-empty] [fixture: info/title-repeat-empty]
 [fixture: info/title-tabs] [fixture: info/title-double-quotes]
 [fixture: info/title-single-quotes] [fixture: info/title-open-quote]
@@ -20498,12 +20529,12 @@ LF で終わる comment の control は info として受理する。
 | `packet`   | 公開された行の順序付き配列。各行はブロックの順序付き配列で、各ブロックは `start`、`end`（両端を含むビット位置）、`label` を持つ。空の図には行がない。 |
 
 要約元は
-[`PacketDB.getPacket()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/db.ts#L18-L52)
+[`PacketDB.getPacket()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/packet/db.ts#L18-L52)
 が公開し、
-[renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/renderer.ts#L8-L90)
+[renderer](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/packet/renderer.ts#L8-L109)
 が読む行。
 行とブロックは並べ替えず、隣り合う同じラベルもまとめない。
-[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/parser.ts#L18-L90)
+[adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/packet/parser.ts#L18-L90)
 は公開前に省略された端点を補い、
 `packet.bitsPerRow` の境界でブロックを分割する。
 要約はその端点と繰り返されたラベルを残す。
@@ -20515,7 +20546,7 @@ renderer が読まない `bits` は含めない。
 特に分割後のビット数は `end - start + 1` と一致しないことがあり、
 正規化関数はその値を修正せず、保存もしない。
 解析状態（`lastBit`、`row`、作業中の行、固定の行数上限）と、
-[`getConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/db.ts#L16-L29)
+[`getConfig()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/packet/db.ts#L16-L29)
 が返す設定も含めない。
 描画寸法と `showBits` は要約を変えない。
 行幅の効果は公開行に残し、設定自体は既存のサイト設定と embedded 値の欄で渡す。
@@ -20554,7 +20585,7 @@ YAML の `.inf` は無限大になり、YAML の `1e400` は文字列のまま�
 init の JSON の `1e400` は無限大になる。
 どれも有限の範囲を 1 行に収める。
 init の裸の `.nan` と `.inf` は JSON として不正なので、
-[`detectDirective()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L175-L203)
+[`detectDirective()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L175-L203)
 はその引数を無視し、既定の行幅が残る。
 init で引用符を付けると数でない文字列になり、行を公開しない。
 [fixture: packet/config-frontmatter-row-infinity]
@@ -20577,13 +20608,13 @@ adapter が 10,000 行で公開を止めた場合も、公開された範囲だ�
 [fixture: packet/db-overflow-wide]
 [fixture: packet/db-frontmatter-infinite-endpoint]
 
-[共通の公開関数](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+[共通の公開関数](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
 は AST の最終値が truthy のときだけ代入する。
 共通項目を繰り返すと最後の代入が残り、
 最後が空ならそれ以前の本文の代入も公開されない。
 本文の最終 title が空なら frontmatter の図題が残る。
 アクセシビリティ項目は
-[共通の描画経路](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628)
+[共通の描画経路](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L626-L630)
 が読む。
 空ラベルも公開され、要約に残る。
 乱数 id と図種固有の patch はない。 [fixture: packet/title-repeat]
@@ -20609,9 +20640,9 @@ schema で有効な小数の `bitsPerRow` も、分割時の拒否を起こし�
 ## architecture
 
 `normalizeArchitecture()` は検出 id `architecture` の Db を要約します。
-[detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDetector.ts#L7-L11)
+[detector](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/architecture/architectureDetector.ts#L7-L11)
 は `architecture` で始まる入力を認識しますが、
-[grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/architecture/architecture.langium#L5-L13)
+[grammar](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/architecture/architecture.langium#L5-L13)
 は `architecture-beta` を要求します。 [fixture: architecture/header-beta]
 [fixture: architecture/header-bare-rejected]
 
@@ -20624,13 +20655,13 @@ schema で有効な小数の `bitsPerRow` も、分割時の拒否を起こし�
 | `edges`       | 公開された辺。`lhsId`、`lhsDir`、`lhsInto`、`lhsGroup`、`rhsId`、`rhsDir`、`rhsInto`、`rhsGroup` と、設定された `title`。 |
 | `layoutHints` | 公開された整列制約。`direction` と、順序を持つ `members` 配列。                                                           |
 
-[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureParser.ts#L9-L19)
+[adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/architecture/architectureParser.ts#L9-L19)
 はグループ、サービス、junction、辺、整列制約の順に公開し、
 各種類の内部では記述順を保ちます。
 正規化関数は
-[`getNodes()`、`getGroups()`、`getEdges()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L148-L261)
+[`getNodes()`、`getGroups()`、`getEdges()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L148-L261)
 と、
-[`getLayoutHints()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L263-L288)
+[`getLayoutHints()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L263-L288)
 を読み、並べ替えません。
 未設定の optional 値は省略し、公開された false と空文字は保持します。
 同じ辺と整列制約の繰り返しも残します。
@@ -20641,18 +20672,18 @@ schema で有効な小数の `bitsPerRow` も、分割時の拒否を起こし�
 [fixture: architecture/db-align-forward-repeat]
 [fixture: architecture/db-junction-order] [fixture: architecture/header-beta]
 
-[renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureRenderer.ts#L40-L152)
+[renderer](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/architecture/architectureRenderer.ts#L40-L152)
 はノードとグループの ID、親、ラベル、アイコンと、辺の端点、ポート、矢印、
 グループ境界の印、ラベルを使います。
 サービスの `iconText` は
-[`drawServices()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/svgDraw.ts#L277-L359)
+[`drawServices()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/architecture/svgDraw.ts#L277-L359)
 が読みます。
 iconify での検索とサニタイズは描画時なので、アイコンは名前のまま残します。
 整列の向きとメンバーの順序は renderer の
-[整列と相対配置の制約](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureRenderer.ts#L261-L320)
+[整列と相対配置の制約](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/architecture/architectureRenderer.ts#L261-L320)
 が使います。
 アクセシビリティ情報は
-[共通の描画経路](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628)
+[共通の描画経路](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L626-L630)
 が使います。 [fixture: architecture/db-mixed]
 [fixture: architecture/db-unknown-icon]
 [fixture: architecture/lex-string-conversion]
@@ -20662,7 +20693,7 @@ iconify での検索とサニタイズは描画時なので、アイコンは名
 - 図全体のタイトル。
   共通 adapter は公開しますが、
   architecture の
-  [`draw()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureRenderer.ts#L610-L642)
+  [`draw()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/architecture/architectureRenderer.ts#L610-L642)
   はタイトル描画を未実装と明記し、値を読みません。
   フロントマターのタイトルは `embedded.title` から参照できます。
   [fixture: architecture/frontmatter-title]
@@ -20678,13 +20709,13 @@ iconify での検索とサニタイズは描画時なので、アイコンは名
 - `dataStructures`。
   隣接リスト、空間マップ、グループの整列は、
   描画開始時に
-  [ノードと辺から導出](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L290-L384)
+  [ノードと辺から導出](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L290-L384)
   します。
   正規化関数は `getDataStructures()` を呼びません。
 - `elements`、`diagramId`、DOM id、座標、幅、高さ、解決済みの SVG。
   描画状態、設定・計測に依存する値、または保持した項目からの派生値です。
 - Db の
-  [設定 getter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L395-L405)。
+  [設定 getter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L395-L405)。
   設定は要約の外の site config と embedded config に残します。
   公開処理は architecture の設定を読まず、Db パッチも、
   data block の記録も不要です。 [fixture: architecture/config-drawing-only]
@@ -20704,9 +20735,9 @@ converter の `ARCH_TEXT_ICON` 分岐には到達しません。
 ## radar
 
 `normalizeRadar()` は detector id `radar` を要約する。
-[detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/detector.ts#L7-L11)
+[detector](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/detector.ts#L7-L11)
 は `radar-beta` を検出し、
-[文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/radar/radar.langium#L4-L17)
+[文法](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/radar/radar.langium#L4-L17)
 は `radar-beta:` と、 `radar-beta :` も許す。
 [fixture: radar/spec-radar-test-ts-f0c0291e]
 [fixture: radar/header-colon-inline] [fixture: radar/header-separated-colon]
@@ -20720,22 +20751,22 @@ converter の `ARCH_TEXT_ICON` 分岐には到達しません。
 | `curves`   | 公開順の曲線。各要素に `label` と数列 `entries`。             |
 | `options`  | 公開された `showLegend`、`ticks`、`max`、`min`、`graticule`。 |
 
-[renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L8-L45)
+[renderer](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/renderer.ts#L8-L45)
 はタイトルと 3 つのコレクションを読む。
 軸ラベルは
-[`drawAxes()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L95-L132)、
+[`drawAxes()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/renderer.ts#L95-L132)、
 曲線の数列は
-[`drawCurves()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L135-L173)、
+[`drawCurves()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/renderer.ts#L135-L173)、
 曲線ラベルは
-[`drawLegend()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L209-L243)
+[`drawLegend()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/renderer.ts#L209-L243)
 へ渡る。
 アクセシビリティの値は
-[共通描画経路](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628)
+[共通描画経路](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L626-L630)
 へ渡る。 [fixture: radar/db-all-fields]
 
-[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/parser.ts#L8-L21)
+[adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/parser.ts#L8-L21)
 は文中の順にかかわらず全軸を全曲線より先に公開する。
-[Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L56-L91)
+[Db](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/db.ts#L56-L91)
 はラベル省略時だけ名前をラベルとし、明示した空ラベルは空のまま保持する。
 同名の軸と曲線も順序どおり残る。
 位置による entry は入力順で、個数が軸数と違ってもよい。
@@ -20751,10 +20782,10 @@ renderer が描かない曲線も、公開値は要約に残す。
 [fixture: radar/error-reference-no-axes]
 
 各 option は最後の指定を採る。
-[既定値](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L23-L40)
+[既定値](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/db.ts#L23-L40)
 は `showLegend: true`、 `ticks: 5`、`max: null`、`min: 0`、
 `graticule: "circle"`。
-[`setOptions()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L93-L117)
+[`setOptions()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/db.ts#L93-L117)
 は最後の ticks を 32 以下に抑え、 0 と小数は保持する。
 要約は最大値 null を描画時の自動最大値で置き換えず、
 entry を上下限へ切り詰めない。 [fixture: radar/db-options-repeat]
@@ -20775,7 +20806,7 @@ entry を上下限へ切り詰めない。 [fixture: radar/db-options-repeat]
 [fixture: radar/number-exponent]
 
 共通の
-[公開 helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+[公開 helper](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
 は最終 AST 値が truthy の場合だけ設定する。
 最後の共通指定が空なら以前の本文の値を抑止し、
 最後の title が空なら frontmatter のタイトルが残る。
@@ -20791,7 +20822,7 @@ entry を上下限へ切り詰めない。 [fixture: radar/db-options-repeat]
   [fixture: radar/db-all-fields] [fixture: radar/db-prototype-names]
 - 元の名前つき entry と参照。
   Db は公開用の数列に置き換える。 [fixture: radar/db-extra-detailed-entry]
-- [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L42-L54)
+- [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/db.ts#L42-L54)
   の設定。
   公開処理はこれを読まない。
   `radar.width`、`height`、各 margin、`axisScaleFactor`、 `axisLabelFactor`、
@@ -20808,16 +20839,16 @@ entry を上下限へ切り詰めない。 [fixture: radar/db-options-repeat]
   [fixture: radar/config-invalid-cannot-rescue]
 - 自動最大値、半径、座標、path、viewBox、CSS class。
   これらは
-  [描画時に導出する](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L21-L173)。
+  [描画時に導出する](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/renderer.ts#L21-L173)。
   色も
-  [テーマ変数から導出する](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/styles.ts#L8-L46)。
+  [テーマ変数から導出する](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/styles.ts#L8-L46)。
   生成される identity、browser に依存する公開処理、 Db patch はない。
   [fixture: radar/config-drawing-only]
 
 ## treemap
 
 `normalizeTreemap()` は detector id `treemap` を要約する。
-[`treemap` と `treemap-beta` の見出し](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treemap/treemap.langium#L44-L49)
+[`treemap` と `treemap-beta` の見出し](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/treemap/treemap.langium#L44-L49)
 は同じ id を使う。 [fixture: treemap/header-beta]
 [fixture: treemap/spec-treemap-test-ts-892fa294]
 
@@ -20830,12 +20861,12 @@ entry を上下限へ切り詰めない。 [fixture: radar/db-options-repeat]
 | `classDefs` | 初出順のクラス。各要素に `id` と `styles`。                                   |
 
 要約は、
-[renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/renderer.ts#L24-L30)
+[renderer](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/renderer.ts#L24-L30)
 が読む、
-[`getRoot()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/db.ts#L37-L48)
+[`getRoot()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/db.ts#L37-L48)
 の子を採り、同じノードを `getNodes()` でも重ねて保持しない。
 adapter は Db に追加する前に
-[`buildHierarchy()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/utils.ts#L25-L66)
+[`buildHierarchy()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/utils.ts#L25-L66)
 で親子を作る。
 順序と同名の重複は公開どおり残す。
 section は空配列を含む `children` を持ち、
@@ -20854,9 +20885,9 @@ leaf の行末の空白によって、
 次の行にも字下げがある場合、2 つの空白の連なりは別々のままで、
 Mermaid は入力を拒否する。
 これは、
-[行の文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treemap/treemap.langium#L57-L70)
+[行の文法](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/treemap/treemap.langium#L57-L70)
 と、
-[公開される字下げ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/parser.ts#L34-L55)
+[公開される字下げ](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/parser.ts#L34-L55)
 に従う。 [fixture: treemap/db-section-tail-no-space]
 [fixture: treemap/db-section-tail-space] [fixture: treemap/db-section-tail-tab]
 [fixture: treemap/db-leaf-tail-no-space] [fixture: treemap/db-leaf-tail-space]
@@ -20873,8 +20904,8 @@ Mermaid は入力を拒否する。
 [fixture: treemap/gram-class-tail-tab-next-indent]
 
 adapter は
-[全クラスをノードより先に公開する](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/parser.ts#L27-L55)。
-[`addClass()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/db.ts#L50-L77)
+[全クラスをノードより先に公開する](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/parser.ts#L27-L55)。
+[`addClass()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/db.ts#L50-L77)
 は再定義時にクラスの位置を動かさず style を追加する。
 未参照のクラスと未解決の selector も要約に残す。
 prototype の名前は通常の Map キーとして扱う。
@@ -20893,7 +20924,7 @@ class style は `\,` を `§§§` に、残るコンマを `;` に置き換え�
 [fixture: treemap/db-class-style-marker-four]
 [fixture: treemap/db-class-style-marker-escaped-comma]
 
-[`NUMBER2` の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treemap/valueConverter.ts#L17-L29)
+[`NUMBER2` の変換](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/treemap/valueConverter.ts#L17-L29)
 はカンマを除いて `parseFloat()` を呼ぶ。
 `1,234.5` は 1234.5、`1_234.50` は 1、`1.2.3` は 1.2 になる。
 ドットだけなら NaN になる。
@@ -20911,12 +20942,12 @@ class style は `\,` を `§§§` に、残るコンマを `;` に置き換え�
 [fixture: treemap/lex-string-conversion]
 
 共通の
-[公開 helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+[公開 helper](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
 は最終 AST 値が truthy のときだけ設定する。
 最後の共通値が空なら以前の本文の代入を抑止し、
 最後の title が空なら frontmatter のタイトルを残す。
 アクセシビリティ値は
-[共通描画経路](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628)
+[共通描画経路](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L626-L630)
 へ渡る。 [fixture: treemap/common-repeat] [fixture: treemap/common-repeat-empty]
 [fixture: treemap/frontmatter-empty-body-title]
 
@@ -20928,13 +20959,13 @@ class style は `\,` を `§§§` に、残るコンマを `;` に置き換え�
 - ノードの `cssCompiledStyles` とクラスの `textStyles`。
   selector とクラス定義から導出する。
   描画は compiled styles を
-  [`styles2String()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/renderer.ts#L210-L240)
+  [`styles2String()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/renderer.ts#L210-L240)
   に渡し、
   クラスを
-  [`getClasses()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/renderer.ts#L529-L535)
+  [`getClasses()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/renderer.ts#L529-L535)
   で公開する。 [fixture: treemap/db-class-forward]
   [fixture: treemap/db-class-repeat]
-- [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/db.ts#L28-L35)。
+- [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/db.ts#L28-L35)。
   公開処理は treemap の設定を読まない。
   padding、寸法、値の表示と書式、 `useMaxWidth` は描画だけに効く。
   renderer は `borderWidth`、`valueFontSize`、`labelFontSize` を読まない。
@@ -20947,9 +20978,9 @@ class style は `\,` を `§§§` に、残るコンマを `;` に置き換え�
   [fixture: treemap/config-init-cannot-rescue]
 - section の集計値、描画の並べ替え後の順序、座標、寸法、色、描画用 id。
   renderer が描画時に
-  [集計、並べ替え、配置](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/renderer.ts#L141-L175)
+  [集計、並べ替え、配置](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/renderer.ts#L141-L175)
   と、
-  [テーマ色](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/renderer.ts#L79-L126)
+  [テーマ色](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/renderer.ts#L79-L126)
   を導出する。 [fixture: treemap/db-all-fields]
 
 Db パッチは不要。
@@ -20960,7 +20991,7 @@ Db パッチは不要。
 `normalizeRailroad()` は `railroad`、`railroadEbnf`、`railroadAbnf`、
 `railroadPeg` を一つの形で要約する。
 4 つの
-[図の定義](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadDiagram.ts#L12-L17)
+[図の定義](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/railroadDiagram.ts#L12-L17)
 は Db と renderer を共有する。
 `diagramType` は検出された id を保持する。 [fixture: railroad/ir-header-only]
 [fixture: railroad/ebnf-header-only] [fixture: railroad/abnf-header-only]
@@ -20973,9 +21004,9 @@ Db パッチは不要。
 | `rules`    | 宣言順の規則。各要素は `name` と `definition`。        |
 
 要約は
-[`getRules()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadDb.ts#L71-L102)
+[`getRules()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/railroadDb.ts#L71-L102)
 を使い、
-[renderer も同じ配列を読む](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L647-L657)。
+[renderer も同じ配列を読む](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L647-L657)。
 同名の規則も別々の宣言として残る。
 非公開の `ruleMap` は検索項目を置き換えるが、配列の宣言は置換も移動もしない。
 要約はこの重複する索引を除く。 [fixture: railroad/ir-db-duplicates]
@@ -20984,7 +21015,7 @@ Db パッチは不要。
 
 式は `type` と次の表のフィールドを再帰的に持つ。
 配列順は公開されたとおりに保つ。
-[式の renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L504-L525)
+[式の renderer](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L504-L525)
 は `max` 以外の全項目を読む。
 上限は ABNF の構文が独立して決めるため保持する。
 `min` から導出されず、解析や検証の状態でもない。
@@ -21003,12 +21034,12 @@ Db パッチは不要。
 
 4 つの adapter は次の値を公開する。
 
-- [IR](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/parser/railroadParser.ts#L28-L80):
+- [IR](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/parser/railroadParser.ts#L28-L80):
   constructor を対応する式の種類へ変換する。
   単一要素の sequence と choice は要素へ畳む。
   `zeroOrMore` と `oneOrMore` の下限は 0 と 1、上限は Infinity。
   [fixture: railroad/ir-db-singletons] [fixture: railroad/ir-db-all-fields]
-- [EBNF](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/parser/ebnfParser.ts#L30-L156):
+- [EBNF](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/parser/ebnfParser.ts#L30-L156):
   単一要素の sequence、 choice と group は畳む。
   角括弧と後置 `?` は `optional`、波括弧と `*` は下限 0、
   `+` は下限 1 の repetition となり、上限は Infinity。
@@ -21016,7 +21047,7 @@ Db パッチは不要。
   例外 `A - B` は A、terminal `-`、 B の sequence となる。
   [fixture: railroad/ebnf-db-singletons] [fixture: railroad/ebnf-db-all-fields]
   [fixture: railroad/ebnf-db-postfix-order]
-- [ABNF](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/parser/abnfParser.ts#L26-L120):
+- [ABNF](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/parser/abnfParser.ts#L26-L120):
   単一要素の連結、選択と group は畳む。
   数値 terminal は `%x41` などの文字列のまま残る。
   繰り返し境界は十進の `parseInt` で読む。
@@ -21034,7 +21065,7 @@ Db パッチは不要。
   [fixture: railroad/abnf-db-repeat-precision]
   [fixture: railroad/abnf-db-repeat-overflow]
   [fixture: railroad/abnf-db-repeat-max-overflow]
-- [PEG](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/parser/pegParser.ts#L27-L148):
+- [PEG](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/parser/pegParser.ts#L27-L148):
   単一要素の sequence、 choice と group は畳む。
   後置 `?`、`*`、`+` は同じ optional と repetition の形になる。
   dot は special の `.` となる。
@@ -21049,26 +21080,26 @@ Db パッチは不要。
   [fixture: railroad/peg-db-predicate-predicate]
   [fixture: railroad/peg-db-predicate-quote-newline]
 
-[IR](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/railroad/valueConverter.ts#L5-L34)、
-[EBNF](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/railroad-ebnf/valueConverter.ts#L5-L34)、
-[PEG](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/railroad-peg/valueConverter.ts#L5-L34)
+[IR](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/railroad/valueConverter.ts#L5-L34)、
+[EBNF](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/railroad-ebnf/valueConverter.ts#L5-L34)、
+[PEG](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/railroad-peg/valueConverter.ts#L5-L34)
 の文字列の変換は、両端の単一引用符または二重引用符を除き、 `\n`、`\r`、
 `\t` を制御文字に、ほかの backslash escape `\x` を `x` にする。
 [fixture: railroad/ir-lex-string-conversion]
 [fixture: railroad/ebnf-lex-string-conversion]
 [fixture: railroad/peg-lex-string-conversion]
-[ABNF の文字列](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/railroad-abnf/valueConverter.ts#L26-L33)
+[ABNF の文字列](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/railroad-abnf/valueConverter.ts#L26-L33)
 は二重引用符を使い、両端の引用符だけを除く。
 backslash は escape として解釈せず、そのまま残す。
 [fixture: railroad/abnf-lex-string-conversion]
-[EBNF の special の文字列](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/railroad-ebnf/valueConverter.ts#L66-L68)
+[EBNF の special の文字列](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/railroad-ebnf/valueConverter.ts#L66-L68)
 は両端の `?` を除き、両端の空白を trim する。
 [fixture: railroad/ebnf-special-whitespace]
 
-[共通の公開関数](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+[共通の公開関数](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
 はアクセシビリティ値について、最終の AST 値が truthy の場合だけ設定する。
 空の最終代入は前の本文の値を抑制する。
-[Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadDb.ts#L107-L135)
+[Db](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/railroadDb.ts#L107-L135)
 はさらにアクセシビリティタイトルの先頭空白と、説明の LF 後の空白を除く。
 [fixture: railroad/ir-common-repeat] [fixture: railroad/ir-common-repeat-empty]
 [fixture: railroad/ebnf-common-repeat-empty]
@@ -21080,15 +21111,15 @@ backslash は escape として解釈せず、そのまま残す。
 - 図全体のタイトル。
   adapter は本文の title を公開するが、
   railroad の
-  [`draw()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L637-L667)
+  [`draw()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L637-L667)
   はそれを読まない。
-  [共通描画経路](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628)
+  [共通描画経路](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L626-L630)
   もアクセシビリティ値だけを読む。
   書かれた title は構文木に残し、
   frontmatter の title は `embedded.title` に残る。
   各 adapter は parse 開始時に Db を clear する。
   これは
-  [`Diagram.fromText()` が frontmatter の title を設定](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L49-L54)
+  [`Diagram.fromText()` が frontmatter の title を設定](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/Diagram.ts#L49-L54)
   した後なので、この title は正規化前の Db にも残らない。
   [fixture: railroad/ir-db-all-fields]
   [fixture: railroad/ir-frontmatter-empty-body-title]
@@ -21096,17 +21127,17 @@ backslash は escape として解釈せず、そのまま残す。
   [fixture: railroad/abnf-frontmatter-empty-body-title]
   [fixture: railroad/peg-frontmatter-empty-body-title]
 - 規則の `comment` と repetition の `separator`:
-  [型](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadTypes.ts#L33-L69)
+  [型](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/railroadTypes.ts#L33-L69)
   にはあるが、どの adapter も設定せず renderer も読まない。
 - railroad 設定:
-  [描画](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L637-L667)
+  [描画](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L637-L667)
   と、
-  [style の構築](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/styles.ts#L1-L44)
+  [style の構築](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/styles.ts#L1-L44)
   が使う。
   Db と adapter は `railroad.*` を読まず、設定は site と embedded に残す。
   ただし埋め込み `railroad.fontFamily` が数の場合は、
   公開前の再帰的な
-  [設定の無害化](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils/sanitizeDirective.ts#L65-L85)
+  [設定の無害化](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils/sanitizeDirective.ts#L65-L85)
   で拒否されるため、その fixture は `embedded-data-opaque` とする。
   正しく導出できる設定から除く railroad 固有の意味的な受理キーはない。
   [fixture: railroad/ir-config-drawing-site]
@@ -21118,7 +21149,7 @@ backslash は escape として解釈せず、そのまま残す。
   [fixture: railroad/ebnf-config-init-fontfamily-number]
 - 測定値、座標、SVG path、寸法、
   描画 id:
-  [描画中](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L535-L624)
+  [描画中](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L535-L624)
   に計算される。
 
 公開処理は browser global、時刻、乱数を読まず、リンクや data block もない。
@@ -21128,7 +21159,7 @@ Db patch は不要。
 
 `normalizeWardley()` は図種 id `wardley` を要約する。
 描画前に
-[builder の公開値](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L187-L207)
+[builder の公開値](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L187-L207)
 を一度読む。
 空の配列は保持し、未定義の任意項目は省く。
 進化の設定がなければ `axes: {}` となる。 [fixture: wardley/header-only]
@@ -21149,20 +21180,20 @@ Db patch は不要。
 | `size`                           | 任意の `width`, `height`。                                                                                  |
 
 renderer は
-[title と size](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L72-L82)
+[title と size](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L72-L82)
 を読み、
-[title を実際に描画する](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L164-L181)。
+[title を実際に描画する](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L164-L181)。
 アクセシビリティの値は
-[共通の描画経路](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628)
+[共通の描画経路](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L626-L630)
 へ渡る。
-[共通の公開 helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+[共通の公開 helper](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
 は、最後の AST 値が truthy の場合だけ設定する。
 最後が空なら以前の本文の値は公開されず、
 空の本文 title は frontmatter の title を残す。 [fixture: wardley/db-all-fields]
 [fixture: wardley/common-repeat] [fixture: wardley/common-repeat-empty]
 [fixture: wardley/frontmatter-empty-body-title]
 
-[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L92-L171)
+[adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L92-L171)
 は、 anchor、component、pipeline の子の順に公開し、種類の中では記載順を保つ。
 通常の node の id と label は名前で、pipeline の子の id は `${parent}_${name}`、
 label は子の名前となる。
@@ -21174,7 +21205,7 @@ label は子の名前となる。
 [fixture: wardley/db-pipeline-nested-parent]
 
 builder の
-[Map の更新](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L92-L133)
+[Map の更新](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L92-L133)
 は、 node、trend、pipeline の初回登録位置を保って値を置き換える。
 node の再定義で label offset を省くと以前の値が残るが、
 strategy などの公開された undefined は以前の値を上書きする。
@@ -21190,7 +21221,7 @@ prototype の名前も通常の Map のキーとなる。
 [fixture: wardley/db-prototype-names] [fixture: wardley/db-zero-first]
 [fixture: wardley/db-zero-last]
 
-[リンク](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L173-L187)
+[リンク](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L173-L187)
 は、重複、自己参照、未解決の端点も保持する。
 破線の矢印は `dashed` を設定する。
 flow は始点の port、終点の port、矢印の順に優先する。
@@ -21198,7 +21229,7 @@ flow のラベルは空文字でもセミコロンのラベルに優先する。
 [fixture: wardley/db-link-forms]
 [fixture: wardley/db-link-unresolved-duplicates]
 
-[座標変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L9-L30)
+[座標変換](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L9-L30)
 は、進化を `x`、可視性を `y` とする。
 座標は double に直した値で比較し、 1 以下なら 100 倍し、
 それより大きければ百分率として保つ。
@@ -21206,7 +21237,7 @@ flow のラベルは空文字でもセミコロンのラベルに優先する。
 注釈と加速・減速の座標も、記載した二つの値をこの順に入れ替える。
 ラベル offset は符号付き整数のまま保持する。
 これらは renderer による
-[画面への投影](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L183-L184)
+[画面への投影](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L183-L184)
 の前の値である。 [fixture: wardley/db-all-fields]
 [fixture: wardley/db-coordinate-boundary]
 [fixture: wardley/db-coordinate-rounding]
@@ -21215,7 +21246,7 @@ flow のラベルは空文字でもセミコロンのラベルに優先する。
 [fixture: wardley/gram-replaced-invalid-node]
 [fixture: wardley/number-offset-negative-zero]
 
-[残りの公開処理](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L189-L226)
+[残りの公開処理](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L189-L226)
 は、 note、注釈、加速・減速をそれぞれ記載順に保持する。
 重複と空文字も残す。
 存在しない id の evolve は公開せず、その目標の範囲も調べない。
@@ -21225,7 +21256,7 @@ annotations box は最初の一つだけを変換し、公開する。
 [fixture: wardley/db-empty-pipeline-names] [fixture: wardley/db-trend-missing]
 [fixture: wardley/db-singletons-last] [fixture: wardley/db-later-invalid-box]
 
-[進化の公開](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L76-L90)
+[進化の公開](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L76-L90)
 は、段階名の端の空白を除き、
 二つ目の名前が truthy なら前後に空白1文字を置いた `/` で結ぶ。
 境界は記載された値だけを段階の順に保持し、不足を補わず、範囲や順序も検査しない。
@@ -21249,18 +21280,18 @@ underflow は注入された converter の既定の数値変換に従う。
 - node の `inPipeline` は renderer が読まない。
   `isPipelineParent` は `pipelines[].nodeId` から決まる。
   これらは builder が
-  [設定するフラグ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L112-L133)
+  [設定するフラグ](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L112-L133)
   である。 [fixture: wardley/db-pipeline-duplicates]
 - trend の `targetY` は全 node の公開後に node の `y` を複製する。
-  [adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L189-L197)
+  [adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L189-L197)
   は、その後 node を変更しない。 [fixture: wardley/db-all-fields]
 - 軸の `xLabel`, `yLabel` は adapter が代入しない。
   既定の段階名と等分した幅も
-  [描画の既定値](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L205-L256)
+  [描画の既定値](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L205-L256)
   である。 [fixture: wardley/header-only]
 - 設定、色、描画 id、画面座標と寸法、pipeline の親の描画時の移動。
   renderer は
-  [`wardley-beta` の設定と theme](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L32-L63)
+  [`wardley-beta` の設定と theme](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L32-L63)
   を読む。
   adapter と builder は `wardley.*` も `wardley-beta.*` も読まない。
   これらの設定は Wardley の受理条件や公開値を変えない。
@@ -21286,7 +21317,7 @@ site の値が `other` で `htmlLabels: true` なら、
 
 `normalizeCynefin()` は図 id `cynefin` を要約する。
 描画前の
-[公開 Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L17-L69)
+[公開 Db](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L17-L69)
 を読む。
 空の集合は配列のまま保持し、無い遷移 label は省略する。
 [fixture: cynefin/header-only] [fixture: cynefin/db-empty-texts]
@@ -21299,11 +21330,11 @@ site の値が `other` で `htmlLabels: true` なら、
 | `transitions`          | 公開順の遷移。`from`、`to`、任意の `label`。                       |
 
 renderer は
-[title](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L423-L433)
+[title](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L423-L433)
 と、
-[アクセシビリティのテキスト](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L102-L109)
+[アクセシビリティのテキスト](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L102-L109)
 を描画する。
-[共通の公開処理](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+[共通の公開処理](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
 は AST の最後の代入が truthy の場合だけ公開する。
 最後が空なら以前の本文の値を抑制する。
 本文の最後の title が空なら frontmatter の title を保持する。
@@ -21313,11 +21344,11 @@ renderer は
 [fixture: cynefin/frontmatter-empty-body-title]
 
 領域は renderer の
-[参照順](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L233-L246)
+[参照順](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L233-L246)
 `complex`、`complicated`、`chaotic`、`clear`、`confusion` に並べる。
 要約には項目を 1 つ以上持つ領域だけを含める。
 renderer が
-[未宣言の領域と項目の無い領域を同じ分岐で飛ばす](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L235-L238)
+[未宣言の領域と項目の無い領域を同じ分岐で飛ばす](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L235-L238)
 ため、空の領域の宣言は描画に現れない。
 Map の挿入順は描画で使わない。
 同じ領域の再定義は項目のリスト全体を置き換える。
@@ -21332,11 +21363,11 @@ renderer が超過表示にまとめる confusion の項目もすべて保持す
 [fixture: cynefin/db-domain-empty-last] [fixture: cynefin/db-empty-texts]
 [fixture: cynefin/gram-inline-items]
 
-[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
+[adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
 は全領域を公開してから全遷移を公開する。
 遷移の重複や未宣言領域への参照は残り、
 自己遷移は
-[Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L48-L69)
+[Db](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L48-L69)
 が除外する。
 空の遷移 label は無いものとなり、空白だけの label は残る。
 [fixture: cynefin/gram-transition-first]
@@ -21344,13 +21375,13 @@ renderer が超過表示にまとめる confusion の項目もすべて保持す
 [fixture: cynefin/db-self-loop-empty-label] [fixture: cynefin/db-empty-texts]
 
 図固有の文字列は注入された
-[共通 converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/module.ts#L30-L37)
+[共通 converter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/cynefin/module.ts#L30-L37)
 の既定の STRING 変換を使う。
 共通メタデータには
-[行とブロックの変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L46-L70)
+[行とブロックの変換](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/valueConverter.ts#L46-L70)
 を使う。
 cynefin の
-[到達する値の規則](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/cynefin.langium#L19-L31)
+[到達する値の規則](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/cynefin/cynefin.langium#L19-L31)
 に数値 terminal は無い。
 文字列の数値らしい綴りはテキストのままで、引用しない数は変換前に拒否する。
 正規化する数値比較や丸めの境界は無い。 [fixture: cynefin/lex-string-conversion]
@@ -21363,11 +21394,11 @@ cynefin の
 
 要約から除くもの:
 
-- [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L71-L77)
+- [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L71-L77)
   が返す設定、 theme の色、SVG id、文字の計測値、画面座標。
-  [renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L73-L118)
+  [renderer](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L73-L118)
   が描画設定を読んで形状を求める。
-  [境界の helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinBoundaries.ts#L31-L79)
+  [境界の helper](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinBoundaries.ts#L31-L79)
   が描画 id や設定の seed を使うのは描画時だけである。
   adapter と公開処理は `cynefin.*` を読まない。
   有効な図の描画設定は受理も公開値も変えない。
@@ -21377,7 +21408,7 @@ cynefin の
   [fixture: cynefin/config-frontmatter-cannot-rescue]
   [fixture: cynefin/config-init-cannot-rescue]
 - 領域の既定の副題、表示件数の上限、超過の label。
-  [描画定数](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L23-L29)
+  [描画定数](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L23-L29)
   または保持した項目リストから求める値である。 [fixture: cynefin/db-all-fields]
 - `domains[].name` と重複する Map key と挿入位置。
   renderer は名前で領域を参照するためである。
@@ -21401,19 +21432,19 @@ Db のパッチは不要である。
 
 ## eventmodeling
 
-[`parser.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/parser.ts#L8-L14)
+[`parser.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/parser.ts#L8-L14)
 adapter は AST 全体を `setAst` で保存する。
 AST の getter はないため、パッチで `setAst` と `clear` を観測する。
 元の処理を変えず、
 DOM を使う
-[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L143)
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L153)
 builder は呼ばない。 [fixture: eventmodeling/header-only]
 [fixture: eventmodeling/db-all-fields]
 
 | フィールド                  | 内容                                                        |
 | --------------------------- | ----------------------------------------------------------- |
 | `accTitle`、`accDescr`      | 共通 Db のアクセシビリティ文字列。                          |
-| `frames`                    | 宣言順の frame。同名の重複も残す。                          |
+| `frames`                    | 宣言順の frame。同名の重複は拒否される。                    |
 | `frames[].kind`             | `"time"` または `"reset"`。                                 |
 | `frames[].name`             | 先頭のゼロを含む、書かれた数字列。                          |
 | `frames[].modelEntityType`  | 省略名・正式名を含む、書かれた entity type。                |
@@ -21421,23 +21452,29 @@ builder は呼ばない。 [fixture: eventmodeling/header-only]
 | `frames[].sourceFrames`     | 参照文字列の集合を文字列の昇順で記録。                      |
 | `frames[].data`             | `null`、または kind（inline / block）と value（本文）の組。 |
 
-[`mermaidAPI.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L626-L628)
+[`mermaidAPI.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L628-L630)
 は共通 getter を読む。
 EM terminal 名は
-[`valueConverter.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L6-L41)
+[`valueConverter.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/valueConverter.ts#L6-L41)
 の `TITLE`、 `ACC_TITLE`、`ACC_DESCR` と異なる。
 fallback は keyword と区切りを含む terminal 全体を残す。
-[`commonDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L16-L24)
+[`commonDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/commonDb.ts#L16-L24)
 setter は title の先頭空白と description の LF 後の空白を除く。
 繰り返しは最後の terminal が残り、
 payload が空でも生の terminal が空でなければ置き換える。
 
 到達する terminal は unit の先頭に ASCII space/tab の連なりを持つ。
-字下げは共通 directive、共通 comment region、
-選ばれた semicolon を除いた後の本文で判断する。
-共通 comment region は、その字下げと終わりの LF ごと除かれる。
+字下げは共通 directive と選ばれた semicolon を除いた後の本文で判断する。
+`%%` の comment は除かれない。
+Db が `preserveCommentsWhenParsing` を設定するので、
+[`Diagram.fromText()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/Diagram.ts#L55-L76)
+は comment を残したテキストを parser に渡す。
+comment を残したテキストが `maxTextSize` より長ければ、
+comment を除いたテキストを渡す。
+隠れた terminal `EM_SINGLE_LINE_COMMENT` は、
+comment 自身の字下げと行末までの本文を取るので、comment の後の LF は残る。
 閉じた共通 directive だけを除いても、その外の LF は残るため、
-directive だけの行と空行は LF を残す。
+directive だけの行、comment だけの行、空行は LF を残す。
 選ばれた semicolon を除いても LF は残る。
 その後、次の行の字下げを取れるかは、
 字下げの直前に残る LF を前の単位が消費したかで決まる。
@@ -21456,7 +21493,7 @@ closer と LF の間に水平空白があれば、その LF は消費しない�
 空の説明ブロックは文として残り、後ろの LF は消費しないが、
 同じ行の closing brace の直後の padding は次の共通の形が取れる。
 この規則は
-[`event-modeling.langium`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L1-L70)
+[`event-modeling.langium`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L1-L70)
 による。 [fixture: eventmodeling/common-inline]
 [fixture: eventmodeling/common-whitespace]
 [fixture: eventmodeling/common-repeat]
@@ -21494,8 +21531,8 @@ closer と LF の間に水平空白があれば、その LF は消費しない�
 一つの連なりにつながる。
 たとえば ` \t; accDescr: D` の semicolon が選ばれれば、
 ` \t accDescr: D` になる。
-共通 comment region 自身の字下げと終わりの LF は除き、残る prefix だけを保つ。
-除いた閉じた directive の外の LF、空行の LF、
+comment 自身の字下げは comment の一部で、その後の LF は残る。
+除いた閉じた directive の外の LF、空行の LF、comment の後の LF、
 選ばれた semicolon の後の LF は残る。
 LF、LS、PS は水平の連なりに含めず、terminal は上記の字下げの条件も満たす。
 選ばれない semicolon はこの gap では拒否され、
@@ -21517,16 +21554,20 @@ LF、LS、PS は水平の連なりに含めず、terminal は上記の字下げ�
 [fixture: eventmodeling/lex-common-after-block-ps-indented]
 [fixture: eventmodeling/gram-common-leading-empty-description-boundary]
 
-[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L143)
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L153)
 builder は frame を宣言順に処理する。
-[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L179-L318)
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L189-L328)
 は entity type と修飾名を読む。
-reset frame は
-[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L531-L601)
-builder で入力の関係線を作らない。
+source frame を名指さない reset frame は、
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L541-L614)
+builder で入ってくる関係線を持たない。
+source frame を名指す reset frame は、
+ほかの frame と同じくその frame からの関係線を持つ。
 名前は数ではなく文字列で、`1`、`01`、`001` は別名である。
-同じ名前の再定義でも frame は置き換わらない。
-[fixture: eventmodeling/db-all-aliases]
+同じ名前の frame は拒否される。
+[`setAst()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L139-L150)
+は Db が AST を保つ前に `Duplicate event modeling frame ID "01" on line 3`
+を投げ、 parse は `Error` で失敗する。 [fixture: eventmodeling/db-all-aliases]
 [fixture: eventmodeling/db-qualified-names]
 [fixture: eventmodeling/db-frame-order]
 [fixture: eventmodeling/db-frame-duplicates]
@@ -21543,7 +21584,7 @@ source の探索は frame 宣言順に `$refText` の所属を調べる。
 [fixture: eventmodeling/db-source-forward]
 [fixture: eventmodeling/db-source-self]
 
-[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L320-L368)
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L330-L378)
 は参照名と一致する最初の data 宣言を選ぶ。
 一致すれば inline data に優先し、未解決なら inline data またはデータなしになる。
 要約は選ばれた terminal を frame ごとに一度保持し、区切りと空白も残す。
@@ -21556,15 +21597,16 @@ source の探索は frame 宣言順に `$refText` の所属を調べる。
 [fixture: eventmodeling/db-data-unresolved]
 [fixture: eventmodeling/db-data-unused]
 
-[`parse.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L134-L150)
+[`parse.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/parse.ts#L134-L150)
 は lexer error と parser error を拒否する。
 登録された
-[`event-modeling-validator.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling-validator.ts#L12-L25)
+[`event-modeling-validator.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling-validator.ts#L12-L25)
 と参照の解決は実行しない。
-不適切な source type、未定義参照、前方参照、重複定義も受理される。
+不適切な source type、未定義参照、前方参照、重複した data の定義も受理される。
+同じ frame 名だけは、上のとおり拒否される。
 entity 宣言、note、
 GWT は AST にあるが
-[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L143)
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L153)
 は読まない。 [fixture: eventmodeling/error-start]
 [fixture: eventmodeling/error-recovered]
 [fixture: eventmodeling/error-after-prefix]
@@ -21582,12 +21624,12 @@ GWT は AST にあるが
 除外するもの：
 
 - 図全体の title：保存はされるが
-  [`renderer.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/renderer.ts#L128-L171)
+  [`renderer.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/renderer.ts#L128-L171)
   は描かない。
   アクセシビリティ文字列は別に残す。 [fixture: eventmodeling/common-title-only]
   [fixture: eventmodeling/frontmatter-title]
 - data type：
-  [`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L320-L368)
+  [`db.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L330-L378)
   と描画は tag を参照せず、 JSON、Markdown、HTML などとして本文を解析しない。
   native な text terminal であり、opaque な `@{ ... }` ではない。
   `dataBlockEffects` はない。 [fixture: eventmodeling/data-all-types]
@@ -21598,9 +21640,9 @@ GWT は AST にあるが
   [fixture: eventmodeling/db-entities-notes-gwt]
 - 座標、寸法、HTML、色、swimlane、
   推論された関係：
-  [`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L143)
+  [`db.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L153)
   と、
-  [`renderer.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/renderer.ts#L128-L171)
+  [`renderer.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/renderer.ts#L128-L171)
   が保持した項目、測定、定数、設定から導く。
   要約はこの計算を実行しない。 [fixture: eventmodeling/config-drawing-site]
   [fixture: eventmodeling/config-frontmatter-drawing]
@@ -21628,12 +21670,12 @@ opaque-data の比較は独立した有効な frontmatter title と設定を残�
 [fixture: eventmodeling/config-security-level-other]
 
 本文は共通の前処理と
-[`utils.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L924)
+[`utils.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L895-L924)
 を経て公開された terminal の値である。
 数値文字参照の内部マーカーもそのまま保持する。
 [fixture: eventmodeling/entity-texts] [fixture: eventmodeling/entity-common]
 
-[`Diagram.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L77-L83)
+[`Diagram.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/Diagram.ts#L77-L83)
 は parse の前に LF を足す。
 EOF で閉じる data block の公開値には、その LF も含まれ得る。
 要約はそれも保持する。
@@ -21644,7 +21686,7 @@ EOF で閉じる data block の公開値には、その LF も含まれ得る。
 ## treeview
 
 `normalizeTreeview()` は Mermaid の検出 id `treeView` を要約する。
-[大文字小文字を区別する header](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/detector.ts#L4-L8)
+[大文字小文字を区別する header](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treeView/detector.ts#L4-L8)
 は `treeView-beta`。 [fixture: treeview/header-only] [fixture:
 treeview/header-lower]
 
@@ -21657,10 +21699,10 @@ treeview/header-lower]
 | `children`                        | 公開順の子ノード。葉でも空の配列を持つ。           |
 
 要約は
-[`getRoot()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/db.ts#L40-L75)
+[`getRoot()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treeView/db.ts#L40-L75)
 の children を取り、
 renderer はそれを
-[再帰的にたどる](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/renderer.ts#L140-L182)。
+[再帰的にたどる](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treeView/renderer.ts#L140-L182)。
 階層、順序、重複名、空の名前を保つ。
 file も子を持てる。
 Db は新しいノード以上の字下げを持つ祖先を取り除き、
@@ -21668,7 +21710,7 @@ Db は新しいノード以上の字下げを持つ祖先を取り除き、
 [fixture: treeview/db-first-indented] [fixture: treeview/db-file-parent]
 [fixture: treeview/db-duplicate-names] [fixture: treeview/db-empty-names]
 
-[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/parser.ts#L11-L39)
+[adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treeView/parser.ts#L11-L39)
 は変換後の名前の末尾の `/` を一文字除いて `"directory"` を公開し、
 それ以外は `"file"` を公開する。
 空の `icon()` は `"none"`、未指定の icon は省略。
@@ -21680,20 +21722,20 @@ treeview/db-directory-trailing-space] [fixture: treeview/db-icon-none]
 [fixture: treeview/db-repeat-icon-empty-first]
 
 この図種の
-[文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treeView/treeView.langium#L1-L64)
+[文法](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/treeView/treeView.langium#L1-L64)
 は `common.langium` を import しない。
 独自の共通 terminal も名前が `TITLE`、`ACC_TITLE`、`ACC_DESCR` なので、
 common converter が接頭辞を除き、空白を正規化する。
 共通の
-[公開 helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+[公開 helper](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
 は最後の値が truthy の場合だけ代入する。
 アクセシビリティ文字列は
-[共通の SVG 描画処理](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628)
+[共通の SVG 描画処理](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L626-L630)
 が読む。 [fixture: treeview/common-whitespace] [fixture: treeview/common-repeat]
 [fixture: treeview/common-repeat-empty]
 
 独自の
-[converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treeView/valueConverter.ts#L10-L38)
+[converter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/treeView/valueConverter.ts#L10-L38)
 は空白もタブも字下げ一文字分と数える。
 引用符は区切りだけを除き、escape は解釈しない。
 bare name は末尾の ASCII 空白とタブだけを除く。
@@ -21703,14 +21745,14 @@ bare name は末尾の ASCII 空白とタブだけを除く。
 [fixture: treeview/db-quoted-tail-space] [fixture: treeview/db-quoted-tail-tab]
 
 parse の前の
-[`preprocessBoxDrawing()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/boxDrawingPreprocessor.ts#L67-L208)
+[`preprocessBoxDrawing()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treeView/boxDrawingPreprocessor.ts#L67-L208)
 は、
 共通の
-[directive とコメントの除去](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L33-L65)
+[directive とコメントの除去](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L33-L65)
 および、
-[選ばれたセミコロンの除去と文字参照の符号化](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L919)
+[選ばれたセミコロンの除去と文字参照の符号化](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L895-L919)
 の後で、 LF で区切る物理行を処理する。
-[Diagram.fromText](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L77-L83)
+[Diagram.fromText](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/Diagram.ts#L77-L83)
 がこの順序で adapter に渡す。
 行の中か行だけの directive とともに除かれた罫線の文字は、
 罫線モードの選択に使われない。
@@ -21788,7 +21830,7 @@ branch の深さにする。 [fixture: treeview/box-infer-first-column]
   [fixture: treeview/db-all-fields]
 - 図全体の title。
   adapter は保存するが
-  [renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/renderer.ts#L218-L240)
+  [renderer](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treeView/renderer.ts#L218-L240)
   は描かない。
   frontmatter title は embedded に残る。 [fixture:
   treeview/db-all-fields] [fixture: treeview/frontmatter-title]
@@ -21796,7 +21838,7 @@ branch の深さにする。 [fixture: treeview/box-infer-first-column]
   描画への入力か描画時に導く値。
   明示された icon は要約に残すが、
   既定値や filename/extension の対応は
-  [`getNodeIcon()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/icons.ts#L77-L100)
+  [`getNodeIcon()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treeView/icons.ts#L77-L100)
   が描画時に解決する。
   `treeView.*` は parse と公開へ影響せず、 opaque data の受理の鍵もない。
   [fixture: treeview/config-drawing-site] [fixture:

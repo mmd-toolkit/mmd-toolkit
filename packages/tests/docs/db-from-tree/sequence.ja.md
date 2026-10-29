@@ -531,7 +531,7 @@ mermaid.js は、箱のテキストを色の候補と残りに分け、
 候補が色かどうかをブラウザに問い合わせます。
 その答えはテキストから来ないので、箱の `name`、`fill`、`wrap` は、
 設定の値と同じく、木の外から与えます。
-[`parseBoxData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L394-L419)
+[`parseBoxData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L394-L419)
 を参照。
 
 分け方が受け取るテキストは、色の候補から、候補がなければテキストから、

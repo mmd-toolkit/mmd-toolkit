@@ -118,7 +118,7 @@ flowchart LR
 
 ## Diagrams and rules
 
-The plugin reads every diagram type of mermaid.js 12.0.0, the version that the
+The plugin reads every diagram type of mermaid.js 12.2.0, the version that the
 toolkit follows; see [Diagram support](../docs/pages/reference/support.md). It
 accepts and rejects the same text as mermaid.js, except for the
 [known divergences](../spec/docs/known-divergences.md).

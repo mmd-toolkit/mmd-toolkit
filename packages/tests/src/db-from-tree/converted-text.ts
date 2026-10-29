@@ -151,11 +151,8 @@ function afterFrontmatter(text: string, root: TreeRoot): number {
   return start
 }
 
-/** common.md: Agentflow measures UTF-16 source after frontmatter, directives and CRLF normalization. */
-export function agentflowPreservesComments(
-  text: string,
-  root: TreeRoot,
-): boolean {
+/** common.md: Agentflow and eventmodeling measure UTF-16 source after frontmatter, directives and CRLF normalization. */
+export function withinMaxTextSize(text: string, root: TreeRoot): boolean {
   const start = afterFrontmatter(text, root)
   const scan = scanSource(text, start)
   const cuts = new Uint8Array(text.length)
@@ -175,18 +172,39 @@ export function agentflowPreservesComments(
   return length <= 50_000
 }
 
-/** Written source cuts, including the lexical comments of Agentflow and Usecase. */
+/** The diagram bodies whose Db receives the comment lines (common.md, mermaid.js and this specification). */
+const COMMENT_PRESERVING_BODIES: ReadonlySet<string> = new Set([
+  "AgentflowDiagram",
+  "EventmodelingDiagram",
+])
+
+/**
+ * Whether the comment lines of the source are left in the text that the lexer
+ * reads (common.md, mermaid.js and this specification): the diagram is one of
+ * agentflow and eventmodeling, and the text is not longer than `maxTextSize`.
+ */
+export function preservesCommentLines(text: string, root: TreeRoot): boolean {
+  return (
+    COMMENT_PRESERVING_BODIES.has(root.body.type) &&
+    withinMaxTextSize(text, root)
+  )
+}
+
+/** Written source cuts, including the lexical comments of Agentflow and Usecase (those of eventmodeling stay: its checks read them as units). */
 export function sourceCutsOf(text: string, root: TreeRoot): Uint8Array {
   const start = root.frontmatter?.range[1] ?? 0
   const scan = scanSource(text, start)
   const cuts = new Uint8Array(text.length)
   for (const directive of scan.directives)
     mark(cuts, [directive.range[0], directive.scanEnd])
-  if (
-    root.body.type !== "AgentflowDiagram" ||
-    !agentflowPreservesComments(text, root)
-  ) {
+  if (!preservesCommentLines(text, root)) {
     for (const line of scan.commentLines) mark(cuts, line.region)
+  } else if (root.body.type === "EventmodelingDiagram") {
+    // The bare percent lines that detection passes before the header are
+    // shared Comments and trivia (diagrams/eventmodeling.md, Detection).
+    for (const line of scan.commentLines) {
+      if (line.commentStart < root.body.range[0]) mark(cuts, line.region)
+    }
   }
   if (
     root.body.type === "AgentflowDiagram" ||
@@ -249,14 +267,11 @@ export function readConvertedCharacters(
   root: TreeRoot,
   attributes: AttributeQuotes = new AttributeQuotes(text, root),
 ): ConvertedCharacter[] {
-  const textStart =
-    root.body.type === "AgentflowDiagram"
-      ? afterFrontmatter(text, root)
-      : (root.frontmatter?.range[1] ?? 0)
+  const textStart = COMMENT_PRESERVING_BODIES.has(root.body.type)
+    ? afterFrontmatter(text, root)
+    : (root.frontmatter?.range[1] ?? 0)
   const leftOut = sourceCutsOf(text, root)
-  const removeLeadingWhitespace =
-    root.body.type !== "AgentflowDiagram" ||
-    !agentflowPreservesComments(text, root)
+  const removeLeadingWhitespace = !preservesCommentLines(text, root)
   // Leading whitespace is trivia (common.md, Leading whitespace), also after
   // the directives and comment regions that precede the first unit.
   const visible: number[] = []

@@ -139,13 +139,13 @@ mermaid.js が同じに読む図を書くには、そのような名前や型を
 
 mermaid.js の字句解析器は、バッククォートの名前とジェネリクスの型のテキストを、
 それぞれの状態で読みます（mermaid.js の
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)）。
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)）。
 その規則のいくつかは、どの状態でも当てはまります。
 キーワード、`<<`、
 `>>` （mermaid.js の
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L89-L104)）、
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L89-L104)）、
 文字列の始まり（mermaid.js の
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L62-L62)）、
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L62-L62)）、
 ジェネリクスの型の始まりです。
 字句解析器は、規則をファイルの順に試し、最初に当たったものを取ります。
 これらの規則は、バッククォートの名前のテキストの規則より前にあり、
@@ -173,10 +173,10 @@ mermaid.js は 2023 年に、文字列について同じ順を替え、
 ## mermaid.js の文書と issue
 
 - mermaid.js の class 図の文書は、
-  [Class labels](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/classDiagram.md#L161-L168)
+  [Class labels](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/classDiagram.md#L161-L168)
   で「You can also use backticks to escape special characters in the
   label」と書き、
-  [Generic Types](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/classDiagram.md#L215-L217)
+  [Generic Types](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/classDiagram.md#L215-L217)
   でジェネリクスの型を説明しています。
   どちらも、テキストがキーワードで始まれないとは書いていません。
 - [Issue #4590](https://github.com/mermaid-js/mermaid/issues/4590) 「Note "note"

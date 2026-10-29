@@ -13,12 +13,12 @@ xychart の図の木から Db の要約を作る手順です。
 mermaid.js は、構文解析のあいだに Db を作ります。
 文法は、文が終わるたびに Db を呼びます。
 出典は
-[`statement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L98-L110)
+[`statement`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L98-L110)
 です。
 Db は、あとの文が読む状態を持ちます。
 軸に範囲やカテゴリーが与えられたかどうかと、プロットが広げた y 軸の範囲です。
 出典は
-[`xychartDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L26-L38)
+[`xychartDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L26-L38)
 です。
 要約も同じように作ります。
 ヘッダーと文をソースの順に、同じ状態で実行し、最後の文を実行したときに、

@@ -4,9 +4,9 @@ Japanese version: [kanban.ja.md](./kanban.ja.md)
 
 Source of truth in mermaid.js:
 
-- [`kanban.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/parser/kanban.jison)
-- [`kanbanDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts)
-- [`detector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/detector.ts#L6-L10)
+- [`kanban.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/kanban/parser/kanban.jison)
+- [`kanbanDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts)
+- [`detector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/kanban/detector.ts#L6-L10)
 
 This document covers the diagram type `kanban`. The nodes of the tree are
 defined in [ast/kanban.md](../ast/kanban.md). How mermaid.js reads section

@@ -72,7 +72,7 @@ usecase-beta
 
 ## 参考
 
-- [ユースケース図の構文: システム境界](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L223-L223)
+- [ユースケース図の構文: システム境界](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/usecase.md#L223-L223)
 
 <!-- begin auto-generated rule resources -->
 

@@ -1,0 +1,206 @@
+{
+  "type": "Root",
+  "diagramType": "sequence",
+  "body": {
+    "type": "SequenceDiagram",
+    "body": [
+      {
+        "type": "SequenceParticipantStatement",
+        "kind": "participant",
+        "created": false,
+        "id": {
+          "type": "SequenceIdentifier",
+          "name": "A=B",
+          "range": [
+            28,
+            31
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 12
+            },
+            "end": {
+              "line": 2,
+              "column": 15
+            }
+          }
+        },
+        "data": {
+          "type": "SequenceDataBlock",
+          "value": " \"type\": \"queue\" ",
+          "range": [
+            31,
+            51
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 15
+            },
+            "end": {
+              "line": 2,
+              "column": 35
+            }
+          }
+        },
+        "alias": null,
+        "range": [
+          16,
+          51
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 35
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      51
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 35
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "sequenceDiagram",
+      "range": [
+        0,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "participant",
+      "range": [
+        16,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "A=B",
+      "range": [
+        28,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        31,
+        33
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 15
+        },
+        "end": {
+          "line": 2,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " \"type\": \"queue\" ",
+      "range": [
+        33,
+        50
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 17
+        },
+        "end": {
+          "line": 2,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        50,
+        51
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 34
+        },
+        "end": {
+          "line": 2,
+          "column": 35
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    52
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 0
+    }
+  }
+}

@@ -165,9 +165,10 @@ after writing it.
   These cases do not read the corpus. Whitespace at the end of a line is not
   among those characters: it stays in a fixture file, where `.editorconfig`
   keeps it.
-- Regenerate snapshots with `test:update` (without `CI=true`) when an output
-  intentionally changes. Read the differences and account for each one. When
-  adding a case, keep existing snapshots and add only its missing snapshot.
+- Regenerate snapshots with `test:update` when an output intentionally changes.
+  Read the differences and account for each one. When adding a case, keep
+  existing snapshots and add only its missing snapshot: in the package, run
+  `UPDATE_SNAPSHOTS=true npx vitest run <test file>`.
 
 ### Which tests to run
 
@@ -220,14 +221,15 @@ reported as done.
 - Before reporting the work as done, run these checks once, and say which
   failures are not caused by the change (while working, run only what the change
   can affect, as the table above says):
-  - in `packages/eslint-plugin`: `CI=true npx vitest run` (the whole suite) and
+  - in `packages/eslint-plugin`: `npx vitest run` (the whole suite) and
     `pnpm run check:docs`;
   - from the root of the repository: `npx eslint packages/eslint-plugin` (ESLint
     run inside the package misses the configuration of the root),
     `pnpm run lint:docs`, `pnpm run lint:chars`, `pnpm run format:check`, and
     `npx tsc --noEmit`.
-- Do not commit, push, or change the staging area of a shared working tree. Use
-  plain `rm` and `mv`. Put work files outside the repository.
+- Do not commit, push, or change the staging area: committing and pushing wait
+  for the user's word, and the user stages (`git mv` and `git rm` change the
+  staging area). Use plain `rm` and `mv`. Put work files outside the repository.
 
 ## 6. Report
 

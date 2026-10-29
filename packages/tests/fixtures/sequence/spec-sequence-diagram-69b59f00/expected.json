@@ -9,6 +9,6 @@
   "accepted": false,
   "error": {
     "name": "Error",
-    "message": "Parse error on line 2:\n...        participant X_AutoPublishable as...\n-----------------------^\nExpecting 'ACTOR', got 'INVALID'"
+    "message": "Parse error on line 2:\n...        participant X_AutoPublishable as...\n-----------------------^\nExpecting 'link', 'ACTOR', got 'INVALID'"
   }
 }

@@ -67,7 +67,7 @@ This rule has no options.
 
 ## Further Reading
 
-- [Flowchart directions](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L100-L100)
+- [Flowchart directions](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/flowchart.md#L100-L100)
 
 <!-- begin auto-generated rule resources -->
 

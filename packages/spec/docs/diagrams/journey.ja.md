@@ -4,9 +4,9 @@
 
 mermaid.js での正本:
 
-- [`journey.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison)
-- [`journeyDb.js`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js)
-- [`user-journey/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey)
+- [`journey.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison)
+- [`journeyDb.js`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/journeyDb.js)
+- [`user-journey/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey)
   のテスト（`*.spec.js`）
 
 この文書は、図種 `journey`、ユーザージャーニー図を扱います。
@@ -17,7 +17,7 @@ mermaid.js での正本:
 [detection.ja.md](../detection.ja.md) の項目 21 がこの文法を選びます。
 テキストが、空白の後、
 ちょうどこの大文字小文字の `journey` で始まるときです（mermaid.js の
-[`journeyDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDetector.ts#L9-L11)）。
+[`journeyDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/journeyDetector.ts#L9-L11)）。
 `JOURNEY` はユーザージャーニー図ではなく、どの検出器にも合いません。
 [fixture: journey/header-only] [fixture: journey/header-leading-whitespace]
 [fixture: journey/header-upper-case]
@@ -614,7 +614,7 @@ journey/lex-percent-comment-line] [fixture: journey/lex-percent-x-line]
 同じ行のヘッダーと空白の後がそうで、行の残りを取ります。
 この図の mermaid.js の字句解析器には、
 gantt の字句解析器が持つ `%%{` の規則がないので（gantt の規則は
-[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L18-L18)）、
+[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L18-L18)）、
 前にどんな空白があっても、
 単位の始まる位置の `%%{ }%%` はどちらでもコメントです。
 ヘッダーや説明ブロックと空白 2 つの後、改行と空白 2 つの後、空行の後がそうです。
@@ -700,7 +700,7 @@ journey/lex-brace-before-percent] [fixture: journey/lex-hash-before-percent]
 二重引用符の中のテキストは、`"title"` や `":"` のように、
 そのテキストが名指す単位を表します。
 文法は
-[`journey.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison#L44-L67)
+[`journey.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison#L44-L67)
 の文法を言い直したもので、同じ単位の並びを受理します。
 ただし、mermaid.js がトークンを読まない空の説明ブロックは別です。
 [空の説明ブロック](#空の説明ブロック) を参照してください。
@@ -766,7 +766,7 @@ journey/db-task-description-spaces] [fixture: journey/lex-task-colon-at-end]
 [fixture: journey/lex-task-text-only] [fixture: journey/lex-task-data-only]
 
 データは、
-[`addTask()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)
+[`addTask()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)
 が分けるとおり、そのコロンで分かれます。
 データの 1 つ目のコロンは、説明の後の `:` の単位です。
 
@@ -901,9 +901,9 @@ mermaid.js はそれにトークンを読みません。
 
 ありません。
 mermaid.js の Db は、その文法が受理するどの入力にも例外を投げません。
-[`addSection()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L26-L29)
+[`addSection()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L26-L29)
 と、
-[`addTask()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)
+[`addTask()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)
 は、テキストを保存するだけで、数でないスコア、最初の section より前のタスク、
 繰り返される section は受理されます。
 [fixture: journey/db-task-score-not-a-number]

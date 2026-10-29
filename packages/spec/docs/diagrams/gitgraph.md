@@ -8,13 +8,13 @@ acceptance are summarized by the
 [tests package](../../../tests/docs/db-summaries.md#gitgraph).
 
 The syntax follows
-[gitGraph.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/gitGraph/gitGraph.langium),
+[gitGraph.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/gitGraph/gitGraph.langium),
 its imported
-[common.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium)
+[common.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/common.langium)
 and
-[reference.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/gitGraph/reference.langium).
+[reference.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/gitGraph/reference.langium).
 Acceptance also follows
-[gitGraphAst.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts).
+[gitGraphAst.ts](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphAst.ts).
 
 ## Detection
 
@@ -766,7 +766,7 @@ above. If any condition in the table holds, reject the input. Otherwise apply
 that statement’s state change. An immediate parent means a member of the ordered
 parent list in the source identity’s current definition; no ancestry search is
 made. These rules follow
-[gitGraphAst.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L49-L394).
+[gitGraphAst.ts](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L49-L394).
 [fixture: gitgraph/db-merge-self] [fixture:
 gitgraph/db-cherry-pick-invalid-parent] [fixture:
 gitgraph/db-ordinary-parent-accepted] [fixture:
@@ -927,7 +927,7 @@ gitgraph/lex-description-block-only-directive] [fixture:
 gitgraph/db-duplicate-id] [fixture: gitgraph/detect-lowercase]
 
 Upstream
-[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md)
+[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/gitgraph.md)
 documents quoted ids, branch order, merge, cherry-pick and directions. Checked
 on 2026-10-23: [#4838](https://github.com/mermaid-js/mermaid/issues/4838) is
 closed with Status: Approved; merged

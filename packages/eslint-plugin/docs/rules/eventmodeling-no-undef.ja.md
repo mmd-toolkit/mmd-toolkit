@@ -10,7 +10,7 @@
 
 <!-- end auto-generated rule notice -->
 
-time frame は、`->>` の後にその番号で source を名指し、
+time frame と reset frame は、`->>` の後にその番号で source を名指し、
 `[[` と `]]` の間にその名前でデータブロックを名指す。
 その名前がどのフレームの名前でも、どのデータブロックの名前でもないと、
 mermaid.js はエラーなしに受理し、その source からの関係も、
@@ -19,7 +19,8 @@ mermaid.js はエラーなしに受理し、その source からの関係も、
 ## 規則の詳細
 
 この規則は、イベントモデリング図（`eventmodeling`）に当てる。
-どのフレームも名指さない `tf` や `timeframe` の文の source と、
+どのフレームも名指さない `tf`、`timeframe`、`rf`、
+`resetframe` の文の source と、
 どの `data` ブロックも名指さないフレームの `[[ ]]` の参照を報告する。
 参照の後に宣言したフレームやデータブロックも数える。
 どの `data` ブロックも名指さない `[[ ]]` の参照は、
@@ -31,10 +32,12 @@ mermaid.js がそれを代わりに示すときも報告する。
 後のフレームを名指す source は、mermaid.js がそこからの関係を描かないが、
 報告しない。
 
-reset frame（`rf`、`resetframe`）の source は、
-何を名指しても mermaid.js が関係を描かないので調べないが、
-その `[[ ]]` の参照は調べる。
-`note` と `gwt` が名指すフレームも、
+reset frame（`rf`、`resetframe`）の source も、
+time frame の source と同じように調べる。
+mermaid.js は、フレームを名指す明示的な source のそれぞれから関係を描き、
+フレームを名指さない source からは描かないからである。
+source のない reset frame には、調べるものがない。
+`note` と `gwt` が名指すフレームは、
 mermaid.js がどちらの文も描かないので調べない。
 
 この規則に**反する**コードの例:

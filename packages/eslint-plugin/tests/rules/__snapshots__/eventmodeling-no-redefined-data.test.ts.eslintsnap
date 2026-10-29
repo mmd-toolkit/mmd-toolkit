@@ -76,6 +76,26 @@ Code:
 ---
 
 
+Test: eventmodeling-no-redefined-data >> invalid >>> invalid/eventmodeling/data-redefined-comment-only-difference
+Filename: tests/fixtures/rules/eventmodeling-no-redefined-data/invalid/eventmodeling/data-redefined-comment-only-difference-input.mmd
+
+Code:
+  1 | eventmodeling
+  2 | tf 01 evt Bought [[Payload]]
+  3 | data Payload {
+  4 | first
+  5 | }
+  6 | data Payload {
+    |      ^~~~~~~ [1]
+  7 | first
+  8 | %% note
+  9 | }
+ 10 |
+
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
+---
+
+
 Test: eventmodeling-no-redefined-data >> invalid >>> invalid/eventmodeling/data-redefined-empty-last
 Filename: tests/fixtures/rules/eventmodeling-no-redefined-data/invalid/eventmodeling/data-redefined-empty-last-input.mmd
 

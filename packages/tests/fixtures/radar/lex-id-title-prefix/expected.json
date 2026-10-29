@@ -6,6 +6,6 @@
   "accepted": false,
   "error": {
     "name": "MermaidParseError",
-    "message": "Parsing failed:  Parse error on line 2, column 5: Expecting token of type 'ID' but found ` title`.\nParse error on line 2, column 11: Expecting: one of these possible Token sequences:\n  1. [NEWLINE]\n  2. [EOF]\nbut found: 'X'"
+    "message": "Parsing failed:  Parse error on line 2, column 5: Expecting token of type 'ID' but found ` title`.\nParse error on line 2, column 5: Expecting: expecting at least one iteration which starts with one of these possible Token sequences::\n  <[ACC_DESCR] ,[ACC_TITLE] ,[TITLE]>\nbut found: ' title'\nParse error on line 2, column 5: Expecting end of file but found ` title`."
   }
 }

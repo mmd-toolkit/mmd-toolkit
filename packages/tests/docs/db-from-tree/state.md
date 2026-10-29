@@ -10,8 +10,8 @@ and [ast/state.md](../../../spec/docs/ast/state.md).
 
 mermaid.js builds the data that it draws, a list of nodes and a list of edges,
 while it parses
-([`StateDB.extract`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDb.ts#L249-L302),
-[`dataFetcher`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L241-L477)).
+([`StateDB.extract`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/stateDb.ts#L249-L302),
+[`dataFetcher`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L241-L477)).
 The summary is taken from that data, from the class definitions, and from the
 links. Values are kept as the Db holds them, whitespace included; the only
 change is to the id that mermaid.js makes at random for the last region of a
@@ -178,9 +178,9 @@ defines it, that is not the empty text. A visit sets:
   the existing shape on a later visit, unchanged. An alias whose written id is
   `root_start` or `root_end` instead has the initial shape `rect`, like any
   ordinary id; a later terminal visit does not replace it. These follow
-  [`StateDB.docTranslator`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDb.ts#L331-L345)
+  [`StateDB.docTranslator`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/stateDb.ts#L331-L345)
   and the first-visit and description steps of
-  [`dataFetcher`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L271-L338).
+  [`dataFetcher`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L271-L338).
   [fixture: state/db-alias-blank-terminal-first] [fixture:
   state/db-alias-blank-terminal-nested] [fixture:
   state/db-alias-blank-terminal-after-end] [fixture:

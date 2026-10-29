@@ -104,7 +104,7 @@ Code:
   3 | %% TODO
     | ~~~~~~~\ [1]
   4 | } tf 02 evt B accDescr: Second
-    | ~ [1]
+    | ~ [1]         ^~~~~~~~~~~~~~~~ [2]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
@@ -118,6 +118,45 @@ Code:
           2 | tf 01 evt A accDescr {
           3 | %% TODO
           4 | } tf 02 evt B accDescr: Second
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | eventmodeling accDescr: First
+          2 | tf 01 evt A accDescr {
+          3 | %% TODO
+          4 | } tf 02 evt B
+---
+
+
+Test: eventmodeling-no-duplicate-description >> invalid >>> invalid/eventmodeling/description-comment-text-changed
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-description/invalid/eventmodeling/description-comment-text-changed-input.mmd
+
+Code:
+  1 | eventmodeling accDescr {
+  2 | %% TODO
+  3 | } tf 01 evt Bought accDescr {
+    |                    ^~~~~~~~~~\ [1]
+  4 | %% DONE
+    | ~~~~~~~\ [1]
+  5 | }
+    | ~ [1]
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | eventmodeling accDescr {
+          2 | %% TODO
+          3 | } tf 01 evt Bought
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | eventmodeling tf 01 evt Bought accDescr {
+          2 | %% DONE
+          3 | }
+          4 |
 ---
 
 

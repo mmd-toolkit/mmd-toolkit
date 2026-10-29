@@ -188,7 +188,7 @@ EmptyStatement はセミコロンを寄与する。
 [fixture: agentflow/gram-flow-nested] [fixture: agentflow/db-flow-collapse]
 [fixture: agentflow/db-diagnostics-containment-cycle]
 
-[`addSubGraph`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1187-L1265)
+[`addSubGraph`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1187-L1265)
 は、候補の重複を通常の object のキーで除くが、
 既存の所属列への統合には `includes()` を使う。
 object の `__proto__` に真偽値を代入しても own key ができないため、

@@ -190,8 +190,9 @@ type RuleAtPosition =
  * results it keeps as {@link LineEntry} values. No position is judged for a
  * directive twice.
  *
- * Agentflow at or below its default size limit preserves comment lines;
- * `preserveComments` selects line segments without common comment removal.
+ * Agentflow and eventmodeling at or below their default size limit preserve
+ * comment lines; `preserveComments` selects line segments without common
+ * comment removal.
  */
 export class SourceLexer {
   public readonly text: string
@@ -220,7 +221,7 @@ export class SourceLexer {
   /** The decided entries, in source order. */
   private readonly entries: LineEntry[] = []
 
-  /** common.md: agentflow at its default size limit reads comment lines itself. */
+  /** common.md: agentflow and eventmodeling at their default size limit read comment lines themselves. */
   private readonly preserveComments: boolean
 
   /** The comment start where the next entry begins, or the end of the source. */

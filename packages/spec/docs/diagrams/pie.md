@@ -7,9 +7,9 @@ the stored values are summarized by the
 [tests package](../../../tests/docs/db-summaries.md#pie).
 
 The lexical and grammar rules follow
-[pie.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium#L1-L20)
+[pie.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/pie/pie.langium#L1-L20)
 and its imported
-[common.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L1-L34).
+[common.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/common.langium#L1-L34).
 
 ## Detection
 
@@ -602,7 +602,7 @@ pie/review-hidden-directive-before-showdata]
 Reject when any section value, converted to a double, is less than zero.
 Validate even duplicate labels. Negative infinity rejects, but negative zero and
 a negative decimal rounded to negative zero do not. This is the condition in
-[addSection()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieDb.ts#L36-L46),
+[addSection()](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/pie/pieDb.ts#L36-L46),
 not exact-real negativity of the written decimal. [fixture: pie/number-negative]
 [fixture: pie/db-duplicate-negative] [fixture: pie/number-negative-overflow]
 [fixture: pie/number-negative-zero] [fixture: pie/number-negative-decimal-zero]

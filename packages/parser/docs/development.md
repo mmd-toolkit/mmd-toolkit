@@ -33,7 +33,7 @@ read from the source text directly:
 - the `style` and `classDef` line rule;
 - entities;
 - the end of the text;
-- diagram type detection, for every diagram type of mermaid.js 12.0.0.
+- diagram type detection, for every diagram type of mermaid.js 12.2.0.
 
 The diagram bodies implemented so far are the `error` pseudo-diagram, the
 flowchart (`flowchart-v2`, `flowchart-elk`, and `swimlane`), the sequence
@@ -193,12 +193,24 @@ agentflow/lex-brace-ls-without-lf]
 
 At or below the default 50000 normalized UTF-16 code units after frontmatter and
 directive removal, SourceLexer reads line segments without removing common
-comment regions; agentflow reads leading trivia and its own comments. Above the
-limit it uses the common comment-removal path. [fixture:
-agentflow/comment-default-size-equal-crlf] [fixture:
-agentflow/comment-default-size-above-crlf] [fixture:
+comment regions for agentflow and eventmodeling, and the diagram's lexer reads
+leading trivia and its own comments. Above the limit both use the common
+comment-removal path. [fixture: agentflow/comment-default-size-equal-crlf]
+[fixture: agentflow/comment-default-size-above-crlf] [fixture:
 agentflow/comment-default-size-equal-inline-directive] [fixture:
-agentflow/comment-default-size-above-frontmatter]
+agentflow/comment-default-size-above-frontmatter] [fixture:
+eventmodeling/comment-default-size-equal] [fixture:
+eventmodeling/comment-default-size-above] [fixture:
+eventmodeling/comment-default-size-equal-crlf] [fixture:
+eventmodeling/comment-default-size-above-crlf] [fixture:
+eventmodeling/comment-default-size-equal-inline-directive] [fixture:
+eventmodeling/comment-default-size-above-inline-directive] [fixture:
+eventmodeling/comment-default-size-equal-frontmatter] [fixture:
+eventmodeling/comment-default-size-above-frontmatter] [fixture:
+eventmodeling/frontmatter-extra-trivia-below] [fixture:
+eventmodeling/frontmatter-extra-trivia-boundary] [fixture:
+eventmodeling/frontmatter-extra-trivia-above] [fixture:
+eventmodeling/frontmatter-extra-whitespace-line-boundary]
 
 The usecase lexer tries its default rules in specification order and uses
 exclusive JSON and stereotype contexts. Its grammar retains authored

@@ -4,10 +4,10 @@ Japanese version: [mindmap.ja.md](./mindmap.ja.md)
 
 Source of truth in mermaid.js:
 
-- [`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison)
-- [`mindmapDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts)
+- [`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison)
+- [`mindmapDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts)
 - the tests (`*.spec.ts`, `*.test.ts`) in
-  [`mindmap/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap)
+  [`mindmap/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/mindmap)
 
 This document covers the diagram type `mindmap`. The nodes of the tree are
 defined in [ast/mindmap.md](../ast/mindmap.md).
@@ -16,7 +16,7 @@ defined in [ast/mindmap.md](../ast/mindmap.md).
 
 Entry 4 of [detection.md](../detection.md) selects this grammar: the text starts
 with `mindmap`, after whitespace, in exactly this case
-([`detector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/detector.ts#L8-L10)).
+([`detector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/mindmap/detector.ts#L8-L10)).
 `MINDMAP` and `Mindmap` match no detector, and empty lines and lines of
 whitespace before the header change nothing. [fixture: mindmap/db-header-only]
 [fixture: mindmap/db-header-indented] [fixture: mindmap/header-upper-case]
@@ -350,7 +350,7 @@ The grammar uses the notation of [common.md](../common.md#notation), over units
 instead of characters. A unit name stands for one unit with that name, and text
 in double quotes stands for the unit named by that text. The grammar is a
 restatement of the grammar in
-[`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L66-L127),
+[`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L66-L127),
 except where [Blank lines](#blank-lines) says otherwise.
 
 Each rule below makes a node of the tree, defined in

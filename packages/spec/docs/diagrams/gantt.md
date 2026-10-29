@@ -4,10 +4,10 @@ Japanese version: [gantt.ja.md](./gantt.ja.md)
 
 Source of truth in mermaid.js:
 
-- [`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison)
-- [`ganttDb.js`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js)
+- [`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison)
+- [`ganttDb.js`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js)
 - the tests (`*.spec.js`) in
-  [`gantt/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt)
+  [`gantt/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt)
 
 This document covers the diagram type `gantt`, the Gantt chart. The nodes of the
 tree are defined in [ast/gantt.md](../ast/gantt.md).
@@ -16,7 +16,7 @@ tree are defined in [ast/gantt.md](../ast/gantt.md).
 
 Entry 11 of [detection.md](../detection.md) selects this grammar: the text
 starts with `gantt`, after whitespace, in exactly this case
-([`ganttDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDetector.ts#L9-L11)).
+([`ganttDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDetector.ts#L9-L11)).
 `GANTT` is no gantt diagram and matches no detector. [fixture:
 gantt/header-only] [fixture: gantt/header-leading-whitespace] [fixture:
 gantt/header-upper-case]
@@ -916,7 +916,7 @@ gantt/lex-percent-brace-in-task-data] [fixture:
 gantt/lex-percent-brace-glued-in-title-text]
 
 The documentation of mermaid.js says, under
-[Comments](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gantt.md#L319-L322),
+[Comments](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/gantt.md#L319-L322),
 that comments "need to be on their own line and must be prefaced with `%%`".
 
 ## Grammar
@@ -925,7 +925,7 @@ The grammar uses the notation of [common.md](../common.md#notation), over units
 instead of characters. A unit name, such as `task-text`, stands for one unit
 with that name, and text in double quotes stands for the unit named by that
 text, such as `"title"` or `":"`. The grammar is a restatement of the grammar in
-[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L107-L173)
+[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L107-L173)
 and accepts the same sequences of units, except for the empty forms that
 mermaid.js reads no token for (see
 [Empty description blocks](#empty-description-blocks) and
@@ -1028,10 +1028,10 @@ gantt/gram-task-trailing-comma] [fixture: gantt/gram-task-empty-middle-item]
 [fixture: gantt/gram-task-empty-item-first]
 
 mermaid.js reads the items as
-[`parseData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L497-L551)
+[`parseData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L536-L590)
 does, and the tree shows the items as written; how mermaid.js reads them is in
 the summary of the tests package. The **tags** are taken from the front
-([`getTaskTags()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L846-L860)):
+([`getTaskTags()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L885-L899)):
 as long as the first remaining item is one of the words `active`, `done`,
 `crit`, `milestone`, and `vert`, in exactly this case, it is a tag and sets its
 flag, also when it repeats; an empty item, a word in another case, and two tag
@@ -1146,7 +1146,7 @@ gantt/config-security-level-loose-click-call] [fixture:
 gantt/config-security-level-strict-click-href]
 
 The documentation of mermaid.js describes the two parts under
-[Interaction](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gantt.md#L450-L458).
+[Interaction](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/gantt.md#L450-L458).
 
 ### Settings
 
@@ -1348,13 +1348,13 @@ Two inputs that the grammar of mermaid.js accepts are rejected by its Db, and
 are rejected here:
 
 - A `top-axis-statement`: the grammar calls
-  [`yy.TopAxis()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L141-L141),
+  [`yy.TopAxis()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L141-L141),
   which the Db does not have, so every text with a `topAxis` statement is
   rejected with a `TypeError`, whatever else it holds. [fixture:
   gantt/db-top-axis-statement] [fixture: gantt/lex-topaxis-upper-case] [fixture:
   gantt/lex-topaxis-then-title]
 - A task whose data holds tags only: after the tags are taken,
-  [`getTaskTags()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L846-L860)
+  [`getTaskTags()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L885-L899)
   reads the first item of an empty list, and the text is rejected with a
   `TypeError`. [fixture: gantt/gram-task-tags-only] [fixture:
   gantt/gram-task-tags-only-two]

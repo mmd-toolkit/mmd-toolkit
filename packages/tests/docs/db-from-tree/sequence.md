@@ -447,7 +447,7 @@ sequence/db-arrow-types]
 
 mermaid.js splits the text of a box into a colour candidate and the rest, and
 asks the browser whether the candidate is a colour (see
-[`parseBoxData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L394-L419)).
+[`parseBoxData()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L394-L419)).
 The answer does not come from the text, so the `name`, `fill`, and `wrap` of a
 box are given from outside the tree, as a value of the configuration is.
 

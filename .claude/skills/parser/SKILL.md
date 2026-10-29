@@ -82,9 +82,8 @@ flowchart; the steps do not depend on the diagram type.
 - Do not commit, change what is staged, or use `git mv`, `stash`, `checkout`, or
   `reset`; move and delete files with plain `mv` and `rm`.
 - Do not edit a tracked file for a while to change how a check runs, such as the
-  number of inputs of a test. When the working tree is shared with other work,
-  the file can be staged in that state, and a run that is cut off never restores
-  it.
+  number of inputs of a test. A run that is cut off never restores it, and the
+  file can then be committed in that state.
 - The Write tool and shell here-documents can turn an escape such as `\u00a0`
   into the real character. The sources and tests of `packages/parser` are ASCII
   only (every other character is written as an escape), except a readable
@@ -104,9 +103,8 @@ flowchart; the steps do not depend on the diagram type.
 - The tests are heavy. Under a high load (a load average of `uptime` above the
   number of CPUs) a test file can time out. When one does, run that file alone
   before judging. Run long checks in the background, with the output in a file
-  outside the repository. When the working tree is shared with other work, stop
-  only what you started, by its task id or process id; never by name
-  (`pkill -f vitest` stops the runs of others too).
+  outside the repository. Stop only what you started, by its task id or process
+  id; never by name (`pkill -f vitest` also stops runs that you did not start).
 
 ## 3. How to check (in every piece of work)
 
@@ -443,20 +441,21 @@ Records contain the default `parse(text)` result, while
 `outcomeOf(fixture.input, fixture.config)` applies only external site settings
 for acceptance without adding configuration parameters or options to `parse()`.
 
-1. Write and read these files only for fixtures whose rules are implemented. Run
-   earlier, the fixture test writes the result of the current parser, which is
+1. Write and read these files only for fixtures whose rules are implemented.
+   Written earlier, a record holds the result of the current parser, which is
    wrong, and it then passes as recorded. Before writing, use `loadFixtures`,
    `fixtureAccepts`, `embeddedValuesOf` and `dbFromTree` to probe the diagram's
    fixed fixtures and applicable common detection fixtures, then inspect the
    trees and tokens of each sentence's cases against the specification (4.6).
    Report each undecided input and its question without recording it.
-2. Inventory missing records and run `tests/fixtures.test.ts` once outside CI,
-   in `packages/parser`, without `-u`; it writes the missing files (in CI, a
-   missing file fails). Use `-u` only for a change that changes existing results
-   (step 4):
+2. Inventory missing records and write them once, in `packages/parser`, with
+   `pnpm run test:record`, which runs `tests/fixtures.test.ts` alone with
+   `--update=new`; any other run of the package's tests fails on a missing
+   record and writes nothing. Use `-u` only for a change that changes existing
+   results (step 4):
 
    ```sh
-   pnpm run test tests/fixtures.test.ts
+   pnpm run test:record
    ```
 
    Scope the run to an already probed diagram with `-t "<diagram> fixtures"`,
@@ -615,13 +614,12 @@ wiring, tests and records.
 
 - Fixtures are added: do 4.7, steps 1 to 3. When a fixture's rule is not
   implemented yet, implement it first.
-- The specification changes while you work: take a change in only after it is
-  announced to you, with the changed sentences, fields, and fixture names. The
-  working tree is shared, so a document that is being written can be seen
-  half-way; do not change the implementation from it, and do not take back a
-  provisional implementation because of it. In state, an alias rule was taken
-  back from a draft of a known divergence that was decided the other way
-  afterwards; in class, the same happened before.
+- The specification changes while you work: take a change in only once it is
+  finished, with the changed sentences, fields, and fixture names. A document
+  that is still being written decides nothing; do not change the implementation
+  from it, and do not take back a provisional implementation because of it. In
+  state, an alias rule was taken back from a draft of a known divergence that
+  was decided the other way afterwards; in class, the same happened before.
 - A rule of the specification changes, or a gap is filled: read the changed
   sections, check them as in 4.2, step 2, and implement them. When existing
   trees change, do 4.7, step 4. Before reporting it, check as in 4.8, and show
@@ -675,8 +673,12 @@ skill). The parser does not change behavior before the specification does.
 
 1. Read the changed sections of the specification, and check each changed rule
    as in 4.2, step 2.
-2. Fix what is tied to the version. `grep -rn '12\.0\.0' packages/parser` finds
-   it: the README and `docs/development.md`, each with its `.ja.md`.
+2. Fix what is tied to the version. A `grep -rn` for the old version number in
+   `packages/parser` finds it in the README and `docs/development.md`, each with
+   its `.ja.md`. The links to the source of mermaid.js are permalinks of the
+   pinned commit: replace each with the link at the new commit, from the table
+   of old and new links that the update of the specification gives, and check
+   them with `node scripts/check-mermaid-links.mjs`.
 3. When diagram type ids are added or changed: following `detection.md` and the
    DiagramType of `ast.md`, fix `src/detection.ts`, `DiagramType` in
    `src/ast.ts`, `allDiagramTypes` in `tests/types.test.ts`, and
@@ -688,5 +690,4 @@ skill). The parser does not change behavior before the specification does.
 6. Show as the result: what was fixed, the number of differences of the trees by
    kind, and the mismatches that remain.
 
-These steps have not been through a real update yet. At the first update, follow
-them as written and correct them where they do not hold.
+Where a step does not hold at an update, correct it.

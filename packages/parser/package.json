@@ -32,6 +32,7 @@
     "build": "tsdown",
     "clean": "rimraf lib",
     "test": "vitest run",
+    "test:record": "vitest run tests/fixtures.test.ts --update=new",
     "test:update": "vitest run tests/fixtures.test.ts -u",
     "show-trees": "node --conditions=source tools/show-trees.ts",
     "diff-trees": "node --conditions=source tools/diff-trees.ts"

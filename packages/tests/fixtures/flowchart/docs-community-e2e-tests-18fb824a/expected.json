@@ -1,0 +1,225 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.2.0",
+    "path": "packages/mermaid/src/docs/community/e2e-tests.md",
+    "line": 77
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "start",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "What triggered this run?",
+        "type": "diamond",
+        "props": {}
+      },
+      {
+        "id": "pr_label",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "'run pr tests'<br/>label set?",
+        "type": "diamond",
+        "props": {}
+      },
+      {
+        "id": "release_label",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "'run release test'<br/>label set?",
+        "type": "diamond",
+        "props": {}
+      },
+      {
+        "id": "push_develop",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "pr-check tier only",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "push_master",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "pr-check + nightly-check tiers",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "nightly_run",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "pr-check + nightly-check tiers",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "pr_scoped",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "pr-check tier only",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "blocked1",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "e2e skipped —<br/>required check fails",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "gated",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "pr-check + nightly-check tiers<br/>(visual-check excluded — see Applitools)",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "blocked2",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "e2e skipped —<br/>required check fails",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "start",
+        "end": "pr_label",
+        "type": "arrow_point",
+        "text": "PR → develop",
+        "labelType": "string",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_start_pr_label_0"
+      },
+      {
+        "start": "start",
+        "end": "release_label",
+        "type": "arrow_point",
+        "text": "PR → master",
+        "labelType": "string",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_start_release_label_0"
+      },
+      {
+        "start": "start",
+        "end": "push_develop",
+        "type": "arrow_point",
+        "text": "Push to develop<br/>(e.g. a PR merge)",
+        "labelType": "string",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_start_push_develop_0"
+      },
+      {
+        "start": "start",
+        "end": "push_master",
+        "type": "arrow_point",
+        "text": "Push to master",
+        "labelType": "string",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_start_push_master_0"
+      },
+      {
+        "start": "start",
+        "end": "nightly_run",
+        "type": "arrow_point",
+        "text": "Scheduled (daily) or<br/>manual 'simulated nightly'",
+        "labelType": "string",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_start_nightly_run_0"
+      },
+      {
+        "start": "pr_label",
+        "end": "pr_scoped",
+        "type": "arrow_point",
+        "text": "yes, or PR just opened",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_pr_label_pr_scoped_0"
+      },
+      {
+        "start": "pr_label",
+        "end": "blocked1",
+        "type": "arrow_point",
+        "text": "no",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_pr_label_blocked1_0"
+      },
+      {
+        "start": "release_label",
+        "end": "gated",
+        "type": "arrow_point",
+        "text": "yes, or PR just opened",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_release_label_gated_0"
+      },
+      {
+        "start": "release_label",
+        "end": "blocked2",
+        "type": "arrow_point",
+        "text": "no",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_release_label_blocked2_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

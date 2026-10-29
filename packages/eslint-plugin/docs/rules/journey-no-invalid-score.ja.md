@@ -72,7 +72,7 @@ journey
 
 ## 参考
 
-- [ユーザージャーニー図の構文: score](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/userJourney.md#L24)
+- [ユーザージャーニー図の構文: score](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/userJourney.md#L24)
 - [Issue #6262: ジャーニー図で顔が範囲の外に出る](https://github.com/mermaid-js/mermaid/issues/6262)
 - [Issue #4248: ユーザージャーニーの目盛りの設定](https://github.com/mermaid-js/mermaid/issues/4248)
 

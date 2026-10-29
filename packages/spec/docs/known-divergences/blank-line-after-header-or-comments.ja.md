@@ -282,13 +282,13 @@ mindmap/div-header-trailing-spaces-then-node]
 
 ## mermaid.js がそう読む理由
 
-[`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L21-L30)
+[`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L21-L30)
 の字句解析器は、 `\s*%%.*`、
 つまり前の空白と改行を含むコメントを 1 つのトークンとして、 `[\s]+[\n]`、
 つまり最後の改行までの空白の並びを、同じトークン `SPACELINE` として読みます。
 その文法は、`SPACELINE` を、それだけの文として、
 または前の文の終わりとして取り（mermaid.js の
-[`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L82-L108)）、
+[`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L82-L108)）、
 終わりの後には改行しか続けられません。
 そのため、文の後のトークンは、終わりと文として交互に組になり、
 文として残った `SPACELINE` は次のノードの前に終わりを要しますが、
@@ -296,7 +296,7 @@ mindmap/div-header-trailing-spaces-then-node]
 ヘッダーの後には文が続くので、そこでは組み方が逆から始まります。
 
 kanban の字句規則と文法も空白と文を同じように組にします。
-[`kanban.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/parser/kanban.jison#L48-L138)
+[`kanban.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/kanban/parser/kanban.jison#L48-L138)
 を参照してください。
 その組分けは木が持つものを変えません。
 同じ直接の規則を適用します。
@@ -328,7 +328,7 @@ kanban の字句規則と文法も空白と文を同じように組にします�
 [fixture: kanban/div-between-real-comments-ps-node]
 
 Ishikawa も
-[`ishikawa.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/parser/ishikawa.jison#L6-L55)
+[`ishikawa.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/ishikawa/parser/ishikawa.jison#L6-L55)
 で同じ組を作ります。
 空白と図のコメントをどちらも `SPACELINE` とし、文と文の終わりの両方に使います。
 空白と行終端は空白類で、コメントは既にコメントとして保持するため、
@@ -366,12 +366,12 @@ mindmap/div-two-comments-line-separator-between-nodes]
 
 ## mermaid.js の文書と issue
 
-- [マインドマップの構文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/mindmap.md)
+- [マインドマップの構文](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/mindmap.md)
   は、マインドマップの行の間の空の行やコメントについて何も述べていません。
 - それについての issue と pull request は見つかりませんでした（2026-10-15 に
   `mindmap empty line`、 `mindmap blank line`、 `mindmap comment`、
   `mindmap newline`、 `mindmap parse`、`mindmap error` で検索）。
-- [kanban の構文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/kanban.md)
+- [kanban の構文](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/kanban.md)
   は、 kanban の図の行の間の空の行やコメントについて何も述べず、
   字下げが大切だと述べるだけです。
 - それについての issue と pull request は見つかりませんでした（2026-10-21 に
@@ -380,7 +380,7 @@ mindmap/div-two-comments-line-separator-between-nodes]
   見つかった issue と pull request は、`style` の文（#8118）、
   `:::` のクラス（#8119）、`accTitle`（#8120）など、別の件についてのものです。
 - ピン留めした
-  [Ishikawa syntax](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/ishikawa.md#L1-L41)
+  [Ishikawa syntax](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/ishikawa.md#L1-L41)
   は字下げを説明しますが、空行やコメントの組の規則は述べません。
   2026-10-21 に issue と pull request を `ishikawa blank`、 `ishikawa comment`、
   `ishikawa header` で検索し、

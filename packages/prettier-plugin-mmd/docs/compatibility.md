@@ -2480,20 +2480,34 @@ eventmodeling/line-terminators-and-unicode/block-ls-boundary-stays-outside-value
 
 Common EM terminals retain keyword, delimiter and leading ASCII padding as
 values. Preserve their complete source and preceding interval, including across
-global directives, selected semicolons and removed comment regions. Ordinary
-accessibility spacing and shared description-block compaction therefore do not
-apply: even a whitespace-only description keeps its interior. Common statements
-can depend on their original connection to the header, a preceding statement or
-a consumed LF; putting them on ordinary body lines can reject input. Required
-identifier `title` likewise keeps its successful LF or hidden boundary, because
-adding horizontal padding can turn it into metadata. [fixture:
+global directives and selected semicolons. Ordinary accessibility spacing and
+shared description-block compaction therefore do not apply: even a
+whitespace-only description keeps its interior. Common statements can depend on
+their original connection to the header, a preceding statement or a consumed LF;
+putting them on ordinary body lines can reject input. Required identifier
+`title` likewise keeps its successful LF or hidden boundary, because adding
+horizontal padding can turn it into metadata. [fixture:
 eventmodeling/header/accdescr-moved-to-line-start] [fixture:
 eventmodeling/common-boundaries/common-retained-exact-leading-directive-gaps]
 [fixture: eventmodeling/semicolons/metadata-across-selected-semicolon-gap-exact]
-[fixture: eventmodeling/common-boundaries/common-comment-region-join] [fixture:
+[fixture:
 eventmodeling/description-blocks/description-whitespace-literal-retained]
 [fixture:
 eventmodeling/frame-components/hidden-before-required-title-identifier-keep-zero-indentation]
+
+Eventmodeling keeps comment lines in its Db unless the source is longer than
+`maxTextSize`, 50000 UTF-16 code units by default. At normal size a `%%` comment
+line inside a data block, a note, a description block, a slash block comment or
+a hidden form is part of that text and stays as written. At or above 50000
+normalized units after frontmatter and directive removal, retain the complete
+diagram text and ending. Below it, ordinary layout is applied only if its
+planned measurement stays strictly below 50000, so that indentation or the final
+line break cannot move the text across the limit and drop those comment lines
+from the Db. [fixture: eventmodeling/default-size-branches/size-utf16-surrogate]
+[fixture:
+eventmodeling/default-size-branches/size-preserving-to-fallback-unsafe]
+[fixture: eventmodeling/default-size-branches/size-below-planned-crossing]
+[fixture: eventmodeling/comments/comment-line-inside-data-block-kept]
 
 Every source occurrence remains, including model entities, notes, GWT, unused or
 later same-name data, repeated references, type words and inline data alongside
@@ -2515,15 +2529,15 @@ semicolons, so a style/classDef word alone does not freeze the entire line.
 Directives keep both contacts within a printed line; when units split, the
 directive moves with the following unit. Common-value intervals override this
 ordinary placement. Comments keep their marks and contents; native line comments
-include LS/PS, while common-region joins retain their original interval. When
-units split, intervening inline comments and directives move with the following
-unit in source order. This shared placement treats comments alike across diagram
-types. [fixture: eventmodeling/comments/mixed-directive-order] [fixture:
+include LS/PS. When units split, intervening inline comments and directives move
+with the following unit in source order. This shared placement treats comments
+alike across diagram types. [fixture:
+eventmodeling/comments/mixed-directive-order] [fixture:
 eventmodeling/semicolons/gwt-protected-opening-kept] [fixture:
 eventmodeling/semicolons/no-grammar-semicolon-style-word-line-formats] [fixture:
 eventmodeling/global-directives/directive-follows-split-next-gwt-item] [test:
 eventmodeling/comments/native-line-comment-ls-stays-content] [test:
-eventmodeling/comments/comment-region-ls-join-unchanged]
+eventmodeling/comments/comment-after-ls-gap-ends-at-lf]
 
 The five existing [specified readings](./eventmodeling.md#specified-readings)
 apply without new divergences: atomic directive/semicolon cuts,

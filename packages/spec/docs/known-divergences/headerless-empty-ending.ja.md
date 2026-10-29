@@ -124,23 +124,23 @@ mermaid.js もそれを拒否しますが、
 
 mermaid.js の字句解析器は、`classDiagram` と `classDiagram-v2` を、
 後に語の文字が続かないところでだけヘッダーとして読みます（mermaid.js の
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L41-L42)）。
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L41-L42)）。
 そのため `classDiagramX` をクラスの名前として読み、
 クラスの名前だけの文は何も変えません（mermaid.js の
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L332-L333)）。
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L332-L333)）。
 
 mermaid.js の文法には 2 つの開始があります（mermaid.js の
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L221-L232)）。
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L221-L232)）。
 ヘッダー、その文、`EOF` のトークンと続くものと、
 ヘッダーも `EOF` のトークンもない、文だけのものです。
 字句解析器はどのテキストも `EOF` のトークンで終えるので（mermaid.js の
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L209-L209)）、
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L209-L209)）、
 2 つ目の開始がテキストの全体を取ることはありません。
 例外が 1 つあります。
 字句解析器のいくつかの規則は、空文字列にもマッチします。
 `accTitle:` と `accDescr:` の値、`accDescr {` の値、`call` の後の名前、
 文字列の中身です（mermaid.js の
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L30-L61)）。
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L30-L61)）。
 そのどれかがテキストの終わりで空文字列にマッチすると、
 字句解析器はすでに終わりに着いた印を付けていて、
 `EOF` のトークンの代わりに入力の終わりを知らせます。

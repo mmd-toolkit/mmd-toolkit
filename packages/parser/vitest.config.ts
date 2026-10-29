@@ -21,6 +21,10 @@ const config: ViteUserConfig = defineConfig({
   test: {
     name: "parser",
     include: ["tests/**/*.test.ts"],
+    // A missing `ast.json` or `parse-error.json` fails the fixture test
+    // instead of being written: the records are written only when asked for,
+    // by `pnpm run test:record` or `pnpm run test:update`.
+    update: "none",
   },
 })
 

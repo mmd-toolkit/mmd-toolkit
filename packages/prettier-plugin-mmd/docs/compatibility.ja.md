@@ -2661,7 +2661,7 @@ native data は埋め込まれた設定として評価せず、 source から直
 [fixture: eventmodeling/final-newline/final-block-padding-kept]
 
 共通の EM terminal は keyword、delimiter、前置 ASCII 空白も値に含みます。
-global directive、選ばれた semicolon、除去される comment region を挟む場合も、
+global directive と選ばれた semicolon を挟む場合も、
 原文全体とその前方区間を保ちます。
 通常の accessibility の空白と共有 description-block の圧縮は使いません。
 空白だけの description も内部を保ちます。
@@ -2672,9 +2672,25 @@ required identifier の `title` も、水平空白を足すと metadata にな�
 [fixture: eventmodeling/header/accdescr-moved-to-line-start]
 [fixture: eventmodeling/common-boundaries/common-retained-exact-leading-directive-gaps]
 [fixture: eventmodeling/semicolons/metadata-across-selected-semicolon-gap-exact]
-[fixture: eventmodeling/common-boundaries/common-comment-region-join]
 [fixture: eventmodeling/description-blocks/description-whitespace-literal-retained]
 [fixture: eventmodeling/frame-components/hidden-before-required-title-identifier-keep-zero-indentation]
+
+Eventmodeling の Db は、
+source が `maxTextSize` （既定は UTF-16 コード単位で 50000）を超えない限り、
+コメント行を残します。
+通常の大きさでは、data block、note、description block、slash block comment、
+hidden 形の内部の `%%` のコメント行は、その text の一部で、
+原文どおりに保ちます。
+frontmatter と directive を除いた後の正規化した単位数が 50000 以上のときは、
+図の text 全体とその終わりを保ちます。
+それ未満のときは、印字する計画の長さも 50000 未満に収まる場合だけ、
+通常の整形を行います。
+字下げや末尾の改行で text が上限を越え、
+そのコメント行が Db から消えるのを防ぐためです。
+[fixture: eventmodeling/default-size-branches/size-utf16-surrogate]
+[fixture: eventmodeling/default-size-branches/size-preserving-to-fallback-unsafe]
+[fixture: eventmodeling/default-size-branches/size-below-planned-crossing]
+[fixture: eventmodeling/comments/comment-line-inside-data-block-kept]
 
 model entity、note、GWT、未使用・後続の同名 data、重複参照、型語、
 参照と併記した inline data も、全出現を残します。
@@ -2697,8 +2713,7 @@ style・classDef という語だけでは行全体を固定しません。
 directive は同じ印字行では両側の接触を保ち、
 単位を行に分けるときは次の単位へ付けます。
 共通値の区間では原文保持を優先します。
-comment は mark と内容を保ち、native 行 comment は LS・PS を含み、
-common-region join は元の区間を保ちます。
+comment は mark と内容を保ち、native 行 comment は LS・PS を含みます。
 単位を行に分けるとき、間の inline comment と directive は原順で次側へ付けます。
 共有の置き方に揃え、同じ comment を図種の間で同じように扱います。
 [fixture: eventmodeling/comments/mixed-directive-order]
@@ -2706,7 +2721,7 @@ common-region join は元の区間を保ちます。
 [fixture: eventmodeling/semicolons/no-grammar-semicolon-style-word-line-formats]
 [fixture: eventmodeling/global-directives/directive-follows-split-next-gwt-item]
 [test: eventmodeling/comments/native-line-comment-ls-stays-content]
-[test: eventmodeling/comments/comment-region-ls-join-unchanged]
+[test: eventmodeling/comments/comment-after-ls-gap-ends-at-lf]
 
 既存の 5 つの [specified reading](./eventmodeling.ja.md#specified-readings)
 に従い、差異は足しません。

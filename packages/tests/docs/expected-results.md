@@ -13,29 +13,29 @@ values are recorded before mermaid.js would sanitize them.
 1. mermaid.js's configuration goes back to its defaults
    (`mermaidAPI.globalReset()`), which also empties the list of directives the
    previous text applied. Then `mermaid.initialize(config)`
-   ([`initialize`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L702-L740))
+   ([`initialize`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L704-L742))
    sets the site configuration afresh, so nothing carries over from the previous
    input. Without the reset, a directive that made the previous run fail (for
    example `"theme": "base"` with a color mermaid.js cannot read) would stay in
    that list, and every later call would fail the same way: `mermaid.parse()`
    empties the list only once it starts, and `initialize()` runs before it.
 2. `mermaid.parse(text)`
-   ([`parse`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L96-L117))
+   ([`parse`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L96-L117))
    decides acceptance. It also applies the configuration from frontmatter and
    `%%{init}%%` directives
-   ([`processAndSetConfigs`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L73-L87)).
+   ([`processAndSetConfigs`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L73-L87)).
 3. `mermaidAPI.getDiagramFromText(text, { title })`
-   ([`getDiagramFromText`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L742-L746))
+   ([`getDiagramFromText`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L744-L748))
    parses again and returns the Db. The frontmatter `title` is passed the way
    `render()` passes it
-   ([`renderDiagram`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L578-L579),
-   [`Diagram.fromText`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L52-L54)),
+   ([`renderDiagram`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L578-L579),
+   [`Diagram.fromText`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/Diagram.ts#L52-L54)),
    so the Db title matches what a rendered diagram gets. (`parse()` alone never
    sets it.) The title is extracted with a copy of mermaid.js's frontmatter
    handling
-   ([`cleanupText`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L6-L17),
-   [`extractFrontMatter`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L69),
-   [`frontMatterRegex`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L7-L7)),
+   ([`cleanupText`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L6-L17),
+   [`extractFrontMatter`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L69),
+   [`frontMatterRegex`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/regexes.ts#L10-L10)),
    since mermaid.js does not export it.
 4. The Db is summarized by the normalizer registered for the diagram id (see
    [db-summaries.md](./db-summaries.md)).
@@ -66,9 +66,9 @@ recorded as mermaid.js does it, for example a subgraph direction inherited under
 `flowchart.inheritDir`.
 
 With DOMPurify disabled,
-[`sanitizeText`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L85-L97)
+[`sanitizeText`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/common.ts#L85-L97)
 (through
-[`sanitizeMore`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L69-L83))
+[`sanitizeMore`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/common.ts#L69-L83))
 leaves text unchanged as long as `securityLevel` is one of mermaid.js's values
 (`strict`, `loose`, `antiscript`, `sandbox`), and whatever the value when
 `htmlLabels` is disabled. [fixture: flowchart/db-vertex-label-markup-as-written]
@@ -93,28 +93,28 @@ flowchart/config-security-level-other-html-labels-true-flowchart-false]
 flowchart/config-security-level-other-html-labels-false-flowchart-true]
 
 `@braintree/sanitize-url` is reached through
-[`utils.formatUrl()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L247-L259),
+[`utils.formatUrl()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L247-L259),
 which Db classes call when they store a link. It cannot be replaced from
 outside, so a Db patch registered for the diagram type (`getDbPatches()` in
 `src/normalizers/index.ts`) changes the Db class, before any input is parsed, to
 store the URL as written (trimmed), which is what `formatUrl()` returns under
 `securityLevel: loose`. [fixture: flowchart/db-click-link-trimmed] [fixture:
 class/db-click-link-trimmed] For flowchart
-([`FlowDB.setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L553-L562)),
+([`FlowDB.setLink`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L553-L562)),
 `javascript:alert(1)` therefore stays as is and `https://example.com` gets no
 trailing slash. The class Db does the same
-([`ClassDB.setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L404-L425)).
+([`ClassDB.setLink`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classDb.ts#L404-L425)).
 [fixture: class/db-click-link-javascript-url-as-written] It also sets the link
 target to `_top` under `securityLevel: sandbox`; its patch stores the target as
 written (or `_blank`), as the other levels give. [fixture:
 class/config-security-level-sandbox-link-target] [fixture:
-class/config-security-level-sandbox-link-default-target] In mermaid@12.0.0,
+class/config-security-level-sandbox-link-default-target] In mermaid@12.2.0,
 `formatUrl()` is also called by the Db of agentflow
-([`agentflowDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1014-L1014)),
+([`agentflowDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1014-L1014)),
 which needs the same patch when its normalizer is added.
 
 The gantt Db does not reach `@braintree/sanitize-url` through `formatUrl()`:
-[`setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L673-L688)
+[`setLink`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L712-L727)
 calls it itself unless `securityLevel` is `loose`. The Db is one object that all
 gantt diagrams share, so its patch is applied to the object, and it stores the
 URL as written, which is what `setLink` stores under `loose`. [fixture:
@@ -124,12 +124,12 @@ gantt/config-security-level-sandbox-click-href]
 ## Label text is recorded before HTML sanitization
 
 mermaid.js sanitizes text while it parses. For example,
-[`FlowDB.addVertex`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L201-L207)
+[`FlowDB.addVertex`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L201-L207)
 passes each label through
-[`sanitizeText`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L85-L97)
+[`sanitizeText`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/common.ts#L85-L97)
 in `common.ts`, stores the result in the Db, and then strips surrounding quotes
 from the sanitized text. `sanitizeText()` calls DOMPurify, directly and through
-[`removeScript`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L62-L68),
+[`removeScript`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/common.ts#L62-L68),
 which needs a DOM. In Node, DOMPurify has no `sanitize` or `addHook`, and
 parsing any label fails.
 
@@ -159,7 +159,7 @@ recorded Db is the Db mermaid.js builds when DOMPurify changes nothing:
   mermaid.js and DOMPurify, a browser would store `a &amp; <b>b</b>`; this has
   not been checked in a browser.
 - **What remains**: the rest of `sanitizeText()`
-  ([`sanitizeMore`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L70-L83))
+  ([`sanitizeMore`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/common.ts#L70-L83))
   still runs. With `htmlLabels` enabled (see above for how that is decided) and
   a `securityLevel` other than `strict`, `loose`, `antiscript` or `sandbox`, it
   still replaces `<`, `>` and `=` with entities, and every form of the line
@@ -180,7 +180,7 @@ does not parse.
 ## Rejection versus a missing browser feature
 
 Every error
-[`mermaid.parse()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L96-L117)
+[`mermaid.parse()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L96-L117)
 throws is recorded as a rejection, with its name and message, except an error
 that shows mermaid.js reached for a browser feature Node lacks. Two kinds of
 error count as such:
@@ -216,9 +216,9 @@ A few Db methods call a browser function while mermaid.js parses. For each, the
 Db patch of the diagram type gives a stand-in for that function, only for the
 duration of the call (`src/normalizers/browser-stand-ins.ts`); mermaid.js's own
 processing runs as it is. The patches are applied before any input is parsed, so
-no input meets an unpatched Db. In mermaid@12.0.0:
+no input meets an unpatched Db. In mermaid@12.2.0:
 
-- [`SequenceDB.parseBoxData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L394-L419)
+- [`SequenceDB.parseBoxData`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L394-L419)
   asks `window.CSS.supports("color", word)` whether the first word of a `box`
   line (or an `rgb`, `rgba`, `hsl` or `hsla` function there) is a color. If it
   is, it becomes the box's fill and the rest of the line its name; if not, the
@@ -250,7 +250,7 @@ no input meets an unpatched Db. In mermaid@12.0.0:
   Safari were not checked. The same function is exported as `cssSupportsColor`
   from `@mmd-toolkit/tests`, which runs no mermaid.js, for an implementation
   that takes the answer from outside.
-- [`SequenceDB.addDetails`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L526-L546)
+- [`SequenceDB.addDetails`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L526-L546)
   reads an element of the page with `document.getElementById`. A Db method that
   reads the page is treated as on a page without the element, since the page is
   not part of the diagram's text: the stand-in finds no element, and a `details`
@@ -318,7 +318,7 @@ flowchart/html-tag-starts-in-frontmatter-crlf] [fixture:
 flowchart/html-tag-starts-in-frontmatter-closing-line-blank] The frontmatter
 title in the specified reading is Mermaid's converted value in every diagram
 type, as `extractFrontmatterTitle` gives it after
-[`cleanupText()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L6-L17).
+[`cleanupText()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L6-L17).
 In a tag, a `"` after an `=` becomes `'`. The same derived title supplies the Db
 and `embedded.title`; a body title that overrides it in the Db stays in place.
 [fixture: flowchart/html-tag-starts-in-frontmatter-value] [fixture:
@@ -510,7 +510,7 @@ removal lists for its probe texts: before the replacement, during it, and after
 it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
 
 - `comment-takes-character`, in the sequence lexer
-  ([`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L29-L30)):
+  ([`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L29-L30)):
   the rule that reads a character other than `}` before `%%` together with the
   comment is taken out, so a comment starts at its `%%`; the rule for numbers
   also ends a number before `%%`, not only before a space or a line feed. No
@@ -519,7 +519,7 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   before any rule for ids, so no input gives it an id run, as in a message,
   whose second and third characters are `%%`.
 - `comment-takes-character`, in the gantt lexer
-  ([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L29-L29)):
+  ([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L29-L29)):
   the rule that reads a character other than `}` before `%` together with the
   comment is taken out, so a comment starts at a `%` where a unit starts, and
   any other `%` is a character of the unit that holds it. [fixture:
@@ -529,7 +529,7 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   gantt/lex-comment-after-two-characters] [fixture:
   gantt/lex-brace-before-percent] [fixture: gantt/lex-colon-then-percent]
 - `comment-takes-character`, in the journey lexer
-  ([`journey.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison#L15-L15)):
+  ([`journey.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison#L15-L15)):
   the rule that reads a character other than `}` before `%%` together with the
   comment is taken out, so a comment starts at a `%` where a unit starts, and
   any other `%%` is part of the unit that holds it. [fixture:
@@ -537,7 +537,7 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   journey/div-comment-after-colon-after-section] [fixture:
   journey/div-comment-after-task-colon]
 - `comment-takes-character`, in the timeline lexer
-  ([`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L15-L15)):
+  ([`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L15-L15)):
   the rule that reads a character other than `}` before `%%` together with the
   comment is taken out, so a comment starts at a `%` where a unit starts, and
   any other `%%` is part of the unit that holds it. [fixture:
@@ -549,7 +549,7 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   timeline/div-comment-after-semicolon-after-header] [fixture:
   timeline/div-comment-after-semicolon]
 - `comment-takes-character`, in the xychart lexer
-  ([`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L16-L16)):
+  ([`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L16-L16)):
   the rule that reads a character other than `}` before `%%` together with the
   comment is taken out, so a comment starts at its `%%`. [fixture:
   xychart/div-comment-glued-after-title-word] [fixture:
@@ -557,7 +557,7 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   xychart/div-comment-takes-hyphen] [fixture:
   xychart/div-comment-takes-one-letter-word]
 - `comment-takes-character`, in the quadrant lexer
-  ([`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L17-L17)):
+  ([`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L17-L17)):
   the rule that reads a character other than `}` before `%%` together with the
   comment is taken out, so a comment starts at its `%%`. A space or a tab before
   the `%%` is then a space that no statement takes after a point or after the
@@ -571,7 +571,7 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   quadrant/div-acc-descr-block-space-and-comment-after-brace] [fixture:
   quadrant/div-comment-glued-tab-after-point]
 - `comment-takes-line-break`, in the class lexer
-  ([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)):
+  ([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)):
   the rule that reads `%%`, the rest of the line and the line feeds after it
   keeps that reading only for a comment with only whitespace before it on its
   line; a comment after a unit ends at the end of its line, and the line feed
@@ -580,14 +580,14 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   class/div-comment-after-note-string-then-statement] [fixture:
   class/div-comment-after-click-string-then-statement]
 - `comment-takes-line-break`, in the gantt lexer
-  ([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L30-L30)):
+  ([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L30-L30)):
   the rule that reads `%`, the rest of the line and the line feeds after it ends
   at the end of the line, so the line feed after a comment is read as a line
   feed. [fixture: gantt/div-percent-comment-takes-line-feed-after-href]
   [fixture: gantt/div-percent-comment-takes-line-feeds-after-call] [fixture:
   gantt/lex-space-percent-comment-after-call-then-href-line]
 - `comment-takes-line-break`, in the C4 lexer
-  ([`c4Diagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/parser/c4Diagram.jison#L98-L99)):
+  ([`c4Diagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/c4/parser/c4Diagram.jison#L98-L99)):
   both rules that read `%%`, the rest of the line and the line feeds after it
   end at the end of the line, so the line terminator after a diagram comment
   separates the header, call, or boundary from what follows, also with an empty
@@ -603,7 +603,7 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   c4/header-header-comment-spaces-recovery] [fixture:
   c4/lex-comment-between-spaces-recovery]
 - `percent-brace-after-unit`, in the gantt lexer
-  ([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L18-L18)):
+  ([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L18-L18)):
   the rule that enters the start state `open_directive` at every `%%{` is taken
   out, so a `%%{` that starts no directive is read by the rule for comments; the
   directives themselves are taken out of the text before the lexer reads it.
@@ -612,10 +612,10 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   gantt/div-percent-brace-after-glued-percent-comment] [fixture:
   gantt/lex-percent-brace-after-tab]
 - `title-digit-after-axis-statement`, in the xychart lexer
-  ([`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L36-L37)):
+  ([`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L36-L37)):
   the lexer enters the start state `axis_data` at every `x-axis` and `y-axis`,
   also inside it, and leaves one at a line break
-  ([line 17](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L17-L17)),
+  ([line 17](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L17-L17)),
   so a `;`, the next statement on the line and the next line after a plot line
   that follows the axis statement on its line are all read in it, where a digit
   is a number and an unquoted title that holds one is rejected. The rules for
@@ -629,7 +629,7 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   xychart/div-title-digit-next-line-after-two-axes] [fixture:
   xychart/div-title-digit-after-axis-and-empty-block]
 - `c4-keyword-anywhere`, in the detector of C4
-  ([`c4Detector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Detector.ts#L10-L10)):
+  ([`c4Detector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/c4/c4Detector.ts#L10-L10)):
   the detector looks for each of the five keywords, `C4Context`, `C4Container`,
   `C4Component`, `C4Dynamic` and `C4Deployment`, at the start of the text, after
   whitespace; mermaid.js looks for `C4Context` there and for the other four
@@ -641,7 +641,7 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   [fixture: class/div-c4-keyword-as-class-name] [fixture:
   state/div-c4-keyword-as-state-id] [fixture: block/div-c4-container-in-label]
 - `name-start-reads-unit`, in the class lexer
-  ([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)):
+  ([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)):
   inside a backquoted name and a generic type, the rule that closes it and the
   rule that reads its text are tried first, so the text is read up to the
   closing mark whatever it starts with. [fixture:
@@ -760,6 +760,6 @@ Db computes its dates from both, so its summary leaves the dates out (see
 ## Text size
 
 `mermaid.parse()` does not apply `maxTextSize`; only rendering does
-([`renderDiagram`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L502-L505)).
+([`renderDiagram`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L502-L505)).
 The fixtures do not apply it either. [fixture:
 flowchart/config-max-text-size-not-applied]

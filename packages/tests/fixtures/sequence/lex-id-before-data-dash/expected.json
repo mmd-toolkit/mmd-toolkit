@@ -1,11 +1,37 @@
 {
   "source": {
     "kind": "authored",
-    "note": "sequence.md The id context, rule 4: an id before `@{` cannot contain `-`."
+    "note": "sequence.md The id context, rule 4: `-` may stand in an id before `@{`; the participant `A-B`."
   },
-  "accepted": false,
-  "error": {
-    "name": "Error",
-    "message": "Parse error on line 2:\n...Diagramparticipant A-B@{ \"type\": \"queue...\n----------------------^\nExpecting 'ACTOR', got 'INVALID'"
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A-B",
+        "description": "A-B",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "queue"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A-B",
+        "set": {
+          "type": "queue"
+        }
+      }
+    ]
   }
 }

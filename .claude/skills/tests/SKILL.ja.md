@@ -240,7 +240,7 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
 2. keyword のパターンも読む。
    独自の境界を持つもの、既定の順序を使うもの、
    明示的な `longer_alt` の選択肢を持つものを列挙する。
-   [共有の token builder](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/tokenBuilder.ts#L7-L31)
+   [共有の token builder](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/tokenBuilder.ts#L7-L31)
    は指定された keyword だけに、空白・EOF・percent ペアの先読み境界を加える。
    一般的な最長一致ではなく、最初に合う規則を取る。
    keyword 境界と明示的な選択肢も単位を決める。
@@ -250,7 +250,7 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
 3. hidden terminal が字句規則として消費するテキストを調べる。
    全体の除去とは区別する。
    import した
-   [YAML・DIRECTIVE terminal](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L25-L34)
+   [YAML・DIRECTIVE terminal](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/common.langium#L25-L34)
    は直後の LF を消費し、ほかの空白境界は先読みだけする。
    各単位の隙間と各文の EOL・EOF を probe する。
    唯一の LF が消えると次の文は拒否されるが、
@@ -262,18 +262,18 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    検出から parser への受渡しを、その図種で独立に probe する。
 4. 実際の terminal 規則名から、注入された converter と fallback をたどる。
    恒等・文字列・整数・double の変換は、到達するものだけを調べる。
-   [共通の converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L26-L70)
+   [共通の converter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/valueConverter.ts#L26-L70)
    は、行とブロックの共通の値で空白の読みが異なる。
    たとえば pie の
-   [独自分岐](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/valueConverter.ts#L6-L16)
+   [独自分岐](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/pie/valueConverter.ts#L6-L16)
    は PIE_SECTION_LABEL を名指すが、
-   [文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium#L1-L20)
+   [文法](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/pie/pie.langium#L1-L20)
    は STRING を呼び、既定の escape 変換に進む。
    到達する単位について、両方の引用符、未知の escape、精度、 overflow、
    underflow を集める。
    前の図種の単位に到達しない所は、拒否の対照を置き、理由を記す。
 5. 回復した AST だけでなく公開の受理の門を読む。
-   [公開 parse wrapper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L134-L150)
+   [公開 parse wrapper](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/parse.ts#L134-L150)
    は字句・構文エラーが 1 つでもあれば拒否する。
    次に、その図種の AST から Db への公開をたどる。
    保存する値、条件付き・省略する代入、値を代入しない文法の literal、
@@ -529,7 +529,7 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    新規が 0 件であること（名前が安定していること）を確かめる。
 9. 手書きの入力。
    各入力は、note の 1 行で 1 つの問いに答える。
-   書く前に、これまでの図種の review が足りないと見つけた場合の種類を、
+   書く前に、これまでの図種で必要になった場合の種類を、
    新しい図種の文と fixture に先に当てる。
    一覧にして当て、当てはまらない種類は、省かずに理由を書く。
    どの種類でも、構文のテキストを持つ場所すべて（欄、名前、文字列、
@@ -537,42 +537,37 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    入力は、一覧の文言からでなく、これまでの図種の fixture の名前から取る。
    近い 2 つの図種の手書きの fixture の名前を `ls` で一覧にし、名前ごとに、
    新しい図種での対応か、対応しない理由を書く。
-   一覧は、これまでの review が見つけた種類をすべて持ち、
-   見つけた review を添える。
+   一覧は次の種類を持つ。
    - `style` 行と `classDef` 行の行の規則が届く値。
      `style`、その後ろの `:` と `#` を持つ行の最後の `;` が、
-     その行のどのテキストからも落ちる（timeline の review 435、sankey の 441）。
+     その行のどのテキストからも落ちる。
      語の大文字小文字が違う、`:` と `#` の間に空白がある、`#` がない、
      `;` が別の行にある場合は `;` が残り、
      `;` が 2 つあれば最初の `;` が文字参照を終える。
-     引用符の中の行は、それだけで 1 つの行（441）。
-   - キーワードと値の間のコメント行、ディレクティブの行、
-     空行（timeline の review 435 の軽 1）。
+     引用符の中の行は、それだけで 1 つの行。
+   - キーワードと値の間のコメント行、ディレクティブの行、空行。
      また、行にテキストのないキーワードが、
      後の行を値に取る場合（アクセシビリティのテキスト）は、取られる行そのもの。
      図の文の行であっても、
-     そのまま値になる（xychart の review 448。 `accTitle:` の次に `line [1]`）。
+     そのまま値になる（xychart の `accTitle:` の次に `line [1]`）。
    - キーワードの別の大文字小文字と、その後ろにくっついた文字、語の文字、`-`、
      ASCII の外の文字。
      ヘッダーにも、各文のキーワードにも。
    - `Object.prototype` の名前（`__proto__`、`constructor`）を名前や id にする。
    - 同じ名前の 2 つ目、3 つ目の定義。
      どれが残るか、文法のアクションのほかの呼び出しが働くか。
-     3 つ目は、相手が最初の定義でない組み合わせにする（review 419・420）。
-   - 空の説明ブロック（またはテキストのない文）が、
-     前の値を保つこと（timeline の review 436。 er と requirement にも）。
+     3 つ目は、相手が最初の定義でない組み合わせにする。
+   - 空の説明ブロック（またはテキストのない文）が、前の値を保つこと。
    - CRLF、単独の CR、U+2028、U+2029。
      行末として、値や引用符の中で、テキストの末尾で。
    - 空白の種類のタブと U+FEFF。
-     行の先頭、値の中、行とテキストの末尾で（timeline の review 436 の軽 2、
-     437 の軽 5）。
+     行の先頭、値の中、行とテキストの末尾で。
    - 文字参照。
      すべてのテキストと引用符の中で、
      また文字参照の `#` はコメントを始めないこと。
    - ディレクティブで切れる値。
      値の中、その先頭と末尾、引用符の中、ヘッダーの行、キーワードに続けて、
-     閉じないもの（次の行の先頭の語か、
-     テキストの残りを取る）（sankey の review 441）。
+     閉じないもの（次の行の先頭の語か、テキストの残りを取る）。
    - 閉じない文脈の中でテキストが終わる場合。
      `accTitle:` で終わる、終わりのないブロック、閉じない引用符。
    - 各文の形の後ろの行末。
@@ -583,53 +578,46 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    - 複数の行にまたがる値の途中にあるコメント行とディレクティブの行。
    - Db がテキストから読む数。
      符号、`-0`（Db は -0 で、JSON は 0 と書く）、 `NaN`、`Infinity`、
-     倍精度に収まらない大きな数、
-     数の後ろのテキスト（journey と sankey の review 441）。
-   - Db が読む埋め込み設定の値（packet の review pk12-1）。
-   - `html-tag-in-frontmatter` の受理の両方向と値だけの違い（review ra3-1、
-     tm3-1、rr12-3）。
+     倍精度に収まらない大きな数、数の後ろのテキスト。
+   - Db が読む埋め込み設定の値。
+   - `html-tag-in-frontmatter` の受理の両方向と値だけの違い。
    - 文の直後の hidden の形（本文の `---` ブロック、`%%{...}%%`）。
      消費した LF の後に文が続く場合、空行が余分の LF を与える場合、
      閉じの後の空白が LF を残す場合、EOF を確かめる。
-     開きをテキストとして取り込む行の値も含める（pie12-1）。
+     開きをテキストとして取り込む行の値も含める。
    - hidden ブロックの隣接する fence。
      本文のある選択肢を空の fallback より先に試し、
-     後に適合する閉じがある場合とない場合、
-     EOF と閉じの空白も含める（pie-yaml-1）。
-   - 省略可能なヘッダーのフラグの後に、同じ行で文が続く場合（pie12-2）。
+     後に適合する閉じがある場合とない場合、 EOF と閉じの空白も含める。
+   - 省略可能なヘッダーのフラグの後に、同じ行で文が続く場合。
    - 重複した定義の 2 度目に、`-0` のような意味上の境目の値を置く場合。
      両方の順で、どの値が残るか、
-     意味上の拒否が重複を捨てる前に起きるかを調べる（pie12-3）。
+     意味上の拒否が重複を捨てる前に起きるかを調べる。
    - C4 検出の 4 語（`C4Container`、`C4Component`、`C4Dynamic`、
      `C4Deployment`）を、すべてのテキストの欄に置く場合。
      label、title、accTitle、accDescr の行とブロックを含める。
      文の後とヘッダーの行で、EOF で終わるコメントにも置く。
-     LF で終わる対照も含める（pie3-4）。
+     LF で終わる対照も含める。
    - 通過した裸の `%%` 行とヘッダーの間の空白。
      VT、FF、NBSP、BOM、U+1680、U+2000〜U+200A、U+202F、U+205F、 U+3000、LS、
      PS をそれぞれ空白だけの行とヘッダーの直前に置く。
-     ASCII の空白・タブの対照も含める（pie3-3）。
+     ASCII の空白・タブの対照も含める。
    - 検出がブロックを 1 つ飛ばす場合の 6 通り。
      2 つ目のブロック、裸の `%%{` 行の後、本物の frontmatter の後、
      二度目の directive 読みの前と後を別々に、
-     開きと閉じが同じ字下げの形を調べる（pie3-6）。
+     開きと閉じが同じ字下げの形を調べる。
    - keyword の直後に global な directive が接着し、
      その後に次の keyword や値が接着する場合。
-     境界は、
-     global な directive と選ばれたセミコロンを除いた文で判定する（pie3-7）。
+     境界は、 global な directive と選ばれたセミコロンを除いた文で判定する。
    - 各図種の atom（固定語、ヘッダーの keyword、矢印、共通の keyword、
      空白を含められない class 名や icon の値）の中と、
      作者が書いた部品の間にある global な directive と選ばれたセミコロン。
      atom の中を割り、mermaid.js が受理する場合は、
      `directive-as-token-boundary` または `ignored-semicolon-as-token-boundary`
      の印を付ける。
-     pie3-7 のように末尾に接する場合と、
-     atom 自体を割る場合を区別する（review cy12-1、
-     tv12-2。 railroad の工程 1・2 と、
-     wardley の工程 1・2 および 3 の review でも確認）。
+     keyword の直後に接着する場合は atom の末尾に接するだけで、
+     atom 自体は割らない。
 
-   review がこの一覧にない種類を見つけたら、review の番号とともにここに足す。
-   その review を閉じる変更で行う。
+   この一覧にない種類が必要になったら、それが必要になった変更でここに足す。
 
 10. 結果として、出どころごとの件数（受理・拒否）、標準外の拒否の内訳、
     印を付けた fixture、
@@ -832,10 +820,23 @@ tests の生成器（`fixtures:add-many` など）で足す（方針と手順は
    `fixtures/`、`lib/`、`node_modules/` は除く。
    - `tests/mermaid.test.ts` の版の検査、`tools/README.md` の clone のタグ、
      `README.md` が名指す版。
+   - 図種の登録簿を持つバンドルのチャンクの名前。
+     `src/mermaid.ts`（`readMermaidConfiguration()`）にある。
+     バンドラーはチャンクをハッシュで名付けるので、版ごとに変わる。
+     入れた `mermaid` の `dist/chunks/mermaid.core/` で、
+     `getDiagramLoader` を export しているファイルがそれに当たる。
+     古い名前のままだと、
+     設定を読むすべての fixture が `Cannot find module` で失敗する。
    - `docs/` と `tools/collect.ts` の、 mermaid.js のソースへのパーマリンク。
      コミットを替え、行番号を新しい版の同じコードへ移す。
+     2 つのタグの間のファイルの行の差分で各範囲を写す script を使うと、
+     行が変わらなかった範囲は見つかる。
+     そうでないものは読む。
      同じ行の並びが新しいファイルに 1 か所だけあれば、その位置にする。
-     コードが変わっていれば、関数を探して範囲を選び直す。
+     コードが変わっていれば、関数を探して範囲を選び直し、
+     文の主張が新しいコードで成り立つかを読む。
+     成り立たなければ、その文は mermaid.js の変化を述べているので、
+     4 の分類で変化を分類して、文を書き直す。
      ファイルや、文が名指すものがなくなっていれば、文を書き直す。
    - `src/` のコメントのうち、版についての主張を書いたもの。
      `src/mermaid.ts` が写したフロントマターの関数、

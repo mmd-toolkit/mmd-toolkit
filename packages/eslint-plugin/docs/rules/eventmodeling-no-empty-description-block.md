@@ -26,11 +26,12 @@ This rule applies to Event Modeling diagrams (`eventmodeling`). It reports an
 are not description text, so a block containing only directives is also
 reported, though mermaid.js applies their settings.
 
-A block containing a comment line between its braces is not reported. A block
-containing only comment lines still removes an earlier description, and
+A block containing a comment line between its braces is not reported, because
+mermaid.js keeps the comment line as the text of the description. After a
+description, such a block replaces it, and
 [eventmodeling-no-duplicate-description](./eventmodeling-no-duplicate-description.md)
-reports it after a description. A comment outside the braces, as in
-`accDescr {} %% later`, does not prevent a report.
+reports it. A comment outside the braces, as in `accDescr {} %% later`, does not
+prevent a report.
 
 Examples of **incorrect** code for this rule:
 

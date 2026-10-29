@@ -64,13 +64,15 @@ describe("eventmodeling normalization", () => {
     })
   })
 
-  it("keeps duplicate frames, first matching data and source membership", async () => {
-    expect((await summary("db-frame-duplicates"))?.frames).toMatchObject([
-      { name: "01", entityIdentifier: "First" },
-      { name: "01", entityIdentifier: "Second" },
-      { name: "02", entityIdentifier: "Partner" },
-      { name: "01", entityIdentifier: "Third" },
-    ])
+  it("rejects a repeated frame id", async () => {
+    const result = await runMermaid(named("db-frame-duplicates").input)
+    expect(result).toMatchObject({
+      accepted: false,
+      error: { message: 'Duplicate event modeling frame ID "01" on line 3' },
+    })
+  })
+
+  it("keeps first matching data and source membership", async () => {
     expect((await summary("db-data-first"))?.frames).toMatchObject([
       { data: { kind: "block", value: "{\nfirst\n}\n" } },
       { data: { kind: "block", value: "{\npartner\n}\n" } },

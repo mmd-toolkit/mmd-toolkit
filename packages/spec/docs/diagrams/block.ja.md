@@ -4,9 +4,9 @@
 
 mermaid.js の正となるソース：
 
-- [`block.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/parser/block.jison)
-- [`blockDB.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDB.ts)
-- [`block/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block)
+- [`block.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/parser/block.jison)
+- [`blockDB.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/blockDB.ts)
+- [`block/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block)
   の中のテスト（`*.spec.ts`）
 
 この文書は図種 `block` を扱います。
@@ -19,7 +19,7 @@ mermaid.js が受理したテキストを Db にどう読むか（ブロック�
 [detection.ja.md](../detection.ja.md) の項目 26 がこの文法を選びます。
 テキストが、空白の後、
 ちょうどこの大文字小文字の `block` で始まるときです（mermaid.js の
-[`blockDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDetector.ts#L6-L6)）。
+[`blockDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/blockDetector.ts#L6-L6)）。
 字句解析器は次に、この大文字小文字の、
 語の文字が続かない `block-beta` か `block`
 をヘッダーとして読みます（[文の文脈](#文の文脈) を参照）。
@@ -1281,7 +1281,7 @@ id にくっついていてもかまいません（`A-->B`、`A--xB`）。
 `id` のような単位の名前は、その名前の単位 1 つを表し、
 二重引用符の中のテキストは、そのテキストを名前とする単位を表します。
 この文法は
-[`block.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/parser/block.jison#L168-L291)
+[`block.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/parser/block.jison#L168-L291)
 の文法を言い直したもので、既知の差異を除いて、同じ単位の並びを受理します。
 
 下の各規則は、

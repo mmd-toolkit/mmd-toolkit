@@ -23,14 +23,14 @@ functions. Where mermaid.js rejects an input while it derives the configuration,
 the text below says so; this specification accepts such an input.
 
 The derivation follows
-[`preprocessDiagram()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L58-L91),
-[`detectInit()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L98-L130)
+[`preprocessDiagram()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L58-L91),
+[`detectInit()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L98-L130)
 and
-[`detectDirective()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L159-L198),
-[`addDirective()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/config.ts#L277-L290),
-[`updateCurrentConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/config.ts#L109-L143),
+[`detectDirective()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L159-L198),
+[`addDirective()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/config.ts#L277-L290),
+[`updateCurrentConfig()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/config.ts#L109-L143),
 and
-[`sanitizeDirective()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils/sanitizeDirective.ts#L38-L98).
+[`sanitizeDirective()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils/sanitizeDirective.ts#L38-L98).
 
 Configuration values are JSON values: null, booleans, numbers, strings, lists,
 and mappings. Frontmatter values are read into the same kinds. A **container**
@@ -48,7 +48,7 @@ in one step, it does not run the later ones.
 
 ### Reading the frontmatter body
 
-[`extractFrontMatter()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L69)
+[`extractFrontMatter()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L69)
 removes the indent from the body (see
 [Frontmatter](../../spec/docs/common.md#frontmatter)) and reads the result as
 YAML 1.2, the way js-yaml 4.3.0, the version bundled in the pinned mermaid.js,
@@ -83,7 +83,7 @@ The result is the **frontmatter mapping**. Only three of its keys are used:
 
 ### Frontmatter configuration
 
-[`processFrontmatter()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L19-L31)
+[`processFrontmatter()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L19-L31)
 uses the frontmatter mapping as follows. Without frontmatter, the frontmatter
 mapping is empty.
 
@@ -91,12 +91,12 @@ mapping is empty.
   **title** of the diagram. The title is not configuration but a Db value, and
   like the Db values that depend on the configuration, it does not come from the
   tree: whoever checks Db values derives it with mermaid.js's own functions.
-  [`renderDiagram()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L577-L579)
+  [`renderDiagram()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L577-L579)
   passes the title to the Db as the diagram title; each diagram document says
   how its Db stores it. `title: [1, 2]` gives the title `1,2`, `title: 1.0`
   gives `1`, and `title: {a: 1}` gives `[object Object]`. mermaid.js reads the
   body after
-  [`cleanupText()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L6-L17)
+  [`cleanupText()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L6-L17)
   has rewritten `="..."` inside HTML tags, so `title: <b class="x">T</b>` gives
   the title `<b class='x'>T</b>`, while `title: "<a b=\"c\">"` has no `="` in
   its tag and gives the title `<a b="c">`. [fixture:
@@ -138,7 +138,7 @@ own, not with the scan that finds the `Directive` trivia. The scan starts from
 the source after the frontmatter, with line terminators normalized to `\n` and
 with `="..."` inside HTML tags rewritten to `='...'` over the whole source,
 frontmatter included, as
-[`cleanupText()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L6-L17)
+[`cleanupText()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L6-L17)
 does, and prepares it in this order. Of these steps, only the second can change
 which directives are found.
 
@@ -256,7 +256,7 @@ common/directive-primitive-init-two-wrap-substrings]
 ### The text configuration
 
 The **text configuration** is an empty mapping into which
-[`cleanAndMerge()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L861-L863)
+[`cleanAndMerge()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L861-L863)
 merges the frontmatter configuration and then the directive configuration, with
 the **deep merge** (`merge` of es-toolkit). A source that is not a container
 contributes nothing. To merge a source container into a target container, each
@@ -285,7 +285,7 @@ common/config-primitive-replaces-frontmatter-mapping]
 The text configuration is then processed in three steps.
 
 **1. The key filter**
-([`sanitizeDirective()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils/sanitizeDirective.ts#L38-L98)).
+([`sanitizeDirective()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils/sanitizeDirective.ts#L38-L98)).
 It is applied to the text configuration, and to a list by applying it to each
 element. For a mapping, each entry is visited in order:
 
@@ -293,11 +293,11 @@ element. For a mapping, each entry is visited in order:
   `constr`, or is not a configuration key, or when its value is null. A name is
   a **configuration key** when it appears, at any depth, as the key of a value
   that is not a list in the default configuration of the pinned mermaid.js
-  ([`configKeys`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/defaultConfig.ts#L346-L356),
+  ([`configKeys`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/defaultConfig.ts#L347-L357),
   computed from the
-  [default configuration](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/defaultConfig.ts#L18-L343),
+  [default configuration](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/defaultConfig.ts#L18-L344),
   which takes its values from
-  [`config.schema.yaml`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/schemas/config.schema.yaml)
+  [`config.schema.yaml`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/schemas/config.schema.yaml)
   and from the variables of the default theme).
 - When the value is a container, it is filtered in turn. The keys `nodeColors`,
   `filenameIcons`, and `extensionIcons` are filtered differently: each of their
@@ -327,7 +327,7 @@ such a character, mermaid.js rejects the input with a `TypeError`. [fixture:
 common/config-theme-variables-string-rejected]
 
 **2. The font family**
-([`addDirective()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/config.ts#L277-L290)).
+([`addDirective()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/config.ts#L277-L290)).
 When `fontFamily` in the text configuration is not empty and `themeVariables` in
 the text configuration has no non-empty `fontFamily`, `themeVariables` becomes a
 new mapping with the old entries (for a mapping its entries, for a string its
@@ -336,32 +336,32 @@ other values) and with `fontFamily` set to the value of `fontFamily` in the text
 configuration.
 
 **3. The secure filter**
-([`sanitize()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/config.ts#L235-L270)).
+([`sanitize()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/config.ts#L235-L270)).
 It is applied to every container in the text configuration, from the top down.
 In each, the keys `secure` and those listed in the `secure` entry of the site
 configuration are removed, then the keys that start with `__`, and then every
 string value that contains `<`, `>`, or `url(data:`; a string removed from a
 list leaves its position empty, and later merges skip it. The
-[default `secure` list](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/schemas/config.schema.yaml#L334-L347)
+[default `secure` list](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/schemas/config.schema.yaml#L343-L356)
 is `secure`, `securityLevel`, `startOnLoad`, `maxTextSize`,
 `suppressErrorRendering`, and `maxEdges`; `secure` is in it, so the text cannot
 change it. [fixture: common/config-secure-key-ignored]
 
 The result is the text configuration. It is what
-[`mermaid.parse()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L96-L117)
+[`mermaid.parse()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L96-L117)
 returns as `config`.
 
 ### The effective configuration
 
 The **site configuration** is the default configuration of the pinned mermaid.js
 with the configuration passed to
-[`mermaid.initialize()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L702-L740).
+[`mermaid.initialize()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L704-L742).
 Fixtures that need a site configuration record it in the `config` field of
 `expected.json`.
 
 The **effective configuration** is a copy of the site configuration into which
 the text configuration is merged with the **depth-limited merge**
-([`assignWithDepth()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/assignWithDepth.ts#L30-L91)):
+([`assignWithDepth()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/assignWithDepth.ts#L30-L91)):
 first the text configuration is merged into an empty mapping, and then the
 result is merged into the copy. To merge a source value into a target value with
 a depth, which starts at 2:
@@ -397,7 +397,7 @@ when it cannot parse one, as for
 `%%{init: {"themeVariables": {"primaryColor": "notacolor"}}}%%`. [fixture:
 common/config-theme-colour-rejected]
 
-[`renderDiagram()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L477-L680)
+[`renderDiagram()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L477-L682)
 applies the text configuration and the title before it parses. `mermaid.parse()`
 applies the same configuration but not the title. The fixtures follow
 `renderDiagram()`.

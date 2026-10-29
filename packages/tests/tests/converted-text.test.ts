@@ -4,7 +4,7 @@ import {
   convertedValuesOf,
   readConvertedCharacters,
   readWhitespaceAfterBraceAsLineFeed,
-  agentflowPreservesComments,
+  withinMaxTextSize,
   readAgentflowCharacters,
 } from "../src/db-from-tree/converted-text.ts"
 import { loadFixture } from "../src/index.ts"
@@ -212,7 +212,7 @@ describe("Agentflow conversion", () => {
           ? { type: "Frontmatter", range: [0, 16] }
           : null,
       }
-      expect(agentflowPreservesComments(fixture.input, root)).toBe(preserved)
+      expect(withinMaxTextSize(fixture.input, root)).toBe(preserved)
       expect(readAgentflowCharacters(fixture.input, root)[0]?.start).toBe(
         fixture.input.indexOf("agentflow-beta"),
       )

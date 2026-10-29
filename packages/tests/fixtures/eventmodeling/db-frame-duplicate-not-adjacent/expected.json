@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "diagrams/eventmodeling.md, Semantic acceptance conditions: a frame repeats the name of a frame that is not right before it; setAst rejects the duplicate."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Duplicate event modeling frame ID \"01\" on line 4"
+  }
+}

@@ -38,15 +38,7 @@
       {
         "id": "S",
         "nodes": [
-          "A"
-        ],
-        "title": "S",
-        "classes": [],
-        "labelType": "text"
-      },
-      {
-        "id": "S",
-        "nodes": [
+          "A",
           "B"
         ],
         "title": "S",

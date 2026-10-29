@@ -1,5 +1,6 @@
 import { isWhitespace, isWordCharacter } from "../db-from-tree/characters.ts"
 import { trimmed } from "../db-from-tree/values.ts"
+import { scanSource } from "../source-scan.ts"
 import type { TreeRange } from "../db-from-tree/tree.ts"
 import { label } from "./problems.ts"
 import {
@@ -438,10 +439,21 @@ export function checkPreheader(reading: Reading, node: CheckedNode): void {
         "a native bare percent line before YAML prevents detection from skipping it",
       )
     } else {
+      // Detection reads the text without its comments, also where the lexer
+      // keeps a comment line in the form (eventmodeling).
+      const commentRegions = scanSource(
+        reading.text,
+        reading.root.frontmatter?.range[1] ?? 0,
+      )
+        .commentLines.map((line) => line.region)
+        .filter(
+          (region) => form.range[0] <= region[0] && region[1] <= form.range[1],
+        )
+      const detected = reading.converted.of(form.range, commentRegions)
       let at = 3
-      while (isWhitespace(value.charCodeAt(at))) at++
+      while (isWhitespace(detected.charCodeAt(at))) at++
       reading.problems.expect(
-        isWordCharacter(value.charCodeAt(at)),
+        isWordCharacter(detected.charCodeAt(at)),
         label(form),
         "a pre-header hidden directive must be found by the second word-type scan; bare percent forms are Comments",
       )

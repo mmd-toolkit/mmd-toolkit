@@ -15,6 +15,42 @@ new RuleTester(LANGUAGE_CONFIG).run(
   {
     valid: [
       {
+        name: "comment-opening-with-ls",
+        filename: "comment-opening-with-ls.mmd",
+        code: `eventmodeling accDescr { first
+%% see \u2028{x
+second }
+tf 01 evt A
+`,
+      },
+      {
+        name: "comment-opening-with-ps",
+        filename: "comment-opening-with-ps.mmd",
+        code: `eventmodeling accDescr { first
+%% see \u2029{x
+second }
+tf 01 evt A
+`,
+      },
+      {
+        name: "comment-closing-with-ls",
+        filename: "comment-closing-with-ls.mmd",
+        code: `eventmodeling accDescr { first
+text {x
+%% note \u2028}
+tf 01 evt A
+`,
+      },
+      {
+        name: "comment-closing-with-ps",
+        filename: "comment-closing-with-ps.mmd",
+        code: `eventmodeling accDescr { first
+text {x
+%% note \u2029}
+tf 01 evt A
+`,
+      },
+      {
         name: "valid/eventmodeling/ls-same-physical-line",
         filename: "ls-same-physical-line.mmd",
         code: `eventmodeling accDescr { first\u2028tf 01 cmd Buy { item } tf 02 evt Bought`,

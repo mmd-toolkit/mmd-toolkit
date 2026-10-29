@@ -4,9 +4,9 @@ Japanese version: [venn.ja.md](./venn.ja.md)
 
 Source of truth in mermaid.js:
 
-- [`venn.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/parser/venn.jison#L1-L133)
-- [`vennDB.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L16-L96)
-- [`vennDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDetector.ts#L7-L11)
+- [`venn.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/venn/parser/venn.jison#L1-L133)
+- [`vennDB.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/venn/vennDB.ts#L16-L96)
+- [`vennDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/venn/vennDetector.ts#L7-L11)
 
 This document covers the diagram type `venn`. The tree is defined in
 [ast/venn.md](../ast/venn.md). How mermaid.js reads accepted values into its Db

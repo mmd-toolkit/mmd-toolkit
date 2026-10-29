@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "diagrams/sequence.md, The statement context, rule 11: a tab and `A` follow `link`, so it is the keyword; a link statement for A."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {
+          "": "x"
+        },
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

@@ -150,7 +150,7 @@
           "textBeforeValue": [],
           "value": {
             "type": "EventmodelingLiteral",
-            "value": "\n/* block */\n// line\n",
+            "value": "\n%% percent\n/* block */\n// line\n",
             "range": [
               40,
               72
@@ -213,27 +213,7 @@
     }
   },
   "frontmatter": null,
-  "comments": [
-    {
-      "type": "Comment",
-      "mark": "%%",
-      "value": " percent",
-      "range": [
-        41,
-        51
-      ],
-      "loc": {
-        "start": {
-          "line": 4,
-          "column": 0
-        },
-        "end": {
-          "line": 4,
-          "column": 10
-        }
-      }
-    }
-  ],
+  "comments": [],
   "directives": [],
   "tokens": [
     {
@@ -436,33 +416,15 @@
     },
     {
       "type": "RawText",
-      "value": "\n",
+      "value": "\n%% percent\n/* block */\n// line\n",
       "range": [
         40,
-        41
+        72
       ],
       "loc": {
         "start": {
           "line": 3,
           "column": 8
-        },
-        "end": {
-          "line": 4,
-          "column": 0
-        }
-      }
-    },
-    {
-      "type": "RawText",
-      "value": "/* block */\n// line\n",
-      "range": [
-        52,
-        72
-      ],
-      "loc": {
-        "start": {
-          "line": 5,
-          "column": 0
         },
         "end": {
           "line": 7,

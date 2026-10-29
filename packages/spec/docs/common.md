@@ -132,10 +132,10 @@ text says so: the `maxTextSize` limit below and treeview
 
 ## mermaid.js and this specification
 
-[`preprocessDiagram()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L58-L91),
-[`Diagram.fromText()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L19-L85),
+[`preprocessDiagram()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L58-L91),
+[`Diagram.fromText()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/Diagram.ts#L19-L85),
 and
-[`detectType()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/detectType.ts#L36-L48)
+[`detectType()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/detectType.ts#L36-L51)
 apply these steps in order. The last column says how this specification restates
 each of them.
 
@@ -166,11 +166,11 @@ configuration in Steps 3 and 4 is described for reference in
 Steps 1–4, 6, and 8 are the same for every diagram type. Step 5 is skipped for
 the parser's input, though not for detection, when the diagram's Db sets
 `preserveCommentsWhenParsing`
-([`Diagram.fromText()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L66-L77)).
+([`Diagram.fromText()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/Diagram.ts#L66-L77)).
 Step 7 then works on the text that the parser receives, so it also sees the
-comment lines and the leading whitespace. In the pinned mermaid.js only the
-agentflow Db does so: its parser receives comment lines and leading whitespace,
-unless the source after the complete frontmatter trivia, including
+comment lines and the leading whitespace. In the pinned mermaid.js the agentflow
+and eventmodeling Dbs do so: their parsers receive comment lines and leading
+whitespace, unless the source after the complete frontmatter trivia, including
 whitespace-only lines after the closing --- line, without its directives and
 with each `\r\n` counted as one, is longer than `maxTextSize` UTF-16 code units,
 in which case Step 5 applies as usual. [fixture:
@@ -183,10 +183,23 @@ agentflow/comment-default-size-above-frontmatter] [fixture:
 agentflow/frontmatter-extra-trivia-below] [fixture:
 agentflow/frontmatter-extra-trivia-boundary] [fixture:
 agentflow/frontmatter-extra-whitespace-line-boundary] [fixture:
-agentflow/frontmatter-extra-trivia-above] `maxTextSize` can only be set by the
-site configuration (see
+agentflow/frontmatter-extra-trivia-above] [fixture:
+eventmodeling/comment-default-size-equal] [fixture:
+eventmodeling/comment-default-size-above] [fixture:
+eventmodeling/comment-default-size-equal-crlf] [fixture:
+eventmodeling/comment-default-size-above-crlf] [fixture:
+eventmodeling/comment-default-size-equal-inline-directive] [fixture:
+eventmodeling/comment-default-size-above-inline-directive] [fixture:
+eventmodeling/comment-default-size-equal-frontmatter] [fixture:
+eventmodeling/comment-default-size-above-frontmatter] [fixture:
+eventmodeling/frontmatter-extra-trivia-below] [fixture:
+eventmodeling/frontmatter-extra-trivia-boundary] [fixture:
+eventmodeling/frontmatter-extra-trivia-above] [fixture:
+eventmodeling/frontmatter-extra-whitespace-line-boundary] `maxTextSize` can only
+be set by the site configuration (see
 [The effective configuration](../../tests/docs/configuration.md#the-effective-configuration));
-it is 50000 by default. The agentflow document says how its lexer treats them.
+it is 50000 by default. The agentflow and eventmodeling documents say how their
+lexers treat them.
 
 ### Reading a source
 
@@ -229,9 +242,9 @@ lexer tries these in order:
 The characters that the diagram's lexer reads are the **diagram text**: the
 characters of the text outside directives and comment regions, other than the
 `;` that the line rule ignores. The diagram text includes the whitespace and
-line terminators that the diagram treats as trivia between units. For agentflow,
-whose lexer reads comment lines itself, the characters of comment regions are
-diagram text too (see
+line terminators that the diagram treats as trivia between units. For agentflow
+and eventmodeling, whose lexers read comment lines themselves, the characters of
+comment regions are diagram text too (see
 [mermaid.js and this specification](#mermaidjs-and-this-specification)).
 
 The **converted form** of diagram text is the text as the lexer reads it: each
@@ -280,9 +293,9 @@ start up to the end of the comment's line, the diagram type by the diagram text
 after the passes defined under Diagram detection, the line rule by its line
 segment, and an entity by `#`, a word, and `;`.
 
-For agentflow, item 1 does not apply to the lexer: it reads comment lines and
-leading whitespace itself, and the line rule and entities apply to them too, as
-described above.
+For agentflow and eventmodeling, item 1 does not apply to the lexer: it reads
+comment lines and leading whitespace itself, and the line rule and entities
+apply to them too, as described above.
 
 The frontmatter body, the directive arguments, and the `@{ ... }` data blocks of
 a diagram are never parsed. Where a Db value depends on the configuration, the
@@ -416,7 +429,7 @@ text starts a quoted string, so the same label without this rule would be
 rejected.
 
 mermaid.js makes this replacement in
-[`cleanupText()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L6-L17)
+[`cleanupText()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L6-L17)
 so that the attribute values of HTML in a label can use `"` without a change to
 the grammar, and it applies it to the whole source before it removes the
 frontmatter, directives, and comment lines. Except in the frontmatter (see
@@ -450,7 +463,7 @@ this specification follows it on purpose, with its consequences:
 ## Frontmatter
 
 Trivia rule, from
-[`extractFrontMatter()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L69).
+[`extractFrontMatter()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L69).
 The source has frontmatter when all of the following hold:
 
 1. The **opening line** is the first line of the source. It consists of an
@@ -603,7 +616,7 @@ mermaid.js reads some directives for configuration; see
 
 Directives are found at every position of the source after the frontmatter, from
 left to right, as
-[`removeDirectives()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L200-L202)
+[`removeDirectives()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L200-L202)
 finds them. A directive starts at `%%{` when zero or more whitespace characters
 and then a word character follow it; it then extends as far as this rule
 reaches:
@@ -773,7 +786,7 @@ document applies this rule to what its lexer reads; for flowchart, see
 ## Comment lines
 
 Trivia rule, from
-[`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8).
+[`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/comments.ts#L6-L8).
 
 A **comment start** is the start of the text, or the position right after a line
 terminator, U+2028, or U+2029 that is not part of a directive. A **comment** is
@@ -902,7 +915,7 @@ does not read. [fixture: state/lex-diagram-comment-across-comment-line]
 
 Trivia rule. mermaid.js removes leading whitespace right after it removes
 comment lines, in
-[`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8).
+[`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/comments.ts#L6-L8).
 Whitespace, line terminators, directives, and comment regions before the first
 unit of the diagram's lexer are trivia and are not seen by the diagram's
 grammar. [fixture: common/leading-whitespace-before-header] [fixture:
@@ -1176,13 +1189,13 @@ Two pseudo-diagrams are registered before all real diagrams:
   common/detect-dashes-after-directive-found-once-more]
 
 mermaid.js decides the diagram type on a text that it rewrites first. In
-[`detectType()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/detectType.ts#L36-L48),
+[`detectType()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/detectType.ts#L36-L51),
 after the frontmatter, the directives, the comment lines, and the leading
 whitespace are removed, it removes a frontmatter block at the start again, scans
 the text for directives again, and removes every `%%` that has a line break
 somewhere after it together with the whitespace before it and the rest of its
 line
-([`stripAnyComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L46-L73));
+([`stripAnyComments()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/regexes.ts#L49-L76));
 then its detectors look at what is left, and the C4 detector looks for four of
 its five keywords anywhere in it. The lexer of the detected diagram then reads
 the text without these last removals. For a diagram with a grammar, the rules
@@ -1273,7 +1286,7 @@ railroad/ir-yaml-unicode-no-bare]
 ## `style` and `classDef` lines
 
 Line rule, applied to every diagram type, from
-[`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L917).
+[`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L895-L917).
 It applies to one line segment at a time, and the lexer applies it at the start
 of each segment, looking ahead to the segment's end. For this rule, a line
 segment runs between line terminators, U+2028, and U+2029 that are not part of a
@@ -1327,9 +1340,12 @@ which `;` is ignored:
   [fixture:
   sequence/tokens-ignored-semicolon-separator-unclosed-directive-name-line-separator]
 
-For agentflow, comment regions are not left out (see
+For agentflow and eventmodeling, comment regions are not left out (see
 [mermaid.js and this specification](#mermaidjs-and-this-specification)), so the
-rule also applies to comment lines.
+rule also applies to comment lines. [fixture:
+eventmodeling/comment-line-ignored-semicolon-in-data] [fixture:
+eventmodeling/tokens-comment-line-ignored-semicolon] [fixture:
+eventmodeling/tokens-comment-line-semicolon-before-text]
 
 A line segment **matches the `style` rule** when it contains, in this order:
 
@@ -1344,7 +1360,7 @@ done with `classDef` in place of `style` in item 1, on the segment without the
 `;` that the `style` rule ignored. [fixture:
 common/entity-style-then-classdef-rule] mermaid.js removes such a `;` from the
 text in
-[`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L917);
+[`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L895-L917);
 this specification keeps it in the source and only ignores it. Like a directive,
 the ignored `;` may lie inside a text or a string, and between two units (see
 [A directive is a token boundary](#a-directive-is-a-token-boundary)). Inside a
@@ -1434,8 +1450,9 @@ The rule is meant to keep a CSS colour such as `#f00;` in a `style` or
 
 ## Entities
 
-Entities are found from left to right, outside comment regions (for agentflow,
-comment regions are not left out, as for the line rule), in the text without its
+Entities are found from left to right, outside comment regions (for agentflow
+and eventmodeling, comment regions are not left out, as for the line rule;
+[fixture: eventmodeling/comment-line-entity-in-data]), in the text without its
 directives: the characters before and after a directive follow one another, so
 an entity can have a directive between two of its characters. Such a directive
 lies inside the unit that holds the entity, and the rule of

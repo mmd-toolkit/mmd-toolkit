@@ -666,7 +666,7 @@ function markdownFiles(dir: string): string[] {
 /**
  * The blocks of the demo pages that belong to `diagram`.
  *
- * The text is what `mermaid.run()` reads from the page ([`run`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaid.ts#L173-L178)):
+ * The text is what `mermaid.run()` reads from the page ([`run`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaid.ts#L173-L178)):
  * the element's content with character references decoded, then `dedent()`
  * (mermaid's own `ts-dedent`), then trimmed. Like a browser, the line feed
  * right after `<pre>` is not part of the content. `run()` also rewrites every

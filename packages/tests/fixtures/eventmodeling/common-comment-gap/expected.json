@@ -6,6 +6,6 @@
   "accepted": false,
   "error": {
     "name": "MermaidParseError",
-    "message": "Parsing failed:  Parse error on line 2, column 1: Expecting end of file but found `A`."
+    "message": "Parsing failed:  Parse error on line 3, column 1: Expecting end of file but found `A`."
   }
 }

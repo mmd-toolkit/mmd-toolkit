@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "diagrams/sequence.md, Grammar: a space and `B` follow `link`, so it is the keyword unit where the message takes its target; the jison grammar takes a `link` unit there as an id, but then `B` stands where a text must start, and the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...nceDiagramA->>link B: x\n----------------------^\nExpecting 'NEWLINE', 'AS', ',', 'TXT', got 'ACTOR'"
+  }
+}

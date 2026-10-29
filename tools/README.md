@@ -36,7 +36,7 @@ test files, its documentation and the demos.
    devDependency in `packages/tests/package.json`):
 
    ```sh
-   git clone --depth 1 --branch mermaid@12.0.0 https://github.com/mermaid-js/mermaid.git .work/mermaid
+   git clone --depth 1 --branch mermaid@12.2.0 https://github.com/mermaid-js/mermaid.git .work/mermaid
    ```
 
    The collector checks that the checkout is at that tag. Nothing needs to be
@@ -47,13 +47,14 @@ test files, its documentation and the demos.
 2. Collect, writing the result outside the repository (here for `sequence`):
 
    ```sh
-   pnpm --filter @mmd-toolkit/tests run fixtures:collect sequence --mermaid .work/mermaid --out /tmp/sequence.json
+   pnpm --filter @mmd-toolkit/tests run fixtures:collect sequence --mermaid "$PWD/.work/mermaid" --out /tmp/sequence.json
    ```
 
-   For each test file it reports the number of tests run, the inputs recorded
-   and the tests that ended with an error; then how many inputs it found, how
-   many are new, and how many it left out as already fixtures or repeats. These
-   stop the run before anything is written:
+   Give `--mermaid` an absolute path: the command runs in `packages/tests`. For
+   each test file it reports the number of tests run, the inputs recorded and
+   the tests that ended with an error; then how many inputs it found, how many
+   are new, and how many it left out as already fixtures or repeats. These stop
+   the run before anything is written:
 
    - a test that ended with an error, in its body, a hook or a promise it handed
      to `expect`. It may have stopped before some of its parse calls, so inputs

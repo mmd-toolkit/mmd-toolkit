@@ -1,0 +1,263 @@
+{
+  "type": "Root",
+  "diagramType": "sequence",
+  "body": {
+    "type": "SequenceDiagram",
+    "body": [
+      {
+        "type": "SequenceMessageStatement",
+        "from": {
+          "type": "SequenceIdentifier",
+          "name": "A",
+          "range": [
+            16,
+            17
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 1
+            }
+          }
+        },
+        "fromCentralConnection": false,
+        "arrow": {
+          "type": "SequenceArrow",
+          "value": "->>",
+          "startMarker": "none",
+          "line": "solid",
+          "endMarker": "arrow",
+          "range": [
+            17,
+            20
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 1
+            },
+            "end": {
+              "line": 2,
+              "column": 4
+            }
+          }
+        },
+        "activation": null,
+        "toCentralConnection": false,
+        "to": {
+          "type": "SequenceIdentifier",
+          "name": "link",
+          "range": [
+            20,
+            24
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 4
+            },
+            "end": {
+              "line": 2,
+              "column": 8
+            }
+          }
+        },
+        "text": {
+          "type": "SequenceText",
+          "wrap": null,
+          "value": {
+            "type": "SequenceLiteral",
+            "value": "x",
+            "range": [
+              26,
+              27
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 10
+              },
+              "end": {
+                "line": 2,
+                "column": 11
+              }
+            }
+          },
+          "range": [
+            26,
+            27
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 10
+            },
+            "end": {
+              "line": 2,
+              "column": 11
+            }
+          }
+        },
+        "range": [
+          16,
+          27
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 11
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      27
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 11
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "sequenceDiagram",
+      "range": [
+        0,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "A",
+      "range": [
+        16,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "->>",
+      "range": [
+        17,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 1
+        },
+        "end": {
+          "line": 2,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "link",
+      "range": [
+        20,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        24,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "x",
+      "range": [
+        26,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 11
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    28
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 0
+    }
+  }
+}

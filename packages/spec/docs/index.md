@@ -18,8 +18,8 @@ mermaid.js version. The pinned version is recorded in
 
 ## The pinned mermaid.js
 
-The pinned version is mermaid 12.0.0. Its tag points to the commit
-[`98a0945418c76238f15df2afaddbba4272656c3b`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b),
+The pinned version is mermaid 12.2.0. Its tag points to the commit
+[`1fb7869866dd619168d840291c9c54b4f129758b`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b),
 and every reference to the source of mermaid.js in this specification is a link
 into that commit.
 
@@ -74,21 +74,21 @@ The treeview definition is in its [syntax](./diagrams/treeview.md) and
 The specification is derived from three sources in the mermaid.js repository:
 
 - the grammar of each diagram, in its directory under
-  [`diagrams/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams)
+  [`diagrams/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams)
   (for example
-  [`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison)),
+  [`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison)),
   including its lexer states; for Langium diagrams, the grammar and its imports
   under
-  [language/](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language),
+  [language/](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language),
   such as
-  [pie.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium)
+  [pie.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/pie/pie.langium)
   and
-  [common.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium);
+  [common.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/common.langium);
 - the `Db` class of each diagram, which performs part of the parsing (for
   example
-  [`destructLink()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L915-L946)
+  [`destructLink()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L928-L959)
   in
-  [`flowDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts));
+  [`flowDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts));
 - the parser tests (`*.spec.js`), which are imported into
   [`@mmd-toolkit/tests`](../../tests) as conformance fixtures.
 
@@ -179,9 +179,9 @@ which rule makes which node.
   first position …") and use that name.
 - Refer to the source of mermaid.js with a link into the pinned commit (see
   [The pinned mermaid.js](#the-pinned-mermaidjs)), in the form
-  `https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/<path>#L<first>-L<last>`.
+  `https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/<path>#L<first>-L<last>`.
   The link text is the function name or the file name, as in
-  [`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8).
+  [`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/comments.ts#L6-L8).
   The line range covers exactly what is meant; check it against the file at that
   commit before writing it. A link to a whole file or a directory has no line
   range. Within one section, the first mention of a function carries the link,

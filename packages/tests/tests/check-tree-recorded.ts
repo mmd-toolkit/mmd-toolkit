@@ -36,7 +36,7 @@ export function recordedTree(diagram: DiagramType, name: string): RecordedTree {
   }
 }
 
-/** A recorded tree of the corpus, with its name (`diagram/fixture`), its input, and its `ast.json` text. */
+/** A recorded tree of the corpus, with its name (`diagram/fixture`), its `ast.json` text, and its input, which is read when it is asked for. */
 export interface CorpusTree {
   readonly name: string
   readonly input: string
@@ -146,8 +146,12 @@ function readCorpusTrees(): CorpusTree[] {
       if (!existsSync(file)) continue
       trees.push({
         name: `${diagram}/${name}`,
-        input: readFileSync(path.join(directory, "input.mmd"), "utf8"),
         json: readFileSync(file, "utf8"),
+        // Read when a test asks for it: a test takes the input of a few trees
+        // among the thousands that it reads.
+        get input() {
+          return readFileSync(path.join(directory, "input.mmd"), "utf8")
+        },
       })
     }
   }

@@ -491,12 +491,11 @@ x
 Keep a common statement's complete source, the immediately preceding ASCII
 space/tab run and its connection to the unit that makes it readable. Preserve
 the entire intervening source interval across global directives, selected
-semicolons and common comment regions; these removals decide which padding
-joins. Do not reconstruct a run after losing it. The shared accessibility layout
-is deliberately bypassed here: EM terminals retain keyword, delimiter and
-leading padding as values, unlike the converted common terminals of other
-diagrams. Even when accTitle's setter strips some leading padding, retaining all
-common forms avoids inconsistent exceptions.
+semicolons; these removals decide which padding joins. Do not reconstruct a run
+after losing it. The shared accessibility layout is deliberately bypassed here:
+EM terminals retain keyword, delimiter and leading padding as values, unlike the
+converted common terminals of other diagrams. Even when accTitle's setter strips
+some leading padding, retaining all common forms avoids inconsistent exceptions.
 
 [fixture:
 eventmodeling/common-boundaries/common-retained-exact-leading-directive-gaps]
@@ -508,11 +507,6 @@ eventmodeling/common-boundaries/acctitle-prefix-leading-stripped-by-setter]
 
 [fixture:
 eventmodeling/common-boundaries/common-after-empty-description-keep-adjacency]
-
-[fixture: eventmodeling/common-boundaries/common-comment-region-join]
-
-[fixture:
-eventmodeling/common-boundaries/hidden-consuming-lf-comment-line-removed-keep-metadata]
 
 [fixture:
 eventmodeling/common-boundaries/native-comment-separates-common-requires-following-padding]
@@ -693,11 +687,11 @@ harmless separation to one space. When units split into separate lines, attach
 intervening inline comments to the following unit, in the same direction as
 directives. Use this shared placement so the same comments are treated alike
 across diagram types. Keep marks, contents, trailing padding and block-comment
-continuation columns. Native `//` and `%%` run through LS/PS to physical LF.
-Common comment-region joins retain their complete source interval and following
-columns; boundaries needed for metadata or a required `title` take precedence.
-Slash comments are not moved before the header, where detection would reject
-them.
+continuation columns. Native `//` and `%%` run through LS/PS to physical LF. A
+`%%` comment line inside a data block, a note, an `accDescr` block, a slash
+block comment or a hidden form is part of that text and keeps its columns.
+Boundaries needed for metadata or a required `title` take precedence. Slash
+comments are not moved before the header, where detection would reject them.
 
 [fixture: eventmodeling/comments/standalone-native-comments]
 
@@ -711,7 +705,29 @@ them.
 
 [fixture: eventmodeling/comments/do-not-move-slash-comment-before-header]
 
-[test: eventmodeling/comments/comment-region-ls-join-unchanged]
+[test: eventmodeling/comments/comment-after-ls-gap-ends-at-lf]
+
+[fixture: eventmodeling/comments/comment-line-inside-data-block-kept]
+
+[fixture: eventmodeling/comments/comment-line-inside-note-block-kept]
+
+[fixture: eventmodeling/comments/comment-line-inside-accdescr-block-kept]
+
+[fixture: eventmodeling/comments/comment-line-inside-slash-block-comment-kept]
+
+[fixture: eventmodeling/comments/comment-line-inside-hidden-yaml-kept]
+
+[corpus fixture: eventmodeling/comment-line-directive-in-data]
+
+[corpus fixture: eventmodeling/comment-line-ignored-semicolon-in-data]
+
+[corpus fixture: eventmodeling/comment-line-entity-in-data]
+
+[corpus fixture: eventmodeling/comment-line-line-separator]
+
+[corpus fixture: eventmodeling/comment-line-paragraph-separator]
+
+[corpus fixture: eventmodeling/comment-line-directive]
 
 [test: eventmodeling/comments/ps-native-line-comment-remains-owned]
 
@@ -731,6 +747,39 @@ eventmodeling
   tf 01 evt A
   /*c*/ tf 02 evt B
 ```
+
+### Default size branches
+
+Eventmodeling differs from flowchart because its Db keeps comment lines, and
+removes them when the source is longer than `maxTextSize`, 50000 UTF-16 code
+units by default; agentflow has the same limit (see
+[Default size branches](./agentflow.md#default-size-branches)). Measure after
+the frontmatter, the whitespace-only lines that follow it and the directives are
+removed, counting CRLF as one unit and a surrogate pair as two. [fixture:
+default-size-branches/size-frontmatter-not-counted] [fixture:
+default-size-branches/size-frontmatter-trivia-not-counted] [fixture:
+default-size-branches/size-directive-not-counted] [fixture:
+default-size-branches/size-utf16-surrogate] At or above 50000 retain the
+complete diagram text and its ending. [fixture:
+default-size-branches/size-preserving-to-fallback-unsafe] Below it apply
+ordinary layout only when the planned printed measurement also stays strictly
+below 50000; otherwise retain the complete diagram and its ending. [fixture:
+default-size-branches/size-below-planned-crossing] This keeps indentation or the
+final line break from moving the text across the limit, where the comment lines
+in a value would be removed and the Db would change. The boundary itself is
+covered by the corpus, also with CRLF, an inline directive and frontmatter.
+[corpus fixture: eventmodeling/comment-default-size-equal] [corpus fixture:
+eventmodeling/comment-default-size-above] [corpus fixture:
+eventmodeling/comment-default-size-equal-crlf] [corpus fixture:
+eventmodeling/comment-default-size-above-crlf] [corpus fixture:
+eventmodeling/comment-default-size-equal-inline-directive] [corpus fixture:
+eventmodeling/comment-default-size-above-inline-directive] [corpus fixture:
+eventmodeling/comment-default-size-equal-frontmatter] [corpus fixture:
+eventmodeling/comment-default-size-above-frontmatter] [corpus fixture:
+eventmodeling/frontmatter-extra-trivia-below] [corpus fixture:
+eventmodeling/frontmatter-extra-trivia-boundary] [corpus fixture:
+eventmodeling/frontmatter-extra-trivia-above] [corpus fixture:
+eventmodeling/frontmatter-extra-whitespace-line-boundary]
 
 ### Global directives
 
@@ -824,8 +873,8 @@ eventmodeling tf 01 evt Alpha "style:#x" ;rf 02 cmd Beta
 Keep at most one ordinary ASCII blank line between statements or items and
 remove ordinary blanks at document/body edges. This keeps separation without
 unlimited vertical space. Whitespace-only ordinary lines become empty; data,
-description, hidden and directive interiors, retained prefixes, comment-region
-joins and common consumed-LF boundaries remain as written.
+description, hidden and directive interiors, retained prefixes and common
+consumed-LF boundaries remain as written.
 
 [fixture: eventmodeling/blank-lines/ordinary-blanks-bounded]
 

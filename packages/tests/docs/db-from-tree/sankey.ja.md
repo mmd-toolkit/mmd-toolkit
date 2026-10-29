@@ -13,13 +13,13 @@ sankey の図の木から Db の要約を作る手順です。
 mermaid.js は、構文解析のあいだに Db を作ります。
 文法は、レコードが終わるたびに Db を呼びます。
 出典は
-[`record`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L51-L58)
+[`record`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L51-L58)
 です。
 Db は、渡されたものを持ちます。
 出典は
-[`findOrCreateNode()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L48-L58)、
-[`addLink()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L40-L42)、
-[`setDiagramTitle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L16-L30)
+[`findOrCreateNode()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L48-L58)、
+[`addLink()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L40-L42)、
+[`setDiagramTitle`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/commonDb.ts#L16-L30)
 です。
 要約も同じように作ります。
 レコードをソースの順に実行し、Db が持つ一覧がそのまま要約になります。
@@ -74,7 +74,7 @@ Db にほかの文はなく、図にほかのノードもありません。
 source や target が与える id は、欄の変換後の形から両端の空白を除いたものです。
 文字列では、改行の各連なりを 1 つの改行にもします（テキスト全体が、
 読まれる前にそうなります。
-[`prepareTextForParsing()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyUtils.ts#L1-L8)
+[`prepareTextForParsing()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyUtils.ts#L1-L8)
 を参照）。
 そのうえで各 `""` を `"` 1 つにし、文字の置き換え（後述）をします。
 空白だけの欄と、空白だけの文字列は、空の id になります。

@@ -21,8 +21,10 @@ error: the statements up to it become the description and disappear.
 This rule applies to Event Modeling diagrams (`eventmodeling`). It reports an
 `accDescr {` block with a `{` on a line after its opening `{`, unless the
 closing `}` stands alone on its line. A `}` counts as alone when only whitespace
-precedes it on that line. A `{` in a comment line does not count, and a `}` in
-it closes nothing.
+precedes it on that line. A `{` in a comment line does not count: the author
+does not mean a comment to open what a later `}` closes. A `}` in a comment line
+closes the block, because mermaid.js keeps the comment line as text of the
+block; such a block is not reported, since nothing after it is taken.
 
 A block closed on the line of its opening `{` is not reported. Neither is a
 block closed by a `}` standing alone, including the `}` of a `data` block. A

@@ -59,20 +59,6 @@ Code:
 ---
 
 
-Test: eventmodeling-no-unclosed-description-block >> invalid >>> invalid/eventmodeling/comment-line-closing-brace
-Filename: tests/fixtures/rules/eventmodeling-no-unclosed-description-block/invalid/eventmodeling/comment-line-closing-brace-input.mmd
-
-Code:
-  1 | eventmodeling accDescr { first
-    |               ^~~~~~~~~~ [1]
-  2 | %% note }
-  3 |   tf 01 cmd Buy { item }
-  4 |
-
-[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
----
-
-
 Test: eventmodeling-no-unclosed-description-block >> invalid >>> invalid/eventmodeling/docs-incorrect-1
 Filename: tests/fixtures/rules/eventmodeling-no-unclosed-description-block/invalid/eventmodeling/docs-incorrect-1-input.mmd
 
@@ -83,6 +69,38 @@ Code:
   3 |   tf 02 cmd Buy { item }
   4 |   tf 03 evt Bought
   5 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: eventmodeling-no-unclosed-description-block >> invalid >>> invalid/eventmodeling/text-opening-after-comment-line
+Filename: tests/fixtures/rules/eventmodeling-no-unclosed-description-block/invalid/eventmodeling/text-opening-after-comment-line-input.mmd
+
+Code:
+  1 | eventmodeling accDescr { first
+    |               ^~~~~~~~~~ [1]
+  2 | %% note
+  3 | text {x
+  4 | second }
+  5 | tf 01 cmd Buy { item }
+  6 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: eventmodeling-no-unclosed-description-block >> invalid >>> invalid/eventmodeling/text-opening-after-multiline-directive
+Filename: tests/fixtures/rules/eventmodeling-no-unclosed-description-block/invalid/eventmodeling/text-opening-after-multiline-directive-input.mmd
+
+Code:
+  1 | eventmodeling accDescr { first
+    |               ^~~~~~~~~~ [1]
+  2 | text %%{init: {
+  3 | }}%% %% {x
+  4 | second }
+  5 | tf 01 evt A
+  6 |
 
 [1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
 ---

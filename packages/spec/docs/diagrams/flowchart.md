@@ -4,11 +4,11 @@ Japanese version: [flowchart.ja.md](./flowchart.ja.md)
 
 Source of truth in mermaid.js:
 
-- [`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison)
-- [`flowParser.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flowParser.ts)
-- [`flowDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts)
+- [`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison)
+- [`flowParser.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flowParser.ts)
+- [`flowDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts)
 - the tests (`*.spec.js`) in
-  [`parser/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser)
+  [`parser/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser)
 
 This document covers the diagram types `flowchart-v2`, `flowchart-elk`, and
 `swimlane`: all three use the same grammar and the same Db. The nodes of the
@@ -193,7 +193,7 @@ When a `}` is followed by whitespace that contains a line feed, the lexer reads
 that whitespace, up to and including its last line feed, as one line feed. The
 whitespace is that of the diagram text, so comment regions and directives inside
 it are left out. mermaid.js makes this replacement in
-[`flowParser.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flowParser.ts#L6-L10)
+[`flowParser.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flowParser.ts#L6-L10)
 before its grammar reads the text.
 
 So a directive in that whitespace gives the result of mermaid.js: in `A-- a}`,
@@ -1001,7 +1001,7 @@ flowchart/header-space-before-empty-string] [fixture: flowchart/header-string]
 ### Unicode letters
 
 A `letter` unit is one character from these ranges, the letters that
-[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L211-L272)
+[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L211-L272)
 lists: U+00AA, U+00B5, U+00BA, U+00C0–U+00D6, U+00D8–U+00F6, U+00F8–U+02C1,
 U+02C6–U+02D1, U+02E0–U+02E4, U+02EC, U+02EE, U+0370–U+0374, U+0376, U+0377,
 U+037A–U+037D, U+0386, U+0388–U+038A, U+038C, U+038E–U+03A1, U+03A3–U+03F5,
@@ -1084,7 +1084,7 @@ not a unit, and several rules can see it. A unit that no rule takes makes the
 input rejected, such as an `empty-string` unit (see [Strings](#strings)). Where
 a repetition cannot be completed, it is not taken, and the rule goes on with
 what follows it. The grammar is a restatement of the grammar in
-[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L302-L633)
+[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L302-L633)
 and accepts the same sequences of units.
 
 Each rule below makes a node of the tree, defined in
@@ -1397,7 +1397,7 @@ Each alternative gives the shape its name:
 
 The name is a word that mermaid.js accepts for the same shape in a data block,
 `A@{ shape: … }`
-([`shapesDefs`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/rendering-util/rendering-elements/shapes.ts#L107-L534)):
+([`shapesDefs`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/rendering-util/rendering-elements/shapes.ts#L107-L534)):
 of those words, the one that names the shape itself and is not abbreviated, not
 a word for a use, such as `process`, `decision`, or `subroutine`, and not an
 abbreviation, such as `rect`, `diam`, or `fr-rect`. A bracketed shape is drawn
@@ -1546,7 +1546,7 @@ flowchart/db-subgraph-name-end-in-word-line-feed-then-semicolon] [fixture:
 flowchart/db-subgraph-name-end-semicolon] The documentation of flowcharts of
 mermaid.js warns at its start that the word `end` in all lowercase letters
 breaks a flowchart, and advises capitalizing it or any of its letters
-([flowchart.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L9-L11));
+([flowchart.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/flowchart.md#L9-L11));
 it links to a workaround in
 [issue #1444](https://github.com/mermaid-js/mermaid/issues/1444), "Some node
 names break the diagrams", which was closed on 2020-06-23 with the labels
@@ -1723,9 +1723,9 @@ mermaid.js rejects some inputs that the grammar accepts, while it builds the Db:
   flowchart/gram-linkstyle-repeated-link] `linkStyle 00 stroke:red` and a
   `linkStyle` before the link it names are rejected, with and without
   `interpolate`. mermaid.js rejects them with a `TypeError` in
-  [`updateLink()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L391-L413)
+  [`updateLink()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L391-L413)
   and
-  [`updateLinkInterpolate()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L377-L386),
+  [`updateLinkInterpolate()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L377-L386),
   which do not check the index they receive as text. [fixture:
   flowchart/linkstyle-index-out-of-range] [fixture:
   flowchart/gram-linkstyle-leading-zero] [fixture:
@@ -1842,7 +1842,7 @@ mermaid.js rejects some inputs that the grammar accepts, while it builds the Db:
   [fixture: flowchart/gram-subgraph-member-has-own-property-nested-blocks-glued]
   The name is not reserved anywhere else. mermaid.js keeps the members it has
   seen as the keys of a plain object in
-  [`addSubGraph()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L685-L707)
+  [`addSubGraph()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L685-L707)
   and asks the object's `hasOwnProperty` function about each member; keeping the
   member `hasOwnProperty` replaces that function with `true`, so the next member
   makes it throw a `TypeError`.

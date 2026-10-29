@@ -6,6 +6,6 @@
   "accepted": false,
   "error": {
     "name": "MermaidParseError",
-    "message": "Parsing failed:  Parse error on line 2, column 9: Expecting: one of these possible Token sequences:\n  1. [NUMBER]\n  2. [NEWLINE, NUMBER]\n  3. [NEWLINE, NEWLINE, NEWLINE]\n  4. [NEWLINE, NEWLINE, NUMBER]\n  5. [ID]\n  6. [NEWLINE, ID]\n  7. [NEWLINE, NEWLINE, NEWLINE]\n  8. [NEWLINE, NEWLINE, ID]\nbut found: 'accDescr {}'\nParse error on line 2, column 20: Expecting: one of these possible Token sequences:\n  1. [NEWLINE]\n  2. [EOF]\nbut found: '}'"
+    "message": "Parsing failed:  Parse error on line 2, column 9: Expecting: one of these possible Token sequences:\n  1. [NUMBER]\n  2. [NEWLINE, NUMBER]\n  3. [NEWLINE, NEWLINE, NEWLINE]\n  4. [NEWLINE, NEWLINE, NUMBER]\n  5. [ID]\n  6. [NEWLINE, ID]\n  7. [NEWLINE, NEWLINE, NEWLINE]\n  8. [NEWLINE, NEWLINE, ID]\nbut found: 'accDescr {}'\nParse error on line 2, column 9: Expecting: expecting at least one iteration which starts with one of these possible Token sequences::\n  <[ACC_DESCR] ,[ACC_TITLE] ,[TITLE]>\nbut found: 'accDescr {}'\nParse error on line 2, column 9: Expecting end of file but found `accDescr {}`."
   }
 }

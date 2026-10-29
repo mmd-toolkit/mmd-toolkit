@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "diagrams/sequence.md, The statement context, rule 11: a space and `:` follow `link`, so it is no keyword; a message to the participant `link`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "link"
+      },
+      {
+        "name": "link",
+        "description": "link",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "A",
+        "to": "link",
+        "message": "x",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

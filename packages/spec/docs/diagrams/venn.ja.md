@@ -4,9 +4,9 @@
 
 mermaid.js の正しさの基準:
 
-- [`venn.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/parser/venn.jison#L1-L133)
-- [`vennDB.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L16-L96)
-- [`vennDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDetector.ts#L7-L11)
+- [`venn.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/venn/parser/venn.jison#L1-L133)
+- [`vennDB.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/venn/vennDB.ts#L16-L96)
+- [`vennDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/venn/vennDetector.ts#L7-L11)
 
 この文書は図種 `venn` を扱います。
 木は [ast/venn.ja.md](../ast/venn.ja.md) で定義します。

@@ -85,6 +85,7 @@
         "cScale1": "#00FF00",
         "cScale2": "#0000FF",
         "radar": {
+          "axisColor": "#0b0b0b",
           "curveOpacity": 0
         },
         "primaryTextColor": "#333",

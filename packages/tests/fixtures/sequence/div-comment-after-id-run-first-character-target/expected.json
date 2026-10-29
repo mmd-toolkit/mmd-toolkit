@@ -7,6 +7,6 @@
   "accepted": false,
   "error": {
     "name": "Error",
-    "message": "Parse error on line 2:\n...ice->>B%% cob: Hello\n-----------------------^\nExpecting '+', '-', '()', 'ACTOR', got 'NEWLINE'"
+    "message": "Parse error on line 2:\n...ice->>B%% cob: Hello\n-----------------------^\nExpecting 'link', '+', '-', '()', 'ACTOR', got 'NEWLINE'"
   }
 }

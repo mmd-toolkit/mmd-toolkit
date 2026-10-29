@@ -58,9 +58,8 @@ This procedure writes only to `packages/prettier-plugin-mmd` and this SKILL.
 When another package needs a change, make it with that package's SKILL (a gap in
 the specification with the spec SKILL, a change of the tree with the parser
 SKILL, fixtures with the tests SKILL). Commit and push only when asked
-(AGENTS.md). Do not change the staging area or use `git mv`: when the working
-tree is shared, what is staged may belong to other work. Move and delete files
-with `mv` and `rm`.
+(AGENTS.md). The user stages: do not change the staging area, and do not use
+`git mv`. Move and delete files with `mv` and `rm`.
 
 ## 2. When to start (input)
 
@@ -361,14 +360,14 @@ Running tests; this is what belongs to this package):
   fixtures, escaped cases and corpus byte for byte before and after, with
   defaults and `tabWidth: 0`, retaining rejected results too.
 
-When the working tree or the machine is shared with other work:
+When the machine is under load or the workspace has unrelated failures:
 
 - Under load, a corpus test may fail by going over its 5-second limit. Run that
   test alone again; if it passes, the failure came from the load.
-- Workspace lint or tests may fail in a file that other work is editing. Do not
-  touch files outside this package; say so in the results.
-- To stop a run, stop your own run by its process id. Do not `pkill` by name
-  (that stops the runs of other work too).
+- Workspace lint or tests may fail in a file outside this package. Do not touch
+  files outside this package; say so in the results.
+- To stop a run, stop it by its process id. Do not `pkill` by name (that stops
+  other processes with the same name too).
 
 ## 7. Documents
 
@@ -439,11 +438,11 @@ When the working tree or the machine is shared with other work:
 - The Write tool and bash heredocs turn `\uXXXX` into the actual characters.
   After writing, grep for non-ASCII characters and turn them back into escapes.
 - Do not change tracked files temporarily to check something. Do not put
-  temporary test files in the working tree (when it is shared, other work's test
-  runs pick them up). Put checking scripts in a scratch directory, and import
-  with absolute paths. A script run with Node that imports the plugin's sources
-  gets `@mmd-toolkit/parser` and `@mmd-toolkit/tests` from their builds in
-  `lib/`, unlike the tests, so rebuild them first:
+  temporary test files in the working tree (a test run picks them up). Put
+  checking scripts in a scratch directory, and import with absolute paths. A
+  script run with Node that imports the plugin's sources gets
+  `@mmd-toolkit/parser` and `@mmd-toolkit/tests` from their builds in `lib/`,
+  unlike the tests, so rebuild them first:
   `pnpm --filter @mmd-toolkit/parser run build` and
   `pnpm --filter @mmd-toolkit/tests run build`.
 - Before making a document again from its draft, check that the draft is current

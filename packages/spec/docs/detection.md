@@ -15,9 +15,9 @@ the `diagramType` of the tree (see [ast.md](./ast.md#root)). When no condition
 holds, the input is rejected with `UnknownDiagramError`. [fixture: common/empty]
 
 The registration order is in
-[`addDiagrams()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L44-L126),
+[`addDiagrams()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L44-L126),
 and each detector is in its diagram's directory under
-[`diagrams/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams).
+[`diagrams/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams).
 
 ## How to read the list
 
@@ -126,7 +126,7 @@ common/detect-c4-keyword-after-word] [fixture:
 eventmodeling/detect-real-retained-secondscan]
 
 Entry 6,
-[`afDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/afDetector.ts#L7-L11),
+[`afDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/afDetector.ts#L7-L11),
 is the exact lower-case `agentflow-beta` detector, before C4. A following ASCII
 letter, digit, or underscore prevents detection. A hyphen or non-ASCII letter
 passes detection but the agentflow grammar rejects these suffix forms. There is
@@ -139,14 +139,14 @@ agentflow/detect-hyphen-suffix] [fixture: agentflow/detect-non-ascii-suffix]
 [fixture: agentflow/lex-detect-c4-component-id]
 
 Entry 12,
-[infoDetector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoDetector.ts#L7-L11),
+[infoDetector.ts](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/info/infoDetector.ts#L7-L11),
 selects the exact lower-case prefix `info` without a suffix boundary.
 `information` is detected and then rejects lexically; `Info` and `INFO` do not
 select it. [fixture: info/header-lf] [fixture: info/detect-lower-suffix]
 [fixture: info/detect-titlecase] [fixture: info/detect-uppercase]
 
 Entry 13,
-[`pieDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieDetector.ts#L9-L11),
+[`pieDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/pie/pieDetector.ts#L9-L11),
 requires only the exact lower-case prefix `pie`. `pieChart` selects pie and then
 fails its lexical rules; `Pie` and `PIE` do not select it. [fixture:
 pie/header-only] [fixture: pie/header-letter-suffix] [fixture:
@@ -179,7 +179,7 @@ wardley/detect-block-after-directive] [fixture: wardley/detect-retained-two]
 eventmodeling/detect-real-retained-secondscan]
 
 Entry 39,
-[`usecaseDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDetector.ts#L1-L14),
+[`usecaseDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/usecase/usecaseDetector.ts#L1-L14),
 requires exact lower-case `usecase-beta` followed by whitespace or the end of
 text. A colon, hyphen, letter, digit, or underscore prevents detection; Unicode
 whitespace can pass detection and still fail the usecase grammar. This detector
@@ -190,7 +190,7 @@ usecase/header-semicolon] [fixture: usecase/header-u2028-eof] [fixture:
 usecase/lex-header-emspace-eof] [fixture: usecase/div-detect-c4-label]
 
 Entry 19,
-[gitGraphDetector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphDetector.ts),
+[gitGraphDetector.ts](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/git/gitGraphDetector.ts),
 selects exact `gitGraph` without a suffix boundary. The
 [gitgraph syntax](./diagrams/gitgraph.md#detection) distinguishes the
 plain/joined/separated-colon header and LR/TB/BT forms. A suffix can pass
@@ -200,7 +200,7 @@ gitgraph/header-lr] [fixture: gitgraph/header-tb] [fixture: gitgraph/header-bt]
 [fixture: gitgraph/detect-letter-suffix]
 
 Entry 24, the
-[packet detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/detector.ts#L7-L15),
+[packet detector](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/packet/detector.ts#L7-L15),
 selects the lowercase prefix `packet` without a suffix boundary, including
 `packet-beta`; both report id `packet`. The
 [packet syntax](./diagrams/packet.md#detection) defines header boundaries and
@@ -208,7 +208,7 @@ acceptance. [fixture: packet/spec-packet-7426afc4] [fixture:
 packet/spec-packet-c4580507] [fixture: packet/header-letter-suffix]
 
 Entry 31, the
-[treemap detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/detector.ts#L7-L11),
+[treemap detector](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treemap/detector.ts#L7-L11),
 selects lowercase `treemap` without a suffix boundary. The accepted headers
 `treemap` and `treemap-beta` share id `treemap`;
 [treemap syntax](./diagrams/treemap.md#detection) defines acceptance and the
@@ -217,10 +217,10 @@ treemap/spec-treemap-test-ts-892fa294] [fixture: treemap/header-letter-suffix]
 [fixture: treemap/detect-retained-body-yaml-no-native]
 
 Entries 32–35
-([IR](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadDetector.ts#L1-L32),
-[EBNF](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/ebnfDetector.ts#L1-L22),
-[ABNF](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/abnfDetector.ts#L1-L22),
-[PEG](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/pegDetector.ts#L1-L22))
+([IR](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/railroadDetector.ts#L1-L32),
+[EBNF](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/ebnfDetector.ts#L1-L22),
+[ABNF](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/abnfDetector.ts#L1-L22),
+[PEG](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/railroad/pegDetector.ts#L1-L22))
 compare the four railroad prefixes case-insensitively without a suffix boundary.
 Their distinct ids select IR, EBNF, ABNF and PEG. Detection alone does not
 establish acceptance: the [railroad grammar](./diagrams/railroad.md#detection)
@@ -231,7 +231,7 @@ railroad/ir-header-inline] [fixture: railroad/ebnf-header-inline] [fixture:
 railroad/abnf-header-inline] [fixture: railroad/peg-header-inline]
 
 Entry 37,
-[wardleyDetector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyDetector.ts#L7-L11),
+[wardleyDetector.ts](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/wardley/wardleyDetector.ts#L7-L11),
 selects wardley-beta case-insensitively with no suffix boundary. The accepted
 header is lowercase and needs no following EOL, so a statement can be glued to
 it. Wardley is after C4; its [syntax](./diagrams/wardley.md#detection) defines
@@ -241,7 +241,7 @@ acceptance of retained YAML/second-scan prefixes and the C4 divergence.
 wardley/c4-component-component]
 
 Entry 38,
-[cynefinDetector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinDetector.ts#L7-L11),
+[cynefinDetector.ts](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/cynefin/cynefinDetector.ts#L7-L11),
 selects exact lower-case cynefin-beta followed by common whitespace, colon or
 end of text. Its grammar has the two headers cynefin-beta and cynefin-beta:;
 neither needs a following EOL. For %% touching the bare header, detection-only
@@ -255,7 +255,7 @@ cynefin/header-native-comment-glued-eof] [fixture:
 cynefin/detect-real-before-retained-secondscan]
 
 Entry 27,
-[detector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/detector.ts#L4-L8),
+[detector.ts](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/detector.ts#L4-L8),
 selects the exact lowercase prefix eventmodeling with no following boundary. The
 accepted grammar header has its own whitespace, percent-pair or end-of-text
 boundary; a suffix can therefore be detected and rejected. Its
@@ -267,7 +267,7 @@ eventmodeling/header-inline] [fixture: eventmodeling/header-percent-comment]
 eventmodeling/detect-retained-bare-ls-line]
 
 Entry 28, the
-[treeview detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/detector.ts#L4-L8),
+[treeview detector](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/treeView/detector.ts#L4-L8),
 selects exact case-sensitive `treeView-beta` without a suffix boundary. The
 [syntax](./diagrams/treeview.md#detection) distinguishes the keyword lookahead
 and bare longer alternative, retained prefixes and passed bare-line trivia.
@@ -281,7 +281,7 @@ treeview/detect-secondscan-bare-unicode]
 ## Notes
 
 - **Pseudo-diagrams.** Entries 1 and 2 are registered before all real diagrams
-  ([`addDiagrams()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L51-L83)).
+  ([`addDiagrams()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L51-L83)).
   `error` is accepted and has no Db content; `---` is always rejected, so it is
   not a DiagramType. See [common.md](./common.md#diagram-detection) for both.
   For entry 1, mermaid.js lower-cases the whole text with the full Unicode
@@ -291,7 +291,7 @@ treeview/detect-secondscan-bare-unicode]
   [fixture: common/error-pseudo-diagram] [fixture: common/error-uppercase]
 - **Entries registered only with large features.** Entries 3–5 are registered
   only when mermaid.js is built with
-  [`includeLargeFeatures`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L85-L87).
+  [`includeLargeFeatures`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L85-L87).
   The default entry point of the npm package is built that way, so this
   specification includes them, in this position: after the pseudo-diagrams and
   before every other detector. Entry 3 also sets the layout configuration to
@@ -302,7 +302,7 @@ treeview/detect-secondscan-bare-unicode]
 - **Entry 7 in mermaid.js.** mermaid.js writes the condition of entry 7 as five
   alternatives of which only the first, `C4Context`, is anchored to the start of
   the text
-  ([`c4Detector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Detector.ts#L10)).
+  ([`c4Detector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/c4/c4Detector.ts#L10)).
   There, a text that contains `C4Container`, `C4Component`, `C4Dynamic`, or
   `C4Deployment` anywhere, for example as a node id or a message text, is a C4
   diagram unless one of entries 1–6 matched first, and a sequence diagram with a

@@ -8,9 +8,14 @@
  * The tester updates a snapshot only with `--update` or `-u` in
  * `process.argv`, which does not reach the workers of vitest: to update the
  * snapshots, delete the `.eslintsnap` file and run the tests again. Outside CI
- * the tester writes the snapshots that are missing; in CI (`CI=true`) a missing
- * snapshot fails the test.
+ * the tester writes the snapshots that are missing; in CI (`CI=true`, read when
+ * the tester is loaded) a missing snapshot fails the test. A run writes
+ * snapshots only when `UPDATE_SNAPSHOTS=true`, which the script `test:update`
+ * sets; so a run from the package or from the root writes none, whatever `CI`
+ * the shell has.
  */
 Object.assign(globalThis, { jest: {} })
 // eslint-disable-next-line no-process-env -- the tester reads this variable to find Jest
 process.env.JEST_WORKER_ID ??= "1"
+// eslint-disable-next-line no-process-env -- the tester reads this variable when it is loaded
+process.env.CI = process.env.UPDATE_SNAPSHOTS === "true" ? "false" : "true"

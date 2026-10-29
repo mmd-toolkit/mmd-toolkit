@@ -225,7 +225,7 @@ diagram; an imported common rule does not establish how the diagram uses it.
 2. Read keyword patterns too: list which keywords receive custom boundaries,
    which keep the default ordering, and which have explicit `longer_alt`
    alternatives. The
-   [shared token builder](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/tokenBuilder.ts#L7-L31)
+   [shared token builder](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/tokenBuilder.ts#L7-L31)
    adds whitespace/EOF-or-percent-pair lookahead only to its configured
    keywords. First matching rule, keyword boundaries and explicit alternatives
    decide the unit, rather than a general longest match. Probe glued suffixes,
@@ -234,7 +234,7 @@ diagram; an imported common rule does not establish how the diagram uses it.
    boundaries of its own.
 3. Treat hidden terminals as lexer rules with consumed text, not as global
    removals. The imported
-   [YAML and DIRECTIVE terminals](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L25-L34)
+   [YAML and DIRECTIVE terminals](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/common.langium#L25-L34)
    consume an immediately following LF, whereas another whitespace boundary is
    only looked at. Probe each unit gap and each statement's EOL and EOF: a
    consumed sole LF prevents a later statement, but consuming the common
@@ -247,18 +247,18 @@ diagram; an imported common rule does not establish how the diagram uses it.
 4. Follow the actual terminal rule name through the injected converter and its
    fallback, including identity, string, integer and double conversion only
    where reachable. The
-   [common converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L26-L70)
+   [common converter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/valueConverter.ts#L26-L70)
    gives line and block common values different whitespace readings. For
    example, the pie
-   [custom branch](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/valueConverter.ts#L6-L16)
+   [custom branch](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/pie/valueConverter.ts#L6-L16)
    names PIE_SECTION_LABEL, while its
-   [grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium#L1-L20)
+   [grammar](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/pie/pie.langium#L1-L20)
    calls STRING and reaches the default escape conversion. For reachable units,
    collect both quote styles, unknown escapes, precision, overflow and
    underflow; use rejecting controls and record the reason where a previous
    diagram's unit is unreachable.
 5. Read the public acceptance gate, not just the recoverable AST. The
-   [public parse wrapper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L134-L150)
+   [public parse wrapper](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/parse.ts#L134-L150)
    rejects any lexer or parser error. Then follow the diagram's AST-to-Db
    publication, distinguishing stored values, conditional or skipped
    assignments, unassigned grammar literals and statements the adapter discards.
@@ -486,28 +486,27 @@ diagram; an imported common rule does not establish how the diagram uses it.
    the second run changes nothing. Run `fixtures:check`. Run the collection
    again and check that it finds nothing new (the names are stable).
 9. Hand-written inputs. Each input answers one question, in one line of its
-   note. Before writing them, take the kinds of cases that the reviews of the
-   earlier diagram types found missing, and apply each kind to the sentences and
-   the fixtures of the new diagram type first, as a list; a kind that does not
-   apply is written down with its reason, not left out. For every kind, check
-   each place of the syntax that holds text (every field, name, string, and
-   block, in quotes or not, on the first line and on the later ones) with
-   mermaid.js. Take the cases from the fixture names of the earlier diagram
-   types, not from the wording of the list: list the names of the hand-written
-   fixtures of the two nearest diagram types (`ls` the directories), and give
-   each name a counterpart in the new diagram type or a reason. The list holds
-   every kind that a review has found so far, with the review that found it:
+   note. Before writing them, take the kinds of cases that the earlier diagram
+   types needed, and apply each kind to the sentences and the fixtures of the
+   new diagram type first, as a list; a kind that does not apply is written down
+   with its reason, not left out. For every kind, check each place of the syntax
+   that holds text (every field, name, string, and block, in quotes or not, on
+   the first line and on the later ones) with mermaid.js. Take the cases from
+   the fixture names of the earlier diagram types, not from the wording of the
+   list: list the names of the hand-written fixtures of the two nearest diagram
+   types (`ls` the directories), and give each name a counterpart in the new
+   diagram type or a reason. The list holds the kinds:
    - values that the line rule of `style` and `classDef` lines reaches: the last
      `;` of a line that has `style`, later a `:` and a `#`, dropped from any
-     text of the line (timeline review 435, sankey review 441); the keyword in
-     another case, a space between the `:` and the `#`, no `#`, and a `;` on
-     another line, which keep the `;`; two `;`, where the first ends a character
-     reference; a line inside quotes, which is a line of its own (441);
+     text of the line; the keyword in another case, a space between the `:` and
+     the `#`, no `#`, and a `;` on another line, which keep the `;`; two `;`,
+     where the first ends a character reference; a line inside quotes, which is
+     a line of its own;
    - a comment line, a directive line, and an empty line between a keyword and
-     its value (timeline review 435, remark 1); and, where a keyword whose line
-     has no text takes a later line as its value (the accessibility texts), the
-     line it takes, whatever that line says, such as a statement of the diagram
-     (xychart review 448, `accTitle:` followed by `line [1]`);
+     its value; and, where a keyword whose line has no text takes a later line
+     as its value (the accessibility texts), the line it takes, whatever that
+     line says, such as a statement of the diagram (`accTitle:` followed by
+     `line [1]` in xychart);
    - the keyword in another case, and a letter, a word character, a `-`, or a
      character outside ASCII glued after it, for the header and for the keyword
      of every statement;
@@ -515,20 +514,19 @@ diagram; an imported common rule does not establish how the diagram uses it.
      an id;
    - a second and a third definition of the same name: which one stays, and
      whether the other calls of the grammar action work; make the third one meet
-     a partner that is not the first definition (reviews 419 and 420);
+     a partner that is not the first definition;
    - an empty description block (or a statement with no text) that keeps the
-     value before it (timeline review 436, also er and requirement);
+     value before it;
    - CRLF, a lone CR, U+2028 and U+2029: as a line end, inside a value or
      quotes, and at the end of the text;
    - a tab and a U+FEFF as whitespace, at the start of a line, inside a value,
-     and at the end of a line and of the text (timeline review 436, remark 2,
-     and 437, remark 5);
+     and at the end of a line and of the text;
    - character references, in every text and in quotes, and the `#` of one,
      which starts no comment;
    - values that a directive cuts: a directive inside a value, at its start and
      its end, inside quotes, on the line of the header, glued to a keyword, and
      one that is not closed, which takes the word at the start of the next line
-     or the rest of the text (sankey review 441);
+     or the rest of the text;
    - a text that ends inside a context that is not closed: after `accTitle:`, in
      a block with no end, in a quote with no end;
    - what stands after each form of a statement, at the end of its line: ` ;`,
@@ -539,47 +537,46 @@ diagram; an imported common rule does not establish how the diagram uses it.
      several lines;
    - numbers that the Db reads from text: a sign, `-0` (the Db has -0 and JSON
      writes 0), `NaN`, `Infinity`, a number too large for a double, and text
-     after the number (journey and sankey, review 441);
-   - values of embedded settings read by the Db (packet review pk12-1);
+     after the number;
+   - values of embedded settings read by the Db;
    - `html-tag-in-frontmatter`: acceptance in both directions and value-only
-     differences (reviews ra3-1, tm3-1 and rr12-3);
+     differences;
    - a hidden form immediately after a statement (a body `---` block or
      `%%{...}%%`): a following statement after its consumed LF, a blank line
      supplying a spare LF, a space after its closer leaving the LF visible, and
-     EOF; include line values that absorb the opener as text (pie12-1);
+     EOF; include line values that absorb the opener as text;
    - adjacent hidden-block fences: a body-present alternative before an empty
      fallback, with a later qualifying closer and with none, including EOF and
-     closing whitespace (pie-yaml-1);
-   - a statement on the same line after an optional header flag (pie12-2);
+     closing whitespace;
+   - a statement on the same line after an optional header flag;
    - a duplicate definition whose second value is on a semantic boundary, such
      as `-0`, in both orders: which value is retained, and whether semantic
-     rejection precedes duplicate suppression (pie12-3);
+     rejection precedes duplicate suppression;
    - the four C4 detection words (`C4Container`, `C4Component`, `C4Dynamic`,
      `C4Deployment`) in every text field: labels, titles, accessibility titles,
      and line and block accessibility descriptions; also in EOF comments after a
-     statement and on the header line, with LF-terminated controls (pie3-4);
+     statement and on the header line, with LF-terminated controls;
    - whitespace between a passed bare `%%` line and the header: VT, FF, NBSP,
      BOM, U+1680, U+2000–U+200A, U+202F, U+205F, U+3000, LS and PS, each on a
      whitespace-only line and immediately before the header; include ASCII
-     space/tab controls (pie3-3);
+     space/tab controls;
    - the one-block detection skip: a second block, a block after a bare `%%{`
      line, a block after real frontmatter, a block before and a block after a
      second-scan directive as separate cases, and a block whose opening and
-     closing fences share indentation (six cases, pie3-6);
+     closing fences share indentation (six cases);
    - a global directive glued immediately after a keyword, with the next keyword
      or value glued after it: judge the keyword boundary in the text without
-     global directives and selected semicolons (pie3-7);
+     global directives and selected semicolons;
    - a global directive or a selected semicolon inside each diagram atom (a
      fixed word, a header keyword, an arrow, a common keyword, or a class name
      or icon value that cannot contain whitespace), and between its authored
      parts. Inside cases accepted by mermaid.js carry
      `directive-as-token-boundary` or `ignored-semicolon-as-token-boundary`:
-     these split the atom itself, whereas the pie3-7 cases touch its end (review
-     cy12-1 and tv12-2; also the railroad steps 1–2 review and the wardley steps
-     1–2 and 3 reviews).
+     these split the atom itself, whereas a directive glued after a keyword
+     touches its end.
 
-   When a review finds a kind that the list lacks, add it here, with the review
-   number, in the change that closes the review.
+   When a kind is missing from the list, add it here in the change that needs
+   it.
 
 10. Show as the result the number of fixtures per source (accepted and
     rejected), the unusual rejections, the fixtures marked, and the time
@@ -699,7 +696,7 @@ the spec's skill). This skill does the following.
    plain `mv` and run `fixtures:check`. Check with grep that nothing in tests
    and tools refers to the old name. References in the text of the specification
    are fixed by the steps of the spec's skill.
-4. To keep an input on which the parser failed (found by a review, a generated
+4. To keep an input on which the parser failed (from a review, a generated
    input, a differential run), make it a fixture of the corpus: the input of a
    failure kept in a file of the parser is not kept for the other
    implementations, and every implementation checks the fixtures. The inputs of
@@ -777,12 +774,22 @@ the spec's skill). This skill does the following.
    version and the old commit:
    - the version check in `tests/mermaid.test.ts`, the tag of the clone in
      `tools/README.md`, and the version named in `README.md`;
+   - the name of the chunk of the bundle that holds the registry of diagrams, in
+     `src/mermaid.ts` (`readMermaidConfiguration()`): the bundler names chunks
+     by a hash, so it changes with the version. It is the file of
+     `dist/chunks/mermaid.core/` of the installed `mermaid` that exports
+     `getDiagramLoader`. With the old name, every fixture whose configuration is
+     read fails with `Cannot find module`;
    - the permalinks to mermaid.js's source in `docs/` and in `tools/collect.ts`.
-     Change the commit, and move the line numbers to the same code in the new
-     version: where the same lines appear once in the new file, take their
-     place; where the code changed, find the function and choose the range
-     again; where the file or what the sentence names is gone, rewrite the
-     sentence;
+     Change the commit (a script that maps each range through a line diff of the
+     file between the two tags finds the ranges whose lines did not change; read
+     the others), and move the line numbers to the same code in the new version:
+     where the same lines appear once in the new file, take their place; where
+     the code changed, find the function and choose the range again, then read
+     whether the claim of the sentence holds in the new code: if it does not,
+     the sentence reports a change of mermaid.js, so classify the change as in
+     step 4 and rewrite the sentence; where the file or what the sentence names
+     is gone, rewrite the sentence;
    - comments in `src/` that make a claim about the version (the frontmatter
      functions copied in `src/mermaid.ts`, the class name of the YAML error in
      `src/rejections.ts`, the Dbs that call `formatUrl()` in

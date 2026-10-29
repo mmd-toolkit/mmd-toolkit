@@ -148,9 +148,12 @@ set A
 Ordinary complete statements split into separate lines for scanning; a
 declaration and its same-line style, explicit text or title followers remain
 together because splitting would introduce a line-start statement that clears
-implicit mode. Same-line declaration runs can split, even where a retained group
-is followed by a declaration that resets the mode. Titles keep their
-statement-looking value text, and swallowed fragments stay with their written
+implicit mode. Same-line declaration runs can split, because each declaration
+enables the same mode. A retained group stays whole even where a later
+declaration on the same line resets the mode and splitting would be harmless:
+the rule is local to the syntax, not a search for the final normalized state. A
+title takes the rest of its line as its value, so statement-looking words after
+`title` cannot be split out, and swallowed fragments stay with their written
 line neighbours. [corpus fixture: venn/db-indent-after-same-line-explicit-text]
 [corpus fixture: venn/db-indent-after-same-line-style] [corpus fixture:
 venn/db-indent-after-same-line-title] [corpus fixture:
@@ -244,9 +247,12 @@ Standalone comments align with the next statement, or the last statement at EOF,
 to show their association. Trailing comments retain touching versus spaced
 attachment, reducing an ordinary spaced gap to one space; a swallowed
 `VennIgnoredText` fragment remains touching its comment because detaching it can
-reject the input. Comment contents, including trailing spaces and U+2028/U+2029
-through LF or EOF, stay whole; percent pairs inside values remain value text.
-Protected gaps retain comment and mode boundaries. [fixture:
+reject the input. The lexer swallows a preceding fragment by position, so adding
+or removing the gap before a comment can change which fragment is swallowed. A
+required one-character name that a comment already swallows is rejected, and no
+space is added to rescue it. Comment contents, including trailing spaces and
+U+2028/U+2029 through LF or EOF, stay whole; percent pairs inside values remain
+value text. Protected gaps retain comment and mode boundaries. [fixture:
 venn/comments/bare-percent-tail] [fixture: venn/comments/comment-directives]
 [fixture: venn/comments/comment-mark-value] [fixture:
 venn/comments/comment-spaced] [fixture: venn/comments/comment-touch] [fixture:
@@ -282,10 +288,16 @@ set A Q%% note
 Keywords and operands use one separator; name commas touch the preceding name
 and take one following space for readable lists. Bare and quoted names, quoted
 padding, empty names, source order and repeated members stay as written, even
-where the Db sorts targets; directives and ignored semicolons override ordinary
-gap spacing. [corpus fixture: venn/db-case-distinct-ids] [corpus fixture:
-venn/db-empty-identifiers] [corpus fixture: venn/db-union-repeated-member]
-[corpus fixture: venn/lex-name-list-comma-directive] [corpus fixture:
+where the Db sorts targets. A quote is the author's choice even where removing
+it has the same Db (`set "A"` and `set A`), padding inside quotes belongs to the
+name (`" A "` and `"A"` differ in the Db), the Db sorting the targets is no
+permission to reorder the written list, and a repeated member keeps a union's
+arity. Venn accepts spaces beside quoted names, so, unlike a sankey list, a
+space after each comma is safe. Directives and ignored semicolons override
+ordinary gap spacing. [corpus fixture: venn/db-case-distinct-ids] [corpus
+fixture: venn/db-empty-identifiers] [corpus fixture:
+venn/db-union-repeated-member] [corpus fixture:
+venn/lex-name-list-comma-directive] [corpus fixture:
 venn/lex-union-empty-quoted-members] [corpus fixture:
 venn/lex-union-matching-quoted-padding] [fixture:
 venn/name-lists/empty-quoted-targets] [fixture: venn/name-lists/name-order-keep]
@@ -391,11 +403,15 @@ union A, B:007
 Properties use `key:value` and comma plus one space, distinguishing compact
 punctuation from value whitespace. Each bare value is one written `VennLiteral`,
 retaining adjacent atoms and their spacing even where the Db joins atoms with
-spaces; quoted values, whole rgb/rgba tokens, key case, repetitions and separate
-statements stay as written. A kept prefix overrides punctuation spacing so
-colon-to-hash gaps cannot change semicolon selection. [corpus fixture:
-venn/div-c4-bare-style-value] [corpus fixture: venn/db-style-case-and-order]
-[corpus fixture: venn/db-style-colon-value-inline-directive] [corpus fixture:
+spaces. Normalizing those gaps would keep the Db, but the tree holds the bare
+value with its written spelling, and keeping it avoids a second lexer in the
+printer. Space inside an rgb/rgba token is different: changing a component gap
+changes the Db, and so does quoting a joined bare value; quoted values, whole
+rgb/rgba tokens, key case, repetitions and separate statements stay as written.
+A kept prefix overrides punctuation spacing so colon-to-hash gaps cannot change
+semicolon selection. [corpus fixture: venn/div-c4-bare-style-value] [corpus
+fixture: venn/db-style-case-and-order] [corpus fixture:
+venn/db-style-colon-value-inline-directive] [corpus fixture:
 venn/db-style-property-colon-inline-directive] [corpus fixture:
 venn/db-style-prototype-keys] [corpus fixture: venn/db-style-unknown] [corpus
 fixture: venn/lex-directive-style-value-color] [corpus fixture:
@@ -505,17 +521,21 @@ set A[style:#x;y] set B:2
 
 The consumed first title separator becomes one ASCII space for readability;
 every later value character, including leading/trailing whitespace and
-statement-looking words, stays as written. LF and the broader accepted title
-separators may normalize, but trivia, joined regions and kept parts protect
-their written boundaries. [corpus fixture: venn/db-frontmatter-title-overridden]
-[corpus fixture: venn/db-title-on-header] [corpus fixture:
-venn/db-title-only-whitespace] [corpus fixture: venn/db-title-padding] [corpus
-fixture: venn/db-title-value-next-line] [corpus fixture:
-venn/lex-gap-title-comment] [fixture: venn/title/repeated-title] [fixture:
-venn/title/title-directive] [fixture: venn/title/title-inline-percent] [fixture:
-venn/title/title-next-line] [fixture: venn/title/title-statement-words]
-[fixture: venn/title/title-tab-separator] [fixture:
-venn/title/title-trim-unsafe] [fixture: venn/title/title-whitespace-only]
+statement-looking words, stays as written, because everything after the one
+separator is the title value in the tree and in the Db, so trimming or
+collapsing it changes the Db. Indentation on the next source line belongs to the
+value, so `title` LF `  T` prints as `title   T`. LF and the broader accepted
+title separators may normalize, but trivia, joined regions and kept parts
+protect their written boundaries. [corpus fixture:
+venn/db-frontmatter-title-overridden] [corpus fixture: venn/db-title-on-header]
+[corpus fixture: venn/db-title-only-whitespace] [corpus fixture:
+venn/db-title-padding] [corpus fixture: venn/db-title-value-next-line] [corpus
+fixture: venn/lex-gap-title-comment] [fixture: venn/title/repeated-title]
+[fixture: venn/title/title-directive] [fixture: venn/title/title-inline-percent]
+[fixture: venn/title/title-next-line] [fixture:
+venn/title/title-statement-words] [fixture: venn/title/title-tab-separator]
+[fixture: venn/title/title-trim-unsafe] [fixture:
+venn/title/title-whitespace-only]
 
 Input (escaped):
 
@@ -549,10 +569,14 @@ alike, because removal joins all those gaps.
 On a header or statement line, a directive stays with the preceding text when
 the following statement moves to a new line; its written gap before the
 directive becomes one space or stays touching. If a directive touches the
-following statement, the line remains together to preserve that relation. A
-semicolon-kept line also keeps its header attachment. [corpus fixture:
-venn/db-indent-after-directive] [corpus fixture:
-venn/db-set-label-unclosed-directive-gap] [corpus fixture:
+following statement, the line remains together to preserve that relation:
+removing a directive supplies no separator, so the touching relation between a
+directive and its neighbour decides what is read. This is the same as in class,
+flowchart, gantt, timeline and block diagrams. Kanban moves the directive along
+only because the whitespace after a directive becomes node indentation there; a
+statement on a Venn header line has no such role. A semicolon-kept line also
+keeps its header attachment. [corpus fixture: venn/db-indent-after-directive]
+[corpus fixture: venn/db-set-label-unclosed-directive-gap] [corpus fixture:
 venn/lex-after-set-directive-unclosed] [corpus fixture:
 venn/lex-comment-after-directive-keeps-id] [corpus fixture:
 venn/lex-directive-style-value-color] [corpus fixture:
@@ -717,10 +741,12 @@ Title T
 CRLF and lone CR follow the shared `endOfLine`, including inside values, because
 mermaid.js reads them as LF. [test: a venn diagram with other line endings]
 [test: uses lone CR inside values and after implicit text] U+2028/U+2029 stay as
-characters in values, comments and directives; a Venn diagram comment runs
-through them to LF or EOF. Only the consumed first title separator can become an
-ASCII space; Unicode separators are rejected as ordinary body or bare-style
-gaps. [fixture: venn/line-terminators/ls-comment-split-unsafe-control] [fixture:
+characters in values, comments and directives, because they are characters of
+the stored text and replacing one with LF changes the Db; a Venn diagram comment
+runs through them to LF or EOF. Only the consumed first title separator can
+become an ASCII space; Unicode separators are rejected as ordinary body or
+bare-style gaps. [fixture:
+venn/line-terminators/ls-comment-split-unsafe-control] [fixture:
 venn/line-terminators/ls-value-to-lf-differs-control] [fixture:
 venn/line-terminators/ps-value-to-lf-differs-control] [test: a venn diagram with
 other line endings] [test: venn: crlf-values] [test: venn: cr-values] [test:
@@ -832,7 +858,11 @@ set A
 The shared failure path reports a syntax error and leaves rejected source
 unformatted, and declines rejected Markdown fences. It repairs neither names,
 lists, labels, sizes, quotes, newlines or headers, nor ordinary semicolons or
-unsupported syntax. Specified token-boundary divergences remain failures.
+unsupported syntax: a repair would turn an error into another meaning, since a
+repaired name, semicolon, header case or unknown union member changes acceptance
+or intent, and running mermaid.js again at print time would duplicate the
+language implementation and hide a missing rule. Specified token-boundary
+divergences remain failures.
 
 For example, `venn-beta\nset A;` reports a syntax error and leaves the
 standalone source unformatted; a rejected Markdown fence retains its contents

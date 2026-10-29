@@ -48,7 +48,7 @@ export const ENVIRONMENT_SIGNATURES: readonly RegExp[] = [
  * `MermaidParseError` keeps the name `Error`).
  *
  * Class names are used only there because bundling may rename classes (the
- * YAML error class is `YAMLException2` in mermaid@12.0.0), while `name` is set
+ * YAML error class is `YAMLException2` in mermaid@12.2.0), while `name` is set
  * explicitly and stays stable.
  */
 export function errorName(error: Error): string {

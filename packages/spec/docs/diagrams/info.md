@@ -5,9 +5,9 @@ Japanese version: [info.ja.md](./info.ja.md)
 This document defines `info`. Its source tree is in
 [ast/info.md](../ast/info.md); derived values are summarized by the
 [tests package](../../../tests/docs/db-summaries.md#info). The syntax follows
-[info.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/info/info.langium#L1-L9)
+[info.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/info/info.langium#L1-L9)
 and its imported
-[common.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L1-L34).
+[common.langium](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/common.langium#L1-L34).
 [fixture: info/header-lf] [fixture: info/common-all]
 
 ## Detection
@@ -418,9 +418,9 @@ authored nodes. [fixture: info/common-all] [fixture: info/common-flag-all]
 
 Any lexical error, parser error or unconsumed visible unit rejects the entire
 input, even if a recovered tree or valid prefix exists. The
-[public parse wrapper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L134-L150)
+[public parse wrapper](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/parse.ts#L134-L150)
 checks both error lists. The
-[info adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoParser.ts#L6-L11)
+[info adapter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/info/infoParser.ts#L6-L11)
 adds no semantic rejection. Shared detection and embedded-data rules still
 apply. [fixture: info/error-after-prefix] [fixture: info/error-after-common]
 [fixture: info/spec-info-1b111b64] [fixture: info/terminal-number] [fixture:

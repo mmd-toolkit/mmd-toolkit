@@ -22,8 +22,25 @@ eventmodeling を選ぶ。
 [fixture: eventmodeling/header-double]
 
 [共通の原文の読み](../common.ja.md#ソースの読み方)に従い、改行、
-HTML 属性の引用符、本当の先頭 frontmatter、共通 directive、コメント領域、
-先頭 trivia、文字参照、選ばれた semicolon を扱う。
+HTML 属性の引用符、本当の先頭 frontmatter、共通 directive、文字参照、
+選ばれた semicolon を扱う。
+コメント領域と先頭の空白を除くのは検出のときだけ。
+eventmodeling の Db は `preserveCommentsWhenParsing` を設定するので、
+ソースが `maxTextSize` より長くないかぎり、
+字句解析器がコメント行と先頭の空白を自分で読む（詳しくは
+[mermaid.js とこの仕様](../common.ja.md#mermaidjs-とこの仕様) を参照）。
+[fixture: eventmodeling/comment-default-size-equal]
+[fixture: eventmodeling/comment-default-size-above]
+[fixture: eventmodeling/comment-default-size-equal-crlf]
+[fixture: eventmodeling/comment-default-size-above-crlf]
+[fixture: eventmodeling/comment-default-size-equal-inline-directive]
+[fixture: eventmodeling/comment-default-size-above-inline-directive]
+[fixture: eventmodeling/comment-default-size-equal-frontmatter]
+[fixture: eventmodeling/comment-default-size-above-frontmatter]
+[fixture: eventmodeling/frontmatter-extra-trivia-below]
+[fixture: eventmodeling/frontmatter-extra-trivia-boundary]
+[fixture: eventmodeling/frontmatter-extra-trivia-above]
+[fixture: eventmodeling/frontmatter-extra-whitespace-line-boundary]
 [前処理][preprocess]と[検出の走査][detect-type]は図種の文法より先。
 本当の frontmatter は共有 Frontmatter。
 先行する C4 検出には c4-keyword-anywhere を適用する。
@@ -338,9 +355,13 @@ trim、空白の collapse、escape の decode をせず残す。
 
 これらの composite は native whitespace より先、identifier より後。
 現在位置の先頭の ASCII space/tab の連なりを取れる。
-LF と padding は、共通 directive、共通 comment region、
+LF と padding は、共通 directive と、
 共通の行規則が選ぶ semicolon という共通の除去の後で判断する。
-共通 comment region は、その字下げと終わりの LF ごと除かれる。
+コメント行は除かれない。
+それは native の percent-comment で、その LF の手前で終わるので、LF は残り、
+次の行の字下げは native whitespace が取る。
+そのため、コメント行の後に字下げした title、accTitle、
+accDescr が続くと拒否する。
 閉じた共通 directive だけを除いても、その外の LF は残る。
 選ばれた semicolon を除いても LF は残り、空行も LF を残す。
 その後、次の行の字下げを取れるかは、前の単位が残る LF を消費したかで決まる。
@@ -440,10 +461,10 @@ quote と backslash は closer を保護せず、閉じない形は拒否する�
 [fixture: eventmodeling/gram-empty-payload-after-removals]
 [fixture: eventmodeling/gram-description-block-empty-after-removal]
 
-keyword と brace の間では、
-whitespace の一致より先に共通 directive とコメント領域を除く。
+keyword と brace の間では、 whitespace の一致より先に共通 directive を除く。
 空行も許す。
-native comment を composite の単位に挿入できるという意味ではない。
+コメント行を含め、native comment は composite の単位に挿入できないので、
+この間のコメント行は拒否する。
 metadata の値がすでに包む slash comment や YAML に見える形は、
 その text であって別の hidden ではない。
 [fixture: eventmodeling/common-description-comment-gap]
@@ -509,6 +530,20 @@ native の動作は名前が単語でない形で確かめる。
 
 hidden-directive が失敗したら percent-comment を試す。
 %% から CR/LF の直前または text の終わりまでで、裸の %% も含む。
+コメント行は字句解析器が読む前に除かれないので、コメント行もこの規則が読む。
+block の値、slash block comment、hidden の形の中のコメント行は、
+その text の一部になる。
+コメント行は CR か LF でだけ終わる。
+その中の U+2028 や U+2029 では終わらないので、 `%% a`、U+2028、
+`tf 01 evt A` は全体が 1 つのコメントになる。
+コメント行の中の共通 directive は、どこでもと同じく除かれ、
+行の残りはコメントに残る。
+`%% a %%{init: {}}%% tf 09 evt Z` では frame はコメントの一部で、
+data block の中の行 `%% c %%{init: {}}%% d` は、 `%% c`、空白 2 個、
+`d` を値に残す。 [fixture: eventmodeling/comment-line-line-separator]
+[fixture: eventmodeling/comment-line-paragraph-separator]
+[fixture: eventmodeling/comment-line-directive]
+[fixture: eventmodeling/comment-line-directive-in-data]
 一行の native directive の失敗形は、
 後の frame に見える text まで飲み込む comment になりうる。
 複数行の残りの text は拒否されうる。
@@ -531,7 +566,8 @@ mark は `/*` と `//`、値は mark と block の closer を含めず、
 外の padding も内容でない。
 comment は完全な単位の間に置けるが identifier の断片を結合しない。
 共通 directive は comment の本文や mark の文字の間にも置け、
-共有のコメント領域の除去は先に適用する。 [fixture: eventmodeling/comment-native]
+slash block comment の中のコメント行は、その text の一部になる。
+[fixture: eventmodeling/comment-native]
 [fixture: eventmodeling/comment-between-id]
 [fixture: eventmodeling/comment-block-open]
 [fixture: eventmodeling/comment-block-nearest-close]
@@ -542,6 +578,10 @@ comment は完全な単位の間に置けるが identifier の断片を結合し
 [fixture: eventmodeling/comment-block-close-mark-directive]
 [fixture: eventmodeling/comment-inline-data]
 [fixture: eventmodeling/comment-block-data]
+[fixture: eventmodeling/comment-note-data]
+[fixture: eventmodeling/comment-line-inside-block-comment]
+[fixture: eventmodeling/comment-line-inside-hidden-yaml]
+[fixture: eventmodeling/comment-line-inside-hidden-directive]
 
 ### 作者の部品の境目
 
@@ -684,8 +724,8 @@ entity 宣言が修飾名でも GWT の参照は単一 identifier。
 GWT 内では、共通 directive だけの行、選ばれた semicolon、コメント行、空行、LS、
 PS は item を隔てられる。
 そこでの空の説明 block は GWT item にならず拒否する。
-data block 内では対応する形は共通の除去の対象になる text で、
-入れ子の文ではない。
+data block 内では対応する形は text で、入れ子の文ではない。
+共通 directive だけの行と選ばれた semicolon は除かれ、コメント行は text に残る。
 LS、PS、空の説明に見える行は内容に残る。
 [fixture: eventmodeling/gram-nested-gwt-global-directive-line]
 [fixture: eventmodeling/lex-native-directive-in-gwt]
@@ -721,10 +761,14 @@ PS はその間を分けられる。
 lexer または parser のエラーをすべて拒否する。
 [validator の登録][validator]があっても、
 この wrapper は検証も参照のリンクも実行しない。
-未知、前方、自己参照、重複定義、
+未知、前方、自己参照、data の重複定義、
 source の型の組合せを拒否する追加の意味上の gate はない。
-[adapter][adapter]は AST と共通 metadata を保存し、
-[setAst][store]は保存するだけ。
+[adapter][adapter] は AST と共通 metadata を保存する。
+[setAst][store] は、2 つの frame（time frame と reset frame のどの組合せでも、
+どこにあっても）が書かれたとおり同じ名前を持つ入力を拒否し、
+それ以外では AST を保存するだけ。
+`tf 01` の後の `tf 01` か `rf 01` と、`rf 01` の後の `tf 01` は拒否され、
+`tf 01`、`tf 02`、`tf 01` も拒否されるが、`tf 01` と `tf 1` は受理される。
 描画と getState は受理の外。 [fixture: eventmodeling/error-start]
 [fixture: eventmodeling/error-recovered]
 [fixture: eventmodeling/error-after-prefix]
@@ -732,6 +776,11 @@ source の型の組合せを拒否する追加の意味上の gate はない。
 [fixture: eventmodeling/db-source-forward]
 [fixture: eventmodeling/db-source-self]
 [fixture: eventmodeling/db-frame-duplicates]
+[fixture: eventmodeling/db-frame-duplicate-reset-frame]
+[fixture: eventmodeling/db-frame-duplicate-reset-frames]
+[fixture: eventmodeling/db-frame-duplicate-reset-then-time]
+[fixture: eventmodeling/db-frame-duplicate-not-adjacent]
+[fixture: eventmodeling/db-frame-same-number-other-spelling]
 [fixture: eventmodeling/db-data-first]
 [fixture: eventmodeling/db-entities-notes-gwt]
 [fixture: eventmodeling/link-note-forward]
@@ -746,7 +795,7 @@ source の型の組合せを拒否する追加の意味上の gate はない。
 
 ### 全出現の保持
 
-frame の繰り返し、後の同名 data 宣言、未使用の entity、note、GWT を含め、
+後の同名 data 宣言、未使用の entity、note、GWT を含め、
 すべての文と参照の出現を原文順に残す。
 上流の unassigned な文法の呼び出しがモデルから落とす GWT item の entity type
 の語も保持する。
@@ -755,7 +804,6 @@ frame の繰り返し、後の同名 data 宣言、未使用の entity、note、
 参照先があっても書いた inline data を捨てない。
 空 data や共通の空の形も node にする。
 木に場所のある意味の読み違いは受理したままにする。
-[fixture: eventmodeling/db-frame-duplicates]
 [fixture: eventmodeling/db-data-first] [fixture: eventmodeling/db-data-unused]
 [fixture: eventmodeling/db-entities-notes-gwt]
 [fixture: eventmodeling/gram-gwt-unassigned-type]
@@ -836,25 +884,25 @@ bare-percent-line-before-header と tokenless-empty-forms は追加しない。
 [fixture: eventmodeling/lex-inline-empty]
 [fixture: eventmodeling/common-description-repeat]
 
-[grammar]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L1-L70
-[entry]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L49
-[names]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L24-L55
-[data]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L17-L22
-[data-terminals]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L57-L58
-[metadata]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L60-L62
-[hidden]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L64-L70
-[module]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/module.ts#L31-L62
-[token-builder]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/tokenBuilder.ts#L1-L7
-[common-token-builder]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/tokenBuilder.ts#L6-L29
-[converter]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L6-L81
-[parse]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L133-L150
-[validator]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling-validator.ts#L12-L66
-[adapter]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/parser.ts#L8-L14
-[store]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L50-L141
-[renderer]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/renderer.ts#L128-L167
-[detector]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/detector.ts#L4-L8
-[preprocess]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L6-L65
-[detect-type]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/detectType.ts#L36-L48
-[docs]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L1-L322
-[parser-tests]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/tests/eventmodeling.test.ts#L1-L339
-[mermaid-tests]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/eventmodeling.spec.ts#L1-L79
+[grammar]: https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L1-L70
+[entry]: https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L49
+[names]: https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L24-L55
+[data]: https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L17-L22
+[data-terminals]: https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L57-L58
+[metadata]: https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L60-L62
+[hidden]: https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling.langium#L64-L70
+[module]: https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/module.ts#L31-L62
+[token-builder]: https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/tokenBuilder.ts#L1-L7
+[common-token-builder]: https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/tokenBuilder.ts#L6-L29
+[converter]: https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/valueConverter.ts#L6-L81
+[parse]: https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/parse.ts#L133-L150
+[validator]: https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/eventmodeling/event-modeling-validator.ts#L12-L66
+[adapter]: https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/parser.ts#L8-L14
+[store]: https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L50-L151
+[renderer]: https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/renderer.ts#L128-L167
+[detector]: https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/detector.ts#L4-L8
+[preprocess]: https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L6-L65
+[detect-type]: https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/detectType.ts#L36-L51
+[docs]: https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/eventmodeling.md#L1-L336
+[parser-tests]: https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/tests/eventmodeling.test.ts#L1-L339
+[mermaid-tests]: https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/eventmodeling/eventmodeling.spec.ts#L1-L133

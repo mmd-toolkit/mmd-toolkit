@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "diagrams/sequence.md, The statement context, rule 11: `,` follows `link`, so it is no keyword; a note over `link` and A."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "link",
+        "description": "link",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "A"
+      },
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "prevActor": "link",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "link",
+        "to": "A",
+        "message": "x",
+        "wrap": false,
+        "type": 2,
+        "placement": 2
+      }
+    ]
+  }
+}

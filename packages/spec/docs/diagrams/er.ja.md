@@ -4,9 +4,9 @@
 
 mermaid.js での正本:
 
-- [`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/parser/erDiagram.jison)
-- [`erDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/erDb.ts)
-- [`er/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er)
+- [`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/er/parser/erDiagram.jison)
+- [`erDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/er/erDb.ts)
+- [`er/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/er)
   のテスト（`*.spec.js`）
 
 この文書は、図種 `er`、実体関連図を扱います。
@@ -17,7 +17,7 @@ mermaid.js での正本:
 [detection.ja.md](../detection.ja.md) の項目 10 がこの文法を選びます。
 テキストが、空白の後、ちょうどこの大文字小文字の、
 `erDiagram` で始まるときです（mermaid.js の
-[`erDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/erDetector.ts#L9-L11)）。
+[`erDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/er/erDetector.ts#L9-L11)）。
 [fixture: er/header-only] [fixture: er/header-leading-whitespace]
 
 その後、字句解析器がヘッダーをもう一度、大文字小文字を区別せず、
@@ -1055,7 +1055,7 @@ er/header-after-bare-percent-line]
 二重引用符で囲んだテキストは、`"subgraph"` や `"{"` のように、
 そのテキストを名前とする単位を表します。
 この文法は
-[`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L102-L334)
+[`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L102-L334)
 の文法の言い換えで、同じ単位の列を受理します。
 
 以下の各規則は、[ast/er.ja.md](../ast/er.ja.md) で定める木のノードを作ります。
@@ -1115,7 +1115,7 @@ er/gram-acc-title-after-name] [fixture: er/gram-classdef-after-name-one-line]
 er/gram-relationship-then-name-one-line]
 mermaid.js の文法には `title` の文の規則がありますが、
 字句解析器はその単位を作りません（mermaid.js の
-[`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L188)）。
+[`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L188)）。
 そのため `title T` は 2 つの実体 `title` と `T` です。
 [fixture: er/gram-title-words-as-names]
 

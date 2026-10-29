@@ -33,6 +33,7 @@ const ruleDocuments: readonly {
   {
     diagram: "eventmodeling",
     rulesWithoutExamples: [
+      "default-size-branches",
       "line-terminators-and-unicode",
       "specified-readings",
       "markdown-fences",

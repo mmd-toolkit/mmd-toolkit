@@ -10,28 +10,29 @@ Disallow a source or a data reference that names nothing.
 
 <!-- end auto-generated rule notice -->
 
-A time frame names its sources by their numbers after `->>`, and its data block
-by its name between `[[` and `]]`. When the name is the name of no frame or of
-no data block, mermaid.js accepts it without an error, and draws no relation
-from that source and no data of that reference.
+A time frame or a reset frame names its sources by their numbers after `->>`,
+and its data block by its name between `[[` and `]]`. When the name is the name
+of no frame or of no data block, mermaid.js accepts it without an error, and
+draws no relation from that source and no data of that reference.
 
 ## Rule Details
 
 This rule applies to Event Modeling diagrams (`eventmodeling`). It reports a
-source of a `tf` or `timeframe` statement that names no frame, and a `[[ ]]`
-reference of a frame that names no `data` block. A frame or data block declared
-after the reference counts. A `[[ ]]` reference that names no `data` block is
-reported even when the frame has inline data, which mermaid.js then shows
-instead. Names are compared as written, with their case, so `1`, `01`, and `001`
-name three frames.
+source of a `tf`, `timeframe`, `rf`, or `resetframe` statement that names no
+frame, and a `[[ ]]` reference of a frame that names no `data` block. A frame or
+data block declared after the reference counts. A `[[ ]]` reference that names
+no `data` block is reported even when the frame has inline data, which
+mermaid.js then shows instead. Names are compared as written, with their case,
+so `1`, `01`, and `001` name three frames.
 
 A source naming a later frame is not reported, though mermaid.js draws no
 relation from it.
 
-Sources of reset frames (`rf` or `resetframe`) are not checked, because
-mermaid.js draws no relation for them, whatever their sources name; their
-`[[ ]]` references are checked. Frames named by `note` and `gwt` are not checked
-either, because mermaid.js draws neither statement.
+The sources of a reset frame (`rf` or `resetframe`) are checked as those of a
+time frame, because mermaid.js draws a relation from each explicit source that
+names a frame and none from one that names no frame. A reset frame without
+sources has none to check. Frames named by `note` and `gwt` are not checked,
+because mermaid.js draws neither statement.
 
 Examples of **incorrect** code for this rule:
 

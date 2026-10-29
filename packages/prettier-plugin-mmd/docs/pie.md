@@ -93,7 +93,7 @@ pie
 
 Print a section as `"label" : value`, with one space on both sides of the colon
 and no width alignment. This pie-specific choice follows the spelling in
-[Mermaid pie examples](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/pie.md#L64-L69).
+[Mermaid pie examples](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/pie.md#L64-L69).
 Both quoted label forms and empty labels follow this rule. A gap containing a
 directive keeps its touching/separated sides; a hidden form also keeps its
 physical boundary, since these items supply no separator.

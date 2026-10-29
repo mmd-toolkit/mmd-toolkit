@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "diagrams/sequence.md, The statement context, rule 11: `links` with no space after it is no keyword; a message from the participant `links`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "links",
+        "description": "links",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "B"
+      },
+      {
+        "name": "B",
+        "description": "B",
+        "wrap": false,
+        "prevActor": "links",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "links",
+        "to": "B",
+        "message": "x",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

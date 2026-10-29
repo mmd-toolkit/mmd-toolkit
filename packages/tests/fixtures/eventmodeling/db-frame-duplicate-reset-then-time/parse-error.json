@@ -1,0 +1,17 @@
+{
+  "message": "A frame with this name exists already",
+  "range": [
+    33,
+    35
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 3
+    },
+    "end": {
+      "line": 3,
+      "column": 5
+    }
+  }
+}

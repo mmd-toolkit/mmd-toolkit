@@ -344,7 +344,8 @@ pin した版のタグで clone する。
    sequence の例: box の色。
    そのような値は木では決めない。
    サイトの設定と同じく外から与える値として、
-   tests の `docs/db-from-tree/<図種>.md` が書くので、tests に知らせる。
+   `@mmd-toolkit/tests` の `docs/db-from-tree/<図種>.md` が書く。
+   それは tests のスキルの手順で書く。
 4. 前処理の順序（common.md の Reading a source）と、
    検出（detection.md）を確かめる。
 
@@ -496,8 +497,8 @@ index.md の「How to read a diagram document」の 4 節で書く。
 
 図種の Db の要約と、それを木から作る手順は、
 `@mmd-toolkit/tests` の文書（`docs/db-summaries.md` と
-`docs/db-from-tree/<図種>.md`）で、 tests が書く。
-そこに要るものは tests に知らせる。
+`docs/db-from-tree/<図種>.md`）である。
+そこに要るものは、tests のスキルの手順で書く。
 
 ### 3.3 木のノードを足す
 
@@ -545,7 +546,8 @@ index.md の「How to read a diagram document」の 4 節で書く。
    どのトークンも持てないところだけ、
    `ast/<diagram>.md` の欄の説明に理由を書く。
    Db がそれをソースから読むことは、
-   tests の `docs/db-from-tree/<図種>.md` が書くので、 tests に知らせる。
+   `@mmd-toolkit/tests` の `docs/db-from-tree/<図種>.md` が書く。
+   それは tests のスキルの手順で書く。
    flowchart の例: subgraph の名前のすぐ後の空の説明ブロックの間の空白。
 
 ### 3.4 主張と fixture を対応させる
@@ -712,7 +714,7 @@ parser は仕様だけを源として読む。
    値がある、の 3 つの場合を数える。
    現れた場合は、どれも tests の `docs/db-from-tree/<図種>.md` の文で説明され、
    fixture を持つ。
-   説明する文のない場合は tests に知らせる。
+   説明する文のない場合の文は、tests のスキルの手順で書く。
    最初の訪れでだけ決まるもの、積み重なるもの、
    更新がそのまま残すもの（`Object.assign`
    は新しいオブジェクトにないキーを残す）を、 Db のクラスで探す。

@@ -303,26 +303,26 @@ each comment on a line of its own, or at least put a space before the `%%`.
 ## Why mermaid.js reads it so
 
 The lexer of mermaid.js has two rules that differ from this specification
-([`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L29-L30)).
+([`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L29-L30)).
 In its statement state, before its rules for numbers and ids, it tries a rule
 that reads a character other than `}` followed by `%%` and the rest of the line
 as one comment; and it reads a number only where a space or a line feed follows
 it. Where a rule would start its match at the character right before `%%`, the
 comment rule matches first, and a number right before `%%` is not read as one.
 The lexer of gantt has the same comment rule with a single `%`
-([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L29-L29)),
+([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L29-L29)),
 tried before its rules for task texts and the colon of task data. The lexer of
 journey has the same comment rule with `%%`
-([`journey.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison#L15-L15)),
+([`journey.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison#L15-L15)),
 tried before its rules for line feeds, whitespace, task texts, and task data,
 and so has the lexer of timeline
-([`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L15-L15)),
+([`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L15-L15)),
 tried before its rules for line feeds, whitespace, keywords, events, and
 periods, and so has the lexer of xychart
-([`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L16-L16)),
+([`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L16-L16)),
 tried before all its rules but the comment rule for `%%` where a unit starts,
 and so has the lexer of quadrant
-([`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L17-L17)),
+([`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L17-L17)),
 tried in the same place.
 
 ## The rule of this specification, and why
@@ -345,7 +345,7 @@ syntax; this is the second of the reasons for a known divergence (see
 ## The documentation of mermaid.js and its issues
 
 - The documentation of sequence diagrams of mermaid.js says, under
-  [Comments](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L680-L682),
+  [Comments](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L680-L682),
   "Comments need to be on their own line".
 - [Issue #6401](https://github.com/mermaid-js/mermaid/issues/6401), "Inline
   comments cause errors when compiling", reports a comment after a statement in

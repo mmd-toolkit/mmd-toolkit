@@ -106,25 +106,6 @@ Code:
 ---
 
 
-Test: eventmodeling-no-empty-description-block >> invalid >>> invalid/eventmodeling/empty-comment-before-brace
-Filename: tests/fixtures/rules/eventmodeling-no-empty-description-block/invalid/eventmodeling/empty-comment-before-brace-input.mmd
-
-Code:
-  1 | eventmodeling accDescr
-    |               ^~~~~~~~\ [1]
-  2 | %% TODO
-    | ~~~~~~~\ [1]
-  3 | {} tf 01 evt Bought
-    | ~~ [1]
-
-[1] mermaid.js uses the text of this empty `accDescr` block as the description, replacing any earlier description.
-    Suggestions:
-      - Remove the empty block.
-        Output:
-          1 | eventmodeling tf 01 evt Bought
----
-
-
 Test: eventmodeling-no-empty-description-block >> invalid >>> invalid/eventmodeling/empty-frontmatter-hidden-yaml
 Filename: tests/fixtures/rules/eventmodeling-no-empty-description-block/invalid/eventmodeling/empty-frontmatter-hidden-yaml-input.mmd
 

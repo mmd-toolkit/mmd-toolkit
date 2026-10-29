@@ -4,11 +4,11 @@ Japanese version: [sankey.ja.md](./sankey.ja.md)
 
 Source of truth in mermaid.js:
 
-- [`sankey.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison)
-- [`sankeyUtils.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyUtils.ts)
-- [`sankeyDB.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts)
+- [`sankey.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison)
+- [`sankeyUtils.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyUtils.ts)
+- [`sankeyDB.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts)
 - the tests (`*.spec.ts`) in
-  [`sankey/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey)
+  [`sankey/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey)
 
 This document covers the diagram type `sankey`. The nodes of the tree are
 defined in [ast/sankey.md](../ast/sankey.md).
@@ -17,7 +17,7 @@ defined in [ast/sankey.md](../ast/sankey.md).
 
 Entry 23 of [detection.md](../detection.md) selects this grammar: the text
 starts with `sankey`, after whitespace, in exactly this case
-([`sankeyDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDetector.ts#L5-L7)).
+([`sankeyDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyDetector.ts#L5-L7)).
 `Sankey` and `SANKEY` match no detector; U+FEFF before the header is whitespace.
 [fixture: sankey/db-link-basic] [fixture: sankey/db-byte-order-mark-at-start]
 [fixture: sankey/header-indented] [fixture: sankey/header-tab-indented]
@@ -314,7 +314,7 @@ The grammar uses the notation of [common.md](../common.md#notation), over units
 instead of characters. A unit name, such as `field-text`, stands for one unit
 with that name, and text in double quotes stands for the unit named by that
 text, such as `","`. The grammar is a restatement of the grammar in
-[`sankey.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L45-L67)
+[`sankey.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L45-L67)
 and accepts the same sequences of units.
 
 Each rule below makes a node of the tree, defined in
@@ -381,9 +381,9 @@ sankey/db-quoted-and-unquoted-same-id] [fixture: sankey/db-value-not-a-number]
 ### Rejections outside the grammar
 
 None. The Db of mermaid.js throws for no input that its grammar accepts:
-[`findOrCreateNode()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L48-L58)
+[`findOrCreateNode()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L48-L58)
 and
-[`addLink()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L40-L42)
+[`addLink()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L40-L42)
 only store their texts, and an empty id, a value that is no number, and a link
 that repeats are accepted. [fixture: sankey/db-spaces-only-source-id] [fixture:
 sankey/db-value-not-a-number] [fixture: sankey/db-duplicate-link]
