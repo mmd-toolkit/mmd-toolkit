@@ -8,7 +8,9 @@ Db が等しい複数の形があるときは、選ぶ理由を記します。
 
 エスケープ例は完全な JSON 文字列です。
 `\n`、`\r`、`\t`、`\u2028`、`\u2029` は文字を表します。
-例は定義時に Mermaid 12.0.0 で検査しました。
+例は固定した版の mermaid.js で検査しています。
+入力を拒否する場合（既知の差異）を除き、
+mermaid.js は各入力とその出力を同じ Db として読みます。
 通常のテストは Mermaid を動かさず、木と記録した結果を使います。
 
 ## Rules
@@ -96,6 +98,9 @@ ishikawa
 普通の見出し行の根は、全体を深さ 1 の独立した行へ移します。
 接する句読点、接尾辞、percent の文字列、semicolon も一緒に移します。
 Db を保ちながら、他の printer の見出しと本文の置き方に揃えるためです。
+semicolon を含む根も全体を移します。
+Ishikawa の見出しは、
+共有の行の規則の `style` と `classDef` の契機を加えないためです。
 見出しのコメントと directive の接続は、専用の規則に従います。
 根に含まれる文らしいテキストは分割しません。
 [fixture: ishikawa/root-on-header-line/header-root]
@@ -159,7 +164,10 @@ ishikawa
 [fixture: ishikawa/blank-lines/blank-runs]
 [fixture: ishikawa/blank-lines/blank-around-trivia]
 
-図のコメントの後の区切りの空行は 1 つ保ちます。
+空行は Ishikawa の節点も親も変えないため、連続を 1 つにし、
+本文の端の普通の空行を除いても Db は同じです。
+図のコメントの後の空行は、そのコメントの区切りの隙間であり、
+本文の端の普通の空行ではないため、区切りの空行は 1 つ保ちます。
 見出しに接する図のコメントの後も同じです。
 最後の図コメントの後の隙間は、末尾まで全体を保ちます。
 [fixture: ishikawa/blank-lines/blank-comment-accepted]
@@ -270,6 +278,8 @@ ishikawa
 
 見出し行で見出しに接する directive は見出し側に残し、
 空白で離れた根を次の行へ移します。
+根の字下げは親を決めないため、
+根を見出しの directive の下へ移しても読みは変わりません。
 [fixture: ishikawa/standalone-directives/header-touching-directive]
 [fixture: ishikawa/standalone-directives/header-two-touching-directives]
 
@@ -298,6 +308,7 @@ ishikawa/standalone-directives/header-spaced-directive-literal-percent]
 ishikawa/standalone-directives/header-touching-prefix-spaced-directive]
 
 根に接する directive は、書かれた見出しと根の組全体を保ちます。
+作者が書いた directive と根のテキストの関係を保つためです。
 [fixture: ishikawa/standalone-directives/directive-header-touch-root]
 [fixture: ishikawa/standalone-directives/header-directive-touching-root]
 [fixture: ishikawa/standalone-directives/header-two-directives-touching-root]
@@ -639,6 +650,12 @@ LF は [Physical lines](#physical-lines) の規則で、普通の節点の行を
 
 図コメントを終える区切り文字は保ち、
 次の節点の深さによる字下げに 1 文字として数え、残りだけ補います。
+Mermaid はこの区切りを次の節点の字下げの 1 文字として数えるので、
+印字する合計は節点の深さによる字下げでなければなりません。
+合計が浅いと、節点は直前の原因の子ではなく兄弟になり、Db が変わります。
+LF に置き換えても木は保てますが、
+区切りを保つほうが kanban の境界を保つ選択に揃い、
+Mermaid のコメントと空行の組合せを修復する別の方針も要りません。
 LF のコメント終端は新しい行を始め、字下げの文字としては数えません。
 [fixture: ishikawa/line-separators/lf-comment-boundary]
 [test: ishikawa: ls-comment-boundary] [test: ishikawa: kept-comment-ls-before]
@@ -686,6 +703,9 @@ LF のコメント終端は新しい行を始め、字下げの文字として�
 受理する字下げの空白は、深さに応じた設定の文字に直します。
 タブ、VT、FF、NBSP、BOM、全角空白も入力の 1 文字として数えます。
 タブの見かけの幅で親を決めません。
+Mermaid は字下げの文字を 1 文字ずつ数えるので、
+タブを見かけの幅に広げると後の行が Mermaid の読みより深くなり、
+後ろの行が `A` の子になって Db が変わるためです。
 [corpus fixture: ishikawa/lex-space-positions]
 [corpus fixture: ishikawa/lex-tab-positions]
 [fixture: ishikawa/whitespace-characters/space-indentation]

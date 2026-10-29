@@ -13,7 +13,6 @@ export default [
       "**/node_modules/",
       "**/lib/",
       "packages/tests/fixtures/",
-      "tmp/",
       ".claude/worktrees/",
       ".work/",
     ],

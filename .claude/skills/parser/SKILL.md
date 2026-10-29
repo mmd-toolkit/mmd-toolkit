@@ -125,9 +125,10 @@ flowchart; the steps do not depend on the diagram type.
   pnpm --filter @mmd-toolkit/tests run fixtures:add <diagram> <name> --note "<the sentence and the case>" < input.mmd
   ```
 
-  An example for a test or a comment is such an input too: in the flowchart, an
-  example written by hand for a test was rejected by mermaid.js, because its
-  line feed left the click context.
+  An example for a test or a comment is such an input too: in the flowchart,
+  `click A`, a line break, and `cb` is the click statement `click A cb`, but
+  with the next line indented, as `  cb`, the input is rejected (the fixtures
+  `flowchart/lex-click-line-feed` and `flowchart/lex-click-line-feed-indented`).
 
 - When a sentence of the parser's documents that defines a behavior is written
   or changed, list the cases that it distinguishes and the other rules that meet
@@ -190,16 +191,16 @@ flowchart; the steps do not depend on the diagram type.
    disagrees with the specification, is a gap in the specification. Do not fill
    it from the source of mermaid.js; fix the specification first, with the input
    and the result of mermaid.js (the spec skill, "When a gap in the
-   specification is found"). Examples from the flowchart: an entity in a context
-   that reads one character at a time; the token kind of a `click` in a subgraph
-   name; the `,` of the click context, which had the same unit name as the `,`
-   of the statement context.
+   specification is found"). Examples from the flowchart of what the
+   specification has to decide: how an entity is read in a context that reads
+   one character at a time; the token kind of a `click` in a subgraph name; a
+   unit name of its own for the `,` of the click context and for the `,` of the
+   statement context.
 3. While a gap is open, implement what it does not touch.
 4. The specification can change while you work, also on what you have built
-   already (in class, two fields of a node were renamed and one was removed
-   during the work). Keep a copy of the documents as you read them, outside the
-   repository, and before the checks of 4.8, compare the documents with the copy
-   and implement what changed.
+   already (the fields of a node can be renamed or removed). Keep a copy of the
+   documents as you read them, outside the repository, and before the checks of
+   4.8, compare the documents with the copy and implement what changed.
 
 ### 4.3 Node types and wiring
 
@@ -244,9 +245,9 @@ Add them in this order; the flowchart files are the model.
    the diagram. When the diagram document adds a rule of how its text is read,
    wrap the reader in one of the shape `DiagramText` (in the flowchart,
    `FlowchartText`, which reads the whitespace after `}`). Do not make a derived
-   text, such as the text without directives, as an intermediate result: in the
-   flowchart, a structure that copied the preprocessing passes of mermaid.js was
-   built and rebuilt.
+   text, such as the text without directives, as an intermediate result: such a
+   text repeats the preprocessing passes of mermaid.js, where the specification
+   states direct rules (AGENTS.md, Principles).
 3. A rule that the document of another diagram states too (the direction line of
    flowchart and class, with their own lists of values) has one implementation,
    shared by both (`src/direction-line.ts`); move it out of the first diagram
@@ -293,10 +294,10 @@ Add them in this order; the flowchart files are the model.
     (`docs/error-positions.md`). Where no rule matches only because the text
     ends (only whitespace follows, such as the line feed that the lexer reads
     after the last character), report the end of the text in that context
-    instead, at what entered it: in state, `scale 3` was reported as an
-    unexpected character with an empty range, at the line feed after the text.
-    Keep the contexts that the text may not end in, with their messages, in the
-    diagram's `END_OF_TEXT_MESSAGES`, the table over all contexts that
+    instead, at what entered it: in state, `scale 3` would otherwise be reported
+    as an unexpected character with an empty range, at the line feed after the
+    text. Keep the contexts that the text may not end in, with their messages,
+    in the diagram's `END_OF_TEXT_MESSAGES`, the table over all contexts that
     `UnitLexer` takes (step 4).
 
 ### 4.5 The grammar
@@ -503,9 +504,9 @@ for acceptance without adding configuration parameters or options to `parse()`.
    for rules not implemented yet; each `new:` line must be a fixture whose rule
    is implemented, and the file of any other is deleted (step 1). Show the
    number of fixtures of each kind in the result. A node whose fields the Db
-   does not read shows a wrong change only here (in state, a floating note id
-   that a careless edit made end at its first character; the value strings of
-   the leaf nodes and the position of a state note are such fields). A snapshot
+   does not read shows a wrong change only here (in state, an edit that makes a
+   floating note id end at its first character; the value strings of the leaf
+   nodes and the position of a state note are such fields). A snapshot
    comparison alone establishes repeatability, so retain independent
    tree-condition and Db checks when records are rewritten. Complete the parser
    build before starting checks that import its `lib` output, then run the
@@ -614,12 +615,13 @@ wiring, tests and records.
 
 - Fixtures are added: do 4.7, steps 1 to 3. When a fixture's rule is not
   implemented yet, implement it first.
-- The specification changes while you work: take a change in only once it is
-  finished, with the changed sentences, fields, and fixture names. A document
-  that is still being written decides nothing; do not change the implementation
-  from it, and do not take back a provisional implementation because of it. In
-  state, an alias rule was taken back from a draft of a known divergence that
-  was decided the other way afterwards; in class, the same happened before.
+- The specification changes while you work: take a change in once the change
+  names the sentences, fields, and fixtures it changes, in its record (a commit
+  message or the request that hands it over), and take in what it names. A
+  document before that decides nothing; do not change the implementation from
+  it, and do not take back a provisional implementation because of it: until a
+  document is finished, its rules can still be withdrawn or decided the other
+  way.
 - A rule of the specification changes, or a gap is filled: read the changed
   sections, check them as in 4.2, step 2, and implement them. When existing
   trees change, do 4.7, step 4. Before reporting it, check as in 4.8, and show
@@ -634,11 +636,11 @@ wiring, tests and records.
   of a range that can now contain it (the name text of a subgraph, the text of a
   style). Each item of that list is a case of the sentence that accepts the
   form: ask for a fixture of each (section 3), and report every difference to
-  the specification at once. When the empty description blocks before a
-  separator were accepted in this way one place at a time, the place of a block
-  after a subgraph name, the whitespace around the blocks, the text of a style,
-  the header line, a comment after a block, and a run of blocks inside a
-  statement were found one after another.
+  the specification at once. For the empty description blocks before a
+  separator, the list holds the place of a block after a subgraph name, the
+  whitespace around the blocks, the text of a style, the header line, a comment
+  after a block, and a run of blocks inside a statement; accepting the form one
+  place at a time leaves the rest of these unread.
 - A gap in the specification is found during other work: fix the specification
   first (4.2, step 2), then do the above.
 - A known divergence is added (its document `known-divergences/<id>.md`, listed

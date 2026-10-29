@@ -120,9 +120,8 @@ The steps of this SKILL write `packages/spec/` and, through the tools of
 documents, the parser, the formatter), change it with the steps of that
 package's SKILL.
 
-When the working tree is shared with other work: make no git operation (commit,
-stage, unstage, `git mv`), do not touch files that the other work is editing,
-and do not edit a tracked file temporarily.
+Make no git operation (commit, stage, unstage, `git mv`) unless the user says
+so, and do not edit a tracked file temporarily.
 
 ## 2. Tools
 
@@ -302,7 +301,7 @@ Every link from the specification is a permalink to the commit recorded in
      the initial state), and the `<*>` rules (they match in every state, but the
      rules of that state that come earlier in the file match first). Flowchart
      example: the string rule `<*>["]` also matches in the click state and the
-     dir state, which was a gap in the specification.
+     dir state.
    - Rules that return no token. Flowchart example: `"click"[\s]+` only enters a
      state, so the grammar never sees the word `click`. The specification makes
      it a `click` unit, which may only start a click statement; the inputs where
@@ -609,15 +608,13 @@ it from the cases that its sentences distinguish.
       whitespace, a line break after it), checked with mermaid.js for acceptance
       and for the Db, the values of the second item included.
 
-   When empty description blocks before a separator were first accepted, only
-   the end of a line was looked at; the place after the name of a subgraph, the
-   whitespace around the blocks, the text that the Db read for a style, and the
-   header line were each found afterwards. Check also that acceptance does not
-   change elsewhere (flowchart example: the rule that reads the placeholder of
-   an entity as one unit would change acceptance under the letter rule, rule 23,
-   so its scope was limited; and skipping every `click` unit joined the click
-   ids of two click contexts and accepted inputs that mermaid.js rejects, so the
-   rule was narrowed).
+   A change of acceptance at one place can change the acceptance and the Db at
+   other places of the same form, so check also that acceptance does not change
+   elsewhere (flowchart example: reading the placeholder of an entity as one
+   unit everywhere would change acceptance under the letter rule, rule 23, so
+   the rule has a limited scope; and skipping every `click` unit would join the
+   click ids of two click contexts and accept inputs that mermaid.js rejects, so
+   the rule does not skip every `click` unit).
 
 6. When a rule of the specification rests on behavior of mermaid.js that looks
    like a bug, such as a known divergence or a surprising reading, search the
@@ -650,14 +647,13 @@ Include these responsibilities in the handoff:
 ### 3.7 Checks before the parser reads the specification
 
 The parser reads the specification as its only source. Before the diagram
-documents go to it, go through these checks for the diagram type; each comes
-from a gap that a parser found in an earlier diagram type. Write the result of
-each check in the output (3.6).
+documents go to it, go through these checks for the diagram type. Write the
+result of each check in the output (3.6).
 
 1. **Unit names.** List every unit name of the lexical structure and the
    grammar, the names of the rules of the grammar included. One name names one
-   unit: a keyword unit and a unit of text never share a name (state once used
-   `style` for both the keyword and the text of a style; it is `style-text`).
+   unit: a keyword unit and a unit of text never share a name (state: the
+   keyword is `style`, and the text of a style is `style-text`).
 2. **Every character in a unit.** In every context, every character that is not
    whitespace belongs to a unit, a comment, or a stated rejection: separators
    such as the `:` of a one-line note or of an alias, the `;` that the line rule
@@ -868,25 +864,25 @@ are sorted (the tests SKILL).
    version.
 6. Show the result as in 3.6.
 
-## 7. Where flowchart went wrong
+## 7. Mistakes to avoid
 
-- A rule decided from hand-written examples failed on boundary inputs. → Check
+- A rule decided from hand-written examples fails on boundary inputs. → Check
   the cases of each sentence and of the rules that meet it, and give each a
   fixture, as in 3.5.
-- An existing fixture was taken as sufficient from the start of its input, and
-  it was a rejected input. → Read its `accepted` and values.
-- Prettier wrapped citations after `[fixture:`, and a line-by-line search read
-  only a third of them. → Do not search line by line; use the check of
-  `pnpm run lint:docs` (2.4).
-- The reason written in a fixture's note did not match the order of the rules. →
-  Check notes as claims of the specification, and fix them with
+- An existing fixture whose input starts as wanted can be a rejected input. →
+  Read its `accepted` and values before taking it as sufficient.
+- Prettier wraps citations after `[fixture:`, so a line-by-line search misses
+  them. → Do not search line by line; use the check of `pnpm run lint:docs`
+  (2.4).
+- The reason written in a fixture's note can disagree with the order of the
+  rules. → Check notes as claims of the specification, and fix them with
   `fixtures:set-note`.
-- A working file of a check was written inside the repository. → Write every
-  output to an absolute path in the working directory outside the repository.
-- `add-many` was assumed to stop when `accepted` disagrees. → Read the list in
-  its output.
-- Do not try something by editing a tracked file temporarily. Copy it to the
-  working directory outside the repository and edit the copy.
+- A working file of a check inside the repository, or a temporary edit of a
+  tracked file, changes the working tree. → Write every output to an absolute
+  path in the working directory outside the repository; to try an edit, copy the
+  file there and edit the copy.
+- `add-many` does not stop when `accepted` disagrees. → Read the list in its
+  output.
 
 ## 8. Jison, Langium, and Chevrotain
 

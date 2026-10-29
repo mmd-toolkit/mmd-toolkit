@@ -96,10 +96,11 @@ parser from its build in `lib/`: rebuild it with
   the examples of its English document and the inputs of its fixture directory.
   Incorrect examples and `invalid/` inputs must report; correct examples and
   `valid/` inputs must not. The snapshots record each report and the text that
-  each suggestion produces. Inputs with a carriage return or with a character
-  that `pnpm run lint:chars` checks for (U+2028, U+2029, U+00A0, and the like)
-  use ESLint's `RuleTester`, with the input and each suggestion's expected
-  output written as template literals with escapes in the test source.
+  each fix and each suggestion produces. Inputs with a carriage return or with a
+  character that `pnpm run lint:chars` checks for (U+2028, U+2029, U+00A0, and
+  the like) use ESLint's `RuleTester`, with the input, the expected output of
+  the fix, and each suggestion's expected output written as template literals
+  with escapes in the test source.
 
 The tests of the language do not run on the whole corpus, which holds one input
 for each claim of the specification and is tested one by one by the parser and
@@ -136,14 +137,14 @@ case, also in a subdirectory, and a file or a directory whose name starts with
   that `pnpm run lint:chars` checks for (the list is in
   [`packages/spec/docs/index.md`](../../spec/docs/index.md)). Such inputs are
   tested with ESLint's `RuleTester`. Use template literals for `code` and each
-  suggestion's `output`, preserving the input's line terminators. Escape those
-  characters: write a carriage return as `\r`, and a CRLF as `\r` followed by an
-  actual line break; write U+2028, U+2029, and U+00A0 as `\u2028`, `\u2029`, and
-  `\u00a0`. Write any other line break as an actual line break. A tab and
-  whitespace at the end of a line may be written as `\t` and `\u0020`, which
-  shows in the code the whitespace that a case is about. Whitespace at the end
-  of a line is not among those characters: it stays in a fixture file, where
-  `.editorconfig` keeps it.
+  suggestion's `output` and the `output` of the fix, preserving the input's line
+  terminators. Escape those characters: write a carriage return as `\r`, and a
+  CRLF as `\r` followed by an actual line break; write U+2028, U+2029, and
+  U+00A0 as `\u2028`, `\u2029`, and `\u00a0`. Write any other line break as an
+  actual line break. A tab and whitespace at the end of a line may be written as
+  `\t` and `\u0020`, which shows in the code the whitespace that a case is
+  about. Whitespace at the end of a line is not among those characters: it stays
+  in a fixture file, where `.editorconfig` keeps it.
 - The common directive rule keeps its named corpus inputs in the `INVALID` and
   `VALID` tables, which its test passes to `testRule` as its corpus cases, so it
   has no fixture directory; its inputs that need escapes use `RuleTester`.
@@ -258,8 +259,9 @@ the fix is clear. A rule that relies on behavior of mermaid.js that a fix under
 way would change is left out of it. The index says only which rules the
 configuration enables, with the ✅ of its list.
 
-The document of a common rule has an item for each diagram type that the parser
-supports; the skill `eslint-plugin` sets the form of the item and the steps.
+A common rule that has something to say for some diagram types says it in a list
+in Rule Details, one item for each such diagram type; the skill `eslint-plugin`
+sets the form of the item and the steps.
 
 The namespace is `@mmd-toolkit`, the scope of the package: ESLint splits an id
 that starts with `@` into the plugin and the rule at its last `/`, so
@@ -370,29 +372,31 @@ These choices hold for every rule, so that the rules read alike:
   directive or a token, is reported at its `loc`; a part of the value of a
   token, at a `loc` from `sourceCode.getLocFromIndex`. Something that runs to
   the end of the text, such as an unclosed block, is reported where it opens.
-- A rule has no fix. The document of a rule says whether it has options; the
-  rule-ideas skill decides whether a rule has an option. A rule offers
-  suggestions only as the rule-ideas skill decides (`meta.hasSuggestions`), and
-  each suggestion says how mermaid.js reads the text after it is applied. The
-  suggestions are built in functions of their own, apart from `create`, which
-  passes what they return to `context.report`. A suggestion that removes a
-  statement or a token removes the range that `removalRange` of
-  `src/utils/removal.ts` gives: the element, and the whitespace or the line
-  around it, so that no blank space is left. A `;` after the element is not
-  removed: it is the separator of the statement before it, or an empty statement
-  of its own, which is a member in a subgraph. The one exception is the `;` that
-  mermaid.js ignores (an `IgnoredSemicolon` token, by the rule of `style` and
-  `classDef` lines): `oneOfTwoRemovals` removes it with the statement that it
-  follows.
+- A rule has a fix only as the rule-ideas skill decides (`meta.fixable`), and it
+  offers suggestions only as that skill decides (`meta.hasSuggestions`). The
+  document of a rule says whether it has options; the rule-ideas skill decides
+  whether a rule has an option. Each suggestion says how mermaid.js reads the
+  text after it is applied. The fixes and the suggestions are built in functions
+  of their own, apart from `create`, which passes what they return to
+  `context.report`; a fix is left out where the edit cannot be made. A
+  suggestion that removes a statement or a token removes the range that
+  `removalRange` of `src/utils/removal.ts` gives: the element, and the
+  whitespace or the line around it, so that no blank space is left. A `;` after
+  the element is not removed: it is the separator of the statement before it, or
+  an empty statement of its own, which is a member in a subgraph. The one
+  exception is the `;` that mermaid.js ignores (an `IgnoredSemicolon` token, by
+  the rule of `style` and `classDef` lines): `oneOfTwoRemovals` removes it with
+  the statement that it follows.
 - The snapshot test of a rule is one call of `testRule(name, rule)`. It checks
-  the reports and suggestions on the examples of the English document and the
-  inputs of the rule's fixture directory. A rule test does not run mermaid.js.
-  Use ESLint's `RuleTester` for inputs with a carriage return or with a
-  character that `pnpm run lint:chars` checks for (U+2028, U+2029, U+00A0, and
-  the like): write the input as a template literal with escapes in `code`, list
-  the expected reports in `errors`, and write the full expected text of each
-  suggestion as a template literal in `output`. The fixture files and snapshots
-  of ordinary inputs remain the main cases of the rule.
+  the reports, fixes, and suggestions on the examples of the English document
+  and the inputs of the rule's fixture directory. A rule test does not run
+  mermaid.js. Use ESLint's `RuleTester` for inputs with a carriage return or
+  with a character that `pnpm run lint:chars` checks for (U+2028, U+2029,
+  U+00A0, and the like): write the input as a template literal with escapes in
+  `code`, list the expected reports in `errors`, and write the full expected
+  text of the fix as a template literal in the `output` of the case, and that of
+  each suggestion in the `output` of the suggestion. The fixture files and
+  snapshots of ordinary inputs remain the main cases of the rule.
 
 ## Types for rules
 

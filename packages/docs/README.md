@@ -64,4 +64,6 @@ page hot updates.
 
 Rendering resolves links to imported documents as site links, and other
 repository links and fixture citations as GitHub links. The source link on each
-page points to its original document.
+page points to its original document. Write a link as a relative path to the
+real file, with `index.md` or `index.ja.md` spelled out: the resolution matches
+files, not directories.

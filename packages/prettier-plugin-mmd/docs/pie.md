@@ -238,7 +238,12 @@ pie
 ### Description blocks
 
 Reuse [flowchart multiline values](./flowchart.md#multi-line-values) and its
-reason: authored value columns remain consistent everywhere. Touching
+reason: authored value columns remain consistent everywhere. Among the Db-equal
+forms (`accDescr{a}` and `accDescr {a}`; `{a}` and `{ a }`), pie takes the
+shared accessibility decision of its sibling diagrams
+([flowchart](./flowchart.md#accessibility-lines) and
+[C4](./c4.md#description-blocks)) rather than a form of its own: contact is
+kept, a run of whitespace becomes one space, and no padding is added. Touching
 keyword/opener and interior sides stay touching; present runs collapse to one
 space. Plain whitespace before the opener can join, including across physical or
 Unicode line boundaries; a real comment/directive keeps its break. Empty
@@ -291,9 +296,16 @@ the hidden rule consumes an immediate LF outside the node, and closing-boundary
 whitespace can leave a required visible EOL. Keep closing padding, including at
 EOF. Required exterior LF and edge blanks follow [Blank lines](#blank-lines).
 Keep opaque malformed/empty/nested-looking contents, internal trivia and
-multiple forms. Do not insert a break before a form. Ordinary opener padding can
-compact and a body opener can be indented; its interior and unindented closer
-keep their columns. Already-started string/title/block text retains priority.
+multiple forms. Do not insert a break before a form: each of these edits changes
+what Mermaid accepts. A break added before a form, or a form moved onto its own
+line, turns the line feed that the form consumed into a visible one inside the
+statement. Removing a form exposes the line feed that it consumed. Removing the
+closing space lets the form consume the line feed that the next statement needs,
+and that statement is rejected. The closing fence of a hidden YAML block also
+stays at column one: it is the closer only there, and an indented closing fence
+is rejected. Ordinary opener padding can compact and a body opener can be
+indented; its interior and unindented closer keep their columns. Already-started
+string/title/block text retains priority.
 
 Keep closing padding for standalone forms at the start or middle of the body,
 indented forms, forms after the header or showData, and forms at EOF. The same
@@ -350,9 +362,11 @@ directive-kind PieIgnoredText. It is distinct from a Root directive. Keep
 empty/punctuation/multiline forms, source gaps before colon/number/flag, global
 cuts inside the range and textAfter of all five statement forms. A digit-glued
 nonqualifying closer can be a real comment, or a later closer can qualify;
-preserve that classification instead of adding a boundary. Strings and blocks
-retain earlier lexical priority. Closing spaces and spare LF remain significant
-before another statement; a closed form at EOF can gain the shared final LF.
+preserve that classification instead of adding a boundary: a space added after
+such a `}%%` would make the comment that Mermaid reads a hidden token instead.
+Strings and blocks retain earlier lexical priority. Closing spaces and spare LF
+remain significant before another statement; a closed form at EOF can gain the
+shared final LF.
 
 Fixed cases: [fixture: pie/hidden-directives/hidden-number-gap] [fixture:
 pie/hidden-directives/hidden-before-colon] [fixture:
@@ -407,10 +421,13 @@ Reuse [shared comment placement](./flowchart.md#comments) to keep author
 attachment and text: inline comments retain touching sides or one separating
 space; standalone comments align with body statements, or column one before the
 header. Keep bare/triple-percent marks and trailing comment spaces. Pie native
-comments end at LF, retaining LS/PS inside them; strings and block interiors
-keep percent content, while line common values stop at it. Common removed
-regions keep their complete swallowed source and joined continuation columns. A
-protected preheader prefix overrides ordinary alignment.
+comments end at LF, retaining LS/PS inside them, because pie does not treat them
+as separators: ending a comment at one would expose the rest of the line as a
+statement and change the Db; strings and block interiors keep percent content,
+while line common values stop at it. Common removed regions keep their complete
+swallowed source and joined continuation columns, because re-indenting a
+continuation adds spaces to the joined label. A protected preheader prefix
+overrides ordinary alignment.
 
 Fixed cases: [fixture: pie/comments/comments-align] [fixture:
 pie/comments/comment-bare] [fixture: pie/comments/comment-value-text] [test:
@@ -611,12 +628,16 @@ Reuse [shared line endings](./compatibility.md#line-endings) and
 CR/CRLF before printing and applies endOfLine afterwards. These physical
 conversions preserve Mermaid reading, including in labels, blocks and hidden
 consumed LF. Preserve LS/PS/NBSP/BOM in value/comment/ignored content according
-to its mode; unprotected common value edges trim
+to its mode: LS and PS are not pie separators, so they are content inside
+strings, common values, comments and ignored bodies, and invalid in structural
+places, and splitting at them changes the Db; unprotected common value edges
+trim
 [common whitespace as defined in the specification](../../spec/docs/common.md#notation)
 at either end. [corpus fixture: pie/review-common-all-whitespace-trim] Plain
-block-opener whitespace joins. Native colon gaps remain ASCII. Invalid
-structural Unicode stays rejected. A leading BOM is handled by Prettier, so byte
-identity is not promised.
+block-opener whitespace joins. Native colon gaps remain ASCII: a native colon
+gap takes only ASCII whitespace, and NBSP there is rejected. Invalid structural
+Unicode stays rejected. A leading BOM is handled by Prettier, so byte identity
+is not promised.
 
 Fixed cases: [test: pie/line-terminators-and-unicode/eol-cr] [test:
 pie/line-terminators-and-unicode/eol-crlf-hidden] [test:

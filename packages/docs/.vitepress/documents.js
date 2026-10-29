@@ -14,7 +14,7 @@ const documentDirectories = [
 ]
 
 /**
- * Diagram families in the order of Mermaid 12.0.0's sidebarSyntax(). Existing
+ * Diagram families in the order of Mermaid 12.2.0's sidebarSyntax(). Existing
  * families use their specification filenames; other entries use diagram ids.
  * The sidebar omits agentflow, info and railroad; they follow it in name
  * order.

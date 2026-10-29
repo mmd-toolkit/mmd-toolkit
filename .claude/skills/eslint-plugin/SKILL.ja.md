@@ -391,9 +391,6 @@ Rule Details は、文の後に、反するコードと従うコードの例を�
 - fixture（規則の覚え書き）: 「規則が依拠する mermaid.js の読み方は、
   `@mmd-toolkit/tests` の次の fixture に記録されている。」の後に、
   主張と例を裏付ける fixture を並べる。
-  まだ fixture のないものがある間は、
-  最後に「ほかの例の fixture は追加中である。」を置く。
-  英語版では「Fixtures for the other examples are being added.」である。
 
 ## 4. 書く前と書いた後に確かめること
 
@@ -456,21 +453,15 @@ mermaid.js の呼び出しは直列で遅いので、入力が多いときは、
    flowchart の printer の形（ヘッダーの後の文を 1 段下げる）に合わせる。
    挙げる fixture の `expected.json` が文書の主張どおりであることを確かめる。
    例にする fixture は、従う例も含めて、 `accepted` が true のものだけにする。
-   fixture のない例と主張には、
-   コーパスを持つ tests パッケージに fixture を頼む。
-   それを示す最小の入力と、その fixture が答える規則の文書の主張を添える。
-   tests パッケージは、`pnpm run fixtures:add` で足して、
-   mermaid.js の結果を記録し（`packages/tests/docs/maintaining-fixtures.md`）、
-   parser は木を記録する。
-   fixture の名前が届いたら、その `expected.json` を読み、
-   規則の覚え書きの一覧に入れる。
+   fixture のない例と主張には、SKILL `tests` の手順で fixture を足す。
+   それを示す最小の入力と、その fixture が答える規則の文書の主張を添え、
+   `pnpm run fixtures:add` で足して、
+   mermaid.js
+   の結果を記録する（`packages/tests/docs/maintaining-fixtures.md`）。
+   そのうえで、parser に木を記録する（SKILL `parser`）。
+   その `expected.json` を読み、規則の覚え書きの一覧に入れる。
    実装した規則には覚え書きがないので、規則のテストに入れる。
-   fixture ができるまでは、覚え書きの fixture の節の最後に、
-   追加中であることを書く文を置く。
-   実装した規則には、その文を置く覚え書きがない。
-   そのため、文書の変更は、fixture が規則のテストに入るまで終わらない。
-   それまでは、作業の結果（9 節）に、追加中の fixture を、
-   その入力と mermaid.js の結果とともに挙げる。
+   文書の変更は、fixture ができるまで終わらない。
 
 ## 5. 書いた後の検査
 
@@ -579,6 +570,5 @@ mermaid.js の呼び出しは直列で遅いので、入力が多いときは、
 
 作業の結果として次を示す。
 書いたファイル、例ごとの条件の結果（当たる、当たらない）、
-報告する例それぞれの整形の結果、足した fixture（追加中の間は、
-最小の入力と mermaid.js の結果）。
+報告する例それぞれの整形の結果、足した fixture。
 主張ごとに、実行して確かめたか、読んで確かめたか、確かめていないかを書く。

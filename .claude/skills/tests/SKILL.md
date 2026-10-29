@@ -68,15 +68,12 @@ the skill `conventions`, which section 2 points to.
   characters.
 - Read the result of `eslint --fix` and of Prettier, as the skill `conventions`
   says.
-
-When the working tree is shared with other work:
-
-- Do not touch files that the other work is editing.
 - Do not edit a tracked file temporarily to try something (it may be staged in
-  the middle).
+  the middle); try it in a copy outside the repository.
 - Do not change the git staging or the checked-out files (`git add`, `git mv`,
-  `stash`, `checkout`, `reset`). Do not stop processes by name
-  (`pkill -f vitest` also stops the tests of the other work).
+  `stash`, `checkout`, `reset`); the staging is the user's.
+- Stop only the processes that you started, and not by name (`pkill -f vitest`
+  also stops every other run of the tests on the machine).
 
 ## 4. How to check (in every piece of work)
 
@@ -107,10 +104,11 @@ When the working tree is shared with other work:
 - When showing results, say for each claim whether it was checked by running
   something, checked by reading, or not checked.
 - Do not settle for a few hand-written examples. Where a rule acts on a value,
-  try the whole set of characters at the boundary (for example, the whitespace
-  left at the end of a style value was checked by putting each of the 23
-  characters of JavaScript's `\s` there and running mermaid.js). Check that
-  results do not change across every fixture, or every collected input.
+  try the whole set of characters at the boundary (for example, for the
+  whitespace left at the end of a style value, put each of the 23 characters of
+  JavaScript's `\s` other than LF and CR (the line whitespace of the
+  specification) there and run mermaid.js). Check that results do not change
+  across every fixture, or every collected input.
 - Which tests to run, and when, follows "Running tests" in the skill
   `conventions`. For this package:
 
@@ -167,9 +165,8 @@ When the working tree is shared with other work:
   `MMD_TOOLKIT_MERMAID_CACHE=disabled` is set. Only the files of `src/` in
   `RESULT_FILES` are in the key, so changing them makes every stored result
   unused: keep that list right (a test checks it). A change to those files is
-  announced, before it is made, to those who run the tests, and is made when no
-  long run is going, whose stored results it would throw away; only a fix of a
-  wrong result goes in at once, announced all the same.
+  made when no long run is going, whose stored results it would throw away; only
+  a fix of a wrong result goes in at once.
 - Check that the generator changes nothing with the hashes of the files, not
   only with the count it prints (run at the root of the repository).
 
@@ -283,8 +280,8 @@ diagram; an imported common rule does not establish how the diagram uses it.
   `classDiagram-v2` are both detected as `classDiagram`. The diagram type's
   fixtures go in one directory, whatever ids it has. The diagram-type naming
   rules are in [conventions](../conventions/SKILL.md#code).
-- A clone of mermaid.js at the tag of the pinned version (in `.work/mermaid`,
-  which `.gitignore` lists; how to make it is in `tools/README.md`).
+- A clone of mermaid.js at the tag of the pinned version (outside the
+  repository, for example `../mermaid`; how to make it is in `tools/README.md`).
 
 ### 5.2 The normalizer
 
@@ -389,8 +386,8 @@ diagram; an imported common rule does not establish how the diagram uses it.
    of the tests that read every fixture in `tests/fixtures.test.ts`. Add the
    normalizer's file to `RESULT_FILES` in
    `packages/tests/src/mermaid-run-store.ts`; `codeIdentityOf` uses this list to
-   build the result identity. Announce the new type to the owners of consumer
-   lists in other packages rather than editing outside the assigned scope.
+   build the result identity. The lists of diagram types in other packages are
+   changed by the steps of that package's skill (section 3), not here.
 6. Add tests in `tests/` (dropped fields do not appear, a patch does not change
    the summary, data block effects). In corpus-backed tests, load fixtures by
    name rather than copying their input strings, and add a missing input through
@@ -433,28 +430,29 @@ diagram; an imported common rule does not establish how the diagram uses it.
    the spec files import and of the functions that receive the text (the
    diagram's parser's `parse`, `Diagram.fromText`, ...) to the list in
    `spec-recorder.ts`, which every diagram type shares.
-3. What went wrong with the recorder of spec files in flowchart and sequence:
+3. The recorder of spec files (`tools/src/spec-recorder.ts`) runs each spec file
+   against stubs. What it relies on, and what to keep when changing it or adding
+   a diagram type:
    - Spec files build their inputs in loops and template literals, so reading
      string literals statically misses them. Run each file against stubs and
      record the strings passed to parse.
-   - Pointing the imports at stubs with Node's module hooks (`registerHooks`,
-     `register`) is stopped by the lint as an experimental feature, and
-     transpiling with TypeScript moves the line numbers. Copy the test file into
-     a temporary directory, rewrite only what is between the quotes of each
-     import path, and import the copy as it is. Paths of `import("...")` calls
-     inside tests are rewritten too; a type-only import is left alone, since
-     Node removes it.
+   - The lint stops Node's module hooks (`registerHooks`, `register`) as an
+     experimental feature, and transpiling with TypeScript moves the line
+     numbers. So the recorder copies the test file into a temporary directory,
+     rewrites only what is between the quotes of each import path, and imports
+     the copy as it is. Paths of `import("...")` calls inside tests are
+     rewritten too; a type-only import is left alone, since Node removes it.
    - The temporary directory on macOS is a symbolic link, so pass it through
      `realpathSync` to match the real paths in stack traces.
    - Node evaluates a module once per URL, so put the stub modules in a separate
      directory for each test file.
-   - Do not swallow errors that could hide inputs. Make a stub turned into a
-     string throw, and stop on a test-body error unless its file, test title and
-     error message are listed in `ERRORS_AFTER_THEIR_INPUT` in `collect.ts`,
-     with proof that it failed only after its final parse call and every input
-     was recorded.
-   - Tests that check the layout of the drawing do arithmetic on stubs. Make it
-     give `NaN`, and stop when a recorded text contains `NaN`.
+   - Errors must not hide inputs. A stub turned into a string throws, and the
+     run stops on a test-body error unless its file, test title and error
+     message are listed in `ERRORS_AFTER_THEIR_INPUT` in `collect.ts`, with
+     proof that it failed only after its final parse call and every input was
+     recorded.
+   - Tests that check the layout of the drawing do arithmetic on stubs. The
+     stubs give `NaN`, and the run stops when a recorded text contains `NaN`.
    - Tests that render through a real DOM and check the drawing cannot run
      against stubs (sequence's `actorBandModel.spec.ts`). Check that their
      inputs are also in the documentation or the demos, and leave the file out
@@ -465,8 +463,11 @@ diagram; an imported common rule does not establish how the diagram uses it.
    detectors (`detectDiagramType`) give the diagram type. Make the text of a
    demo what `mermaid.run()` reads (drop the line feed right after `<pre>`,
    decode character references, apply the `ts-dedent` that mermaid uses, trim).
-   This can be checked against the real page in a browser (for flowchart, the
-   demos were served on localhost and compared).
+   This can be checked against the real page in a browser: this one check needs
+   the dependencies installed in the clone, which collection does not. Start the
+   dev server of the clone (`pnpm run dev`), which builds the `mermaid.esm.mjs`
+   that the demo pages import and serves the demos, open the demo page, and
+   compare.
 5. Collected inputs get no `config`. Their names are
    `<source>-<file>-<first 8 hexadecimal digits of the SHA-256 of the input>`
    (`docs/maintaining-fixtures.md`).
@@ -655,15 +656,15 @@ extraction procedure, not the rules that the tree implements.
    rule intersections, not from corpus success alone.
 8. Document the builder in `docs/db-from-tree/<diagram>.md` and the checks in
    `docs/check-tree.md`, both with Japanese pairs and fixtures for each
-   distinguishing case. While trees are being recorded, implement from the
-   specification and fixed hand-built trees rather than waiting to infer the
-   contract from records. Once trees are recorded, run the checker on every
-   recorded tree and compare every comparable `dbFromTree` result with its
-   recorded reading, using the shared embedded-value helpers. Report actual tree
-   and Db counts, missing records, and each mismatch with its input; do not
-   silently skip a missing tree or an error record for an accepting reading, and
-   skip an error record only when its mark's reading rejects. Keep cases without
-   a comparison Db explicit as in §7.1.
+   distinguishing case. Before trees are recorded, implement from the
+   specification and fixed hand-built trees; do not infer the contract from
+   records. Once trees are recorded, run the checker on every recorded tree and
+   compare every comparable `dbFromTree` result with its recorded reading, using
+   the shared embedded-value helpers. Report actual tree and Db counts, missing
+   records, and each mismatch with its input; do not silently skip a missing
+   tree or an error record for an accepting reading, and skip an error record
+   only when its mark's reading rejects. Keep cases without a comparison Db
+   explicit as in §7.1.
 
 ## 7. Fixture tools and lists for the other packages
 
@@ -709,10 +710,10 @@ the spec's skill). This skill does the following.
    is kept in the case it is written in, so `State` and `state` are two shapes)
    and every other character kept: blanks, U+2028, U+2029, punctuation, and the
    text of directives and comments. Inputs are compared with the other inputs of
-   the same file of failures only: the same shape found for another kind of
-   failure is kept, since it was kept for another reason. When the input comes
-   from another package's file, only read it, take the strings out through the
-   syntax tree, and match them byte for byte. Follow the existing names
+   the same file of failures only: the same shape from another kind of failure
+   is kept, since the other file holds it for another reason. When the input
+   comes from another package's file, only read it, take the strings out through
+   the syntax tree, and match them byte for byte. Follow the existing names
    (prefixes such as `gram-`, `lex-`, `db-`, `tokens-`, `config-`, a name of
    what the input shows and, for many inputs of one topic, the first 8
    hexadecimal digits of the SHA-256 of the input), write in the note what the
@@ -826,7 +827,12 @@ the spec's skill). This skill does the following.
    (`docs/maintaining-fixtures.md`). Classify from that list before deciding
    anything:
    - `acceptance` or `Db values`: a change of syntax. It concerns the updates of
-     the specification (the spec's skill) and the parser (the parser's skill). A
+     the specification (the spec's skill) and the parser (the parser's skill).
+     It also concerns this package: where the new Db reads a text differently (a
+     merge of repeated definitions, a comment line that is kept), change
+     `src/db-from-tree/<diagram>.ts` and the checks in `src/check-tree/`, and
+     their documents `docs/db-from-tree/<diagram>.md` and `docs/check-tree.md`
+     with their Japanese pairs, then run the whole test suite of the package. A
      diagram type that the new version lacks shows as `acceptance` to
      `UnknownDiagramError` on the `common/` fixtures that use it; that belongs
      with detection below;
@@ -867,8 +873,3 @@ the spec's skill). This skill does the following.
    difference). It cannot pass while a `MermaidEnvironmentError` remains.
 7. Show as the result the classified differences (the fixture names and what
    changed), grouped by the package they concern.
-
-The steps of this section have not yet been through a real update. At the first
-real update, check them as they are followed, together with the update steps in
-the skills of spec, parser and prettier-plugin, and correct on the spot what
-proves wrong or missing.

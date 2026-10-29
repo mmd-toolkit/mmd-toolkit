@@ -82,7 +82,7 @@ fixture の名前は、どの文字を扱うかを示します（たとえば `l
 NUL を持つ fixture は、`git diff` では binary と表示されます。
 
 リポジトリのルートの 2 つの設定が、これらのバイトが変わらないようにします。
-`.gitattributes` の `packages/*/tests/fixtures/** -text` は、
+`.gitattributes` の `packages/tests/fixtures/** -text` の行は、
 Git が改行を変換しないようにします。
 `.editorconfig` の fixture のディレクトリの節は、エディタが改行、末尾の改行、
 行末の空白、字下げを変えないようにします。

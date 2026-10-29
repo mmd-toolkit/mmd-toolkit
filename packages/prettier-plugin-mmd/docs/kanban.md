@@ -41,7 +41,19 @@ Some words are used in the rules below:
 The parser rejects some boards, and the plugin then reports a syntax error and
 leaves the text as it is; the printer repairs nothing (see
 [When a diagram is not formatted](../README.md#when-a-diagram-is-not-formatted)).
-The rejected inputs of the conformance corpus are checked by `corpus.test.ts`.
+The parser follows the specification, not mermaid.js, so it also rejects forms
+that mermaid.js accepts: an empty icon (`::icon()`), an empty class line
+(`:::`), and an empty string or markdown string inside a shape (`S[""]`) (known
+divergence
+[`tokenless-empty-forms`](../../spec/docs/known-divergences/tokenless-empty-forms.md)).
+The printer does not delete them: a rejected board is left as written, and no Db
+of mermaid.js decides it. A whitespace-only icon, class, or label, a node
+written `""` outside a shape, and an empty data block (`A@{}`) are accepted and
+formatted, and the parser also accepts a data block with invalid YAML as opaque
+text, although mermaid.js rejects it (known divergence
+[`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.md)),
+and keeps it without checking or repairing it. The rejected inputs of the
+conformance corpus are checked by `corpus.test.ts`.
 
 Each rule below shows its formatting with examples: the text before formatting,
 and the text that the plugin prints. The examples are the fixtures that the
@@ -407,9 +419,13 @@ opaque, with its delimiters, its interior, and its line breaks, as written: it
 does not format the YAML, and it does not merge, split, reorder, wrap, or repair
 blocks, whether a block is empty (`A@{}`), has an unknown or duplicate key
 (`A@{ticket: X, ticket: Y}`), is not valid YAML (`A@{assigned: [a}`), or runs
-over several lines. Even a rewrite that leaves the Db unchanged would change the
-text that the author embedded. [fixture: data-blocks/data-opaque] [fixture:
-data-blocks/empty-data] [fixture: data-blocks/data-invalid-yaml] [fixture:
+over several lines. The parser accepts a block whose YAML is invalid, although
+mermaid.js rejects it (known divergence
+[`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.md)),
+because the block is embedded text that the specification reads as opaque. Even
+a rewrite that leaves the Db unchanged would change the text that the author
+embedded. [fixture: data-blocks/data-opaque] [fixture: data-blocks/empty-data]
+[fixture: data-blocks/data-invalid-yaml] [fixture:
 data-blocks/data-unknown-duplicate] [fixture:
 data-blocks/gram-metadata-ticket-duplicate] [fixture:
 data-blocks/data-multiline] [fixture: data-blocks/gram-metadata-empty-multiline]
@@ -484,7 +500,9 @@ by another comment, or by a U+2028 or U+2029 is kept whole as written: its empty
 lines and its comments, up to the indentation of the next statement, which the
 printer chooses (see [Indentation](#indentation)). A gap with only comment lines
 (`S`, `%% note`, an empty line, `A`) is formatted as usual, and the comment line
-is aligned (see [Comments](#comments)). [fixture:
+is aligned (see [Comments](#comments)). A gap of this kind at the end of the
+board is kept whole too, with nothing after it to indent: `kanban`, ` S`, `%%`,
+and two empty lines print `  S`, `%%`, and the same two empty lines. [fixture:
 blank-lines/div-between-comment-blank] [fixture:
 blank-lines/div-comment-blank-before-icon] [fixture:
 blank-lines/div-comment-blank-before-class] [fixture:
@@ -818,7 +836,12 @@ separator and the whitespace after it count as the indentation of the next node
 (`S[x]%% c\u2028   A`: `A` is indented by 4 characters, the separator and 3
 spaces). The printer keeps such a comment and the separator as written, and
 writes after the separator the whitespace that makes up the indentation of the
-node (see [Indentation](#indentation)). The same holds on a line that holds a
+node (see [Indentation](#indentation)). Unlike a
+[mindmap](./mindmap.md#line-separators), which writes a line break there, the
+printer keeps the separator, because it is one character of the indentation of
+the next node and keeping it rebuilds no comment region. Writing a line break
+and one more space would give the same Db, so keeping the boundary is a
+conservative choice, not a forced one. The same holds on a line that holds a
 `;`: the node after the separator is a line of its own, so `S[x]%% c;`, U+2028,
 and ` T` print the comment, the separator, and `T` as an item, and the `;` in
 the comment does not join `T` to the line. A comment line (`%% c\u2029   A`) is
@@ -1032,14 +1055,17 @@ kanban
 
 The output ends with one line break, the one of the `endOfLine` option, after
 the last line: `kanban`, a line break, and ` S` without a final line break print
-`  S` and a line break. An empty board is `kanban` and a line break. The spaces
-at the end of a last bare id are part of the id and stay (`S   ` prints with its
-spaces, then the line break). When a directive that is not closed reaches the
-end of the text, it takes the rest, and the printer adds nothing after it. In
-Markdown, the indentation of the code fence or of its list item is the
-indentation of the host, and is not part of the indentation of the board.
-[fixture: final-newline/accepted] [fixture: final-newline/no-final-lf] [fixture:
-final-newline/empty-board] [fixture: final-newline/open-directive-at-eof]
+`  S` and a line break. An empty board is `kanban` and a line break. The
+exception is a gap that stays whole under [Blank lines](#blank-lines) at the end
+of the board: the output then ends with that gap, and the printer adds no line
+break after it. The spaces at the end of a last bare id are part of the id and
+stay (`S   ` prints with its spaces, then the line break). When a directive that
+is not closed reaches the end of the text, it takes the rest, and the printer
+adds nothing after it. In Markdown, the indentation of the code fence or of its
+list item is the indentation of the host, and is not part of the indentation of
+the board. [fixture: final-newline/accepted] [fixture:
+final-newline/no-final-lf] [fixture: final-newline/empty-board] [fixture:
+final-newline/open-directive-at-eof]
 
 Input
 ([final-newline/empty-board-input.mmd](../tests/fixtures/kanban/final-newline/empty-board-input.mmd)):

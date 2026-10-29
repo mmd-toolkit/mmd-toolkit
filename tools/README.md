@@ -31,12 +31,12 @@ unrelated test files of mermaid, such as `mermaid.spec.ts`,
 the end-to-end tests, are not collected: the inputs come from the diagram's own
 test files, its documentation and the demos.
 
-1. Clone mermaid into `.work/mermaid`, which `.gitignore` lists, at the tag of
-   the pinned version (`mermaid@` followed by the version of the `mermaid`
-   devDependency in `packages/tests/package.json`):
+1. Clone mermaid outside the repository, at the tag of the pinned version
+   (`mermaid@` followed by the version of the `mermaid` devDependency in
+   `packages/tests/package.json`):
 
    ```sh
-   git clone --depth 1 --branch mermaid@12.2.0 https://github.com/mermaid-js/mermaid.git .work/mermaid
+   git clone --depth 1 --branch mermaid@12.2.0 https://github.com/mermaid-js/mermaid.git ../mermaid
    ```
 
    The collector checks that the checkout is at that tag. Nothing needs to be
@@ -47,7 +47,7 @@ test files, its documentation and the demos.
 2. Collect, writing the result outside the repository (here for `sequence`):
 
    ```sh
-   pnpm --filter @mmd-toolkit/tests run fixtures:collect sequence --mermaid "$PWD/.work/mermaid" --out /tmp/sequence.json
+   pnpm --filter @mmd-toolkit/tests run fixtures:collect sequence --mermaid "$PWD/../mermaid" --out /tmp/sequence.json
    ```
 
    Give `--mermaid` an absolute path: the command runs in `packages/tests`. For

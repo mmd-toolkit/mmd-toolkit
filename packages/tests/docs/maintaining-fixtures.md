@@ -73,9 +73,9 @@ U+2029 as they are). The name of a fixture says which character it is about,
 such as `lex-nul`. A fixture with NUL shows as binary in a `git diff`.
 
 Two settings in the root of the repository keep these bytes from changing: the
-`.gitattributes` lines `packages/*/tests/fixtures/** -text` stop Git from
-converting line endings, and the sections for the fixture directories in
-`.editorconfig` stop editors from changing line endings, final line breaks,
+`.gitattributes` line `packages/tests/fixtures/** -text` stops Git from
+converting line endings, and the section for the fixture directories in
+`.editorconfig` stops editors from changing line endings, final line breaks,
 trailing whitespace and indentation. `scripts/check-invisible-chars.mjs` skips
 the fixtures of this package and checks everything else.
 

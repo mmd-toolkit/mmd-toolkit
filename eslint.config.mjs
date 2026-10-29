@@ -42,7 +42,7 @@ export default [
       ".work/",
       // Candidate reports to mermaid.js, kept apart from the documents of the
       // packages and not linted.
-      "tmp/",
+      "tmp/report-candidate/",
       "!.github/",
     ],
   },

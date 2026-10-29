@@ -15,7 +15,16 @@ specified reading under
 [Inputs read differently](./compatibility.md#inputs-read-differently-from-mermaidjs).
 All corpus inputs, including rejections and divergences, run through the corpus
 test. For example, `"Agentflow-beta TB\nA\n"` is rejected rather than having its
-header repaired. [corpus fixture: agentflow/header-upper]
+header repaired. [corpus fixture: agentflow/header-upper] Of the specified
+divergences, Agentflow has six: directive-as-token-boundary,
+ignored-semicolon-as-token-boundary, embedded-data-opaque,
+html-tag-in-frontmatter, bare-percent-line-before-header and
+tokenless-empty-forms. A comment that takes the character before it or the line
+breaks after it, the blank-line pairing and the C4 detection do not apply, a C4
+word in Agentflow text stays Agentflow text, and the reserved word `click` does
+not apply either. The formatter never asks mermaid.js while printing and never
+reverts a result because mermaid.js reads it differently: formatting is not
+syntax repair, and the specification already defines the exceptional readings.
 
 ## Rules
 
@@ -214,10 +223,14 @@ agentflow-beta TB
 
 Reuse [Arrow spacing](./flowchart.md#arrow-spacing): one exterior space makes a
 relation readable; an edge id touches its @ and arrow. Keep directive touching
-and exact dash/dot counts, including counts beyond the Db cap. Agentflow has
-only sequence `-->`, failure `--x`, and reference `-.-`, with their extensions.
-Reference length counts dots. A following x may be vertex text; no unsupported
-arrow family is introduced. [fixture: arrows/arrow-cap-spelling] [fixture:
+and exact dash/dot counts, including counts beyond the Db cap: below the cap a
+shorter or longer arrow is another arrow (`A---->B` printed as `A --> B` is read
+differently), and beyond the cap the Db is the same but the tree keeps the
+written length, and a Db-equal capped arrow is not shortened because an equal Db
+alone gives no permission to rewrite authored text. Agentflow has only sequence
+`-->`, failure `--x`, and reference `-.-`, with their extensions. Reference
+length counts dots. A following x may be vertex text; no unsupported arrow
+family is introduced. [fixture: arrows/arrow-cap-spelling] [fixture:
 arrows/arrow-length-change-unsafe] [fixture: arrows/arrow-lengths] [fixture:
 arrows/edge-id] [fixture: arrows/marker-letter-vertex] [fixture:
 arrows/three-kinds]
@@ -294,7 +307,10 @@ Reuse [Whitespace between tokens](./flowchart.md#whitespace-between-tokens) and
 whitespace on both sides of & distinguishes a group from one id. Keep tight
 id/shape/:::/data suffixes, property Identifiers, actual comma-list holes
 (including empty ends), comma-bearing single ids, occurrences and order. Do not
-split ids, sort lists or manufacture a trailing comma. [fixture:
+split ids, sort lists or manufacture a trailing comma: a style target, a class
+suffix, a second class id or a vertex id that contains commas is one Identifier,
+and only the grammar's own id lists split at commas; property operands are
+Identifiers, not numbers to rewrite. [fixture:
 vertices-and-lists/class-list-holes] [fixture:
 vertices-and-lists/groups-suffixes]
 
@@ -642,7 +658,9 @@ without adding a brace or newline. Unlike flowchart, comment-looking description
 lines are real values and keep their columns. Closed empty descriptions stay
 separate statements where the grammar places them; Name/click placements stay
 IgnoredText, and style statements with a final empty style stay with following
-empty description blocks under Kept lines. [fixture:
+empty description blocks under Kept lines. An erased empty string, empty
+markdown string or empty call where a statement starts is not a statement: it is
+rejected as `tokenless-empty-forms`. [fixture:
 accessibility/accessibility-block] [fixture:
 accessibility/accessibility-comment-indent-alternative] [fixture:
 accessibility/accessibility-comment-is-value] [fixture:
@@ -892,7 +910,11 @@ description/string/markdown/call in textBeforeUrl/textBeforeTooltip with its
 exact source gaps, including either side of href. It has no prefix field before
 a callback name or target. The single whitespace characters required before
 tooltips and targets stay written; terminal empty descriptions are following
-statements. [fixture: click-statements/callback-padding-unsafe] [fixture:
+statements. The erased prefixes are kept because the specification accepts them
+and the tree holds them in textBeforeUrl/textBeforeTooltip, so dropping one
+would lose written text; flowchart's rule for the reserved word `click`, which
+rejects such input, does not apply to Agentflow. [fixture:
+click-statements/callback-padding-unsafe] [fixture:
 click-statements/tooltip-required-tab] [fixture: click-statements/url-form-kept]
 
 A tab before a fixed link target also stays written, and directives inside a

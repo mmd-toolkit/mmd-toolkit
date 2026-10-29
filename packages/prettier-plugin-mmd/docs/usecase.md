@@ -138,7 +138,8 @@ usecase-beta
 
 Reuse [ER's compact entity layout](./er.md#entities): one gap after `actor`,
 tight id/shape delimiters and metadata/class suffixes, no exterior ASCII label
-padding, and comma-space between actor items. Stereotype spacing follows
+padding, and comma-space between actor items, which shows the separate actor
+occurrences that one `actor` keyword introduces. Stereotype spacing follows
 [its class-based rule](#stereotypes). Keep explicit ids, quoted-only names,
 ellipse/rectangle spelling, label kinds, suffix order and every
 declaration/reference occurrence. Generated ids and resolved actor endpoints
@@ -285,7 +286,11 @@ fixed. Semantic operators print compact `..>:InClUdE` or the written extend
 case, then one target gap; their colon and keyword are operator syntax.
 [fixture: arrows/semantic-operator-directives] Case normalization can be
 Db-equal, but authored spelling follows the shared keyword policy. Never swap
-endpoints or translate operator families.
+endpoints or translate operator families. Direction, marker, case and the dash
+and dot counts stay as written because the printer never prints a normalized Db
+operator: `A---->B` printed as `A --> B` changes the minimum length, and `A<--B`
+printed as `B --> A` changes the order of source and target. A split arrow keeps
+its dash counts even where the Db length is fixed.
 
 [fixture: arrows/arrows-solid] [fixture: arrows/arrows-markers] [fixture:
 arrows/arrows-semantic] [fixture: arrows/arrows-length-kept] [fixture:
@@ -378,7 +383,12 @@ Native metadata is parsed, validated syntax. Format only structural whitespace:
 tight target/`@{`, no gap before a property colon, one after it, comma-space on
 one line and one space inside inline braces, including `@{ }`. Preserve key and
 scalar spelling, quote kinds, integer-looking text, booleans, order, duplicates,
-separate updates, separators and trailing commas. [fixture:
+separate updates, separators and trailing commas. Spelling, order and duplicates
+stay because they can change the final geometry or reject conflicts: reordering
+`U@{icon:'x',icon:''}` to `icon: '', icon: 'x'` changes the final icon, and
+`business: "true"` is rejected where Mermaid requires a boolean. `@{` stays one
+touching opener because `@ {` is rejected, and no newline is inserted inside a
+key, colon and value, because a newline cannot split one property. [fixture:
 native-metadata/metadata-key-multiline-directive] [fixture:
 native-metadata/metadata-scalar-multiline-directive] Neither YAML nor opaque
 flowchart/Agentflow metadata supplies a formatting model here.
@@ -740,9 +750,13 @@ Reuse [C4 value columns](./c4.md#multiline-values) and
 [flowchart's no-wrapping rule](./flowchart.md#line-wrapping): authored lines and
 columns are characters, and `printWidth` does not wrap long statements. Keep
 markdown, JSON, descriptions, directives and common-region continuations;
-ordinary strings and stereotypes gain no physical newline. Native metadata
-structure follows its own rule. [fixture:
-native-metadata/metadata-key-multiline-directive] [fixture:
+ordinary strings and stereotypes gain no physical newline. Usecase is
+line-oriented, so a structural newline can reject a relationship: `A-->`
+followed by `B` on the next line is rejected, and wrapping
+`LongSource-->LongTarget` at a small `printWidth` turns an accepted input into a
+rejected one. Markdown strings, JSON and description blocks can hold real
+newlines because those are value text. Native metadata structure follows its own
+rule. [fixture: native-metadata/metadata-key-multiline-directive] [fixture:
 native-metadata/metadata-scalar-multiline-directive] Repeated compatible
 declarations, boundaries, relationships, notes, class definitions/assignments
 and updates stay in source order, even when a shorter representation would have

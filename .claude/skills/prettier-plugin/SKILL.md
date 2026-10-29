@@ -82,7 +82,7 @@ The rules of the printer follow the choices made item by item. Before writing
 the printer, make the list of choices and ask for a decision.
 
 1. From the grammar and the tree in the specification, list what formatting
-   could change. The kinds of items flowchart had (as examples; a diagram type
+   could change. The kinds of items flowchart has (as examples; a diagram type
    has more or fewer):
    - the indentation unit, and nested indentation
    - statement separators (`;`), several statements on a line, empty lines
@@ -189,14 +189,14 @@ Steps when writing:
 
 ## 5. When a rule is added or changed
 
-When a missing rule is found after the decision, and a rule is added or changed,
-add the rule, its reason, and an example to that rule in `docs/<diagram>.md`
-(and to `docs/compatibility.md` when needed) in the same change. Show as the
-result: the wording of the rule, an input that shows it, mermaid.js's results
-before and after formatting, and the reason in the specification. A rule that
-changes a decided choice needs a decision before it is implemented; ask for it
-with that evidence. An implementation without the document leaves the decision
-and the code apart.
+When a rule is added or changed after the decision, add the rule, its reason,
+and an example to that rule in `docs/<diagram>.md` (and to
+`docs/compatibility.md` when needed) in the same change. Show as the result: the
+wording of the rule, an input that shows it, mermaid.js's results before and
+after formatting, and the reason in the specification. A rule that changes a
+decided choice needs a decision before it is implemented; ask for it with that
+evidence. An implementation without the document leaves the decision and the
+code apart.
 
 Write a narrow exception (for example, no space before the closing `?]` or `=]`
 of a slanted shape) into the document in the same way.
@@ -254,11 +254,10 @@ built is in `docs/development.md`.
 - The corpus: `tests/corpus.test.ts` checks idempotence and the Db on every
   fixture of the diagram type in `@mmd-toolkit/tests` that the plugin formats.
   Add the diagram type to what it loads.
-- The inputs of failures that were found and fixed are fixtures of the corpus,
-  which the corpus test formats on every run (formatting does not throw, is
-  idempotent, and keeps the Db and the embedded data). A failure that is fixed
-  is guarded by its fixture; the fixtures of the corpus are made in
-  `@mmd-toolkit/tests`. A failure that `pnpm run lint` rules out (an array
+- A failure of the printer is guarded by a fixture of the corpus, which the
+  corpus test formats on every run (formatting does not throw, is idempotent,
+  and keeps the Db and the embedded data); the fixtures of the corpus are made
+  in `@mmd-toolkit/tests`. A failure that `pnpm run lint` rules out (an array
   spread into the arguments of a call, in the `conventions` skill) is guarded by
   that rule instead.
 - Fixtures answer sentences. Every sentence of the rules documents
@@ -267,10 +266,10 @@ built is in `docs/development.md`.
   that meets it at the place it names: a directive, an ignored `;`, a comment
   line, an empty line, a line separator (U+2028, U+2029), an empty description
   block, and whatever else the sentence's own words name. The fixtures are
-  written with the sentence and checked against mermaid.js once. A failure found
-  anywhere is closed by a fixture and by the sentence that was missing. No test
-  and no command generates inputs, and no input is chosen by a random source or
-  by a number (a seed, a count).
+  written with the sentence and checked against mermaid.js once. A failure is
+  closed by a fixture and by the sentence that states the rule it shows to be
+  missing. No test and no command generates inputs, and no input is chosen by a
+  random source or by a number (a seed, a count).
 - Fixtures come from the cases of the rule sentences, never copies of corpus
   inputs; write minimal inputs for distinct cases, merge fixtures that answer
   the same case, cite corpus inputs as `[corpus fixture: ...]` instead, and
@@ -402,11 +401,11 @@ When the machine is under load or the workspace has unrelated failures:
   same Db, idempotence, no exceptions), and the fixtures added. For each claim,
   say whether it was checked by running (【実行】) or by reading (【読解】).
 
-## 9. Pitfalls (as steps)
+## 9. Mistakes to avoid
 
-- Checking with one or two hand-written examples misses cases. List the cases
-  that the sentence of the rule distinguishes and the rules that meet it, give
-  each a fixture, then fix the rule.
+- The sentence of a rule distinguishes more cases than one or two hand-written
+  examples show. List the cases that the sentence distinguishes and the rules
+  that meet it, give each a fixture, then fix the rule.
 - Whitespace outside the ranges of the tree can affect the Db. In flowchart: a
   style that is all whitespace at the end of a list of styles (it lies outside
   the range), the whitespace after a subgraph name (the id changes), the

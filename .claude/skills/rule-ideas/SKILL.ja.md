@@ -113,7 +113,7 @@ description:
 判断の前に毎回読む。
 この節の残りでは、その当て方を例で示す。
 
-### 判断の例（mermaid 12.0.0 で【実行】）
+### 判断の例（【実行】）
 
 残したもの（書き手の側の誤りを、mermaid が黙って受け入れるもの）:
 
@@ -153,7 +153,7 @@ description:
 | `subgraph Front end`、改行、`A`、改行、`end`（名前に `A` が入り、メンバーなし）                                                                                                           | mermaid の不具合のように見える。ふつうの名前を正しく書いており、その最後の語 `end` が後ろの改行を取る。事実: flowchart の文書はページの冒頭で小文字の `end` について警告し、[#1444](https://github.com/mermaid-js/mermaid/issues/1444)（closed。Type: Enhancement）はマークアップの作りによる制限としている                                                                                                                                                                                                                                                                                                                                                 |
 | `box red-team`（箱が赤くなり、名前が `-team` になる）                                                                                                                                     | mermaid の不具合のように見える。文書は色のない名前だけの書き方を認めており、その名前が `-` で分けられる                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | `link A: Dash@https://x.example`（ラベルが `Das` になる）                                                                                                                                 | mermaid の不具合のように見える。空白が 1 つないだけで、ラベルの最後の文字が落ちる。事実: 文書は `<ラベル> @ <URL>` の形だけを示す                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| `subgraph a `（行末の空白で id が subGraph0 になる）                                                                                                                                      | mermaid の不具合のように見える。見えない行末の空白で id が変わる。事実: 保守者は [#3252](https://github.com/mermaid-js/mermaid/issues/3252)（closed。Type: Bug / Error、Status: Approved、P1）で不具合と認めており、12.0.0 でも起きる                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `subgraph a `（行末の空白で id が subGraph0 になる）                                                                                                                                      | mermaid の不具合のように見える。見えない行末の空白で id が変わる。事実: 保守者は [#3252](https://github.com/mermaid-js/mermaid/issues/3252)（closed。Type: Bug / Error、Status: Approved、P1）で不具合と認めており、固定版でも起きる（実行）                                                                                                                                                                                                                                                                                                                                                                                                                |
 | `class 1A:::c`（数字で始まる名前）、`class C` より前の `style C fill:red`、CSS クラス `foo` に効く `classDef fo`                                                                          | この道具の範囲の外。CSS クラスやスタイルが付くかどうかは描かれた図にしか現れず、この道具は図を描かない。mermaid の不具合かどうかは判定せず、mermaid にも報告しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | `` class `a~b` ``（id `a`、型 `b`。図では `a<b>`）                                                                                                                                        | 文書から見て mermaid の不具合。バッククォートは特別な文字を逃がすとされる（[syntax/classDiagram.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/classDiagram.md#L161-L168)）が、その中の `~` も総称型を始める。ふつうの書き方ではまれ                                                                                                                                                                                                                                                                                                                                              |
 | `class A~T~` の後の `note for A~T~ "x"`（総称型つきで書いたクラスへのノート）                                                                                                             | mermaid の不具合のように見える。ノートは名前 `A~T~` を持ち、クラスは `A` なので、線なしで描かれる。`note for A "x"` ならクラスが見つかる                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
@@ -215,7 +215,7 @@ description:
 | 石川図で、原因として書いた `title`、`accTitle:`、`accDescr`（原因 `title Delivery causes`。`{` のブロックは原因 `accDescr {`、その行、`}` を与える）                                      | mermaid.js は文法どおり各行を原因として読み、何も失わない。石川図の文書はタイトルを示さず、最初の行が事象である。アクセシビリティの文は、すべての図種が対応すると書く mermaid.js のアクセシビリティの文書が示すとおりに書かれ、ほかに保つ書き方もない（フロントマターはどちらも設定しない）ので、mermaid.js の不具合である。カンバン図の `title` と `accTitle:` と同じ                                                                                                                                                                                                                                                                                      |
 | 石川図で、最初の原因より浅く字下げした原因、前の原因より 2 段以上深い原因、空白の中のタブ（タブは 1 文字と数える）                                                                        | 整形が見えるようにする。整形は各原因を mermaid.js が与える深さで印字する。マインドマップの不明瞭な字下げと同じく、字下げは書き手のつもりを示さない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | 石川図で、1 つの原因の下の同じ文字の 2 つの原因                                                                                                                                           | 両方が、それぞれの原因とともに描かれ、何も失われない。2 つ目を写しと呼ぶのは推測である。同じ項目を 2 度挙げるカンバン図の同じ id の 2 つの列とは違う                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| 石川図で、`A@{shape: rect}`、`[]`、`""`、閉じる `"` のない `"`                                                                                                                            | mermaid.js は原因の文字として読み、何も失わない。形、空の原因、引用符の付いた文字と呼ぶのは推測である。`[]` は mermaid.js 12.0.0 では文字である（[#7891](https://github.com/mermaid-js/mermaid/pull/7891) が open で、隙間にする）                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| 石川図で、`A@{shape: rect}`、`[]`、`""`、閉じる `"` のない `"`                                                                                                                            | mermaid.js は原因の文字として読み、何も失わない。形、空の原因、引用符の付いた文字と呼ぶのは推測である。`[]` は固定版の mermaid.js では文字である（実行。[#7891](https://github.com/mermaid-js/mermaid/pull/7891) が open で、隙間にする）                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | 石川図で、原因の文字の後の `%%`（`Process %% note` が原因になる）                                                                                                                         | flowchart の `subgraph S %% group` と同じく、構文を知らないことから来る                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | 石川図で、`style` か `classDef` で始まる行の終わりで失われる `;`（原因 `style R fill:#abc`）                                                                                              | 上の flowchart のラベルの CSS の同じ書き換えと同じく、mermaid.js の不具合である                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | 石川図で、原因の文字の中の指示子、2 つ目の `ishikawa` のヘッダー、ヘッダー `ishikawa-betaX`（事象 `-betaX`）                                                                              | 語の中の指示子は通常の書き方ではなく、行の終わりのものは設定の書き方である。2 つ目のヘッダーは受理されない。接尾辞の付いたヘッダーは通常の書き方ではない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
@@ -577,7 +577,7 @@ for (const input of inputs) {
    手で書いた一覧は使わない。
 2. 図種ごとに、その先頭の語で始まる最小の図を作り、
    mermaid が受理することを確かめる。
-   次の 22 の図は、mermaid 12.0.0 での受理を確かめた【実行】。
+   次の 22 の図は、固定版の mermaid.js での受理を確かめた【実行】。
    括弧内は、mermaid が返した図種の id。
    表にない図種は、その都度作って確かめる。
    - `sequenceDiagram`、改行、`A->>B: hi`（sequence）
@@ -589,7 +589,7 @@ for (const input of inputs) {
    - `pie`、改行、`"a" : 1`（pie）
    - `journey`、改行、`title T`、改行、`section S`、改行、
      `Task: 5: Me`（journey）
-   - `gitGraph`、改行、`commit`（gitgraph）
+   - `gitGraph`、改行、`commit`（gitGraph）
    - `mindmap`、改行、`root`、改行、`  A`（mindmap）
    - `timeline`、改行、`title T`、改行、`2020 : a`（timeline）
    - `quadrantChart`、改行、`x-axis Low --> High`（quadrantChart）
@@ -731,7 +731,7 @@ mermaid.js はそのテキストも捨てるので、報告は事実であり（
 どれも、すべての図種で 4 つの基準を満たし（注が言うとおり、
 すべての図種で実行）、その文書はすべての図種を書いている。
 
-判定（mermaid 12.0.0）:
+判定:
 
 | 規則                                        | 入れるか | 入れない理由                                                             |
 | ------------------------------------------- | -------- | ------------------------------------------------------------------------ |
@@ -1047,7 +1047,7 @@ flowchart-no-undef: (1) `style` は書き手が書かなかった頂点を作り
 [#7040](https://github.com/mermaid-js/mermaid/issues/7040) （closed、
 approved）はエラーを求め、
 [#7441](https://github.com/mermaid-js/mermaid/pull/7441) （merged、
-12.0.0 に入っている）は、警告を出し、頂点はなお作る。
+固定版に入っている）は、警告を出し、頂点はなお作る。
 (4) id を直す。
 id なしで書いたリンクに mermaid.js が与える `L_A_B_0` のような id は、
 図の id である（実行: `class L_A_B_0 hot` はリンクにクラスを与える）。
@@ -1664,7 +1664,7 @@ agentflow の規則の注は次のとおりである。
 検索は題名の「agentflow」と「agentflow-beta」と、「agentflow」に connector、
 flow title、direction、accDescr、duplicate、shape の語を加えたもので、
 読み方を変えるものはなかった。
-mermaid.js 12.0.0 の後にマージされた
+固定版の後にマージされた
 [#8443](https://github.com/mermaid-js/mermaid/pull/8443) は `[/…/]`
 を入力として描くので、 agentflow-no-redefined-vertex はそれへの、
 またはそれからの変化を見逃すが、何も変えないものは報告しない。
@@ -2291,8 +2291,7 @@ mermaid.js がそれをつもりどおりに読む。
 何を見えるようにしうるか、規則が提案を付けない理由、
 それを説明する mermaid.js のソースへのパーマリンクは、この節に記録する。
 実装はこの記録に従い、規則のテストがそれを確かめる。
-読み方は、mermaid 12.0.0 で各規則の invalid の fixture について確かめ、
-12.2.0 が違う読み方をするところは、固定版の 12.2.0 で確かめた（実行）。
+読み方は、各規則の invalid の fixture で確かめた（実行）。
 
 ### 書き換えの種類
 

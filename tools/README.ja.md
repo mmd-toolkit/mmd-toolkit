@@ -34,13 +34,12 @@ mermaid の無関係なテストファイル、例えば `mermaid.spec.ts`、
 端から端までのテストにあるテキストは集めません。
 入力は、その図種自身のテストファイル、文書、デモから取ります。
 
-1. mermaid を、`.gitignore` に入っている `.work/mermaid` に、
-   pin した版のタグで clone します。
+1. mermaid を、リポジトリの外に、pin した版のタグで clone します。
    タグの名前は、`mermaid@` の後に、
    `packages/tests/package.json` の devDependency `mermaid` の版を続けます。
 
    ```sh
-   git clone --depth 1 --branch mermaid@12.2.0 https://github.com/mermaid-js/mermaid.git .work/mermaid
+   git clone --depth 1 --branch mermaid@12.2.0 https://github.com/mermaid-js/mermaid.git ../mermaid
    ```
 
    収集の道具は、チェックアウトがそのタグにあることを確かめます。
@@ -52,7 +51,7 @@ mermaid の無関係なテストファイル、例えば `mermaid.spec.ts`、
 2. 集めて、結果をリポジトリの外に書きます（ここでは `sequence`）。
 
    ```sh
-   pnpm --filter @mmd-toolkit/tests run fixtures:collect sequence --mermaid "$PWD/.work/mermaid" --out /tmp/sequence.json
+   pnpm --filter @mmd-toolkit/tests run fixtures:collect sequence --mermaid "$PWD/../mermaid" --out /tmp/sequence.json
    ```
 
    `--mermaid` には絶対パスを与えます。

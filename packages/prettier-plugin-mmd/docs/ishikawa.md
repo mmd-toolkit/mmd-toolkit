@@ -8,8 +8,10 @@ How prettier-plugin-mmd formats the
 Db-equal forms exist.
 
 Escaped examples are complete JSON strings: `\n`, `\r`, `\t`, `\u2028` and
-`\u2029` denote characters. Examples were checked against Mermaid 12.0.0 when
-defined; regular tests use trees and recorded results without running Mermaid.
+`\u2029` denote characters. Examples are checked against the pinned mermaid.js,
+which reads each input and its output as the same Db except where it rejects the
+input (a known divergence); regular tests use trees and recorded results without
+running Mermaid.
 
 ## Rules
 
@@ -87,11 +89,12 @@ ishikawa
 
 An ordinary header-line root moves whole to its own depth-one line, including
 glued punctuation, fallback suffixes, percent text and semicolons. This agrees
-with the other printers' header/body convention while keeping the Db. Header
-comments and directive attachment follow their narrower rules; apparent
-statements inside the root are never split. [fixture:
-ishikawa/root-on-header-line/header-root] [fixture:
-ishikawa/root-on-header-line/header-root-kept] [fixture:
+with the other printers' header/body convention while keeping the Db. A root
+that contains semicolons moves whole as well: the Ishikawa header adds no
+`style` or `classDef` trigger to the shared line rule. Header comments and
+directive attachment follow their narrower rules; apparent statements inside the
+root are never split. [fixture: ishikawa/root-on-header-line/header-root]
+[fixture: ishikawa/root-on-header-line/header-root-kept] [fixture:
 ishikawa/root-on-header-line/header-root-percent] [fixture:
 ishikawa/root-on-header-line/header-root-tab] [fixture:
 ishikawa/root-on-header-line/header-root-touch]
@@ -145,10 +148,12 @@ ishikawa
 
 Ordinary blank runs collapse to one, keeping visual grouping without arbitrary
 runs; plain body-edge blanks disappear, including after leading common comments
-or directive-only lines. [fixture: ishikawa/blank-lines/blank-runs] [fixture:
-ishikawa/blank-lines/blank-around-trivia] A separating blank after a diagram
-comment remains one, including after an attached header comment; the complete
-terminal gap after a final diagram comment stays written. [fixture:
+or directive-only lines, because blank lines change no node and no parent in
+Ishikawa. A blank after a diagram comment is that comment's separating gap, not
+a plain body-edge blank, so it stays. [fixture: ishikawa/blank-lines/blank-runs]
+[fixture: ishikawa/blank-lines/blank-around-trivia] A separating blank after a
+diagram comment remains one, including after an attached header comment; the
+complete terminal gap after a final diagram comment stays written. [fixture:
 ishikawa/blank-lines/blank-comment-accepted] [fixture:
 ishikawa/blank-lines/blank-header-comment-accepted] [corpus fixture:
 ishikawa/gram-last-comment-blank-line] [fixture:
@@ -246,15 +251,17 @@ ishikawa/standalone-directives/directives-align] A directive glued before the
 header stays glued. [fixture:
 ishikawa/standalone-directives/directive-before-header-glued] On the header
 line, a directive touching the header remains there while a separated root moves
-below. [fixture: ishikawa/standalone-directives/header-touching-directive]
-[fixture: ishikawa/standalone-directives/header-two-touching-directives] A
-directive separated from the header by whitespace moves with a following
-same-line root, also when the directive spans physical lines: leaving it behind
-would leave header trailing whitespace after directive removal, which Mermaid
-rejects. This is the same reason kanban moves a header-line directive with its
-node. [fixture: ishikawa/standalone-directives/header-spaced-directive]
-[fixture: ishikawa/standalone-directives/header-spaced-multiline-directive]
-[fixture: ishikawa/standalone-directives/header-spaced-two-directives] [fixture:
+below; the root can move because root indentation does not choose a parent, so
+placing it below a header directive keeps the reading. [fixture:
+ishikawa/standalone-directives/header-touching-directive] [fixture:
+ishikawa/standalone-directives/header-two-touching-directives] A directive
+separated from the header by whitespace moves with a following same-line root,
+also when the directive spans physical lines: leaving it behind would leave
+header trailing whitespace after directive removal, which Mermaid rejects. This
+is the same reason kanban moves a header-line directive with its node. [fixture:
+ishikawa/standalone-directives/header-spaced-directive] [fixture:
+ishikawa/standalone-directives/header-spaced-multiline-directive] [fixture:
+ishikawa/standalone-directives/header-spaced-two-directives] [fixture:
 ishikawa/standalone-directives/header-spaced-directive-comment] [fixture:
 ishikawa/standalone-directives/header-beta-spaced-directive] [fixture:
 ishikawa/standalone-directives/header-spaced-directive-kept] [fixture:
@@ -268,7 +275,8 @@ ishikawa/standalone-directives/header-spaced-directive-zero] With multiple
 directives, the touching header prefix stays and the suffix after the first
 separating gap moves with the root. [fixture:
 ishikawa/standalone-directives/header-touching-prefix-spaced-directive] A
-directive touching root text retains the whole written header group. [fixture:
+directive touching root text retains the whole written header group, which keeps
+the relation the author wrote between the directive and the root text. [fixture:
 ishikawa/standalone-directives/directive-header-touch-root] [fixture:
 ishikawa/standalone-directives/header-directive-touching-root] [fixture:
 ishikawa/standalone-directives/header-two-directives-touching-root] [fixture:
@@ -587,8 +595,14 @@ separators normalize as indentation. [test: ishikawa: unicode-blank-lines]
 [corpus fixture: ishikawa/div-header-ls-line-node] [corpus fixture:
 ishikawa/div-header-ps-line-node] An actual diagram-comment ending keeps its
 separator, counting it once toward the next node's chosen depth and supplying
-only the remaining characters. An LF comment ending instead starts a new line
-without contributing an indentation character. [fixture:
+only the remaining characters. Mermaid counts that separator as one character of
+the next node's indentation, so the printed total must be the node's chosen
+depth indentation: a shallower total makes the node a sibling of the previous
+cause instead of its child, which changes the Db. Keeping the separator, rather
+than replacing it with a line feed (which keeps the tree too), follows kanban's
+boundary-preserving choice and needs no separate policy that repairs Mermaid's
+comment/blank pairing. An LF comment ending instead starts a new line without
+contributing an indentation character. [fixture:
 ishikawa/line-separators/lf-comment-boundary] [test: ishikawa:
 ls-comment-boundary] [test: ishikawa: kept-comment-ls-before] [test: ishikawa:
 kept-comment-ps-after] [test: ishikawa: selected-comment-ls-both] [test:
@@ -629,9 +643,12 @@ Input and output (escaped):
 
 Accepted indentation whitespace uses configured depth characters, counting each
 input character once, including tabs, VT/FF, NBSP, BOM and ideographic space;
-visual tab expansion is never a parenting rule. [corpus fixture:
-ishikawa/lex-space-positions] [corpus fixture: ishikawa/lex-tab-positions]
-[fixture: ishikawa/whitespace-characters/space-indentation] [fixture:
+visual tab expansion is never a parenting rule: Mermaid counts each indentation
+character once, so expanding a tab to visual columns would make a later line
+deeper than Mermaid reads it, and the following lines become children of `A` and
+change the Db. [corpus fixture: ishikawa/lex-space-positions] [corpus fixture:
+ishikawa/lex-tab-positions] [fixture:
+ishikawa/whitespace-characters/space-indentation] [fixture:
 ishikawa/whitespace-characters/tab-visual-expansion-unsafe] [corpus fixture:
 ishikawa/lex-bom-positions] [corpus fixture: ishikawa/lex-em-quad-positions]
 [corpus fixture: ishikawa/lex-em-space-positions] [corpus fixture:

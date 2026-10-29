@@ -2,10 +2,10 @@
 
 Japanese version: [compatibility.ja.md](./compatibility.ja.md)
 
-The plugin is checked against what mermaid.js 12.0.0 recorded in the conformance
-corpus. Formatting keeps what mermaid.js reads from a diagram, and text that
-mermaid.js rejects is left unchanged. This document lists where that does not
-hold, and why.
+The plugin is checked against what the pinned mermaid.js recorded in the
+conformance corpus. Formatting keeps what mermaid.js reads from a diagram, and
+text that mermaid.js rejects is left unchanged. This document lists where that
+does not hold, and why.
 
 ## Inputs read differently from mermaid.js
 
@@ -1170,8 +1170,11 @@ chooses the indentation, one step for a section and two for an item, and keeps
 what decides the roles. Bare-id, label, icon, and class whitespace remains value
 text. Decorations align with their node; an inline-directive line keeps its
 directives and the gaps beside them, and the printer chooses the whitespace
-before the first one. See the [kanban rules](./kanban.md). [fixture:
-kanban/indentation/sections-and-items] [fixture:
+before the first one. A data block with invalid YAML is accepted by the parser
+as opaque text, although mermaid.js rejects it (known divergence
+[`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.md)),
+and the printer keeps it as written. See the [kanban rules](./kanban.md).
+[fixture: kanban/indentation/sections-and-items] [fixture:
 kanban/icons-and-classes/aligned] [fixture:
 kanban/directives/leading-directive-indentation-decided] [fixture:
 kanban/trailing-whitespace/class-trailing-trim]

@@ -1,11 +1,11 @@
 // The Markdown documents of the repository that the document checks cover.
-// Files under tmp/, node_modules/, lib/, .changeset/, .git/, .work/, fixtures/
-// and .claude/worktrees/ and generated browser test reports are exempt.
+// Files under node_modules/, lib/, .changeset/, .git/, .work/, fixtures/,
+// .claude/worktrees/, tmp/report-candidate/ (candidate reports to mermaid.js,
+// kept apart from the documents) and generated browser test reports are exempt.
 import { readdirSync, statSync } from "node:fs"
 import path from "node:path"
 
 const skipDirs = new Set([
-  "tmp",
   "node_modules",
   "lib",
   ".changeset",
@@ -15,7 +15,10 @@ const skipDirs = new Set([
   "test-results",
   "playwright-report",
 ])
-const skipPaths = new Set([path.join(".claude", "worktrees")])
+const skipPaths = new Set([
+  path.join(".claude", "worktrees"),
+  path.join("tmp", "report-candidate"),
+])
 
 /**
  * Collects the Markdown files under `dir`, as paths relative to `root`,

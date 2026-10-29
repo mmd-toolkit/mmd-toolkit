@@ -17,6 +17,16 @@ Unicodeと制御文字のケースはテストのエスケープした文字列�
 拒否と差異を含む全corpus入力をcorpusテストで確認します。
 たとえば`"Agentflow-beta TB\nA\n"`は見出しを修復せず拒否します。
 [corpus fixture: agentflow/header-upper]
+仕様の乖離のうちagentflowに当たるのは6つです。
+directive-as-token-boundary、ignored-semicolon-as-token-boundary、
+embedded-data-opaque、html-tag-in-frontmatter、bare-percent-line-before-header、
+tokenless-empty-forms です。
+直前の文字や後続の改行を取るコメント、空行の対応付け、C4の検出は適用せず、
+agentflowの文字にあるC4の語はagentflowの文字のままです。
+予約語`click`も適用しません。
+整形は印字中にmermaid.jsへ問い合わせず、
+mermaid.jsの読みが違うからと結果を戻しません。
+整形は構文修復ではなく、例外の読みは仕様がすでに定義しているためです。
 
 ## Rules
 
@@ -220,6 +230,11 @@ agentflow-beta TB
 関係を読みやすくするため矢印の外側に空白1つを置きます。
 辺IDは@と矢印に接し、directiveとの接触を保ちます。
 Dbの上限を超えるものも含め、ダッシュとドットの数を保ちます。
+上限未満では、長さを変えると別の矢印になります。
+`A---->B`を`A --> B`にするとDbが変わります。
+上限を超える場合は、Dbが同じですが、木は書かれた長さを持ちます。
+Dbが同じというだけでは、著者の文字を書き換える許可にならないため、
+上限で打ち切った矢印へ短くしません。
 agentflowの矢印は`-->`、`--x`、`-.-`とその延長形だけです。
 参照辺の長さはドット数です。
 後続のxは頂点の文字になり、未対応の矢印を補いません。
@@ -306,6 +321,10 @@ ID、形、:::、データの接触、プロパティのIdentifier、
 実際のコンマ区切りリストの穴と空の両端、コンマを含む単一ID、
 出現と順序を保ちます。
 IDの分割、並べ替え、末尾コンマの補完はしません。
+スタイルの対象、classの接尾辞、2つ目のclassのID、
+コンマを含む頂点IDは1つのIdentifierで、
+コンマで分かれるのは文法上のIDリストだけです。
+プロパティのオペランドはIdentifierであり、書き換える数値ではありません。
 [fixture: vertices-and-lists/class-list-holes]
 [fixture: vertices-and-lists/groups-suffixes]
 
@@ -670,6 +689,8 @@ flowchartと同じ理由で同じ規則を使います。
 flowchartと異なり、コメントに見える説明行も値なので桁位置を保ちます。
 文法が割り当てる閉じた空の説明文は別の文で、 Nameとclick内ではIgnoredTextです。
 空のstyleと後続の空の説明ブロックはKept linesに従って同じ行に保ちます。
+文の先頭にある、消される空の文字列、空のmarkdown文字列、空のcallは文ではなく、
+`tokenless-empty-forms`として拒否します。
 [fixture: accessibility/accessibility-block]
 [fixture: accessibility/accessibility-comment-indent-alternative]
 [fixture: accessibility/accessibility-comment-is-value]
@@ -928,6 +949,10 @@ agentflowのtextBeforeUrl/textBeforeTooltipには、消されるclick、
 hrefの両側も同じです。
 callback名とtargetの前にはprefix欄がありません。
 tooltip/target前に必須の空白1文字を保ち、末尾の空の説明は後続文とします。
+消される前置きを保つのは、
+仕様がそれを受理して木のtextBeforeUrl/textBeforeTooltipに持つため、
+除くと書かれた文字が失われるからです。
+`click`を予約語として扱って拒否するflowchartの規則は、agentflowには当てません。
 [fixture: click-statements/callback-padding-unsafe]
 [fixture: click-statements/tooltip-required-tab]
 [fixture: click-statements/url-form-kept]

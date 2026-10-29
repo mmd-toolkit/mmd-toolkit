@@ -151,6 +151,7 @@ usecase-beta
 ER の[実体](./er.ja.md#実体)を再利用します。
 `actor` の後は空白 1 個、id と形の区切り、metadata と class の接尾辞は詰め、
 ラベルの外側の ASCII 空白を除き、actor の項目はコンマと空白で区切ります。
+一つの `actor` キーワードの下にある別々の actor の出現を見える形にするためです。
 stereotype の隙間は、[class に揃えた規則](#stereotypes)に従います。
 明示 id、引用だけの名前、楕円と長方形の綴り、ラベルの種類、接尾辞の順序、
 宣言と参照のすべての出現を保ちます。
@@ -314,6 +315,11 @@ Db の長さが固定される分割矢印の長い右半分も同じです。
 [fixture: arrows/semantic-operator-directives]
 大小文字を揃えて Db が等しくても、共有の方針に従い作者の綴りを保ちます。
 端点の交換や演算子の種類の変換はしません。
+方向、マーカー、大小文字、ダッシュと点の数は書かれたままです。
+正規化した Db の演算子は出力しないためです。
+`A---->B` を `A --> B` にすると最小の長さが変わり、
+`A<--B` を `B --> A` にすると始点と終点の順序が変わります。
+分割矢印は、Db の長さが固定される場合もダッシュの数を保ちます。
 
 [fixture: arrows/arrows-solid] [fixture: arrows/arrows-markers]
 [fixture: arrows/arrows-semantic] [fixture: arrows/arrows-length-kept]
@@ -410,6 +416,14 @@ native metadata は解析と検証を行う構文です。
 空の場合は `@{ }` です。
 キーと値の綴り、引用の種類、整数風の文字列、真偽値、順序、重複、独立した更新、
 区切り、末尾コンマを保ちます。
+綴り、順序、重複は、
+最終的な形状を変えたり競合で拒否されたりする場合があるため保ちます。
+`U@{icon:'x',icon:''}` を `icon: '', icon: 'x'` の順にすると最終的な icon
+が変わり、真偽値が必要な位置の `business: "true"` は拒否されます。
+`@{` は一つの開始記号として接したままです。
+`@ {` は拒否されるためです。
+キー、コロン、値の間には改行を入れません。
+改行は一つのプロパティを分けられないためです。
 [fixture: native-metadata/metadata-key-multiline-directive]
 [fixture: native-metadata/metadata-scalar-multiline-directive]
 YAML や flowchart、Agentflow の不透明な metadata の整形は当てはまりません。
@@ -797,6 +811,11 @@ flowchart の[折り返し](./flowchart.ja.md#折り返し)を再利用します
 書かれた行と列は文字であり、`printWidth` で長い文を折り返しません。
 markdown、JSON、説明、directive、共通領域の継続を保ちます。
 通常の文字列と stereotype に物理改行を足しません。
+usecase は行指向なので、構造としての改行は関係を拒否させることがあります。
+`A-->` の次の行に `B` を置いた入力は拒否され、
+`LongSource-->LongTarget` を小さな `printWidth` で折り返すと、
+受理される入力が拒否される入力になります。
+markdown 文字列、JSON、説明ブロックは、値の文字として実際の改行を持てます。
 native metadata の構造は専用の規則に従います。
 [fixture: native-metadata/metadata-key-multiline-directive]
 [fixture: native-metadata/metadata-scalar-multiline-directive]

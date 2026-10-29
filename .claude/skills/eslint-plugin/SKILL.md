@@ -369,9 +369,7 @@ How each part is written:
   rule-ideas skill).
 - Fixtures (in the rule notes): "The behavior of mermaid.js that the rule relies
   on is recorded in these fixtures of `@mmd-toolkit/tests`:", followed by the
-  fixtures that back the claims and the examples. While some have no fixture
-  yet, it ends with "Fixtures for the other examples are being added."
-  (`ほかの例の fixture は追加中である。`).
+  fixtures that back the claims and the examples.
 
 ## 4. Checking, before and after writing
 
@@ -426,19 +424,14 @@ write its output to a file.
    after the header one level in). Check that the `expected.json` of each
    fixture listed says what the document claims, and use only fixtures whose
    `accepted` is true as examples, also for the correct examples. For every
-   example and claim without a fixture, request one from the tests package,
-   which holds the corpus: give the smallest input that shows it and the claim
-   of the rule document that the fixture answers. The tests package adds it with
-   `pnpm run fixtures:add`, which records what mermaid.js does
-   (`packages/tests/docs/maintaining-fixtures.md`), and the parser records its
-   tree. When the name of the fixture arrives, read its `expected.json` and list
-   it in the rule notes; for an implemented rule, which has no rule notes, it
-   goes into the tests of the rule. Until it exists, the rule notes end their
-   Fixtures section with the sentence for fixtures being added. An implemented
-   rule has no rule notes to hold that sentence: its document change is not done
-   until the fixture is in the tests of the rule, and until then the result of
-   the work (section 9) lists the fixtures being added, with their inputs and
-   the results of mermaid.js.
+   example and claim without a fixture, add one by the steps of the skill
+   `tests`: give the smallest input that shows it and the claim of the rule
+   document that the fixture answers, and add it with `pnpm run fixtures:add`,
+   which records what mermaid.js does
+   (`packages/tests/docs/maintaining-fixtures.md`); then record its tree in the
+   parser (the skill `parser`). Read its `expected.json` and list it in the rule
+   notes; for an implemented rule, which has no rule notes, it goes into the
+   tests of the rule. The document change is not done until the fixture exists.
 
 ## 5. Checks after writing
 
@@ -544,6 +537,5 @@ skeleton that reports nothing.
 
 Show, as the result of the work: the files written, the result of the condition
 for each example (matched or not), the formatted output of each reported
-example, and the fixtures added (or, while they are being added, the smallest
-inputs and the results of mermaid.js). Say for each claim whether it was checked
-by running something, checked by reading, or not checked.
+example, and the fixtures added. Say for each claim whether it was checked by
+running something, checked by reading, or not checked.

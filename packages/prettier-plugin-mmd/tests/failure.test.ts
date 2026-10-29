@@ -5,7 +5,7 @@ import {
   formatMermaid,
 } from "./helpers.ts"
 
-// Inputs that mermaid.js rejects (UnknownDiagramError in mermaid 12.0.0), run
+// Inputs that mermaid.js rejects (UnknownDiagramError in mermaid.js), run
 // through the real parser.
 const rejected = ["this is not a diagram\n", "flowchrt LR\n  A --> B\n"]
 

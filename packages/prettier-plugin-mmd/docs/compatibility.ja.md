@@ -2,8 +2,8 @@
 
 英語版: [compatibility.md](./compatibility.md)
 
-このプラグインは、
-適合性コーパスに記録された mermaid.js 12.0.0 の結果で確かめています。
+このプラグインは、適合性コーパスに記録された、
+固定した版の mermaid.js の結果で確かめています。
 整形は mermaid.js が図から読むものを保ち、
 mermaid.js が拒否するテキストは変えません。
 この文書は、それが成り立たない箇所と、その理由を挙げます。
@@ -1254,6 +1254,10 @@ kanban のボードの Db は字下げを持たず、
 裸の id・ラベル・icon・class の空白は値として残します。
 装飾はノードの桁に揃え、インラインディレクティブの行は、
 ディレクティブと隣の隙間を保ち、最初のディレクティブの前の空白を印字が決めます。
+YAML として正しくないデータブロックは、パーサーが不透明なテキストとして受理し、
+mermaid.js は拒否します（既知の差異
+[`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.ja.md)）。
+印字は書かれたまま残します。
 [kanban の規則](./kanban.ja.md)を参照してください。
 [fixture: kanban/indentation/sections-and-items]
 [fixture: kanban/icons-and-classes/aligned]
