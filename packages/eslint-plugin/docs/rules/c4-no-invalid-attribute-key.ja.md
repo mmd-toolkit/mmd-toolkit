@@ -76,9 +76,13 @@ C4Context
 
 ## 背景
 
-要素の adapter は [`bgColor`、`borderColor`、`fontColor`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4ShapeAdapter.ts#L140-L156) を正確な名前で読む。
+要素の adapter は
+[`bgColor`、`borderColor`、`fontColor`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4ShapeAdapter.ts#L140-L156)
+を正確な名前で読む。
 関係の描画も、
-正確な名前の [色と offset のフィールド](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/svgDraw.ts#L26-L36) を読む。
+正確な名前の
+[色と offset のフィールド](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/svgDraw.ts#L26-L36)
+を読む。
 対象は無視される属性名であり、色の値が正しい CSS かどうかではない。
 
 <!-- begin auto-generated rule resources -->

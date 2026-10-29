@@ -23,8 +23,8 @@ subgraph の文はその `subgraph` の行より 1 段深く置き、
 1 段は Prettier の `useTabs` と `tabWidth` オプションで指定し、
 下記の下限を適用します。
 既定は空白 2 つで、Prettier が整形するほかの言語と同じです。
-ヘッダーの後の文を 1 段深くするのは、
-mermaid.js の文書の書き方です。 [fixture: indentation/use-tabs]
+ヘッダーの後の文を 1 段深くするのは、 mermaid.js の文書の書き方です。
+[fixture: indentation/use-tabs]
 通常の字下げは木の構造から決めます。
 入力の桁位置は subgraph の所属を決めません。 [fixture: indentation/statements]
 [fixture: indentation/empty-description-block]
@@ -35,8 +35,8 @@ mermaid.js の文書の書き方です。 [fixture: indentation/use-tabs]
 字下げをすべて取り除くと、方向文がaccessibilityの値や構文エラーに変わり、
 Mermaidの読みが変わるためです。
 この下限で実際の方向文を保護します。
-桁位置で読みが変わる非方向行は、
-後述の規則で元の字下げを保ちます。 [fixture: indentation/zero-direction-description-subgraph]
+桁位置で読みが変わる非方向行は、後述の規則で元の字下げを保ちます。
+[fixture: indentation/zero-direction-description-subgraph]
 [fixture: indentation/zero-direction-title]
 [fixture: indentation/zero-direction-title-tab]
 [fixture: indentation/zero-direction-description-block]
@@ -44,17 +44,19 @@ Mermaidの読みが変わるためです。
 [fixture: indentation/zero-direction-directive]
 [fixture: indentation/zero-direction-style-prefix]
 
-入力（エスケープ表記、`tabWidth: 0`）:
-`"flowchart LR\n  accTitle: t;direction TB\n"`。
+入力（エスケープ表記、
+`tabWidth: 0`）: `"flowchart LR\n  accTitle: t;direction TB\n"`。
 
-出力 ([indentation/zero-direction-title-output.mmd](../tests/fixtures/flowchart/indentation/zero-direction-title-output.mmd)):
+出力
+([indentation/zero-direction-title-output.mmd](../tests/fixtures/flowchart/indentation/zero-direction-title-output.mmd)):
 
 ```mmd
 flowchart LR
  accTitle: t;direction TB
 ```
 
-入力 ([indentation/nested-subgraphs-input.mmd](../tests/fixtures/flowchart/indentation/nested-subgraphs-input.mmd)):
+入力
+([indentation/nested-subgraphs-input.mmd](../tests/fixtures/flowchart/indentation/nested-subgraphs-input.mmd)):
 
 ```mmd
 flowchart TB
@@ -66,7 +68,8 @@ C
 end
 ```
 
-出力 ([indentation/nested-subgraphs-output.mmd](../tests/fixtures/flowchart/indentation/nested-subgraphs-output.mmd)):
+出力
+([indentation/nested-subgraphs-output.mmd](../tests/fixtures/flowchart/indentation/nested-subgraphs-output.mmd)):
 
 ```mmd
 flowchart TB
@@ -78,9 +81,11 @@ flowchart TB
   end
 ```
 
-`tabWidth: 4` のとき（ [オプション](../tests/fixtures/flowchart/indentation/tab-width-4-options.json) ）:
+`tabWidth: 4` のとき
+([オプション](../tests/fixtures/flowchart/indentation/tab-width-4-options.json)):
 
-入力 ([indentation/tab-width-4-input.mmd](../tests/fixtures/flowchart/indentation/tab-width-4-input.mmd)):
+入力
+([indentation/tab-width-4-input.mmd](../tests/fixtures/flowchart/indentation/tab-width-4-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -89,7 +94,8 @@ A --> B
 end
 ```
 
-出力 ([indentation/tab-width-4-output.mmd](../tests/fixtures/flowchart/indentation/tab-width-4-output.mmd)):
+出力
+([indentation/tab-width-4-output.mmd](../tests/fixtures/flowchart/indentation/tab-width-4-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -100,14 +106,16 @@ flowchart LR
 
 `direction` の後に空白と `TB`、`BT`、`RL`、`LR`、
 `TD` のどれかが続くテキストを含み、方向の文ではない行は、
-字下げも含めて書かれたまま残します。 [fixture: indentation/direction-text-values-kept]
+字下げも含めて書かれたまま残します。
+[fixture: indentation/direction-text-values-kept]
 [fixture: indentation/direction-text-with-directive-kept]
 [fixture: indentation/acc-descr-block-direction-text-kept]
 mermaid.js は、そうしたテキストを含む行を字下げすると、方向の文として読みます。
 `accTitle: t;direction TB` はアクセシビリティのタイトルですが、
 同じ行を字下げすると方向 `TB` になります。
 
-入力 ([indentation/direction-text-kept-input.mmd](../tests/fixtures/flowchart/indentation/direction-text-kept-input.mmd)):
+入力
+([indentation/direction-text-kept-input.mmd](../tests/fixtures/flowchart/indentation/direction-text-kept-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -119,7 +127,8 @@ C
 end
 ```
 
-出力 ([indentation/direction-text-kept-output.mmd](../tests/fixtures/flowchart/indentation/direction-text-kept-output.mmd)):
+出力
+([indentation/direction-text-kept-output.mmd](../tests/fixtures/flowchart/indentation/direction-text-kept-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -133,17 +142,18 @@ accDescr: d ; direction LR
 
 ### 1 行に 1 文
 
-文はそれぞれ 1 行に置きます。 [fixture: statements-one-per-line/compat-empty-description-block-after-statement]
+文はそれぞれ 1 行に置きます。
+[fixture: statements-one-per-line/compat-empty-description-block-after-statement]
 [fixture: statements-one-per-line/compat-empty-description-block-before-separator]
 [fixture: statements-one-per-line/compat-empty-description-block-before-statement]
 1 行に書かれ `;` で区切られた文は、行に分けます。
-`;` は文を区切るだけで、
-1 行に複数の文があると読みにくいからです。 [fixture: statements-one-per-line/separated-by-semicolons-meets-others]
+`;` は文を区切るだけで、 1 行に複数の文があると読みにくいからです。
+[fixture: statements-one-per-line/separated-by-semicolons-meets-others]
 
 ただし、文を区切る `;` 以外の `;` を含む行は、文と `;` を行に残します。
 `A[x;]`、`accTitle: a;b`、コメントの中の `;` などがそうした `;` です。
-文を別の行に分けず、`;` はその位置に、
-両側の空白も書かれたとおりにして残します。 [fixture: statements-one-per-line/inner-semicolon-kept]
+文を別の行に分けず、`;` はその位置に、両側の空白も書かれたとおりにして残します。
+[fixture: statements-one-per-line/inner-semicolon-kept]
 [fixture: statements-one-per-line/comment-semicolon-not-separator]
 [fixture: statements-one-per-line/compat-semicolon-in-label-without-style-kept]
 文そのものは、ほかと同じように整形します。
@@ -161,9 +171,10 @@ mermaid.js は、一部の行（`style`、`:`、`#` がこの順に `;` の前�
 この規則が読むのは `style`、`:`、`#`、`;` だけなので、
 ほかのトークンの間の空白は変えてかまいません。
 ただし、`:` とその後の `#` の間の空白は、
-あるかないかを変えません（[Semicolons](#semicolons)を参照）。
+あるかないかを変えません（[セミコロン](#セミコロン)を参照）。
 
-入力 ([statements-one-per-line/separated-by-semicolons-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-input.mmd)):
+入力
+([statements-one-per-line/separated-by-semicolons-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -171,7 +182,8 @@ flowchart LR
   subgraph S; E; F; end
 ```
 
-出力 ([statements-one-per-line/separated-by-semicolons-output.mmd](../tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-output.mmd)):
+出力
+([statements-one-per-line/separated-by-semicolons-output.mmd](../tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -184,7 +196,8 @@ flowchart LR
   end
 ```
 
-入力 ([statements-one-per-line/line-with-semicolon-kept-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/line-with-semicolon-kept-input.mmd)):
+入力
+([statements-one-per-line/line-with-semicolon-kept-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/line-with-semicolon-kept-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -197,7 +210,8 @@ G[x;]; style H fill:#f00;
 I[style:#x;]-->J;   -->L
 ```
 
-出力 ([statements-one-per-line/line-with-semicolon-kept-output.mmd](../tests/fixtures/flowchart/statements-one-per-line/line-with-semicolon-kept-output.mmd)):
+出力
+([statements-one-per-line/line-with-semicolon-kept-output.mmd](../tests/fixtures/flowchart/statements-one-per-line/line-with-semicolon-kept-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -213,14 +227,16 @@ flowchart LR
 文が id `accTitle`、`accDescr`、`direction`、`click`、`call`、`href` のどれか、
 または `direction` で終わる id で終わり、次の文との間を `;` が区切るときも、
 文を行にまとめ、`;` をその位置に残します。
-id が `A-->call;` のようにリンクの末尾にあるときも同じです。 [fixture: statements-one-per-line/semicolon-after-word-between-others-kept]
+id が `A-->call;` のようにリンクの末尾にあるときも同じです。
+[fixture: statements-one-per-line/semicolon-after-word-between-others-kept]
 [fixture: statements-one-per-line/semicolon-after-link-to-word-kept]
 [fixture: statements-one-per-line/semicolon-after-word-not-at-end-split]
 mermaid.js は、これらの語の後の空白を、改行も含めて語と一緒に読むからです。
 `accTitle ; :` は頂点 `accTitle` と `:` ですが、
 `accTitle` と `:` を 2 行に書くとアクセシビリティのタイトルになります。
 
-入力 ([statements-one-per-line/semicolon-after-word-kept-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/semicolon-after-word-kept-input.mmd)):
+入力
+([statements-one-per-line/semicolon-after-word-kept-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/semicolon-after-word-kept-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -236,7 +252,8 @@ directiondirection ; TB
 A-->Bdirection; LR
 ```
 
-出力 ([statements-one-per-line/semicolon-after-word-kept-output.mmd](../tests/fixtures/flowchart/statements-one-per-line/semicolon-after-word-kept-output.mmd)):
+出力
+([statements-one-per-line/semicolon-after-word-kept-output.mmd](../tests/fixtures/flowchart/statements-one-per-line/semicolon-after-word-kept-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -261,7 +278,8 @@ flowchart LR
 `style A`、`classDef c`、`linkStyle 0 interpolate basis` に、
 空白と改行が続く形がそうです。
 
-入力 ([statements-one-per-line/empty-style-before-block-kept-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/empty-style-before-block-kept-input.mmd)):
+入力
+([statements-one-per-line/empty-style-before-block-kept-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/empty-style-before-block-kept-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -272,7 +290,8 @@ style A accDescr {
 } ;B
 ```
 
-出力 ([statements-one-per-line/empty-style-before-block-kept-output.mmd](../tests/fixtures/flowchart/statements-one-per-line/empty-style-before-block-kept-output.mmd)):
+出力
+([statements-one-per-line/empty-style-before-block-kept-output.mmd](../tests/fixtures/flowchart/statements-one-per-line/empty-style-before-block-kept-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -286,27 +305,30 @@ flowchart LR
 単語が subgraph の名前や、スタイル、クラス定義、
 リンクスタイルのテキストの終わりにあるときも同じです。
 その単語は `end`、`click`、`call`、`href` で、スタイルのテキストでは、
-`fill:click` のように、
-ASCII の英数字以外の文字の後にあっても終わりの単語です。 [fixture: statements-one-per-line/semicolon-after-style-text-word-kept]
+`fill:click` のように、 ASCII の英数字以外の文字の後にあっても終わりの単語です。
+[fixture: statements-one-per-line/semicolon-after-style-text-word-kept]
 [fixture: statements-one-per-line/semicolon-after-style-text-not-word-split]
 名前の中の `end` は、その後の空白を、改行も含めて取ります。
 そのため、`subgraph Front end` に改行と `A` が続くと、名前は `Front end`、改行、
 `A` で、メンバーはなく、 `subgraph Front end ;` ではメンバー A があります。
 `;` が後の行にあるときも、`;` はそのまま残り、その前の空白も書かれたまま、
-`subgraph` の行の一部になります。 [corpus fixture: flowchart/semicolon-after-end-name-2a3a795c]
+`subgraph` の行の一部になります。
+[corpus fixture: flowchart/semicolon-after-end-name-2a3a795c]
 名前の後の改行を読むのは `end` と `click` だけで、一覧のほかの単語は、
 文のテキストと一覧を共用しているために入っています。
-そこで `;` を残しても、
-mermaid.js が読むものは変わりません。 [fixture: statements-one-per-line/semicolon-after-name-word-kept]
+そこで `;` を残しても、 mermaid.js が読むものは変わりません。
+[fixture: statements-one-per-line/semicolon-after-name-word-kept]
 [corpus fixture: flowchart/name-semicolon-whitespace-0c9483e4]
 [corpus fixture: flowchart/name-semicolon-whitespace-0fd5a434]
 [corpus fixture: flowchart/name-semicolon-whitespace-05fd0f99]
-`Front pend` と `Front endx` は、
-単語で終わりません。 [fixture: statements-one-per-line/semicolon-after-name-not-end-dropped]
+`Front pend` と `Front endx` は、単語で終わりません。
+[fixture: statements-one-per-line/semicolon-after-name-not-end-dropped]
 ディレクティブが単語を切っていても同じです。
-mermaid.js はテキストを読む前にディレクティブを取り除くからです。 [fixture: statements-one-per-line/semicolon-after-word-cut-by-directive-kept]
+mermaid.js はテキストを読む前にディレクティブを取り除くからです。
+[fixture: statements-one-per-line/semicolon-after-word-cut-by-directive-kept]
 
-入力 ([statements-one-per-line/semicolon-after-end-name-kept-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/semicolon-after-end-name-kept-input.mmd)):
+入力
+([statements-one-per-line/semicolon-after-end-name-kept-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/semicolon-after-end-name-kept-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -326,7 +348,8 @@ D
 end
 ```
 
-出力 ([statements-one-per-line/semicolon-after-end-name-kept-output.mmd](../tests/fixtures/flowchart/statements-one-per-line/semicolon-after-end-name-kept-output.mmd)):
+出力
+([statements-one-per-line/semicolon-after-end-name-kept-output.mmd](../tests/fixtures/flowchart/statements-one-per-line/semicolon-after-end-name-kept-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -351,14 +374,17 @@ flowchart LR
 mermaid.js ではコメントを始めません。
 テキストの始まりで、頂点 `%%x` になります。
 単独の行に置くとコメントになるので、その行は書かれたとおりにトークンを保ち、
-文は単独の行に移しません。 [fixture: statements-one-per-line/glued-percent-after-label-kept]
+文は単独の行に移しません。
+[fixture: statements-one-per-line/glued-percent-after-label-kept]
 [fixture: statements-one-per-line/percent-token-after-whitespace-kept]
 [fixture: statements-one-per-line/percent-token-after-block-and-directive-kept]
 [fixture: statements-one-per-line/percent-token-in-subgraph-kept]
 ラベルやリンクのテキストの中の `%%` は文を始めず、
-その行はほかと同じように整形します。 [fixture: statements-one-per-line/percent-in-label-formatted]
+その行はほかと同じように整形します。
+[fixture: statements-one-per-line/percent-in-label-formatted]
 
-入力 ([statements-one-per-line/glued-percent-token-kept-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/glued-percent-token-kept-input.mmd)):
+入力
+([statements-one-per-line/glued-percent-token-kept-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/glued-percent-token-kept-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -368,7 +394,8 @@ accDescr {y}%%z
 C --> D
 ```
 
-出力 ([statements-one-per-line/glued-percent-token-kept-output.mmd](../tests/fixtures/flowchart/statements-one-per-line/glued-percent-token-kept-output.mmd)):
+出力
+([statements-one-per-line/glued-percent-token-kept-output.mmd](../tests/fixtures/flowchart/statements-one-per-line/glued-percent-token-kept-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -381,24 +408,28 @@ flowchart LR
 ### セミコロン
 
 文の終わりの `;` は取り除き、
-トップレベルでそれだけで置かれた `;` も取り除きます。 [fixture: semicolons/alone-between-empty-lines-removed]
+トップレベルでそれだけで置かれた `;` も取り除きます。
+[fixture: semicolons/alone-between-empty-lines-removed]
 [fixture: semicolons/alone-between-comments-removed]
 [fixture: semicolons/before-empty-description-block-removed]
 subgraph の中で、それだけで 1 つの文になる `;` は、1 行に置いて残します。
-mermaid.js はそれを subgraph のメンバーに入れます。 [fixture: semicolons/kept-in-subgraph-own-line]
+mermaid.js はそれを subgraph のメンバーに入れます。
+[fixture: semicolons/kept-in-subgraph-own-line]
 [fixture: semicolons/kept-in-subgraph-with-directive]
 [fixture: semicolons/kept-in-subgraph-repeated]
 文の中にある `;` は、mermaid.js が一部の行で読み飛ばすもので、その位置に残し、
-その行も残します（[1 行に 1 文](#1-行に-1-文)を参照）。 [fixture: semicolons/compat-ignored-semicolon-in-label]
+その行も残します（[1 行に 1 文](#1-行に-1-文)を参照）。
+[fixture: semicolons/compat-ignored-semicolon-in-label]
 [fixture: semicolons/compat-ignored-semicolon-in-string]
 文の終わりの `;` も、同じ行でその後にディレクティブが続くときは残します。
-`;` がないと、
-ディレクティブの前の空白が文の一部として読まれるからです。 [fixture: semicolons/kept-before-trailing-directive]
+`;` がないと、ディレクティブの前の空白が文の一部として読まれるからです。
+[fixture: semicolons/kept-before-trailing-directive]
 `;` を落とすと、行の終わりか、行の規則が無視する `;` が変わる行は、
 書かれたまま印字します。
 閉じていないディレクティブの後の `;`、別の `;` に接する無視される `;`、
 U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは、
-[`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照）。 [fixture: semicolons/kept-after-unclosed-directive]
+[`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照）。
+[fixture: semicolons/kept-after-unclosed-directive]
 [fixture: semicolons/ignored-next-to-another-kept]
 [fixture: statements-one-per-line/compat-unclosed-directive-semicolon-kept]
 [fixture: statements-one-per-line/compat-ignored-semicolon-next-to-semicolon-kept]
@@ -408,18 +439,20 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 `:` とその後の `#` の間の空白は、あるかないかを保ちます。
 行の規則は、その間に空白がないときだけ、行の最後の `;` を無視するので、
 `A[style:]-->B[# z;y]` の矢印の周りのように、
-そこで空白を落としたり書いたりすると、
-ラベルが変わるからです。 [fixture: semicolons/style-line-gap-between-colon-and-hash-kept]
+そこで空白を落としたり書いたりすると、ラベルが変わるからです。
+[fixture: semicolons/style-line-gap-between-colon-and-hash-kept]
 空白があるところは、ほかの所と同じに空白 1 つで印字します。
 規則が問うのは空白があるかどうかで、いくつあるかではないからです。
 `A[style: ]-->B[#z;y]` はそのままで、
-`C[style:]   -->   D[#z;y]` は `C[style:] --> D[#z;y]` になります。 [fixture: semicolons/style-line-space-between-colon-and-hash-kept]
+`C[style:]   -->   D[#z;y]` は `C[style:] --> D[#z;y]` になります。
+[fixture: semicolons/style-line-space-between-colon-and-hash-kept]
 [fixture: semicolons/style-line-spaces-between-colon-and-hash-become-one]
 行の末尾にある、規則が無視する `;` は落とします。
-印字した行には規則が読む `;` がないので、
-その空白はほかと同じに整えます。 [fixture: semicolons/style-line-dropped-semicolon-formats-the-gap]
+印字した行には規則が読む `;` がないので、その空白はほかと同じに整えます。
+[fixture: semicolons/style-line-dropped-semicolon-formats-the-gap]
 
-入力 ([semicolons/removed-input.mmd](../tests/fixtures/flowchart/semicolons/removed-input.mmd)):
+入力
+([semicolons/removed-input.mmd](../tests/fixtures/flowchart/semicolons/removed-input.mmd)):
 
 ```mmd
 flowchart LR;
@@ -428,7 +461,8 @@ flowchart LR;
   ;
 ```
 
-出力 ([semicolons/removed-output.mmd](../tests/fixtures/flowchart/semicolons/removed-output.mmd)):
+出力
+([semicolons/removed-output.mmd](../tests/fixtures/flowchart/semicolons/removed-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -438,10 +472,11 @@ flowchart LR
 
 文の終わりの `;` は、mermaid.js の行の規則が無視するものも取り除きます。
 `style` 文の CSS の色の後の `;` がそうです。
-mermaid.js はその `;` をテキストから取り除くので、
-落としても何も変わりません。 [fixture: semicolons/ignored-removed-other-statements]
+mermaid.js はその `;` をテキストから取り除くので、落としても何も変わりません。
+[fixture: semicolons/ignored-removed-other-statements]
 
-入力 ([semicolons/ignored-removed-input.mmd](../tests/fixtures/flowchart/semicolons/ignored-removed-input.mmd)):
+入力
+([semicolons/ignored-removed-input.mmd](../tests/fixtures/flowchart/semicolons/ignored-removed-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -451,7 +486,8 @@ classDef c fill:#fff,stroke:#333;
 style B   fill:#0f0 ;
 ```
 
-出力 ([semicolons/ignored-removed-output.mmd](../tests/fixtures/flowchart/semicolons/ignored-removed-output.mmd)):
+出力
+([semicolons/ignored-removed-output.mmd](../tests/fixtures/flowchart/semicolons/ignored-removed-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -461,7 +497,8 @@ flowchart LR
   style B fill:#0f0
 ```
 
-入力 ([semicolons/kept-in-subgraph-input.mmd](../tests/fixtures/flowchart/semicolons/kept-in-subgraph-input.mmd)):
+入力
+([semicolons/kept-in-subgraph-input.mmd](../tests/fixtures/flowchart/semicolons/kept-in-subgraph-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -472,7 +509,8 @@ flowchart LR
   end
 ```
 
-出力 ([semicolons/kept-in-subgraph-output.mmd](../tests/fixtures/flowchart/semicolons/kept-in-subgraph-output.mmd)):
+出力
+([semicolons/kept-in-subgraph-output.mmd](../tests/fixtures/flowchart/semicolons/kept-in-subgraph-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -485,21 +523,24 @@ flowchart LR
   end
 ```
 
-入力 ([semicolons/ignored-in-statement-kept-input.mmd](../tests/fixtures/flowchart/semicolons/ignored-in-statement-kept-input.mmd)):
+入力
+([semicolons/ignored-in-statement-kept-input.mmd](../tests/fixtures/flowchart/semicolons/ignored-in-statement-kept-input.mmd)):
 
 ```mmd
 flowchart LR
 A[style:#x] e;@-->B
 ```
 
-出力 ([semicolons/ignored-in-statement-kept-output.mmd](../tests/fixtures/flowchart/semicolons/ignored-in-statement-kept-output.mmd)):
+出力
+([semicolons/ignored-in-statement-kept-output.mmd](../tests/fixtures/flowchart/semicolons/ignored-in-statement-kept-output.mmd)):
 
 ```mmd
 flowchart LR
   A[style:#x] e;@--> B
 ```
 
-入力 ([semicolons/kept-before-items-input.mmd](../tests/fixtures/flowchart/semicolons/kept-before-items-input.mmd)):
+入力
+([semicolons/kept-before-items-input.mmd](../tests/fixtures/flowchart/semicolons/kept-before-items-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -509,7 +550,8 @@ class A c; %%{init: {}}%%
 C; D
 ```
 
-出力 ([semicolons/kept-before-items-output.mmd](../tests/fixtures/flowchart/semicolons/kept-before-items-output.mmd)):
+出力
+([semicolons/kept-before-items-output.mmd](../tests/fixtures/flowchart/semicolons/kept-before-items-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -529,14 +571,16 @@ Prettier がコードでそうするのと同じで、空行は文をまとま�
 [fixture: blank-lines/inside-multi-line-statement]
 [fixture: blank-lines/around-comment-lines]
 [fixture: blank-lines/around-directive-lines]
-テキストの先頭と末尾、
-subgraph の先頭と末尾の空行は取り除きます。 [fixture: blank-lines/after-comment-before-header]
+テキストの先頭と末尾、 subgraph の先頭と末尾の空行は取り除きます。
+[fixture: blank-lines/after-comment-before-header]
 [fixture: blank-lines/after-frontmatter]
 行をまたいで書かれた値（ラベルなど）のテキストの中の空行は、
 値の一部なので残します。 [fixture: blank-lines/inside-values-kept]
-テキストはちょうど 1 つの改行で終わります。 [fixture: blank-lines/header-only-without-line-break]
+テキストはちょうど 1 つの改行で終わります。
+[fixture: blank-lines/header-only-without-line-break]
 
-入力 ([blank-lines/collapsed-input.mmd](../tests/fixtures/flowchart/blank-lines/collapsed-input.mmd)):
+入力
+([blank-lines/collapsed-input.mmd](../tests/fixtures/flowchart/blank-lines/collapsed-input.mmd)):
 
 ```mmd
 
@@ -558,7 +602,8 @@ flowchart LR
 
 ```
 
-出力 ([blank-lines/collapsed-output.mmd](../tests/fixtures/flowchart/blank-lines/collapsed-output.mmd)):
+出力
+([blank-lines/collapsed-output.mmd](../tests/fixtures/flowchart/blank-lines/collapsed-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -577,14 +622,15 @@ flowchart LR
 接しているトークンは、下の規則（矢印の空白）がなければ接したままにします。
 mermaid.js には、接しているときだけ読むトークンがあります。
 `A%%{init: {}}%%B-->C` は id `AB` です。
-接するトークンの間に空白を書く規則は、
-その場所ごとの例外を要するからです。 [fixture: whitespace-between-tokens/header-and-tabs-collapsed]
+接するトークンの間に空白を書く規則は、その場所ごとの例外を要するからです。
+[fixture: whitespace-between-tokens/header-and-tabs-collapsed]
 [fixture: whitespace-between-tokens/compat-empty-description-block-own-line]
 値の一部である空白は保ちます。
 スタイルの並びの `,` の前後の空白は mermaid.js がスタイルに残し、
 subgraph の名前の中の空白はそのタイトルになります。
 `direction` の文の、`direction` の前と値の後のテキストは例外で、
-書かれたまま残します（[方向](#方向)を参照）。 [fixture: whitespace-between-tokens/style-values-in-class-def-and-link-style-kept]
+書かれたまま残します（[方向](#方向)を参照）。
+[fixture: whitespace-between-tokens/style-values-in-class-def-and-link-style-kept]
 [fixture: whitespace-between-tokens/subgraph-quoted-name-kept]
 `style`・`classDef`・`linkStyle` の文では、最初のスタイルの前の空白は、
 mermaid.js の文の規則が読むものなので、そこにディレクティブがあるときも、
@@ -592,15 +638,17 @@ mermaid.js の文の規則が読むものなので、そこにディレクティ
 `style A %%{init: {}}%%  fill:red` と `style A %%{init: {}}%% fill:red` は、
 Db が同じです。
 最初のスタイルの始まりから最後のスタイルまでは、書かれたまま残します。
-mermaid.js はそれをスタイルの一部として読むからです。 [fixture: whitespace-between-tokens/style-inner-whitespace-kept]
+mermaid.js はそれをスタイルの一部として読むからです。
+[fixture: whitespace-between-tokens/style-inner-whitespace-kept]
 
 subgraph の `end` の後の U+2028 と U+2029 は mermaid.js にとって空白なので、
 行末の空白と一緒に落とします。
-`end`、U+2028、
-改行は `end` と印字します。 [test: U+2028 after the `end` of a subgraph]
+`end`、U+2028、改行は `end` と印字します。
+[test: U+2028 after the `end` of a subgraph]
 [test: U+2029 and whitespace around it after the `end` of a subgraph]
 
-入力 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/collapsed-input.mmd)):
+入力
+([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/collapsed-input.mmd)):
 
 ```mmd
 flowchart   LR
@@ -611,7 +659,8 @@ flowchart   LR
   F	-->	G
 ```
 
-出力 ([whitespace-between-tokens/collapsed-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/collapsed-output.mmd)):
+出力
+([whitespace-between-tokens/collapsed-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/collapsed-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -622,7 +671,8 @@ flowchart LR
   F --> G
 ```
 
-入力 ([whitespace-between-tokens/style-values-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-values-kept-input.mmd)):
+入力
+([whitespace-between-tokens/style-values-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-values-kept-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -630,7 +680,8 @@ flowchart LR
   style A fill:#f00 , stroke:#333
 ```
 
-出力 ([whitespace-between-tokens/style-values-kept-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-values-kept-output.mmd)):
+出力
+([whitespace-between-tokens/style-values-kept-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-values-kept-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -638,7 +689,8 @@ flowchart LR
   style A fill:#f00 , stroke:#333
 ```
 
-入力 ([whitespace-between-tokens/subgraph-name-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-kept-input.mmd)):
+入力
+([whitespace-between-tokens/subgraph-name-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-kept-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -647,7 +699,8 @@ flowchart LR
   end
 ```
 
-出力 ([whitespace-between-tokens/subgraph-name-kept-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-kept-output.mmd)):
+出力
+([whitespace-between-tokens/subgraph-name-kept-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-kept-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -656,7 +709,8 @@ flowchart LR
   end
 ```
 
-入力 ([whitespace-between-tokens/style-after-directives-collapsed-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-after-directives-collapsed-input.mmd)):
+入力
+([whitespace-between-tokens/style-after-directives-collapsed-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-after-directives-collapsed-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -668,7 +722,8 @@ linkStyle   0   %%{init: {}}%%  fill:red
 linkStyle default interpolate   basis   %%{init: {}}%%  %%{init: {}}%%stroke:red
 ```
 
-出力 ([whitespace-between-tokens/style-after-directives-collapsed-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-after-directives-collapsed-output.mmd)):
+出力
+([whitespace-between-tokens/style-after-directives-collapsed-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-after-directives-collapsed-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -683,10 +738,11 @@ flowchart LR
 `call` の後の関数名と、その後の `(` の間の空白は、括弧と引数と一緒に、
 書かれたまま残します。
 mermaid.js は、名前を `(` の前まで、空白も含めて読むので、
-`click A call fn  ()` は、
-`fn` と 2 つの空白を名前とする関数を呼びます。 [fixture: whitespace-between-tokens/callback-name-arguments-forms-kept]
+`click A call fn  ()` は、 `fn` と 2 つの空白を名前とする関数を呼びます。
+[fixture: whitespace-between-tokens/callback-name-arguments-forms-kept]
 
-入力 ([whitespace-between-tokens/callback-name-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/callback-name-kept-input.mmd)):
+入力
+([whitespace-between-tokens/callback-name-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/callback-name-kept-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -696,7 +752,8 @@ click A call fn  ( x )
 click B call gn   (y, z)
 ```
 
-出力 ([whitespace-between-tokens/callback-name-kept-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/callback-name-kept-output.mmd)):
+出力
+([whitespace-between-tokens/callback-name-kept-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/callback-name-kept-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -711,15 +768,16 @@ flowchart LR
 辺の前と後に空白を 1 つずつ置きます。 [fixture: arrow-spacing/other-link-kinds]
 [fixture: arrow-spacing/ampersand-spacing-kept]
 [fixture: arrow-spacing/arrow-length-kept]
-2 つの矢印の間に書いたテキストは、
-両側に空白を 1 つずつ置きます。 [fixture: arrow-spacing/text-between-other-link-kinds]
+2 つの矢印の間に書いたテキストは、両側に空白を 1 つずつ置きます。
+[fixture: arrow-spacing/text-between-other-link-kinds]
 [fixture: arrow-spacing/directive-in-text-between-arrows]
-`|` で囲んだラベルは矢印とその `|` に接し、
-辺の id はその `@` と矢印に接します。 [fixture: arrow-spacing/pipe-label-other-link-kinds]
+`|` で囲んだラベルは矢印とその `|` に接し、辺の id はその `@` と矢印に接します。
+[fixture: arrow-spacing/pipe-label-other-link-kinds]
 [fixture: arrow-spacing/edge-id-with-labels]
 [fixture: arrow-spacing/edge-id-whitespace-before-arrow-dropped]
 
-入力 ([arrow-spacing/plain-input.mmd](../tests/fixtures/flowchart/arrow-spacing/plain-input.mmd)):
+入力
+([arrow-spacing/plain-input.mmd](../tests/fixtures/flowchart/arrow-spacing/plain-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -729,7 +787,8 @@ flowchart LR
   Gx--xH
 ```
 
-出力 ([arrow-spacing/plain-output.mmd](../tests/fixtures/flowchart/arrow-spacing/plain-output.mmd)):
+出力
+([arrow-spacing/plain-output.mmd](../tests/fixtures/flowchart/arrow-spacing/plain-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -739,7 +798,8 @@ flowchart LR
   Gx --x H
 ```
 
-入力 ([arrow-spacing/text-between-arrows-input.mmd](../tests/fixtures/flowchart/arrow-spacing/text-between-arrows-input.mmd)):
+入力
+([arrow-spacing/text-between-arrows-input.mmd](../tests/fixtures/flowchart/arrow-spacing/text-between-arrows-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -747,7 +807,8 @@ flowchart LR
   C==  thick  ==>D
 ```
 
-出力 ([arrow-spacing/text-between-arrows-output.mmd](../tests/fixtures/flowchart/arrow-spacing/text-between-arrows-output.mmd)):
+出力
+([arrow-spacing/text-between-arrows-output.mmd](../tests/fixtures/flowchart/arrow-spacing/text-between-arrows-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -755,7 +816,8 @@ flowchart LR
   C == thick ==> D
 ```
 
-入力 ([arrow-spacing/pipe-label-input.mmd](../tests/fixtures/flowchart/arrow-spacing/pipe-label-input.mmd)):
+入力
+([arrow-spacing/pipe-label-input.mmd](../tests/fixtures/flowchart/arrow-spacing/pipe-label-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -763,7 +825,8 @@ flowchart LR
   C --> |text| D
 ```
 
-出力 ([arrow-spacing/pipe-label-output.mmd](../tests/fixtures/flowchart/arrow-spacing/pipe-label-output.mmd)):
+出力
+([arrow-spacing/pipe-label-output.mmd](../tests/fixtures/flowchart/arrow-spacing/pipe-label-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -771,14 +834,16 @@ flowchart LR
   C -->|text| D
 ```
 
-入力 ([arrow-spacing/edge-id-input.mmd](../tests/fixtures/flowchart/arrow-spacing/edge-id-input.mmd)):
+入力
+([arrow-spacing/edge-id-input.mmd](../tests/fixtures/flowchart/arrow-spacing/edge-id-input.mmd)):
 
 ```mmd
 flowchart LR
   A e1@-->B
 ```
 
-出力 ([arrow-spacing/edge-id-output.mmd](../tests/fixtures/flowchart/arrow-spacing/edge-id-output.mmd)):
+出力
+([arrow-spacing/edge-id-output.mmd](../tests/fixtures/flowchart/arrow-spacing/edge-id-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -787,16 +852,18 @@ flowchart LR
 
 ### ラベルの内側の空白
 
-引用符のないラベルの両端の空白は、
-mermaid.js が取り除くのと同じく取り除きます。 [fixture: label-inner-whitespace/trimmed-every-shape]
-ラベルの中の空白は保ち、
-空白だけのラベルも保ちます（`A[]` は拒否されます）。 [fixture: label-inner-whitespace/all-whitespace-every-shape-kept]
-引用符で囲んだラベルは書かれたまま残します。 [fixture: label-inner-whitespace/quotes-kept]
+引用符のないラベルの両端の空白は、 mermaid.js が取り除くのと同じく取り除きます。
+[fixture: label-inner-whitespace/trimmed-every-shape]
+ラベルの中の空白は保ち、空白だけのラベルも保ちます（`A[]` は拒否されます）。
+[fixture: label-inner-whitespace/all-whitespace-every-shape-kept]
+引用符で囲んだラベルは書かれたまま残します。
+[fixture: label-inner-whitespace/quotes-kept]
 
 ラベルの先頭の空白は、それがないとラベルの読み方が変わるときは、
 空白 1 つとして残します。
 ラベルが `/`、`\`、`-`、`"` のどれかで始まるときと、
-最初の語（空白か `"` まで）が `@` を含むときです。 [fixture: label-inner-whitespace/leading-whitespace-trimmed-without-trigger]
+最初の語（空白か `"` まで）が `@` を含むときです。
+[fixture: label-inner-whitespace/leading-whitespace-trimmed-without-trigger]
 [fixture: label-inner-whitespace/leading-whitespace-run-becomes-one]
 [fixture: label-inner-whitespace/compat-leading-backslash-kept]
 空白がないと、`A[ /x/]` はラベル `x` の lean-right の形に、
@@ -806,11 +873,12 @@ mermaid.js が取り除くのと同じく取り除きます。 [fixture: label-i
 ただし、斜めの形の閉じの `?]` と `=]` の前には置きません。
 mermaid.js が、その空白と `?` や `=` をテキストとして読むからです。
 `A[/ -x/?]` はそのままです。
-この規則は、どの形でも、
-`|` の間のテキストでも同じです。 [fixture: label-inner-whitespace/leading-whitespace-every-shape-kept]
+この規則は、どの形でも、 `|` の間のテキストでも同じです。
+[fixture: label-inner-whitespace/leading-whitespace-every-shape-kept]
 [fixture: label-inner-whitespace/leading-whitespace-pipe-label-kept]
 
-入力 ([label-inner-whitespace/trimmed-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/trimmed-input.mmd)):
+入力
+([label-inner-whitespace/trimmed-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/trimmed-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -820,7 +888,8 @@ flowchart LR
   A -->| label |B
 ```
 
-出力 ([label-inner-whitespace/trimmed-output.mmd](../tests/fixtures/flowchart/label-inner-whitespace/trimmed-output.mmd)):
+出力
+([label-inner-whitespace/trimmed-output.mmd](../tests/fixtures/flowchart/label-inner-whitespace/trimmed-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -830,35 +899,40 @@ flowchart LR
   A -->|label| B
 ```
 
-入力 ([label-inner-whitespace/inner-whitespace-kept-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/inner-whitespace-kept-input.mmd)):
+入力
+([label-inner-whitespace/inner-whitespace-kept-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/inner-whitespace-kept-input.mmd)):
 
 ```mmd
 flowchart LR
   A[ hello   world ]
 ```
 
-出力 ([label-inner-whitespace/inner-whitespace-kept-output.mmd](../tests/fixtures/flowchart/label-inner-whitespace/inner-whitespace-kept-output.mmd)):
+出力
+([label-inner-whitespace/inner-whitespace-kept-output.mmd](../tests/fixtures/flowchart/label-inner-whitespace/inner-whitespace-kept-output.mmd)):
 
 ```mmd
 flowchart LR
   A[hello   world]
 ```
 
-入力 ([label-inner-whitespace/quoted-kept-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/quoted-kept-input.mmd)):
+入力
+([label-inner-whitespace/quoted-kept-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/quoted-kept-input.mmd)):
 
 ```mmd
 flowchart LR
   A[" text "]
 ```
 
-出力 ([label-inner-whitespace/quoted-kept-output.mmd](../tests/fixtures/flowchart/label-inner-whitespace/quoted-kept-output.mmd)):
+出力
+([label-inner-whitespace/quoted-kept-output.mmd](../tests/fixtures/flowchart/label-inner-whitespace/quoted-kept-output.mmd)):
 
 ```mmd
 flowchart LR
   A[" text "]
 ```
 
-入力 ([label-inner-whitespace/leading-whitespace-kept-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/leading-whitespace-kept-input.mmd)):
+入力
+([label-inner-whitespace/leading-whitespace-kept-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/leading-whitespace-kept-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -872,7 +946,8 @@ H[ %%{init: {}}%%/x/]
 I{ -x }
 ```
 
-出力 ([label-inner-whitespace/leading-whitespace-kept-output.mmd](../tests/fixtures/flowchart/label-inner-whitespace/leading-whitespace-kept-output.mmd)):
+出力
+([label-inner-whitespace/leading-whitespace-kept-output.mmd](../tests/fixtures/flowchart/label-inner-whitespace/leading-whitespace-kept-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -886,7 +961,8 @@ flowchart LR
   I{ -x }
 ```
 
-入力 ([label-inner-whitespace/leading-whitespace-before-question-end-kept-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/leading-whitespace-before-question-end-kept-input.mmd)):
+入力
+([label-inner-whitespace/leading-whitespace-before-question-end-kept-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/leading-whitespace-before-question-end-kept-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -894,7 +970,8 @@ B[/ -x/?]
 C[/ -x/=]
 ```
 
-出力 ([label-inner-whitespace/leading-whitespace-before-question-end-kept-output.mmd](../tests/fixtures/flowchart/label-inner-whitespace/leading-whitespace-before-question-end-kept-output.mmd)):
+出力
+([label-inner-whitespace/leading-whitespace-before-question-end-kept-output.mmd](../tests/fixtures/flowchart/label-inner-whitespace/leading-whitespace-before-question-end-kept-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -905,13 +982,14 @@ flowchart LR
 ### 辺のラベルの書き方
 
 辺のラベルは、書かれた形を保ちます。
-2 つの矢印の間のテキストか、
-矢印の後の `|` の間のテキストです。 [fixture: link-label-form/other-link-kinds-kept]
+2 つの矢印の間のテキストか、矢印の後の `|` の間のテキストです。
+[fixture: link-label-form/other-link-kinds-kept]
 一方の形をもう一方に変えるには、`|` を含むラベルの規則が要ります。
-`A -- a|b --> B` は受理されますが、
-`A -->|a|b| B` は拒否されます。 [fixture: link-label-form/pipe-in-text-between-arrows-kept]
+`A -- a|b --> B` は受理されますが、 `A -->|a|b| B` は拒否されます。
+[fixture: link-label-form/pipe-in-text-between-arrows-kept]
 
-入力 ([link-label-form/kept-input.mmd](../tests/fixtures/flowchart/link-label-form/kept-input.mmd)):
+入力
+([link-label-form/kept-input.mmd](../tests/fixtures/flowchart/link-label-form/kept-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -919,7 +997,8 @@ flowchart LR
   C -->|text| D
 ```
 
-出力 ([link-label-form/kept-output.mmd](../tests/fixtures/flowchart/link-label-form/kept-output.mmd)):
+出力
+([link-label-form/kept-output.mmd](../tests/fixtures/flowchart/link-label-form/kept-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -929,13 +1008,14 @@ flowchart LR
 
 ### 連鎖
 
-辺の連鎖は、
-書かれたとおり 1 行に保ちます。 [fixture: chains/labelled-links-kept]
+辺の連鎖は、書かれたとおり 1 行に保ちます。
+[fixture: chains/labelled-links-kept]
 1 辺 1 行には分けません。
-長い行や複数行に書かれた文と同じく、
-書き手が文や辺を区切った位置を保ちます。 [fixture: chains/split-after-semicolon]
+長い行や複数行に書かれた文と同じく、書き手が文や辺を区切った位置を保ちます。
+[fixture: chains/split-after-semicolon]
 
-入力 ([chains/kept-input.mmd](../tests/fixtures/flowchart/chains/kept-input.mmd)):
+入力
+([chains/kept-input.mmd](../tests/fixtures/flowchart/chains/kept-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -943,7 +1023,8 @@ flowchart LR
   D & E --> F
 ```
 
-出力 ([chains/kept-output.mmd](../tests/fixtures/flowchart/chains/kept-output.mmd)):
+出力
+([chains/kept-output.mmd](../tests/fixtures/flowchart/chains/kept-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -953,18 +1034,20 @@ flowchart LR
 
 ### 折り返し
 
-Prettier の `printWidth` オプションにかかわらず、
-行を折り返しません。 [fixture: line-wrapping/print-width-ignored]
+Prettier の `printWidth` オプションにかかわらず、行を折り返しません。
+[fixture: line-wrapping/print-width-ignored]
 連鎖と同じく、行をどこで分けるかは書き手が決めます。
 
-入力 ([line-wrapping/long-line-kept-input.mmd](../tests/fixtures/flowchart/line-wrapping/long-line-kept-input.mmd)):
+入力
+([line-wrapping/long-line-kept-input.mmd](../tests/fixtures/flowchart/line-wrapping/long-line-kept-input.mmd)):
 
 ```mmd
 flowchart LR
   AAAAAAAAAAAAAAAAAAAA --> BBBBBBBBBBBBBBBBBBBB --> CCCCCCCCCCCCCCCCCCCC --> DDDDDDDDDDDDDDDDDDDD
 ```
 
-出力 ([line-wrapping/long-line-kept-output.mmd](../tests/fixtures/flowchart/line-wrapping/long-line-kept-output.mmd)):
+出力
+([line-wrapping/long-line-kept-output.mmd](../tests/fixtures/flowchart/line-wrapping/long-line-kept-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -974,32 +1057,32 @@ flowchart LR
 ### アクセシビリティの行
 
 通常の行は`accTitle: value`または`accDescr: value`と印字します。
-コロンを語に接し、値の前にASCII空白1つを置き、
-値の両端の空白を落とします。 [fixture: accessibility-lines/tight-colon]
+コロンを語に接し、値の前にASCII空白1つを置き、値の両端の空白を落とします。
+[fixture: accessibility-lines/tight-colon]
 [fixture: accessibility-lines/spaced-colon]
 [fixture: accessibility-lines/value-padding]
 Dbが同じ形から選ぶ場合は、その図種の理由がなければ兄弟の図種に揃えます。
 flowchartの通常のアクセシビリティ行に固有の理由はないので、
-[C4](./c4.ja.md#accessibility-lines)、[class](./class.ja.md#ラベル)、
+[C4](./c4.ja.md#アクセシビリティの行)、[class](./class.ja.md#ラベル)、
 [usecase](./usecase.ja.md#direction-and-accessibility)と同じ短い形にします。
 
-値の内部の空白、
-インラインの`%%`と`#`は値の文字として保ちます。 [fixture: accessibility-lines/inline-percent-hash]
+値の内部の空白、インラインの`%%`と`#`は値の文字として保ちます。
+[fixture: accessibility-lines/inline-percent-hash]
 値が空または空白だけでも文の形を保ち、 `accTitle:`または`accDescr:`とし、
 後ろに空白を足しません。 [fixture: accessibility-lines/empty-title]
 [fixture: accessibility-lines/empty-description]
 [corpus fixture: flowchart/gram-acc-title-empty-at-end]
 [corpus fixture: flowchart/db-acc-descr-empty-replaces]
-Mermaidはコロンの次行の通常の文字を値と読むので、
-語と同じ行につなぎます。 [fixture: accessibility-lines/next-line-values]
+Mermaidはコロンの次行の通常の文字を値と読むので、語と同じ行につなぎます。
+[fixture: accessibility-lines/next-line-values]
 
 文中の実コメントやdirectiveがあれば短い形につなぎません。
 従来の[複数行の文](#複数行の文)の配置を保ち、
 コメントやdirectiveを含む継続行はキーワードより1段深く置きます。
 コメントやdirectiveの文字と、著者が文を区切った改行を保ちます。
 flowchartはコロンの後のコメントを読み飛ばして後の値を読みます。
-通常の結合が使えない場合も、
-従来の継続行の規則を保つためです。 [fixture: accessibility-lines/description-comment-continuation]
+通常の結合が使えない場合も、従来の継続行の規則を保つためです。
+[fixture: accessibility-lines/description-comment-continuation]
 [fixture: accessibility-lines/title-directive-continuation]
 [fixture: accessibility-lines/next-line-comment-kept]
 [fixture: accessibility-lines/inline-directive-kept]
@@ -1008,11 +1091,13 @@ flowchartはコロンの後のコメントを読み飛ばして後の値を読�
 この短い形は[1行に1文](#1-行に-1-文)の規則に優先しません。
 値や別の文にある非区切りの`;`を含む行では、
 アクセシビリティの文字と`;`の両側の空白を保ちます。
-`;`を含む次行の値も改行を保ちます。 [fixture: accessibility-lines/semicolon-value-kept]
+`;`を含む次行の値も改行を保ちます。
+[fixture: accessibility-lines/semicolon-value-kept]
 [fixture: accessibility-lines/neighbour-semicolon-kept]
 [fixture: accessibility-lines/next-line-semicolon-kept]
 方向の文字列がある行は[字下げ](#字下げ)に従い、原文、改行、桁位置を保ちます。
-ほかの文書化された保持行の理由も優先します。 [fixture: accessibility-lines/direction-text-kept]
+ほかの文書化された保持行の理由も優先します。
+[fixture: accessibility-lines/direction-text-kept]
 [fixture: accessibility-lines/next-line-direction-kept]
 通常の行には`tabWidth: 0`での最小幅と`useTabs`を含む設定の字下げを使い、
 これらの設定でも保持の例外を保ちます。 [fixture: accessibility-lines/zero-width]
@@ -1021,46 +1106,50 @@ flowchartはコロンの後のコメントを読み飛ばして後の値を読�
 CRには共通の改行の正規化を使います。
 受理する外側の隙間のNBSP、U+2028、U+2029も同じコロンと値の規則で整え、
 値内部の文字と保持する`;`の脇の空白は保ちます。
-これらの文字はエスケープしたinlineテストに置きます。 [test: graph accessibility: flowchart cr-lines]
+これらの文字はエスケープしたinlineテストに置きます。
+[test: graph accessibility: flowchart cr-lines]
 [test: graph accessibility: flowchart unicode-gaps]
 [test: graph accessibility: flowchart unicode-values]
 [test: graph accessibility: flowchart unicode-semicolon-kept]
 文字とtriviaのない閉じた説明ブロックの内側は、空白や空行があっても`{}`です。
 外側の語と波括弧の隙間は[トークンの間の空白](#トークンの間の空白)に従い、
-接する語は`accDescr{}`と接したままにします。 [fixture: accessibility-lines/empty-block-touching-keyword]
+接する語は`accDescr{}`と接したままにします。
+[fixture: accessibility-lines/empty-block-touching-keyword]
 囲む文字がないので内側の空白も不要で、コロン行と同じ兄弟の図種に揃える理由で、
 usecaseのDbが同じ形に従います。 [fixture: accessibility-lines/empty-block-tight]
 [fixture: accessibility-lines/empty-block-spaced]
 [fixture: accessibility-lines/empty-block-lines]
-空ブロック内で受理するNBSP、U+2028、
-U+2029も落とします。 [test: accessibility blocks: flowchart empty-block-unicode]
-保持行の例外を優先し、
-コメントやdirectiveがあるブロックは従来の配置を保ちます。 [fixture: accessibility-lines/empty-block-semicolon-kept]
+空ブロック内で受理するNBSP、U+2028、 U+2029も落とします。
+[test: accessibility blocks: flowchart empty-block-unicode]
+保持行の例外を優先し、コメントやdirectiveがあるブロックは従来の配置を保ちます。
+[fixture: accessibility-lines/empty-block-semicolon-kept]
 [fixture: accessibility-lines/empty-block-directive-kept]
 [fixture: multi-line-values/accdescr-block-comment-only]
 
 空でないブロックは[複数行の値](#複数行の値)に従います。
 `{a}`と`{ a }`はそのまま、`{  a  }`は`{ a }`です。
-文字の両側の空白列を1つにし、
-空白がなければ足しません。 [fixture: accessibility-lines/block-tight-text]
+文字の両側の空白列を1つにし、空白がなければ足しません。
+[fixture: accessibility-lines/block-tight-text]
 [fixture: accessibility-lines/block-spaced-text]
 [fixture: accessibility-lines/block-padded-text]
-左右を別々に扱い、`{  a}`は`{ a}`、
-`{a  }`は`{a }`にします。 [fixture: accessibility-lines/block-left-padding-only]
+左右を別々に扱い、`{  a}`は`{ a}`、 `{a  }`は`{a }`にします。
+[fixture: accessibility-lines/block-left-padding-only]
 [fixture: accessibility-lines/block-right-padding-only]
 複数行の値とコメントの桁位置を保ち、単独行の閉じ括弧を`accDescr`に揃えます。
 閉じ括弧が0桁目でも字下げされていても同じです。
-兄弟の図種と同じ形で、
-flowchart固有の理由はありません。 [fixture: accessibility-lines/block-close-column-zero]
+兄弟の図種と同じ形で、 flowchart固有の理由はありません。
+[fixture: accessibility-lines/block-close-column-zero]
 [fixture: accessibility-lines/block-close-indented]
 [fixture: accessibility-lines/block-comment-close-column-zero]
 [fixture: accessibility-lines/block-comment-close-indented]
-`tabWidth: 0`の本文の最小幅でも同じ空ブロックと閉じ括弧の規則を使います。 [fixture: accessibility-lines/block-zero-width]
+`tabWidth: 0`の本文の最小幅でも同じ空ブロックと閉じ括弧の規則を使います。
+[fixture: accessibility-lines/block-zero-width]
 
-入力（エスケープ表記）:
+入力（escape 表記）:
 `"flowchart LR\naccTitle:Compact title\naccDescr:Compact description"`。
 
-出力 ([accessibility-lines/tight-colon-output.mmd](../tests/fixtures/flowchart/accessibility-lines/tight-colon-output.mmd)):
+出力
+([accessibility-lines/tight-colon-output.mmd](../tests/fixtures/flowchart/accessibility-lines/tight-colon-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -1068,9 +1157,10 @@ flowchart LR
   accDescr: Compact description
 ```
 
-入力（エスケープ表記）: `"flowchart LR\naccDescr {a}\nA[Block spacing]"`.
+入力（escape 表記）: `"flowchart LR\naccDescr {a}\nA[Block spacing]"`
 
-出力 ([accessibility-lines/block-tight-text-output.mmd](../tests/fixtures/flowchart/accessibility-lines/block-tight-text-output.mmd)):
+出力
+([accessibility-lines/block-tight-text-output.mmd](../tests/fixtures/flowchart/accessibility-lines/block-tight-text-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -1078,10 +1168,11 @@ flowchart LR
   A[Block spacing]
 ```
 
-入力（エスケープ表記）:
-`"flowchart LR\naccDescr: previous description\naccDescr { }\nA[Empty spacing]"`.
+入力（escape 表記）:
+`"flowchart LR\naccDescr: previous description\naccDescr { }\nA[Empty spacing]"`
 
-出力 ([accessibility-lines/empty-block-spaced-output.mmd](../tests/fixtures/flowchart/accessibility-lines/empty-block-spaced-output.mmd)):
+出力
+([accessibility-lines/empty-block-spaced-output.mmd](../tests/fixtures/flowchart/accessibility-lines/empty-block-spaced-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -1090,10 +1181,11 @@ flowchart LR
   A[Empty spacing]
 ```
 
-入力（エスケープ表記）:
+入力（escape 表記）:
 `"flowchart LR\naccTitle:\n%%{init: {}}%%\nTitle after directive\nA[Continuation]"`。
 
-出力 ([accessibility-lines/title-directive-continuation-output.mmd](../tests/fixtures/flowchart/accessibility-lines/title-directive-continuation-output.mmd)):
+出力
+([accessibility-lines/title-directive-continuation-output.mmd](../tests/fixtures/flowchart/accessibility-lines/title-directive-continuation-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -1114,15 +1206,16 @@ sequence、class、state は、そこでは改行が空白の後でだけ数え�
 行をつなぎます。 [fixture: multi-line-statements/continuation-in-subgraph]
 [fixture: multi-line-statements/label-over-lines]
 [fixture: multi-line-statements/directive-inside]
-途中のコメント行は文の中に残り、
-2 行目以降と同じ段に置きます。 [fixture: multi-line-statements/several-comments-inside]
+途中のコメント行は文の中に残り、 2 行目以降と同じ段に置きます。
+[fixture: multi-line-statements/several-comments-inside]
 複数行に書かれた `click` の文は書かれたまま残します。
-mermaid.js は、2 行目以降が字下げされていると、
-その一部を拒否するからです。 [fixture: multi-line-statements/click-in-subgraph-kept]
+mermaid.js は、2 行目以降が字下げされていると、その一部を拒否するからです。
+[fixture: multi-line-statements/click-in-subgraph-kept]
 [fixture: multi-line-statements/click-forms-kept]
 [fixture: multi-line-statements/click-comment-inside-kept]
 
-入力 ([multi-line-statements/continuation-indented-input.mmd](../tests/fixtures/flowchart/multi-line-statements/continuation-indented-input.mmd)):
+入力
+([multi-line-statements/continuation-indented-input.mmd](../tests/fixtures/flowchart/multi-line-statements/continuation-indented-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -1131,7 +1224,8 @@ B -->
       C
 ```
 
-出力 ([multi-line-statements/continuation-indented-output.mmd](../tests/fixtures/flowchart/multi-line-statements/continuation-indented-output.mmd)):
+出力
+([multi-line-statements/continuation-indented-output.mmd](../tests/fixtures/flowchart/multi-line-statements/continuation-indented-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -1140,7 +1234,8 @@ flowchart LR
     C
 ```
 
-入力 ([multi-line-statements/comment-inside-input.mmd](../tests/fixtures/flowchart/multi-line-statements/comment-inside-input.mmd)):
+入力
+([multi-line-statements/comment-inside-input.mmd](../tests/fixtures/flowchart/multi-line-statements/comment-inside-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -1149,7 +1244,8 @@ flowchart LR
 B
 ```
 
-出力 ([multi-line-statements/comment-inside-output.mmd](../tests/fixtures/flowchart/multi-line-statements/comment-inside-output.mmd)):
+出力
+([multi-line-statements/comment-inside-output.mmd](../tests/fixtures/flowchart/multi-line-statements/comment-inside-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -1158,7 +1254,8 @@ flowchart LR
     B
 ```
 
-入力 ([multi-line-statements/click-kept-input.mmd](../tests/fixtures/flowchart/multi-line-statements/click-kept-input.mmd)):
+入力
+([multi-line-statements/click-kept-input.mmd](../tests/fixtures/flowchart/multi-line-statements/click-kept-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -1167,7 +1264,8 @@ flowchart LR
 cb
 ```
 
-出力 ([multi-line-statements/click-kept-output.mmd](../tests/fixtures/flowchart/multi-line-statements/click-kept-output.mmd)):
+出力
+([multi-line-statements/click-kept-output.mmd](../tests/fixtures/flowchart/multi-line-statements/click-kept-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -1180,26 +1278,31 @@ cb
 
 複数行に書かれた値では、各行の開始位置を変えません。
 引用符で囲んだ文字列と、
-`{` の次の行から始まる `accDescr { ... }` ブロックのテキストです。 [fixture: multi-line-values/markdown-string-kept]
+`{` の次の行から始まる `accDescr { ... }` ブロックのテキストです。
+[fixture: multi-line-values/markdown-string-kept]
 subgraph の中では、 mermaid.js はそのブロックのテキストを、
 字下げごと subgraph のメンバーにも入れるので、字下げを変えられません。
 subgraph の外では、行の桁は Db に入りませんが、同じに残し、
-どのブロックのテキストにも 1 つの規則が当てはまるようにします。 [fixture: multi-line-values/accdescr-block-comment-only-in-subgraph]
-ブロックの `}` は、
-それが閉じる `accDescr` と同じ段に置きます。 [fixture: multi-line-values/accdescr-block-kept]
-そうしたブロックの中のコメント行も、
-書かれたまま残します。 [fixture: multi-line-values/accdescr-block-comment-line-in-subgraph-kept]
+どのブロックのテキストにも 1 つの規則が当てはまるようにします。
+[fixture: multi-line-values/accdescr-block-comment-only-in-subgraph]
+ブロックの `}` は、それが閉じる `accDescr` と同じ段に置きます。
+[fixture: multi-line-values/accdescr-block-kept]
+そうしたブロックの中のコメント行も、書かれたまま残します。
+[fixture: multi-line-values/accdescr-block-comment-line-in-subgraph-kept]
 テキストが`{`と同じ行から始まるときは、その前後の空白列を、
 トークンの間と同じく空白1つにし、空白がなければ足しません。
 triviaのない空ブロックは、
-[アクセシビリティの行](#アクセシビリティの行)に従います。 [fixture: multi-line-values/accdescr-block-text-starts-on-brace-line]
+[アクセシビリティの行](#アクセシビリティの行)に従います。
+[fixture: multi-line-values/accdescr-block-text-starts-on-brace-line]
 テキストがなく、コメント行だけを持つブロックは、値を持ちません。
 そのコメント行は、文の中のコメント行と同じく、
 `accDescr` より 1 段深く置き（[コメント](#コメント)を参照）、
-`}` は `accDescr` と同じ段に置きます。 [fixture: multi-line-values/accdescr-block-comment-only-several-comments]
+`}` は `accDescr` と同じ段に置きます。
+[fixture: multi-line-values/accdescr-block-comment-only-several-comments]
 [fixture: multi-line-values/accdescr-block-comment-only-in-subgraph]
 
-入力 ([multi-line-values/string-kept-input.mmd](../tests/fixtures/flowchart/multi-line-values/string-kept-input.mmd)):
+入力
+([multi-line-values/string-kept-input.mmd](../tests/fixtures/flowchart/multi-line-values/string-kept-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -1207,7 +1310,8 @@ flowchart LR
       second line"]
 ```
 
-出力 ([multi-line-values/string-kept-output.mmd](../tests/fixtures/flowchart/multi-line-values/string-kept-output.mmd)):
+出力
+([multi-line-values/string-kept-output.mmd](../tests/fixtures/flowchart/multi-line-values/string-kept-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -1215,7 +1319,8 @@ flowchart LR
       second line"]
 ```
 
-入力 ([multi-line-values/accdescr-block-closing-brace-aligned-input.mmd](../tests/fixtures/flowchart/multi-line-values/accdescr-block-closing-brace-aligned-input.mmd)):
+入力
+([multi-line-values/accdescr-block-closing-brace-aligned-input.mmd](../tests/fixtures/flowchart/multi-line-values/accdescr-block-closing-brace-aligned-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -1235,7 +1340,8 @@ accDescr {
 }
 ```
 
-出力 ([multi-line-values/accdescr-block-closing-brace-aligned-output.mmd](../tests/fixtures/flowchart/multi-line-values/accdescr-block-closing-brace-aligned-output.mmd)):
+出力
+([multi-line-values/accdescr-block-closing-brace-aligned-output.mmd](../tests/fixtures/flowchart/multi-line-values/accdescr-block-closing-brace-aligned-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -1254,7 +1360,8 @@ flowchart LR
   accDescr {}
 ```
 
-入力 ([multi-line-values/accdescr-block-comment-only-input.mmd](../tests/fixtures/flowchart/multi-line-values/accdescr-block-comment-only-input.mmd)):
+入力
+([multi-line-values/accdescr-block-comment-only-input.mmd](../tests/fixtures/flowchart/multi-line-values/accdescr-block-comment-only-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -1264,7 +1371,8 @@ accDescr {
       }
 ```
 
-出力 ([multi-line-values/accdescr-block-comment-only-output.mmd](../tests/fixtures/flowchart/multi-line-values/accdescr-block-comment-only-output.mmd)):
+出力
+([multi-line-values/accdescr-block-comment-only-output.mmd](../tests/fixtures/flowchart/multi-line-values/accdescr-block-comment-only-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -1278,20 +1386,20 @@ flowchart LR
 
 1 行に置かれたコメントは、周りの文と同じ段に置きます。
 コメントはどの文にも属さないので、読む人が探す場所の隣の段にします。
-ヘッダーの前でも同じで、
-行の先頭に置きます。 [fixture: comments/only-comment-in-subgraph]
-[fixture: comments/after-end]
+ヘッダーの前でも同じで、行の先頭に置きます。
+[fixture: comments/only-comment-in-subgraph] [fixture: comments/after-end]
 [fixture: comments/tab-indented-and-consecutive]
 [fixture: comments/after-frontmatter-before-header]
 [fixture: comments/before-header] [fixture: comments/before-end]
 [fixture: comments/at-end-of-text]
 コメントのテキストは、末尾の空白も含めて書かれたまま残します。
-mermaid.js は読まず、
-書き手のテキストだからです。 [fixture: comments/trailing-whitespace-kept]
+mermaid.js は読まず、書き手のテキストだからです。
+[fixture: comments/trailing-whitespace-kept]
 [fixture: comments/leading-whitespace-kept]
 [fixture: comments/statement-text-kept] [fixture: comments/directive-text-kept]
 
-入力 ([comments/indented-input.mmd](../tests/fixtures/flowchart/comments/indented-input.mmd)):
+入力
+([comments/indented-input.mmd](../tests/fixtures/flowchart/comments/indented-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -1304,7 +1412,8 @@ A --> B
   end
 ```
 
-出力 ([comments/indented-output.mmd](../tests/fixtures/flowchart/comments/indented-output.mmd)):
+出力
+([comments/indented-output.mmd](../tests/fixtures/flowchart/comments/indented-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -1317,7 +1426,8 @@ flowchart LR
   end
 ```
 
-入力 ([comments/before-end-input.mmd](../tests/fixtures/flowchart/comments/before-end-input.mmd)):
+入力
+([comments/before-end-input.mmd](../tests/fixtures/flowchart/comments/before-end-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -1327,7 +1437,8 @@ A
 end
 ```
 
-出力 ([comments/before-end-output.mmd](../tests/fixtures/flowchart/comments/before-end-output.mmd)):
+出力
+([comments/before-end-output.mmd](../tests/fixtures/flowchart/comments/before-end-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -1344,12 +1455,13 @@ flowchart LR
 [fixture: directives/several-on-own-line]
 [fixture: directives/multi-line-on-own-line]
 [fixture: directives/own-line-between-comment-and-empty-line]
-同じ印字行の中では、
-ディレクティブの位置を保ちます。 [fixture: directives/after-header-on-same-line]
+同じ印字行の中では、ディレクティブの位置を保ちます。
+[fixture: directives/after-header-on-same-line]
 [fixture: directives/after-end-on-same-line]
 [fixture: directives/after-last-statement-without-line-break]
 ディレクティブの側に空白が書かれていればそこに空白 1 つを置き、
-トークンに接していれば接したまま残します。 [fixture: directives/whitespace-on-both-sides-collapsed]
+トークンに接していれば接したまま残します。
+[fixture: directives/whitespace-on-both-sides-collapsed]
 [fixture: directives/meets-empty-description-block]
 mermaid.js はディレクティブを除いたテキストを読むので、
 2 つのトークンが離れているかどうかを変えてはいけないからです。
@@ -1362,7 +1474,8 @@ mermaid.js はディレクティブを除いたテキストを読むので、
 
 [fixture: flowchart/directives/same-line-as-statements]
 
-入力 ([directives/indented-input.mmd](../tests/fixtures/flowchart/directives/indented-input.mmd)):
+入力
+([directives/indented-input.mmd](../tests/fixtures/flowchart/directives/indented-input.mmd)):
 
 ```mmd
 %%{init: {"theme": "dark"}}%%
@@ -1371,7 +1484,8 @@ flowchart LR
 A --> B
 ```
 
-出力 ([directives/indented-output.mmd](../tests/fixtures/flowchart/directives/indented-output.mmd)):
+出力
+([directives/indented-output.mmd](../tests/fixtures/flowchart/directives/indented-output.mmd)):
 
 ```mmd
 %%{init: {"theme": "dark"}}%%
@@ -1380,7 +1494,8 @@ flowchart LR
   A --> B
 ```
 
-入力 ([directives/same-line-as-statements-input.mmd](../tests/fixtures/flowchart/directives/same-line-as-statements-input.mmd)):
+入力
+([directives/same-line-as-statements-input.mmd](../tests/fixtures/flowchart/directives/same-line-as-statements-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -1388,7 +1503,8 @@ flowchart LR
   C; %%{init: {}}%% D
 ```
 
-出力 ([directives/same-line-as-statements-output.mmd](../tests/fixtures/flowchart/directives/same-line-as-statements-output.mmd)):
+出力
+([directives/same-line-as-statements-output.mmd](../tests/fixtures/flowchart/directives/same-line-as-statements-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -1397,21 +1513,24 @@ flowchart LR
   %%{init: {}}%% D
 ```
 
-入力 ([directives/touching-token-kept-input.mmd](../tests/fixtures/flowchart/directives/touching-token-kept-input.mmd)):
+入力
+([directives/touching-token-kept-input.mmd](../tests/fixtures/flowchart/directives/touching-token-kept-input.mmd)):
 
 ```mmd
 flowchart LR
   A%%{init: {}}%%-->B
 ```
 
-出力 ([directives/touching-token-kept-output.mmd](../tests/fixtures/flowchart/directives/touching-token-kept-output.mmd)):
+出力
+([directives/touching-token-kept-output.mmd](../tests/fixtures/flowchart/directives/touching-token-kept-output.mmd)):
 
 ```mmd
 flowchart LR
   A%%{init: {}}%%--> B
 ```
 
-入力 ([directives/whitespace-on-each-side-kept-input.mmd](../tests/fixtures/flowchart/directives/whitespace-on-each-side-kept-input.mmd)):
+入力
+([directives/whitespace-on-each-side-kept-input.mmd](../tests/fixtures/flowchart/directives/whitespace-on-each-side-kept-input.mmd)):
 
 ```mmd
 flowchart %%{init: {}}%%LR
@@ -1421,7 +1540,8 @@ click A %%{init: {}}%%href "u"
 B%%{init: {}}%% --> C
 ```
 
-出力 ([directives/whitespace-on-each-side-kept-output.mmd](../tests/fixtures/flowchart/directives/whitespace-on-each-side-kept-output.mmd)):
+出力
+([directives/whitespace-on-each-side-kept-output.mmd](../tests/fixtures/flowchart/directives/whitespace-on-each-side-kept-output.mmd)):
 
 ```mmd
 flowchart %%{init: {}}%%LR
@@ -1432,39 +1552,45 @@ flowchart %%{init: {}}%%LR
 ```
 
 閉じていないディレクティブは、mermaid.js が読むとおり、
-テキストの終わりまで続きます。 [fixture: directives/unclosed-after-statement-on-same-line]
+テキストの終わりまで続きます。
+[fixture: directives/unclosed-after-statement-on-same-line]
 [fixture: directives/compat-unclosed-directive-joins-next-line]
 その範囲は、
-空白でない最後の文字で終わります（仕様の [コメント、ディレクティブ、フロントマター](../../spec/docs/ast.ja.md#ディレクティブとフロントマター) ）。
+空白でない最後の文字で終わります（仕様の
+[コメント、ディレクティブ、フロントマター](../../spec/docs/ast.ja.md#ディレクティブとフロントマター)）。
 そのため、その後の空白はテキストの末尾の空白で、そのとおりに整形します。
 テキストは、ディレクティブの後の改行 1 つで終わります。
 テキストがディレクティブの直後で終わるときは、改行を足しません。
 足した改行を、mermaid.js がディレクティブの一部として読むからです。
 空白がテキストの末尾にあるので、例は、`\n` を改行とする文字列で書きます。
-`"flowchart LR\nA\n%%{init: {}  \n\n"` は `"flowchart LR\n  A\n  %%{init: {}\n"` と印字し、
-`"flowchart LR\nA\n%%{init: {}"` は `"flowchart LR\n  A\n  %%{init: {}"` と印字します（fixture
-`unclosed-trailing-whitespace` と、
-`unclosed-at-end-of-text-kept` は [フォルダー](../tests/fixtures/flowchart/directives)にあります）。
+`"flowchart LR\nA\n%%{init: {}  \n\n"` は `"flowchart LR\n  A\n  %%{init: {}\n"`
+と印字し、
+`"flowchart LR\nA\n%%{init: {}"` は `"flowchart LR\n  A\n  %%{init: {}"`
+と印字します（fixture `unclosed-trailing-whitespace` と、
+`unclosed-at-end-of-text-kept` は
+[フォルダー](../tests/fixtures/flowchart/directives)にあります）。
 
 ### 方向
 
 方向は書かれたまま残します。
-ヘッダーでも `direction` の文でも、
-`TD` を `TB` に変えません。 [fixture: direction/header-td-kept]
+ヘッダーでも `direction` の文でも、 `TD` を `TB` に変えません。
+[fixture: direction/header-td-kept]
 [fixture: direction/statement-td-kept-with-other-header]
 [fixture: direction/statement-values-kept]
-mermaid.js は subgraph の中の `direction` の文の `TD` を書かれたとおりに保つので、
-そこを変えると図が変わり、ヘッダーだけを変えると両者が揃わなくなるからです。
+mermaid.js は subgraph の中の `direction` の文の `TD`
+を書かれたとおりに保つので、そこを変えると図が変わり、
+ヘッダーだけを変えると両者が揃わなくなるからです。
 `direction` の文では、mermaid.js は `direction` の前と値の後を、
 ラベルや文字列を含みうるテキストとして読み、値の後の `;` はそのテキストに属し、
 区切りではありません。
 そのテキストは書かれたまま残し、それと `direction` の間、
 `direction` と値の間の空白は、ほかのトークンの間と同じく空白 1 つにします。
 `A[direction TB]` のような行も `direction` の文で、頂点も接続も読まれず、
-そのように、
-その段の字下げで印字します。 [fixture: direction/statement-holds-text-kept]
+そのように、その段の字下げで印字します。
+[fixture: direction/statement-holds-text-kept]
 
-入力 ([direction/kept-input.mmd](../tests/fixtures/flowchart/direction/kept-input.mmd)):
+入力
+([direction/kept-input.mmd](../tests/fixtures/flowchart/direction/kept-input.mmd)):
 
 ```mmd
 flowchart TD
@@ -1474,7 +1600,8 @@ flowchart TD
   end
 ```
 
-出力 ([direction/kept-output.mmd](../tests/fixtures/flowchart/direction/kept-output.mmd)):
+出力
+([direction/kept-output.mmd](../tests/fixtures/flowchart/direction/kept-output.mmd)):
 
 ```mmd
 flowchart TD
@@ -1487,36 +1614,40 @@ flowchart TD
 ### subgraph のヘッダー
 
 タイトルの内側の空白を保ち、`[ T ]`を`[ T ]`のままにします。
-Dbは同じで、
-見出しには著者のタイトルの書き方を保つためです。 [fixture: subgraph-header/title-interior-whitespace-kept]
+Dbは同じで、見出しには著者のタイトルの書き方を保つためです。
+[fixture: subgraph-header/title-interior-whitespace-kept]
 
 subgraph の id と角括弧のタイトルの間に空白があるかないかは、
 書かれたまま残します。
-空白の連続は空白 1 つにします。 [fixture: subgraph-header/title-run-of-whitespace-becomes-one]
+空白の連続は空白 1 つにします。
+[fixture: subgraph-header/title-run-of-whitespace-becomes-one]
 mermaid.js はどちらの形も同じに読み、どちらも使われているので、
 書き手に任せます。
 タイトルなしで書かれた名前は、その後の空白を保ちます。
-mermaid.js はその空白を名前の一部として読みます。 [fixture: subgraph-header/name-trailing-run-kept]
+mermaid.js はその空白を名前の一部として読みます。
+[fixture: subgraph-header/name-trailing-run-kept]
 [fixture: subgraph-header/name-trailing-whitespace-kept]
 [fixture: subgraph-header/name-whitespace-before-directive-kept]
 [fixture: subgraph-header/name-whitespace-after-directive-kept]
 ヘッダーと同じ行に書かれた空の説明ブロックの周りの空白も同じです。
 ブロックの前、ブロックの間、最後のブロックと `;` の間の空白がそうで、
 `subgraph "S"accDescr {} accDescr {}` と、
-`subgraph "U"accDescr {} ;` がその例です。 [fixture: subgraph-header/whitespace-before-first-block-kept]
+`subgraph "U"accDescr {} ;` がその例です。
+[fixture: subgraph-header/whitespace-before-first-block-kept]
 ブロックは何のトークンも読まれず、その空白が名前の後に続くとみなされ、
 subgraph の id は `subGraph0` になり、空白がなければ `S` になります。
 空白があることは残しますが、幅は、最初のブロックの前だけ、
 名前に続くものとして書かれたまま残し、ブロックの間や `;` の前の空白の連続は、
 空白 1 つにします。 [fixture: subgraph-header/runs-between-blocks-become-one]
-最後のブロックの後の空白に改行が続くときは、改行として読まれ、
-数えません。 [fixture: subgraph-header/whitespace-after-last-block-dropped]
+最後のブロックの後の空白に改行が続くときは、改行として読まれ、数えません。
+[fixture: subgraph-header/whitespace-after-last-block-dropped]
 ブロックは、`;` とその後のディレクティブとともに、
 ヘッダーの行に書かれたまま残します。
 ブロックが独立した行にあると、空白は別に読まれ、
 ブロックとディレクティブの後の `;` は頂点として読まれます。
 
-入力 ([subgraph-header/whitespace-before-block-kept-input.mmd](../tests/fixtures/flowchart/subgraph-header/whitespace-before-block-kept-input.mmd)):
+入力
+([subgraph-header/whitespace-before-block-kept-input.mmd](../tests/fixtures/flowchart/subgraph-header/whitespace-before-block-kept-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -1534,7 +1665,8 @@ D
 end
 ```
 
-出力 ([subgraph-header/whitespace-before-block-kept-output.mmd](../tests/fixtures/flowchart/subgraph-header/whitespace-before-block-kept-output.mmd)):
+出力
+([subgraph-header/whitespace-before-block-kept-output.mmd](../tests/fixtures/flowchart/subgraph-header/whitespace-before-block-kept-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -1552,7 +1684,8 @@ flowchart LR
   end
 ```
 
-入力 ([subgraph-header/title-spacing-kept-input.mmd](../tests/fixtures/flowchart/subgraph-header/title-spacing-kept-input.mmd)):
+入力
+([subgraph-header/title-spacing-kept-input.mmd](../tests/fixtures/flowchart/subgraph-header/title-spacing-kept-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -1564,7 +1697,8 @@ flowchart LR
   end
 ```
 
-出力 ([subgraph-header/title-spacing-kept-output.mmd](../tests/fixtures/flowchart/subgraph-header/title-spacing-kept-output.mmd)):
+出力
+([subgraph-header/title-spacing-kept-output.mmd](../tests/fixtures/flowchart/subgraph-header/title-spacing-kept-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -1576,7 +1710,8 @@ flowchart LR
   end
 ```
 
-入力 ([subgraph-header/name-whitespace-before-directive-kept-input.mmd](../tests/fixtures/flowchart/subgraph-header/name-whitespace-before-directive-kept-input.mmd)):
+入力
+([subgraph-header/name-whitespace-before-directive-kept-input.mmd](../tests/fixtures/flowchart/subgraph-header/name-whitespace-before-directive-kept-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -1585,7 +1720,8 @@ flowchart LR
   end
 ```
 
-出力 ([subgraph-header/name-whitespace-before-directive-kept-output.mmd](../tests/fixtures/flowchart/subgraph-header/name-whitespace-before-directive-kept-output.mmd)):
+出力
+([subgraph-header/name-whitespace-before-directive-kept-output.mmd](../tests/fixtures/flowchart/subgraph-header/name-whitespace-before-directive-kept-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -1596,8 +1732,8 @@ flowchart LR
 
 ### スタイルの行末の空白
 
-`style`、`classDef`、
-`linkStyle` の文の末尾の空白は取り除きます。 [fixture: style-trailing-whitespace/removed]
+`style`、`classDef`、 `linkStyle` の文の末尾の空白は取り除きます。
+[fixture: style-trailing-whitespace/removed]
 [fixture: style-trailing-whitespace/removed-tab]
 [fixture: style-trailing-whitespace/removed-after-directive]
 mermaid.js はその空白を最後のスタイルの末尾に残すので、
@@ -1606,27 +1742,32 @@ mermaid.js はその空白を最後のスタイルの末尾に残すので、
 mermaid.js がその空白を、
 並びの末尾の `,` の後の 1 つのスタイルとして読むときは、空白を保ちます。
 取り除くと文が拒否されるからです。
-`style A fill:#f00, ` と `classDef c fill:x\, ` がそうです。 [fixture: style-trailing-whitespace/whitespace-only-value-kept]
+`style A fill:#f00, ` と `classDef c fill:x\, ` がそうです。
+[fixture: style-trailing-whitespace/whitespace-only-value-kept]
 [fixture: style-trailing-whitespace/whitespace-only-value-in-link-style-kept]
 [fixture: style-trailing-whitespace/whitespace-only-value-before-directive-kept]
 [fixture: style-trailing-whitespace/escaped-comma-kept]
 ディレクティブの後や、mermaid.js が無視する `;` の後の、
 空白だけのスタイルも同じです。
-`style A fill:red,%%{init: {}}%% ` と `style A fill:#f00,; ` がそうです。 [fixture: style-trailing-whitespace/whitespace-only-value-after-directive-kept]
+`style A fill:red,%%{init: {}}%% ` と `style A fill:#f00,; ` がそうです。
+[fixture: style-trailing-whitespace/whitespace-only-value-after-directive-kept]
 [fixture: style-trailing-whitespace/whitespace-only-value-after-ignored-semicolon-kept]
 
 空白が行末にあるので、例は、`\n` を改行とする文字列で書きます。
-`"flowchart LR\n  A --> B\n  style A fill:#f00   \n"` は `"flowchart LR\n  A --> B\n  style A fill:#f00\n"` と印字し、
+`"flowchart LR\n  A --> B\n  style A fill:#f00   \n"` は
+`"flowchart LR\n  A --> B\n  style A fill:#f00\n"` と印字し、
 `"flowchart LR\n  A\n  style A fill:#f00, \n"` はそのまま印字します（fixture
-`removed` と `whitespace-only-value-kept` は [フォルダー](../tests/fixtures/flowchart/style-trailing-whitespace) にあります）。
+`removed` と `whitespace-only-value-kept` は
+[フォルダー](../tests/fixtures/flowchart/style-trailing-whitespace)
+にあります）。
 
 ### フロントマターの YAML
 
 `---` の行の間の YAML は、Prettier の YAML 整形で整形します。
-パーサーは YAML を読まないので、
-YAML として整形するのは整形器の仕事です。 [fixture: frontmatter-yaml/compat-unknown-config-formatted]
-`---` の行は、行末の空白とタブも含めて、
-書かれたまま残します。 [fixture: frontmatter-yaml/closing-delimiter-whitespace-kept]
+パーサーは YAML を読まないので、 YAML として整形するのは整形器の仕事です。
+[fixture: frontmatter-yaml/compat-unknown-config-formatted]
+`---` の行は、行末の空白とタブも含めて、書かれたまま残します。
+[fixture: frontmatter-yaml/closing-delimiter-whitespace-kept]
 Prettier が YAML として読めないときと、`---` の行が字下げされているときは、
 YAML を書かれたまま残します。
 `---` の行は書かれたまま残すので、
@@ -1639,12 +1780,13 @@ Prettier は、
 書かれたまま残します。
 mermaid.js は YAML を読む前に、フロントマターを含むテキスト全体で、
 HTML タグの中の `="..."` を書き換えます。
-そうした値の引用符を変えると、
-mermaid.js が読むものが変わることがあります。 [fixture: frontmatter-yaml/compat-tag-start-digit-kept]
+そうした値の引用符を変えると、 mermaid.js が読むものが変わることがあります。
+[fixture: frontmatter-yaml/compat-tag-start-digit-kept]
 [fixture: frontmatter-yaml/compat-tag-start-underscore-kept]
 [fixture: frontmatter-yaml/compat-less-than-without-tag-formatted]
 
-入力 ([frontmatter-yaml/formatted-input.mmd](../tests/fixtures/flowchart/frontmatter-yaml/formatted-input.mmd)):
+入力
+([frontmatter-yaml/formatted-input.mmd](../tests/fixtures/flowchart/frontmatter-yaml/formatted-input.mmd)):
 
 ```mmd
 ---
@@ -1655,7 +1797,8 @@ flowchart LR
 A-->B
 ```
 
-出力 ([frontmatter-yaml/formatted-output.mmd](../tests/fixtures/flowchart/frontmatter-yaml/formatted-output.mmd)):
+出力
+([frontmatter-yaml/formatted-output.mmd](../tests/fixtures/flowchart/frontmatter-yaml/formatted-output.mmd)):
 
 ```mmd
 ---
@@ -1666,7 +1809,8 @@ flowchart LR
   A --> B
 ```
 
-入力 ([frontmatter-yaml/malformed-kept-input.mmd](../tests/fixtures/flowchart/frontmatter-yaml/malformed-kept-input.mmd)):
+入力
+([frontmatter-yaml/malformed-kept-input.mmd](../tests/fixtures/flowchart/frontmatter-yaml/malformed-kept-input.mmd)):
 
 ```mmd
 ---
@@ -1676,7 +1820,8 @@ flowchart LR
 A-->B
 ```
 
-出力 ([frontmatter-yaml/malformed-kept-output.mmd](../tests/fixtures/flowchart/frontmatter-yaml/malformed-kept-output.mmd)):
+出力
+([frontmatter-yaml/malformed-kept-output.mmd](../tests/fixtures/flowchart/frontmatter-yaml/malformed-kept-output.mmd)):
 
 ```mmd
 ---
@@ -1686,7 +1831,8 @@ flowchart LR
   A --> B
 ```
 
-入力 ([frontmatter-yaml/html-tag-kept-input.mmd](../tests/fixtures/flowchart/frontmatter-yaml/html-tag-kept-input.mmd)):
+入力
+([frontmatter-yaml/html-tag-kept-input.mmd](../tests/fixtures/flowchart/frontmatter-yaml/html-tag-kept-input.mmd)):
 
 ```mmd
 ---
@@ -1696,7 +1842,8 @@ flowchart LR
 A-->B
 ```
 
-出力 ([frontmatter-yaml/html-tag-kept-output.mmd](../tests/fixtures/flowchart/frontmatter-yaml/html-tag-kept-output.mmd)):
+出力
+([frontmatter-yaml/html-tag-kept-output.mmd](../tests/fixtures/flowchart/frontmatter-yaml/html-tag-kept-output.mmd)):
 
 ```mmd
 ---
@@ -1706,7 +1853,8 @@ flowchart LR
   A --> B
 ```
 
-入力 ([frontmatter-yaml/delimiter-line-kept-input.mmd](../tests/fixtures/flowchart/frontmatter-yaml/delimiter-line-kept-input.mmd)):
+入力
+([frontmatter-yaml/delimiter-line-kept-input.mmd](../tests/fixtures/flowchart/frontmatter-yaml/delimiter-line-kept-input.mmd)):
 
 ```mmd
 ---
@@ -1718,7 +1866,8 @@ flowchart LR
 A
 ```
 
-出力 ([frontmatter-yaml/delimiter-line-kept-output.mmd](../tests/fixtures/flowchart/frontmatter-yaml/delimiter-line-kept-output.mmd)):
+出力
+([frontmatter-yaml/delimiter-line-kept-output.mmd](../tests/fixtures/flowchart/frontmatter-yaml/delimiter-line-kept-output.mmd)):
 
 ```mmd
 ---
@@ -1730,7 +1879,8 @@ flowchart LR
   A
 ```
 
-入力 ([frontmatter-yaml/indented-delimiters-kept-input.mmd](../tests/fixtures/flowchart/frontmatter-yaml/indented-delimiters-kept-input.mmd)):
+入力
+([frontmatter-yaml/indented-delimiters-kept-input.mmd](../tests/fixtures/flowchart/frontmatter-yaml/indented-delimiters-kept-input.mmd)):
 
 ```mmd
   ---
@@ -1741,7 +1891,8 @@ flowchart LR
 A
 ```
 
-出力 ([frontmatter-yaml/indented-delimiters-kept-output.mmd](../tests/fixtures/flowchart/frontmatter-yaml/indented-delimiters-kept-output.mmd)):
+出力
+([frontmatter-yaml/indented-delimiters-kept-output.mmd](../tests/fixtures/flowchart/frontmatter-yaml/indented-delimiters-kept-output.mmd)):
 
 ```mmd
   ---
@@ -1758,13 +1909,15 @@ flowchart LR
 いつも書かれたまま残します。
 
 - ラベルが引用符で囲まれているかどうか。
-  `A[text]` と `A["text"]` はラベルの種類が違います。 [fixture: label-inner-whitespace/quotes-kept]
+  `A[text]` と `A["text"]` はラベルの種類が違います。
+  [fixture: label-inner-whitespace/quotes-kept]
 - `&` の前後に空白があるかどうか。
   `A&B` は頂点 1 つ、`A & B` は 2 つで、`A &B` は拒否されます。
-  空白の連続は、
-  トークンの間と同じく空白 1 つにします。 [fixture: arrow-spacing/ampersand-spacing-kept]
+  空白の連続は、トークンの間と同じく空白 1 つにします。
+  [fixture: arrow-spacing/ampersand-spacing-kept]
 - 矢印の長さ（`-->` と `--->`）と、
-  ヘッダーのキーワード（`graph` か `flowchart`）。 [fixture: arrow-spacing/arrow-length-kept]
+  ヘッダーのキーワード（`graph` か `flowchart`）。
+  [fixture: arrow-spacing/arrow-length-kept]
   [fixture: direction/header-keyword-kept]
 - `@{ ... }` のデータブロックとディレクティブの中身。
   パーサーは読みません。 [fixture: whitespace-between-tokens/data-block-kept]

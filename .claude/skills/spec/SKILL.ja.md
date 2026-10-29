@@ -112,7 +112,8 @@ description:
    pin した commit）、 `common.md`、`ast.md`、
    既存の図種の `diagrams/<図種>.md` と `ast/<図種>.md`。
    木の原則とその理由は、`ast.md` の「設計の目標」と「共通の葉のノード」にある。
-4. `packages/tests/docs/maintaining-fixtures.md`（fixture のコマンドと規則）と `packages/tests/README.md`（fixture の形）。
+4. `packages/tests/docs/maintaining-fixtures.md`（fixture のコマンドと規則）と
+   `packages/tests/README.md`（fixture の形）。
 
 この SKILL の手順が書くのは、`packages/spec/` と、
 `@mmd-toolkit/tests` の道具を通した fixture である。
@@ -213,8 +214,8 @@ pnpm run -s fixtures:check
 `<file.json>` は `{ "fixtures": [ { "name", "input", "accepted", "note" } ] }`。
 
 - `accepted` には、確かめた結果を書く。
-  mermaid.js と違っても止まらず、mermaid.js の結果が記録され、「disagree with
-  the observation」として一覧に出る。
+  mermaid.js と違っても止まらず、mermaid.js の結果が記録され、
+  「disagree with the observation」として一覧に出る。
   出力は必ず最後まで読む。
 - 同じ入力の fixture が既にあれば、その項目は飛ばされる。
 - `note` は、仕様のどの節のどの規則の例か（`flowchart.md Strings: …`）と、
@@ -227,8 +228,8 @@ pnpm run -s fixtures:check
 
 ### 2.4 仕様の文書を確かめる
 
-仕様の文書と fixture の変更は、次のように確かめる（SKILL
-`conventions` の「テストの実行」を参照）。
+仕様の文書と fixture の変更は、
+次のように確かめる（SKILL `conventions` の「テストの実行」を参照）。
 書いた後に毎回、リポジトリのルートで次を通す。
 
 ```sh
@@ -247,15 +248,17 @@ fixture の引用（`[fixture:` の後で行が折り返されたものも読む
 すべて `packages/spec/docs/index.md` に記録した commit を指していることも、
 `scripts/check-mermaid-links.mjs` で確かめる。
 
-`packages/tests` で `pnpm run -s fixtures:check` も通す（fixture を足したとき）。
+`packages/tests` で `pnpm run -s fixtures:check` も通す（fixture
+を足したとき）。
 すべての fixture を mermaid.js で読み直し、
 記録した結果と違うものがあれば失敗する。
 
 ほかのパッケージのテストは回さない。
 parser、整形器、lint は、変更を取り込むときに自分のテストを回す。
 仕様を読む parser のテストが 1 つある。
-`packages/parser/tests/types.test.ts` は `docs/known-divergences/` の文書を並べるので、
-既知の差異の文書を足したか除いたときは、作業の結果（3.6）にそう書く。
+`packages/parser/tests/types.test.ts` は `docs/known-divergences/`
+の文書を並べるので、既知の差異の文書を足したか除いたときは、
+作業の結果（3.6）にそう書く。
 3.5 の場合は、文を書くときに mermaid.js で 1 回確かめて fixture にし、
 `fixtures:check` がそれをもう一度回す。
 入力を生成するテストやコマンドはない。
@@ -273,7 +276,8 @@ parser、整形器、lint は、変更を取り込むときに自分のテスト
   途中で止まったときは、どのファイルが書かれたかを確かめ、
   書かれたファイルの分を外してから流し直す（二重に足さない）。
 - 書いた後に `npx prettier --write` で折り返し直す。
-- Write ツールとシェルのヒアドキュメントは `\uXXXX` を実際の文字に変えることがある。
+- Write ツールとシェルのヒアドキュメントは `\uXXXX`
+  を実際の文字に変えることがある。
   見えない文字は文書に書かない（SKILL `conventions`）。
   書いた後に `pnpm run lint:chars` を通す。
 - バッククォートを含む例のコードスパンは、
@@ -369,7 +373,8 @@ Jison の自動的な語境界は適用しない。
    継承した terminal、custom keyword matcher、長い代替を含め、優先順を記録する。
    宣言順だけや、一般的な最長一致の仮定では、その順は決まらない。
    インポートされても到達しない terminal を挙げ、
-   mermaid.js の `packages/parser` と `packages/mermaid/src/diagrams/<図種>` の両方の固定したテストを読む。
+   mermaid.js の `packages/parser` と `packages/mermaid/src/diagrams/<図種>`
+   の両方の固定したテストを読む。
 2. 実際の keyword matcher と境界の検査を読む。
    境界を満たす文字を正確に述べ、単位間で読み飛ばす空白と区別する。
    境界は、共通のディレクティブと、
@@ -413,10 +418,12 @@ Jison の自動的な語境界は適用しない。
    同一性、置換を含める。
    adapter が何も公開しない場合や意味の検査がない場合は、
    公開の処理や欄を作らず、その不在を記録する。
-6. [common.md](../../../packages/spec/docs/common.ja.md) の共通の前処理と検出の規則を読む。
+6. [common.md](../../../packages/spec/docs/common.ja.md)
+   の共通の前処理と検出の規則を読む。
    「ソースの読み方」「フロントマター」「先頭の空白」と、
    「図種の検出」が対象である。
-   [detection.md](../../../packages/spec/docs/detection.ja.md) の図種の検出器も読む。
+   [detection.md](../../../packages/spec/docs/detection.ja.md)
+   の図種の検出器も読む。
    3.2 の Detection を書く前に、次を直接の文と固定した場合で記録する。
    - 本物の先頭のフロントマターと、
      検出点で保持する 1 つのフロントマター形のブロックを区別する。
@@ -448,8 +455,8 @@ Jison の自動的な語境界は適用しない。
 7. 求めた検出規則、順序つきの単位、書かれた構成要素、隠れた形、変換、
    受理の門に、3.2〜3.5 を適用する。
    差異を考える前に、直接の文と木を書く。
-   文ごとに、名指す境界と規則の交点の明示した場合を、 tests パッケージの Mermaid
-   runner で調べる。
+   文ごとに、名指す境界と規則の交点の明示した場合を、
+   tests パッケージの Mermaid runner で調べる。
    隠れた形の所有、区切り、取られる LF、EOF、差異の逆方向を含める。
    文が区別する場合だけを fixture CLI で加え、入力を生成しない。
    見出し・flag・文の隙間と EOL の条件は、先行する図の配置を使わず、
@@ -457,8 +464,8 @@ Jison の自動的な語境界は適用しない。
 
 ### 3.2 図種の文書を書く
 
-`docs/diagrams/<図種>.md` と `.ja.md` を、 index.md の「How to read a diagram
-document」の 4 節で書く。
+`docs/diagrams/<図種>.md` と `.ja.md` を、
+index.md の「How to read a diagram document」の 4 節で書く。
 
 1. Detection: detection.md の該当の検出器を指す。
 2. Lexical structure: 単位と文脈を、各文脈の規則の一覧（適用する順）で書く。
@@ -482,12 +489,14 @@ document」の 4 節で書く。
    - 差異の文書に図種の段落を足すときは、「mermaid.js の文書と issue」の節にも、
      その図種の項を足す。
    - `embedded-data-opaque` は、
-     [比較する Db](../../../packages/spec/docs/known-divergences/embedded-data-opaque.ja.md#比較する-db) と、
-     [DIVERGENCE_PROPERTIES](../../../packages/tests/src/fixture-acceptance.ts) に従う。
+     [比較する Db](../../../packages/spec/docs/known-divergences/embedded-data-opaque.ja.md#比較する-db)
+     と、
+     [DIVERGENCE_PROPERTIES](../../../packages/tests/src/fixture-acceptance.ts)
+     に従う。
 
 図種の Db の要約と、それを木から作る手順は、
-`@mmd-toolkit/tests` の文書（`docs/db-summaries.md` と `docs/db-from-tree/<図種>.md`）で、
-tests が書く。
+`@mmd-toolkit/tests` の文書（`docs/db-summaries.md` と
+`docs/db-from-tree/<図種>.md`）で、 tests が書く。
 そこに要るものは tests に知らせる。
 
 ### 3.3 木のノードを足す
@@ -583,8 +592,8 @@ tests が書く。
    flowchart の例: mermaid.js がトークンを読まず、木に置く場所もない空の文字列、
    空の呼び出し、空の説明ブロックは、それらが現れるどの場所についても、
    場所ごとの規則ではなく、 1 つの既知の差異として扱った。
-4. 受理・拒否は 1 つの基準で決める（AGENTS.md の Project
-   1 と「方針と基準」の節）。
+4. 受理・拒否は 1 つの基準で決める（AGENTS.md の Project 1
+   と「方針と基準」の節）。
    mermaid.js が受理・拒否するものを受理・拒否し、
    受理した入力には mermaid.js の Db を与える。
    mermaid.js が受理する入力を拒否するには、2 つの事実が要る。
@@ -657,7 +666,8 @@ tests が書く。
 
 - `checkTree` は、[tests §6](../tests/SKILL.ja.md#6-langium-の図)に従う。
 - 差異の形の検査は、
-  [parser §6](../parser/SKILL.ja.md#6-fixture-が足されたとき規則が変わったとき)に従う。
+  [parser §6](../parser/SKILL.ja.md#6-fixture-が足されたとき規則が変わったとき)
+  に従う。
 - printer の作業は、[prettier-plugin](../prettier-plugin/SKILL.ja.md)に従う。
 - Db に載らない構文は Db の一致では保持を確かめられないため、
   独立した木の検査と、整形の期待出力全体を比べる fixture を求める。
@@ -673,12 +683,13 @@ parser は仕様だけを源として読む。
    字句構造と文法の単位の名前を、文法の規則の名前も含めて一覧にする。
    1 つの名前は 1 つの単位を指す。
    キーワードの単位とテキストの単位が名前を共有しない（state は一度、
-   キーワードとスタイルのテキストの両方に `style` を使った。今は `style-text`）。
+   キーワードとスタイルのテキストの両方に `style` を使った。今は
+   `style-text`）。
 2. **どの文字もどれかの単位に入る。**
    どの文脈でも、空白でない文字は、単位、コメント、述べた拒否のどれかに入る。
    1 行のノートや別名の `:` のような区切り、行の規則が無視する `;`、
-   mermaid.js の規則が読んでトークンを返さないテキスト（`processId` が落とす id、
-   空の説明ブロック）も同じ。
+   mermaid.js の規則が読んでトークンを返さないテキスト（`processId` が落とす
+   id、空の説明ブロック）も同じ。
    parser は `packages/parser/docs/tokens/<diagram>.md` で、
    各単位にトークンの種類を、無視される `;` に文脈ごとの種類を与える。
    仕様は、それができるように各単位に名前を付ける。
@@ -703,8 +714,8 @@ parser は仕様だけを源として読む。
    fixture を持つ。
    説明する文のない場合は tests に知らせる。
    最初の訪れでだけ決まるもの、積み重なるもの、
-   更新がそのまま残すもの（`Object.assign` は新しいオブジェクトにないキーを残す）を、
-   Db のクラスで探す。
+   更新がそのまま残すもの（`Object.assign`
+   は新しいオブジェクトにないキーを残す）を、 Db のクラスで探す。
 8. **値の外で Db が読むもの。**
    木は Db を変えるものを持つ。
    値として（mermaid.js が読む空白。空白だけの値も）、
@@ -815,8 +826,8 @@ fixture でキーがないことが一度もない欄も、ある入力ではな
      `StateIgnoredStatement` や `SequenceIgnoredStatement` のような、
      読まれないテキストの文。
    - どの値にも入らない文字: 行の規則が無視する `;`。
-   - トークンを断片に切るトリビア:
-     `String` のトークンを `StringFragment` のトークンに、
+   - トークンを断片に切るトリビア: `String` のトークンを `StringFragment`
+     のトークンに、
      `RawText` のトークンを `RawText` のトークンに切るコメントの領域と、
      `String` か `RawText` のトークンの中の、
      それを同じように切るディレクティブ。

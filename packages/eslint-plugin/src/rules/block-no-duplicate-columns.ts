@@ -22,7 +22,7 @@ export const blockNoDuplicateColumns: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js replaces the column count set on line {{line}} with this count for the whole block.",
+        "mermaid.js replaces the earlier column count with this count for the whole block.",
     },
   },
   create(context) {
@@ -38,7 +38,6 @@ export const blockNoDuplicateColumns: MermaidRuleDefinition<{
           context.report({
             node,
             messageId: "duplicate",
-            data: { line: String(previous.loc.start.line) },
           })
         }
         previous = node

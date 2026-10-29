@@ -1,7 +1,6 @@
 # @mmd-toolkit/railroad-no-duplicate-title
 
-英語版:
-[railroad-no-duplicate-title.md](./railroad-no-duplicate-title.md)
+英語版: [railroad-no-duplicate-title.md](./railroad-no-duplicate-title.md)
 
 前に設定したタイトルを置き換える `accTitle` を禁止する。
 
@@ -18,7 +17,8 @@ railroad の図は、`accTitle` が設定するアクセシブルなタイトル
 ## 規則の詳細
 
 この規則は、
-前の `accTitle` が設定した空でないアクセシブルなタイトルを変える `accTitle` 文を報告する。
+前の `accTitle` が設定した空でないアクセシブルなタイトルを変える `accTitle`
+文を報告する。
 対象の図種は `railroad`、`railroadEbnf`、`railroadAbnf`、`railroadPeg` である。
 
 `accTitle: first` と `accTitle: second` の後では、
@@ -75,13 +75,14 @@ railroad-ebnf-beta
 
 ## 背景
 
-[値の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L57-L60) は、
-タイトルの両端の空白を除き、 2 つ以上の空白やタブの連なりを 1 つの空白にする。
+[値の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L57-L60)
+は、タイトルの両端の空白を除き、
+2 つ以上の空白やタブの連なりを 1 つの空白にする。
 パーサーは最後のアクセシブルなタイトルを保ち、
-[`populateCommonDb`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14) は、
-それが空でないときだけそれを設定する。
-[描画](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L637-L667) は、
-タイトルを描かない。
+[`populateCommonDb`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14)
+は、それが空でないときだけそれを設定する。
+[描画](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L637-L667)
+は、タイトルを描かない。
 
 <!-- begin auto-generated rule resources -->
 

@@ -35,9 +35,9 @@ export const ganttNoDuplicateTitle: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicateTitle:
-        "mermaid.js replaces the title set on line {{line}} with the one of this `title`.",
+        "mermaid.js replaces the earlier title with the one of this `title`.",
       duplicateAccTitle:
-        "mermaid.js replaces the accessible title set on line {{line}} with the one of this `accTitle`.",
+        "mermaid.js replaces the earlier accessible title with the one of this `accTitle`.",
     },
   },
   create(context) {
@@ -52,7 +52,6 @@ export const ganttNoDuplicateTitle: MermaidRuleDefinition<{
           context.report({
             node,
             messageId: "duplicateTitle",
-            data: { line: String(previousTitle.loc.start.line) },
           })
         }
         previousTitle = node
@@ -65,7 +64,6 @@ export const ganttNoDuplicateTitle: MermaidRuleDefinition<{
           context.report({
             node,
             messageId: "duplicateAccTitle",
-            data: { line: String(previousAccTitle.loc.start.line) },
           })
         }
         previousAccTitle = node

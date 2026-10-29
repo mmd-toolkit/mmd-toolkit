@@ -20,14 +20,11 @@ export const vennNoDuplicateStyle: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js replaces the `{{name}}` value given on line {{line}} for this target with this value.",
+        "mermaid.js replaces the `{{name}}` value given earlier for this target with this value.",
     },
   },
   create(context) {
-    const targets = new Map<
-      string,
-      Map<string, { value: string; line: number }>
-    >()
+    const targets = new Map<string, Map<string, string>>()
     return {
       VennStyleStatement(node) {
         const target = vennRegionKey(node.targets)
@@ -41,14 +38,14 @@ export const vennNoDuplicateStyle: MermaidRuleDefinition<{
           if (!VENN_STYLE_KEYS.has(name)) continue
           const value = normalizeLineTerminators(property.value.value)
           const previous = properties.get(name)
-          if (previous !== undefined && previous.value !== value) {
+          if (previous !== undefined && previous !== value) {
             context.report({
               node: property,
               messageId: "duplicate",
-              data: { name, line: String(previous.line) },
+              data: { name },
             })
           }
-          properties.set(name, { value, line: property.loc.start.line })
+          properties.set(name, value)
         }
       },
     }

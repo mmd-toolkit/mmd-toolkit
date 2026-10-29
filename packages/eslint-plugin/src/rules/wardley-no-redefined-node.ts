@@ -113,7 +113,7 @@ export const wardleyNoRedefinedNode: MermaidRuleDefinition<{
     schema: [],
     messages: {
       redefined:
-        "mermaid.js replaces the node `{{name}}` registered from line {{line}} with this declaration.",
+        "mermaid.js replaces the earlier node `{{name}}` with this declaration.",
     },
   },
   create(context) {
@@ -140,7 +140,6 @@ export const wardleyNoRedefinedNode: MermaidRuleDefinition<{
               messageId: "redefined",
               data: {
                 name: declaration.id,
-                line: String(declaration.previous?.node.loc.start.line),
               },
             })
           }

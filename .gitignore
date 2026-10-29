@@ -152,3 +152,6 @@ test-results/
 
 # the pinned mermaid.js checkout that the tools read (.work/mermaid), not committed
 .work/
+
+# copies of the root LICENSE that scripts/copy-license.mjs makes for publishing
+packages/*/LICENSE

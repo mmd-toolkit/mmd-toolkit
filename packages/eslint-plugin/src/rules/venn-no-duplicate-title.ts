@@ -16,23 +16,21 @@ export const vennNoDuplicateTitle: MermaidRuleDefinition<{
     },
     schema: [],
     messages: {
-      duplicate:
-        "mermaid.js replaces the title set on line {{line}} with this title.",
+      duplicate: "mermaid.js replaces the earlier title with this title.",
     },
   },
   create(context) {
-    let previous: { text: string; line: number } | null = null
+    let previous: string | null = null
     return {
       VennTitleStatement(node) {
         const text = normalizeLineTerminators(node.value.value)
-        if (previous !== null && previous.text !== text) {
+        if (previous !== null && previous !== text) {
           context.report({
             node,
             messageId: "duplicate",
-            data: { line: String(previous.line) },
           })
         }
-        previous = { text, line: node.loc.start.line }
+        previous = text
       },
     }
   },

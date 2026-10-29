@@ -4,7 +4,9 @@
 
 [tokens.md](../tokens.ja.md) を補うトークンです。
 ノードは [ast/ishikawa.md](../../../spec/docs/ast/ishikawa.ja.md)、
-字句規則は [diagrams/ishikawa.md](../../../spec/docs/diagrams/ishikawa.ja.md#字句構造) が定めます。
+字句規則は
+[diagrams/ishikawa.md](../../../spec/docs/diagrams/ishikawa.ja.md#字句構造)
+が定めます。
 
 ## トークン
 
@@ -16,8 +18,8 @@
 各項目は、共通のトリビアが切る前は 1 つのトークンです。
 ヘッダーの大文字と小文字は書かれたままです。
 beta 接尾辞の単語境界が成立しないとき、
-接尾辞は安定版ヘッダーの後のノードのテキストです。 [fixture: ishikawa/header-uppercase]
-[fixture:
+接尾辞は安定版ヘッダーの後のノードのテキストです。
+[fixture: ishikawa/header-uppercase] [fixture:
 ishikawa/header-beta-mixed-case] [fixture: ishikawa/header-beta-letter-suffix]
 [fixture: ishikawa/header-beta-digit-suffix] [fixture:
 ishikawa/header-beta-underscore-suffix]
@@ -40,9 +42,8 @@ ishikawa/gram-after-child-colon-space] [fixture: ishikawa/gram-empty-quotes]
 ishikawa/gram-after-child-semicolon]
 
 字下げ、空行の空白、newline 単位はトークンを作りません。
-CR と CRLF はテキストを終えますが、
-中の U+2028 と U+2029 は終えません。 [fixture: ishikawa/lex-space-positions]
-[fixture: ishikawa/lex-tab-positions]
+CR と CRLF はテキストを終えますが、中の U+2028 と U+2029 は終えません。
+[fixture: ishikawa/lex-space-positions] [fixture: ishikawa/lex-tab-positions]
 [fixture: ishikawa/lex-nbsp-positions] [fixture:
 ishikawa/gram-between-spaces-line] [fixture: ishikawa/lex-cr-lines] [fixture:
 ishikawa/lex-crlf-lines] [fixture: ishikawa/lex-u2028-in-root] [fixture:
@@ -52,8 +53,8 @@ ishikawa/lex-u2029-in-child]
 [共通規則](../tokens.ja.md)に従ってテキストを `RawText` の断片に切ります。
 切れ目の隣の値の空白は、空白だけの断片でも保ちます。
 共通の記録処理が、
-コメントの外の `Directive` と `IgnoredSemicolon` のトークンを作ります。 [fixture: ishikawa/directive-root-middle]
-[fixture:
+コメントの外の `Directive` と `IgnoredSemicolon` のトークンを作ります。
+[fixture: ishikawa/directive-root-middle] [fixture:
 ishikawa/directive-multiline-joins-node-text] [fixture:
 ishikawa/comment-ls-region-in-text] [fixture:
 ishikawa/lex-node-text-ps-comment-region] [fixture:
@@ -65,8 +66,8 @@ ishikawa/lex-style-rule-directive-in-trigger]
 図のコメントの印は `%%` で、LF、U+2028、U+2029 の直前か EOF で終わります。
 前の空白はコメントの外です。
 印の間や本文中のディレクティブは、コメントの範囲の中です。
-ノードのテキストが始まった後の `%%` は `RawText` に残ります。 [fixture: ishikawa/gram-preserved-comment-after-root]
-[fixture:
+ノードのテキストが始まった後の `%%` は `RawText` に残ります。
+[fixture: ishikawa/gram-preserved-comment-after-root] [fixture:
 ishikawa/comment-preserved-u2028] [fixture: ishikawa/comment-preserved-u2029]
 [fixture: ishikawa/comment-only-eof] [fixture:
 ishikawa/comment-directive-between-marks] [fixture:

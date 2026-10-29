@@ -1,7 +1,6 @@
 # @mmd-toolkit/gantt-no-duplicate-description
 
-英語版:
-[gantt-no-duplicate-description.md](./gantt-no-duplicate-description.md)
+英語版: [gantt-no-duplicate-description.md](./gantt-no-duplicate-description.md)
 
 説明をもう一度設定する `accDescr` の文を禁止する。
 
@@ -32,7 +31,9 @@ mermaid.js は `accDescr` の文をすべて受理し、説明を設定する文
 
 説明を持たないブロックは数えない。
 `accDescr: a` の後のブロック `accDescr {}` は、説明を `a` のままにする。
-これは [gantt-no-empty-description-block](./gantt-no-empty-description-block.ja.md) が報告する。
+これは
+[gantt-no-empty-description-block](./gantt-no-empty-description-block.ja.md)
+が報告する。
 
 図がすでに持つ説明を設定する文は、どちらの形でも報告しない。
 `accDescr: d` の後のブロック `accDescr { d }` は、何も失わない。

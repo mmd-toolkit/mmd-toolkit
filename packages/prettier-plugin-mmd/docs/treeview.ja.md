@@ -3,7 +3,8 @@
 英語版: [treeview.md](./treeview.md)
 
 `treeView-beta` の整形規則です。
-[構文](../../spec/docs/diagrams/treeview.ja.md)と [原文の木](../../spec/docs/ast/treeview.ja.md)が読みを定義します。
+[構文](../../spec/docs/diagrams/treeview.ja.md)と
+[原文の木](../../spec/docs/ast/treeview.ja.md)が読みを定義します。
 printer は共有の blocks、atoms、gaps、共通の配置と root の経路を使い、
 入れ子の木から親子の列を計画し、原文からモードを読みます。
 parser が拒否する入力は、単独ファイルでは構文エラーを報告し、
@@ -26,10 +27,10 @@ fence では Markdown host に任せます。
 
 [corpus fixture: treeview/header-nbsp-custom-boundary]
 
-入力（escape 表記）:
-`"\n  treeView-beta\nRoot"`.
+入力（escape 表記）: `"\n  treeView-beta\nRoot"`
 
-出力 ([header/header-leading-output.mmd](../tests/fixtures/treeview/header/header-leading-output.mmd)):
+出力
+([header/header-leading-output.mmd](../tests/fixtures/treeview/header/header-leading-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -111,10 +112,10 @@ Branch prefixes の本文保持の条件によって、モードと値内の罫�
 
 [corpus fixture: treeview/box-metadata-only]
 
-入力（escape 表記）:
-`"treeView-beta\naccDescr {\nx\u2500\n}\n"`.
+入力（escape 表記）: `"treeView-beta\naccDescr {\nx\u2500\n}\n"`
 
-出力 ([modes/block-interior-active-output.mmd](../tests/fixtures/treeview/modes/block-interior-active-output.mmd)):
+出力
+([modes/block-interior-active-output.mmd](../tests/fixtures/treeview/modes/block-interior-active-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -240,8 +241,9 @@ treeview/description-blocks/box-redraw-opener-prefix-with-directive-gap]
 [fixture: treeview/branch-prefixes/box-redraw-nested-mixed-weights]
 
 描く前に、本文を保つかを一度に判断します。
-外側の prefix と区切りが任意文字、directive、選ばれる semicolon、 comment
-region と交わる図や、装飾の行が共有の trivia と交わる図は本文を保ちます。
+外側の prefix と区切りが任意文字、directive、選ばれる semicolon、
+comment region と交わる図や、
+装飾の行が共有の trivia と交わる図は本文を保ちます。
 固定された原文の行の境界、安全に寄せられない注釈、モードの喪失、
 値内の prefix の有効な indent の変化も本文保持の理由です。
 枝の追加や除去で値の tab や末尾の読みが変わる図も本文を保ちます。
@@ -306,10 +308,10 @@ region と交わる図や、装飾の行が共有の trivia と交わる図は�
 
 [corpus fixture: treeview/box-skip-space-before-dash]
 
-入力（escape 表記）:
-`"treeView-beta\na\n    ├─ b\n  └─ c\n"`.
+入力（escape 表記）: `"treeView-beta\na\n    ├─ b\n  └─ c\n"`
 
-出力 ([branch-prefixes/rounding-half-output.mmd](../tests/fixtures/treeview/branch-prefixes/rounding-half-output.mmd)):
+出力
+([branch-prefixes/rounding-half-output.mmd](../tests/fixtures/treeview/branch-prefixes/rounding-half-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -578,10 +580,10 @@ body、名前待ち、注釈、opener の gap の各所有位置で適用しま�
 
 [corpus fixture: treeview/box-unicode-decoration]
 
-入力（escape 表記）:
-`"treeView-beta\na\n\u2502\n\u2514\u2500 :::x\n"`.
+入力（escape 表記）: `"treeView-beta\na\n\u2502\n\u2514\u2500 :::x\n"`
 
-出力 ([decorations/annotation-owner-output.mmd](../tests/fixtures/treeview/decorations/annotation-owner-output.mmd)):
+出力
+([decorations/annotation-owner-output.mmd](../tests/fixtures/treeview/decorations/annotation-owner-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -694,12 +696,12 @@ Db の等しい一定幅を選びます。
 
 [corpus fixture: treeview/nested-child-empty-block]
 
-入力（escape 表記）:
-`"treeView-beta\nR\n A\n  B\n"`.
+入力（escape 表記）: `"treeView-beta\nR\n A\n  B\n"`
 
-Options: `{"tabWidth":4}`.
+設定: `{"tabWidth":4}`
 
-出力 ([indentation/indent-config-four-output.mmd](../tests/fixtures/treeview/indentation/indent-config-four-output.mmd)):
+出力
+([indentation/indent-config-four-output.mmd](../tests/fixtures/treeview/indentation/indent-config-four-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -772,10 +774,10 @@ treeView-beta
 
 [corpus fixture: treeview/box-tail-decoration-empty-block]
 
-入力（escape 表記）:
-`"treeView-beta\nR :::hot   \nC\n"`.
+入力（escape 表記）: `"treeView-beta\nR :::hot   \nC\n"`
 
-出力 ([carried-indentation/carry-class-output.mmd](../tests/fixtures/treeview/carried-indentation/carry-class-output.mmd)):
+出力
+([carried-indentation/carry-class-output.mmd](../tests/fixtures/treeview/carried-indentation/carry-class-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -869,10 +871,10 @@ tab や末尾の空白の読みが変わる図は本文を保ちます。
 
 [corpus fixture: treeview/space-indent-nbsp]
 
-入力（escape 表記）:
-`"treeView-beta\na\n\t\u2514\u2500 b\tc\n"`.
+入力（escape 表記）: `"treeView-beta\na\n\t\u2514\u2500 b\tc\n"`
 
-出力 ([tabs/branch-tab-output.mmd](../tests/fixtures/treeview/tabs/branch-tab-output.mmd)):
+出力
+([tabs/branch-tab-output.mmd](../tests/fixtures/treeview/tabs/branch-tab-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -914,8 +916,8 @@ AST の children から親子を読みます。
 誤解を招く同じ行の配置を保たず、見た目の親子を読みと一致させるためです。
 裸名の中の引用らしい文字は名前に残します。
 固定された原文の行の境界や、値の tab、末尾、
-新しく露出する先頭の Unicode 空白が安全な行分けを妨げる図は、 Branch
-prefixes に従って本文を保ちます。
+新しく露出する先頭の Unicode 空白が安全な行分けを妨げる図は、
+Branch prefixes に従って本文を保ちます。
 
 [fixture: treeview/statements-one-per-line/review159-box-quoted-line-rule-semicolon]
 
@@ -995,10 +997,10 @@ directive を枝の外に置き、見た目のずれを防いで、
 
 [test: treeview split directives remain redrawable]
 
-入力（escape 表記）:
-`"treeView-beta\nroot\n├── \"a\" %%{x}%% \"b\"\n└── c\n"`.
+入力（escape 表記）: `"treeView-beta\nroot\n├── \"a\" %%{x}%% \"b\"\n└── c\n"`
 
-出力 ([statements-one-per-line/review159-box-quoted-inline-directive-output.mmd](../tests/fixtures/treeview/statements-one-per-line/review159-box-quoted-inline-directive-output.mmd)):
+出力
+([statements-one-per-line/review159-box-quoted-inline-directive-output.mmd](../tests/fixtures/treeview/statements-one-per-line/review159-box-quoted-inline-directive-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -1083,10 +1085,10 @@ directive 間の space と tab を消します。
 
 [fixture: treeview/statements-one-per-line/review159-split-directive-indent-control]
 
-入力（escape 表記）:
-`"treeView-beta\n\"A\"\"B\"'C'\n"`.
+入力（escape 表記）: `"treeView-beta\n\"A\"\"B\"'C'\n"`
 
-出力 ([statements-one-per-line/adjacent-quoted-output.mmd](../tests/fixtures/treeview/statements-one-per-line/adjacent-quoted-output.mmd)):
+出力
+([statements-one-per-line/adjacent-quoted-output.mmd](../tests/fixtures/treeview/statements-one-per-line/adjacent-quoted-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -1124,10 +1126,10 @@ trivia の両側は普通の gap の規則でなく接触と分離を保ちま�
 
 [corpus fixture: treeview/directive-class-value-parts]
 
-入力（escape 表記）:
-`"treeView-beta\nR   text   :::hot\n"`.
+入力（escape 表記）: `"treeView-beta\nR   text   :::hot\n"`
 
-出力 ([annotation-gaps/annotation-bare-owned-gap-output.mmd](../tests/fixtures/treeview/annotation-gaps/annotation-bare-owned-gap-output.mmd)):
+出力
+([annotation-gaps/annotation-bare-owned-gap-output.mmd](../tests/fixtures/treeview/annotation-gaps/annotation-bare-owned-gap-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -1158,10 +1160,10 @@ Db の最後の値だけでは原文を再現できません。
 
 [corpus fixture: treeview/db-repeat-icon]
 
-入力（escape 表記）:
-`"treeView-beta\nR :::first :::last\n"`.
+入力（escape 表記）: `"treeView-beta\nR :::first :::last\n"`
 
-出力 ([repeated-annotations/repeat-class-output.mmd](../tests/fixtures/treeview/repeated-annotations/repeat-class-output.mmd)):
+出力
+([repeated-annotations/repeat-class-output.mmd](../tests/fixtures/treeview/repeated-annotations/repeat-class-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -1282,10 +1284,10 @@ class、icon と description の反復はすべて残します。
 
 [corpus fixture: treeview/box-annotation-prefix]
 
-入力（escape 表記）:
-`"treeView-beta\n\"head\n tail\"\n    :::X\n"`.
+入力（escape 表記）: `"treeView-beta\n\"head\n tail\"\n    :::X\n"`
 
-出力 ([annotation-lines/after-multiline-output.mmd](../tests/fixtures/treeview/annotation-lines/after-multiline-output.mmd)):
+出力
+([annotation-lines/after-multiline-output.mmd](../tests/fixtures/treeview/annotation-lines/after-multiline-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -1395,10 +1397,10 @@ marker 後を詰めると class がまとまり、icon の内側の空白は文�
 
 [corpus fixture: treeview/icon-name-close-directive]
 
-入力（escape 表記）:
-`"treeView-beta\nentry :::%%{wrap}%%  X\n"`.
+入力（escape 表記）: `"treeView-beta\nentry :::%%{wrap}%%  X\n"`
 
-出力 ([annotation-components/class-directive-output.mmd](../tests/fixtures/treeview/annotation-components/class-directive-output.mmd)):
+出力
+([annotation-components/class-directive-output.mmd](../tests/fixtures/treeview/annotation-components/class-directive-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -1431,10 +1433,10 @@ Db の等しい trim も原文を失い、内部の空白の変更は descriptio
 
 [corpus fixture: treeview/directive-description-middle]
 
-入力（escape 表記）:
-`"treeView-beta\nR ##\n"`.
+入力（escape 表記）: `"treeView-beta\nR ##\n"`
 
-出力 ([descriptions/description-empty-output.mmd](../tests/fixtures/treeview/descriptions/description-empty-output.mmd)):
+出力
+([descriptions/description-empty-output.mmd](../tests/fixtures/treeview/descriptions/description-empty-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -1472,10 +1474,10 @@ padding のある裸の directory を引用すると名前と種類が変わり�
 
 [corpus fixture: treeview/db-directory-trailing-space]
 
-入力（escape 表記）:
-`"treeView-beta\nA   B\n"`.
+入力（escape 表記）: `"treeView-beta\nA   B\n"`
 
-出力 ([names/name-bare-internal-output.mmd](../tests/fixtures/treeview/names/name-bare-internal-output.mmd)):
+出力
+([names/name-bare-internal-output.mmd](../tests/fixtures/treeview/names/name-bare-internal-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -1517,10 +1519,10 @@ treeView-beta
 
 [corpus fixture: treeview/box-trim-string-closing-quote]
 
-入力（escape 表記）:
-`"treeView-beta\n'first\n\n last'\n"`.
+入力（escape 表記）: `"treeView-beta\n'first\n\n last'\n"`
 
-出力 ([multiline-values/multiline-blank-output.mmd](../tests/fixtures/treeview/multiline-values/multiline-blank-output.mmd)):
+出力
+([multiline-values/multiline-blank-output.mmd](../tests/fixtures/treeview/multiline-values/multiline-blank-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -1609,10 +1611,10 @@ summary に出ない title も残します。
 
 [corpus fixture: treeview/common-title-percent-boundary]
 
-入力（escape 表記）:
-`"treeView-beta\ntitle\t\nR\n"`.
+入力（escape 表記）: `"treeView-beta\ntitle\t\nR\n"`
 
-出力 ([title/common-bare-title-separator-tab-output.mmd](../tests/fixtures/treeview/title/common-bare-title-separator-tab-output.mmd)):
+出力
+([title/common-bare-title-separator-tab-output.mmd](../tests/fixtures/treeview/title/common-bare-title-separator-tab-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -1670,10 +1672,10 @@ Db が等しくても内部まで正規化しません。
 
 [corpus fixture: treeview/text-accline-ps]
 
-入力（escape 表記）:
-`"treeView-beta\naccDescr:\n%%{init: {}}%%\nR\n"`.
+入力（escape 表記）: `"treeView-beta\naccDescr:\n%%{init: {}}%%\nR\n"`
 
-出力 ([accessibility-lines/acc-empty-next-directive-output.mmd](../tests/fixtures/treeview/accessibility-lines/acc-empty-next-directive-output.mmd)):
+出力
+([accessibility-lines/acc-empty-next-directive-output.mmd](../tests/fixtures/treeview/accessibility-lines/acc-empty-next-directive-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -1691,8 +1693,8 @@ treeView-beta
 ### Description blocks
 
 普通の block は共有の description layout を通します。
-空白だけの内部は `{}`、接した端は接したまま、普通の端の padding は space
-1 個です。
+空白だけの内部は `{}`、接した端は接したまま、
+普通の端の padding は space 1 個です。
 普通の opener の前の空白は寄せ、非空の継続列と trivia だけの内部は保ちます。
 別行の closer は文の段に揃えます。
 罫線モードでは keyword と opener の普通の prefix を外し、
@@ -1779,9 +1781,10 @@ Decorations に従って gap だけを保ちます。
 [corpus fixture: treeview/semicolon-block-parts]
 
 入力（escape 表記）:
-`"treeView-beta\naccDescr {\n  first\n\n    second\n}\nR\n"`.
+`"treeView-beta\naccDescr {\n  first\n\n    second\n}\nR\n"`
 
-出力 ([description-blocks/block-continuation-output.mmd](../tests/fixtures/treeview/description-blocks/block-continuation-output.mmd)):
+出力
+([description-blocks/block-continuation-output.mmd](../tests/fixtures/treeview/description-blocks/block-continuation-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -1876,10 +1879,10 @@ treeView-beta
 
 [corpus fixture: treeview/common-title-percent-boundary]
 
-入力（escape 表記）:
-`"treeView-beta\nR %% literal\n"`.
+入力（escape 表記）: `"treeView-beta\nR %% literal\n"`
 
-出力 ([comments/comment-bare-is-value-output.mmd](../tests/fixtures/treeview/comments/comment-bare-is-value-output.mmd)):
+出力
+([comments/comment-bare-is-value-output.mmd](../tests/fixtures/treeview/comments/comment-bare-is-value-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -1949,7 +1952,8 @@ treeView-beta
 directive の原文と順序を保ちます。
 同じ印字行では両側の接触と分離を保ちます。
 ただし、
-[Statements one per line](#statements-one-per-line) に従って新しく作る directive だけの行へ移す directive の間は例外です。
+[Statements one per line](#statements-one-per-line) に従って新しく作る directive
+だけの行へ移す directive の間は例外です。
 単位を行に分けるときは次の単位に付け、右の境界を保ちます。
 独立した directive は第 1 列です。
 行頭の字下げ単位では、後ろの gap を収まるだけ残し、超過を最後の gap から短くし、
@@ -2017,10 +2021,10 @@ directive の原文と順序を保ちます。
 
 [corpus fixture: treeview/directive-icon-parts-parts]
 
-入力（escape 表記）:
-`"treeView-beta\nA%%{init: {}}%%B\n"`.
+入力（escape 表記）: `"treeView-beta\nA%%{init: {}}%%B\n"`
 
-出力 ([directives/directive-in-bare-output.mmd](../tests/fixtures/treeview/directives/directive-in-bare-output.mmd)):
+出力
+([directives/directive-in-bare-output.mmd](../tests/fixtures/treeview/directives/directive-in-bare-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -2080,10 +2084,10 @@ semicolon を捨てたり、危険な本文を部分的に描き直したりす�
 
 [corpus fixture: treeview/semicolon-block-parts]
 
-入力（escape 表記）:
-`"treeView-beta\n   \"style:#z;\"\n"`.
+入力（escape 表記）: `"treeView-beta\n   \"style:#z;\"\n"`
 
-出力 ([semicolons/first-line-baseline-output.mmd](../tests/fixtures/treeview/semicolons/first-line-baseline-output.mmd)):
+出力
+([semicolons/first-line-baseline-output.mmd](../tests/fixtures/treeview/semicolons/first-line-baseline-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -2152,10 +2156,10 @@ Unicode だけの名前を空行扱いしません。
 
 [corpus fixture: treeview/space-line-nbsp]
 
-入力（escape 表記）:
-`"treeView-beta\nR\n%% note\n\n\n C\n"`.
+入力（escape 表記）: `"treeView-beta\nR\n%% note\n\n\n C\n"`
 
-出力 ([blank-lines/blank-between-comments-output.mmd](../tests/fixtures/treeview/blank-lines/blank-between-comments-output.mmd)):
+出力
+([blank-lines/blank-between-comments-output.mmd](../tests/fixtures/treeview/blank-lines/blank-between-comments-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -2362,11 +2366,12 @@ printWidth で折り返しません。
 [fixture: treeview/long-lines/long-annotations-kept]
 
 入力（escape 表記）:
-`"treeView-beta\nR :::long-class-name icon(long-pack:long-icon-name) ## long description with words\n"`.
+`"treeView-beta\nR :::long-class-name icon(long-pack:long-icon-name) ## long description with words\n"`
 
-Options: `{"printWidth":20}`.
+設定: `{"printWidth":20}`
 
-出力 ([long-lines/long-annotations-kept-output.mmd](../tests/fixtures/treeview/long-lines/long-annotations-kept-output.mmd)):
+出力
+([long-lines/long-annotations-kept-output.mmd](../tests/fixtures/treeview/long-lines/long-annotations-kept-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -2379,8 +2384,8 @@ treeView-beta
 字下げされた fence、closer の padding、不正な YAML、
 HTML の引用符の危険と fence を作る本文は保ちます。
 入れ子と scalar は tabWidth 0 でも最低 1 space です。
-普通の見出し前の trivia は root の配置に従い、 second
-scan の Comment と内部の Root directive は各 1 回印字します。
+普通の見出し前の trivia は root の配置に従い、
+second scan の Comment と内部の Root directive は各 1 回印字します。
 本文の `---` は名前のまま、拒否される保持 YAML は昇格も修復もしません。
 
 [fixture: treeview/frontmatter-yaml/frontmatter-safe]
@@ -2409,10 +2414,10 @@ scan の Comment と内部の Root directive は各 1 回印字します。
 
 [fixture: treeview/frontmatter-yaml/frontmatter-delimiter-guard]
 
-入力（escape 表記）:
-`"treeView-beta\n---\nkey: value\n---\n"`.
+入力（escape 表記）: `"treeView-beta\n---\nkey: value\n---\n"`
 
-出力 ([frontmatter-yaml/body-yaml-is-name-output.mmd](../tests/fixtures/treeview/frontmatter-yaml/body-yaml-is-name-output.mmd)):
+出力
+([frontmatter-yaml/body-yaml-is-name-output.mmd](../tests/fixtures/treeview/frontmatter-yaml/body-yaml-is-name-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -2470,10 +2475,10 @@ prefix の任意文字と値内の罫線の綴りは保ち、Db から原文を�
 
 [fixture: treeview/source-order/source-empty-common]
 
-入力（escape 表記）:
-`"treeView-beta\nR\n X\n X\nR\n"`.
+入力（escape 表記）: `"treeView-beta\nR\n X\n X\nR\n"`
 
-出力 ([source-order/source-duplicate-output.mmd](../tests/fixtures/treeview/source-order/source-duplicate-output.mmd)):
+出力
+([source-order/source-duplicate-output.mmd](../tests/fixtures/treeview/source-order/source-duplicate-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -2679,10 +2684,10 @@ EOF の未完 directive と保護・原文保持の終端は共有の例外に�
 
 [corpus fixture: treeview/gram-quoted-tail-space-next-indent]
 
-入力（escape 表記）:
-`"treeView-beta\naccDescr {}"`.
+入力（escape 表記）: `"treeView-beta\naccDescr {}"`
 
-出力 ([final-newline/eof-block-output.mmd](../tests/fixtures/treeview/final-newline/eof-block-output.mmd)):
+出力
+([final-newline/eof-block-output.mmd](../tests/fixtures/treeview/final-newline/eof-block-output.mmd)):
 
 ```mmd
 treeView-beta
@@ -2721,8 +2726,8 @@ raw の拒否に raw の Db はなく、treeview 固有の opaque の受理設�
 
 ### Markdown fences
 
-dedent 後の本文へ同じ規則を適用し、 fence、list と quote の列は Markdown
-host に任せます。
+dedent 後の本文へ同じ規則を適用し、 fence、
+list と quote の列は Markdown host に任せます。
 値の継続列へ host の列を足しません。
 host の出力と冪等性は本文の Db とは別に検査します。
 host は最後のコード行の padding を落としうるため、

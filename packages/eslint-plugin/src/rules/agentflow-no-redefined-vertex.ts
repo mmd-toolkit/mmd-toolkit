@@ -18,19 +18,18 @@ export const agentflowNoRedefinedVertex: MermaidRuleDefinition<{
     schema: [],
     messages: {
       redefined:
-        "mermaid.js replaces the {{field}} of `{{id}}` written on line {{line}} with that of this vertex.",
+        "mermaid.js replaces the {{field}} of `{{id}}` written earlier with that of this vertex.",
     },
   },
   create(context) {
     return agentflowElementDeclarations({
-      vertex(node, id, replacement) {
+      vertex(node, id, field) {
         context.report({
           node,
           messageId: "redefined",
           data: {
             id,
-            field: replacement.field,
-            line: String(replacement.previous.line),
+            field,
           },
         })
       },

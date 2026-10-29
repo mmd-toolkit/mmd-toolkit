@@ -18,12 +18,11 @@ JSON 往復後も、トークンを参照できず、
    選択された無視するセミコロンを除きます。
    CR と CRLF は LF、HTML 属性の引用符は単一引用符、
    文字参照は仮の文字列にします。
-   タグが値の外から始まる場合も、
-   ソース全体の HTML タグの文脈を当てます。 [fixture: venn/lex-identifier-directive-middle]
+   タグが値の外から始まる場合も、ソース全体の HTML タグの文脈を当てます。
+   [fixture: venn/lex-identifier-directive-middle]
    [fixture: venn/lex-label-directive-middle]
    [fixture: venn/lex-identifier-comment-line]
-   [fixture: venn/lex-label-comment-line]
-   [fixture: venn/lex-cr-quoted-value]
+   [fixture: venn/lex-label-comment-line] [fixture: venn/lex-cr-quoted-value]
    [fixture: venn/lex-crlf-quoted-value]
    [fixture: venn/lex-identifier-style-rule]
    [fixture: venn/db-grid-entity-label-bare]
@@ -40,8 +39,7 @@ JSON 往復後も、トークンを参照できず、
    [fixture: venn/lex-label-entity-numeric]
    [fixture: venn/lex-text-entity-numeric]
    [fixture: venn/lex-identifier-entity-named]
-   [fixture: venn/lex-label-entity-named]
-   [fixture: venn/lex-text-entity-named]
+   [fixture: venn/lex-label-entity-named] [fixture: venn/lex-text-entity-named]
    [fixture: venn/lex-style-entity-named]
    [fixture: venn/lex-identifier-style-rule-two-semicolons]
    [fixture: venn/lex-label-style-rule-two-semicolons]
@@ -56,20 +54,16 @@ JSON 往復後も、トークンを参照できず、
 2. **初期要約。**
    埋め込みデータのタイトルか空のタイトル、
    空のアクセシビリティ文字列と subsets、texts、styles から始めます。
-   frontmatter のアクセシビリティ欄と描画設定は欄を追加しません。 [fixture: venn/header-only]
-   [fixture: venn/db-frontmatter-title]
-   [fixture: venn/db-frontmatter-accessibility]
-   [fixture: venn/db-markup]
+   frontmatter のアクセシビリティ欄と描画設定は欄を追加しません。
+   [fixture: venn/header-only] [fixture: venn/db-frontmatter-title]
+   [fixture: venn/db-frontmatter-accessibility] [fixture: venn/db-markup]
 3. **名前と id。**
    大文字小文字、重複、空の引用文字列、引用内の空白を保ち、
    引用の外側を trim して外側の引用符を一組除きます。
-   数値の text
-   id は数値でなく綴りを保ちます。 [fixture: venn/db-empty-identifiers]
-   [fixture: venn/db-quoted-padding]
-   [fixture: venn/db-text-leading-zeros]
-   [fixture: venn/db-form-text-id]
-   [fixture: venn/db-form-text-string]
-   [fixture: venn/db-form-text-number]
+   数値の text id は数値でなく綴りを保ちます。
+   [fixture: venn/db-empty-identifiers] [fixture: venn/db-quoted-padding]
+   [fixture: venn/db-text-leading-zeros] [fixture: venn/db-form-text-id]
+   [fixture: venn/db-form-text-string] [fixture: venn/db-form-text-number]
    [fixture: venn/gram-repeated-target-lists]
    [fixture: venn/db-case-distinct-ids]
 4. **部分集合とサイズ。**
@@ -78,24 +72,18 @@ JSON 往復後も、トークンを参照できず、
    非有限値は文字列、負のゼロはゼロにします。 [fixture: venn/db-all-fields]
    [fixture: venn/db-three-definitions]
    [fixture: venn/db-union-three-definitions]
-   [fixture: venn/db-union-repeated-member]
-   [fixture: venn/db-size-fraction]
-   [fixture: venn/db-size-signed-fraction]
-   [fixture: venn/db-size-plus]
-   [fixture: venn/db-size-zero]
-   [fixture: venn/db-size-negative]
-   [fixture: venn/db-size-leading-zeros]
-   [fixture: venn/db-size-negative-zero]
-   [fixture: venn/db-size-overflow]
-   [fixture: venn/db-size-negative-overflow]
+   [fixture: venn/db-union-repeated-member] [fixture: venn/db-size-fraction]
+   [fixture: venn/db-size-signed-fraction] [fixture: venn/db-size-plus]
+   [fixture: venn/db-size-zero] [fixture: venn/db-size-negative]
+   [fixture: venn/db-size-leading-zeros] [fixture: venn/db-size-negative-zero]
+   [fixture: venn/db-size-overflow] [fixture: venn/db-size-negative-overflow]
 5. **ラベル。**
    括弧と引用符を除き、裸のラベルを Db に渡す前に trim します。
    字句の値が空なら省略し、残りを再び trim して外側の引用符を一組除きます。
-   引用された空白が二度目の trim に達した場合は空文字列を保ちます。 [fixture: venn/db-label-empty]
-   [fixture: venn/db-label-spaces]
+   引用された空白が二度目の trim に達した場合は空文字列を保ちます。
+   [fixture: venn/db-label-empty] [fixture: venn/db-label-spaces]
    [fixture: venn/db-label-double-normalization]
-   [fixture: venn/lex-label-bare-padding]
-   [fixture: venn/db-label-backticks]
+   [fixture: venn/lex-label-bare-padding] [fixture: venn/db-label-backticks]
    [fixture: venn/db-label-inner-quotes]
    [fixture: venn/lex-label-quoted-directive-only]
    [fixture: venn/lex-label-quoted-ignored-semicolon-only]
@@ -113,16 +101,12 @@ JSON 往復後も、トークンを参照できず、
    空白かタブだけの空でない行が間にあってもモードは保たれます。
    先頭の空白かタブが二つ以上なら一つの並びとして読み飛ばします。
    規則 2 がコメントの前の別の一文字を飲み込まなければ、
-   規則 7 が `%%{` でモードを終わらせます。 [fixture: venn/db-text-three-definitions]
-   [fixture: venn/db-text-comma-list]
-   [fixture: venn/gram-repeated-target-lists]
-   [fixture: venn/db-form-indent-id]
-   [fixture: venn/db-form-indent-string]
-   [fixture: venn/db-form-indent-number]
-   [fixture: venn/db-indent-width]
-   [fixture: venn/db-indent-after-union]
-   [fixture: venn/db-indent-after-blank]
-   [fixture: venn/db-indent-blank-line]
+   規則 7 が `%%{` でモードを終わらせます。
+   [fixture: venn/db-text-three-definitions] [fixture: venn/db-text-comma-list]
+   [fixture: venn/gram-repeated-target-lists] [fixture: venn/db-form-indent-id]
+   [fixture: venn/db-form-indent-string] [fixture: venn/db-form-indent-number]
+   [fixture: venn/db-indent-width] [fixture: venn/db-indent-after-union]
+   [fixture: venn/db-indent-after-blank] [fixture: venn/db-indent-blank-line]
    [fixture: venn/db-indent-after-comment]
    [fixture: venn/db-indent-after-directive]
    [fixture: venn/db-indent-after-same-line-style]
@@ -152,7 +136,8 @@ JSON 往復後も、トークンを参照できず、
    整列済みの対象と、
    任意の大文字小文字を区別するプロパティを持つ別々の項目を追加します。
    同じ項目では最後の同名キーが勝ち、`__proto__` への文字列代入は除き、
-   他のプロトタイプ関連名は自身のプロパティとして保ちます。 [fixture: venn/db-style-three-definitions-same-target]
+   他のプロトタイプ関連名は自身のプロパティとして保ちます。
+   [fixture: venn/db-style-three-definitions-same-target]
    [fixture: venn/db-style-case-and-order]
    [fixture: venn/db-style-duplicate-key]
    [fixture: venn/db-style-prototype-keys]
@@ -161,20 +146,16 @@ JSON 往復後も、トークンを参照できず、
    引用内の空白と空文字列を保ちます。
    裸の VennLiteral の変換済みテキストを、識別子、十進数、hex、rgb、
    rgba の単位に分け、綴りが接していても空白一つで結びます。
-   色の大文字小文字、成分の綴り、
-   内部の空白を保ちます。 [fixture: venn/db-empty-identifiers]
-   [fixture: venn/db-quoted-padding]
-   [fixture: venn/db-form-style-tokens]
-   [fixture: venn/lex-style-adjacent-units]
+   色の大文字小文字、成分の綴り、内部の空白を保ちます。
+   [fixture: venn/db-empty-identifiers] [fixture: venn/db-quoted-padding]
+   [fixture: venn/db-form-style-tokens] [fixture: venn/lex-style-adjacent-units]
    [fixture: venn/lex-style-single-number-whole-spelling]
    [fixture: venn/db-style-adjacent-numeric-tokens]
-   [fixture: venn/db-form-style-rgba]
-   [fixture: venn/db-style-rgb-uppercase]
+   [fixture: venn/db-form-style-rgba] [fixture: venn/db-style-rgb-uppercase]
    [fixture: venn/db-style-rgb-dot-components]
    [fixture: venn/db-style-hex-trailing-numeric-token]
    [fixture: venn/db-style-hex-trailing-identifier]
-   [fixture: venn/db-style-rgb-crlf]
-   [fixture: venn/db-style-rgb-nbsp]
+   [fixture: venn/db-style-rgb-crlf] [fixture: venn/db-style-rgb-nbsp]
    [fixture: venn/db-style-rgb-line-separator]
    [fixture: venn/db-style-rgba-paragraph-separator]
    [fixture: venn/db-style-rgb-directive]
@@ -184,21 +165,17 @@ JSON 往復後も、トークンを参照できず、
    [fixture: venn/lex-style-rgb-ignored-semicolon]
    [fixture: venn/div-c4-bare-style-value]
 9. **無視された断片。**
-   VennIgnoredText は Db を変えず、
-   直前の完全な宣言を保ちます。 [fixture: venn/lex-style-extra-id-eaten]
-   [fixture: venn/lex-set-colon-eaten]
+   VennIgnoredText は Db を変えず、直前の完全な宣言を保ちます。
+   [fixture: venn/lex-style-extra-id-eaten] [fixture: venn/lex-set-colon-eaten]
 10. **タイトルと設定。**
     最初の区切りの後の引用符と空白を含めた全内容を保ち、
     最後のタイトルが frontmatter の初期タイトルを置き換えます。
     文字の置換はタイトルだけに適用し、
-    HTML ラベルのルート設定を flowchart の設定より優先します。 [fixture: venn/db-title-padding]
-    [fixture: venn/db-title-only-whitespace]
-    [fixture: venn/db-title-value-next-line]
-    [fixture: venn/db-title-quotes]
-    [fixture: venn/lex-title-separator-crlf]
-    [fixture: venn/db-title-last]
-    [fixture: venn/db-frontmatter-title-overridden]
-    [fixture: venn/db-markup]
+    HTML ラベルのルート設定を flowchart の設定より優先します。
+    [fixture: venn/db-title-padding] [fixture: venn/db-title-only-whitespace]
+    [fixture: venn/db-title-value-next-line] [fixture: venn/db-title-quotes]
+    [fixture: venn/lex-title-separator-crlf] [fixture: venn/db-title-last]
+    [fixture: venn/db-frontmatter-title-overridden] [fixture: venn/db-markup]
     [fixture: venn/config-security-other]
     [fixture: venn/config-security-other-flowchart-false]
     [fixture: venn/config-security-other-html-false]

@@ -17,7 +17,9 @@ mermaid.js での根拠:
 `agentflow` を扱う。
 木は [ast/agentflow.md](../ast/agentflow.ja.md) に定義する。
 Db の変換、metadata の振り分け、所属、診断は、
-この構文ではなく [tests パッケージの要約](../../../tests/docs/db-summaries.ja.md#agentflow) にある。
+この構文ではなく
+[tests パッケージの要約](../../../tests/docs/db-summaries.ja.md#agentflow)
+にある。
 
 ## 検出
 
@@ -26,8 +28,8 @@ Db の変換、metadata の振り分け、所属、診断は、
 agentflow を選ぶ。
 文法はヘッダーを再び読む。
 安定版の agentflow ヘッダーや大文字小文字の同一視はない。
-ハイフンや非 ASCII の接尾部は検出を通っても文法で拒否され得る。 [fixture: agentflow/header-only]
-[fixture: agentflow/header-without-beta]
+ハイフンや非 ASCII の接尾部は検出を通っても文法で拒否され得る。
+[fixture: agentflow/header-only] [fixture: agentflow/header-without-beta]
 [fixture: agentflow/header-upper] [fixture: agentflow/detect-letter-suffix]
 [fixture: agentflow/detect-digit-suffix]
 [fixture: agentflow/detect-underscore-suffix]
@@ -38,7 +40,8 @@ agentflow を選ぶ。
 共通のフロントマター、ディレクティブ、ヘッダー前のコメントの trivia を適用する。
 裸の %% 行は mermaid.js でも受理される。
 ディレクティブでない percent と波括弧の行には、
-後述の bare-percent-line-before-header を適用する。 [fixture: agentflow/lex-detect-c4-component-id]
+後述の bare-percent-line-before-header を適用する。
+[fixture: agentflow/lex-detect-c4-component-id]
 [fixture: agentflow/lex-detect-c4-container-label]
 [fixture: agentflow/lex-detect-c4-dynamic-string]
 [fixture: agentflow/lex-detect-c4-deployment-suffix]
@@ -58,8 +61,8 @@ agentflow を選ぶ。
 以下の置換以外は [flowchart](./flowchart.ja.md#字句構造) の単位、
 順序付きの文脈、最初に一致する規則を使う。
 この参照で共有する規則を与え、重ねて定義しない。 [fixture: agentflow/lex-cr]
-[fixture: agentflow/lex-crlf]
-[fixture: agentflow/lex-quoted-crlf] [fixture: agentflow/html-attribute-quotes]
+[fixture: agentflow/lex-crlf] [fixture: agentflow/lex-quoted-crlf]
+[fixture: agentflow/html-attribute-quotes]
 [fixture: agentflow/directive-in-string]
 [fixture: agentflow/lex-style-preprocessing-semicolon]
 [fixture: agentflow/header-only]
@@ -72,9 +75,8 @@ agentflow を選ぶ。
 アクセシビリティの文脈を使う。
 ラベル、斜め、楕円、click の文脈には以下の変更を加える。
 各規則は文脈の次の位置ごとに試し直す。
-後の長い一致を優先せず、
-一致しない文字は拒否する。 [fixture: agentflow/gram-bracket-shapes]
-[fixture: agentflow/gram-props]
+後の長い一致を優先せず、一致しない文字は拒否する。
+[fixture: agentflow/gram-bracket-shapes] [fixture: agentflow/gram-props]
 [fixture: agentflow/lex-quoted-supplementary-label]
 [fixture: agentflow/lex-supplementary-id] [fixture: agentflow/lex-combining-id]
 [fixture: agentflow/lex-callback-args-u2028]
@@ -86,7 +88,8 @@ flowchart の選択肢を header-keyword の agentflow-beta だけに置き換�
 その後のコンテナーのキーワードの位置では、subgraph を flow、connector、
 global に置き換える。
 以前の graph、flowchart、subgraph は通常の id のテキストになり得るが、
-agentflow のヘッダーやコンテナーにはならない。 [fixture: agentflow/lex-legacy-header-words-as-ids]
+agentflow のヘッダーやコンテナーにはならない。
+[fixture: agentflow/lex-legacy-header-words-as-ids]
 [fixture: agentflow/gram-removed-subgraph-keyword]
 [fixture: agentflow/lex-flow-digit-suffix]
 [fixture: agentflow/lex-connector-digit-suffix]
@@ -108,7 +111,8 @@ LF や他の空白文字は取らない。
 1 文字ごとに space の単位を作る。
 先にある newline の規則は、連続する LF を 1 つの newline の単位にする。
 従って space を 1 つ要求する生成規則は、その単位を 1 つだけ取る。
-どの空白の間隔も任意の余白を許すという意味ではない。 [fixture: agentflow/lex-style-double-space-keyword]
+どの空白の間隔も任意の余白を許すという意味ではない。
+[fixture: agentflow/lex-style-double-space-keyword]
 [fixture: agentflow/lex-class-double-space-keyword]
 [fixture: agentflow/lex-class-double-space-value]
 [fixture: agentflow/lex-classdef-double-space-keyword]
@@ -124,7 +128,8 @@ arrow を作る。
 リンクテキストの文脈ならそこを抜ける。
 先頭の x、o、< の印は許さない。
 次に、周囲に空白を許す 2 つのダッシュが opening-arrow を作り、
-唯一の solid のリンクテキストの文脈に入る。 [fixture: agentflow/gram-three-edge-kinds]
+唯一の solid のリンクテキストの文脈に入る。
+[fixture: agentflow/gram-three-edge-kinds]
 [fixture: agentflow/gram-edge-extended-length]
 [fixture: agentflow/gram-removed-prefix-cross]
 [fixture: agentflow/gram-removed-prefix-circle]
@@ -151,7 +156,8 @@ thick、点線の矢じり付き、invisible の演算子の組とテキスト�
 先頭のチルダは通常のラベルの内容とする。
 残る solid のリンクテキストの文脈では、
 flowchart の文字と文字列の順序と停止規則を使う。
-閉じる矢印までセミコロンと行終端は内容とする。 [fixture: agentflow/gram-removed-thick]
+閉じる矢印までセミコロンと行終端は内容とする。
+[fixture: agentflow/gram-removed-thick]
 [fixture: agentflow/gram-removed-thick-split]
 [fixture: agentflow/gram-removed-dotted-split]
 [fixture: agentflow/gram-removed-invisible]
@@ -163,12 +169,13 @@ flowchart の文字と文字列の順序と停止規則を使う。
 
 ### 保持するコメントと既定の大きさの上限
 
-common.md の[コメント保持の大きさの規則](../common.ja.md#mermaidjs-とこの仕様)に従う。
+common.md
+の[コメント保持の大きさの規則](../common.ja.md#mermaidjs-とこの仕様)に従う。
 maxTextSize の既定値は 50000 であり、
 完全なフロントマターのトリビアを除いたソースを測る。
 閉じの --- の行の後に続く空白だけの行も、そのトリビアに含める。
-ディレクティブを除き、CRLF を 1 と数え、単位は UTF-16 code
-unit とする。 [fixture: agentflow/comment-default-size-equal-crlf]
+ディレクティブを除き、CRLF を 1 と数え、単位は UTF-16 code unit とする。
+[fixture: agentflow/comment-default-size-equal-crlf]
 [fixture: agentflow/comment-default-size-above-crlf]
 [fixture: agentflow/comment-default-size-equal-inline-directive]
 [fixture: agentflow/comment-default-size-above-inline-directive]
@@ -180,17 +187,19 @@ unit とする。 [fixture: agentflow/comment-default-size-equal-crlf]
 [fixture: agentflow/frontmatter-extra-trivia-above]
 50000 を超えれば共通の Step 5 のコメント領域と先頭の空白の除去を適用する。
 それ以下なら図のテキストにこれらの除去を適用せず、
-以下の図の規則がコメント行と行頭の空白を受け取る。 [fixture: agentflow/comment-default-size-fallback]
+以下の図の規則がコメント行と行頭の空白を受け取る。
+[fixture: agentflow/comment-default-size-fallback]
 [fixture: agentflow/comment-default-size-equal]
 [fixture: agentflow/comment-looking-string-default-size]
 [fixture: agentflow/lex-comment-looking-quote-closes-string]
 
 agentflow のテキストは、この既定の上限で読む。
-テキストの設定ではこの secure の設定を変えられない。 [fixture: agentflow/config-secure-key-in-text]
+テキストの設定ではこの secure の設定を変えられない。
+[fixture: agentflow/config-secure-key-in-text]
 
 どちらの大きさの分岐でも、残る図のテキストには agentflow の字句規則を適用する。
-大きさで変わるのは共通の Step
-5 のコメント領域と先頭の空白の除去だけである。 [fixture: agentflow/comment-default-size-fallback-inline-label]
+大きさで変わるのは共通の Step 5 のコメント領域と先頭の空白の除去だけである。
+[fixture: agentflow/comment-default-size-fallback-inline-label]
 [fixture: agentflow/comment-default-size-fallback-inline-statement]
 
 文の id-run の直前にコメントの規則を入れる。
@@ -198,10 +207,11 @@ agentflow のテキストは、この既定の上限で読む。
 LF を含まない最長の連続を読む。
 LF を含めずコメントを作り、印は %%、値はその後のテキストとする。
 先行する space と tab は trivia とする。
-U+2028 と U+2029 はこの図のコメントを終えない。 [fixture: agentflow/comment-directive-in-body-u2029]
+U+2028 と U+2029 はこの図のコメントを終えない。
+[fixture: agentflow/comment-directive-in-body-u2029]
 [fixture: agentflow/comment-open-directive-takes-lf]
-コメントはヘッダーと文の区切りになり得る。 [fixture: agentflow/comment-node-spaced]
-[fixture: agentflow/lex-comment-u2028]
+コメントはヘッダーと文の区切りになり得る。
+[fixture: agentflow/comment-node-spaced] [fixture: agentflow/lex-comment-u2028]
 [fixture: agentflow/lex-comment-u2029]
 [fixture: agentflow/comment-before-class-keeps-newline]
 [fixture: agentflow/comment-after-shape-keeps-next-statement]
@@ -215,8 +225,8 @@ U+2028 と U+2029 はこの図のコメントを終えない。 [fixture: agentf
 LF を含まない最長の連続を読み、先行する space や tab は取らない。
 これらの文字は、文字列やスラッシュの単位の後や楕円の中でもラベルの内容に残る。
 LF は次のテキストの単位へ残すため、次の行へラベルを続けられる。
-そのコメント行の形を閉じる区切りは、
-閉じる区切りではなくコメントの内容になる。 [fixture: agentflow/comment-double-percent-inside-id]
+そのコメント行の形を閉じる区切りは、閉じる区切りではなくコメントの内容になる。
+[fixture: agentflow/comment-double-percent-inside-id]
 [fixture: agentflow/comment-inside-square]
 [fixture: agentflow/comment-inside-trapezoid]
 [fixture: agentflow/comment-inside-ellipse]
@@ -237,7 +247,8 @@ LF は次のテキストの単位へ残すため、次の行へラベルを続�
 percent の対やコメントのような行は内容になる。
 文の文脈のコメントは、不完全な click の文を次の行のコールバックにつながない。
 保持したコメントのような内容にも、
-共通のディレクティブと選ばれたセミコロンの規則を適用する。 [fixture: agentflow/comment-quoted-label]
+共通のディレクティブと選ばれたセミコロンの規則を適用する。
+[fixture: agentflow/comment-quoted-label]
 [fixture: agentflow/comment-markdown-label]
 [fixture: agentflow/comment-split-edge-label]
 [fixture: agentflow/lex-accessibility-block-comment]
@@ -257,8 +268,8 @@ percent の対やコメントのような行は内容になる。
 通常または斜めの裸のラベルでは、テキストの先頭や末尾も含め単独の % を拒否する。
 文字列と楕円のラベルでは受理する。
 ディレクティブでない %%{ はラベルのコメントにはならず、その位置で拒否する。
-NOTES.md の意図する単独の percent の読み方によって、
-この規則を変えない。 [fixture: agentflow/lex-single-percent-square]
+NOTES.md の意図する単独の percent の読み方によって、この規則を変えない。
+[fixture: agentflow/lex-single-percent-square]
 [fixture: agentflow/lex-single-percent-trapezoid]
 [fixture: agentflow/lex-single-percent-ellipse]
 [fixture: agentflow/lex-text-percent-quoted]
@@ -272,7 +283,8 @@ flowchart の斜めの閉じる単位を使う。
 スラッシュのテキストの単位の後なら到達できるが、
 通常のテキストの連続が ? や = を取ると、対応しない ] が残る。
 文の通常の id の規則は A=B を拒否する。
-flowchart の公開された lexer も同じである。 [fixture: agentflow/lex-trap-close-question]
+flowchart の公開された lexer も同じである。
+[fixture: agentflow/lex-trap-close-question]
 [fixture: agentflow/lex-trap-close-equals]
 [fixture: agentflow/lex-slanted-question-closer-after-slash]
 [fixture: agentflow/lex-slanted-equals-closer-after-slash]
@@ -285,7 +297,8 @@ flowchart の波括弧の後の空白の変換を、次の狭い規則に置き�
 後続の LF がなければ、この変換を適用しない。
 その後の空行は別々に残す。
 ディレクティブを除いた上で、どの文脈にも適用する。
-ノードの値は変換後の表記ではなくソースの空白を保つ。 [fixture: agentflow/spec-agentflow-blank-line-fold-47a9bd91]
+ノードの値は変換後の表記ではなくソースの空白を保つ。
+[fixture: agentflow/spec-agentflow-blank-line-fold-47a9bd91]
 [fixture: agentflow/gram-target-data-trailing-space]
 [fixture: agentflow/gram-flow-heading-data-brace-whitespace]
 [fixture: agentflow/lex-brace-string-keeps-blank-line]
@@ -308,7 +321,8 @@ click の文脈を抜けるだけの空白の前で断片を終える。
 この空白はちょうど 1 つの空白文字であり、tab、U+00A0、U+2028、U+2029、
 正規化された CRLF も含む。
 LF にもなり得るため、後の物理行のテキストも名前を続け得る。
-さらに続く通常の空白は次の断片に残る。 [fixture: agentflow/lex-name-click-exit-tab]
+さらに続く通常の空白は次の断片に残る。
+[fixture: agentflow/lex-name-click-exit-tab]
 [fixture: agentflow/lex-name-click-exit-nbsp]
 [fixture: agentflow/lex-name-click-exit-ls]
 [fixture: agentflow/lex-name-click-exit-ps]
@@ -327,7 +341,8 @@ URL と tooltip の前置の位置だけで、消される click を保つ。
 別の click-id の群を最初の群に結合しない。
 認識した閉じた空の説明ブロックや、消される空の文字列、空の markdown 文字列、
 空の call も、
-[消される形の規則](#空の説明ブロックと消される形)に従い同じ前置欄に置ける。 [fixture: agentflow/lex-empty-call-before-href]
+[消される形の規則](#空の説明ブロックと消される形)に従い同じ前置欄に置ける。
+[fixture: agentflow/lex-empty-call-before-href]
 [fixture: agentflow/lex-empty-string-before-url]
 [fixture: agentflow/lex-empty-markdown-before-href]
 [fixture: agentflow/lex-empty-string-before-url-tooltip]
@@ -335,8 +350,8 @@ URL と tooltip の前置の位置だけで、消される click を保つ。
 [fixture: agentflow/lex-empty-markdown-before-callback-tooltip]
 [fixture: agentflow/lex-mixed-empty-forms-before-url-tooltip]
 字句の文脈の変化は引き続き生じる。
-印を保持することは、
-後続の全 click の語を入れ替え可能にすることではない。 [fixture: agentflow/gram-click-erased-before-url]
+印を保持することは、後続の全 click の語を入れ替え可能にすることではない。
+[fixture: agentflow/gram-click-erased-before-url]
 [fixture: agentflow/gram-click-erased-before-url-tooltip]
 [fixture: agentflow/gram-click-erased-before-callback-tooltip]
 [fixture: agentflow/gram-click-id-groups-not-merged]
@@ -348,8 +363,8 @@ URL と tooltip の前置の位置だけで、消される click を保つ。
 全体が空の文字列と markdown 文字列は値ではなく empty-string の単位とする。
 データには独自の二重引用の文脈を使う。
 バックスラッシュは引用符をエスケープせず、単引用符は閉じる波括弧を保護しない。
-その二重引用の文脈の外のキャレットは拒否する。 [fixture: agentflow/lex-quoted-u2028]
-[fixture: agentflow/lex-quoted-u2029]
+その二重引用の文脈の外のキャレットは拒否する。
+[fixture: agentflow/lex-quoted-u2028] [fixture: agentflow/lex-quoted-u2029]
 [fixture: agentflow/lex-unclosed-string]
 [fixture: agentflow/lex-unclosed-markdown]
 [fixture: agentflow/lex-string-markdown-unescaped-quote]
@@ -364,12 +379,15 @@ URL と tooltip の前置の位置だけで、消される click を保つ。
 ### 単位の中のディレクティブと無視するセミコロン
 
 Name の part を subgraph-name の代わりとして、
-flowchart の [単位の中のディレクティブ](./flowchart.ja.md#単位の中のディレクティブ) を適用する。
+flowchart の
+[単位の中のディレクティブ](./flowchart.ja.md#単位の中のディレクティブ)
+を適用する。
 id、id-list の要素、辺の id、click の文の id、補間名、
 形のプロパティの両辺は名前の単位とする。
 構造の単位となるキーワードと数値、矢印、複合区切りも不可分である。
 これらの内部のディレクティブや選ばれた無視するセミコロンは拒否し、
-完全な単位の境界や周囲の空白では拒否しない。 [fixture: agentflow/div-directive-in-id]
+完全な単位の境界や周囲の空白では拒否しない。
+[fixture: agentflow/div-directive-in-id]
 [fixture: agentflow/div-directive-in-arrow]
 [fixture: agentflow/div-directive-in-linkstyle-number]
 [fixture: agentflow/div-directive-in-props-field]
@@ -385,7 +403,8 @@ direction-text、Name の断片の単位はテキストか文字列であり、
 特に metadata のキーは Identifier ではなく不透明なデータのテキストとする。
 書かれた名前の選ばれた無視するセミコロンは共通の trivia に保つ。
 結合後の入力を mermaid.js が既に拒否するなら、
-境界の規則による divergence の印は付けない。 [fixture: agentflow/lex-directive-in-classdef-value]
+境界の規則による divergence の印は付けない。
+[fixture: agentflow/lex-directive-in-classdef-value]
 [fixture: agentflow/lex-directive-in-linkstyle-value]
 [fixture: agentflow/lex-directive-in-metadata-key]
 [fixture: agentflow/lex-ignored-semicolon-in-metadata-key]
@@ -397,14 +416,16 @@ direction-text、Name の断片の単位はテキストか文字列であり、
 
 Name の断片では、キーワードや数値の形の name-piece もテキストであり、
 構造のキーワードや NumericLiteral の位置にはしない。
-その内部のディレクティブも許す。 [fixture: agentflow/lex-directive-in-name-keyword-text]
+その内部のディレクティブも許す。
+[fixture: agentflow/lex-directive-in-name-keyword-text]
 [fixture: agentflow/lex-directive-in-name-number-text]
 
 ## 文法
 
 [common.md](../common.ja.md#表記) の表記と end-of-text の位置を使い、
 上の単位を読む。
-以下に挙げる同一の生成規則は [flowchart の文法](./flowchart.ja.md#文法)から参照し、
+以下に挙げる同一の生成規則は
+[flowchart の文法](./flowchart.ja.md#文法)から参照し、
 ノード型を次の表の Agentflow の型に置き換える。
 agentflow の木に Flowchart の接頭辞のノードはない。
 
@@ -442,8 +463,8 @@ agentflow の木に Flowchart の接頭辞のノードはない。
 click の URL と tooltip に StringLiteral、
 linkStyle の番号に NumericLiteral を使う。
 style、call の後の名前、引数、アクセシビリティの値は AgentflowLiteral とする。
-句読記号とキーワードは単位であり、
-値の葉を作らない。 [fixture: agentflow/gram-id-numbers-unicode]
+句読記号とキーワードは単位であり、値の葉を作らない。
+[fixture: agentflow/gram-id-numbers-unicode]
 [fixture: agentflow/db-callback-token-punctuation]
 [fixture: agentflow/gram-click-link-forms]
 [fixture: agentflow/gram-linkstyle-interpolate-index]
@@ -476,13 +497,13 @@ separator                   = newline | ";" | end-of-text | comment
 ```
 
 ヘッダーの方向と no-direction には、
-header-keyword を agentflow-beta とした [flowchart のヘッダーの文脈](./flowchart.ja.md#ヘッダーの文脈)を使う。
+header-keyword を agentflow-beta とした
+[flowchart のヘッダーの文脈](./flowchart.ja.md#ヘッダーの文脈)を使う。
 次の行の方向は頂点とする。
 ヘッダー行の方向には first-separator が必要であり、
 セミコロンの前の space では満たさない。
-ソースに後続の改行がなくても、
-コメントは first-separator になり得る。 [fixture: agentflow/header-lf]
-[fixture: agentflow/header-only]
+ソースに後続の改行がなくても、コメントは first-separator になり得る。
+[fixture: agentflow/header-lf] [fixture: agentflow/header-only]
 [fixture: agentflow/header-br] [fixture: agentflow/header-left-symbol]
 [fixture: agentflow/header-up-symbol] [fixture: agentflow/header-down-symbol]
 [fixture: agentflow/lex-header-direction-empty-line]
@@ -495,7 +516,8 @@ header-keyword を agentflow-beta とした [flowchart のヘッダーの文脈]
 区切りはどの文にも属さない。
 追加のセミコロンは EmptyStatement とし、空行とコメントだけの行では文を作らない。
 裸の改行と、先行する ASCII の空白を取るコメントの違いも含め、
-各文自身の末尾の空白の制限を保つ。 [fixture: agentflow/gram-class-double-semicolon]
+各文自身の末尾の空白の制限を保つ。
+[fixture: agentflow/gram-class-double-semicolon]
 [fixture: agentflow/gram-data-double-semicolon]
 [fixture: agentflow/gram-tail-node-semicolons]
 [fixture: agentflow/header-empty-document]
@@ -544,8 +566,8 @@ connector に本文はない。 [fixture: agentflow/gram-flow-all-forms]
 コメントの区切りならその空白を取れる。
 見出しのデータは名前か題に直接続く隣接した完全なブロックとする。
 名前のない flow に見出しのデータは書けない。
-境界付きの小文字の end が flow と global を閉じ、
-一般の行末を表すものではない。 [fixture: agentflow/gram-flow-inline-data]
+境界付きの小文字の end が flow と global を閉じ、一般の行末を表すものではない。
+[fixture: agentflow/gram-flow-inline-data]
 [fixture: agentflow/gram-flow-bare-inline-data]
 [fixture: agentflow/gram-connector-all-forms]
 [fixture: agentflow/gram-flow-open] [fixture: agentflow/gram-flow-end-suffix]
@@ -580,7 +602,8 @@ default は name-piece の選択肢にない。
 
 名前を読む間、認識した消される click の印、閉じた空の説明ブロック、
 消される空の文字列、空の markdown 文字列、空の call は、
-通常の名前の文字にせず読み通す。 [fixture: agentflow/lex-empty-string-in-flow-name]
+通常の名前の文字にせず読み通す。
+[fixture: agentflow/lex-empty-string-in-flow-name]
 [fixture: agentflow/lex-empty-call-in-flow-name]
 [fixture: agentflow/lex-empty-markdown-in-flow-name]
 [fixture: agentflow/lex-empty-string-in-connector-name]
@@ -589,13 +612,14 @@ default は name-piece の選択肢にない。
 click の印は引き続きその文脈に入り、
 click-id と click-comma の単位はここでは名前のテキストになる。
 文脈を抜ける空白はその断片に含めない。
-part が分かれたからといって、
-追加の先頭の文字列の選択肢を許さない。 [fixture: agentflow/gram-empty-form-does-not-restart-name-string]
+part が分かれたからといって、追加の先頭の文字列の選択肢を許さない。
+[fixture: agentflow/gram-empty-form-does-not-restart-name-string]
 消される click は、先頭の文字列や markdown の断片の前にも、
 先頭の markdown の断片の後にも置け、文脈を抜けた後に繰り返すこともできる。
 その出口の後の閉じた空の説明ブロックは、
 後続の名前のテキストの前の IgnoredText の part に残る。
-これが正規化した 1 つのラベルではなく AgentflowName を定義する。 [fixture: agentflow/lex-name-click-initial-string]
+これが正規化した 1 つのラベルではなく AgentflowName を定義する。
+[fixture: agentflow/lex-name-click-initial-string]
 [fixture: agentflow/lex-name-click-initial-markdown]
 [fixture: agentflow/lex-name-markdown-before-click]
 [fixture: agentflow/lex-name-click-empty-block]
@@ -623,24 +647,26 @@ part が分かれたからといって、
 Name には、空白だけでも、Label の断片が少なくとも 1 つ必要である。
 空のブロックは先頭の裸の断片や文字列の断片の前に置け、IgnoredText に保つ。
 新しい先頭の文字列の選択肢は作らない。
-必須の 1 つの space の後の空のブロックだけでは名前にならない。 [fixture: agentflow/gram-empty-description-before-flow-name]
+必須の 1 つの space の後の空のブロックだけでは名前にならない。
+[fixture: agentflow/gram-empty-description-before-flow-name]
 [fixture: agentflow/gram-empty-description-before-connector-string]
 [fixture: agentflow/gram-empty-description-no-flow-name]
 
 名前の click の文脈は、Label の断片を寄与せず、
 空の文字列や空の markdown 文字列を認識することもある。
 click と空の形を、別々の AgentflowIgnoredText の part として保つ。
-必要な Label は flow click "" A のように後から来てもよく、 connector F click
-"" のように click より前にあってもよい。
-文脈を抜けた後、
-空の文字列と後続の名前のテキストの間に空の call も置ける。 [fixture: agentflow/lex-name-click-empty-string-before-text]
+必要な Label は flow click "" A のように後から来てもよく、
+connector F click "" のように click より前にあってもよい。
+文脈を抜けた後、空の文字列と後続の名前のテキストの間に空の call も置ける。
+[fixture: agentflow/lex-name-click-empty-string-before-text]
 [fixture: agentflow/lex-name-click-empty-markdown-before-text]
 [fixture: agentflow/lex-name-click-empty-string-then-call]
 [fixture: agentflow/lex-connector-name-click-empty-string-tail]
 [fixture: agentflow/lex-name-click-empty-string-before-string]
 
 flow の名前では、flow click ""A と、
-空の markdown 文字列に替えた同じ隣接形を拒否する。 [fixture: agentflow/gram-name-click-empty-string-adjacent-text]
+空の markdown 文字列に替えた同じ隣接形を拒否する。
+[fixture: agentflow/gram-name-click-empty-string-adjacent-text]
 [fixture: agentflow/gram-flow-name-click-empty-markdown-adjacent-rejected]
 
 connector の名前では、click の後で認識した消される空の文字列や、
@@ -652,7 +678,8 @@ kind は、空の文字列なら empty-string、
 空の文字列に空の markdown 文字列を直接続けてから、名前のテキストを置いてもよい。
 後続のテキストはセミコロンで始まってもよく、
 前に Label がないときは必要な Label を供給し、
-末尾のセミコロン 1 つだけでもよい。 [fixture: agentflow/lex-connector-name-click-empty-string-adjacent-text]
+末尾のセミコロン 1 つだけでもよい。
+[fixture: agentflow/lex-connector-name-click-empty-string-adjacent-text]
 [fixture: agentflow/lex-connector-name-click-empty-string-adjacent-semicolon]
 [fixture:
 agentflow/lex-connector-name-click-empty-string-no-id-adjacent-semicolon]
@@ -667,8 +694,8 @@ agentflow/lex-connector-name-click-empty-markdown-no-id-adjacent-semicolon]
 後で何も認識しない消される click は、既に名前の断片があっても、
 EOF に末尾の印だけを残せない。
 ソースが connector click で終わる形は、末尾に LF があってもなくても拒否する。
-connector F click で終わる形も mermaid.js が拒否し、
-差異の印は付けない。 [fixture: agentflow/gram-connector-name-click-only-eof]
+connector F click で終わる形も mermaid.js が拒否し、差異の印は付けない。
+[fixture: agentflow/gram-connector-name-click-only-eof]
 [fixture: agentflow/gram-connector-name-click-only-newline]
 [fixture: agentflow/gram-connector-name-terminal-click-eof]
 
@@ -681,9 +708,8 @@ connector F click で終わる形も mermaid.js が拒否し、
 id、形、::: のクラス、データの接尾部を空白で離せない。
 裸の id、形付きの id、クラスの接尾部、反復した出現は、
 いずれも書かれた構造を保つ。 [fixture: agentflow/gram-bare-node]
-[fixture: agentflow/gram-group-spaces]
-[fixture: agentflow/gram-group-unspaced] [fixture: agentflow/gram-group-data]
-[fixture: agentflow/gram-style-suffix]
+[fixture: agentflow/gram-group-spaces] [fixture: agentflow/gram-group-unspaced]
+[fixture: agentflow/gram-group-data] [fixture: agentflow/gram-style-suffix]
 [fixture: agentflow/gram-style-suffix-twice]
 [fixture: agentflow/gram-node-three-definitions]
 [fixture: agentflow/gram-bracket-shapes] [fixture: agentflow/gram-props]
@@ -695,8 +721,7 @@ Agentflow のドメインの metadata の alias にはしない。
 その後は裸の続きを許す。
 ラベルには空でない字句の内容が必要であり、全体が空の文字列では満たさないが、
 空白の内容は満たす。 [fixture: agentflow/gram-bracket-shapes]
-[fixture: agentflow/gram-props]
-[fixture: agentflow/gram-node-empty-label]
+[fixture: agentflow/gram-props] [fixture: agentflow/gram-node-empty-label]
 [fixture: agentflow/gram-node-empty-string]
 [fixture: agentflow/gram-node-empty-markdown]
 [fixture: agentflow/lex-edge-empty-string-label]
@@ -712,8 +737,8 @@ Agentflow のドメインの metadata の alias にはしない。
 辺の id の位置、Label の構成を参照する。
 sequence と failure は -- とテキストに続けて --> または --x を使える。
 reference は分割テキストを使えないが、縦棒のラベルは書ける。
-書かれたダッシュと点の数、id、ラベルを、
-意味や配置の欄なしに保つ。 [fixture: agentflow/gram-three-edge-kinds]
+書かれたダッシュと点の数、id、ラベルを、意味や配置の欄なしに保つ。
+[fixture: agentflow/gram-three-edge-kinds]
 [fixture: agentflow/gram-split-sequence-label]
 [fixture: agentflow/gram-split-failure-label]
 [fixture: agentflow/gram-split-reference-label]
@@ -727,8 +752,8 @@ reference は分割テキストを使えないが、縦棒のラベルは書け�
 縦棒のラベルの後には space の単位を 1 つ続けられるが、2 つは続けられない。
 分割テキストで文字列の選択肢を許すのは先頭だけであり、その後の裸の続きは許すが、
 別の文字列は許さない。
-完全な矢印の後の印のような x は、
-次の矢印の始点の印ではなく id の文字とする。 [fixture: agentflow/gram-pipe-labels]
+完全な矢印の後の印のような x は、次の矢印の始点の印ではなく id の文字とする。
+[fixture: agentflow/gram-pipe-labels]
 [fixture: agentflow/gram-pipe-label-two-spaces-after]
 [fixture: agentflow/gram-split-edge-second-string-rejected]
 [fixture: agentflow/gram-split-edge-string-bare-tail]
@@ -737,7 +762,8 @@ reference は分割テキストを使えないが、縦棒のラベルは書け�
 
 ### metadata のブロック
 
-[データブロック](./flowchart.ja.md#データブロック)と頂点の data の生成規則を参照する。
+[データブロック](./flowchart.ja.md#データブロック)と頂点の data
+の生成規則を参照する。
 1 個以上の完全な @{ ... } のブロックを隣接して書く。
 付加は書かれた頂点の出現か明示の flow と connector の見出しに属する。
 mermaid.js が隣接する内容を結合する場合も、
@@ -770,14 +796,14 @@ YAML、形、型の内容だけによる拒否は、embedded-data-opaque によ�
 
 ### style、classDef、class、linkStyle
 
-[style、class、linkStyle の文](./flowchart.ja.md#styleclasslinkstyle-の文) を参照し、
-id-list、styles、style、name、番号付きと default の選択肢を含める。
+[style、class、linkStyle の文](./flowchart.ja.md#styleclasslinkstyle-の文)
+を参照し、 id-list、styles、style、name、番号付きと default の選択肢を含める。
 必須の space はそれぞれ Agentflow の space の単位 1 つとする。
 id-list の空の要素は末尾も含め null とする。
 style の対象 id、クラスの接尾部、class の文の 2 番目の id は、
-コンマを含んでも 1 つの Identifier とする。 [fixture: agentflow/gram-classdef-multi]
-[fixture: agentflow/gram-class-semicolon]
-[fixture: agentflow/gram-style-suffix]
+コンマを含んでも 1 つの Identifier とする。
+[fixture: agentflow/gram-classdef-multi]
+[fixture: agentflow/gram-class-semicolon] [fixture: agentflow/gram-style-suffix]
 [fixture: agentflow/gram-linkstyle-default]
 [fixture: agentflow/gram-linkstyle-interpolate-index]
 [fixture: agentflow/gram-linkstyle-interpolate-default]
@@ -803,8 +829,8 @@ style の内容にする。 [fixture: agentflow/db-node-style-first-leading-spac
 [fixture: agentflow/db-node-style-tab-gaps-leading-tab]
 [fixture: agentflow/db-classdef-tab-gaps-leading-tab]
 [fixture: agentflow/db-style-leading-whitespace]
-class の値や補間名の前の間隔は、
-引き続きちょうど 1 つの space の単位とする。 [fixture: agentflow/lex-class-double-space-value]
+class の値や補間名の前の間隔は、引き続きちょうど 1 つの space の単位とする。
+[fixture: agentflow/lex-class-double-space-value]
 [fixture: agentflow/gram-class-semicolon]
 [fixture: agentflow/lex-linkstyle-interpolate-double-space]
 [fixture: agentflow/gram-linkstyle-interpolate-index]
@@ -817,18 +843,21 @@ class の値や補間名の前の間隔は、
 補間名の後の任意の space には style が続かなければならず、
 任意の末尾の余白ではない。
 空の説明ブロックの前後の space の単位は別々に保つため、それらを結合せずに、
-そのブロックの後に空白だけの style を続けられる。 [fixture: agentflow/lex-linkstyle-interpolate-double-space]
+そのブロックの後に空白だけの style を続けられる。
+[fixture: agentflow/lex-linkstyle-interpolate-double-space]
 [fixture: agentflow/lex-linkstyle-three-semis]
 [fixture: agentflow/gram-empty-description-splits-interpolate-spaces]
 
 ### click、call、href
 
 flowchart の click の予約語による拒否と以下の前置欄を除き、
-click とコールバックの字句規則および [クリックの文](./flowchart.ja.md#クリックの文)を参照する。
+click とコールバックの字句規則および
+[クリックの文](./flowchart.ja.md#クリックの文)を参照する。
 click の id は click-comma で分け、空の端を null にできる。
 その文脈では矢印、キーワード、括弧の表記のような id も click の id であり、
 頂点の文にはしない。
-後続の空白がなければ call と href は通常の id のテキストである。 [fixture: agentflow/gram-click-callback-forms]
+後続の空白がなければ call と href は通常の id のテキストである。
+[fixture: agentflow/gram-click-callback-forms]
 [fixture: agentflow/gram-click-link-forms]
 [fixture: agentflow/gram-click-punctuation-id]
 [fixture: agentflow/gram-click-id-empty-ends]
@@ -840,8 +869,8 @@ click の id は click-comma で分け、空の端を null にできる。
 call の後のコールバックは開き括弧までの不透明な名前と、
 任意の不透明な引数を持つ。
 名前と引数の余白を保つ。
-名前の LF、CRLF、U+2028、
-U+2029 は書かれたまま保つ。 [fixture: agentflow/lex-callback-name-lf]
+名前の LF、CRLF、U+2028、 U+2029 は書かれたまま保つ。
+[fixture: agentflow/lex-callback-name-lf]
 [fixture: agentflow/lex-callback-name-crlf]
 [fixture: agentflow/lex-callback-name-u2028]
 [fixture: agentflow/lex-callback-name-u2029]
@@ -849,8 +878,8 @@ U+2029 は書かれたまま保つ。 [fixture: agentflow/lex-callback-name-lf]
 裸のコールバックには共通の name の生成規則を使う。
 URL には href、次に tooltip と _self、_blank、_parent、
 _top のいずれかを付けられる。
-URL と tooltip は空でない文字列の構文とし、
-空白だけの文字列も含める。 [fixture: agentflow/gram-click-callback-space-args]
+URL と tooltip は空でない文字列の構文とし、空白だけの文字列も含める。
+[fixture: agentflow/gram-click-callback-space-args]
 [fixture: agentflow/db-call-name-space-before-parentheses]
 [fixture: agentflow/gram-click-callback-blank-args]
 [fixture: agentflow/gram-click-bare-link-target]
@@ -863,8 +892,8 @@ URL の前、href の両側も含む位置、または tooltip の前では、
 通常の click の生成規則でそのキーワードを読み通し、
 textBeforeUrl または textBeforeTooltip に保つ。
 その位置の閉じた空の説明ブロックや、認識した消される空の文字列、
-空の markdown 文字列、
-空の call も同じように保つ。 [fixture: agentflow/lex-empty-call-before-href]
+空の markdown 文字列、空の call も同じように保つ。
+[fixture: agentflow/lex-empty-call-before-href]
 [fixture: agentflow/lex-empty-string-before-url]
 [fixture: agentflow/lex-empty-markdown-before-href]
 [fixture: agentflow/lex-empty-string-before-url-tooltip]
@@ -873,7 +902,8 @@ textBeforeUrl または textBeforeTooltip に保つ。
 [fixture: agentflow/lex-mixed-empty-forms-before-url-tooltip]
 これらの列は任意の語を飛ばしたり、
 2 つの click-id の群を結合したりする規則ではない。
-コールバック名に textBeforeCallback の欄はない。 [fixture: agentflow/gram-click-erased-before-url]
+コールバック名に textBeforeCallback の欄はない。
+[fixture: agentflow/gram-click-erased-before-url]
 [fixture: agentflow/gram-click-erased-before-url-tooltip]
 [fixture: agentflow/gram-click-erased-before-callback-tooltip]
 [fixture: agentflow/gram-click-erased-after-href]
@@ -883,8 +913,8 @@ textBeforeUrl または textBeforeTooltip に保つ。
 
 tooltip と target の必須の間隔も space の単位 1 つとする。
 2 つ目の通常の space はその間隔で吸収しない。
-末尾の空の説明ブロックは、
-その文自身の末尾の空白の制限に従う後続の文とする。 [fixture: agentflow/lex-click-double-space-before-tooltip]
+末尾の空の説明ブロックは、その文自身の末尾の空白の制限に従う後続の文とする。
+[fixture: agentflow/lex-click-double-space-before-tooltip]
 [fixture: agentflow/gram-callback-tooltip-double-space]
 [fixture: agentflow/gram-empty-description-after-url-glued]
 [fixture: agentflow/gram-empty-description-after-url-space]
@@ -893,18 +923,22 @@ URL とコールバックの tooltip の前の、閉じた空のブロックは�
 textBeforeTooltip に置く。
 裸のコールバック名と固定のリンクの target の前には対応する前置の欄がない。
 これらの内部のブロックは、任意に tooltip の欄へ割り当てず、
-tokenless-empty-forms とする。 [fixture: agentflow/gram-empty-description-before-url-tooltip]
+tokenless-empty-forms とする。
+[fixture: agentflow/gram-empty-description-before-url-tooltip]
 [fixture: agentflow/gram-empty-description-before-callback-tooltip]
 [fixture: agentflow/div-empty-description-before-callback-name]
 [fixture: agentflow/div-empty-description-before-link-target]
 
 ### 方向とアクセシビリティの文
 
-方向の行の規則と [方向とアクセシビリティの文](./flowchart.ja.md#方向とアクセシビリティの文) を参照する。
+方向の行の規則と
+[方向とアクセシビリティの文](./flowchart.ja.md#方向とアクセシビリティの文)
+を参照する。
 方向は TB、BT、RL、LR、TD の順に試し、
 選んだ方向の中で最後に一致する direction のキーワードを使う。
 未完成の形やリンクに見える場合も、前後のテキストは IgnoredText とする。
-direction と値の間の空白には LF も含められる。 [fixture: agentflow/lex-direction-line-greedy]
+direction と値の間の空白には LF も含められる。
+[fixture: agentflow/lex-direction-line-greedy]
 [fixture: agentflow/lex-direction-after-ls]
 [fixture: agentflow/lex-direction-after-ps]
 [fixture: agentflow/lex-direction-value-priority]
@@ -919,7 +953,8 @@ direction と値の間の空白には LF も含められる。 [fixture: agentfl
 これらの文は区切りを必要としない。
 題と行の説明は、セミコロンと percent の対も含め、値の行の残りを読む。
 値の前の空白は次の物理行も取り得る。
-EOF の欠けた値は null とする。 [fixture: agentflow/lex-direction-title-column-zero]
+EOF の欠けた値は null とする。
+[fixture: agentflow/lex-direction-title-column-zero]
 [fixture: agentflow/lex-direction-title-indented]
 [fixture: agentflow/lex-direction-description-column-zero]
 [fixture: agentflow/lex-direction-description-indented]
@@ -933,15 +968,15 @@ EOF の欠けた値は null とする。 [fixture: agentflow/lex-direction-title
 説明ブロックは閉じる波括弧以外の全ての文字を読む。
 LF、U+2028、U+2029、保持するコメントのようなテキストも含む。
 開く区切りは後続の空白を取る。
-EOF で閉じなくてもよく、
-そのテキストと closed の false を保つ。 [fixture: agentflow/gram-accdescr-open-trailing-spaces-eof]
+EOF で閉じなくてもよく、そのテキストと closed の false を保つ。
+[fixture: agentflow/gram-accdescr-open-trailing-spaces-eof]
 [fixture: agentflow/gram-accdescr-open-crlf-eof]
 [fixture: agentflow/gram-accdescr-open-directive-eof]
 [fixture: agentflow/gram-accdescr-open-text-directive-eof]
 [fixture: agentflow/gram-accdescr-open-text-spaces-eof]
 [fixture: agentflow/frontmatter-accdescr-open-trailing-spaces-eof]
-内容のない閉じたブロックは value を null、
-closed を true とする。 [fixture: agentflow/lex-accdescr-block-u2028]
+内容のない閉じたブロックは value を null、 closed を true とする。
+[fixture: agentflow/lex-accdescr-block-u2028]
 [fixture: agentflow/lex-accdescr-block-u2029]
 [fixture: agentflow/lex-accessibility-block-comment]
 [fixture: agentflow/db-accessibility-unclosed-block]
@@ -951,10 +986,12 @@ closed を true とする。 [fixture: agentflow/lex-accdescr-block-u2028]
 ### 空の説明ブロックと消される形
 
 区切られる文には、ブロックの周囲の別々の space の単位も含め、
-flowchart の [末尾の空の説明ブロックの規則](./flowchart.ja.md#区切りの前の空の説明ブロック) を参照する。
+flowchart の
+[末尾の空の説明ブロックの規則](./flowchart.ja.md#区切りの前の空の説明ブロック)
+を参照する。
 文の始まりでは、同じ行の次の文の前も含め、閉じた空のブロック自身を文とする。
-完成した文とその区切りの間では、
-その文の値の一部ではなく後続の文とする。 [fixture: agentflow/lex-empty-description-before-node]
+完成した文とその区切りの間では、その文の値の一部ではなく後続の文とする。
+[fixture: agentflow/lex-empty-description-before-node]
 [fixture: agentflow/gram-empty-description-after-vertex]
 [fixture: agentflow/gram-empty-description-after-data]
 [fixture: agentflow/gram-empty-description-after-data-space-semicolon]
@@ -969,8 +1006,8 @@ flowchart の [末尾の空の説明ブロックの規則](./flowchart.ja.md#区
 connector の題の後では後続の文とする。
 flow と connector の名前の中では Name の part とする。
 既存の click の前置欄では IgnoredText とする。
-ヘッダーの方向の前や、
-保持する欄のない他の構造の間では受理しない。 [fixture: agentflow/gram-empty-description-after-header-direction]
+ヘッダーの方向の前や、保持する欄のない他の構造の間では受理しない。
+[fixture: agentflow/gram-empty-description-after-header-direction]
 [fixture: agentflow/gram-empty-description-header-no-direction]
 [fixture: agentflow/gram-empty-description-after-flow-name]
 [fixture: agentflow/gram-empty-description-before-flow-title]
@@ -990,8 +1027,8 @@ style のコンマの前の空のブロックには、そのような置き場�
 葉を分けるか任意の間の欄を加える必要があるため、
 mermaid.js が受理する場合は tokenless-empty-forms として拒否する。
 完成したクラスの値の後の末尾のブロックは保つ。
-通常の space があると、
-両方の文法が拒否する場合もある。 [fixture: agentflow/div-empty-description-in-classdef]
+通常の space があると、両方の文法が拒否する場合もある。
+[fixture: agentflow/div-empty-description-in-classdef]
 [fixture: agentflow/div-empty-description-in-style]
 [fixture: agentflow/div-empty-description-before-arrow]
 [fixture: agentflow/div-empty-description-before-style-comma]
@@ -1002,7 +1039,8 @@ mermaid.js が受理する場合は tokenless-empty-forms として拒否する�
 
 文の始まりの、全体が消される空の文字列、空の markdown 文字列、空の call は、
 tokenless-empty-forms の agentflow の明示の例外により拒否する。
-これらのための IgnoredStatement は作らない。 [fixture: agentflow/div-empty-string-statement]
+これらのための IgnoredStatement は作らない。
+[fixture: agentflow/div-empty-string-statement]
 [fixture: agentflow/div-empty-markdown-statement]
 [fixture: agentflow/div-empty-call-statement]
 [fixture: agentflow/div-empty-string-before-vertex]
@@ -1014,7 +1052,8 @@ flow と connector の名前では AgentflowName.parts、
 URL とコールバックの後続の tooltip の前では textBeforeTooltip に置く。
 その位置の消される click や閉じた空の説明ブロックと同じく、
 全体の表記を別々の AgentflowIgnoredText として保つ。
-前置欄には引き続き後続の URL または tooltip が必要である。 [fixture: agentflow/lex-empty-string-in-flow-name]
+前置欄には引き続き後続の URL または tooltip が必要である。
+[fixture: agentflow/lex-empty-string-in-flow-name]
 [fixture: agentflow/lex-empty-call-in-flow-name]
 [fixture: agentflow/lex-empty-markdown-in-flow-name]
 [fixture: agentflow/lex-empty-string-in-connector-name]
@@ -1028,21 +1067,21 @@ URL とコールバックの後続の tooltip の前では textBeforeTooltip に
 [fixture: agentflow/lex-mixed-empty-forms-before-url-tooltip]
 
 単位の位置で認識した形だけに、この規則を使う。
-既に始まった通常の名前の単位の中の引用符は、
-名前のテキストに残す。 [fixture: agentflow/lex-empty-quote-spelling-inside-name-unit]
+既に始まった通常の名前の単位の中の引用符は、名前のテキストに残す。
+[fixture: agentflow/lex-empty-quote-spelling-inside-name-unit]
 
 保持する欄がない他の位置では、認識した消される空の形を、
 tokenless-empty-forms の理由 1 で拒否する。
 矢印やコールバック名の前、ヘッダーとその方向の間の空の形も含む。
-URL の前の欄があっても、
-コールバック名の前に欄は作らない。 [fixture: agentflow/div-empty-string-before-arrow]
+URL の前の欄があっても、コールバック名の前に欄は作らない。
+[fixture: agentflow/div-empty-string-before-arrow]
 [fixture: agentflow/div-empty-call-before-arrow]
 [fixture: agentflow/div-empty-string-before-callback]
 [fixture: agentflow/div-empty-string-after-click]
 [fixture: agentflow/div-empty-string-between-header-and-direction]
 
-空のデータブロックはこれらの形ではなく、
-空白だけの文字列の構文も空ではない。 [fixture: agentflow/gram-data-null-document]
+空のデータブロックはこれらの形ではなく、空白だけの文字列の構文も空ではない。
+[fixture: agentflow/gram-data-null-document]
 [fixture: agentflow/gram-url-tooltip-whitespace-only]
 
 ### 文法の外での拒否
@@ -1051,8 +1090,8 @@ flowchart の正規の linkStyle の番号の条件を参照する。
 各番号は先頭のゼロのない非負整数の表記で、
 その文までに作られた辺を指さなければならない。
 連鎖、群、flow の中の辺をソース順に数える。
-設定された maxEdges の上限も受理を決め、
-辺の数が上限を超えれば拒否する。 [fixture: agentflow/gram-linkstyle-style-out-of-bounds]
+設定された maxEdges の上限も受理を決め、辺の数が上限を超えれば拒否する。
+[fixture: agentflow/gram-linkstyle-style-out-of-bounds]
 [fixture: agentflow/gram-linkstyle-interpolate-out-of-bounds]
 [fixture: agentflow/lex-linkstyle-leading-zero]
 [fixture: agentflow/lex-linkstyle-over-safe-integer]
@@ -1068,12 +1107,14 @@ flowchart の正規の linkStyle の番号の条件を参照する。
 名前のない入れ子の flow は hasOwnProperty 以外の空でない値を渡す。
 生成された表記はこの拒否には関係せず、AST の欄に持たない。
 空でないアクセシビリティの値は端の空白を除いたテキスト、
-追加のセミコロンはそのテキストを渡す。 [fixture: agentflow/gram-nested-unnamed-flow]
+追加のセミコロンはそのテキストを渡す。
+[fixture: agentflow/gram-nested-unnamed-flow]
 [fixture: agentflow/gram-flow-named-member-hasownproperty]
 [fixture: agentflow/gram-connector-member-hasownproperty]
 [fixture: agentflow/gram-flow-hasownproperty-before-empty-statement]
 方向、global、style と class と linkStyle、click、コメントは要素を渡さない。
-hasOwnProperty の後に他の空でない候補があれば拒否する。 [fixture: agentflow/lex-flow-prototype-members]
+hasOwnProperty の後に他の空でない候補があれば拒否する。
+[fixture: agentflow/lex-flow-prototype-members]
 [fixture: agentflow/lex-flow-hasownproperty-member]
 [fixture: agentflow/lex-accessibility-scope]
 [fixture: agentflow/gram-accessibility-hasownproperty-member]
@@ -1093,34 +1134,39 @@ id の重複、未解決の connectorRef、入力の欠落、reference のラベ
 
 ## 既知の差異
 
-適用する 6 個の識別子は [known-divergences.md](../known-divergences.ja.md) に定義する。
+適用する 6 個の識別子は [known-divergences.md](../known-divergences.ja.md)
+に定義する。
 まず木に置き場のある書かれたテキストを保ち、その後で列挙した拒否を適用する。
-以下の範囲は flowchart の差異の全一覧を移すものではない。 [fixture: agentflow/gram-click-erased-before-url]
+以下の範囲は flowchart の差異の全一覧を移すものではない。
+[fixture: agentflow/gram-click-erased-before-url]
 [fixture: agentflow/lex-empty-description-in-flow-name]
 [fixture: agentflow/div-directive-in-id]
 
-[directive-as-token-boundary](../known-divergences/directive-as-token-boundary.ja.md): 不可分のキーワード、
-Identifier、数値、矢印、複合区切りには、
+[directive-as-token-boundary](../known-divergences/directive-as-token-boundary.ja.md):
+不可分のキーワード、 Identifier、数値、矢印、複合区切りには、
 全体の単位の定義を変えずに内部のディレクティブを保てない。
 結合して受理される形を理由 2 で拒否する。
 名前のテキスト、文字列、データの位置は受理し、
-結合後も拒否される形には印を付けない。 [fixture: agentflow/div-directive-in-header]
+結合後も拒否される形には印を付けない。
+[fixture: agentflow/div-directive-in-header]
 [fixture: agentflow/div-directive-in-beta-header]
 [fixture: agentflow/div-directive-in-id]
 [fixture: agentflow/div-directive-in-circle-opening]
 [fixture: agentflow/lex-directive-in-flow-name-text]
 [fixture: agentflow/lex-directive-joins-invalid-linkstyle-index]
 
-[ignored-semicolon-as-token-boundary](../known-divergences/ignored-semicolon-as-token-boundary.ja.md): 不可分の単位の内部の選ばれた無視するセミコロンにも、
+[ignored-semicolon-as-token-boundary](../known-divergences/ignored-semicolon-as-token-boundary.ja.md):
+不可分の単位の内部の選ばれた無視するセミコロンにも、
 同じ置き場の問題により理由 2 を適用する。
 EmptyStatement ではその単位の内部の文字を保てない。
-テキストと不透明な metadata のキーは受理する。 [fixture: agentflow/div-ignored-semicolon-in-id]
+テキストと不透明な metadata のキーは受理する。
+[fixture: agentflow/div-ignored-semicolon-in-id]
 [fixture: agentflow/div-ignored-semicolon-in-arrow]
 [fixture: agentflow/lex-ignored-semicolon-in-metadata-key]
 [fixture: agentflow/lex-ignored-semicolon-in-flow-name-text]
 
-[embedded-data-opaque](../known-divergences/embedded-data-opaque.ja.md): 木は埋め込まれた表記全体を保ち、
-内容を検証しない。
+[embedded-data-opaque](../known-divergences/embedded-data-opaque.ja.md):
+木は埋め込まれた表記全体を保ち、内容を検証しない。
 木を作るために不要な検証であるという逆方向の条件により、
 mermaid.js の内容だけの拒否を受理する。
 構文の区切りは引き続き要求する。 [fixture: agentflow/db-data-block-invalid-yaml]
@@ -1130,11 +1176,13 @@ mermaid.js の内容だけの拒否を受理する。
 [fixture: agentflow/div-data-percent-line-is-content]
 [fixture: agentflow/lex-data-block-unclosed]
 
-[html-tag-in-frontmatter](../known-divergences/html-tag-in-frontmatter.ja.md): 共通の本文だけの HTML の範囲を使う。
+[html-tag-in-frontmatter](../known-divergences/html-tag-in-frontmatter.ja.md):
+共通の本文だけの HTML の範囲を使う。
 ノードはテキストを保てるが、
 その範囲ではフロントマターをまたいで本文の引用符の役割を変えるタグを表せない。
 既存の理由 2 の直接の規則を両方向に適用し、
-pipeline の順序による mermaid.js の拒否の受理も含める。 [fixture: agentflow/div-frontmatter-tag-enables-label]
+pipeline の順序による mermaid.js の拒否の受理も含める。
+[fixture: agentflow/div-frontmatter-tag-enables-label]
 [fixture: agentflow/html-label-without-frontmatter-tag]
 [fixture: agentflow/div-frontmatter-tag-changes-title]
 [fixture: agentflow/div-frontmatter-attribute-blocks-body-tag]
@@ -1144,16 +1192,19 @@ pipeline の順序による mermaid.js の拒否の受理も含める。 [fixtur
 Comment の記録はヘッダー前のディレクティブでない percent と波括弧の行を保てる。
 検出は飛ばすが保持する lexer は拒否するため、
 既存の逆方向の pipeline の順序の条件で受理する。
-裸の %% 行は既に受理されるので印を付けない。 [fixture: agentflow/comment-bare-before-spaces]
+裸の %% 行は既に受理されるので印を付けない。
+[fixture: agentflow/comment-bare-before-spaces]
 [fixture: agentflow/div-percent-braces-before-header]
 [fixture: agentflow/div-percent-braces-after-directive-before-header]
 [fixture: agentflow/div-comment-header-percent-brace]
 
-[tokenless-empty-forms](../known-divergences/tokenless-empty-forms.ja.md): 文の始まりでは、
-明示の例外により、消される空の文字列、markdown、call を拒否する。
+[tokenless-empty-forms](../known-divergences/tokenless-empty-forms.ja.md):
+文の始まりでは、明示の例外により、消される空の文字列、markdown、
+call を拒否する。
 保持する欄のない内部の消される形や空の説明ブロックは理由 1 で拒否する。
 Name.parts や click の textBeforeUrl、textBeforeTooltip にある、
-認識した消される空の形は IgnoredText として受理する。 [fixture: agentflow/lex-empty-string-in-flow-name]
+認識した消される空の形は IgnoredText として受理する。
+[fixture: agentflow/lex-empty-string-in-flow-name]
 [fixture: agentflow/lex-empty-call-in-flow-name]
 [fixture: agentflow/lex-empty-markdown-in-flow-name]
 [fixture: agentflow/lex-empty-string-in-connector-name]
@@ -1180,8 +1231,8 @@ Name の part と click の前置欄が計測した無視されたテキスト�
 comment-takes-line-break と comment-takes-character も適用しない。
 コメントは LF の前で止まり、前の文字を取らない。
 c4-keyword-anywhere と blank-line-after-header-or-comments も適用しない。
-検出は C4 より先であり、
-通常の空行は有効である。 [fixture: agentflow/gram-click-erased-before-url]
+検出は C4 より先であり、通常の空行は有効である。
+[fixture: agentflow/gram-click-erased-before-url]
 [fixture: agentflow/lex-flow-name-click-mixed]
 [fixture: agentflow/comment-before-class-keeps-newline]
 [fixture: agentflow/comment-double-percent-inside-id]

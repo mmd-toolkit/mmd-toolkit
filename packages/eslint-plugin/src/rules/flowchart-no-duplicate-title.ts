@@ -31,11 +31,11 @@ export const flowchartNoDuplicateTitle: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js replaces the title set on line {{line}} with the one of this `accTitle`.",
+        "mermaid.js replaces the earlier title with the one of this `accTitle`.",
       removeThis:
         "Remove this `accTitle` statement: mermaid.js uses the last title that remains.",
       removePrevious:
-        "Remove the `accTitle` statement on line {{line}}: mermaid.js uses the last title that remains.",
+        "Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.",
     },
   },
   create(context) {
@@ -47,7 +47,6 @@ export const flowchartNoDuplicateTitle: MermaidRuleDefinition<{
           context.report({
             node,
             messageId: "duplicate",
-            data: { line: String(previous.loc.start.line) },
             suggest: oneOfTwoRemovals(sourceCode, node, previous),
           })
         }

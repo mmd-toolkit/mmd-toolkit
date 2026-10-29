@@ -20,7 +20,6 @@ accTitle: First\raccTitle: Second\r`,
         errors: [
           {
             messageId: "duplicate",
-            data: { line: "2" },
             line: 3,
             column: 1,
             endLine: 3,
@@ -38,7 +37,6 @@ accTitle: First\u2029More
         errors: [
           {
             messageId: "duplicate",
-            data: { line: "2" },
             line: 3,
             column: 1,
             endLine: 3,

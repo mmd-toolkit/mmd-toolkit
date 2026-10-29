@@ -29,7 +29,8 @@ mermaid.js は `A --> B --> C` のようなリンクの連なりもエラーな�
 2 つの辺の文は両方の辺を描く。
 
 複合ブロックの頭の連なりは、
-[block-no-edge-in-composite-head](./block-no-edge-in-composite-head.ja.md) が報告する。
+[block-no-edge-in-composite-head](./block-no-edge-in-composite-head.ja.md)
+が報告する。
 
 この規則に**反する**コードの例:
 

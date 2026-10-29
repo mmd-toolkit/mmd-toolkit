@@ -39,7 +39,8 @@ mermaid.js もそう読む。
 ほかの文の行の、その前にも後にも書ける。
 そこでも説明を設定せず、規則は同じように報告する。
 閉じていないブロックは、何も持たなくても、
-[xychart-no-unclosed-description-block](./xychart-no-unclosed-description-block.ja.md) が報告する。
+[xychart-no-unclosed-description-block](./xychart-no-unclosed-description-block.ja.md)
+が報告する。
 
 この規則に**反する**コードの例:
 

@@ -12,7 +12,7 @@ Code:
   4 |   word = "a";
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -26,7 +26,7 @@ Code:
     | ^~~~~~~~~~~~~~~~ [1]
   4 | word="a";
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -41,7 +41,7 @@ Code:
   4 | %%{init: {}}%%
   5 | word="a";
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -57,8 +57,8 @@ Code:
     | ^~~~~~~~~~~ [2]
   5 | word="a";
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
-[2] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -73,7 +73,7 @@ Code:
   4 | accDescr: Second
   5 | word="a";
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -88,7 +88,7 @@ Code:
   4 |   word = "a";
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -102,7 +102,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~ [1]
   4 | word="a";
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -120,7 +120,7 @@ Code:
     | ~ [1]
   6 | word="a";
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -136,7 +136,7 @@ Code:
   5 | %% comment
   6 | word="a";
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -150,7 +150,7 @@ Code:
     | ^~~~~~~~~~~~~~ [1]
   4 | word="a";
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -164,7 +164,7 @@ Code:
     | ^~~~~~~~~~~~~~~~ [1]
   4 | word=terminal("a");
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -178,7 +178,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
   4 | word=terminal("a");
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -194,8 +194,8 @@ Code:
     | ^~~~~~~~~~~~~~~ [2]
   5 | word=terminal("a");
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
-[2] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -209,7 +209,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~ [1]
   4 | word<-"a";
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -228,5 +228,5 @@ Code:
   6 | accDescr: A
   7 | word<-"a";
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---

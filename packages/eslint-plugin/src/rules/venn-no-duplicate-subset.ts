@@ -17,22 +17,20 @@ export const vennNoDuplicateSubset: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js draws this area again; a declaration on line {{line}} already has these names.",
+        "mermaid.js draws this area again; an earlier declaration already has these names.",
     },
   },
   create(context) {
-    const declarations = new Map<string, number>()
+    const declarations = new Set<string>()
     return {
       VennSubsetStatement(node) {
         const key = vennRegionKey(node.sets)
-        const line = declarations.get(key)
-        if (line === undefined) {
-          declarations.set(key, node.loc.start.line)
+        if (!declarations.has(key)) {
+          declarations.add(key)
         } else {
           context.report({
             node,
             messageId: "duplicate",
-            data: { line: String(line) },
           })
         }
       },

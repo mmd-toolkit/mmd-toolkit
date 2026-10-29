@@ -3,7 +3,8 @@
 English version: [cynefin.md](./cynefin.md)
 
 cynefin-beta と cynefin-beta: の整形規則です。
-[構文](../../spec/docs/diagrams/cynefin.ja.md)と [木](../../spec/docs/ast/cynefin.ja.md)に従い、
+[構文](../../spec/docs/diagrams/cynefin.ja.md)と
+[木](../../spec/docs/ast/cynefin.ja.md)に従い、
 [互換性](./compatibility.ja.md)の共有の制限を適用します。
 
 ## Rules
@@ -68,10 +69,9 @@ global directive の接触、hidden の隣接、保護行は共有規則に従�
 
 [fixture: cynefin/header/header-global-colon]
 
-入力（escape 表記）:
-`"  cynefin-beta complex \"Header\""`.
+入力（escape 表記）: `"  cynefin-beta complex \"Header\""`
 
-Output
+出力
 ([header/header-bare-inline-output.mmd](../tests/fixtures/cynefin/header/header-bare-inline-output.mmd)):
 
 ```mmd
@@ -97,10 +97,9 @@ tabWidth が 0 なら空白は加えず、 useTabs は幅が 0 でも 1 段に 1
 
 [fixture: cynefin/indentation/indent-zero-tabs]
 
-入力（escape 表記）:
-`"cynefin-beta\ncomplex\n \"Indent\"\nclear-->chaotic"`.
+入力（escape 表記）: `"cynefin-beta\ncomplex\n \"Indent\"\nclear-->chaotic"`
 
-Output
+出力
 ([indentation/indent-two-output.mmd](../tests/fixtures/cynefin/indentation/indent-two-output.mmd)):
 
 ```mmd
@@ -150,10 +149,9 @@ cynefin-beta
 
 [corpus fixture: cynefin/gram-items-empty-description-redeclare]
 
-入力（escape 表記）:
-`"cynefin-beta\ncomplex\"Alpha\"'Beta'clear\"Gamma'\""`.
+入力（escape 表記）: `"cynefin-beta\ncomplex\"Alpha\"'Beta'clear\"Gamma'\""`
 
-Output
+出力
 ([domains-and-items/open-body-output.mmd](../tests/fixtures/cynefin/domains-and-items/open-body-output.mmd)):
 
 ```mmd
@@ -181,9 +179,9 @@ hidden closer の padding と semicolon の prefix は保護されたままに�
 [fixture: cynefin/semicolons/cross-domain-suffix]
 
 入力（escape 表記）:
-`"cynefin-beta\ncomplex%%{!domain-gap}%% \"ContactHidden\""`.
+`"cynefin-beta\ncomplex%%{!domain-gap}%% \"ContactHidden\""`
 
-Output
+出力
 ([component-spacing/domain-hidden-contact-output.mmd](../tests/fixtures/cynefin/component-spacing/domain-hidden-contact-output.mmd)):
 
 ```mmd
@@ -208,9 +206,9 @@ cynefin-beta
 [fixture: cynefin/statements-one-per-line/empty-description-redeclare]
 
 入力（escape 表記）:
-`"cynefin-beta\ncomplex\"Left\"clear\"Right\"chaotic-->clear\nconfusion\"End\""`.
+`"cynefin-beta\ncomplex\"Left\"clear\"Right\"chaotic-->clear\nconfusion\"End\""`
 
-Output
+出力
 ([statements-one-per-line/statement-boundaries-output.mmd](../tests/fixtures/cynefin/statements-one-per-line/statement-boundaries-output.mmd)):
 
 ```mmd
@@ -238,10 +236,9 @@ named gap の hidden と global directive の接触は元の境界を保ちま�
 
 [fixture: cynefin/global-directives/global-component-gaps]
 
-入力（escape 表記）:
-`"cynefin-beta\ncomplex-->clear"`.
+入力（escape 表記）: `"cynefin-beta\ncomplex-->clear"`
 
-Output
+出力
 ([arrow-spacing/arrow-bare-output.mmd](../tests/fixtures/cynefin/arrow-spacing/arrow-bare-output.mmd)):
 
 ```mmd
@@ -251,8 +248,8 @@ cynefin-beta
 
 ### Label colon
 
-ラベルを端点から分けるため、to : "label" の colon の前後を普通の 1
-space にします。
+ラベルを端点から分けるため、
+to : "label" の colon の前後を普通の 1 space にします。
 ラベルなし、引用符の中が空、空白だけのラベルは別々の形として残します。
 hidden と global trivia の隙間を普通の空白より優先します。
 
@@ -270,10 +267,9 @@ hidden と global trivia の隙間を普通の空白より優先します。
 
 [fixture: cynefin/global-directives/global-component-gaps]
 
-入力（escape 表記）:
-`"cynefin-beta\nchaotic --> confusion\t:\t\t'ColonTabs'"`.
+入力（escape 表記）: `"cynefin-beta\nchaotic --> confusion\t:\t\t'ColonTabs'"`
 
-Output
+出力
 ([label-colon/colon-tabs-output.mmd](../tests/fixtures/cynefin/label-colon/colon-tabs-output.mmd)):
 
 ```mmd
@@ -284,8 +280,8 @@ cynefin-beta
 ### Strings
 
 項目と遷移ラベルの StringLiteral は source span のまま印字します。
-引用符、escape、空の値、内部の padding、HTML・entity、 native
-form に見える文字を保ち、singleQuote でも引用符は変えません。
+引用符、escape、空の値、内部の padding、HTML・entity、
+native form に見える文字を保ち、singleQuote でも引用符は変えません。
 Db が等しい引用符の変更も書かれた形を失い、
 trim や escape の decode は値を変え得るためです。
 共有の semicolon 保護を先に適用します。
@@ -311,11 +307,11 @@ trim や escape の decode は値を変え得るためです。
 [fixture: cynefin/strings/strings-transition-escapes]
 
 入力（escape 表記）:
-`"cynefin-beta\ncomplex 'Single' \"Double\" 'opposite \" quote' \"opposite ' quote\""`.
+`"cynefin-beta\ncomplex 'Single' \"Double\" 'opposite \" quote' \"opposite ' quote\""`
 
-設定: `{"singleQuote": true}`.
+設定: `{"singleQuote": true}`
 
-Output
+出力
 ([strings/strings-quotes-output.mmd](../tests/fixtures/cynefin/strings/strings-quotes-output.mmd)):
 
 ```mmd
@@ -340,10 +336,9 @@ cynefin-beta
 
 [fixture: cynefin/empty-domains/empty-domain-last-reset]
 
-入力（escape 表記）:
-`"cynefin-beta\ncomplicated"`.
+入力（escape 表記）: `"cynefin-beta\ncomplicated"`
 
-Output
+出力
 ([empty-domains/empty-domain-alone-output.mmd](../tests/fixtures/cynefin/empty-domains/empty-domain-alone-output.mmd)):
 
 ```mmd
@@ -365,9 +360,9 @@ Db の公開順や描画上限を理由に、並べ替え・削除・打ち切�
 [fixture: cynefin/redeclarations/confusion-overflow]
 
 入力（escape 表記）:
-`"cynefin-beta\nclear \"Earlier\"\ncomplex \"Partner\"\nclear \"Final\""`.
+`"cynefin-beta\nclear \"Earlier\"\ncomplex \"Partner\"\nclear \"Final\""`
 
-Output
+出力
 ([redeclarations/domain-repeat-order-output.mmd](../tests/fixtures/cynefin/redeclarations/domain-repeat-order-output.mmd)):
 
 ```mmd
@@ -389,9 +384,9 @@ cynefin-beta
 [fixture: cynefin/transition-occurrences/transition-occurrences]
 
 入力（escape 表記）:
-`"cynefin-beta\ncomplex-->clear:'First'\ncomplex-->clear:'Second'\ncomplex-->complex:'Self'\nclear-->clear\nconfusion-->chaotic:\"\""`.
+`"cynefin-beta\ncomplex-->clear:'First'\ncomplex-->clear:'Second'\ncomplex-->complex:'Self'\nclear-->clear\nconfusion-->chaotic:\"\""`
 
-Output
+出力
 ([transition-occurrences/transition-occurrences-output.mmd](../tests/fixtures/cynefin/transition-occurrences/transition-occurrences-output.mmd)):
 
 ```mmd
@@ -436,10 +431,9 @@ null の title の separator 1 space・tab は範囲の外にあります。
 
 [corpus fixture: cynefin/lex-title-one-tab]
 
-入力（escape 表記）:
-`"cynefin-beta\ntitle\t  Title  inside\t\ttext  "`.
+入力（escape 表記）: `"cynefin-beta\ntitle\t  Title  inside\t\ttext  "`
 
-Output
+出力
 ([title/title-edges-output.mmd](../tests/fixtures/cynefin/title/title-edges-output.mmd)):
 
 ```mmd
@@ -469,9 +463,9 @@ colon 後のかっこは行の値として残します。
 [fixture: cynefin/accessibility-lines/accessibility-trivia]
 
 入力（escape 表記）:
-`"cynefin-beta\naccTitle \t:  Access  Title \t\naccDescr\t:  Access\t\tDescription  "`.
+`"cynefin-beta\naccTitle \t:  Access  Title \t\naccDescr\t:  Access\t\tDescription  "`
 
-Output
+出力
 ([accessibility-lines/accessibility-padding-output.mmd](../tests/fixtures/cynefin/accessibility-lines/accessibility-padding-output.mmd)):
 
 ```mmd
@@ -488,8 +482,8 @@ accDescr ブロックは共有の説明 layout を通します。
 普通の opener 前の空白は結合し、非空値の継続列を保ち、
 独立した closer は文の段にそろえます。
 空ブロック内のコメント・directive は共有の配置を保ちます。
-中身のない内部を padding で囲む必要はなく、値内の native
-form に見える文字も値のままにするためです。
+中身のない内部を padding で囲む必要はなく、
+値内の native form に見える文字も値のままにするためです。
 
 [fixture: cynefin/description-blocks/description-empty]
 
@@ -513,10 +507,9 @@ form に見える文字も値のままにするためです。
 
 [fixture: cynefin/description-blocks/opener-directive]
 
-入力（escape 表記）:
-`"cynefin-beta\naccDescr { \t\n \n}\nclear \"AfterEmpty\""`.
+入力（escape 表記）: `"cynefin-beta\naccDescr { \t\n \n}\nclear \"AfterEmpty\""`
 
-Output
+出力
 ([description-blocks/description-empty-output.mmd](../tests/fixtures/cynefin/description-blocks/description-empty-output.mmd)):
 
 ```mmd
@@ -583,10 +576,9 @@ value は共通の除去を含まないので、再構築すると source を失
 
 [corpus fixture: cynefin/hidden-all-unit-gaps]
 
-入力（escape 表記）:
-`"cynefin-beta\ncomplex%%{!name-owner}%%\n\"NameChild\""`.
+入力（escape 表記）: `"cynefin-beta\ncomplex%%{!name-owner}%%\n\"NameChild\""`
 
-Output
+出力
 ([hidden-forms/hidden-domain-name-output.mmd](../tests/fixtures/cynefin/hidden-forms/hidden-domain-name-output.mmd)):
 
 ```mmd
@@ -616,8 +608,8 @@ closer の padding が LF を可視のまま残す場合もあります。
 見出し行の最初の文の suffix はその文のものとして扱います。
 複数 suffix と可視 EOL 後の本文 form も保ちます。
 
-見出し、領域の開き、項目間に同じ行保持の判断を適用し、項目末尾の native
-DIRECTIVE・YAML もその判断に含めます。
+見出し、領域の開き、項目間に同じ行保持の判断を適用し、
+項目末尾の native DIRECTIVE・YAML もその判断に含めます。
 その行の開きと子を同じ行に保ちます。
 子だけを移すと見出し行の保護が失われ、次の整形が変わるためです。
 form を所有する node は変えず、行の配置を保ちます。
@@ -676,9 +668,9 @@ suffix の owner は保ち、項目の重複で Db を変えません。
 
 [fixture: cynefin/hidden-boundaries/header-inline-domain-item-yaml]
 
-入力（escape 表記）: `"cynefin-beta complex \"A\" %%{{x}}%%\n"`.
+入力（escape 表記）: `"cynefin-beta complex \"A\" %%{{x}}%%\n"`
 
-Output
+出力
 ([hidden-boundaries/header-inline-domain-item-directive-output.mmd](../tests/fixtures/cynefin/hidden-boundaries/header-inline-domain-item-directive-output.mmd)):
 
 ```mmd
@@ -716,9 +708,9 @@ cynefin-beta complex "A" %%{{x}}%%
 [fixture: cynefin/hidden-forms/hidden-item-trailing]
 
 入力（escape 表記）:
-`"cynefin-beta\ncomplex-->clear%%{!spare}%%\n\nchaotic \"Spare\""`.
+`"cynefin-beta\ncomplex-->clear%%{!spare}%%\n\nchaotic \"Spare\""`
 
-Output
+出力
 ([hidden-boundaries/boundary-suffix-directive-spare-output.mmd](../tests/fixtures/cynefin/hidden-boundaries/boundary-suffix-directive-spare-output.mmd)):
 
 ```mmd
@@ -733,8 +725,8 @@ cynefin-beta
 
 textBeforeHeader があれば共有の keepsPrefix で、
 見出し keyword の直前まで prefix 全体を保ちます。
-先頭 LF、passed trivia、second-scan directive、 real・retained
-YAML の順を保ちます。
+先頭 LF、passed trivia、second-scan directive、
+real・retained YAML の順を保ちます。
 掃除すると無視された YAML が有効な frontmatter になり、 title、設定、
 受理を変え得るためです。
 
@@ -749,9 +741,9 @@ YAML の順を保ちます。
 [fixture: cynefin/retained-prefix/prefix-passed-bare-ascii]
 
 入力（escape 表記）:
-`"%% ordinary prefix\n---\ntitle: RetainedOnly\nconfig: [\n---\ncynefin-beta\ncomplex \"PrefixItem\""`.
+`"%% ordinary prefix\n---\ntitle: RetainedOnly\nconfig: [\n---\ncynefin-beta\ncomplex \"PrefixItem\""`
 
-Output
+出力
 ([retained-prefix/prefix-retained-yaml-output.mmd](../tests/fixtures/cynefin/retained-prefix/prefix-retained-yaml-output.mmd)):
 
 ```mmd
@@ -796,9 +788,9 @@ native hidden directive は別の形として扱います。
 [fixture: cynefin/global-directives/between-items-contact]
 
 入力（escape 表記）:
-`"cynefin-beta\ncomplex%%{wrap}%%-->%%{wrap}%%clear%%{wrap}%%:%%{wrap}%%'GlobalLabel'"`.
+`"cynefin-beta\ncomplex%%{wrap}%%-->%%{wrap}%%clear%%{wrap}%%:%%{wrap}%%'GlobalLabel'"`
 
-Output
+出力
 ([global-directives/global-component-gaps-output.mmd](../tests/fixtures/cynefin/global-directives/global-component-gaps-output.mmd)):
 
 ```mmd
@@ -834,10 +826,9 @@ native comment は CR・LF で終わり、LS・PS は内容です。
 
 [test: cynefin/comments/comment-ls-native-content]
 
-入力（escape 表記）:
-`"%% PrefixComment\ncynefin-beta\nclear \"Commented\""`.
+入力（escape 表記）: `"%% PrefixComment\ncynefin-beta\nclear \"Commented\""`
 
-Output
+出力
 ([comments/comment-prefix-output.mmd](../tests/fixtures/cynefin/comments/comment-prefix-output.mmd)):
 
 ```mmd
@@ -865,9 +856,9 @@ semicolon の保護、hidden に要る LF は各規則に従います。
 [fixture: cynefin/blank-lines/blanks-hidden-excess]
 
 入力（escape 表記）:
-`"cynefin-beta\n\ncomplex \"BlankStart\"\n\n \t\n\n\"BlankEnd\"\n\n\n"`.
+`"cynefin-beta\n\ncomplex \"BlankStart\"\n\n \t\n\n\"BlankEnd\"\n\n\n"`
 
-Output
+出力
 ([blank-lines/blanks-between-items-output.mmd](../tests/fixtures/cynefin/blank-lines/blanks-between-items-output.mmd)):
 
 ```mmd
@@ -880,8 +871,8 @@ cynefin-beta
 
 ### Trailing whitespace
 
-見出し、領域の語、完成した項目・遷移、説明 closer の後の、害のない外側の ASCII
-padding を削ります。
+見出し、領域の語、完成した項目・遷移、説明 closer の後の、
+害のない外側の ASCII padding を削ります。
 値の継続行、コメント、directive・hidden 内部、必要な closer padding、
 保護区間は保ちます。
 全物理行の trim は値や受理を変え得るので、owner ごとに決めます。
@@ -895,9 +886,9 @@ padding を削ります。
 [fixture: cynefin/trailing-whitespace/trailing-hidden-opener]
 
 入力（escape 表記）:
-`"cynefin-beta \t\ncomplex \t\n\"StructuralTail\" \t\nclear-->chaotic \t\naccDescr {Done} \t"`.
+`"cynefin-beta \t\ncomplex \t\n\"StructuralTail\" \t\nclear-->chaotic \t\naccDescr {Done} \t"`
 
-Output
+出力
 ([trailing-whitespace/trailing-structure-output.mmd](../tests/fixtures/cynefin/trailing-whitespace/trailing-structure-output.mmd)):
 
 ```mmd
@@ -969,10 +960,9 @@ semicolon の削除や trigger の移動は Db や受理を変え得るためで
 
 [fixture: cynefin/semicolons/cross-domain-suffix]
 
-入力（escape 表記）:
-`"cynefin-beta\ncomplex \"style:#fixed\";\"SuffixItem\""`.
+入力（escape 表記）: `"cynefin-beta\ncomplex \"style:#fixed\";\"SuffixItem\""`
 
-Output
+出力
 ([semicolons/semi-selected-outside-string-output.mmd](../tests/fixtures/cynefin/semicolons/semi-selected-outside-string-output.mmd)):
 
 ```mmd
@@ -996,10 +986,9 @@ cynefin-beta
 
 [fixture: cynefin/semicolons/cynefin-domain-end-before-transition]
 
-入力（escape 表記）:
-`"cynefin-beta\ncomplex \"a;\" clear \"b\" \"c\""`.
+入力（escape 表記）: `"cynefin-beta\ncomplex \"a;\" clear \"b\" \"c\""`
 
-Output
+出力
 ([semicolons/review-semicolon-following-pair-output.mmd](../tests/fixtures/cynefin/semicolons/review-semicolon-following-pair-output.mmd)):
 
 ```mmd
@@ -1022,11 +1011,11 @@ reflow や字下げの変更は Db を変え、遷移部品の折り返しは拒
 [fixture: cynefin/multiline-values/multiline-label-columns]
 
 入力（escape 表記）:
-`"cynefin-beta\ncomplex-->clear:\"A deliberately long transition label that stays on its authored physical line\""`.
+`"cynefin-beta\ncomplex-->clear:\"A deliberately long transition label that stays on its authored physical line\""`
 
-設定: `{"printWidth": 20}`.
+設定: `{"printWidth": 20}`
 
-Output
+出力
 ([multiline-values/long-line-unwrapped-output.mmd](../tests/fixtures/cynefin/multiline-values/long-line-unwrapped-output.mmd)):
 
 ```mmd
@@ -1067,9 +1056,9 @@ retained・native YAML は source のままにし、
 [test: cynefin/specified-readings/divergence-opaque-yaml]
 
 入力（escape 表記）:
-`"---\ntitle: 'SafeYaml'\nconfig: {cynefin: {width: 1000}}\n---\ncynefin-beta\nclear \"YamlBody\""`.
+`"---\ntitle: 'SafeYaml'\nconfig: {cynefin: {width: 1000}}\n---\ncynefin-beta\nclear \"YamlBody\""`
 
-Output
+出力
 ([frontmatter-yaml/frontmatter-safe-yaml-output.mmd](../tests/fixtures/cynefin/frontmatter-yaml/frontmatter-safe-yaml-output.mmd)):
 
 ```mmd
@@ -1124,9 +1113,9 @@ LS・PS・NBSP・BOM は、共通値の外端と普通の説明 opener 前の空
 [fixture: cynefin/source-order/source-common-empty-resets]
 
 入力（escape 表記）:
-`"cynefin-beta\nclear \"EarlyClear\"\ntitle EarlyTitle\ncomplex-->clear:'EarlyMove'\ncomplex \"LaterComplex\"\naccTitle: Accessible\nclear \"FinalClear\"\ntitle FinalTitle"`.
+`"cynefin-beta\nclear \"EarlyClear\"\ntitle EarlyTitle\ncomplex-->clear:'EarlyMove'\ncomplex \"LaterComplex\"\naccTitle: Accessible\nclear \"FinalClear\"\ntitle FinalTitle"`
 
-Output
+出力
 ([source-order/source-interleaving-output.mmd](../tests/fixtures/cynefin/source-order/source-interleaving-output.mmd)):
 
 ```mmd
@@ -1165,10 +1154,9 @@ cynefin-beta
 
 [corpus fixture: cynefin/header-colon]
 
-入力（escape 表記）:
-`"cynefin-beta\ncomplex \"FinalItem\""`.
+入力（escape 表記）: `"cynefin-beta\ncomplex \"FinalItem\""`
 
-Output
+出力
 ([final-newline/final-newline-domain-output.mmd](../tests/fixtures/cynefin/final-newline/final-newline-domain-output.mmd)):
 
 ```mmd
@@ -1184,8 +1172,8 @@ directive-as-token-boundary、ignored-semicolon-as-token-boundary、
 html-tag-in-frontmatter、embedded-data-opaque、
 bare-percent-line-before-header、c4-keyword-anywhere です。
 cynefin 固有の acceptance-setting key や差異は加えません。
-raw 拒否には raw Db がないので、利用できる指定読みと embedded
-effect を使います。
+raw 拒否には raw Db がないので、
+利用できる指定読みと embedded effect を使います。
 単独の parse 失敗は出力せず構文エラーとし、 Markdown は embedding を辞退して、
 拒否 payload を host に任せます。
 
@@ -1206,8 +1194,8 @@ effect を使います。
 ### Markdown fences
 
 共有の Markdown 接続で、dedent した payload に同じ規則を適用します。
-host が fence・list・quote の字下げを決め、最終 code
-line の padding を削ります。
+host が fence・list・quote の字下げを決め、
+最終 code line の padding を削ります。
 内部の hidden に要る padding は保護します。
 末尾 hidden の padding は host が削っても単独整形では保ちます。
 実際の host 出力と 3 回の冪等を、単独 payload の Db 一致と別に検査します。
@@ -1234,7 +1222,7 @@ line の padding を削ります。
 
 [test: cynefin Markdown: rejected]
 
-Input:
+入力:
 
 ````markdown
 ```mermaid
@@ -1242,7 +1230,7 @@ cynefin-beta:complex"FencedAlpha"'FencedBeta'
 ```
 ````
 
-Output:
+出力:
 
 ````markdown
 ```mermaid

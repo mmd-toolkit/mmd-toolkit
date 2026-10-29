@@ -31,7 +31,9 @@ mermaid.js は `accDescr` の文をすべて受理し、説明を設定するそ
 説明を持たないブロックは数えない。
 `accDescr: a` の後のブロック `accDescr {}` は、説明を `a` のままにし、
 コメント行だけ、または指令だけを持つブロックも同じである。
-空のブロックは [quadrant-no-empty-description-block](./quadrant-no-empty-description-block.ja.md) が報告する。
+空のブロックは
+[quadrant-no-empty-description-block](./quadrant-no-empty-description-block.ja.md)
+が報告する。
 
 チャートがすでに持つ説明を設定する文は、どちらの形でも報告しない。
 `accDescr: d` の後のブロック `accDescr { d }` は、何も失わない。

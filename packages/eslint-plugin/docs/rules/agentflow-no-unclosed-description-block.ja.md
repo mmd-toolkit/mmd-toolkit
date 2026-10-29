@@ -97,8 +97,8 @@ agentflow-beta TB
 
 ## 背景
 
-[ブロックの字句解析](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow.jison#L61-L63) は `}` 以外のすべての文字をその文字として読み、
-最初の `}` でブロックを終える。
+[ブロックの字句解析](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow.jison#L61-L63)
+は `}` 以外のすべての文字をその文字として読み、最初の `}` でブロックを終える。
 
 <!-- begin auto-generated rule resources -->
 

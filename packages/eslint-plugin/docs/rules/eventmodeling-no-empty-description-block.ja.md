@@ -33,7 +33,8 @@ mermaid.js は `accDescr {}` のような文の文字を説明として設定し
 後で埋めるブロックは、 `accDescr {`、`%% TODO`、
 `}` のようにコメントを入れて書く。
 説明の後では、そのようなブロックもそれを取り除き、
-[eventmodeling-no-duplicate-description](./eventmodeling-no-duplicate-description.ja.md) が報告する。
+[eventmodeling-no-duplicate-description](./eventmodeling-no-duplicate-description.ja.md)
+が報告する。
 `accDescr {} %% later` のように `}` の後にあるコメントはブロックの中になく、
 そのブロックは報告する。
 
@@ -73,12 +74,14 @@ eventmodeling accDescr {
 
 ## 背景
 
-`accDescr` の [終端記号](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L60-L60) は、
-空のブロックでも文全体を取り、
-[値の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L6-L41) はそれを変換しない。
+`accDescr` の
+[終端記号](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L60-L60)
+は、空のブロックでも文全体を取り、
+[値の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L6-L41)
+はそれを変換しない。
 パーサーは最後の説明を保ち、
-[`populateCommonDb`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14) は、
-それが空になることはないので、それを設定する。
+[`populateCommonDb`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14)
+は、それが空になることはないので、それを設定する。
 
 <!-- begin auto-generated rule resources -->
 

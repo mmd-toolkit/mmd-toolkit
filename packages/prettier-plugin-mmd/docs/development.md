@@ -150,8 +150,8 @@ is a set of files:
 
 A file that belongs to no example, or an output or options file without its
 input, fails the tests, so that a renamed input does not leave a stale output
-behind. `tests/fixtures/.gitattributes` and `.editorconfig` keep the files byte
-for byte, trailing whitespace included.
+behind. The root `.gitattributes` and `.editorconfig` keep the files in
+`tests/fixtures/` byte for byte, trailing whitespace included.
 
 A text with invisible characters, such as U+2028 and U+2029, is not a fixture
 here: it is written with escapes in test code (`tests/line-separators.test.ts`),
@@ -176,21 +176,28 @@ The examples of a rules document are copies of the fixtures, and
 `tests/format.test.ts` checks both that the plugin prints each output and that
 it keeps the Db and the embedded data (see
 [What the tests keep](#what-the-tests-keep)). Each `###` heading of a rules
-document, [docs/flowchart.md](./flowchart.md),
-[docs/agentflow.md](./agentflow.md), [docs/sequence.md](./sequence.md),
-[docs/class.md](./class.md), [docs/state.md](./state.md), [docs/er.md](./er.md),
-[docs/gantt.md](./gantt.md), [docs/journey.md](./journey.md),
-[docs/requirement.md](./requirement.md), and [docs/mindmap.md](./mindmap.md),
-[docs/timeline.md](./timeline.md), [docs/sankey.md](./sankey.md),
-[docs/xychart.md](./xychart.md), [docs/quadrant.md](./quadrant.md),
-[docs/block.md](./block.md), and [docs/kanban.md](./kanban.md), and
-[docs/c4.md](./c4.md), and [docs/venn.md](./venn.md), and
-[docs/ishikawa.md](./ishikawa.md), and [docs/usecase.md](./usecase.md), is a
-rule, and its fixture folder, under the folder of the diagram type, is the
-heading in lower case with spaces replaced by `-`: "Arrow spacing" is
-`arrow-spacing`. An example in a document is a line that ends with a link to a
-fixture file and `:`, then an empty line and an `mmd` code block with the
-content of the file. `tests/docs.test.ts` checks that:
+document, [docs/agentflow.md](./agentflow.md),
+[docs/architecture.md](./architecture.md), [docs/block.md](./block.md),
+[docs/c4.md](./c4.md), [docs/class.md](./class.md),
+[docs/cynefin.md](./cynefin.md), [docs/er.md](./er.md),
+[docs/eventmodeling.md](./eventmodeling.md),
+[docs/flowchart.md](./flowchart.md), [docs/gantt.md](./gantt.md),
+[docs/gitgraph.md](./gitgraph.md), [docs/info.md](./info.md),
+[docs/ishikawa.md](./ishikawa.md), [docs/journey.md](./journey.md),
+[docs/kanban.md](./kanban.md), [docs/mindmap.md](./mindmap.md),
+[docs/packet.md](./packet.md), [docs/pie.md](./pie.md),
+[docs/quadrant.md](./quadrant.md), [docs/radar.md](./radar.md),
+[docs/railroad.md](./railroad.md), [docs/requirement.md](./requirement.md),
+[docs/sankey.md](./sankey.md), [docs/sequence.md](./sequence.md),
+[docs/state.md](./state.md), [docs/timeline.md](./timeline.md),
+[docs/treemap.md](./treemap.md), [docs/treeview.md](./treeview.md),
+[docs/usecase.md](./usecase.md), [docs/venn.md](./venn.md),
+[docs/wardley.md](./wardley.md), and [docs/xychart.md](./xychart.md), is a rule,
+and its fixture folder, under the folder of the diagram type, is the heading in
+lower case with spaces replaced by `-`: "Arrow spacing" is `arrow-spacing`. An
+example in a document is a line that ends with a link to a fixture file and `:`,
+then an empty line and an `mmd` code block with the content of the file.
+`tests/docs.test.ts` checks that:
 
 - the rules of each rules document are the fixture folders of its diagram type;
 - each example links to a file of its rule's folder;

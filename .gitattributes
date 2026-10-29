@@ -1,6 +1,10 @@
 # Every text file is checked out with LF line endings on every platform. The
 # tests read source files and documents as text, and Prettier checks for LF, so
 # a checkout that converts to CRLF (the default of Git for Windows) fails.
-# The fixture directories keep their own .gitattributes (`* -text`), which
-# takes precedence there: fixtures are compared byte for byte.
 * text=auto eol=lf
+
+# Fixtures are compared byte for byte (some inputs use CRLF or a lone CR on
+# purpose), so Git must never convert line endings there. Later lines win.
+packages/tests/fixtures/** -text
+packages/eslint-plugin/tests/fixtures/** -text
+packages/prettier-plugin-mmd/tests/fixtures/** -text

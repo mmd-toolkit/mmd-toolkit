@@ -23,7 +23,6 @@ b"
         errors: [
           {
             messageId: "redefined",
-            data: { line: "2" },
             line: 4,
             column: 1,
             endLine: 5,

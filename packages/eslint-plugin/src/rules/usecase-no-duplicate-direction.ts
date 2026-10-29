@@ -19,7 +19,7 @@ export const usecaseNoDuplicateDirection: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js replaces the direction set on line {{line}} with `{{direction}}`.",
+        "mermaid.js replaces the earlier direction with `{{direction}}`.",
     },
   },
   create(context) {
@@ -35,7 +35,6 @@ export const usecaseNoDuplicateDirection: MermaidRuleDefinition<{
             node,
             messageId: "duplicate",
             data: {
-              line: String(previous.loc.start.line),
               direction: node.direction,
             },
           })

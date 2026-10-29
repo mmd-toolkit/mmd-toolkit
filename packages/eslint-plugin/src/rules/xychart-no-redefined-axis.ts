@@ -8,14 +8,11 @@ import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 
 /**
- * The title and data currently set by statements of one axis, with the line of
- * the statement that set each (0 for the empty title that no statement set).
+ * The title and data currently set by statements of one axis.
  */
 interface AxisState {
   title: string
-  titleLine: number
   data: XychartBand | XychartRange | null
-  dataLine: number
 }
 
 /** Whether two sets of axis data have the same values in mermaid.js. */
@@ -69,15 +66,11 @@ export const xychartNoRedefinedAxis: MermaidRuleDefinition<{
   create(context) {
     const xAxis: AxisState = {
       title: "",
-      titleLine: 0,
       data: null,
-      dataLine: 0,
     }
     const yAxis: AxisState = {
       title: "",
-      titleLine: 0,
       data: null,
-      dataLine: 0,
     }
 
     /** Reports a statement that replaces a value, then records what it sets. */
@@ -87,17 +80,16 @@ export const xychartNoRedefinedAxis: MermaidRuleDefinition<{
       current: AxisState,
     ): void {
       const title = node.title?.value.trim() ?? ""
-      const line = node.loc.start.line
       const replaced: string[] = []
       if (current.title !== "" && current.title !== title) {
-        replaced.push(`the title set on line ${current.titleLine}`)
+        replaced.push("the earlier title")
       }
       if (
         current.data !== null &&
         node.data !== null &&
         !sameData(current.data, node.data)
       ) {
-        replaced.push(`the data set on line ${current.dataLine}`)
+        replaced.push("the earlier data")
       }
       if (replaced.length > 0) {
         context.report({
@@ -107,10 +99,8 @@ export const xychartNoRedefinedAxis: MermaidRuleDefinition<{
         })
       }
       current.title = title
-      current.titleLine = line
       if (node.data !== null) {
         current.data = node.data
-        current.dataLine = line
       }
     }
 

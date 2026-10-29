@@ -36,7 +36,8 @@ mermaid.js には同じで、この規則には違うことがある。
 `Person(a,)` のようにラベルを省いた宣言は空のラベルを与え、
 `Person(a, "First")` の後では報告する。
 省いた technology と description は前の値を保つ。
-`Container(a, "API", "Java", "Payments")` の後の `Container(a, "API")` は両方を保つ。
+`Container(a, "API", "Java", "Payments")` の後の `Container(a, "API")`
+は両方を保つ。
 この規則はラベルと種類を比べ、省略可能な説明、技術、親の変更、
 スタイル更新は比べない。
 スタイル更新が直接書いたラベルは、宣言の文字列ラベルとは別なので比較しない。

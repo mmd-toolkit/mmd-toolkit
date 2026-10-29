@@ -29,9 +29,11 @@ mermaid.js は `accDescr` の文をすべて受理し、説明を設定するそ
 テキストを持つ次の行を取る。
 説明を持たないブロックは数えない。
 `accDescr: a` の後のブロック `accDescr {}` は、説明を `a` のままにし、
-[xychart-no-empty-description-block](./xychart-no-empty-description-block.ja.md) がそれを報告する。
+[xychart-no-empty-description-block](./xychart-no-empty-description-block.ja.md)
+がそれを報告する。
 閉じていないブロックも数えず、
-[xychart-no-unclosed-description-block](./xychart-no-unclosed-description-block.ja.md) がそれを報告する。
+[xychart-no-unclosed-description-block](./xychart-no-unclosed-description-block.ja.md)
+がそれを報告する。
 
 チャートがすでに持つ説明を設定する文は、どちらの形でも報告しない。
 `accDescr: d` の後のブロック `accDescr { d }` は、何も失わない。

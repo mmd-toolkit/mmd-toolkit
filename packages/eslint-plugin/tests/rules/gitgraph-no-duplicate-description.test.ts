@@ -51,7 +51,6 @@ commit
         errors: [
           {
             messageId: "duplicate",
-            data: { line: "2" },
             line: 3,
             column: 1,
             endLine: 3,

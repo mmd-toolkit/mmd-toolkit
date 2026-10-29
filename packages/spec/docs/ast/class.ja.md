@@ -16,8 +16,8 @@ mermaid.js がそれを読むところだけです（[ノード](../ast.ja.md#�
 この図種では、ジェネリクスの型の空白、メンバーの行の注釈の空白、
 空白で始まるメンバーの名前の始まりの空白、
 戻り値の型を終える分類子の記号の前の空白、
-閉じていないバッククォートの名前の終わりの空白、
-`call` の後のコールバックの名前の終わりとその引数の両端の空白です（[ClassName](#classname)、
+閉じていないバッククォートの名前の終わりの空白、`call` の後の、
+コールバックの名前の終わりとその引数の両端の空白です（[ClassName](#classname)、
 [ClassMethod](#classmethod)、 [ClassAnnotation](#classannotation)、
 [ClassLiteral](#classliteral) を参照）。
 ほかのところでは、値の両端の空白は値の外です。
@@ -31,8 +31,8 @@ mermaid.js がそれを読むところだけです（[ノード](../ast.ja.md#�
 閉じています（[StringLiteral](../ast.ja.md#stringliteral) を参照）。
 空になるのは、関係の多重度と tooltip のときだけです。
 それ以外の空の文字列と、空のバッククォートの名前は、
-入力を拒否させます（[既知の差異](../diagrams/class.ja.md#既知の差異) を参照）。 [fixture: class/lex-backquote-unclosed]
-[fixture: class/gram-cardinality-empty]
+入力を拒否させます（[既知の差異](../diagrams/class.ja.md#既知の差異) を参照）。
+[fixture: class/lex-backquote-unclosed] [fixture: class/gram-cardinality-empty]
 [fixture: class/gram-link-tooltip-empty]
 [fixture: class/gram-callback-tooltip-empty] [fixture:
 class/gram-click-call-tooltip-empty] [fixture:
@@ -79,9 +79,8 @@ ClassAccDescrStatement、ClassAccDescrBlockStatement のどれかです。
 `cssClass` と `annotation` は、多くとも一方だけが設定されます。
 空白だけのメンバーの行は、
 どんな空白を持っていても mermaid.js が何も加えないので、ノードを作りません。
-そのため、`class A { }` は空の列を持ち、
-`class A` は null を持ちます。 [fixture: class/gram-class-css-class-blank-body]
-[fixture:
+そのため、`class A { }` は空の列を持ち、 `class A` は null を持ちます。
+[fixture: class/gram-class-css-class-blank-body] [fixture:
 class/spec-class-diagram-4eb71456]
 
 ### ClassMemberStatement
@@ -137,9 +136,8 @@ class/db-member-statement-blank-spaces]
 
 子の欄: `from`、`fromCardinality`、`arrow`、`toCardinality`、`to`、`label`。
 多重度は空の文字列でもかまいません。
-`A "" --> B` は、
-値が空の StringLiteral を持ちます。 [fixture: class/gram-cardinality-empty]
-[fixture:
+`A "" --> B` は、値が空の StringLiteral を持ちます。
+[fixture: class/gram-cardinality-empty] [fixture:
 class/spec-class-diagram-840a462d]
 
 ### ClassArrow
@@ -174,8 +172,8 @@ class/spec-class-diagram-840a462d]
 | `body`   | （ClassDeclaration、ClassNoteStatement、ClassNamespaceStatement のどれか）の列 | 本体の項目。ソースの順。                                                                |
 
 子の欄: `prefix`、`name`、`label`、`body`。
-`namespace a.b` は ClassIdentifier
-`a.b` を持ちます。 [fixture: class/spec-class-diagram-95acf03b] [fixture:
+`namespace a.b` は ClassIdentifier `a.b` を持ちます。
+[fixture: class/spec-class-diagram-95acf03b] [fixture:
 class/db-namespace-nested]
 
 ### ClassNoteStatement
@@ -217,7 +215,7 @@ class/db-callback-names-comma]
 | `tooltip` | StringLiteral または null | 2 つ目の文字列。なければ null。                                      |
 | `target`  | 文字列または null         | 書いたとおりの `_self`、`_blank`、`_parent`、`_top`。なければ null。 |
 
-子の欄: `class`、`url`、`tooltip`。 [fixture: class/db-click-href]
+子の欄: `class`、`url`、 `tooltip`。 [fixture: class/db-click-href]
 [fixture: class/gram-link-tooltip-empty]
 
 ### ClassStyleStatement
@@ -229,8 +227,8 @@ class/db-callback-names-comma]
 
 子の欄: `id`、`styles`。
 スタイルのラベルの中の `,` は、木では 2 つのスタイルを分けません。
-`style A fill:#f00,stroke:#333` は 1 つのスタイルを持ちます。 [fixture: class/gram-style-dash-in-label]
-[fixture: class/db-style-spaces]
+`style A fill:#f00,stroke:#333` は 1 つのスタイルを持ちます。
+[fixture: class/gram-style-dash-in-label] [fixture: class/db-style-spaces]
 
 ### ClassCssClassStatement
 
@@ -248,8 +246,8 @@ class/db-callback-names-comma]
 | `cssClasses` | Identifier の列   | `,` で区切った CSS クラス。ソースの順。 |
 | `styles`     | ClassLiteral の列 | ClassStyleStatement と同じスタイル。    |
 
-子の欄: `cssClasses`、
-`styles`。 [fixture: class/spec-class-diagram-styles-2057adab]
+子の欄: `cssClasses`、 `styles`。
+[fixture: class/spec-class-diagram-styles-2057adab]
 
 ### ClassDirectionStatement
 
@@ -261,8 +259,8 @@ class/db-callback-names-comma]
 
 子の欄: `textBefore`、`textAfter`。
 `class A direction LR` は `direction` の前のテキスト `class A` を、
-`direction TBX` は値の後のテキスト `X` を持ちます。 [fixture: class/lex-direction-line-class-statement]
-[fixture:
+`direction TBX` は値の後のテキスト `X` を持ちます。
+[fixture: class/lex-direction-line-class-statement] [fixture:
 class/lex-direction-line-value-then-text]
 
 ### ClassAccTitleStatement
@@ -273,7 +271,8 @@ class/lex-direction-line-value-then-text]
 
 子の欄: `value`。
 `:` の後の空白は、改行も含めてそれと一緒に読まれるので、
-テキストは次の行にあってもかまいません。 [fixture: class/lex-acc-title-next-line]
+テキストは次の行にあってもかまいません。
+[fixture: class/lex-acc-title-next-line]
 
 ### ClassAccDescrStatement
 
@@ -294,15 +293,16 @@ class/lex-direction-line-value-then-text]
 | `value` | ClassLiteral または null | `{` と `}` の間のテキスト。空の説明ブロックでは null。 |
 
 子の欄: `value`。
-空の説明ブロックが文になるのは、文の始まりにあり、
-同じ行に別の文が続くとき（[空の説明ブロック](../diagrams/class.ja.md#空の説明ブロック) を参照）と、
-文の最後の単位の後、改行の前にあるときです。
-ヘッダーの後、その改行の前では、
-図の `body` の最初の文です。 [fixture: class/spec-class-diagram-0926d7aa]
+空の説明ブロックが文になるのは、文の始まりにあり、同じ行に、
+別の文が続くとき（[空の説明ブロック](../diagrams/class.ja.md#空の説明ブロック)
+を参照）と、文の最後の単位の後、改行の前にあるときです。
+ヘッダーの後、その改行の前では、図の `body` の最初の文です。
+[fixture: class/spec-class-diagram-0926d7aa]
 [fixture: class/gram-empty-description-block-then-statement]
 [fixture: class/gram-empty-description-block-after-note]
 [fixture: class/header-empty-description-block]
-[区切りの前の空の説明ブロック](../diagrams/class.ja.md#区切りの前の空の説明ブロック) を参照してください。
+[区切りの前の空の説明ブロック](../diagrams/class.ja.md#区切りの前の空の説明ブロック)
+を参照してください。
 
 ### ClassName
 
@@ -316,10 +316,11 @@ class の文、関係の両端、`note for`、`click`、`callback`、`link` の�
 | `generic` | ClassLiteral または null             | ジェネリクスの型の 2 つの `~` の間の `generic-text` の単位。空白を含む。ないか空なら null。 |
 
 子の欄: `prefix`、`name`、`generic`。
-間に空白か `.` を置いた名前の部分は 1 つの [ClassIdentifier](#classidentifier) です。
+間に空白か `.` を置いた名前の部分は 1 つの [ClassIdentifier](#classidentifier)
+です。
 `class Foo Bar` は ClassIdentifier `FooBar` を、
-`class a.b.C` は ClassIdentifier
-`a.b.C` を持ちます。 [fixture: class/gram-name-dots]
+`class a.b.C` は ClassIdentifier `a.b.C` を持ちます。
+[fixture: class/gram-name-dots]
 バッククォートの名前は StringLiteral です。
 ``class `Odd Name` `` は値が `Odd Name` の StringLiteral を持ちます。
 バッククォートの名前の前に名前の部分があれば、それが `prefix` です。
@@ -329,17 +330,16 @@ mermaid.js はジェネリクスの型を、空白と改行を含めて書かれ
 generic は `generic-text` の単位の全体です。
 `class A~ T ~` の generic は空白、`T`、空白で、
 `class A~ ~` の generic は空白 1 つです。
-`note for A~ T ~` は、
-それをノートのクラスの名前に保ちます。 [fixture: class/db-generic-spaces]
-[fixture: class/db-generic-blank] [fixture:
+`note for A~ T ~` は、それをノートのクラスの名前に保ちます。
+[fixture: class/db-generic-spaces] [fixture: class/db-generic-blank] [fixture:
 class/tokens-generic-blank] [fixture: class/db-note-for-generic-spaces]
 [fixture: class/gram-name-spaces] [fixture:
 class/docs-syntax-class-diagram-01f18827] [fixture:
 class/gram-name-prefix-backquoted] [fixture: class/gram-generic-empty-at-end]
 [fixture: class/db-generic-type]
 クラスの id は、どの欄でもありません。
-閉じていないバッククォートの名前は、
-閉じの引用符のない StringLiteral です。 [fixture: class/lex-backquote-unclosed]
+閉じていないバッククォートの名前は、閉じの引用符のない StringLiteral です。
+[fixture: class/lex-backquote-unclosed]
 [StringLiteral](../ast.ja.md#stringliteral) を参照してください。
 
 ### ClassMethod
@@ -361,25 +361,26 @@ class/gram-name-prefix-backquoted] [fixture: class/gram-generic-empty-at-end]
 可視性と分類子の記号、`(`、`)` はどのノードも持たない単位で、
 欄はその記号の語を持ちます。
 `+foo(a: int) List~T~$` は、可視性 `public`、名前 `foo`、引数 `a: int`、
-戻り値の型 `List~T~`、
-分類子 `static` を持ちます。 [fixture: class/tokens-method-fields]
-[fixture: class/lex-member-classifiers]
+戻り値の型 `List~T~`、分類子 `static` を持ちます。
+[fixture: class/tokens-method-fields] [fixture: class/lex-member-classifiers]
 [fixture: class/lex-member-method-nested-parentheses]
 読まれないテキストがあるのは、行が U+2028 か U+2029 を持つときだけで、
-そこが空白だけなら null です。 [fixture: class/lex-member-method-line-separator-before]
+そこが空白だけなら null です。
+[fixture: class/lex-member-method-line-separator-before]
 [fixture: class/lex-member-method-line-separator-after]
 [メンバーの行](../diagrams/class.ja.md#メンバーの行) を参照してください。
 
 mermaid.js はこれらの値の端で 2 つの空白の並びを読むので、
-それらは `name` と `returnType` の中にあります（[メンバーの行](../diagrams/class.ja.md#メンバーの行) を参照）。
+それらは `name` と `returnType`
+の中にあります（[メンバーの行](../diagrams/class.ja.md#メンバーの行) を参照）。
 空白（U+0020）で始まるメンバーの名前のテキストの始まりの空白で、
 mermaid.js はそれを空白 1 つにします。
 もう 1 つは、戻り値の型とそれを終える分類子の記号の間の空白です。
 `+ foo()` の名前は空白と `foo` で、
 `+getInstance() Foo $` の戻り値の型は `Foo` と空白です。
 端のほかの空白は外にあります。
-`+` の後の空白をタブにすると、
-名前は `foo` です。 [fixture: class/db-method-name-space] [fixture:
+`+` の後の空白をタブにすると、名前は `foo` です。
+[fixture: class/db-method-name-space] [fixture:
 class/lex-member-method-segment-space-before-name] [fixture:
 class/db-member-name-tab] [fixture:
 class/db-method-return-type-space-before-classifier]
@@ -410,16 +411,16 @@ class/lex-member-annotation-unclosed]
 class の文の名前の後と注釈の文では、
 文法は `<<` と `>>` の間に名前の部分 1 つを許すので、名前は Identifier です。
 mermaid.js はその名前を、周りの空白を除いて読みます。
-`<< interface >> A` と `class A << interface >>` は、 Identifier
-`interface` を持ちます。 [fixture: class/db-annotation-statement-spaces]
-[fixture:
+`<< interface >> A` と `class A << interface >>` は、
+Identifier `interface` を持ちます。
+[fixture: class/db-annotation-statement-spaces] [fixture:
 class/db-class-annotation-spaces]
 本体の中かメンバーの文のメンバーの行としては、どんなテキストでもよく、
 mermaid.js はそれを空白を含めて書かれたとおりに読むので、
 `annotation-name` の単位の全体の ClassLiteral です。
 本体の `<< y z >>` の名前は、空白、`y z`、空白で、
-`<<  >>` の名前は空白 2 個で、
-`A : <<  >>` でも同じです。 [fixture: class/tokens-annotation-blank] [fixture:
+`<<  >>` の名前は空白 2 個で、 `A : <<  >>` でも同じです。
+[fixture: class/tokens-annotation-blank] [fixture:
 class/tokens-annotation-blank-label]
 [fixture: class/spec-class-diagram-280c04be] [fixture:
 class/db-member-annotation-spaces]
@@ -428,7 +429,9 @@ class/db-member-annotation-spaces]
 
 引用符なしで書いたクラスの名前か名前空間の名前です。
 バッククォートの名前の前にあるか、バッククォートの名前のない、
-間に空白か `.` を置いた名前の部分です（[クラスの名前](../diagrams/class.ja.md#クラスの名前) を参照）。
+間に空白か `.`
+を置いた名前の部分です（[クラスの名前](../diagrams/class.ja.md#クラスの名前)
+を参照）。
 
 | 欄     | 型     | 意味                                                                                     |
 | ------ | ------ | ---------------------------------------------------------------------------------------- |
@@ -437,8 +440,8 @@ class/db-member-annotation-spaces]
 子の欄はありません。
 mermaid.js が除くので、2 つの単位の間の空白は名前の一部ではありません。
 `class Foo Bar` と `class Fo oBar` はどちらもクラス `FooBar` を宣言し、
-`class Fo%%{init: {}}%%o` はクラス `Foo` を宣言します。 [fixture: class/gram-name-spaces]
-[fixture:
+`class Fo%%{init: {}}%%o` はクラス `Foo` を宣言します。
+[fixture: class/gram-name-spaces] [fixture:
 class/gram-name-space-inside-word] [fixture: class/lex-directive-in-name]
 
 ### ClassLiteral
@@ -478,9 +481,8 @@ class/tokens-generic-blank] [fixture: class/tokens-annotation-blank]
 その単位の書かれたテキストを順につないだものです。
 mermaid.js はスタイルの単位の間の空白を落とすので、
 `style A fill : #f00` のスタイルは `fill: #f00` です。
-一方、
-flowchart と state 図はその空白を残します。 [fixture: class/db-style-spaces]
-[fixture: class/tokens-style-words-joined]
+一方、 flowchart と state 図はその空白を残します。
+[fixture: class/db-style-spaces] [fixture: class/tokens-style-words-joined]
 [fixture: class/tokens-style-directive-inside-label]
 [fixture: class/tokens-style-label-keeps-space-before-next-colon]
 [fixture: class/tokens-style-label-space-before-directive]

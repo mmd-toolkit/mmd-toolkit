@@ -63,8 +63,8 @@ pie
 
 ## 背景
 
-[`addSection`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieDb.ts#L36-L46) は、
-そのラベルの区分がないときだけ区分を足す。
+[`addSection`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieDb.ts#L36-L46)
+は、そのラベルの区分がないときだけ区分を足す。
 
 <!-- begin auto-generated rule resources -->
 

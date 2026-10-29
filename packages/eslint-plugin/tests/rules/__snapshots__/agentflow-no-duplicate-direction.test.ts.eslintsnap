@@ -14,7 +14,7 @@ Code:
   6 |   end
   7 |
 
-[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+[1] mermaid.js replaces the earlier direction for this flow with `BT`.
 ---
 
 
@@ -34,7 +34,7 @@ Code:
   9 | end
  10 |
 
-[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+[1] mermaid.js replaces the earlier direction for this flow with `BT`.
 ---
 
 
@@ -53,7 +53,7 @@ Code:
   8 | end
   9 |
 
-[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+[1] mermaid.js replaces the earlier direction for this flow with `BT`.
 ---
 
 
@@ -70,7 +70,7 @@ Code:
   6 | end
   7 |
 
-[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+[1] mermaid.js replaces the earlier direction for this flow with `BT`.
 ---
 
 
@@ -87,7 +87,7 @@ Code:
   6 | end
   7 |
 
-[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+[1] mermaid.js replaces the earlier direction for this flow with `BT`.
 ---
 
 
@@ -103,7 +103,7 @@ Code:
   5 | end
   6 |
 
-[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+[1] mermaid.js replaces the earlier direction for this flow with `BT`.
 ---
 
 
@@ -122,7 +122,7 @@ Code:
   8 | end
   9 |
 
-[1] mermaid.js replaces the direction set on line 5 for this flow with `LR`.
+[1] mermaid.js replaces the earlier direction for this flow with `LR`.
 ---
 
 
@@ -139,7 +139,7 @@ Code:
   6 | end
   7 |
 
-[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+[1] mermaid.js replaces the earlier direction for this flow with `BT`.
 ---
 
 
@@ -157,8 +157,8 @@ Code:
   6 | end
   7 |
 
-[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
-[2] mermaid.js replaces the direction set on line 4 for this flow with `LR`.
+[1] mermaid.js replaces the earlier direction for this flow with `BT`.
+[2] mermaid.js replaces the earlier direction for this flow with `LR`.
 ---
 
 
@@ -175,7 +175,7 @@ Code:
   6 | end
   7 |
 
-[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+[1] mermaid.js replaces the earlier direction for this flow with `BT`.
 ---
 
 
@@ -195,7 +195,7 @@ Code:
   9 | end
  10 |
 
-[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+[1] mermaid.js replaces the earlier direction for this flow with `BT`.
 ---
 
 
@@ -213,7 +213,7 @@ Code:
   7 | end
   8 |
 
-[1] mermaid.js replaces the direction set on line 5 for this flow with `LR`.
+[1] mermaid.js replaces the earlier direction for this flow with `LR`.
 ---
 
 
@@ -233,7 +233,7 @@ Code:
   9 | end
  10 |
 
-[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+[1] mermaid.js replaces the earlier direction for this flow with `BT`.
 ---
 
 
@@ -253,5 +253,5 @@ Code:
   9 | end
  10 |
 
-[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+[1] mermaid.js replaces the earlier direction for this flow with `BT`.
 ---

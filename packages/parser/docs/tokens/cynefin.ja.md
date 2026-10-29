@@ -2,14 +2,14 @@
 
 英語版: [cynefin.md](./cynefin.md)
 
-字句解析は仕様の [最初の一致順](../../../spec/docs/diagrams/cynefin.md#ordered-units)に従います。
+字句解析は仕様の
+[最初の一致順](../../../spec/docs/diagrams/cynefin.md#ordered-units)に従います。
 コロン付きヘッダーが裸のヘッダーより先で、
 ドメイン語には末尾の境界検査がありません。
 長い代替形や一般的な識別子・数値の終端は使いません。
-複合一致は記述された構成要素の境界で分けます。 [fixture: cynefin/header-colon-inline]
-[fixture: cynefin/gram-glued-domains]
-[fixture: cynefin/lex-domain-title-priority]
-[fixture: cynefin/domain-digit]
+複合一致は記述された構成要素の境界で分けます。
+[fixture: cynefin/header-colon-inline] [fixture: cynefin/gram-glued-domains]
+[fixture: cynefin/lex-domain-title-priority] [fixture: cynefin/domain-digit]
 
 ## トークン
 
@@ -35,8 +35,7 @@ title の区切り 1 文字やアクセシビリティのコロンの後の空�
 ブロック値は外側の共通空白だけを除きます。
 空または共通の除去対象だけのブロックに値のトークンはありません。
 共通値内の引用符は RawText のままです。 [fixture: cynefin/lex-title-one-space]
-[fixture: cynefin/lex-title-one-tab]
-[fixture: cynefin/lex-title-two-spaces]
+[fixture: cynefin/lex-title-one-tab] [fixture: cynefin/lex-title-two-spaces]
 [fixture: cynefin/common-line-whitespace]
 [fixture: cynefin/common-block-whitespace]
 [fixture: cynefin/common-block-comment-only]
@@ -46,12 +45,12 @@ title の区切り 1 文字やアクセシビリティのコロンの後の空�
 ネイティブ隠し形式は、条件を満たす閉じまで一つの RawText です。
 開始前の空白と消費した直後の改行は含みません。
 YAML は本文ありの代替形を空の本文より先に試します。
-先行する文字列と共通値は内部の隠し形式風テキストを包みます。 [fixture: cynefin/hidden-yaml-opener-padding]
+先行する文字列と共通値は内部の隠し形式風テキストを包みます。
+[fixture: cynefin/hidden-yaml-opener-padding]
 [fixture: cynefin/hidden-yaml-adjacent-later]
 [fixture: cynefin/hidden-yaml-two-nonempty]
 [fixture: cynefin/hidden-directive-adjacent]
-[fixture: cynefin/hidden-directive-string]
-[fixture: cynefin/hidden-yaml-block]
+[fixture: cynefin/hidden-directive-string] [fixture: cynefin/hidden-yaml-block]
 [fixture: cynefin/hidden-directive-crlf]
 
 共通ディレクティブ、コメント領域、
@@ -59,7 +58,8 @@ YAML は本文ありの代替形を空の本文より先に試します。
 文字列の断片は StringFragment になります。
 固定語や矢印全体の内部の分割は拒否します。
 構成要素の境界と値の内部では分割でき、
-ネイティブの囲み記号の各文字の間も含みます。 [fixture: cynefin/directive-every-field]
+ネイティブの囲み記号の各文字の間も含みます。
+[fixture: cynefin/directive-every-field]
 [fixture: cynefin/comment-line-in-string]
 [fixture: cynefin/selected-string-interior]
 [fixture: cynefin/directive-domain-inside]
@@ -78,8 +78,7 @@ YAML は本文ありの代替形を空の本文より先に試します。
 ネイティブの %% コメントは CR/LF の前で終わります。
 検出が通過した裸の行は共通 Comment になり、
 付随する trivia は保持形式の間でも読み直しません。 [fixture: cynefin/space-tabs]
-[fixture: cynefin/space-lines]
-[fixture: cynefin/comment-native-between-items]
+[fixture: cynefin/space-lines] [fixture: cynefin/comment-native-between-items]
 
 [fixture: cynefin/comment-native-triple]
 [fixture: cynefin/detect-retained-secondscan-bare-ls]

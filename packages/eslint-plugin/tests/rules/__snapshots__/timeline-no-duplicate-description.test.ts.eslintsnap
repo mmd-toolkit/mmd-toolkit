@@ -12,7 +12,7 @@ Code:
   4 |   2020 : Launch
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -28,7 +28,7 @@ Code:
   5 |   2020 : a
   6 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -44,7 +44,7 @@ Code:
   5 |   2020 : a
   6 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -61,8 +61,8 @@ Code:
   5 |   2020 : a
   6 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
-[2] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -77,7 +77,7 @@ Code:
   4 |   2020 : a
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -92,7 +92,7 @@ Code:
   4 |   2020 : a
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -107,7 +107,7 @@ Code:
   4 |   2020 : a
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -126,7 +126,7 @@ Code:
   6 |   2020 : a
   7 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -145,7 +145,7 @@ Code:
   6 |   2020 : a
   7 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -164,7 +164,7 @@ Code:
   6 |   2020 : a
   7 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -180,7 +180,7 @@ Code:
     |   ^~~~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -198,5 +198,5 @@ Code:
     | ~~~ [1]
   6 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---

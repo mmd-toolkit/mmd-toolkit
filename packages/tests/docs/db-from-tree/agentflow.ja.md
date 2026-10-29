@@ -20,17 +20,17 @@ directive と選ばれた無視されるセミコロンを除き、CR/CRLF を�
 文字参照をプレースホルダーに置き換える。
 HTML 属性の引用符は frontmatter 後の本文全体を文脈として変換する。
 書かれた値は別途検査し、ソースの綴りを保つ。 [fixture: agentflow/lex-cr]
-[fixture: agentflow/lex-crlf]
-[fixture: agentflow/entity-label-contexts]
+[fixture: agentflow/lex-crlf] [fixture: agentflow/entity-label-contexts]
 [fixture: agentflow/html-attribute-quotes]
 [fixture: agentflow/directive-in-string]
 [fixture: agentflow/lex-style-preprocessing-semicolon]
 
-Agentflow で共通のコメント領域と先頭空白を取り除くのは、既定の 50000
-UTF-16 単位を超える場合だけである。
+Agentflow で共通のコメント領域と先頭空白を取り除くのは、
+既定の 50000 UTF-16 単位を超える場合だけである。
 frontmatter の trivia 全体の後から、directive を除き、CRLF を一つと数える。
 この trivia は閉じ区切り後の空行や空白だけの行を含む。
-本文の最初の空でない行の字下げは測定に残す。 [fixture: agentflow/frontmatter-extra-trivia-boundary]
+本文の最初の空でない行の字下げは測定に残す。
+[fixture: agentflow/frontmatter-extra-trivia-boundary]
 [fixture: agentflow/frontmatter-extra-trivia-below]
 [fixture: agentflow/frontmatter-extra-whitespace-line-boundary]
 [fixture: agentflow/frontmatter-extra-trivia-above]
@@ -38,7 +38,8 @@ frontmatter の trivia 全体の後から、directive を除き、CRLF を一つ
 上限以下では、木に記録された実際の図のコメントだけを除く。
 文字列、コールバック、アクセシビリティ、
 データ内のコメント風テキストは内容である。
-パーサーはサイトの maxTextSize を受け取らない。 [fixture: agentflow/comment-default-size-equal]
+パーサーはサイトの maxTextSize を受け取らない。
+[fixture: agentflow/comment-default-size-equal]
 [fixture: agentflow/comment-default-size-fallback]
 [fixture: agentflow/comment-default-size-equal-crlf]
 [fixture: agentflow/comment-default-size-above-crlf]
@@ -54,8 +55,8 @@ frontmatter の trivia 全体の後から、directive を除き、CRLF を一つ
 
 `}` の直後の行内空白と最初の LF だけを、その LF にまとめる。
 後の空行と、LF が続かない空白は保つ。
-文字列と markdown 文字列の区切りは、
-共有する入れ子の文脈で取り除く。 [fixture: agentflow/lex-brace-string-keeps-blank-line]
+文字列と markdown 文字列の区切りは、共有する入れ子の文脈で取り除く。
+[fixture: agentflow/lex-brace-string-keeps-blank-line]
 [fixture: agentflow/lex-brace-ls-without-lf]
 [fixture: agentflow/gram-target-data-trailing-space]
 [fixture: agentflow/gram-flow-name-string-bare-tail]
@@ -63,20 +64,17 @@ frontmatter の trivia 全体の後から、directive を除き、CRLF を一つ
 
 **共通の文字列と方向。**
 frontmatter のタイトルは `embedded` から取り、なければ空にする。
-[db-from-tree.ja.md](../db-from-tree.ja.md#文字の置き換え) の `textReplacementOf(embedded.config)` でサニタイズする。
+[db-from-tree.ja.md](../db-from-tree.ja.md#文字の置き換え) の
+`textReplacementOf(embedded.config)` でサニタイズする。
 ヘッダー方向がなければ TB、TD は TB、`>` は LR、`<` は RL、 `v` は TB、
 `^` は BT にする。
 BR を含め、ほかの綴られた方向はそのまま使う。
-方向文が変えるのは、図全体でなく、
-それを直接含む flow の方向だけである。 [fixture: agentflow/frontmatter-title]
-[fixture: agentflow/db-frontmatter-null-title]
-[fixture: agentflow/header-only]
-[fixture: agentflow/header-td]
-[fixture: agentflow/header-br]
-[fixture: agentflow/header-right-symbol]
-[fixture: agentflow/header-left-symbol]
-[fixture: agentflow/header-down-symbol]
-[fixture: agentflow/header-up-symbol]
+方向文が変えるのは、図全体でなく、それを直接含む flow の方向だけである。
+[fixture: agentflow/frontmatter-title]
+[fixture: agentflow/db-frontmatter-null-title] [fixture: agentflow/header-only]
+[fixture: agentflow/header-td] [fixture: agentflow/header-br]
+[fixture: agentflow/header-right-symbol] [fixture: agentflow/header-left-symbol]
+[fixture: agentflow/header-down-symbol] [fixture: agentflow/header-up-symbol]
 [fixture: agentflow/gram-direction-in-flow]
 
 **頂点の処理。**
@@ -88,7 +86,8 @@ BR を含め、ほかの綴られた方向はそのまま使う。
 スタイルを追加し、クラスを保ち、空でも `props` を作る。
 同じプロパティは値を置き換える。
 最初から own property だった `__proto__` は残るが、
-既存の空の props に後からそのキーを加えても残らない。 [fixture: agentflow/gram-node-three-definitions]
+既存の空の props に後からそのキーを加えても残らない。
+[fixture: agentflow/gram-node-three-definitions]
 [fixture: agentflow/gram-bracket-shapes]
 [fixture: agentflow/gram-props-repeated]
 [fixture: agentflow/db-props-proto-after-bare]
@@ -96,8 +95,8 @@ BR を含め、ほかの綴られた方向はそのまま使う。
 [fixture: agentflow/db-data-block-aliases]
 
 既存の辺の id なら、頂点の処理は何も変えない。
-予約 id `connectors` は、
-スタイルやメタデータの出現でも通常の頂点を作らない。 [fixture: agentflow/db-generated-edge-id-metadata-target]
+予約 id `connectors` は、スタイルやメタデータの出現でも通常の頂点を作らない。
+[fixture: agentflow/db-generated-edge-id-metadata-target]
 [fixture: agentflow/db-data-block-reserved-connectors]
 [fixture: agentflow/spec-agentflow-metadata-no-validation-92cc9f70]
 
@@ -108,18 +107,16 @@ BR を含め、ほかの綴られた方向はそのまま使う。
 リンクの辺を作る前に、対象グループを読む。
 始点の各頂点と終点の各頂点をその順に組み合わせる。
 鎖では、前の対象グループが次の始点となる。 [fixture: agentflow/gram-group-data]
-[fixture: agentflow/gram-style-suffix]
-[fixture: agentflow/gram-group-spaces]
-[fixture: agentflow/gram-edge-chain]
-[fixture: agentflow/db-data-block-routing]
+[fixture: agentflow/gram-style-suffix] [fixture: agentflow/gram-group-spaces]
+[fixture: agentflow/gram-edge-chain] [fixture: agentflow/db-data-block-routing]
 
 sequence、failure、reference の矢印はそれぞれ、 `arrow_point`/normal、
 `arrow_cross`/normal、`arrow_open`/dotted になる。
 実線の Db の長さはダッシュ数から一を引き、reference はドット数を使う。
 どちらも十で止め、木の長さは制限しない。
 ラベルは変換、trim、サニタイズと外側の引用符の除去を行い、書かれた kind を使う。
-ラベルがなければ空のテキストと kind
-text にする。 [fixture: agentflow/gram-three-edge-kinds]
+ラベルがなければ空のテキストと kind text にする。
+[fixture: agentflow/gram-three-edge-kinds]
 [fixture: agentflow/db-edge-length-cap]
 [fixture: agentflow/lex-reference-long-length-at-cap]
 [fixture: agentflow/gram-reference-quoted-pipe-label]
@@ -138,7 +135,8 @@ Label の parts だけを変換し、初期文字列の区切りを除いて連�
 消される click と空形式、click 文脈の断片外の一空白単位は何も加えない。
 連結結果を trim して id にする。
 `flow click A` の次に `B` があると AB になり、
-`Handle click events` の次の `B` は `Handle eventsB` になる。 [fixture: agentflow/lex-flow-name-click-state]
+`Handle click events` の次の `B` は `Handle eventsB` になる。
+[fixture: agentflow/lex-flow-name-click-state]
 [fixture: agentflow/lex-flow-name-click-mixed]
 [fixture: agentflow/gram-flow-name-quoted-padding]
 [fixture: agentflow/gram-flow-name-space-between-empty-blocks]
@@ -161,7 +159,8 @@ click の手順はオペランドを使う。 [fixture: agentflow/lex-flow-name-
 明示タイトルは trim とサニタイズを行ったテキストと、書かれた kind を使う。
 同じ id は最初のレコードへ新しい所属をそれぞれ一度だけ足し、
 空でないタイトルと与えられた方向を置き換える。
-最初の labelType とマップ内の位置は保つ。 [fixture: agentflow/gram-flow-all-forms]
+最初の labelType とマップ内の位置は保つ。
+[fixture: agentflow/gram-flow-all-forms]
 [fixture: agentflow/gram-nested-unnamed-flow]
 [fixture: agentflow/db-flow-three-definitions]
 [fixture: agentflow/db-duplicate-flow-empty-last-title]
@@ -180,23 +179,22 @@ EmptyStatement はセミコロンを寄与する。
 候補がまだ存在しない場合だけ追加する。
 そのため、3 回目の宣言も含め、再宣言は新しい `__proto__` を最大一つ追加し、
 初回の宣言にあった重複はまとめない。
-レイアウトが折り畳みや循環のため調整した記録でなく、
-元の端点と所属を保つ。 [fixture: agentflow/gram-group-spaces]
+レイアウトが折り畳みや循環のため調整した記録でなく、元の端点と所属を保つ。
+[fixture: agentflow/gram-group-spaces]
 [fixture: agentflow/lex-accessibility-scope]
 [fixture: agentflow/gram-flow-hasownproperty-before-empty-statement]
 [fixture: agentflow/lex-flow-prototype-members]
 [fixture: agentflow/db-flow-self-reference]
-[fixture: agentflow/gram-flow-nested]
-[fixture: agentflow/db-flow-collapse]
+[fixture: agentflow/gram-flow-nested] [fixture: agentflow/db-flow-collapse]
 [fixture: agentflow/db-diagnostics-containment-cycle]
 
-[`addSubGraph`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1187-L1265) は、
-候補の重複を通常の object のキーで除くが、
+[`addSubGraph`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1187-L1265)
+は、候補の重複を通常の object のキーで除くが、
 既存の所属列への統合には `includes()` を使う。
 object の `__proto__` に真偽値を代入しても own key ができないため、
 最初の処理ではすべての出現が残る。
-統合は、
-その途中ですでに追加した所属も検査する。 [fixture: agentflow/db-flow-proto-initial-repeated]
+統合は、その途中ですでに追加した所属も検査する。
+[fixture: agentflow/db-flow-proto-initial-repeated]
 [fixture: agentflow/db-flow-proto-redefinition]
 [fixture: agentflow/db-flow-ordinary-redefinition]
 [fixture: agentflow/db-flow-proto-initial-then-redefinition]
@@ -210,10 +208,9 @@ object の `__proto__` に真偽値を代入しても own key ができないた
 なければ、有効な `flowchart.inheritDir` が truthy のとき図全体の方向を継ぐ。
 既定値は false である。
 global はコンテナーも外側への所属も寄与しない。
-寄与した空でない id を global とし、
-既存と後の flow の所属から外す。 [fixture: agentflow/gram-direction-in-flow]
-[fixture: agentflow/config-inherit-site]
-[fixture: agentflow/gram-global-nested]
+寄与した空でない id を global とし、既存と後の flow の所属から外す。
+[fixture: agentflow/gram-direction-in-flow]
+[fixture: agentflow/config-inherit-site] [fixture: agentflow/gram-global-nested]
 [fixture: agentflow/gram-global-after-flow]
 [fixture: agentflow/db-global-flow-id]
 [fixture: agentflow/db-global-connector-membership]
@@ -225,7 +222,8 @@ global はコンテナーも外側への所属も寄与しない。
 宣言は同じ id の通常の頂点を置き換える。
 既存の connector のメタデータ、スタイル、クラスは保ち、
 空でないタイトルがあるときだけテキストを変える。
-後の通常の頂点の出現で props が付くこともある。 [fixture: agentflow/gram-connector-name-whitespace-only]
+後の通常の頂点の出現で props が付くこともある。
+[fixture: agentflow/gram-connector-name-whitespace-only]
 [fixture: agentflow/gram-connector-all-forms]
 [fixture: agentflow/gram-connector-markdown-title]
 [fixture: agentflow/db-metadata-before-connector]
@@ -251,8 +249,8 @@ classDef は各名前のスタイルへ追加し、null を空テキストにし
 この判定では先頭空白も見る。
 スタイルがなければ以前のスタイルを保つ。
 default 形式は指定された edgeDefaults のフィールドだけを置き換える。
-そのスタイルへ `fill:none` を足さず、
-既存の辺のスタイルも置き換えない。 [fixture: agentflow/db-style-leading-whitespace]
+そのスタイルへ `fill:none` を足さず、既存の辺のスタイルも置き換えない。
+[fixture: agentflow/db-style-leading-whitespace]
 [fixture: agentflow/gram-linkstyle-interpolate-index]
 [fixture: agentflow/gram-linkstyle-default]
 [fixture: agentflow/gram-linkstyle-interpolate-default]
@@ -264,7 +262,8 @@ URL は既存の各頂点の trim したリンクと target を設定する。
 空または存在しないものは取り除く。
 どちらも clickable クラスを適用する。
 ツールチップは trim せずサニタイズし、id ごとに置き換え、最初の id 順を保つ。
-textBeforeUrl/textBeforeTooltip は Db の値を変えない。 [fixture: agentflow/gram-click-callback-forms]
+textBeforeUrl/textBeforeTooltip は Db の値を変えない。
+[fixture: agentflow/gram-click-callback-forms]
 [fixture: agentflow/gram-click-callback-space-args]
 [fixture: agentflow/db-call-name-space-before-parentheses]
 [fixture: agentflow/db-click-missing-id]
@@ -276,8 +275,8 @@ textBeforeUrl/textBeforeTooltip は Db の値を変えない。 [fixture: agentf
 アクセシビリティ文は flow 内も含め、ソース順で共通のタイトルと説明を置き換える。
 説明の LF と続く空白は一つの LF にする。
 行の値がなければ空テキスト、閉じた空ブロックなら何も変更しない。
-閉じていないブロックは、
-保持されたテキストにかかわらず説明を空にする。 [fixture: agentflow/lex-accessibility-scope]
+閉じていないブロックは、保持されたテキストにかかわらず説明を空にする。
+[fixture: agentflow/lex-accessibility-scope]
 [fixture: agentflow/db-accessibility-repeated]
 [fixture: agentflow/db-accessibility-whitespace-block]
 [fixture: agentflow/db-acctitle-eof]
@@ -294,8 +293,8 @@ textBeforeUrl/textBeforeTooltip は Db の値を変えない。 [fixture: agentf
 無視される予約 id `connectors` と空のコネクター id は、
 要素なしで空の効果を持つことがある。
 各エントリーの id が一致し、すべて一度ずつ消費されることを検査する。
-YAML の解析やメタデータのキーの再構築はしない。 [fixture: agentflow/db-data-block-adjacent]
-[fixture: agentflow/gram-group-data]
+YAML の解析やメタデータのキーの再構築はしない。
+[fixture: agentflow/db-data-block-adjacent] [fixture: agentflow/gram-group-data]
 [fixture: agentflow/gram-flow-inline-data]
 [fixture: agentflow/db-data-block-routing]
 [fixture: agentflow/db-connector-edge-id-collision]
@@ -306,7 +305,8 @@ YAML の解析やメタデータのキーの再構築はしない。 [fixture: a
 効果には props、未知のメタデータ、エイリアスのコピー、
 再帰的な非有限数のテキスト `Infinity`、`-Infinity`、`NaN` が記録済みである。
 YAML の構文をノードにはしない。
-診断と描画用の派生フィールドは組み立てない。 [fixture: agentflow/db-metadata-yaml-shared-alias]
+診断と描画用の派生フィールドは組み立てない。
+[fixture: agentflow/db-metadata-yaml-shared-alias]
 [fixture: agentflow/db-data-block-recursive-prototype-keys]
 [fixture: agentflow/db-metadata-nested-map-infinity]
 [fixture: agentflow/db-metadata-nested-nan]
@@ -323,8 +323,8 @@ frontmatter の HTML を本文の文脈に含めない読みと、
 単位の再構築や無視する文の新設なしで検査する。
 `divergence-removals.ts` に Agentflow の登録は不要である。
 flowchart の登録もなく、
-この六つの識別子は既存の共通の specified-reading 経路か、
-木の受理規則で扱う。 [fixture: agentflow/div-frontmatter-attribute-blocks-body-tag]
+この六つの識別子は既存の共通の specified-reading 経路か、木の受理規則で扱う。
+[fixture: agentflow/div-frontmatter-attribute-blocks-body-tag]
 [fixture: agentflow/div-percent-braces-before-header]
 [fixture: agentflow/db-data-block-invalid-yaml]
 [fixture: agentflow/div-metadata-yaml-self-alias]

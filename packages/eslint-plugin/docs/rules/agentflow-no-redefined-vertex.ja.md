@@ -45,7 +45,9 @@ connector にそのラベルと形を与え、要素は connector の種類を�
 どちらも報告する。
 タイトルなしで宣言した connector は、誰も書いていない id をラベルとして持ち、
 その後の頂点はそのラベルについては報告しない。
-頂点を置き換える connector の宣言は [agentflow-no-redefined-connector](./agentflow-no-redefined-connector.ja.md) が報告する。
+頂点を置き換える connector の宣言は
+[agentflow-no-redefined-connector](./agentflow-no-redefined-connector.ja.md)
+が報告する。
 
 すでにあるリンクの id や予約 id `connectors` を持つ通常の頂点の出現は、
 何も変えず、比べない。
@@ -105,11 +107,12 @@ agentflow-beta TB
 
 ## 背景
 
-[`addVertex`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L347-L565) は、
-connector を含めて、その id の既存の要素のラベルと型を設定する。
-[`getTypeFromVertex`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1571-L1587) は型の形を描画に与え、
-[`normaliseNodeShapes`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/shapes.ts#L113-L147) は長方形と、
-agentflow が認めないすべての形を、角の丸い長方形として描く。
+[`addVertex`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L347-L565)
+は、 connector を含めて、その id の既存の要素のラベルと型を設定する。
+[`getTypeFromVertex`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1571-L1587)
+は型の形を描画に与え、
+[`normaliseNodeShapes`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/shapes.ts#L113-L147)
+は長方形と、 agentflow が認めないすべての形を、角の丸い長方形として描く。
 
 <!-- begin auto-generated rule resources -->
 

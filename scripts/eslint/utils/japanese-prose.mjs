@@ -171,7 +171,7 @@ function widthOf(line) {
   return width
 }
 
-/** Whether the whole line is one overlong protected word and its inseparable punctuation. */
+/** Whether the whole line is one overlong word with inseparable punctuation and emphasis. */
 function isOverlongWordLine(prefix, tokens) {
   let word = null
   let afterWord = false
@@ -183,8 +183,13 @@ function isOverlongWordLine(prefix, tokens) {
       word = token.protectedSpan
     } else if (word) {
       afterWord = true
-      if (!NO_LINE_START.has(token.value)) return false
-    } else if (!NO_LINE_END.has(token.value)) return false
+      if (!NO_LINE_START.has(token.value) && token.emphasisMarker !== "closing")
+        return false
+    } else if (
+      !NO_LINE_END.has(token.value) &&
+      token.emphasisMarker !== "opening"
+    )
+      return false
   }
   return word !== null && width > LIMIT
 }

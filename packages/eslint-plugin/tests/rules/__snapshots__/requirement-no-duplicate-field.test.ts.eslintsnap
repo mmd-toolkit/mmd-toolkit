@@ -13,7 +13,7 @@ Code:
   5 |   }
   6 |
 
-[1] mermaid.js keeps the `id` of line 3: this later one changes nothing.
+[1] mermaid.js keeps the first `id` value and ignores this one.
 ---
 
 
@@ -29,7 +29,7 @@ Code:
   5 | }
   6 |
 
-[1] mermaid.js keeps the `docref` of line 3: this later one changes nothing.
+[1] mermaid.js keeps the first `docref` value and ignores this one.
 ---
 
 
@@ -46,7 +46,7 @@ Code:
   6 |   }
   7 |
 
-[1] mermaid.js keeps the `id` of line 3: this later one changes nothing.
+[1] mermaid.js keeps the first `id` value and ignores this one.
 ---
 
 
@@ -65,8 +65,8 @@ Code:
   7 | }
   8 |
 
-[1] mermaid.js keeps the `id` of line 3: this later one changes nothing.
-[2] mermaid.js keeps the `id` of line 3: this later one changes nothing.
+[1] mermaid.js keeps the first `id` value and ignores this one.
+[2] mermaid.js keeps the first `id` value and ignores this one.
 ---
 
 
@@ -82,7 +82,7 @@ Code:
   5 | }
   6 |
 
-[1] mermaid.js keeps the `id` of line 3: this later one changes nothing.
+[1] mermaid.js keeps the first `id` value and ignores this one.
 ---
 
 
@@ -100,8 +100,8 @@ Code:
   6 | }
   7 |
 
-[1] mermaid.js keeps the `id` of line 3: this later one changes nothing.
-[2] mermaid.js keeps the `id` of line 3: this later one changes nothing.
+[1] mermaid.js keeps the first `id` value and ignores this one.
+[2] mermaid.js keeps the first `id` value and ignores this one.
 ---
 
 
@@ -117,7 +117,7 @@ Code:
   5 | }
   6 |
 
-[1] mermaid.js keeps the `id` of line 3: this later one changes nothing.
+[1] mermaid.js keeps the first `id` value and ignores this one.
 ---
 
 
@@ -133,7 +133,7 @@ Code:
   5 | }
   6 |
 
-[1] mermaid.js keeps the `risk` of line 3: this later one changes nothing.
+[1] mermaid.js keeps the first `risk` value and ignores this one.
 ---
 
 
@@ -149,7 +149,7 @@ Code:
   5 | }
   6 |
 
-[1] mermaid.js keeps the `text` of line 3: this later one changes nothing.
+[1] mermaid.js keeps the first `text` value and ignores this one.
 ---
 
 
@@ -166,7 +166,7 @@ Code:
   6 | }
   7 |
 
-[1] mermaid.js keeps the `id` of line 3: this later one changes nothing.
+[1] mermaid.js keeps the first `id` value and ignores this one.
 ---
 
 
@@ -182,7 +182,7 @@ Code:
   5 | }
   6 |
 
-[1] mermaid.js keeps the `type` of line 3: this later one changes nothing.
+[1] mermaid.js keeps the first `type` value and ignores this one.
 ---
 
 
@@ -198,5 +198,5 @@ Code:
   5 | }
   6 |
 
-[1] mermaid.js keeps the `verifymethod` of line 3: this later one changes nothing.
+[1] mermaid.js keeps the first `verifymethod` value and ignores this one.
 ---

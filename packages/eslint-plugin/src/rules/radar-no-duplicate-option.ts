@@ -18,11 +18,11 @@ export const radarNoDuplicateOption: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js uses this `{{name}}` value instead of the one given on line {{line}}.",
+        "mermaid.js replaces the earlier `{{name}}` value with this value.",
     },
   },
   create(context) {
-    const previous = new Map<string, { value: string | number; line: number }>()
+    const previous = new Map<string, string | number>()
 
     /** Compare the effective value; ticks alone has a ceiling of 32. */
     function check(
@@ -31,14 +31,14 @@ export const radarNoDuplicateOption: MermaidRuleDefinition<{
       value: string | number,
     ): void {
       const before = previous.get(name)
-      if (before !== undefined && before.value !== value) {
+      if (before !== undefined && before !== value) {
         context.report({
           node,
           messageId: "duplicate",
-          data: { name, line: String(before.line) },
+          data: { name },
         })
       }
-      previous.set(name, { value, line: node.loc.start.line })
+      previous.set(name, value)
     }
 
     return {

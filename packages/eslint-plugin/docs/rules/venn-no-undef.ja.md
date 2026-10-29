@@ -91,11 +91,14 @@ style A1 color:red
 ## 背景
 
 描画は、
-レイアウトがその領域を持つところにだけ [領域の文字のノードを置き](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L259-L276)、
-[集合か和](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L121-L125) の名前か、
-[文字のノードの id](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L354-L354) でスタイルを探す。
-[`ensurePairwiseSubsets`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L393-L435) は、
-より大きな和の組を足す。
+レイアウトがその領域を持つところにだけ
+[領域の文字のノードを置き](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L259-L276)、
+[集合か和](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L121-L125)
+の名前か、
+[文字のノードの id](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L354-L354)
+でスタイルを探す。
+[`ensurePairwiseSubsets`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L393-L435)
+は、より大きな和の組を足す。
 
 <!-- begin auto-generated rule resources -->
 

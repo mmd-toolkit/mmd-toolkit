@@ -49,7 +49,8 @@ mermaid.js がそう読む理由、この仕様の規則とその理由、
 その fixture に識別子は付けません。
 `flow%%{init: {}}%%chart LR` の後に行 `A-->` が続くものは、
 mermaid.js では flowchart の文法で拒否され、
-この仕様ではディレクティブがヘッダーのキーワードの中にあるので拒否されます。 [fixture: common/directive-splits-header-keyword]
+この仕様ではディレクティブがヘッダーのキーワードの中にあるので拒否されます。
+[fixture: common/directive-splits-header-keyword]
 
 ## 差異を認める条件
 
@@ -74,14 +75,17 @@ mermaid.js では flowchart の文法で拒否され、
    軸やプロットのタイトル全体でも値のラベル全体でもない空の文字列、
    どこにあっても、quadrant の空の文字列と空の markdown 文字列、どこにあっても、
    block の空の文字列と空の markdown 文字列、そして、kanban の空の icon、
-   空の class の行、
-   形の中の空の文字列です。 [fixture: kanban/div-empty-string-before-label]
+   空の class の行、形の中の空の文字列です。
+   [fixture: kanban/div-empty-string-before-label]
 
    木はそうした形を何も変えない文としては持たず、
-   その入力は [tokenless-empty-forms](./known-divergences/tokenless-empty-forms.ja.md) として拒否されます。
+   その入力は
+   [tokenless-empty-forms](./known-divergences/tokenless-empty-forms.ja.md)
+   として拒否されます。
    state の state 文脈で、`state` の後や文の後にある空の文字列はこの形ではなく、
    mermaid.js はその前の文を読んでいて、
-   空の文字列は [StateIgnoredStatement](./ast/state.ja.md#stateignoredstatement) です。
+   空の文字列は [StateIgnoredStatement](./ast/state.ja.md#stateignoredstatement)
+   です。
 
 2. mermaid.js の振る舞いが、その処理の段階の順や字句解析器の規則の順から生じ、
    仕様が述べるものではない場所で、この仕様が直接の規則を述べるとき。
@@ -90,8 +94,9 @@ mermaid.js では flowchart の文法で拒否され、
    この仕様だけが受理する入力であることもあります。
 3. mermaid.js の保守者が、その振る舞いを不具合として扱っているとき。
 
-不具合に見える振る舞いについて差異を作る前に、 mermaid.js の issue と pull
-request を探し、見つかったものを事実として差異の文書に引きます。
+不具合に見える振る舞いについて差異を作る前に、
+mermaid.js の issue と pull request を探し、
+見つかったものを事実として差異の文書に引きます。
 
 差異には、反対の向きのものもあります。
 この仕様は、mermaid.js が拒否するいくつかの入力を受理します。

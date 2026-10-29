@@ -18,25 +18,21 @@ export const pieNoDuplicateLabel: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js keeps the value of the first section with this label, on line {{line}}, and ignores this value.",
+        "mermaid.js keeps the value of the first section with this label and ignores this value.",
     },
   },
   create(context) {
-    const sections = new Map<string, { value: number; line: number }>()
+    const sections = new Map<string, number>()
     return {
       PieSectionStatement(node) {
         const label = normalizeLineTerminators(node.label.value)
         const previous = sections.get(label)
         if (previous === undefined) {
-          sections.set(label, {
-            value: node.value.value,
-            line: node.loc.start.line,
-          })
-        } else if (previous.value !== node.value.value) {
+          sections.set(label, node.value.value)
+        } else if (previous !== node.value.value) {
           context.report({
             node,
             messageId: "duplicate",
-            data: { line: String(previous.line) },
           })
         }
       },

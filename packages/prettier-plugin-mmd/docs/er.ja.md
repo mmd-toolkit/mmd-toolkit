@@ -18,8 +18,8 @@ fixture の置き方と確かめ方は、
 
 ### 字下げ
 
-ヘッダーの後の文は、
-ヘッダーより 1 段深く置きます。 [fixture: indentation/written-indentation-dropped]
+ヘッダーの後の文は、ヘッダーより 1 段深く置きます。
+[fixture: indentation/written-indentation-dropped]
 subgraph の文は、subgraph の行より 1 段深く置き、その `end` は、
 その行と同じ段に、行に単独で置きます。
 文の後に書かれていても同じです。 [fixture: indentation/nested-subgraphs]
@@ -32,11 +32,13 @@ subgraph の中でも同じです。 [fixture: indentation/attribute-blocks-in-s
 入力に書かれた字下げは保ちません。
 行頭の空白は、mermaid.js にとって何でもないためです。
 字下げは構造だけで決められるので、1 つの規則で、
-入力の字下げによらず同じテキストになります。 [fixture: indentation/written-indentation-dropped]
+入力の字下げによらず同じテキストになります。
+[fixture: indentation/written-indentation-dropped]
 例外は、direction を含む `accTitle` と `accDescr` の文で、
 1 桁目を保ちます（[アクセシビリティの文](#アクセシビリティの文)を参照）。
 
-入力 ([indentation/nested-subgraphs-input.mmd](../tests/fixtures/er/indentation/nested-subgraphs-input.mmd)):
+入力
+([indentation/nested-subgraphs-input.mmd](../tests/fixtures/er/indentation/nested-subgraphs-input.mmd)):
 
 ```mmd
 erDiagram
@@ -50,7 +52,8 @@ end
 E
 ```
 
-出力 ([indentation/nested-subgraphs-output.mmd](../tests/fixtures/er/indentation/nested-subgraphs-output.mmd)):
+出力
+([indentation/nested-subgraphs-output.mmd](../tests/fixtures/er/indentation/nested-subgraphs-output.mmd)):
 
 ```mmd
 erDiagram
@@ -72,15 +75,14 @@ erDiagram
 [fixture: attribute-blocks/split]
 1 行に書かれたブロックや、最初の属性が `{` の行に、
 最後の属性が `}` の行にあるブロックも、こう分けます。
-mermaid.js は属性ブロックを改行に関係なく読むので、
-同じ属性を読みます。 [fixture: attribute-blocks/split]
-[corpus fixture: er/gram-attributes-one-line]
+mermaid.js は属性ブロックを改行に関係なく読むので、同じ属性を読みます。
+[fixture: attribute-blocks/split] [corpus fixture: er/gram-attributes-one-line]
 [corpus fixture: er/gram-attribute-split-lines]
-`}` の後に同じ行で続く文は、
-行に単独で置きます。 [fixture: attribute-blocks/entity-after-closing-brace]
+`}` の後に同じ行で続く文は、行に単独で置きます。
+[fixture: attribute-blocks/entity-after-closing-brace]
 [corpus fixture: er/gram-block-then-name-one-line]
-`{` の前の名前、別名、クラスは、
-[実体](#実体)と同じに整形します。 [fixture: attribute-blocks/alias-and-classes]
+`{` の前の名前、別名、クラスは、 [実体](#実体)と同じに整形します。
+[fixture: attribute-blocks/alias-and-classes]
 
 空白しかない空のブロックは、どう書かれていても、
 実体の行に `{ }` として印字します。
@@ -101,18 +103,21 @@ mermaid.js が読まないテキスト、つまり間に何もない 2 つのバ
 2 つの属性の間、最初の前、最後の後、またはブロックに 1 つだけあるとき、
 ブロックの項目です。
 行に単独で、書かれたまま置きます。
-間に空白だけがある単位の並びは 1 つの項目です。 [fixture: attribute-blocks/ignored-text-own-line]
+間に空白だけがある単位の並びは 1 つの項目です。
+[fixture: attribute-blocks/ignored-text-own-line]
 [fixture: attribute-blocks/ignored-text-run-kept]
 [corpus fixture: er/gram-empty-backquotes-between-attributes]
 [corpus fixture: er/gram-empty-backquotes-twice]
 `}` の行で `}` の前にあるディレクティブはそこに書かれたまま残し、
-`}` の後にあるものは、
-その前に書かれた空白を保ちます。 [fixture: attribute-blocks/directive-on-closing-line-kept]
+`}` の後にあるものは、その前に書かれた空白を保ちます。
+[fixture: attribute-blocks/directive-on-closing-line-kept]
 [fixture: attribute-blocks/directive-after-closing-brace-kept]
 ブロックの中のコメント行と空行は、
-ほかのブロックと同じに扱います（[コメント](#コメント)と[空行](#空行)を参照）。 [fixture: attribute-blocks/comment-lines-and-blank-lines]
+ほかのブロックと同じに扱います（[コメント](#コメント)と[空行](#空行)を参照）。
+[fixture: attribute-blocks/comment-lines-and-blank-lines]
 
-入力 ([attribute-blocks/split-input.mmd](../tests/fixtures/er/attribute-blocks/split-input.mmd)):
+入力
+([attribute-blocks/split-input.mmd](../tests/fixtures/er/attribute-blocks/split-input.mmd)):
 
 ```mmd
 erDiagram
@@ -125,7 +130,8 @@ HOUSE {string address
 int number}
 ```
 
-出力 ([attribute-blocks/split-output.mmd](../tests/fixtures/er/attribute-blocks/split-output.mmd)):
+出力
+([attribute-blocks/split-output.mmd](../tests/fixtures/er/attribute-blocks/split-output.mmd)):
 
 ```mmd
 erDiagram
@@ -143,7 +149,8 @@ erDiagram
   }
 ```
 
-入力 ([attribute-blocks/ignored-text-own-line-input.mmd](../tests/fixtures/er/attribute-blocks/ignored-text-own-line-input.mmd)):
+入力
+([attribute-blocks/ignored-text-own-line-input.mmd](../tests/fixtures/er/attribute-blocks/ignored-text-own-line-input.mmd)):
 
 ```mmd
 erDiagram
@@ -159,7 +166,8 @@ int d ``
 }
 ```
 
-出力 ([attribute-blocks/ignored-text-own-line-output.mmd](../tests/fixtures/er/attribute-blocks/ignored-text-own-line-output.mmd)):
+出力
+([attribute-blocks/ignored-text-own-line-output.mmd](../tests/fixtures/er/attribute-blocks/ignored-text-own-line-output.mmd)):
 
 ```mmd
 erDiagram
@@ -181,7 +189,8 @@ erDiagram
   }
 ```
 
-入力 ([attribute-blocks/directive-on-closing-line-kept-input.mmd](../tests/fixtures/er/attribute-blocks/directive-on-closing-line-kept-input.mmd)):
+入力
+([attribute-blocks/directive-on-closing-line-kept-input.mmd](../tests/fixtures/er/attribute-blocks/directive-on-closing-line-kept-input.mmd)):
 
 ```mmd
 erDiagram
@@ -190,7 +199,8 @@ int a
 %%{init: {}}%% }
 ```
 
-出力 ([attribute-blocks/directive-on-closing-line-kept-output.mmd](../tests/fixtures/er/attribute-blocks/directive-on-closing-line-kept-output.mmd)):
+出力
+([attribute-blocks/directive-on-closing-line-kept-output.mmd](../tests/fixtures/er/attribute-blocks/directive-on-closing-line-kept-output.mmd)):
 
 ```mmd
 erDiagram
@@ -203,39 +213,44 @@ erDiagram
 
 属性は 1 行に印字します。
 型、名前、キー、コメントの間は空白 1 つで、
-2 つの部分の間の空白とタブの連続は空白 1 つにします。 [fixture: attribute-spacing/parts-collapsed]
-省略可能な型の `?` は、
-どう書かれていても型に接します。 [fixture: attribute-spacing/optional-touching]
+2 つの部分の間の空白とタブの連続は空白 1 つにします。
+[fixture: attribute-spacing/parts-collapsed]
+省略可能な型の `?` は、どう書かれていても型に接します。
+[fixture: attribute-spacing/optional-touching]
 キーは、前に空白を置かない `,` と空白 1 つで区切り、
 書かれた大文字小文字を保ちます。
 Db が保つからです。 [fixture: attribute-spacing/keys-comma-space]
 [fixture: attribute-spacing/keys-case-kept]
-コメントは、名前やキーに接して書かれていても、
-空白 1 つの後に置きます。 [fixture: attribute-spacing/comment-one-space]
+コメントは、名前やキーに接して書かれていても、空白 1 つの後に置きます。
+[fixture: attribute-spacing/comment-one-space]
 型や名前のテキストは書かれたまま残します。
 チルダの語やバッククォートの語の中の空白は型の一部で、
 コメントのテキストもそうです。
 属性は列にそろえません。
 そろえると、属性を 1 つ変えただけでブロックの全行が変わり、
 名前の幅は文字数で数えられず、mermaid.js の文書の例もそろえていないからです。
-空白 1 つと、型に接する `?` は、
-その例の形です。 [fixture: attribute-spacing/tilde-word-kept]
+空白 1 つと、型に接する `?` は、その例の形です。
+[fixture: attribute-spacing/tilde-word-kept]
 [fixture: attribute-spacing/backquoted-word-kept]
 
 複数行に書かれた属性は 1 行に印字します。
-属性ブロックは改行に関係なく読まれるからです。 [fixture: attribute-spacing/over-lines-joined]
+属性ブロックは改行に関係なく読まれるからです。
+[fixture: attribute-spacing/over-lines-joined]
 [corpus fixture: er/gram-attribute-split-lines]
 [corpus fixture: er/gram-name-then-key-next-line]
 部分の間にコメント行がある属性は、書かれたまま残します。
-コメント行は単独の行になければならないからです。 [fixture: attribute-spacing/comment-line-inside-kept]
+コメント行は単独の行になければならないからです。
+[fixture: attribute-spacing/comment-line-inside-kept]
 属性の部分の間にあるディレクティブは、両側に書かれた空白を保ってその位置に残し、
-2 つの属性の間で行に単独で置かれたディレクティブは、
-その間に残します。 [fixture: attribute-spacing/directive-inside-kept]
+2 つの属性の間で行に単独で置かれたディレクティブは、その間に残します。
+[fixture: attribute-spacing/directive-inside-kept]
 [fixture: attribute-spacing/directive-and-line-break-kept]
 同じ行に書かれた 2 つの属性の間のディレクティブは、各属性が単独の行に立つので、
-後ろの属性と一緒に次の行へ移ります。 [fixture: attribute-spacing/directive-between-attributes-on-a-line]
+後ろの属性と一緒に次の行へ移ります。
+[fixture: attribute-spacing/directive-between-attributes-on-a-line]
 
-入力 ([attribute-spacing/keys-comma-space-input.mmd](../tests/fixtures/er/attribute-spacing/keys-comma-space-input.mmd)):
+入力
+([attribute-spacing/keys-comma-space-input.mmd](../tests/fixtures/er/attribute-spacing/keys-comma-space-input.mmd)):
 
 ```mmd
 erDiagram
@@ -246,7 +261,8 @@ int c UK  ,  PK  ,  FK
 }
 ```
 
-出力 ([attribute-spacing/keys-comma-space-output.mmd](../tests/fixtures/er/attribute-spacing/keys-comma-space-output.mmd)):
+出力
+([attribute-spacing/keys-comma-space-output.mmd](../tests/fixtures/er/attribute-spacing/keys-comma-space-output.mmd)):
 
 ```mmd
 erDiagram
@@ -257,7 +273,8 @@ erDiagram
   }
 ```
 
-入力 ([attribute-spacing/optional-touching-input.mmd](../tests/fixtures/er/attribute-spacing/optional-touching-input.mmd)):
+入力
+([attribute-spacing/optional-touching-input.mmd](../tests/fixtures/er/attribute-spacing/optional-touching-input.mmd)):
 
 ```mmd
 erDiagram
@@ -269,7 +286,8 @@ List~int~ ? d
 }
 ```
 
-出力 ([attribute-spacing/optional-touching-output.mmd](../tests/fixtures/er/attribute-spacing/optional-touching-output.mmd)):
+出力
+([attribute-spacing/optional-touching-output.mmd](../tests/fixtures/er/attribute-spacing/optional-touching-output.mmd)):
 
 ```mmd
 erDiagram
@@ -281,7 +299,8 @@ erDiagram
   }
 ```
 
-入力 ([attribute-spacing/over-lines-joined-input.mmd](../tests/fixtures/er/attribute-spacing/over-lines-joined-input.mmd)):
+入力
+([attribute-spacing/over-lines-joined-input.mmd](../tests/fixtures/er/attribute-spacing/over-lines-joined-input.mmd)):
 
 ```mmd
 erDiagram
@@ -297,7 +316,8 @@ int d
 }
 ```
 
-出力 ([attribute-spacing/over-lines-joined-output.mmd](../tests/fixtures/er/attribute-spacing/over-lines-joined-output.mmd)):
+出力
+([attribute-spacing/over-lines-joined-output.mmd](../tests/fixtures/er/attribute-spacing/over-lines-joined-output.mmd)):
 
 ```mmd
 erDiagram
@@ -328,10 +348,11 @@ state も 1 行に 1 つの文を印字します。
 [corpus fixture: er/gram-two-relationships-one-line]
 [corpus fixture: er/lex-role-then-name]
 何も変えない空の説明ブロックは、文が始まる所ならどこでも文で、
-行に単独で印字します。 [fixture: statements-one-per-line/empty-description-blocks]
+行に単独で印字します。
+[fixture: statements-one-per-line/empty-description-blocks]
 [corpus fixture: er/gram-empty-description-block-between-names]
-2 つの文の間のディレクティブは、
-後ろの文と一緒に置きます。 [fixture: statements-one-per-line/directive-after-statement]
+2 つの文の間のディレクティブは、後ろの文と一緒に置きます。
+[fixture: statements-one-per-line/directive-after-statement]
 
 2 つの場合は、文を 1 行に残します。
 実体 `1` の直後に、空白なしで、またはディレクティブだけを挟んで、別の文や、
@@ -342,8 +363,8 @@ state も 1 行に 1 つの文を印字します。
 カーディナリティ、数、関係の線、規則 11）。
 ほかの数は、後ろの文と分けます。
 そのような実体の行は書かれたまま印字し、その行で終わる subgraph も、
-ヘッダーから `end` まで、
-行ごとの 1 段の字下げなしで書かれたまま印字します。 [fixture: statements-one-per-line/number-name-then-name-kept]
+ヘッダーから `end` まで、行ごとの 1 段の字下げなしで書かれたまま印字します。
+[fixture: statements-one-per-line/number-name-then-name-kept]
 [fixture: statements-one-per-line/number-name-in-subgraph-kept]
 [fixture: statements-one-per-line/number-name-before-end-kept]
 [fixture: statements-one-per-line/number-name-before-directive-kept]
@@ -352,17 +373,19 @@ state も 1 行に 1 つの文を印字します。
 また、`;` がある行は、その文を一緒に残します。
 mermaid.js の行の規則は行のテキストを読み、テキストを別の行に動かすと、
 規則に合う行と、規則が無視する `;` が、
-変わるからです（[スタイルとクラス](#スタイルとクラス)を参照）。 [fixture: statements-one-per-line/semicolon-line-kept]
+変わるからです（[スタイルとクラス](#スタイルとクラス)を参照）。
+[fixture: statements-one-per-line/semicolon-line-kept]
 [fixture: statements-one-per-line/ignored-semicolon-line-kept]
 そのような行にある属性ブロックの `}` や subgraph の `end` が、
 行の上で後ろに文を従えているときは、 `}` や `end` が単独の行に移り、
 文は `;` のない行に残ってしまうので、行に残し、
 行はトークンの間の空白を通常どおりにして印字します。
-後ろに文がなければ、
-ほかのブロックと同じく単独の行に置きます。 [fixture: statements-one-per-line/semicolon-line-block-kept]
+後ろに文がなければ、ほかのブロックと同じく単独の行に置きます。
+[fixture: statements-one-per-line/semicolon-line-block-kept]
 [fixture: statements-one-per-line/semicolon-line-subgraph-end-kept]
 
-入力 ([statements-one-per-line/entities-input.mmd](../tests/fixtures/er/statements-one-per-line/entities-input.mmd)):
+入力
+([statements-one-per-line/entities-input.mmd](../tests/fixtures/er/statements-one-per-line/entities-input.mmd)):
 
 ```mmd
 erDiagram
@@ -370,7 +393,8 @@ A B C
 D:::c E[Entity] F { int f } G
 ```
 
-出力 ([statements-one-per-line/entities-output.mmd](../tests/fixtures/er/statements-one-per-line/entities-output.mmd)):
+出力
+([statements-one-per-line/entities-output.mmd](../tests/fixtures/er/statements-one-per-line/entities-output.mmd)):
 
 ```mmd
 erDiagram
@@ -385,7 +409,8 @@ erDiagram
   G
 ```
 
-入力 ([statements-one-per-line/relationships-input.mmd](../tests/fixtures/er/statements-one-per-line/relationships-input.mmd)):
+入力
+([statements-one-per-line/relationships-input.mmd](../tests/fixtures/er/statements-one-per-line/relationships-input.mmd)):
 
 ```mmd
 erDiagram
@@ -393,7 +418,8 @@ A ||--o{ B : x C ||--o{ D : y
 E }|..|{ F : "z" G
 ```
 
-出力 ([statements-one-per-line/relationships-output.mmd](../tests/fixtures/er/statements-one-per-line/relationships-output.mmd)):
+出力
+([statements-one-per-line/relationships-output.mmd](../tests/fixtures/er/statements-one-per-line/relationships-output.mmd)):
 
 ```mmd
 erDiagram
@@ -403,7 +429,8 @@ erDiagram
   G
 ```
 
-入力 ([statements-one-per-line/number-name-then-name-kept-input.mmd](../tests/fixtures/er/statements-one-per-line/number-name-then-name-kept-input.mmd)):
+入力
+([statements-one-per-line/number-name-then-name-kept-input.mmd](../tests/fixtures/er/statements-one-per-line/number-name-then-name-kept-input.mmd)):
 
 ```mmd
 erDiagram
@@ -413,7 +440,8 @@ B
 12a
 ```
 
-出力 ([statements-one-per-line/number-name-then-name-kept-output.mmd](../tests/fixtures/er/statements-one-per-line/number-name-then-name-kept-output.mmd)):
+出力
+([statements-one-per-line/number-name-then-name-kept-output.mmd](../tests/fixtures/er/statements-one-per-line/number-name-then-name-kept-output.mmd)):
 
 ```mmd
 erDiagram
@@ -434,7 +462,8 @@ subgraph の先頭と末尾の空行は落とします。 [fixture: blank-lines/
 [fixture: blank-lines/between-attributes-collapsed]
 [fixture: blank-lines/around-comment-and-directive-lines]
 
-入力 ([blank-lines/block-edges-dropped-input.mmd](../tests/fixtures/er/blank-lines/block-edges-dropped-input.mmd)):
+入力
+([blank-lines/block-edges-dropped-input.mmd](../tests/fixtures/er/blank-lines/block-edges-dropped-input.mmd)):
 
 ```mmd
 erDiagram
@@ -458,7 +487,8 @@ C
 end
 ```
 
-出力 ([blank-lines/block-edges-dropped-output.mmd](../tests/fixtures/er/blank-lines/block-edges-dropped-output.mmd)):
+出力
+([blank-lines/block-edges-dropped-output.mmd](../tests/fixtures/er/blank-lines/block-edges-dropped-output.mmd)):
 
 ```mmd
 erDiagram
@@ -474,7 +504,8 @@ erDiagram
   end
 ```
 
-入力 ([blank-lines/between-attributes-collapsed-input.mmd](../tests/fixtures/er/blank-lines/between-attributes-collapsed-input.mmd)):
+入力
+([blank-lines/between-attributes-collapsed-input.mmd](../tests/fixtures/er/blank-lines/between-attributes-collapsed-input.mmd)):
 
 ```mmd
 erDiagram
@@ -486,7 +517,8 @@ int b
 }
 ```
 
-出力 ([blank-lines/between-attributes-collapsed-output.mmd](../tests/fixtures/er/blank-lines/between-attributes-collapsed-output.mmd)):
+出力
+([blank-lines/between-attributes-collapsed-output.mmd](../tests/fixtures/er/blank-lines/between-attributes-collapsed-output.mmd)):
 
 ```mmd
 erDiagram
@@ -500,14 +532,16 @@ erDiagram
 ### トークンの間の空白
 
 行の中では、2 つのトークンの間の空白とタブの連続は空白 1 つにし、
-接しているトークンは、以下の規則が別に定めるものを除き、
-接したままにします。 [fixture: whitespace-between-tokens/collapsed]
+接しているトークンは、以下の規則が別に定めるものを除き、接したままにします。
+[fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/touching-kept]
 キーワードは、書かれた大文字小文字を保ちます。
 mermaid.js はどの大文字小文字でも読み、
-属性のキーは Db がその大文字小文字を保つからです。 [fixture: whitespace-between-tokens/keyword-case-kept]
+属性のキーは Db がその大文字小文字を保つからです。
+[fixture: whitespace-between-tokens/keyword-case-kept]
 
-入力 ([whitespace-between-tokens/touching-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/touching-kept-input.mmd)):
+入力
+([whitespace-between-tokens/touching-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/touching-kept-input.mmd)):
 
 ```mmd
 erDiagram
@@ -518,7 +552,8 @@ A ||--u-B : x
 1one to one B : x
 ```
 
-出力 ([whitespace-between-tokens/touching-kept-output.mmd](../tests/fixtures/er/whitespace-between-tokens/touching-kept-output.mmd)):
+出力
+([whitespace-between-tokens/touching-kept-output.mmd](../tests/fixtures/er/whitespace-between-tokens/touching-kept-output.mmd)):
 
 ```mmd
 erDiagram
@@ -529,7 +564,8 @@ erDiagram
   1one to one B : x
 ```
 
-入力 ([whitespace-between-tokens/keyword-case-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-kept-input.mmd)):
+入力
+([whitespace-between-tokens/keyword-case-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-kept-input.mmd)):
 
 ```mmd
 erDiagram
@@ -549,7 +585,8 @@ int a PK
 }
 ```
 
-出力 ([whitespace-between-tokens/keyword-case-kept-output.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-kept-output.mmd)):
+出力
+([whitespace-between-tokens/keyword-case-kept-output.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-kept-output.mmd)):
 
 ```mmd
 erDiagram
@@ -574,13 +611,14 @@ erDiagram
 関係は、左の実体と関係の間、関係と右の実体の間、役割の `:` の両側に、
 どう書かれていても空白 1 つを置きます。
 これは mermaid.js の文書の形で、役割は名前、文字列、
-引用符つきの名前のどれでも同じです。 [fixture: relationship-spacing/around-units-and-role]
+引用符つきの名前のどれでも同じです。
+[fixture: relationship-spacing/around-units-and-role]
 [fixture: relationship-spacing/names-and-classes]
 [fixture: relationship-spacing/role-forms]
 [corpus fixture: er/lex-relationship-no-spaces]
 [corpus fixture: er/lex-colon-no-space]
-実体のクラスは、`:::` と、
-その間の `,` に両側で接します。 [fixture: relationship-spacing/names-and-classes]
+実体のクラスは、`:::` と、その間の `,` に両側で接します。
+[fixture: relationship-spacing/names-and-classes]
 
 関係の 3 つの単位、つまり両側のカーディナリティとその間の線は、
 両方が記号で書かれているときは互いに接し、
@@ -588,15 +626,18 @@ erDiagram
 `A || -- o{ B` は `A ||--o{ B` に、
 `A ||--only one B` は `A ||-- only one B` にします。
 mermaid.js の文書の例は、記号を接し、語の単位を空白で分けているので、
-1 つの規則でどちらも保てるからです。 [fixture: relationship-spacing/symbols-touch]
+1 つの規則でどちらも保てるからです。
+[fixture: relationship-spacing/symbols-touch]
 [fixture: relationship-spacing/words-spaced]
 [fixture: relationship-spacing/symbols-and-words]
 [corpus fixture: er/lex-relationship-spaces-in-spec]
 `many(0)`、`many(1)`、`1+`、`0+`、`u` は記号として扱います。
-`many(0)` の中に空白を置くと拒否されます。 [corpus fixture: er/lex-many-space-before-parenthesis]
+`many(0)` の中に空白を置くと拒否されます。
+[corpus fixture: er/lex-many-space-before-parenthesis]
 カーディナリティの綴りは、記号でも語でも、書かれた大文字小文字のまま残します。
 綴りは作者の選択で、記号には同じに読まれる語が複数あるので、
-どの綴りも別の綴りの代わりにはなりません。 [fixture: relationship-spacing/words-spaced]
+どの綴りも別の綴りの代わりにはなりません。
+[fixture: relationship-spacing/words-spaced]
 
 3 つの場合は、空白を書かれたまま残します。
 別の空白にすると mermaid.js が別の単位を読むからです。
@@ -607,19 +648,22 @@ mermaid.js の文書の例は、記号を接し、語の単位を空白で分け
 `_` で始まるカーディナリティに接して書かれていれば接したままにします。
 `1` の後に、改行を含む 1 つ以上の空白と、 ASCII の文字、`_`、`"`、`'`、
 ASCII の数字が続くと、カーディナリティ `only-one` だからです（diagrams/er.md、
-カーディナリティ、数、関係の線、
-規則 11）。 [fixture: relationship-spacing/number-name-before-unit-kept]
+カーディナリティ、数、関係の線、規則 11）。
+[fixture: relationship-spacing/number-name-before-unit-kept]
 [corpus fixture: er/lex-one-space-letter]
 実体 `only` は、`one` で始まるカーディナリティの前の空白を保ちます。
 空白がちょうど 1 つの `only one` はカーディナリティ `only one`（規則 9）で、
 複数の語のキーワードは語の間の空白がちょうど 1 つなので、
 空白 2 つやタブなら `only` は実体です（diagrams/er.md、文の文脈、
-キーワードとその後ろ）。 [fixture: relationship-spacing/entity-only-before-one-kept]
+キーワードとその後ろ）。
+[fixture: relationship-spacing/entity-only-before-one-kept]
 [corpus fixture: er/lex-only-one-two-spaces]
 関係の単位の間にあるディレクティブは、
-両側に書かれた空白を保ってその位置に残します。 [fixture: relationship-spacing/directive-between-units-kept]
+両側に書かれた空白を保ってその位置に残します。
+[fixture: relationship-spacing/directive-between-units-kept]
 
-入力 ([relationship-spacing/symbols-and-words-input.mmd](../tests/fixtures/er/relationship-spacing/symbols-and-words-input.mmd)):
+入力
+([relationship-spacing/symbols-and-words-input.mmd](../tests/fixtures/er/relationship-spacing/symbols-and-words-input.mmd)):
 
 ```mmd
 erDiagram
@@ -633,7 +677,8 @@ A 1 to 1 B : x
 A many(0) to one B : x
 ```
 
-出力 ([relationship-spacing/symbols-and-words-output.mmd](../tests/fixtures/er/relationship-spacing/symbols-and-words-output.mmd)):
+出力
+([relationship-spacing/symbols-and-words-output.mmd](../tests/fixtures/er/relationship-spacing/symbols-and-words-output.mmd)):
 
 ```mmd
 erDiagram
@@ -647,7 +692,8 @@ erDiagram
   A many(0) to one B : x
 ```
 
-入力 ([relationship-spacing/md-parent-input.mmd](../tests/fixtures/er/relationship-spacing/md-parent-input.mmd)):
+入力
+([relationship-spacing/md-parent-input.mmd](../tests/fixtures/er/relationship-spacing/md-parent-input.mmd)):
 
 ```mmd
 erDiagram
@@ -658,7 +704,8 @@ A u--u-B : x
 A U..U-B : x
 ```
 
-出力 ([relationship-spacing/md-parent-output.mmd](../tests/fixtures/er/relationship-spacing/md-parent-output.mmd)):
+出力
+([relationship-spacing/md-parent-output.mmd](../tests/fixtures/er/relationship-spacing/md-parent-output.mmd)):
 
 ```mmd
 erDiagram
@@ -669,7 +716,8 @@ erDiagram
   A U..U-B : x
 ```
 
-入力 ([relationship-spacing/words-spaced-input.mmd](../tests/fixtures/er/relationship-spacing/words-spaced-input.mmd)):
+入力
+([relationship-spacing/words-spaced-input.mmd](../tests/fixtures/er/relationship-spacing/words-spaced-input.mmd)):
 
 ```mmd
 erDiagram
@@ -680,7 +728,8 @@ A ONE OR MORE TO MANY B : x
 A many to one B : x
 ```
 
-出力 ([relationship-spacing/words-spaced-output.mmd](../tests/fixtures/er/relationship-spacing/words-spaced-output.mmd)):
+出力
+([relationship-spacing/words-spaced-output.mmd](../tests/fixtures/er/relationship-spacing/words-spaced-output.mmd)):
 
 ```mmd
 erDiagram
@@ -697,16 +746,17 @@ erDiagram
 `p [ Person ]` は `p[Person]` にします。 [fixture: entities/alias-tight]
 `:::` の後のクラスは `:::` に接し、両側のクラスに接する `,` で区切ります。
 `A ::: c1 , c2` は `A:::c1,c2` にします。
-別名と `:::` を接する書き方が、
-mermaid.js の文書の例の多くです。 [fixture: entities/classes-tight]
-[fixture: entities/alias-and-classes]
-属性ブロックの `{` は空白 1 つの後に置きます（[属性ブロック](#属性ブロック)を参照）。
-名前は、引用符の有無も数も含めて、
-書かれたまま残します。 [fixture: entities/names-kept]
-実体の部分の間にあるディレクティブは、
-両側に書かれた空白を保ちます。 [fixture: entities/directive-between-parts-kept]
+別名と `:::` を接する書き方が、 mermaid.js の文書の例の多くです。
+[fixture: entities/classes-tight] [fixture: entities/alias-and-classes]
+属性ブロックの `{` は空白 1
+つの後に置きます（[属性ブロック](#属性ブロック)を参照）。
+名前は、引用符の有無も数も含めて、書かれたまま残します。
+[fixture: entities/names-kept]
+実体の部分の間にあるディレクティブは、両側に書かれた空白を保ちます。
+[fixture: entities/directive-between-parts-kept]
 
-入力 ([entities/alias-tight-input.mmd](../tests/fixtures/er/entities/alias-tight-input.mmd)):
+入力
+([entities/alias-tight-input.mmd](../tests/fixtures/er/entities/alias-tight-input.mmd)):
 
 ```mmd
 erDiagram
@@ -719,7 +769,8 @@ int a
 p[Person]
 ```
 
-出力 ([entities/alias-tight-output.mmd](../tests/fixtures/er/entities/alias-tight-output.mmd)):
+出力
+([entities/alias-tight-output.mmd](../tests/fixtures/er/entities/alias-tight-output.mmd)):
 
 ```mmd
 erDiagram
@@ -732,7 +783,8 @@ erDiagram
   p[Person]
 ```
 
-入力 ([entities/classes-tight-input.mmd](../tests/fixtures/er/entities/classes-tight-input.mmd)):
+入力
+([entities/classes-tight-input.mmd](../tests/fixtures/er/entities/classes-tight-input.mmd)):
 
 ```mmd
 erDiagram
@@ -742,7 +794,8 @@ A:::é,b-c
 B ::: d
 ```
 
-出力 ([entities/classes-tight-output.mmd](../tests/fixtures/er/entities/classes-tight-output.mmd)):
+出力
+([entities/classes-tight-output.mmd](../tests/fixtures/er/entities/classes-tight-output.mmd)):
 
 ```mmd
 erDiagram
@@ -762,21 +815,22 @@ mermaid.js が空白 1 つで結ぶからです。 [fixture: subgraphs/header-sp
 [fixture: subgraphs/quoted-and-number-ids]
 本体の文は 1 段深く置き、`end` は、書かれた大文字小文字で、
 subgraph と同じ段に、行に単独で置きます。
-`end` の後に同じ行で続く文は、
-次の行に置きます。 [fixture: subgraphs/end-on-the-line-of-a-statement]
-[fixture: subgraphs/end-case-kept]
-[fixture: subgraphs/entity-after-end]
-文のない subgraph は、
-`end` を次の行に置いて印字します。 [fixture: subgraphs/empty]
+`end` の後に同じ行で続く文は、次の行に置きます。
+[fixture: subgraphs/end-on-the-line-of-a-statement]
+[fixture: subgraphs/end-case-kept] [fixture: subgraphs/entity-after-end]
+文のない subgraph は、 `end` を次の行に置いて印字します。
+[fixture: subgraphs/empty]
 
 名前やタイトルの後、見出しの行にある空の説明ブロックは、本体の最初の文で、
-見出しの行に書かれたまま残します。 [fixture: subgraphs/header-description-blocks-kept]
+見出しの行に書かれたまま残します。
+[fixture: subgraphs/header-description-blocks-kept]
 [corpus fixture: er/gram-subgraph-header-blocks]
 subgraph の中で行に単独で置かれたコメントとディレクティブは、
-その文と同じ段に置き、`end` の前にあるディレクティブは、
-その行に残します。 [fixture: subgraphs/directive-and-comment-lines]
+その文と同じ段に置き、`end` の前にあるディレクティブは、その行に残します。
+[fixture: subgraphs/directive-and-comment-lines]
 
-入力 ([subgraphs/title-names-spaced-input.mmd](../tests/fixtures/er/subgraphs/title-names-spaced-input.mmd)):
+入力
+([subgraphs/title-names-spaced-input.mmd](../tests/fixtures/er/subgraphs/title-names-spaced-input.mmd)):
 
 ```mmd
 erDiagram
@@ -791,7 +845,8 @@ C
 end
 ```
 
-出力 ([subgraphs/title-names-spaced-output.mmd](../tests/fixtures/er/subgraphs/title-names-spaced-output.mmd)):
+出力
+([subgraphs/title-names-spaced-output.mmd](../tests/fixtures/er/subgraphs/title-names-spaced-output.mmd)):
 
 ```mmd
 erDiagram
@@ -806,7 +861,8 @@ erDiagram
   end
 ```
 
-入力 ([subgraphs/header-description-blocks-kept-input.mmd](../tests/fixtures/er/subgraphs/header-description-blocks-kept-input.mmd)):
+入力
+([subgraphs/header-description-blocks-kept-input.mmd](../tests/fixtures/er/subgraphs/header-description-blocks-kept-input.mmd)):
 
 ```mmd
 erDiagram
@@ -822,7 +878,8 @@ C
 end
 ```
 
-出力 ([subgraphs/header-description-blocks-kept-output.mmd](../tests/fixtures/er/subgraphs/header-description-blocks-kept-output.mmd)):
+出力
+([subgraphs/header-description-blocks-kept-output.mmd](../tests/fixtures/er/subgraphs/header-description-blocks-kept-output.mmd)):
 
 ```mmd
 erDiagram
@@ -845,15 +902,15 @@ erDiagram
 テキストと `direction` の間（離して書かれていれば）と、
 `direction` と値の間には空白 1 つを置き、値は書かれた大文字小文字を保ちます。
 大文字小文字は作者のものだからです。 [fixture: direction/spacing]
-[fixture: direction/text-kept]
-[fixture: direction/case-kept]
-後の行に書かれた値は、
-`direction` の後に 1 行で印字します。 [fixture: direction/value-on-next-line-joined]
+[fixture: direction/text-kept] [fixture: direction/case-kept]
+後の行に書かれた値は、 `direction` の後に 1 行で印字します。
+[fixture: direction/value-on-next-line-joined]
 [corpus fixture: er/lex-direction-value-next-line]
-ディレクティブやコメント行がある方向の行は、
-書かれたまま残します。 [fixture: direction/directive-and-comment-line-kept]
+ディレクティブやコメント行がある方向の行は、書かれたまま残します。
+[fixture: direction/directive-and-comment-line-kept]
 
-入力 ([direction/text-kept-input.mmd](../tests/fixtures/er/direction/text-kept-input.mmd)):
+入力
+([direction/text-kept-input.mmd](../tests/fixtures/er/direction/text-kept-input.mmd)):
 
 ```mmd
 erDiagram
@@ -864,7 +921,8 @@ direction LR;
 direction LRX
 ```
 
-出力 ([direction/text-kept-output.mmd](../tests/fixtures/er/direction/text-kept-output.mmd)):
+出力
+([direction/text-kept-output.mmd](../tests/fixtures/er/direction/text-kept-output.mmd)):
 
 ```mmd
 erDiagram
@@ -875,7 +933,8 @@ erDiagram
   direction LRX
 ```
 
-入力 ([direction/case-kept-input.mmd](../tests/fixtures/er/direction/case-kept-input.mmd)):
+入力
+([direction/case-kept-input.mmd](../tests/fixtures/er/direction/case-kept-input.mmd)):
 
 ```mmd
 erDiagram
@@ -883,7 +942,8 @@ DIRECTION lr
 Direction Tb
 ```
 
-出力 ([direction/case-kept-output.mmd](../tests/fixtures/er/direction/case-kept-output.mmd)):
+出力
+([direction/case-kept-output.mmd](../tests/fixtures/er/direction/case-kept-output.mmd)):
 
 ```mmd
 erDiagram
@@ -895,24 +955,28 @@ erDiagram
 
 `classDef` の名前と、`class` と `style` の実体とクラスは、
 両側の名前に接する `,` で区切ります。
-`classDef a ,b ,  c fill:red` は `classDef a,b,c fill:red` にします。 [fixture: styles-and-classes/class-def-names]
+`classDef a ,b ,  c fill:red` は `classDef a,b,c fill:red` にします。
+[fixture: styles-and-classes/class-def-names]
 [fixture: styles-and-classes/style-names]
 [fixture: styles-and-classes/class-lists]
 最初のスタイルは空白 1 つの後に置きます。
 1 つのスタイルの中の空白は、書かれたまま印字します。
 mermaid.js はスタイルのテキストをつなげて間の空白を捨てるので、
 `stroke-dasharray: 5 5` はスタイル `stroke-dasharray:55` ですが、
-空白は `stroke-dasharray:  5    5` のように作者が置いた所に残します。 [fixture: styles-and-classes/styles-as-written]
+空白は `stroke-dasharray:  5    5` のように作者が置いた所に残します。
+[fixture: styles-and-classes/styles-as-written]
 [fixture: styles-and-classes/style-inner-whitespace-kept]
 2 つのスタイルの間の `,` の周りの空白は、トークンの間の空白の連続なので、
 空白 1 つにします。
 `style id2   fill:red   ,   stroke:blue` は、
-`style id2 fill:red , stroke:blue` と印字します。 [fixture: styles-and-classes/styles-as-written]
-キーワードは大文字小文字を保ちます。 [fixture: styles-and-classes/keyword-case-kept]
+`style id2 fill:red , stroke:blue` と印字します。
+[fixture: styles-and-classes/styles-as-written]
+キーワードは大文字小文字を保ちます。
+[fixture: styles-and-classes/keyword-case-kept]
 
 キーワードや名前の後の空白が改行を取り込んで、
-複数行に書かれた `classDef` と `style` の文は、
-1 行に印字します。 [fixture: styles-and-classes/over-lines-joined]
+複数行に書かれた `classDef` と `style` の文は、 1 行に印字します。
+[fixture: styles-and-classes/over-lines-joined]
 最後のスタイルの末尾の空白はその後の改行を取り込み、
 次の行がスタイルの続きになります。
 `classDef a fill:red `、改行、`A` は、スタイル `fill:redA` を定義し、
@@ -921,7 +985,8 @@ mermaid.js はスタイルのテキストをつなげて間の空白を捨てる
 その行は書かれた桁のままです。
 2 行を 1 行にする（`classDef a fill:red A`）と、
 Db は同じで mermaid.js の読みも見えますが、作者が書いた空白が消えます。
-印字は文を解釈しません。 [fixture: styles-and-classes/trailing-whitespace-takes-next-line]
+印字は文を解釈しません。
+[fixture: styles-and-classes/trailing-whitespace-takes-next-line]
 [fixture: styles-and-classes/directive-before-next-line]
 [fixture: styles-and-classes/comment-line-inside-kept]
 [corpus fixture: er/lex-classdef-space-before-line-feed]
@@ -932,16 +997,18 @@ Db は同じで mermaid.js の読みも見えますが、作者が書いた空�
 mermaid.js の行の規則が無視する `;` も同じです。
 規則は、`style` と、その後の `#` の前の `:` を含む行の最後の `;` を、
 mermaid.js が読む前にテキストから取り除くので、
-その `;` がある行は文を一緒に残し、
-`;` を残します。 [fixture: styles-and-classes/ending-semicolon-kept]
+その `;` がある行は文を一緒に残し、 `;` を残します。
+[fixture: styles-and-classes/ending-semicolon-kept]
 [fixture: styles-and-classes/ignored-semicolon-kept]
 [corpus fixture: er/lex-classdef-semicolon-line-feed]
 [corpus fixture: er/lex-classdef-ignored-semicolon]
 行の規則は、`:` と `#` の間に空白がないときだけ `;` を無視するので、
 その間の空白は書かれたままです。
-`style A fill: #f00;` は空白を保ちます。 [fixture: styles-and-classes/space-after-colon-before-hash-kept]
+`style A fill: #f00;` は空白を保ちます。
+[fixture: styles-and-classes/space-after-colon-before-hash-kept]
 
-入力 ([styles-and-classes/class-def-names-input.mmd](../tests/fixtures/er/styles-and-classes/class-def-names-input.mmd)):
+入力
+([styles-and-classes/class-def-names-input.mmd](../tests/fixtures/er/styles-and-classes/class-def-names-input.mmd)):
 
 ```mmd
 erDiagram
@@ -949,7 +1016,8 @@ classDef a ,b ,  c fill:red
 classDef default fill:#f9f,stroke-width:4px
 ```
 
-出力 ([styles-and-classes/class-def-names-output.mmd](../tests/fixtures/er/styles-and-classes/class-def-names-output.mmd)):
+出力
+([styles-and-classes/class-def-names-output.mmd](../tests/fixtures/er/styles-and-classes/class-def-names-output.mmd)):
 
 ```mmd
 erDiagram
@@ -957,7 +1025,8 @@ erDiagram
   classDef default fill:#f9f,stroke-width:4px
 ```
 
-入力 ([styles-and-classes/styles-as-written-input.mmd](../tests/fixtures/er/styles-and-classes/styles-as-written-input.mmd)):
+入力
+([styles-and-classes/styles-as-written-input.mmd](../tests/fixtures/er/styles-and-classes/styles-as-written-input.mmd)):
 
 ```mmd
 erDiagram
@@ -966,7 +1035,8 @@ style id1 fill:#bbf,stroke:#f66,stroke-dasharray: 5 5
 style  id2   fill:red   ,   stroke:blue
 ```
 
-出力 ([styles-and-classes/styles-as-written-output.mmd](../tests/fixtures/er/styles-and-classes/styles-as-written-output.mmd)):
+出力
+([styles-and-classes/styles-as-written-output.mmd](../tests/fixtures/er/styles-and-classes/styles-as-written-output.mmd)):
 
 ```mmd
 erDiagram
@@ -975,7 +1045,8 @@ erDiagram
   style id2 fill:red , stroke:blue
 ```
 
-入力 ([styles-and-classes/ending-semicolon-kept-input.mmd](../tests/fixtures/er/styles-and-classes/ending-semicolon-kept-input.mmd)):
+入力
+([styles-and-classes/ending-semicolon-kept-input.mmd](../tests/fixtures/er/styles-and-classes/ending-semicolon-kept-input.mmd)):
 
 ```mmd
 erDiagram
@@ -987,7 +1058,8 @@ style C fill:blue;
 style D fill:blue%%{init: {}}%%;
 ```
 
-出力 ([styles-and-classes/ending-semicolon-kept-output.mmd](../tests/fixtures/er/styles-and-classes/ending-semicolon-kept-output.mmd)):
+出力
+([styles-and-classes/ending-semicolon-kept-output.mmd](../tests/fixtures/er/styles-and-classes/ending-semicolon-kept-output.mmd)):
 
 ```mmd
 erDiagram
@@ -1002,10 +1074,11 @@ erDiagram
 ### アクセシビリティの文
 
 `accTitle` と `accDescr` の `:` は、キーワードに接し、後に空白 1 つを置きます。
-テキストは両端の空白を除きます。 [fixture: accessibility-statements/title-and-description]
+テキストは両端の空白を除きます。
+[fixture: accessibility-statements/title-and-description]
 後の行に書かれたテキストは、`:` の後に 1 行で印字します。
-その前にコメント行がある文は、
-書かれたまま残します。 [fixture: accessibility-statements/text-on-next-line-joined]
+その前にコメント行がある文は、書かれたまま残します。
+[fixture: accessibility-statements/text-on-next-line-joined]
 [fixture: accessibility-statements/text-with-comment-line-kept]
 [corpus fixture: er/lex-acc-title-line-feed-after-colon]
 
@@ -1016,7 +1089,8 @@ erDiagram
 行は作者のテキストで、印字は整形しないからです。
 `}` は文と同じ段に置きます。
 `{` の行にあるテキストは、離して書かれていれば、
-波括弧の内側に空白を 1 つ置きます。 [fixture: accessibility-statements/block-lines-kept]
+波括弧の内側に空白を 1 つ置きます。
+[fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
 [fixture: accessibility-statements/block-text-on-opening-line]
 空のブロックは文の 1 つで、前の説明を Db に残します。
@@ -1025,9 +1099,10 @@ erDiagram
 すでに空の内側は空のまま、`accDescr{}` は接したままです。
 空白で囲む本文がないので、Db が同じ形の選択は、
 [flowchart のアクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)、
-agentflow、
-usecase に合わせます。 [test: accessibility revisions: er empty-description-nbsp]
-コメントやディレクティブがあるブロックの配置は従来どおり保ちます。 [fixture: accessibility-statements/empty-blocks]
+agentflow、 usecase に合わせます。
+[test: accessibility revisions: er empty-description-nbsp]
+コメントやディレクティブがあるブロックの配置は従来どおり保ちます。
+[fixture: accessibility-statements/empty-blocks]
 [fixture: accessibility-statements/empty-block-with-directive-or-comment-line]
 [corpus fixture: er/gram-acc-descr-block-empty]
 
@@ -1047,14 +1122,14 @@ subgraph の中でも 1 桁目を保ちます（diagrams/er.md、方向の行）
 方向の後に語の境界は要らず、方向は後の行にあってもよく、その場合、
 文には含まれません。
 数えるのは最初に印字される行です。
-後の行に書かれたテキストは `:` の行に寄せるので（[複数行の文](#複数行の文)を参照）、
-`accTitle:`、改行、`direction LR` は、
-1 桁目の `accTitle: direction LR` として印字します。
+後の行に書かれたテキストは `:`
+の行に寄せるので（[複数行の文](#複数行の文)を参照）、 `accTitle:`、改行、
+`direction LR` は、 1 桁目の `accTitle: direction LR` として印字します。
 `direction` と方向の間のコメント行とディレクティブは、
 字句解析器がそれらなしにテキストを読むので、飛ばし（diagrams/er.md、
 単位の間のトリビア）、空行も同じです。
-方向が続かなければ、
-その文はほかの文と同じに字下げします。 [fixture: accessibility-statements/first-column-for-direction-text]
+方向が続かなければ、その文はほかの文と同じに字下げします。
+[fixture: accessibility-statements/first-column-for-direction-text]
 [fixture: accessibility-statements/first-column-direction-case-insensitive]
 [fixture: accessibility-statements/first-column-value-touching-text]
 [fixture: accessibility-statements/first-column-tab-before-value]
@@ -1080,7 +1155,8 @@ subgraph の中でも 1 桁目を保ちます（diagrams/er.md、方向の行）
 [corpus fixture: er/lex-direction-value-tab]
 [corpus fixture: er/lex-direction-value-next-line]
 
-入力 ([accessibility-statements/text-on-next-line-joined-input.mmd](../tests/fixtures/er/accessibility-statements/text-on-next-line-joined-input.mmd)):
+入力
+([accessibility-statements/text-on-next-line-joined-input.mmd](../tests/fixtures/er/accessibility-statements/text-on-next-line-joined-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1091,7 +1167,8 @@ accDescr:
   D
 ```
 
-出力 ([accessibility-statements/text-on-next-line-joined-output.mmd](../tests/fixtures/er/accessibility-statements/text-on-next-line-joined-output.mmd)):
+出力
+([accessibility-statements/text-on-next-line-joined-output.mmd](../tests/fixtures/er/accessibility-statements/text-on-next-line-joined-output.mmd)):
 
 ```mmd
 erDiagram
@@ -1099,7 +1176,8 @@ erDiagram
   accDescr: D
 ```
 
-入力 ([accessibility-statements/block-lines-kept-input.mmd](../tests/fixtures/er/accessibility-statements/block-lines-kept-input.mmd)):
+入力
+([accessibility-statements/block-lines-kept-input.mmd](../tests/fixtures/er/accessibility-statements/block-lines-kept-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1114,7 +1192,8 @@ accDescr {
 end
 ```
 
-出力 ([accessibility-statements/block-lines-kept-output.mmd](../tests/fixtures/er/accessibility-statements/block-lines-kept-output.mmd)):
+出力
+([accessibility-statements/block-lines-kept-output.mmd](../tests/fixtures/er/accessibility-statements/block-lines-kept-output.mmd)):
 
 ```mmd
 erDiagram
@@ -1129,7 +1208,8 @@ erDiagram
   end
 ```
 
-入力 ([accessibility-statements/first-column-for-direction-text-input.mmd](../tests/fixtures/er/accessibility-statements/first-column-for-direction-text-input.mmd)):
+入力
+([accessibility-statements/first-column-for-direction-text-input.mmd](../tests/fixtures/er/accessibility-statements/first-column-for-direction-text-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1142,7 +1222,8 @@ A
 end
 ```
 
-出力 ([accessibility-statements/first-column-for-direction-text-output.mmd](../tests/fixtures/er/accessibility-statements/first-column-for-direction-text-output.mmd)):
+出力
+([accessibility-statements/first-column-for-direction-text-output.mmd](../tests/fixtures/er/accessibility-statements/first-column-for-direction-text-output.mmd)):
 
 ```mmd
 erDiagram
@@ -1159,17 +1240,17 @@ accTitle: direction BT
 
 コメント行、つまり行頭の `%%` は、周りの文と同じ段に置き、
 テキストは書かれたまま残します。
-この図にほかのコメントはありません（diagrams/er.md、
-コメント）。 [fixture: comments/kept]
-[fixture: comments/in-blocks]
-[fixture: comments/last-in-body]
-[fixture: comments/text-kept]
-ヘッダーより前のコメント行は 1 桁目に置きます。 [fixture: comments/before-header]
-テキストの末尾のコメント行は、行に単独で置き、
-改行を足します。 [fixture: comments/after-last-statement-without-line-break]
+この図にほかのコメントはありません（diagrams/er.md、コメント）。
+[fixture: comments/kept] [fixture: comments/in-blocks]
+[fixture: comments/last-in-body] [fixture: comments/text-kept]
+ヘッダーより前のコメント行は 1 桁目に置きます。
+[fixture: comments/before-header]
+テキストの末尾のコメント行は、行に単独で置き、改行を足します。
+[fixture: comments/after-last-statement-without-line-break]
 [fixture: comments/after-header-without-line-break]
 
-入力 ([comments/in-blocks-input.mmd](../tests/fixtures/er/comments/in-blocks-input.mmd)):
+入力
+([comments/in-blocks-input.mmd](../tests/fixtures/er/comments/in-blocks-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1185,7 +1266,8 @@ B
 end
 ```
 
-出力 ([comments/in-blocks-output.mmd](../tests/fixtures/er/comments/in-blocks-output.mmd)):
+出力
+([comments/in-blocks-output.mmd](../tests/fixtures/er/comments/in-blocks-output.mmd)):
 
 ```mmd
 erDiagram
@@ -1201,7 +1283,8 @@ erDiagram
   end
 ```
 
-入力 ([comments/last-in-body-input.mmd](../tests/fixtures/er/comments/last-in-body-input.mmd)):
+入力
+([comments/last-in-body-input.mmd](../tests/fixtures/er/comments/last-in-body-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1211,7 +1294,8 @@ A
 %% c2
 ```
 
-出力 ([comments/last-in-body-output.mmd](../tests/fixtures/er/comments/last-in-body-output.mmd)):
+出力
+([comments/last-in-body-output.mmd](../tests/fixtures/er/comments/last-in-body-output.mmd)):
 
 ```mmd
 erDiagram
@@ -1225,17 +1309,16 @@ erDiagram
 
 行に単独で置かれたディレクティブは、周りの文と同じ段に置きます。
 同じ印字行の中では、両側に空白が書かれているかどうかを保ちます。
-空白があれば空白 1 つを置き、
-トークンに接していれば接したままにします。 [fixture: directives/kept]
-[fixture: directives/before-header]
+空白があれば空白 1 つを置き、トークンに接していれば接したままにします。
+[fixture: directives/kept] [fixture: directives/before-header]
 [fixture: directives/after-header-on-same-line]
 [fixture: directives/after-header-touching-kept]
 [fixture: directives/whitespace-on-both-sides-collapsed]
 [fixture: directives/touching-one-side-kept]
 [fixture: directives/after-statement-at-end-of-line]
 [fixture: directives/in-blocks]
-閉じていないディレクティブはテキストの残りを取り込むので、
-書かれたまま残します。 [fixture: directives/unclosed-at-end-of-text-kept]
+閉じていないディレクティブはテキストの残りを取り込むので、書かれたまま残します。
+[fixture: directives/unclosed-at-end-of-text-kept]
 [fixture: directives/unclosed-after-statement-kept]
 
 元は同じ行にあった単位を別の行へ分けるときは、
@@ -1244,7 +1327,8 @@ erDiagram
 
 [fixture: er/directives/whitespace-on-both-sides-collapsed]
 
-入力 ([directives/kept-input.mmd](../tests/fixtures/er/directives/kept-input.mmd)):
+入力
+([directives/kept-input.mmd](../tests/fixtures/er/directives/kept-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1254,7 +1338,8 @@ A
 B
 ```
 
-出力 ([directives/kept-output.mmd](../tests/fixtures/er/directives/kept-output.mmd)):
+出力
+([directives/kept-output.mmd](../tests/fixtures/er/directives/kept-output.mmd)):
 
 ```mmd
 erDiagram
@@ -1264,7 +1349,8 @@ erDiagram
   B
 ```
 
-入力 ([directives/touching-one-side-kept-input.mmd](../tests/fixtures/er/directives/touching-one-side-kept-input.mmd)):
+入力
+([directives/touching-one-side-kept-input.mmd](../tests/fixtures/er/directives/touching-one-side-kept-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1272,7 +1358,8 @@ A %%{init: {}}%%||--o{ B : x
 A||--o{ %%{init: {}}%%B : y
 ```
 
-出力 ([directives/touching-one-side-kept-output.mmd](../tests/fixtures/er/directives/touching-one-side-kept-output.mmd)):
+出力
+([directives/touching-one-side-kept-output.mmd](../tests/fixtures/er/directives/touching-one-side-kept-output.mmd)):
 
 ```mmd
 erDiagram
@@ -1280,7 +1367,8 @@ erDiagram
   A ||--o{ %%{init: {}}%%B : y
 ```
 
-入力 ([directives/whitespace-on-both-sides-collapsed-input.mmd](../tests/fixtures/er/directives/whitespace-on-both-sides-collapsed-input.mmd)):
+入力
+([directives/whitespace-on-both-sides-collapsed-input.mmd](../tests/fixtures/er/directives/whitespace-on-both-sides-collapsed-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1288,7 +1376,8 @@ A   %%{init: {}}%%    ||--o{ B : x
 C  %%{init: {}}%%  D
 ```
 
-出力 ([directives/whitespace-on-both-sides-collapsed-output.mmd](../tests/fixtures/er/directives/whitespace-on-both-sides-collapsed-output.mmd)):
+出力
+([directives/whitespace-on-both-sides-collapsed-output.mmd](../tests/fixtures/er/directives/whitespace-on-both-sides-collapsed-output.mmd)):
 
 ```mmd
 erDiagram
@@ -1301,21 +1390,24 @@ erDiagram
 
 flowchart と同じです。
 `---` の行の間の YAML は Prettier の YAML 整形で整形し、 `---` の行は、
-各行末の空白とタブも含めて、
-書かれたまま残します。 [fixture: frontmatter-yaml/formatted]
+各行末の空白とタブも含めて、書かれたまま残します。
+[fixture: frontmatter-yaml/formatted]
 [fixture: frontmatter-yaml/config-formatted]
 [fixture: frontmatter-yaml/closing-delimiter-whitespace-kept]
 Prettier が読めない YAML、字下げされた `---` の行、
 整形後の YAML の行が `---` の行になる場合、および、`<` の後に文字、数字、
 `_` が続く YAML は、書かれたまま残します。
-引用符を変えると mermaid.js の読みが変わりうるからです。 [fixture: frontmatter-yaml/malformed-kept]
+引用符を変えると mermaid.js の読みが変わりうるからです。
+[fixture: frontmatter-yaml/malformed-kept]
 [fixture: frontmatter-yaml/indented-delimiters-kept]
 [fixture: frontmatter-yaml/delimiter-line-kept]
 [fixture: frontmatter-yaml/html-tag-kept]
 [fixture: frontmatter-yaml/less-than-before-other-formatted]
-フロントマターとヘッダーの間のコメント行は残します。 [fixture: frontmatter-yaml/comment-after-frontmatter-before-header]
+フロントマターとヘッダーの間のコメント行は残します。
+[fixture: frontmatter-yaml/comment-after-frontmatter-before-header]
 
-入力 ([frontmatter-yaml/formatted-input.mmd](../tests/fixtures/er/frontmatter-yaml/formatted-input.mmd)):
+入力
+([frontmatter-yaml/formatted-input.mmd](../tests/fixtures/er/frontmatter-yaml/formatted-input.mmd)):
 
 ```mmd
 ---
@@ -1325,7 +1417,8 @@ erDiagram
 A
 ```
 
-出力 ([frontmatter-yaml/formatted-output.mmd](../tests/fixtures/er/frontmatter-yaml/formatted-output.mmd)):
+出力
+([frontmatter-yaml/formatted-output.mmd](../tests/fixtures/er/frontmatter-yaml/formatted-output.mmd)):
 
 ```mmd
 ---
@@ -1335,7 +1428,8 @@ erDiagram
   A
 ```
 
-入力 ([frontmatter-yaml/delimiter-line-kept-input.mmd](../tests/fixtures/er/frontmatter-yaml/delimiter-line-kept-input.mmd)):
+入力
+([frontmatter-yaml/delimiter-line-kept-input.mmd](../tests/fixtures/er/frontmatter-yaml/delimiter-line-kept-input.mmd)):
 
 ```mmd
 ---
@@ -1347,7 +1441,8 @@ erDiagram
 A
 ```
 
-出力 ([frontmatter-yaml/delimiter-line-kept-output.mmd](../tests/fixtures/er/frontmatter-yaml/delimiter-line-kept-output.mmd)):
+出力
+([frontmatter-yaml/delimiter-line-kept-output.mmd](../tests/fixtures/er/frontmatter-yaml/delimiter-line-kept-output.mmd)):
 
 ```mmd
 ---
@@ -1363,17 +1458,20 @@ erDiagram
 
 引用符で書かれた役割、属性のコメント、バッククォートの語は、
 複数行に書かれていれば、値の一部なので、
-中の改行と空白も含めて書かれたまま残します。 [fixture: multi-line-values/role-string-kept]
+中の改行と空白も含めて書かれたまま残します。
+[fixture: multi-line-values/role-string-kept]
 [fixture: multi-line-values/attribute-strings-kept]
 [corpus fixture: er/lex-role-string-line-feed]
 [corpus fixture: er/lex-comment-line-feed]
-そのような文字列の中のコメント行は文字列の一部で、
-文字列は書かれたまま残します。 [fixture: multi-line-values/comment-line-inside-string-kept]
+そのような文字列の中のコメント行は文字列の一部で、文字列は書かれたまま残します。
+[fixture: multi-line-values/comment-line-inside-string-kept]
 [corpus fixture: er/tokens-comment-line-in-role-string]
 `accDescr` ブロックの行も、
-書かれたまま残します（[アクセシビリティの文](#アクセシビリティの文)を参照）。 [fixture: multi-line-values/description-block-lines-kept]
+書かれたまま残します（[アクセシビリティの文](#アクセシビリティの文)を参照）。
+[fixture: multi-line-values/description-block-lines-kept]
 
-入力 ([multi-line-values/role-string-kept-input.mmd](../tests/fixtures/er/multi-line-values/role-string-kept-input.mmd)):
+入力
+([multi-line-values/role-string-kept-input.mmd](../tests/fixtures/er/multi-line-values/role-string-kept-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1382,7 +1480,8 @@ A ||--o{ B : "line one
 C
 ```
 
-出力 ([multi-line-values/role-string-kept-output.mmd](../tests/fixtures/er/multi-line-values/role-string-kept-output.mmd)):
+出力
+([multi-line-values/role-string-kept-output.mmd](../tests/fixtures/er/multi-line-values/role-string-kept-output.mmd)):
 
 ```mmd
 erDiagram
@@ -1391,7 +1490,8 @@ erDiagram
   C
 ```
 
-入力 ([multi-line-values/attribute-strings-kept-input.mmd](../tests/fixtures/er/multi-line-values/attribute-strings-kept-input.mmd)):
+入力
+([multi-line-values/attribute-strings-kept-input.mmd](../tests/fixtures/er/multi-line-values/attribute-strings-kept-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1403,7 +1503,8 @@ int a "line one
 }
 ```
 
-出力 ([multi-line-values/attribute-strings-kept-output.mmd](../tests/fixtures/er/multi-line-values/attribute-strings-kept-output.mmd)):
+出力
+([multi-line-values/attribute-strings-kept-output.mmd](../tests/fixtures/er/multi-line-values/attribute-strings-kept-output.mmd)):
 
 ```mmd
 erDiagram
@@ -1420,15 +1521,18 @@ erDiagram
 mermaid.js が複数行にわたって読む文は、
 改行が字句解析器にとって空白である所では 1 行に印字します。
 `accTitle` と `accDescr` の `:` の後、 `direction` と値の間、
-空白の後の `classDef` と `style` の文の中です。 [fixture: multi-line-statements/accessibility-text-joined]
+空白の後の `classDef` と `style` の文の中です。
+[fixture: multi-line-statements/accessibility-text-joined]
 [fixture: multi-line-statements/direction-value-joined]
 [fixture: multi-line-statements/style-over-lines-joined]
 コメント行やディレクティブがある文は、書かれたまま残します。
 コメント行は、置かれた行の残りを取り込み、ディレクティブのある行の空白は、
-ディレクティブと一緒に読まれるからです。 [fixture: multi-line-statements/comment-line-inside-kept]
+ディレクティブと一緒に読まれるからです。
+[fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 
-入力 ([multi-line-statements/accessibility-text-joined-input.mmd](../tests/fixtures/er/multi-line-statements/accessibility-text-joined-input.mmd)):
+入力
+([multi-line-statements/accessibility-text-joined-input.mmd](../tests/fixtures/er/multi-line-statements/accessibility-text-joined-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1439,7 +1543,8 @@ accDescr:
  D
 ```
 
-出力 ([multi-line-statements/accessibility-text-joined-output.mmd](../tests/fixtures/er/multi-line-statements/accessibility-text-joined-output.mmd)):
+出力
+([multi-line-statements/accessibility-text-joined-output.mmd](../tests/fixtures/er/multi-line-statements/accessibility-text-joined-output.mmd)):
 
 ```mmd
 erDiagram
@@ -1447,7 +1552,8 @@ erDiagram
   accDescr: D
 ```
 
-入力 ([multi-line-statements/directive-inside-kept-input.mmd](../tests/fixtures/er/multi-line-statements/directive-inside-kept-input.mmd)):
+入力
+([multi-line-statements/directive-inside-kept-input.mmd](../tests/fixtures/er/multi-line-statements/directive-inside-kept-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1459,7 +1565,8 @@ accTitle:
 T
 ```
 
-出力 ([multi-line-statements/directive-inside-kept-output.mmd](../tests/fixtures/er/multi-line-statements/directive-inside-kept-output.mmd)):
+出力
+([multi-line-statements/directive-inside-kept-output.mmd](../tests/fixtures/er/multi-line-statements/directive-inside-kept-output.mmd)):
 
 ```mmd
 erDiagram
@@ -1478,8 +1585,7 @@ U+2028 や U+2029 を含む空白は、トークンの間で書かれたまま�
 ER 図では、空白そのものを読む規則を除き、これらは名前の文字です。
 文字が見えないので、例は文字列で書き、 `\u2028` を U+2028、
 `\n` を改行とします。 [test: U+2028 inside an entity name]
-[test: U+2029 inside a role name]
-[test: U+2028 before the colon of a role]
+[test: U+2029 inside a role name] [test: U+2028 before the colon of a role]
 [test: U+2028 between direction and its value]
 [test: U+2028 in the text after a direction]
 [test: U+2028 inside an attribute name]

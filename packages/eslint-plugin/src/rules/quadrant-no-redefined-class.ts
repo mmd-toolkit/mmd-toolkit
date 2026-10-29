@@ -38,30 +38,24 @@ export const quadrantNoRedefinedClass: MermaidRuleDefinition<{
     schema: [],
     messages: {
       redefined:
-        "mermaid.js replaces the styles of the class `{{name}}`, set on line {{line}}, with those of this `classDef`.",
+        "mermaid.js replaces the styles of the class `{{name}}`, set earlier, with those of this `classDef`.",
     },
   },
   create(context) {
-    const classes = new Map<
-      string,
-      { styles: Map<string, string | number>; line: number }
-    >()
+    const classes = new Map<string, Map<string, string | number>>()
     return {
       QuadrantClassDefStatement(node) {
         const name = node.name.name
         const styles = stylesOf(node.styles)
         const earlier = classes.get(name)
-        if (
-          earlier !== undefined &&
-          dropsOrChangesStyles(earlier.styles, styles)
-        ) {
+        if (earlier !== undefined && dropsOrChangesStyles(earlier, styles)) {
           context.report({
             node,
             messageId: "redefined",
-            data: { name, line: String(earlier.line) },
+            data: { name },
           })
         }
-        classes.set(name, { styles, line: node.loc.start.line })
+        classes.set(name, styles)
       },
     }
   },

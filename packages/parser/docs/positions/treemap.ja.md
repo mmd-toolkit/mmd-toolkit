@@ -5,8 +5,7 @@
 範囲は [treemap のソース木](../../../spec/docs/ast/treemap.md)に従い、
 元の UTF-16 オフセットとソースの行終端を使う。
 Root は入力全体を覆う。 [fixture: treemap/gram-written-tree]
-[fixture: treemap/line-name-values]
-[fixture: treemap/line-crlf]
+[fixture: treemap/line-name-values] [fixture: treemap/line-crlf]
 
 ## 範囲
 
@@ -26,9 +25,8 @@ leaf は数値またはセレクターで終わり、children を持たない。
 範囲は連続し、名前の開始と一致するとは限らず、兄弟同士は重ならない。
 最初の所有構文より前の字下げと、無関係な後続 trivia は範囲を延ばさない。
 割り当てた字下げは、前の行の連続や directive をまたぐ場合も字句の数を保つ。
-構成要素間の隙間は範囲内に残り、
-子ノードにはならない。 [fixture: treemap/gram-written-tree]
-[fixture: treemap/gram-adjacent-sections]
+構成要素間の隙間は範囲内に残り、子ノードにはならない。
+[fixture: treemap/gram-written-tree] [fixture: treemap/gram-adjacent-sections]
 [fixture: treemap/db-empty-names] [fixture: treemap/db-section-tail-space]
 [fixture: treemap/db-leaf-tail-tab]
 [fixture: treemap/gram-indent-from-whitespace-line]
@@ -45,8 +43,8 @@ leaf は数値またはセレクターで終わり、children を持たない。
 空ブロックと繰り返された文も含む。
 最初の階層ノードより前と最後より後の独立文は body に残る。
 所有する場所は、図全体に対する文の意味を限定しない。
-共通コメント、directive、選ばれたセミコロン、
-空行は gap の項目を作らない。 [fixture: treemap/lex-class-style-crosses-blank-line]
+共通コメント、directive、選ばれたセミコロン、空行は gap の項目を作らない。
+[fixture: treemap/lex-class-style-crosses-blank-line]
 [fixture: treemap/gram-written-tree]
 [fixture: treemap/gram-nesting-title-before-child]
 [fixture: treemap/gram-nesting-acctitle-before-child]
@@ -67,8 +65,8 @@ leaf は数値またはセレクターで終わり、children を持たない。
 それがなければ最後のスタイル文字まで、style が null なら名前までとなる。
 最後の構成要素を越える区切り空白や、
 共通行規則が無視するセミコロンは範囲を延長しない。
-スタイル全体は、
-後続の行やクラス定義に見える内容を含み得る。 [fixture: treemap/gram-written-tree]
+スタイル全体は、後続の行やクラス定義に見える内容を含み得る。
+[fixture: treemap/gram-written-tree]
 [fixture: treemap/gram-class-empty-with-semicolon]
 [fixture: treemap/db-class-empty]
 [fixture: treemap/gram-class-whitespace-style-null]
@@ -85,8 +83,7 @@ title は値まで、null ならキーワードまでとなる。
 [fixture: treemap/common-title-one-space]
 [fixture: treemap/common-title-one-tab]
 [fixture: treemap/common-title-directive-only]
-[fixture: treemap/common-acctitle-eof]
-[fixture: treemap/common-description-eof]
+[fixture: treemap/common-acctitle-eof] [fixture: treemap/common-description-eof]
 [fixture: treemap/common-repeat-empty]
 [fixture: treemap/gram-title-block-node-adjacent]
 [fixture: treemap/gram-description-block-acctitle-adjacent]
@@ -96,15 +93,14 @@ TreemapLiteral は自身の空白を含む、書かれた行・スタイル値�
 null フィールドに literal はない。
 Identifier は名前だけ、StringLiteral は両引用符を含む。
 NumericLiteral は value が読む接頭部だけでなく、書かれた数値全体を覆う。
-値内の共通 trivia は value から除き、
-raw と範囲はソースを保持する。 [fixture: treemap/common-title-two-spaces]
+値内の共通 trivia は value から除き、 raw と範囲はソースを保持する。
+[fixture: treemap/common-title-two-spaces]
 [fixture: treemap/common-acctitle-whitespace-only]
 [fixture: treemap/common-description-whitespace-only]
 [fixture: treemap/common-block-whitespace]
 [fixture: treemap/db-style-whitespace]
 [fixture: treemap/common-block-directive-only]
 [fixture: treemap/common-block-comment-only]
-[fixture: treemap/gram-written-tree]
-[fixture: treemap/db-number-multiple-dots]
+[fixture: treemap/gram-written-tree] [fixture: treemap/db-number-multiple-dots]
 [fixture: treemap/directive-name-middle] [fixture: treemap/directive-style]
 [fixture: treemap/common-block-comment] [fixture: treemap/style-fields]

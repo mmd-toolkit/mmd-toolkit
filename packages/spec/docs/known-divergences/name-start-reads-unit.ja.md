@@ -4,7 +4,8 @@
 
 図種: class。
 これは、
-この仕様の mermaid.js との [既知の差異](../known-divergences.ja.md) の 1 つです。
+この仕様の mermaid.js との [既知の差異](../known-divergences.ja.md) の 1
+つです。
 
 ## 構文
 
@@ -19,10 +20,11 @@ classDiagram
 ```
 
 バッククォートの名前は、`` ` ``、`` ` `` 以外の文字、`` ` `` で、
-ジェネリクスの型のテキストは、
-2 つの `~` の間の `~` 以外の文字です。 [fixture: class/spec-class-diagram-c327a7be]
+ジェネリクスの型のテキストは、 2 つの `~` の間の `~` 以外の文字です。
+[fixture: class/spec-class-diagram-c327a7be]
 [fixture: class/lex-generic-plain-type]
-[文字列、バッククォートの名前、ジェネリクスの型](../diagrams/class.ja.md#文字列バッククォートの名前ジェネリクスの型) を参照してください。
+[文字列、バッククォートの名前、ジェネリクスの型](../diagrams/class.ja.md#文字列バッククォートの名前ジェネリクスの型)
+を参照してください。
 
 この文書は、そのテキストが `"`、（バッククォートでは）`~`、`<<` か `>>`、
 キーワード `cssClass`、`callback`、`link`、`click`、`note`、
@@ -30,8 +32,8 @@ classDiagram
 これらを後に持つテキストや、これらで始まる長い語は、
 mermaid.js もこの仕様も同じに読みます。
 `` class `x note` `` と `` class `notex` `` は、
-どちらでもクラス `x note` と `notex` を宣言します。 [fixture: class/lex-backquote-keyword-later]
-[fixture:
+どちらでもクラス `x note` と `notex` を宣言します。
+[fixture: class/lex-backquote-keyword-later] [fixture:
 class/lex-backquote-keyword-prefix]
 
 ## 差異
@@ -89,8 +91,8 @@ class/lex-backquote-keyword-prefix]
 | 5   | 多重度 `1` の A からの関係 | 型 `"1"` を持つ A からの関係 |
 | 6   | ノート `x`                 | 拒否                         |
 
-表で比較した読みを次の fixture が記録します。 [fixture: class/div-backquote-keyword-escaped]
-[fixture:
+表で比較した読みを次の fixture が記録します。
+[fixture: class/div-backquote-keyword-escaped] [fixture:
 class/div-backquote-starts-with-quote] [fixture:
 class/div-generic-starts-with-keyword] [fixture:
 class/div-backquote-around-string] [fixture: class/div-generic-around-string]
@@ -108,7 +110,8 @@ class/div-backquote-around-string] [fixture: class/div-generic-around-string]
 例 4 から 6 のように、読んだものがたまたまその文法に合うと、
 バッククォートや `~` のないテキストが表す文を読みます。
 この仕様は、バッククォートや `~` の間のテキストを、
-何で始まっても名前や型として読みます。 [fixture: class/div-backquote-starts-with-double-less-than]
+何で始まっても名前や型として読みます。
+[fixture: class/div-backquote-starts-with-double-less-than]
 [fixture: class/div-backquote-starts-with-double-greater-than]
 [fixture: class/div-generic-starts-with-double-less-than]
 [fixture: class/div-generic-starts-with-double-greater-than]
@@ -135,11 +138,14 @@ mermaid.js が同じに読む図を書くには、そのような名前や型を
 ## mermaid.js がそう読む理由
 
 mermaid.js の字句解析器は、バッククォートの名前とジェネリクスの型のテキストを、
-それぞれの状態で読みます（[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)）。
+それぞれの状態で読みます（mermaid.js の
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)）。
 その規則のいくつかは、どの状態でも当てはまります。
 キーワード、`<<`、
-`>>` （[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L89-L104)）、
-文字列の始まり（[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L62-L62)）、
+`>>` （mermaid.js の
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L89-L104)）、
+文字列の始まり（mermaid.js の
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L62-L62)）、
 ジェネリクスの型の始まりです。
 字句解析器は、規則をファイルの順に試し、最初に当たったものを取ります。
 これらの規則は、バッククォートの名前のテキストの規則より前にあり、
@@ -149,13 +155,16 @@ mermaid.js の字句解析器は、バッククォートの名前とジェネリ
 ## この仕様の規則と、その理由
 
 この仕様では、バッククォートの名前のテキストは次の `` ` `` まで、
-ジェネリクスの型のテキストは次の `~` まで続き、
-何で始まっても同じです（[文字列、バッククォートの名前、ジェネリクスの型](../diagrams/class.ja.md#文字列バッククォートの名前ジェネリクスの型) を参照）。
+ジェネリクスの型のテキストは次の `~` まで続き、何で始まっても同じです。
+[文字列、バッククォートの名前、ジェネリクスの型](../diagrams/class.ja.md#文字列バッククォートの名前ジェネリクスの型)
+を参照してください。
 
 バッククォートの名前が、後には `note` を持てるのに `note` で始まれないことは、
 mermaid.js の字句解析器の規則の順から生じるもので、
 仕様が構文の規則として述べるものではありません。
-これは既知の差異の 2 つ目の理由に当たります（[known-divergences.ja.md](../known-divergences.ja.md) を参照）。
+これは既知の差異の 2
+つ目の理由に当たります（[known-divergences.ja.md](../known-divergences.ja.md)
+を参照）。
 mermaid.js は 2023 年に、文字列について同じ順を替え、
 文字列がキーワードで始まれるようにしました。
 バッククォートの名前とジェネリクスの型の規則は、
@@ -164,9 +173,11 @@ mermaid.js は 2023 年に、文字列について同じ順を替え、
 ## mermaid.js の文書と issue
 
 - mermaid.js の class 図の文書は、
-  [Class labels](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/classDiagram.md#L161-L168) で「You
-  can also use backticks to escape special characters in the label」と書き、
-  [Generic Types](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/classDiagram.md#L215-L217) でジェネリクスの型を説明しています。
+  [Class labels](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/classDiagram.md#L161-L168)
+  で「You can also use backticks to escape special characters in the
+  label」と書き、
+  [Generic Types](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/classDiagram.md#L215-L217)
+  でジェネリクスの型を説明しています。
   どちらも、テキストがキーワードで始まれないとは書いていません。
 - [Issue #4590](https://github.com/mermaid-js/mermaid/issues/4590) 「Note "note"
   throws an error」は、文字列が `note` のノートが拒否されることを報告しました。
@@ -174,11 +185,12 @@ mermaid.js は 2023 年に、文字列について同じ順を替え、
   と返信しています。
   ラベル `Type: Bug / Error`、`Graph: Class`、`Internals: Parser` などを持ち、
   2023-07-11 に、
-  マージされた [pull request #4597](https://github.com/mermaid-js/mermaid/pull/4597) 「allow
+  マージされた
+  [pull request #4597](https://github.com/mermaid-js/mermaid/pull/4597) 「allow
   notes identical to keywords」で閉じられました。
   この pull request は、文字列のテキストの規則を共有の規則より前に動かしました。
-  固定した版は、
-  そのようなノートを書かれたとおりに読みます。 [fixture: class/spec-class-diagram-61cad801]
+  固定した版は、そのようなノートを書かれたとおりに読みます。
+  [fixture: class/spec-class-diagram-61cad801]
 - [Issue #6076](https://github.com/mermaid-js/mermaid/issues/6076) 「Allow
   puncutation in class names」は、2026-10-02 の時点で open で、
   ラベルは `Type: Enhancement`、`Status: Approved`、`Contributor needed`、

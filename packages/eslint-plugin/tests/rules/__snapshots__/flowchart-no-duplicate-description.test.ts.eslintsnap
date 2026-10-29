@@ -11,14 +11,14 @@ Code:
     |   ^~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   accDescr: first
           3 |
-      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   accDescr: second
@@ -36,14 +36,14 @@ Code:
     |   ^~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   accDescr { first }
           3 |
-      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   accDescr: second
@@ -64,7 +64,7 @@ Code:
     |   ^~~~~~~~~~~~~~~ [1]
   7 |
 
-[1] mermaid.js replaces the description set on line 4 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -74,7 +74,7 @@ Code:
           4 |     accDescr: inner
           5 |   end
           6 |
-      - Remove the statement on line 4 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   subgraph S
@@ -98,7 +98,7 @@ Code:
     |   ^~~~~~~~~~~ [2]
   6 |
 
-[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -107,14 +107,14 @@ Code:
           3 |   accDescr: a
           4 |   accDescr: a
           5 |
-      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   A
           3 |   accDescr: b
           4 |   accDescr: a
           5 |
-[2] mermaid.js replaces the description set on line 4 with the one of this `accDescr`.
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -123,7 +123,7 @@ Code:
           3 |   accDescr: a
           4 |   accDescr: b
           5 |
-      - Remove the statement on line 4 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   A
@@ -153,7 +153,7 @@ Code:
     | ~~~ [1]
  11 |
 
-[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -164,7 +164,7 @@ Code:
           5 |     e
           6 |   }
           7 |
-      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   A
@@ -187,7 +187,7 @@ Code:
     | ^~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -195,7 +195,7 @@ Code:
           2 | A
           3 | accDescr: x
           4 |
-      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 | A
@@ -214,14 +214,14 @@ Code:
   4 | accDescr:
     | ^~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 | A
           3 | accDescr { x }
-      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 | A
@@ -239,14 +239,14 @@ Code:
   4 | accDescr:
     | ^~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 | A
           3 | accDescr: x
-      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 | A
@@ -264,14 +264,14 @@ Code:
     | ^~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 | accDescr { first }
           3 |
-      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 | accDescr: second
@@ -292,7 +292,7 @@ Code:
     | ^~~~~~~~~~~~~~~ [1]
   7 |
 
-[1] mermaid.js replaces the description set on line 4 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -302,7 +302,7 @@ Code:
           4 | accDescr: inner
           5 | end
           6 |
-      - Remove the statement on line 4 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 | subgraph S
@@ -323,14 +323,14 @@ Code:
     | ^~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 | accDescr: first
           3 |
-      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 | accDescr: second
@@ -351,7 +351,7 @@ Code:
   6 | A
   7 |
 
-[1] mermaid.js replaces the description set on line 4 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -361,7 +361,7 @@ Code:
           4 | accDescr: c
           5 | A
           6 |
-      - Remove the statement on line 4 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 | accTitle: a
@@ -381,13 +381,13 @@ Code:
   3 |   accDescr { style:#b };
     |   ^~~~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   accDescr { x }
-      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   accDescr { style:#b };
@@ -404,7 +404,7 @@ Code:
     |                   ^~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -412,7 +412,7 @@ Code:
           2 |   A
           3 |   accDescr { a };
           4 |
-      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   A
@@ -433,7 +433,7 @@ Code:
     |   ^~~~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -442,7 +442,7 @@ Code:
           3 |   accDescr: a
           4 | %% c
           5 |
-      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   A
@@ -463,7 +463,7 @@ Code:
     |   ^~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -471,7 +471,7 @@ Code:
           2 |   A
           3 |   accDescr: a
           4 |
-      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   A
@@ -492,7 +492,7 @@ Code:
     |   ^~~~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -501,7 +501,7 @@ Code:
           3 |   accDescr: a
           4 | %%{init: {}}%%
           5 |
-      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   A
@@ -517,12 +517,12 @@ Filename: tests/fixtures/rules/flowchart-no-duplicate-description/invalid/flowch
 Code:
   1 | flowchart LR  accDescr: a  accDescr: b
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR  accDescr: a
-      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR  accDescr: b
 ---
@@ -539,7 +539,7 @@ Code:
     |   ^~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -547,7 +547,7 @@ Code:
           2 |   accDescr: a
           3 |   accDescr {}
           4 |
-      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   accDescr {}
@@ -568,14 +568,14 @@ Code:
     | ~~~ [1]
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   accDescr: a
           3 |
-      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   accDescr:
@@ -598,14 +598,14 @@ Code:
     | ~~~ [1]
   6 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   accDescr: a
           3 |
-      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   accDescr:
@@ -629,14 +629,14 @@ Code:
     | ~~~ [1]
   6 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   accDescr: a
           3 |
-      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   accDescr:
@@ -660,14 +660,14 @@ Code:
     | ~~~ [1]
   6 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   accDescr: a
           3 |
-      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   accDescr:
@@ -689,7 +689,7 @@ Code:
     |   ^~~~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -698,7 +698,7 @@ Code:
           3 |   accDescr: a
           4 |
           5 |
-      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   A
@@ -718,14 +718,14 @@ Code:
     |   ^~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart-elk LR
           2 |   accDescr: first
           3 |
-      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart-elk LR
           2 |   accDescr: second
@@ -743,14 +743,14 @@ Code:
     |   ^~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
           1 | graph LR
           2 |   accDescr: first
           3 |
-      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | graph LR
           2 |   accDescr: second
@@ -768,14 +768,14 @@ Code:
     |   ^~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
           1 | swimlane-beta LR
           2 |   accDescr: first
           3 |
-      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | swimlane-beta LR
           2 |   accDescr: second
@@ -794,7 +794,7 @@ Code:
   4 |   A
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -802,7 +802,7 @@ Code:
           2 |   accDescr: a
           3 |   A
           4 |
-      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   accDescr { style:#b };
@@ -821,14 +821,14 @@ Code:
     |   ^~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   accDescr { style:#a };
           3 |
-      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   accDescr: b
@@ -848,7 +848,7 @@ Code:
   5 |   end
   6 |
 
-[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -857,7 +857,7 @@ Code:
           3 |     accDescr: a
           4 |   end
           5 |
-      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   subgraph S
@@ -880,7 +880,7 @@ Code:
   6 |   end
   7 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -890,7 +890,7 @@ Code:
           4 |     A
           5 |   end
           6 |
-      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   subgraph S
@@ -919,7 +919,7 @@ Code:
     | ~~~ [1]
  10 |
 
-[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -930,7 +930,7 @@ Code:
           5 |     line
           6 |   }
           7 |
-      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   A
@@ -955,7 +955,7 @@ Code:
   7 | end
   8 |
 
-[1] mermaid.js replaces the description set on line 4 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -967,7 +967,7 @@ Code:
           6 | end
           7 | end
           8 |
-      - Remove the statement on line 4 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 | subgraph P
@@ -991,7 +991,7 @@ Code:
   5 | end
   6 |
 
-[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -1001,7 +1001,7 @@ Code:
           4 | ;
           5 | end
           6 |
-      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 | subgraph S
@@ -1022,7 +1022,7 @@ Code:
     |   ^~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -1030,7 +1030,7 @@ Code:
           2 |   A
           3 |   accDescr: a;
           4 |
-      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   A
@@ -1048,13 +1048,13 @@ Code:
   3 |   accDescr: style:#b;
     |   ^~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   accDescr: a
-      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   accDescr: style:#b;
@@ -1073,7 +1073,7 @@ Code:
     |   ^~~~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -1082,7 +1082,7 @@ Code:
           3 |   accDescr: a
           4 |   ;
           5 |
-      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   A
@@ -1104,7 +1104,7 @@ Code:
     |   ^~~~~~~~~~~ [2]
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -1112,13 +1112,13 @@ Code:
           2 |   accDescr: a
           3 |   accDescr: c
           4 |
-      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   accDescr: b
           3 |   accDescr: c
           4 |
-[2] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -1126,7 +1126,7 @@ Code:
           2 |   accDescr: a
           3 |   accDescr: b
           4 |
-      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   accDescr: a
@@ -1146,7 +1146,7 @@ Code:
     |   ^~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -1154,7 +1154,7 @@ Code:
           2 |   A
           3 |   accDescr { a }
           4 |
-      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   A
@@ -1177,7 +1177,7 @@ Code:
   7 |   end
   8 |
 
-[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -1188,7 +1188,7 @@ Code:
           5 |   subgraph T
           6 |   end
           7 |
-      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   subgraph S
@@ -1212,7 +1212,7 @@ Code:
   5 |   end
   6 |
 
-[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -1221,7 +1221,7 @@ Code:
           3 |     accDescr: a
           4 |   end
           5 |
-      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   subgraph S
@@ -1243,7 +1243,7 @@ Code:
   5 |   end
   6 |
 
-[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -1253,7 +1253,7 @@ Code:
           4 |     ;
           5 |   end
           6 |
-      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 |   subgraph S
@@ -1274,7 +1274,7 @@ Code:
   4 | %% c
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -1282,7 +1282,7 @@ Code:
           2 | accDescr: x
           3 | %% c
           4 |
-      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 | accDescr:
@@ -1302,7 +1302,7 @@ Code:
   4 | %%{init: {}}%%
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -1310,7 +1310,7 @@ Code:
           2 | accDescr: x
           3 | %%{init: {}}%%
           4 |
-      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 | accDescr:
@@ -1330,7 +1330,7 @@ Code:
   4 |
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement: mermaid.js uses the last description that remains.
         Output:
@@ -1338,7 +1338,7 @@ Code:
           2 | accDescr: x
           3 |
           4 |
-      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+      - Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.
         Output:
           1 | flowchart LR
           2 | accDescr:

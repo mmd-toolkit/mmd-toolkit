@@ -22,11 +22,11 @@ export const gitgraphNoRedefinedCommit: MermaidRuleDefinition<{
     schema: [],
     messages: {
       redefined:
-        "mermaid.js replaces the commit with this id, written on line {{line}}, with this commit.",
+        "mermaid.js replaces the commit with this id, written earlier, with this commit.",
     },
   },
   create(context) {
-    const commits = new Map<string, number>()
+    const commits = new Set<string>()
 
     /** Cherry-picks name an existing commit and never declare its id. */
     function check(
@@ -34,15 +34,13 @@ export const gitgraphNoRedefinedCommit: MermaidRuleDefinition<{
     ): void {
       const id = finalGitgraphId(node)
       if (id === "") return
-      const previous = commits.get(id)
-      if (node.type === "GitgraphCommitStatement" && previous !== undefined) {
+      if (node.type === "GitgraphCommitStatement" && commits.has(id)) {
         context.report({
           node,
           messageId: "redefined",
-          data: { line: String(previous) },
         })
       }
-      commits.set(id, node.loc.start.line)
+      commits.add(id)
     }
 
     return {

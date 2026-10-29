@@ -335,7 +335,8 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
      `securityLevel: sandbox` のときに `_top` になる。
      `securityLevel` を変えて全件を流し、要約が変わらないことを確かめる。
    - 整形が変える空白が値に残る場所（style の値の末尾の空白）。
-     その図種の整形の方針と照らす（`packages/prettier-plugin-mmd/docs/<図種>.md`）。
+     その図種の整形の方針と照らす。
+     出典は `packages/prettier-plugin-mmd/docs/<図種>.md` です。
      落とす前に、
      mermaid.js がその空白を読まないことを確かめる（sequence の空白だけの題は、
      描画が題として場所を取るので落とさない）。
@@ -860,9 +861,10 @@ tests の生成器（`fixtures:add-many` など）で足す（方針と手順は
      `getDiagramFromText()` が拒否するテキストで、
      `MermaidEnvironmentError` を投げる。
      データブロックの記録は、ブロックが想定外のことをすると例外を投げる。
-   - 既知の差異を除いて動かすときの字句解析器の規則（`src/divergence-removals.ts`、
-     選択肢 `withoutDivergences`）:
-     `runMermaid()` はコンパイルされた形で規則を探す。
+   - 既知の差異を除いて動かすときの字句解析器の規則: `runMermaid()`
+     はコンパイルされた形で規則を探す。
+     規則を置く場所は `src/divergence-removals.ts` で、
+     選択肢は `withoutDivergences` である。
      試す順を変える規則は、その開始状態だけが試す規則の中から探す。
      規則が見つからないか 2 つ以上見つかるとき、
      または字句解析器が行のどこにいるかを呼び出しの中で決められないときに、

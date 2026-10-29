@@ -11,7 +11,7 @@ import { ruleDocsUrl } from "../rule-docs-url.ts"
  */
 export const quadrantNoUndef: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "undefined"
+  MessageIds: "undef"
 }> = {
   meta: {
     type: "problem",
@@ -22,7 +22,7 @@ export const quadrantNoUndef: MermaidRuleDefinition<{
     },
     schema: [],
     messages: {
-      undefined:
+      undef:
         "mermaid.js gives this point no styles from `{{name}}`: no `classDef` of the chart defines this class.",
     },
   },
@@ -41,7 +41,7 @@ export const quadrantNoUndef: MermaidRuleDefinition<{
           if (defined.has(node.name)) continue
           context.report({
             node,
-            messageId: "undefined",
+            messageId: "undef",
             data: { name: node.name },
           })
         }

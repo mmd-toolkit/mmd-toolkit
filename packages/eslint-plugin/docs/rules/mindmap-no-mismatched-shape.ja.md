@@ -70,10 +70,12 @@ mindmap
 
 ## 背景
 
-mermaid.js は、形の種類を開きから取り、
-閉じは `(` のときだけ見る（[`getType`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L127-L145)）。
-その文書（[syntax/mindmap.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/mindmap.md#L56-L109)）は、
-それぞれの形を、開きと閉じとともに挙げる。
+mermaid.js は、
+[`getType`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L127-L145)
+で、形の種類を開きから取り、閉じは `(` のときだけ見る。
+その文書は、
+[syntax/mindmap.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/mindmap.md#L56-L109)
+で、それぞれの形を、開きと閉じとともに挙げる。
 
 <!-- begin auto-generated rule resources -->
 

@@ -12,7 +12,7 @@ Code:
   4 |   2020 : Launch
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -27,7 +27,7 @@ Code:
   4 |   2020 : Launch
   5 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -44,8 +44,8 @@ Code:
   5 |   2020 : a
   6 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
-[2] mermaid.js replaces the accessible title set on line 3 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+[2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -64,7 +64,7 @@ Code:
   6 |   2020 : a
   7 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -83,7 +83,7 @@ Code:
   6 |   2020 : a
   7 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -102,7 +102,7 @@ Code:
   6 |   2020 : a
   7 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -116,7 +116,7 @@ Code:
     |   ^~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -130,7 +130,7 @@ Code:
     |   ^~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -145,7 +145,7 @@ Code:
   4 |   2020 : a
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -162,8 +162,8 @@ Code:
   5 |   2020 : a
   6 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
-[2] mermaid.js replaces the title set on line 3 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+[2] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -178,7 +178,7 @@ Code:
   4 |   2020 : a
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -193,7 +193,7 @@ Code:
   4 |   2020 : a
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -210,7 +210,7 @@ Code:
   5 |   2021 : b
   6 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -227,7 +227,7 @@ Code:
   5 |   2021 : b
   6 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -246,7 +246,7 @@ Code:
   6 |   2021 : b
   7 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -263,7 +263,7 @@ Code:
   5 |   2020 : a
   6 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -280,7 +280,7 @@ Code:
   5 |   2020 : a
   6 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -297,7 +297,7 @@ Code:
   5 |   2020 : a
   6 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -314,7 +314,7 @@ Code:
   5 |   2020 : a
   6 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -329,7 +329,7 @@ Code:
   4 |   2020 : a
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -344,7 +344,7 @@ Code:
   4 |   2020 : a
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -359,7 +359,7 @@ Code:
   4 |   2020 : a
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -374,5 +374,5 @@ Code:
     |   ^~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---

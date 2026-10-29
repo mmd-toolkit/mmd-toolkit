@@ -103,10 +103,13 @@ gantt
 
 ## 背景
 
-mermaid.js は、端の空白を除いた最初の項目が小文字のそれらの語のどれかである間、
-データの先頭からタグを取る（[`getTaskTags`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L846-L860)）。
-その文書（[syntax/gantt.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gantt.md#L69)）は、
-タグ `active`、`done`、`crit`、`milestone` を小文字で挙げ、
+mermaid.js は、
+[`getTaskTags`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L846-L860)
+で、端の空白を除いた最初の項目が小文字のそれらの語のどれかである間、
+データの先頭からタグを取る。
+その文書は、
+[syntax/gantt.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gantt.md#L69)
+で、タグ `active`、`done`、`crit`、`milestone` を小文字で挙げ、
 タグを最初に書くと言う。
 
 <!-- begin auto-generated rule resources -->

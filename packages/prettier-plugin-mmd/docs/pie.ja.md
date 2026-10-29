@@ -10,26 +10,27 @@
 
 ### Header
 
-[XY chart の header/body 配置](./xychart.ja.md#header-and-orientation)を再利用します。
+XY chart の[ヘッダーと向き](./xychart.ja.md#ヘッダーと向き) を再利用します。
 見出しを揃えるため、正確な小文字の `pie` を先頭列に置き、
 書かれた `showData` の前を空白1つにします。
 通常の同一行の最初の文は次行へ移します。
 flag 前の hidden form と消費される改行は保持します。
 移動すると flag を読めなくなるためです。
 
-固定例: [fixture: pie/header/header-space]
-[fixture: pie/header/header-absent] [fixture: pie/header/flag-hidden-yaml]
-[fixture: pie/header/flag-hidden-directive]
-[fixture: pie/header/flag-in-title] [fixture: pie/header/header-global-flag]
+固定例: [fixture: pie/header/header-space] [fixture: pie/header/header-absent]
+[fixture: pie/header/flag-hidden-yaml]
+[fixture: pie/header/flag-hidden-directive] [fixture: pie/header/flag-in-title]
+[fixture: pie/header/header-global-flag]
 [fixture: pie/header/flag-hidden-remove-kept]
 [fixture: pie/header/header-hidden-after-flag]
 [fixture: pie/header/header-hidden-without-flag]
 [fixture: pie/header/header-two-hidden-forms]
-[fixture: pie/header/header-spare-visible-lf].
+[fixture: pie/header/header-spare-visible-lf]
 
-入力（escape 表記）: `" \tpie   showData \"Revenue\":8"`.
+入力（escape 表記）: `" \tpie   showData \"Revenue\":8"`
 
-出力 ([header/header-space-output.mmd](../tests/fixtures/pie/header/header-space-output.mmd)):
+出力
+([header/header-space-output.mmd](../tests/fixtures/pie/header/header-space-output.mmd)):
 
 ```mmd
 pie showData
@@ -38,7 +39,7 @@ pie showData
 
 ### Indentation
 
-[XY chart の字下げ](./xychart.ja.md#indentation)を再利用します。
+XY chart の[インデント](./xychart.ja.md#インデント)を再利用します。
 構造を読みやすくするため、
 通常の文と独立したコメント・directive を見出しより1段深く置きます。
 pie の区分は slice であり、追加の階層にはしません。
@@ -51,13 +52,14 @@ pie では列が構文を決めないため、`tabWidth: 0` の本文は空白0�
 [fixture: pie/indentation/indent-tabs]
 [fixture: pie/indentation/indent-zero-tabs]
 [fixture: pie/indentation/indent-two]
-[fixture: pie/indentation/indent-four-trivia].
+[fixture: pie/indentation/indent-four-trivia]
 
 入力（escape 表記）:
 `"pie\n    \"Zero\":0\n    accTitle: direction LR\n    accDescr {direction TB}"`
-({"tabWidth":0}).
+({"tabWidth":0})
 
-出力 ([indentation/indent-zero-output.mmd](../tests/fixtures/pie/indentation/indent-zero-output.mmd)):
+出力
+([indentation/indent-zero-output.mmd](../tests/fixtures/pie/indentation/indent-zero-output.mmd)):
 
 ```mmd
 pie
@@ -68,8 +70,7 @@ accDescr {direction TB}
 
 ### Statements one per line
 
-読みやすさのため、
-[1行1文](./xychart.ja.md#statements-one-per-line)を再利用します。
+読みやすさのため、 [1 行 1 文](./xychart.ja.md#1-行-1-文)を再利用します。
 ただし pie の EOL と保持する source group を優先します。
 空の説明ブロックも含め、区分と共通文を元の順序で残します。
 pie のセミコロンは文の区切りではなく、ラベルや共通値の文字です。
@@ -77,12 +78,12 @@ pie のセミコロンは文の区切りではなく、ラベルや共通値の�
 
 固定例: [fixture: pie/statements-one-per-line/body-lines]
 [fixture: pie/statements-one-per-line/semicolon-values]
-[fixture: pie/statements-one-per-line/statement-interleaving].
+[fixture: pie/statements-one-per-line/statement-interleaving]
 
-入力（escape 表記）:
-`"pie \"Line\":2\naccTitle: Data; title Later\n\"Next\":3"`.
+入力（escape 表記）: `"pie \"Line\":2\naccTitle: Data; title Later\n\"Next\":3"`
 
-出力 ([statements-one-per-line/body-lines-output.mmd](../tests/fixtures/pie/statements-one-per-line/body-lines-output.mmd)):
+出力
+([statements-one-per-line/body-lines-output.mmd](../tests/fixtures/pie/statements-one-per-line/body-lines-output.mmd)):
 
 ```mmd
 pie
@@ -96,21 +97,23 @@ pie
 区分は `"label" : value` とし、コロンの両側を空白1つにします。
 幅に合わせた整列はしません。
 pie 固有の選択であり、
-[Mermaid の pie の例](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/pie.md#L64-L69) の綴りに従います。
+[Mermaid の pie の例](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/pie.md#L64-L69)
+の綴りに従います。
 両方の引用符と空ラベルにも適用します。
-directive のある gap は各側の接触の有無を保持し、 hidden
-form は物理的な境界も保持します。
+directive のある gap は各側の接触の有無を保持し、
+hidden form は物理的な境界も保持します。
 これらは区切りを供給しないためです。
 
 固定例: [fixture: pie/sections/section-colon]
 [fixture: pie/sections/section-colon-tight-authored]
 [fixture: pie/sections/section-gap-directive]
 [fixture: pie/sections/section-gap-sides]
-[fixture: pie/sections/section-hidden-both-sides].
+[fixture: pie/sections/section-hidden-both-sides]
 
-入力（escape 表記）: `"pie\n\"Wide\"\t:   12\n'Narrow':3\n\"\":1"`.
+入力（escape 表記）: `"pie\n\"Wide\"\t:   12\n'Narrow':3\n\"\":1"`
 
-出力 ([sections/section-colon-output.mmd](../tests/fixtures/pie/sections/section-colon-output.mmd)):
+出力
+([sections/section-colon-output.mmd](../tests/fixtures/pie/sections/section-colon-output.mmd)):
 
 ```mmd
 pie
@@ -121,7 +124,7 @@ pie
 
 ### Labels
 
-[XY chart の文字列保持](./xychart.ja.md#quotes)を再利用します。
+XY chart の[引用符](./xychart.ja.md#引用符)を再利用します。
 引用符と原文は著者の選択なので、引用符を含む範囲全体を保ちます。
 引用符の種類、逆側の引用符、escape の綴り、空・空白だけのラベル、
 entity・HTML・hidden に見える percent の文字列を残します。
@@ -129,8 +132,7 @@ entity・HTML・hidden に見える percent の文字列を残します。
 変換後に衝突するラベルも別の出現として残します。
 解決後の Map は原文ではないためです。
 
-固定例: [fixture: pie/labels/label-quotes]
-[fixture: pie/labels/label-escapes]
+固定例: [fixture: pie/labels/label-quotes] [fixture: pie/labels/label-escapes]
 [fixture: pie/labels/label-inner-trim-kept]
 [fixture: pie/labels/label-quote-authored]
 [fixture: pie/labels/label-hidden-looking] [fixture: pie/labels/div-c4-label]
@@ -140,11 +142,12 @@ entity・HTML・hidden に見える percent の文字列を残します。
 [fixture: pie/labels/label-whitespace-opposite]
 [fixture: pie/labels/label-html-entities]
 [fixture: pie/labels/label-converted-collisions]
-[fixture: pie/labels/label-quote-option].
+[fixture: pie/labels/label-quote-option]
 
-入力（escape 表記）: `"pie\n' single  label ':3\n\" double  label \":4\n'':2"`.
+入力（escape 表記）: `"pie\n' single  label ':3\n\" double  label \":4\n'':2"`
 
-出力 ([labels/label-quotes-output.mmd](../tests/fixtures/pie/labels/label-quotes-output.mmd)):
+出力
+([labels/label-quotes-output.mmd](../tests/fixtures/pie/labels/label-quotes-output.mmd)):
 
 ```mmd
 pie
@@ -155,7 +158,7 @@ pie
 
 ### Numbers
 
-[XY chart の数値保持](./xychart.ja.md#numbers)を再利用します。
+XY chart の[数](./xychart.ja.md#数)を再利用します。
 変換後の double ではなく NumericLiteral の原文を印字します。
 負のゼロ、小数の先頭ゼロ、末尾ゼロ、長い精度、ゼロや小さい slice を残します。
 overflow と符号付き underflow は corpus の受理された読みを使い、
@@ -163,16 +166,17 @@ overflow と符号付き underflow は corpus の受理された読みを使い�
 
 固定例: [fixture: pie/numbers/number-spellings]
 [fixture: pie/numbers/number-normalize-authored]
-[fixture: pie/numbers/number-zero-small].
+[fixture: pie/numbers/number-zero-small]
 
 [corpus fixture: pie/number-overflow]
 [corpus fixture: pie/review-number-negative-underflow-final]
 [corpus fixture: pie/db-duplicate-negative]
 
 入力（escape 表記）:
-`"pie showData\n\"negative zero\":-0\n\"fraction\":0007.2300\n\"precision\":0.12345678901234567890123456789"`.
+`"pie showData\n\"negative zero\":-0\n\"fraction\":0007.2300\n\"precision\":0.12345678901234567890123456789"`
 
-出力 ([numbers/number-spellings-output.mmd](../tests/fixtures/pie/numbers/number-spellings-output.mmd)):
+出力
+([numbers/number-spellings-output.mmd](../tests/fixtures/pie/numbers/number-spellings-output.mmd)):
 
 ```mmd
 pie showData
@@ -183,7 +187,7 @@ pie showData
 
 ### Title
 
-[C4 の accessibility 行](./c4.ja.md#accessibility-lines)と同じ理由で、
+C4 の[アクセシビリティの行](./c4.ja.md#アクセシビリティの行)と同じ理由で、
 共通値の同等な外側空白を1つの形にします。
 `title` の後は空白1つと両端を除いた空でない値にし、
 null・空・空白だけなら `title` だけにします。
@@ -194,12 +198,13 @@ pie は次の物理行を title に結合しません。
 保持する trivia とセミコロンの group を優先します。
 
 固定例: [fixture: pie/title/title-trim] [fixture: pie/title/title-empty]
-[fixture: pie/title/title-next-section]
-[fixture: pie/title/title-next-trivia] [fixture: pie/title/title-inner-text].
+[fixture: pie/title/title-next-section] [fixture: pie/title/title-next-trivia]
+[fixture: pie/title/title-inner-text]
 
-入力（escape 表記）: `"pie\ntitle\t   Sales  report  \n\"Sales\":8"`.
+入力（escape 表記）: `"pie\ntitle\t   Sales  report  \n\"Sales\":8"`
 
-出力 ([title/title-trim-output.mmd](../tests/fixtures/pie/title/title-trim-output.mmd)):
+出力
+([title/title-trim-output.mmd](../tests/fixtures/pie/title/title-trim-output.mmd)):
 
 ```mmd
 pie
@@ -209,7 +214,8 @@ pie
 
 ### Accessibility lines
 
-[C4 の accessibility 行](./c4.ja.md#accessibility-lines)を同じ理由で再利用します。
+C4 の[アクセシビリティの行](./c4.ja.md#アクセシビリティの行)
+を同じ理由で再利用します。
 外側空白を簡潔にするため、コロンを語に付け、
 両端を除いた空でない値の前を空白1つにします。
 空なら `accTitle:` または `accDescr:` で終えます。
@@ -228,12 +234,13 @@ hidden form と保持する文字 group の gap を残します。
 [fixture: pie/accessibility-lines/accessibility-next-trivia]
 [fixture: pie/accessibility-lines/accessibility-directive-edges]
 [fixture: pie/accessibility-lines/accessibility-inner-tab]
-[fixture: pie/accessibility-lines/accessibility-only-global-trivia].
+[fixture: pie/accessibility-lines/accessibility-only-global-trivia]
 
 入力（escape 表記）:
-`"pie\naccTitle \t:   Title  words \t\naccDescr\t:  Description  text  \n\"Line\":1"`.
+`"pie\naccTitle \t:   Title  words \t\naccDescr\t:  Description  text  \n\"Line\":1"`
 
-出力 ([accessibility-lines/a11y-lines-output.mmd](../tests/fixtures/pie/accessibility-lines/a11y-lines-output.mmd)):
+出力
+([accessibility-lines/a11y-lines-output.mmd](../tests/fixtures/pie/accessibility-lines/a11y-lines-output.mmd)):
 
 ```mmd
 pie
@@ -244,7 +251,8 @@ pie
 
 ### Description blocks
 
-[flowchart の複数行の値](./flowchart.ja.md#multi-line-values)を同じ理由で再利用します。
+flowchart の[複数行の値](./flowchart.ja.md#複数行の値)
+を同じ理由で再利用します。
 値の列を常に一貫して保つためです。
 語と開き括弧、内部の接した側は接したまま、空白の連なりは1つにします。
 開き括弧の前が空白だけなら改行や Unicode の境界も結合できます。
@@ -271,12 +279,13 @@ trivia のある内部は残します。
 [fixture: pie/description-blocks/block-mixed-trivia]
 [fixture: pie/description-blocks/block-trailing-comment]
 [fixture: pie/description-blocks/block-opener-directive]
-[fixture: pie/description-blocks/block-quotes-backslashes].
+[fixture: pie/description-blocks/block-quotes-backslashes]
 
 入力（escape 表記）:
-`"pie\naccDescr {\n  first\n    second\n        }\n\"Data\":2"`.
+`"pie\naccDescr {\n  first\n    second\n        }\n\"Data\":2"`
 
-出力 ([description-blocks/block-columns-output.mmd](../tests/fixtures/pie/description-blocks/block-columns-output.mmd)):
+出力
+([description-blocks/block-columns-output.mmd](../tests/fixtures/pie/description-blocks/block-columns-output.mmd)):
 
 ```mmd
 pie
@@ -324,7 +333,7 @@ form 間や同じ行の次の文の前でも、閉じの空白を保ちます。
 [fixture: pie/hidden-yaml/yaml-qualifying-later-closer]
 [fixture: pie/hidden-yaml/yaml-after-block]
 [fixture: pie/hidden-yaml/yaml-selected-content]
-[fixture: pie/hidden-yaml/yaml-followed-trivia].
+[fixture: pie/hidden-yaml/yaml-followed-trivia]
 
 [fixture: pie/hidden-yaml/body-closing-padding]
 [fixture: pie/hidden-yaml/first-body-closing-padding]
@@ -335,14 +344,15 @@ form 間や同じ行の次の文の前でも、閉じの空白を保ちます。
 [fixture: pie/hidden-yaml/body-eof-closing-padding]
 [fixture: pie/hidden-yaml/flag-eof-closing-padding]
 [fixture: pie/hidden-yaml/inline-section-padding]
-[fixture: pie/hidden-yaml/inline-two-forms-padding].
+[fixture: pie/hidden-yaml/inline-two-forms-padding]
 
-[fixture: pie/hidden-yaml/closing-line-comment-padding].
+[fixture: pie/hidden-yaml/closing-line-comment-padding]
 
 入力（escape 表記）:
-`"pie\n\"Yaml\"---\nnot: [yaml\n---\n:---\nignored\n---\n7"`.
+`"pie\n\"Yaml\"---\nnot: [yaml\n---\n:---\nignored\n---\n7"`
 
-出力 ([hidden-yaml/yaml-section-gaps-output.mmd](../tests/fixtures/pie/hidden-yaml/yaml-section-gaps-output.mmd)):
+出力
+([hidden-yaml/yaml-section-gaps-output.mmd](../tests/fixtures/pie/hidden-yaml/yaml-section-gaps-output.mmd)):
 
 ```mmd
 pie
@@ -360,8 +370,8 @@ ignored
 directive の PieIgnoredText にも [Hidden yaml](#hidden-yaml)と同じ、
 共有する範囲・境界の理由を適用します。
 Root の directive とは別です。
-空・句読点だけ・複数行の form、コロン・数値・flag 前の gap、内部の global
-trivia、5種類の文の textAfter を保持します。
+空・句読点だけ・複数行の form、コロン・数値・flag 前の gap、
+内部の global trivia、5種類の文の textAfter を保持します。
 数字に接する不適格な閉じは実際のコメントとなるか、
 後の閉じまで続く場合があります。
 境界を加えず、この分類を保持します。
@@ -390,7 +400,7 @@ EOF の閉じた form には共有の最後の LF を加えられます。
 [fixture: pie/hidden-directives/hidden-split-opener]
 [fixture: pie/hidden-directives/hidden-split-closer]
 [fixture: pie/hidden-directives/hidden-boundary-comment]
-[fixture: pie/hidden-directives/hidden-followed-trivia].
+[fixture: pie/hidden-directives/hidden-followed-trivia]
 
 [fixture: pie/hidden-directives/body-closing-padding]
 [fixture: pie/hidden-directives/first-body-closing-padding]
@@ -401,13 +411,14 @@ EOF の閉じた form には共有の最後の LF を加えられます。
 [fixture: pie/hidden-directives/body-eof-closing-padding]
 [fixture: pie/hidden-directives/flag-eof-closing-padding]
 [fixture: pie/hidden-directives/inline-section-padding]
-[fixture: pie/hidden-directives/inline-two-forms-padding].
+[fixture: pie/hidden-directives/inline-two-forms-padding]
 
-[fixture: pie/hidden-directives/closing-line-comment-padding].
+[fixture: pie/hidden-directives/closing-line-comment-padding]
 
-入力（escape 表記）: `"pie\n\"Hidden\":%%{}%%\n7"`.
+入力（escape 表記）: `"pie\n\"Hidden\":%%{}%%\n7"`
 
-出力 ([hidden-directives/hidden-number-gap-output.mmd](../tests/fixtures/pie/hidden-directives/hidden-number-gap-output.mmd)):
+出力
+([hidden-directives/hidden-number-gap-output.mmd](../tests/fixtures/pie/hidden-directives/hidden-number-gap-output.mmd)):
 
 ```mmd
 pie
@@ -418,7 +429,7 @@ pie
 ### Comments
 
 著者の接続と文字を保つため、
-[共有のコメント配置](./flowchart.ja.md#comments)を再利用します。
+共有の[コメント](./flowchart.ja.md#コメント)を再利用します。
 同一行の接したコメントは接したまま、離れていれば空白1つにします。
 独立したコメントは本文の文に揃え、見出し前は先頭列に置きます。
 裸・3つの percent と末尾の空白を残します。
@@ -428,17 +439,17 @@ pie 固有のコメントは LF で終わり、LS・PS は内部に残ります�
 保持する前置きは通常の整列より優先します。
 
 固定例: [fixture: pie/comments/comments-align]
-[fixture: pie/comments/comment-bare]
-[fixture: pie/comments/comment-value-text]
+[fixture: pie/comments/comment-bare] [fixture: pie/comments/comment-value-text]
 [test: pie/comments/comment-region-join]
 [fixture: pie/comments/comment-section-move-attachment]
 [fixture: pie/comments/comments-block-attachments]
-[fixture: pie/comments/comments-final-triple].
+[fixture: pie/comments/comments-final-triple]
 
 入力（escape 表記）:
-`"pie\n\"percent %% label\":3\naccDescr {a%% text}\naccTitle: a%% real comment"`.
+`"pie\n\"percent %% label\":3\naccDescr {a%% text}\naccTitle: a%% real comment"`
 
-出力 ([comments/comment-value-text-output.mmd](../tests/fixtures/pie/comments/comment-value-text-output.mmd)):
+出力
+([comments/comment-value-text-output.mmd](../tests/fixtures/pie/comments/comment-value-text-output.mmd)):
 
 ```mmd
 pie
@@ -451,7 +462,8 @@ pie
 
 ### Directives and semicolons
 
-[global directive の不透明性](./flowchart.ja.md#directives)と [C4 のセミコロン保護](./c4.ja.md#line-rule-and-semicolons)を再利用します。
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)と C4
+の[行規則とセミコロン](./c4.ja.md#行規則とセミコロン)を再利用します。
 共通の削除は区切りを供給せず、セミコロンの選択は原文の区間を読むためです。
 単位の間の位置、複数行の内部、EOF までの末尾を保持します。
 同じ印字行の中では、両側の接触・分離を保ちます。
@@ -490,11 +502,12 @@ Unicode の区間境界、directive が再結合する trigger、
 [fixture: pie/directives-and-semicolons/global-value-boundaries]
 [fixture: pie/directives-and-semicolons/selected-one-three-padding]
 [fixture: pie/directives-and-semicolons/selected-comment-semicolon]
-[fixture: pie/directives-and-semicolons/semicolon-header-gap].
+[fixture: pie/directives-and-semicolons/semicolon-header-gap]
 
-入力（escape 表記）: `"pie title style:#a;b"`.
+入力（escape 表記）: `"pie title style:#a;b"`
 
-出力 ([directives-and-semicolons/selected-header-group-output.mmd](../tests/fixtures/pie/directives-and-semicolons/selected-header-group-output.mmd)):
+出力
+([directives-and-semicolons/selected-header-group-output.mmd](../tests/fixtures/pie/directives-and-semicolons/selected-header-group-output.mmd)):
 
 ```mmd
 pie title style:#a;b
@@ -502,13 +515,12 @@ pie title style:#a;b
 
 ### Blank lines
 
-見えるまとまりを保つため、
-[共有の空行の規則](./flowchart.ja.md#blank-lines)を再利用します。
+見えるまとまりを保つため、共有の[空行](./flowchart.ja.md#空行)を再利用します。
 通常の ASCII の空行の連続は1行にし、文書・本文の端の通常の空行は除きます。
 値・directive・ignored の内部、共通領域の結合と前置き全体は元の空行を保ちます。
 変えると原文の役割や YAML の意味が変わり得るためです。
-hidden form が LF を消費した後は、次の文に必要なときだけ予備の LF
-1 つを保ちます。
+hidden form が LF を消費した後は、
+次の文に必要なときだけ予備の LF 1 つを保ちます。
 文書の終わりは設定の終端改行1つにし、見出しの直後の空行は削除します。
 見出しと最初の文の間に EOL は必要ありません。
 それ以外は予備の LF の後に通常の空行の規則を適用し、連続空行を1行、
@@ -516,8 +528,8 @@ hidden form が LF を消費した後は、次の文に必要なときだけ予�
 予備の LF は文法の要件で、それ以降はコメントの後と同じ作者の区切りです。
 Unicode だけの不正な本文行は corpus の解析失敗です。
 
-hidden の境界や semicolon の保護で文が見出しの行に残っても、その文の後置 hidden
-form の後は文と文の間として扱います。
+hidden の境界や semicolon の保護で文が見出しの行に残っても、
+その文の後置 hidden form の後は文と文の間として扱います。
 
 [fixture: pie/blank-lines/hidden-following-blanks]
 
@@ -534,14 +546,14 @@ form の後は文と文の間として扱います。
 [fixture: pie/blank-lines/hidden-comment-whitespace]
 
 固定例: [fixture: pie/blank-lines/blank-runs]
-[fixture: pie/blank-lines/blank-trivia]
-[fixture: pie/blank-lines/blank-literal]
+[fixture: pie/blank-lines/blank-trivia] [fixture: pie/blank-lines/blank-literal]
 [fixture: pie/blank-lines/blank-hidden-body]
-[fixture: pie/blank-lines/blank-directive-content].
+[fixture: pie/blank-lines/blank-directive-content]
 
-入力（escape 表記）: `"\npie\n\n\n\"First\":2\n \t\n\n\"Second\":3\n\n"`.
+入力（escape 表記）: `"\npie\n\n\n\"First\":2\n \t\n\n\"Second\":3\n\n"`
 
-出力 ([blank-lines/blank-runs-output.mmd](../tests/fixtures/pie/blank-lines/blank-runs-output.mmd)):
+出力
+([blank-lines/blank-runs-output.mmd](../tests/fixtures/pie/blank-lines/blank-runs-output.mmd)):
 
 ```mmd
 pie
@@ -552,7 +564,7 @@ pie
 
 ### Trailing whitespace
 
-[C4 の外側の整理](./c4.ja.md#trailing-whitespace)を再利用し、
+C4 の[末尾空白](./c4.ja.md#末尾空白)を再利用し、
 見出し・数値・完了した block 後の無害な ASCII 空白を除きます。
 共通の行形式の両端は Title と Accessibility lines に従います。
 ラベル行・コメント・directive と、
@@ -564,18 +576,19 @@ EOF も含め残します。
 [fixture: pie/trailing-whitespace/trailing-values]
 [fixture: pie/trailing-whitespace/trailing-label-trim-kept]
 [fixture: pie/trailing-whitespace/trailing-hidden-eof]
-[fixture: pie/trailing-whitespace/trailing-protected-prefix].
+[fixture: pie/trailing-whitespace/trailing-protected-prefix]
 
 セミコロンがあるだけでは行の値の末尾空白を保護しません。
-共有のセミコロン prefix の規則が、
-保持する原文を決めます。 [fixture: pie/trailing-whitespace/line-semicolons]
+共有のセミコロン prefix の規則が、保持する原文を決めます。
+[fixture: pie/trailing-whitespace/line-semicolons]
 [fixture: pie/trailing-whitespace/line-selected-semicolons]
 [fixture: pie/trailing-whitespace/line-without-semicolons]
-[fixture: pie/trailing-whitespace/header-line-semicolon].
+[fixture: pie/trailing-whitespace/header-line-semicolon]
 
-入力（escape 表記）: `"pie showData \t\n\"Data\" : 2 \t\naccDescr {a} \t"`.
+入力（escape 表記）: `"pie showData \t\n\"Data\" : 2 \t\naccDescr {a} \t"`
 
-出力 ([trailing-whitespace/trailing-exterior-output.mmd](../tests/fixtures/pie/trailing-whitespace/trailing-exterior-output.mmd)):
+出力
+([trailing-whitespace/trailing-exterior-output.mmd](../tests/fixtures/pie/trailing-whitespace/trailing-exterior-output.mmd)):
 
 ```mmd
 pie showData
@@ -585,7 +598,8 @@ pie showData
 
 ### Multiline values and order
 
-[flowchart の値の列](./flowchart.ja.md#multi-line-values)と [共有の折り返さない規則](./flowchart.ja.md#line-wrapping)を再利用します。
+flowchart の [複数行の値](./flowchart.ja.md#複数行の値) と共有の
+[折り返し](./flowchart.ja.md#折り返し) を再利用します。
 原文は著者の選択で、幅によらず同じ配置にするためです。
 ラベルと block の物理行、継続列、内部の空行を保持します。
 printWidth で長い文を折り返さず、区分の部品も別行にしません。
@@ -598,12 +612,13 @@ printWidth で長い文を折り返さず、区分の部品も別行にしませ
 [fixture: pie/multiline-values-and-order/order-duplicates]
 [fixture: pie/multiline-values-and-order/order-sort-kept]
 [fixture: pie/multiline-values-and-order/order-converted-prototype]
-[fixture: pie/multiline-values-and-order/order-common-resets].
+[fixture: pie/multiline-values-and-order/order-common-resets]
 
 入力（escape 表記）:
-`"pie\n\"10\":3\n\"2\":4\n\"__proto__\":5\n\"constructor\":6\n'10':8\n\"a\\n\":1\n\"a\n\":7"`.
+`"pie\n\"10\":3\n\"2\":4\n\"__proto__\":5\n\"constructor\":6\n'10':8\n\"a\\n\":1\n\"a\n\":7"`
 
-出力 ([multiline-values-and-order/order-converted-prototype-output.mmd](../tests/fixtures/pie/multiline-values-and-order/order-converted-prototype-output.mmd)):
+出力
+([multiline-values-and-order/order-converted-prototype-output.mmd](../tests/fixtures/pie/multiline-values-and-order/order-converted-prototype-output.mmd)):
 
 ```mmd
 pie
@@ -619,12 +634,14 @@ pie
 
 ### Line terminators and unicode
 
-[共有の改行](./compatibility.ja.md#line-endings)と [BOM の host 処理](./compatibility.ja.md#byte-order-mark)を再利用します。
+共有の[行末](./compatibility.ja.md#行末)と
+[バイト順マーク](./compatibility.ja.md#バイト順マーク)を再利用します。
 Prettier は印字前に CR・CRLF を正規化し、後から endOfLine を適用します。
 ラベル・block・hidden の消費する LF も Mermaid の読みを保ちます。
 LS・PS・NBSP・BOM は値・コメント・ignored のモードに従って残します。
 保護範囲外の共通値は、
-両端の [仕様で定義する共通の空白](../../spec/docs/common.ja.md#表記) を除きます。 [corpus fixture: pie/review-common-all-whitespace-trim]
+両端の [仕様で定義する共通の空白](../../spec/docs/common.ja.md#表記)
+を除きます。 [corpus fixture: pie/review-common-all-whitespace-trim]
 空白だけの block の開きの gap は結合します。
 通常の colon の gap は ASCII です。
 不正な構造上の Unicode は拒否のままです。
@@ -649,7 +666,7 @@ LS・PS・NBSP・BOM は値・コメント・ignored のモードに従って残
 [test: pie/line-terminators-and-unicode/eol-block-crlf]
 [test: pie/line-terminators-and-unicode/unicode-preheader-comment]
 [test: pie/line-terminators-and-unicode/unicode-comment-region-common]
-[test: pie/line-terminators-and-unicode/div-unicode-preheader-nbsp-hidden].
+[test: pie/line-terminators-and-unicode/div-unicode-preheader-nbsp-hidden]
 
 [test: pie/line-terminators-and-unicode/title-leading-ls]
 [test: pie/line-terminators-and-unicode/title-leading-ps]
@@ -657,17 +674,17 @@ LS・PS・NBSP・BOM は値・コメント・ignored のモードに従って残
 [test: pie/line-terminators-and-unicode/acctitle-leading-ps]
 [test: pie/line-terminators-and-unicode/accdescr-leading-ls]
 [test: pie/line-terminators-and-unicode/accdescr-leading-ps]
-[test: pie/line-terminators-and-unicode/line-values-only-unicode].
+[test: pie/line-terminators-and-unicode/line-values-only-unicode]
 
 入力（escape 表記）:
-`"pie\n\"x\u2028y\u2029z\":2\ntitle x\u2028y\naccTitle: x\u2029y\naccDescr {x\u2028y}"`.
+`"pie\n\"x\u2028y\u2029z\":2\ntitle x\u2028y\naccTitle: x\u2029y\naccDescr {x\u2028y}"`
 
 出力（escape 表記）:
-`"pie\n  \"x\u2028y\u2029z\" : 2\n  title x\u2028y\n  accTitle: x\u2029y\n  accDescr {x\u2028y}\n"`.
+`"pie\n  \"x\u2028y\u2029z\" : 2\n  title x\u2028y\n  accTitle: x\u2029y\n  accDescr {x\u2028y}\n"`
 
 ### Frontmatter yaml
 
-[保護した frontmatter](./flowchart.ja.md#frontmatter-yaml)を再利用します。
+[フロントマターの YAML](./flowchart.ja.md#フロントマターの-yaml)を再利用します。
 実際の先頭の YAML だけが title/configuration を与えるためです。
 安全な YAML は整え、区切りの空白を残し、
 不正・字下げ付き・HTML の危険・区切りを生成する内部は原文を保ちます。
@@ -695,11 +712,12 @@ PieIgnoredText を YAML formatter へ渡しません。
 [fixture: pie/frontmatter-yaml/preheader-malformed-yaml]
 [fixture: pie/frontmatter-yaml/preheader-directive-before-yaml]
 [fixture: pie/frontmatter-yaml/preheader-real-and-hidden]
-[fixture: pie/frontmatter-yaml/preheader-leading-comments].
+[fixture: pie/frontmatter-yaml/preheader-leading-comments]
 
-入力（escape 表記）: `"\n---\ntitle: Hidden\n---\npie\n\"Leading\":2"`.
+入力（escape 表記）: `"\n---\ntitle: Hidden\n---\npie\n\"Leading\":2"`
 
-出力 ([frontmatter-yaml/preheader-leading-lf-output.mmd](../tests/fixtures/pie/frontmatter-yaml/preheader-leading-lf-output.mmd)):
+出力
+([frontmatter-yaml/preheader-leading-lf-output.mmd](../tests/fixtures/pie/frontmatter-yaml/preheader-leading-lf-output.mmd)):
 
 ```mmd
 
@@ -712,7 +730,9 @@ pie
 
 ### Specified readings
 
-[共有の失敗方針](./compatibility.ja.md#inputs-read-differently-from-mermaidjs) を再利用します。
+共有の
+[mermaid.js と違って読む入力](./compatibility.ja.md#mermaidjs-と違って読む入力)
+を再利用します。
 受理した木は仕様の読みで整形し、解析失敗は単独ファイルで構文エラー、
 Markdown では埋め込みを辞退します。
 既知の差異の印がある corpus 入力には、仕様が定める受理と Db の読みを使います。
@@ -735,7 +755,7 @@ hidden form・空ラベル・空 block に別の差異を加えません。
 
 ### Final newline
 
-終端を揃えるため、[共有の末尾改行](./c4.ja.md#final-newline)を再利用します。
+終端を揃えるため、共有の[末尾の改行](./c4.ja.md#末尾の改行)を再利用します。
 通常の受理したファイルは指定の改行1つで終えます。
 見出しだけ、区分、閉じた block、空の共通値、裸・3つの percent コメント、
 閉じた hidden form も同じ経路です。
@@ -753,13 +773,14 @@ EOF まで続く global directive と hidden の閉じの空白は残します�
 [fixture: pie/final-newline/markdown-final-hidden-limit]
 [fixture: pie/final-newline/final-section-without-lf]
 [fixture: pie/final-newline/final-block]
-[fixture: pie/final-newline/final-common-empty].
+[fixture: pie/final-newline/final-common-empty]
 
 [corpus fixture: pie/header-only] [corpus fixture: pie/acctitle-eof]
 
-入力（escape 表記）: `"pie\n\"End\":2\n\n\n"`.
+入力（escape 表記）: `"pie\n\"End\":2\n\n\n"`
 
-出力 ([final-newline/final-newline-output.mmd](../tests/fixtures/pie/final-newline/final-newline-output.mmd)):
+出力
+([final-newline/final-newline-output.mmd](../tests/fixtures/pie/final-newline/final-newline-output.mmd)):
 
 ```mmd
 pie
@@ -768,7 +789,9 @@ pie
 
 ### Markdown fences
 
-[共有の Markdown の統合](./compatibility.ja.md#markdown-code-blocks)を再利用します。
+共有の
+[Markdown のコードブロック](./compatibility.ja.md#markdown-のコードブロック)
+を再利用します。
 host の字下げを除いた payload に pie の規則を適用し、
 リスト・引用・fence の字下げは Markdown が与えます。
 固定した先頭・リスト・引用の host で、複数行の値、幅0・tab、
@@ -784,9 +807,9 @@ host の出力と冪等性を、payload の Db・木・原文とは別に確認�
 [test: pie Markdown: tabs] [test: pie Markdown: hidden-gap]
 [test: pie Markdown: hidden-boundary] [test: pie Markdown: preheader]
 [test: pie Markdown: frontmatter] [test: pie Markdown: global-and-semicolons]
-[test: pie Markdown: final-comment]
-[test: pie Markdown: final-hidden-padding] [test: pie Markdown: rejected]
+[test: pie Markdown: final-comment] [test: pie Markdown: final-hidden-padding]
+[test: pie Markdown: rejected]
 
-入力（escape 表記）: `"```mermaid\npie showData \"Fence\":2\n```\n"`.
+入力（escape 表記）: `"```mermaid\npie showData \"Fence\":2\n```\n"`
 
-出力（escape 表記）: `"```mermaid\npie showData\n  \"Fence\" : 2\n```\n"`.
+出力（escape 表記）: `"```mermaid\npie showData\n  \"Fence\" : 2\n```\n"`

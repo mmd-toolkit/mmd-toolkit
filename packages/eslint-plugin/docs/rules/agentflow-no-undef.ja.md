@@ -46,8 +46,9 @@ connector 宣言の後の `style` は connector にスタイルを付ける。
 
 `style` 文が足す頂点も図の頂点なので、この規則は、
 ほかに何も宣言しない id の最初の `style` だけを報告する。
-`style C fill:red` の後の 2 つ目の `style C stroke:blue` は頂点 `C` にスタイルを足し、
-`class C foo` と `click C href "…"` はそれに当たり、どれも報告しない。
+`style C fill:red` の後の 2 つ目の `style C stroke:blue` は頂点 `C`
+にスタイルを足し、 `class C foo` と `click C href "…"` はそれに当たり、
+どれも報告しない。
 
 予約 id `connectors` は、形付きで書いても、
 `style` に書いても通常の頂点を作らない。
@@ -112,11 +113,12 @@ agentflow-beta TB
 
 ## 背景
 
-[`setClass`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L928-L943) と、
-[`setLink` と `setClickEvent`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1010-L1038) は、
-呼ばれるときにその id の要素を探す。
-`style` 文が呼ぶ [`addVertex`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L347-L565) は、
-要素のない id に頂点を足す。
+[`setClass`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L928-L943)、
+[`setLink` と `setClickEvent`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1010-L1038)
+は、呼ばれるときにその id の要素を探す。
+`style` 文が呼ぶ
+[`addVertex`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L347-L565)
+は、要素のない id に頂点を足す。
 
 <!-- begin auto-generated rule resources -->
 

@@ -11,7 +11,7 @@ Code:
     |   ^~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the map size set on line 2 with this size.
+[1] mermaid.js replaces the earlier map size with this size.
 ---
 
 
@@ -25,7 +25,7 @@ Code:
     |   ^~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the map size set on line 2 with this size.
+[1] mermaid.js replaces the earlier map size with this size.
 ---
 
 
@@ -38,7 +38,7 @@ Code:
   3 | size [800,1000]
     | ^~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the map size set on line 2 with this size.
+[1] mermaid.js replaces the earlier map size with this size.
 ---
 
 
@@ -51,7 +51,7 @@ Code:
   3 | size [800,700]
     | ^~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the map size set on line 2 with this size.
+[1] mermaid.js replaces the earlier map size with this size.
 ---
 
 
@@ -66,6 +66,6 @@ Code:
   4 | size [800,600]
     | ^~~~~~~~~~~~~~ [2]
 
-[1] mermaid.js replaces the map size set on line 2 with this size.
-[2] mermaid.js replaces the map size set on line 3 with this size.
+[1] mermaid.js replaces the earlier map size with this size.
+[2] mermaid.js replaces the earlier map size with this size.
 ---

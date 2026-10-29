@@ -25,19 +25,16 @@ export const treeviewNoDuplicateAnnotation: MermaidRuleDefinition<{
     schema: [],
     messages: {
       class:
-        "mermaid.js replaces the class given on line {{line}} for this node with this class.",
-      icon: "mermaid.js keeps only this icon setting, replacing the one given on line {{line}} for this node.",
+        "mermaid.js replaces the class given earlier for this node with this class.",
+      icon: "mermaid.js replaces the earlier icon setting for this node with this icon setting.",
       description:
-        "mermaid.js replaces the description given on line {{line}} for this node with this description.",
+        "mermaid.js replaces the description given earlier for this node with this description.",
     },
   },
   create(context) {
     return {
       TreeviewNode(node) {
-        const previous = new Map<
-          "class" | "icon" | "description",
-          { value: string; line: number }
-        >()
+        const previous = new Map<"class" | "icon" | "description", string>()
 
         /** Empty descriptions reset history; an explicit hidden icon remains nonempty. */
         function check(
@@ -46,18 +43,13 @@ export const treeviewNoDuplicateAnnotation: MermaidRuleDefinition<{
           value: string,
         ): void {
           const before = previous.get(kind)
-          if (
-            before !== undefined &&
-            before.value !== "" &&
-            before.value !== value
-          ) {
+          if (before !== undefined && before !== "" && before !== value) {
             context.report({
               node: annotation,
               messageId: kind,
-              data: { line: String(before.line) },
             })
           }
-          previous.set(kind, { value, line: annotation.loc.start.line })
+          previous.set(kind, value)
         }
 
         for (const annotation of node.annotations) {

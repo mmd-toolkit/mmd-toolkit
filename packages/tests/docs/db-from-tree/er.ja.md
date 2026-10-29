@@ -11,16 +11,21 @@ ER 図の木から Db の要約を作る手順です。
 要約の欄は [db-summaries.ja.md](../db-summaries.ja.md#er) にあります。
 
 mermaid.js は、構文解析の間に Db を作ります。
-文法は、
-文が終わるたびに Db のメソッドを呼びます（[`addEntity`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/erDb.ts#L61-L81)、
+文法は、文が終わるたびに Db のメソッドを呼びます。
+呼ぶメソッドは、
+[`addEntity`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/erDb.ts#L61-L81)、
 [`addAttributes`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/erDb.ts#L95-L110)、
 [`addRelationship`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/erDb.ts#L120-L154)、
 [`addCssStyles`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/erDb.ts#L182-L207)、
 [`addClass`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/erDb.ts#L209-L227)、
 [`addSubGraph`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/erDb.ts#L229-L297)、
-[`setClass`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/erDb.ts#L303-L319)）。
+[`setClass`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/erDb.ts#L303-L319)
+です。
 また、文の規則の動作は値を返し、その値を、
-まわりの subgraph が並べることがあります（[`statement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L121-L198)）。
+まわりの subgraph が並べることがあります。
+出典は
+[`statement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L121-L198)
+です。
 要約も同じように作ります。
 文を出現順に実行し、Db が持つ列がそのまま要約です。
 値は、空白を含めて Db が持つとおりに保ちます。
@@ -39,8 +44,8 @@ id を無作為に作ることはなく、レイアウトのデータから取�
 これはバッククォートの語、コメント、ロールの文字列の中でのことです。
 各属性の引用符は `'` として読みます。
 これは引用符付きの名前、ロールの文字列、コメントの中でのことです。
-U+2028 は行終端ではなく、
-値の中にそのまま残ります。 [fixture: er/entity-placeholder-in-name]
+U+2028 は行終端ではなく、値の中にそのまま残ります。
+[fixture: er/entity-placeholder-in-name]
 [fixture: er/entity-placeholder-in-quoted-name] [fixture: er/db-alias-entity]
 [fixture: er/db-role-entity] [fixture: er/db-role-quoted-entity]
 [fixture: er/db-attribute-comment-entity]
@@ -64,8 +69,8 @@ U+2028 は行終端ではなく、
   `name` は木が持つ書かれたとおりのテキストで、
   Db が持つのは mermaid.js が読むとおりのテキストです。
   そのため、`A`、U+00A0、`B` は、ノーブレークスペースを含む 1 つの名前で、
-  `12` や `2.5` のような数は、
-  その数字の名前です。 [fixture: er/db-entity-name-no-break-space]
+  `12` や `2.5` のような数は、その数字の名前です。
+  [fixture: er/db-entity-name-no-break-space]
   [fixture: er/db-entity-name-line-separator]
   [fixture: er/db-entity-name-numbers] [fixture: er/db-alias-line-separator]
 - StringLiteral は、その範囲の変換した形から区切りを除いたものを持ちます。
@@ -157,9 +162,8 @@ direction 文と、テキストのない description ブロックは、何も返
   リレーションシップ文は、左の名前のエンティティ、
   次に右の名前のエンティティを追加し、次にリレーションシップを追加し、
   次に左のエンティティのクラス、次に右のもののクラスを追加します。
-  `class` 文、`style` 文、`classDef` 文は、
-  エンティティを追加しません。 [fixture: er/db-name-twice]
-  [fixture: er/db-class-undefined-entity]
+  `class` 文、`style` 文、`classDef` 文は、エンティティを追加しません。
+  [fixture: er/db-name-twice] [fixture: er/db-class-undefined-entity]
   [fixture: er/db-style-undefined-entity] [fixture: er/db-class-def-unused]
 - 新しいエンティティの `id` は `entity-<name>-<number>` で、
   number はそれを作ったときに存在したエンティティの数です。
@@ -169,9 +173,8 @@ direction 文と、テキストのない description ブロックは、何も返
   名前は大文字と小文字を区別します。 [fixture: er/basic-entity]
   [fixture: er/db-entity-ids-first-appearance]
   [fixture: er/db-entity-ids-statement-kinds] [fixture: er/db-entity-names-case]
-- エンティティから自分自身へのリレーションシップは、
-  両端が同じ `id` です。 [fixture: er/db-entity-relationship-self]
-  [fixture: er/db-relationship-self]
+- エンティティから自分自身へのリレーションシップは、両端が同じ `id` です。
+  [fixture: er/db-entity-relationship-self] [fixture: er/db-relationship-self]
 - エンティティは subgraph の名前を持ってもよく、その前でも後でも、
   両方が存在します。 [fixture: er/db-subgraph-id-as-name-after]
   [fixture: er/db-subgraph-id-as-name-before]
@@ -196,10 +199,9 @@ direction 文と、テキストのない description ブロックは、何も返
 ブロックの項目のうち ErIgnoredText、つまり `empty-backquotes` の単位は、
 属性ではありません。
 ブロックの中のコメント行、ディレクティブ行、空行、
-空白だけの行はテキストではなく、
-ブロックの中の `direction RL` は属性です。 [fixture: er/db-attribute-order]
-[fixture: er/db-attribute-blocks-add-up] [fixture: er/db-block-twice]
-[fixture: er/db-attribute-block-empty]
+空白だけの行はテキストではなく、ブロックの中の `direction RL` は属性です。
+[fixture: er/db-attribute-order] [fixture: er/db-attribute-blocks-add-up]
+[fixture: er/db-block-twice] [fixture: er/db-attribute-block-empty]
 [fixture: er/db-attribute-block-empty-after-attributes]
 [fixture: er/db-attribute-block-entity-from-relationship]
 [fixture: er/db-attribute-block-one-line]
@@ -235,12 +237,11 @@ direction 文と、テキストのない description ブロックは、何も返
 - `name` は `name` のテキストです。 [fixture: er/db-attribute-order]
   [fixture: er/db-attribute-backquoted]
 - `keys` はキーのテキストを、順に、書かれたままで並べたものです。
-  繰り返したキーは 2 回現れ、
-  キーがなければ空のリストです。 [fixture: er/db-attribute-keys]
-  [fixture: er/db-attribute-keys-case] [fixture: er/db-attribute-defaults]
+  繰り返したキーは 2 回現れ、キーがなければ空のリストです。
+  [fixture: er/db-attribute-keys] [fixture: er/db-attribute-keys-case]
+  [fixture: er/db-attribute-defaults]
 - `comment` は引用符の間のコメントのテキストで、空白を含みます。
-  コメントが空なら空のテキストで、
-  コメントがなくても空のテキストです。
+  コメントが空なら空のテキストで、コメントがなくても空のテキストです。
   [fixture: er/db-attribute-comment-with-keys]
   [fixture: er/db-attribute-comment-spaces]
   [fixture: er/db-attribute-comment-empty] [fixture: er/db-attribute-defaults]
@@ -312,11 +313,10 @@ subgraph の id は、trim したテキストです（**Subgraphs** を参照）
   [fixture: er/db-relationship-quoted-entities]
   [fixture: er/db-relationship-source-order]
 - `roleA` はロールのテキストです。
-  名前、引用符付きの名前、または文字列で、
-  文字列は空でもかまいません。 [fixture: er/db-role-word]
-  [fixture: er/db-role-quoted] [fixture: er/db-role-quoted-empty]
-  [fixture: er/db-role-quoted-percent] [fixture: er/db-role-non-ascii]
-  [fixture: er/db-role-line-separator]
+  名前、引用符付きの名前、または文字列で、文字列は空でもかまいません。
+  [fixture: er/db-role-word] [fixture: er/db-role-quoted]
+  [fixture: er/db-role-quoted-empty] [fixture: er/db-role-quoted-percent]
+  [fixture: er/db-role-non-ascii] [fixture: er/db-role-line-separator]
   [fixture: er/db-role-quoted-line-separator]
 - `cardA` はリレーションシップの `rightCardinality` の名前、
   `cardB` は `leftCardinality` の名前です。
@@ -351,12 +351,12 @@ subgraph の id は、trim したテキストです（**Subgraphs** を参照）
 同じ名前の 2 つ目の `classDef` は、 style を最初の定義に加え、
 位置は動かしません。
 どのエンティティも使わない定義も残り、名前 `default` もほかの名前と同じです。
-style は文の style のテキストで、
-`color` を含むものも含みます。 [fixture: er/db-class-def-styles]
-[fixture: er/db-class-def-several-styles] [fixture: er/db-class-def-twice]
-[fixture: er/db-class-def-twice-empty-line] [fixture: er/db-class-def-ids]
-[fixture: er/db-class-def-unused] [fixture: er/db-class-def-default]
-[fixture: er/db-classdef-twice] [fixture: er/db-classdef-color-style]
+style は文の style のテキストで、 `color` を含むものも含みます。
+[fixture: er/db-class-def-styles] [fixture: er/db-class-def-several-styles]
+[fixture: er/db-class-def-twice] [fixture: er/db-class-def-twice-empty-line]
+[fixture: er/db-class-def-ids] [fixture: er/db-class-def-unused]
+[fixture: er/db-class-def-default] [fixture: er/db-classdef-twice]
+[fixture: er/db-classdef-color-style]
 [fixture: er/db-class-def-semicolon-separator]
 
 **Subgraphs。**
@@ -412,8 +412,8 @@ subgraph は次の値を持ちます。
 - ほかの文の値は、`class`、`classDef`、
   `style` 文のキーワード（書かれたままの大文字小文字）と、
   アクセシビリティ文の trim したテキストです。
-  後者は、置き換えも、
-  行送りでの連結もしません。 [fixture: er/db-subgraph-nodes-class-statement]
+  後者は、置き換えも、行送りでの連結もしません。
+  [fixture: er/db-subgraph-nodes-class-statement]
   [fixture: er/db-subgraph-nodes-class-def-statement]
   [fixture: er/db-subgraph-nodes-style-statement]
   [fixture: er/db-subgraph-class-inside]
@@ -431,8 +431,7 @@ subgraph は次の値を持ちます。
   [fixture: er/db-subgraph-nodes-all-statements]
 - direction 文はノードを与えません。
   空の description ブロックも何も与えず、何も変えません。
-  本体の中でも、
-  ヘッダーの後の本体の先頭でも同じです。
+  本体の中でも、ヘッダーの後の本体の先頭でも同じです。
   [fixture: er/db-subgraph-direction-only]
   [fixture: er/db-subgraph-nodes-empty-description-block]
   [fixture: er/gram-empty-description-block-first-in-subgraph]
@@ -473,10 +472,9 @@ title はフロントマターのもので、文字の置き換えをします�
 テキストのない description ブロックは何も変えません。
 テキストは次の行から始まってもかまいません。
 `accTitle:` の次の行が `A` なら、title は `A` です。
-`accTitle: style:#x;y;` では、最後の `;` が無視され、
-`#x;` はエンティティです。 [fixture: er/db-acc-title-line]
-[fixture: er/db-acc-title-spaces] [fixture: er/db-acc-title-replaces]
-[fixture: er/db-acc-title-twice]
+`accTitle: style:#x;y;` では、最後の `;` が無視され、 `#x;` はエンティティです。
+[fixture: er/db-acc-title-line] [fixture: er/db-acc-title-spaces]
+[fixture: er/db-acc-title-replaces] [fixture: er/db-acc-title-twice]
 [fixture: er/db-acc-title-empty-takes-next-line]
 [fixture: er/db-acc-title-directive-in-text]
 [fixture: er/db-acc-title-ignored-semicolon] [fixture: er/db-acc-descr-line]
@@ -506,8 +504,7 @@ subgraph の title は、語をつないだ後、trim する前に置き換え�
 subgraph のノードは置き換えません。
 本体の中の `accTitle` は、図に置き換えた title を与え、
 subgraph にはノードとして書かれたままのテキストを与えます。
-`accDescr` は、
-行をつないだ後に置き換えます。
+`accDescr` は、行をつないだ後に置き換えます。
 [fixture: er/config-security-level-other-diagram-title]
 [fixture: er/config-security-level-other-acc-title]
 [fixture: er/config-security-level-other-acc-descr]

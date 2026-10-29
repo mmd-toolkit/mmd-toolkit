@@ -11,7 +11,7 @@ Code:
     |   ^~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the title set on line 2 with this `title`.
+[1] mermaid.js replaces the earlier title with this `title`.
 ---
 
 
@@ -28,7 +28,7 @@ Code:
   6 | }
   7 |
 
-[1] mermaid.js replaces the title set on line 2 with this `title`.
+[1] mermaid.js replaces the earlier title with this `title`.
 ---
 
 
@@ -42,7 +42,7 @@ Code:
     | ^~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the title set on line 2 with this `title`.
+[1] mermaid.js replaces the earlier title with this `title`.
 ---
 
 
@@ -58,8 +58,8 @@ Code:
     | ^~~~~~~~~~~ [2]
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with this `title`.
-[2] mermaid.js replaces the title set on line 3 with this `title`.
+[1] mermaid.js replaces the earlier title with this `title`.
+[2] mermaid.js replaces the earlier title with this `title`.
 ---
 
 
@@ -74,7 +74,7 @@ Code:
     | ^~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with this `title`.
+[1] mermaid.js replaces the earlier title with this `title`.
 ---
 
 
@@ -88,7 +88,7 @@ Code:
     | ^~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the title set on line 2 with this `title`.
+[1] mermaid.js replaces the earlier title with this `title`.
 ---
 
 
@@ -103,7 +103,7 @@ Code:
     | ^~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with this `title`.
+[1] mermaid.js replaces the earlier title with this `title`.
 ---
 
 
@@ -117,7 +117,7 @@ Code:
     |            ^~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the title set on line 2 with this `title`.
+[1] mermaid.js replaces the earlier title with this `title`.
 ---
 
 
@@ -131,7 +131,7 @@ Code:
     | ^~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the title set on line 2 with this `title`.
+[1] mermaid.js replaces the earlier title with this `title`.
 ---
 
 
@@ -145,7 +145,7 @@ Code:
     | ^~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the title set on line 2 with this `title`.
+[1] mermaid.js replaces the earlier title with this `title`.
 ---
 
 
@@ -159,5 +159,5 @@ Code:
     | ^~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the title set on line 2 with this `title`.
+[1] mermaid.js replaces the earlier title with this `title`.
 ---

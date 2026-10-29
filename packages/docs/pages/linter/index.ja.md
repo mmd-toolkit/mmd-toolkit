@@ -36,7 +36,8 @@ Markdownのprocessorが取り出した`mmd`・`mermaid`コードブロックも�
 
 次の図を、`diagram.md`の`mermaid`コードブロック内に保存します。
 `%% eslint`コメントで、
-この図の [`@mmd-toolkit/flowchart-no-undef`][no-undef]を明示的に有効にしています。
+この図の
+[`@mmd-toolkit/flowchart-no-undef`][no-undef]を明示的に有効にしています。
 
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-undef: error

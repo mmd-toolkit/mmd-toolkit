@@ -11,7 +11,7 @@ Code:
     |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the commit with this id, written on line 2, with this commit.
+[1] mermaid.js replaces the commit with this id, written earlier, with this commit.
 ---
 
 
@@ -29,7 +29,7 @@ Code:
     | ^~~~~~~~~~~~~ [1]
   8 |
 
-[1] mermaid.js replaces the commit with this id, written on line 6, with this commit.
+[1] mermaid.js replaces the commit with this id, written earlier, with this commit.
 ---
 
 
@@ -44,7 +44,7 @@ Code:
     | ^~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the commit with this id, written on line 2, with this commit.
+[1] mermaid.js replaces the commit with this id, written earlier, with this commit.
 ---
 
 
@@ -58,7 +58,7 @@ Code:
     |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the commit with this id, written on line 2, with this commit.
+[1] mermaid.js replaces the commit with this id, written earlier, with this commit.
 ---
 
 
@@ -77,7 +77,7 @@ Code:
   8 | commit id:"C"
   9 |
 
-[1] mermaid.js replaces the commit with this id, written on line 4, with this commit.
+[1] mermaid.js replaces the commit with this id, written earlier, with this commit.
 ---
 
 
@@ -91,7 +91,7 @@ Code:
     | ^~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the commit with this id, written on line 2, with this commit.
+[1] mermaid.js replaces the commit with this id, written earlier, with this commit.
 ---
 
 
@@ -105,7 +105,7 @@ Code:
     |   ^~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the commit with this id, written on line 2, with this commit.
+[1] mermaid.js replaces the commit with this id, written earlier, with this commit.
 ---
 
 
@@ -121,7 +121,7 @@ Code:
   5 | commit id:"C"
   6 |
 
-[1] mermaid.js replaces the commit with this id, written on line 2, with this commit.
+[1] mermaid.js replaces the commit with this id, written earlier, with this commit.
 ---
 
 
@@ -136,7 +136,7 @@ Code:
     | ^~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the commit with this id, written on line 2, with this commit.
+[1] mermaid.js replaces the commit with this id, written earlier, with this commit.
 ---
 
 
@@ -150,7 +150,7 @@ Code:
     | ^~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the commit with this id, written on line 2, with this commit.
+[1] mermaid.js replaces the commit with this id, written earlier, with this commit.
 ---
 
 
@@ -164,5 +164,5 @@ Code:
     | ^~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the commit with this id, written on line 2, with this commit.
+[1] mermaid.js replaces the commit with this id, written earlier, with this commit.
 ---

@@ -4,7 +4,8 @@
 
 この文書は、図種 `er` の木のノードを定めます。
 木の共通部分は [ast.ja.md](../ast.ja.md) で定め、ソースの読み方と、
-どの文法の規則がどのノードを作るかは [diagrams/er.ja.md](../diagrams/er.ja.md) で定めます。
+どの文法の規則がどのノードを作るかは [diagrams/er.ja.md](../diagrams/er.ja.md)
+で定めます。
 
 この図種の本体は [ErDiagram](#erdiagram) です。
 欄の値は、
@@ -12,9 +13,11 @@
 書き手が書いたものを保ち、
 [common.ja.md](../common.ja.md#ソースの読み方) の変換後の形ではありません。
 値が空白で始まったり終わったりするのは、 mermaid.js が読むとおりに、
-その単位が空白を自分の文字として持つところだけです（[ノード](../ast.ja.md#ノード) を参照）。
+その単位が空白を自分の文字として持つところだけです。
+[ノード](../ast.ja.md#ノード) を参照してください。
 この図種では、名前の文字である U+00A0 のような、
-ASCII の外の空白文字で終わる名前やロールがそうです（[空白](../diagrams/er.ja.md#単位と文脈) を参照）。
+ASCII の外の空白文字で終わる名前やロールがそうです。
+[空白](../diagrams/er.ja.md#単位と文脈) を参照してください。
 それ以外では、値の両端の空白は値の外です。
 
 **実体**は図の箱で、名前で名付けられます。
@@ -23,8 +26,8 @@ ASCII の外の空白文字で終わる名前やロールがそうです（[空�
 この図種の StringLiteral は常に閉じています。
 空になるのは、`A ||--o{ B : ""` のようなロールと、属性のコメントのときだけです。
 実体の名前としての空の文字列は入力を拒否させ、
-空のバッククォートは StringLiteral ではありません。 [fixture: er/gram-role-string-empty]
-[fixture: er/gram-comment-empty]
+空のバッククォートは StringLiteral ではありません。
+[fixture: er/gram-role-string-empty] [fixture: er/gram-comment-empty]
 [fixture: er/spec-er-diagram-f4c59d78]
 [fixture: er/gram-empty-backquotes-between-attributes]
 [属性](../diagrams/er.ja.md#属性) を参照してください。
@@ -46,7 +49,8 @@ ErClassStatement、ErStyleStatement、ErAccTitleStatement、ErAccDescrStatement�
 ErAccDescrBlockStatement のいずれかです。
 
 改行はどの文にも属さず、空行はノードを作りません。
-以下のどのノードの子の欄もソースの順です（[ノード](../ast.ja.md#ノード) を参照）。
+以下のどのノードの子の欄もソースの順です（[ノード](../ast.ja.md#ノード)
+を参照）。
 
 ### ErEntityStatement
 
@@ -67,8 +71,8 @@ ErAccDescrBlockStatement のいずれかです。
 別名も同じです（[実体](../diagrams/er.ja.md#実体) を参照）。
 `attributes` の ErIgnoredText は、2 つの属性の間、最初の属性の前、
 または最後の属性の後の `empty-backquotes` の単位で、
-mermaid.js は読みません（[属性](../diagrams/er.ja.md#属性) を参照）。 [fixture: er/lex-name-unicode-characters]
-[fixture: er/lex-name-number]
+mermaid.js は読みません（[属性](../diagrams/er.ja.md#属性) を参照）。
+[fixture: er/lex-name-unicode-characters] [fixture: er/lex-name-number]
 [fixture: er/lex-quoted-name] [fixture: er/gram-alias] [fixture:
 er/gram-alias-string] [fixture: er/gram-entity-classes] [fixture:
 er/gram-attribute] [fixture: er/gram-block-empty] [fixture:
@@ -117,9 +121,8 @@ er/gram-attributes-keys-comment]
 子の欄: `left`、`relationship`、`right`、`role`。
 ロールは、`string` か `quoted-name` の単位では StringLiteral、
 `name` の単位では ErIdentifier です。
-`string` は空でもよく、
-その値は空の文字列です。 [fixture: er/gram-relationship-symbols]
-[fixture: er/gram-role-string]
+`string` は空でもよく、その値は空の文字列です。
+[fixture: er/gram-relationship-symbols] [fixture: er/gram-role-string]
 [fixture: er/gram-role-string-empty] [fixture: er/lex-role-unicode] [fixture:
 er/gram-relationship-both-classes]
 
@@ -133,7 +136,7 @@ er/gram-relationship-both-classes]
 | `name`       | ErIdentifier か StringLiteral | 実体の名前。ErEntityStatement と同じです。                                   |
 | `cssClasses` | ErIdentifier のリスト         | `:::` の後の、`,` の単位で区切ったクラス。ソースの順。`:::` がないときは空。 |
 
-子の欄: `name`、`cssClasses`。 [fixture: er/gram-relationship-left-classes]
+子の欄: `name`、 `cssClasses`。 [fixture: er/gram-relationship-left-classes]
 [fixture:
 er/gram-relationship-right-classes] [fixture:
 er/gram-relationship-string-names] [fixture:
@@ -178,8 +181,8 @@ er/spec-er-diagram-7b5988ee]
 タイトルがリストなのは、文法がそこで 1 つ以上の実体の名前を、
 間に空白があってもなくても読み、
 mermaid.js がそのテキストを 1つの空白文字でつなぐからです。
-間の空白は値ではありません（[subgraph](../diagrams/er.ja.md#subgraph) を参照）。 [fixture: er/gram-subgraph]
-[fixture: er/gram-subgraph-title] [fixture:
+間の空白は値ではありません（[subgraph](../diagrams/er.ja.md#subgraph) を参照）。
+[fixture: er/gram-subgraph] [fixture: er/gram-subgraph-title] [fixture:
 er/gram-subgraph-title-string] [fixture: er/gram-subgraph-string-id]
 [fixture: er/gram-subgraph-header-blocks] [fixture: er/gram-subgraph-nested]
 
@@ -244,9 +247,8 @@ er/db-class-subgraph]
 | `styles`   | ErLiteral のリスト    | スタイル。ErClassDefStatement と同じです。                               |
 
 子の欄: `entities`、`styles`。
-名前は ErIdentifier で、
-その `name` は `style-text` の単位のテキストです。 [fixture: er/gram-style]
-[fixture: er/gram-style-two-names] [fixture:
+名前は ErIdentifier で、その `name` は `style-text` の単位のテキストです。
+[fixture: er/gram-style] [fixture: er/gram-style-two-names] [fixture:
 er/db-style-subgraph]
 
 ### ErAccTitleStatement
@@ -274,9 +276,8 @@ er/db-style-subgraph]
 | `value` | ErLiteral | `accDescr:` の後、その行の終わりまでのテキスト。 |
 
 子の欄: `value`。
-ErAccTitleStatement と同じく、
-値が nullになることはありません。 [fixture: er/gram-acc-descr]
-[fixture: er/lex-acc-descr-at-end]
+ErAccTitleStatement と同じく、値が nullになることはありません。
+[fixture: er/gram-acc-descr] [fixture: er/lex-acc-descr-at-end]
 
 ### ErAccDescrBlockStatement
 
@@ -316,12 +317,15 @@ ErAccTitleStatement と同じく、
 [Identifier](../ast.ja.md#identifier) ではなく図の名前のノードなのは、
 これらの位置が名前の中に空白を許すからです。
 `name` と `style-text` は、
-U+00A0 や U+2028 のような ASCII の外の空白文字を持て（[空白](../diagrams/er.ja.md#単位と文脈) を参照）、
+U+00A0 や U+2028 のような ASCII
+の外の空白文字を持て（[空白](../diagrams/er.ja.md#単位と文脈) を参照）、
 チルダの語はどの空白も持てます。
 `A`、U+00A0、`B` は 1 つの実体で、`List~a b~ c` の型は `List~a b~`、
 `12` は `name` が `12` の実体です。
 `word` は ASCII の空白と U+00A0 を持ちませんが、
-それ以外の ASCII の外の空白文字を最初の文字の後に持てます（[属性ブロックの文脈](../diagrams/er.ja.md#属性ブロックの文脈) を参照）。
+それ以外の ASCII の外の空白文字を最初の文字の後に持てます。
+[属性ブロックの文脈](../diagrams/er.ja.md#属性ブロックの文脈)
+を参照してください。
 `string name` の型は `string` です。 [fixture: er/lex-name-nbsp]
 [fixture: er/lex-name-line-separator] [fixture:
 er/lex-tilde-space-inside] [fixture: er/lex-name-number] [fixture:
@@ -341,11 +345,12 @@ er/gram-attribute] [fixture: er/lex-tilde-run-two-words]
 単位の書かれたテキストを順につないだものです。
 mermaid.js はスタイルの単位の間の空白を落とすので、
 `classDef a fill : #f9f` はスタイル `fill:#f9f` を持ち、
-`classDef a fill:red stroke:blue` は 1 つのスタイル `fill:redstroke:blue` を持ちます。
+`classDef a fill:red stroke:blue` は 1 つのスタイル `fill:redstroke:blue`
+を持ちます。
 アクセシビリティのテキストは、mermaid.js が取り除く両端の空白なしで読まれ、
 空白だけになることはありません。 [fixture: er/lex-classdef-style-spaces]
-[fixture: er/lex-classdef-styles-joined]
-[fixture: er/gram-acc-title] [fixture: er/db-acc-title-trailing-space]
+[fixture: er/lex-classdef-styles-joined] [fixture: er/gram-acc-title]
+[fixture: er/db-acc-title-trailing-space]
 [fixture: er/lex-acc-descr-block-trailing-spaces]
 
 ### ErIgnoredText

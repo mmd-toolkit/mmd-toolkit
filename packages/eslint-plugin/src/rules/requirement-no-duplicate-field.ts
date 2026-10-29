@@ -26,27 +26,24 @@ export const requirementNoDuplicateField: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js keeps the `{{field}}` of line {{line}}: this later one changes nothing.",
+        "mermaid.js keeps the first `{{field}}` value and ignores this one.",
     },
   },
   create(context) {
     /** Reports each field of the body of `node` whose value differs from the first field of its name in the body. */
     function check(node: BoxStatement): void {
-      const firsts = new Map<string, { line: number; value: string }>()
+      const firsts = new Map<string, string>()
       for (const item of node.body) {
         const field = fieldOf(item)
         if (field === null) continue
         const first = firsts.get(field.name)
         if (first === undefined) {
-          firsts.set(field.name, {
-            line: item.loc.start.line,
-            value: field.value,
-          })
-        } else if (first.value !== field.value) {
+          firsts.set(field.name, field.value)
+        } else if (first !== field.value) {
           context.report({
             node: item,
             messageId: "duplicate",
-            data: { field: field.name, line: String(first.line) },
+            data: { field: field.name },
           })
         }
       }

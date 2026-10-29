@@ -80,6 +80,12 @@ const valid = [
 ]
 const invalid = [
   {
+    name: "a space between two wide characters is not a break",
+    code: "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよら り。",
+    output: null,
+    errors: [{ messageId: "cannotFit" }],
+  },
+  {
     name: "put the overlong link alone before the remaining prose",
     code: "[長いリンクの文字列](https://example.com/docs/a-path-that-is-long-enough-to-pass-the-limit-by-itself) は、次の説明に続く。",
     output:
@@ -523,6 +529,160 @@ new RuleTester(config).run(
   reviewCases,
 )
 
+const citationCases = {
+  valid: [
+    {
+      name: "a backslash hard break after a sentence stays with it",
+      code: "短い文です。\\\n次の文。",
+    },
+    {
+      name: "a backslash hard break after the last reference stays with it",
+      code: "短い文です。 [fixture: a]\\\n次の文。",
+    },
+    {
+      name: "a hard break after the last reference closes the sentence",
+      code: "最初の文は、短いです。 [fixture: a] [fixture: b]  \n次の文。",
+    },
+    {
+      name: "a period after the last reference stays with it",
+      code: "最初の文は、短いです。 [fixture: a] [fixture: b].\n次の文。",
+    },
+    {
+      name: "a short body and its references share one line",
+      code: "説明です。 [fixture: a] [fixture: b]",
+    },
+    {
+      name: "a reference continues after the intact body",
+      code: "後から宣言した軸も対象で、radar 設定は受理を変えません。 [fixture: a]\n[fixture: b]",
+    },
+    {
+      name: "an emphasized overlong link is exempt with its closing period",
+      code: "**[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.ja.md)。**\n後の文。",
+    },
+    {
+      name: "single emphasis belongs to the overlong protected word",
+      code: "*`a-single-protected-name-that-is-longer-than-eighty-columns-and-has-no-break-opportunity-inside-it`。*",
+    },
+    {
+      name: "underscore emphasis belongs to the overlong protected word",
+      code: "_`a-single-protected-name-that-is-longer-than-eighty-columns-and-has-no-break-opportunity-inside-it`。_",
+    },
+    {
+      name: "strikethrough belongs to the overlong protected word",
+      code: "~~`a-single-protected-name-that-is-longer-than-eighty-columns-and-has-no-break-opportunity-inside-it`。~~",
+    },
+  ],
+  invalid: [
+    {
+      name: "a backslash hard break does not start a new sentence",
+      code: "短い文は、\n長めです。\\\n次の文。",
+      output: "短い文は、長めです。\\\n次の文。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "a hard break after the last reference does not split the body",
+      code: "最初の文は、\n短いです。 [fixture: a] [fixture: b]  \n次の文。",
+      output: "最初の文は、短いです。 [fixture: a] [fixture: b]  \n次の文。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "a period after the last reference does not split the body",
+      code: "最初の文は、\n短いです。 [fixture: a] [fixture: b].\n次の文。",
+      output: "最初の文は、短いです。 [fixture: a] [fixture: b].\n次の文。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "one reference moves without wrapping the fitting body",
+      code: "後から宣言した軸も対象で、radar 設定は受理を変えません。 [fixture: radar/axes-declared-after-configuration]",
+      output:
+        "後から宣言した軸も対象で、radar 設定は受理を変えません。\n[fixture: radar/axes-declared-after-configuration]",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "only the second reference moves from the fitting body",
+      code: "後から宣言した軸も対象で、radar 設定は受理を変えません。 [fixture: a] [fixture: b]",
+      output:
+        "後から宣言した軸も対象で、radar 設定は受理を変えません。 [fixture: a]\n[fixture: b]",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "reference continuations retain the list prefix width",
+      code: "- 後から宣言した軸も対象で、radar 設定は受理を変えません。 [fixture: a] [fixture: b]",
+      output:
+        "- 後から宣言した軸も対象で、radar 設定は受理を変えません。 [fixture: a]\n  [fixture: b]",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "a reference fits on the final line of a wrapped body",
+      code: "この文では、最初の説明を読み、次の説明も読み、最後の説明まで読んでから全体の判断を行います。 [fixture: a]",
+      output:
+        "この文では、最初の説明を読み、次の説明も読み、\n最後の説明まで読んでから全体の判断を行います。 [fixture: a]",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "a reference continues after the final line of a wrapped body",
+      code: "この文では、最初の説明を読み、次の説明も読み、最後の説明まで読んでから全体の判断を行います。 [fixture: a-long-reference-identifier-for-the-continuation-line]",
+      output:
+        "この文では、最初の説明を読み、次の説明も読み、\n最後の説明まで読んでから全体の判断を行います。\n[fixture: a-long-reference-identifier-for-the-continuation-line]",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "an overlong reference occupies an exempt continuation line",
+      code: "説明です。 [fixture: a-single-protected-name-that-is-longer-than-eighty-columns-and-has-no-break-opportunity-inside-it] 次の文。",
+      output:
+        "説明です。\n[fixture: a-single-protected-name-that-is-longer-than-eighty-columns-and-has-no-break-opportunity-inside-it]\n次の文。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "a directly attached reference gets exactly one separating space",
+      code: "説明です。[fixture: a]   [fixture: b] 次の文。",
+      output: "説明です。 [fixture: a] [fixture: b]\n次の文。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "adjacent references stay adjacent on a continuation",
+      code: "後から宣言した軸も対象で、radar 設定は受理を変えません。[fixture: a][fixture: b] 次の文。",
+      output:
+        "後から宣言した軸も対象で、radar 設定は受理を変えません。\n[fixture: a][fixture: b]\n次の文。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "a strong overlong link keeps its period and closes before the next sentence",
+      code: "**[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.ja.md)。** 後の文。",
+      output:
+        "**[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.ja.md)。**\n後の文。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "normalization message describes space wrapping and reference continuations",
+      code: "最初。次。",
+      output: "最初。\n次。",
+      errors: [
+        {
+          message:
+            "Use one sentence per line and wrap long sentences after 、 or at a space within 80 columns, with following references on the last line or continuation lines.",
+        },
+      ],
+    },
+    {
+      name: "unwrappable message describes both break candidates and the author's remedy",
+      code: "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよら`ab`。",
+      output: null,
+      errors: [
+        {
+          message:
+            "This sentence is 84 columns wide and cannot be broken after 、 or at a space within 80 columns: split it or add a 、.",
+        },
+      ],
+    },
+  ],
+}
+new RuleTester(config).run(
+  "ja-line-breaks/review-jlb3",
+  jaLineBreaks,
+  citationCases,
+)
+
 it("fixes another sentence while preserving and reporting an unwrappable one", () => {
   const configured = [{ ...config, rules: { "local/ja-line-breaks": "error" } }]
   const messages = linter.verify(
@@ -555,6 +715,7 @@ for (const example of [
   ...invalid,
   ...boundaryCases.invalid,
   ...reviewCases.invalid,
+  ...citationCases.invalid,
 ]) {
   if (example.output === null) continue
   it(`normal form is idempotent: ${example.name}`, () => {

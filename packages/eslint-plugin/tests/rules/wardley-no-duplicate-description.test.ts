@@ -35,7 +35,7 @@ accDescr { A\u2029C }`,
         errors: [
           {
             message:
-              "mermaid.js replaces the description set on line 2 with the one of this `accDescr`.",
+              "mermaid.js replaces the earlier description with the one of this `accDescr`.",
             line: 3,
             column: 1,
             endLine: 3,
@@ -52,7 +52,7 @@ accDescr: A\u2028B`,
         errors: [
           {
             message:
-              "mermaid.js replaces the description set on line 2 with the one of this `accDescr`.",
+              "mermaid.js replaces the earlier description with the one of this `accDescr`.",
             line: 3,
             column: 1,
             endLine: 3,

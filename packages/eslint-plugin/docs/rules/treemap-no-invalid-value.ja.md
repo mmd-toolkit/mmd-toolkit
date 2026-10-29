@@ -1,7 +1,6 @@
 # @mmd-toolkit/treemap-no-invalid-value
 
-英語版:
-[treemap-no-invalid-value.md](./treemap-no-invalid-value.md)
+英語版: [treemap-no-invalid-value.md](./treemap-no-invalid-value.md)
 
 mermaid.js が別の数として読む葉の値を禁止する。
 
@@ -61,8 +60,8 @@ treemap
 
 ## 背景
 
-[値の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treemap/valueConverter.ts#L13-L15) は、
-数のカンマを除き、残りを JavaScript の `parseFloat` で読む。
+[値の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treemap/valueConverter.ts#L13-L15)
+は、数のカンマを除き、残りを JavaScript の `parseFloat` で読む。
 `parseFloat` は、数を続けない最初の文字で止まる。
 
 <!-- begin auto-generated rule resources -->

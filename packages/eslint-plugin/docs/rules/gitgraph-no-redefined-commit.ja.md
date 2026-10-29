@@ -1,7 +1,6 @@
 # @mmd-toolkit/gitgraph-no-redefined-commit
 
-英語版:
-[gitgraph-no-redefined-commit.md](./gitgraph-no-redefined-commit.md)
+英語版: [gitgraph-no-redefined-commit.md](./gitgraph-no-redefined-commit.md)
 
 前に書いたコミットやマージの id を持つ `commit` を禁止する。
 
@@ -73,8 +72,8 @@ gitGraph
 
 ## 背景
 
-[`commit`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L114-L134) は、
-ログに警告を書いた後、同じ id のコミットの上にそのコミットを保つ。
+[`commit`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L114-L134)
+は、ログに警告を書いた後、同じ id のコミットの上にそのコミットを保つ。
 
 <!-- begin auto-generated rule resources -->
 

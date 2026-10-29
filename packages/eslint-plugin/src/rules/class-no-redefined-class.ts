@@ -24,30 +24,29 @@ export const classNoRedefinedClass: MermaidRuleDefinition<{
     schema: [],
     messages: {
       redefined:
-        "mermaid.js replaces the label `{{previous}}` of the class `{{id}}`, set on line {{line}}, with this one.",
+        "mermaid.js replaces the label `{{previous}}` of the class `{{id}}`, set earlier, with this one.",
     },
   },
   create(context) {
-    /** For each class id, the label that the class has and the line that set it. */
-    const labels = new Map<string, { label: string; line: number }>()
+    /** For each class id, the label that the class has. */
+    const labels = new Map<string, string>()
     return {
       ClassDeclaration(node) {
         if (node.label === null) return
         const id = classIdOf(node.name)
         const { value } = node.label
         const earlier = labels.get(id)
-        if (earlier !== undefined && earlier.label !== value) {
+        if (earlier !== undefined && earlier !== value) {
           context.report({
             node,
             messageId: "redefined",
             data: {
-              previous: earlier.label,
+              previous: earlier,
               id,
-              line: String(earlier.line),
             },
           })
         }
-        labels.set(id, { label: value, line: node.loc.start.line })
+        labels.set(id, value)
       },
     }
   },

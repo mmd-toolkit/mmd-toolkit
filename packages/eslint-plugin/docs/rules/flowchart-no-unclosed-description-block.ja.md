@@ -9,7 +9,9 @@
 
 `recommended` の設定は、この規則を有効にしない。
 
-💡 [エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions) を選んで適用できる。
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
 
 <!-- end auto-generated rule notice -->
 
@@ -30,7 +32,8 @@ mermaid.js は、`}` のない説明のブロックを受理する。
 規則は、ほかのもののために書いた `}` が閉じるブロックも報告する。
 説明のブロックは、`{` の後の最初の `}` で終わり、そこまでのほかの文字は、
 `{` も含めて、
-そのテキストである（仕様の [アクセシビリティの値](../../../spec/docs/diagrams/flowchart.ja.md#アクセシビリティの値)）。
+そのテキストである（仕様の
+[アクセシビリティの値](../../../spec/docs/diagrams/flowchart.ja.md#アクセシビリティの値)）。
 形 `A{y}` やデータブロック `A@{ shape: rect }` のように、
 後の文が `{` とその `}` を持つと、その `}` がブロックを閉じ、
 そこまでの行が説明になる。
@@ -79,7 +82,8 @@ A から B への辺ができず、 `%%{init: {}` の代わりに `%%{wrap` が�
 ディレクティブの直前でブロックを閉じても拒否される。
 ブロックの前に説明があるときや、後の文が説明を設定するときは、
 ブロックを閉じるとテキストが説明を 2 度設定することになり、
-[flowchart-no-duplicate-description](./flowchart-no-duplicate-description.ja.md) が後のほうを報告する。
+[flowchart-no-duplicate-description](./flowchart-no-duplicate-description.ja.md)
+が後のほうを報告する。
 `accDescr { x` と次の行の `accDescr { y }` を行の終わりで閉じると、
 説明は `y` になる。
 

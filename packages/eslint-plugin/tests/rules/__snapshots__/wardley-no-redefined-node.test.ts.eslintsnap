@@ -11,7 +11,7 @@ Code:
     |   ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the node `API` registered from line 2 with this declaration.
+[1] mermaid.js replaces the earlier node `API` with this declaration.
 ---
 
 
@@ -25,7 +25,7 @@ Code:
     |   ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the node `API` registered from line 2 with this declaration.
+[1] mermaid.js replaces the earlier node `API` with this declaration.
 ---
 
 
@@ -38,7 +38,7 @@ Code:
   3 | component API [0.6,0.7]
     | ^~~~~~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the node `API` registered from line 2 with this declaration.
+[1] mermaid.js replaces the earlier node `API` with this declaration.
 ---
 
 
@@ -51,7 +51,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~~~ [1]
   3 | anchor API [0.9,0.8]
 
-[1] mermaid.js replaces the node `API` registered from line 3 with this declaration.
+[1] mermaid.js replaces the earlier node `API` with this declaration.
 ---
 
 
@@ -67,7 +67,7 @@ Code:
   5 | component P_X [0.5,0.4] (buy)
   6 | component P [0.3,0.8]
 
-[1] mermaid.js replaces the node `P_X` registered from line 5 with this declaration.
+[1] mermaid.js replaces the earlier node `P_X` with this declaration.
 ---
 
 
@@ -83,7 +83,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~ [1]
   6 | }
 
-[1] mermaid.js replaces the node `P_X` registered from line 3 with this declaration.
+[1] mermaid.js replaces the earlier node `P_X` with this declaration.
 ---
 
 
@@ -107,8 +107,8 @@ Code:
  12 | }
  13 |
 
-[1] mermaid.js replaces the node `A_B` registered from line 2 with this declaration.
-[2] mermaid.js replaces the node `A_B_C` registered from line 5 with this declaration.
+[1] mermaid.js replaces the earlier node `A_B` with this declaration.
+[2] mermaid.js replaces the earlier node `A_B_C` with this declaration.
 ---
 
 
@@ -127,7 +127,7 @@ Code:
   8 | }
   9 |
 
-[1] mermaid.js replaces the node `Pq_X` registered from line 4 with this declaration.
+[1] mermaid.js replaces the earlier node `Pq_X` with this declaration.
 ---
 
 
@@ -140,7 +140,7 @@ Code:
   3 | component A [0.4,0.5]
     | ^~~~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the node `A` registered from line 2 with this declaration.
+[1] mermaid.js replaces the earlier node `A` with this declaration.
 ---
 
 
@@ -153,7 +153,7 @@ Code:
   3 | component A [0.4,0.5]
     | ^~~~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the node `A` registered from line 2 with this declaration.
+[1] mermaid.js replaces the earlier node `A` with this declaration.
 ---
 
 
@@ -166,7 +166,7 @@ Code:
   3 | component A [0.4,0.5] label [-1,3]
     | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the node `A` registered from line 2 with this declaration.
+[1] mermaid.js replaces the earlier node `A` with this declaration.
 ---
 
 
@@ -182,7 +182,7 @@ Code:
   5 | component X [0.7]
   6 | }
 
-[1] mermaid.js replaces the node `P` registered from line 2 with this declaration.
+[1] mermaid.js replaces the earlier node `P` with this declaration.
 ---
 
 
@@ -195,7 +195,7 @@ Code:
   3 | component API [0.3,0.8]
     | ^~~~~~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the node `API` registered from line 2 with this declaration.
+[1] mermaid.js replaces the earlier node `API` with this declaration.
 ---
 
 
@@ -208,7 +208,7 @@ Code:
   3 | component A [0.4,0.5]
     | ^~~~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the node `A` registered from line 2 with this declaration.
+[1] mermaid.js replaces the earlier node `A` with this declaration.
 ---
 
 
@@ -223,8 +223,8 @@ Code:
   4 | component A [0.1,0.2]
     | ^~~~~~~~~~~~~~~~~~~~~ [2]
 
-[1] mermaid.js replaces the node `A` registered from line 2 with this declaration.
-[2] mermaid.js replaces the node `A` registered from line 3 with this declaration.
+[1] mermaid.js replaces the earlier node `A` with this declaration.
+[2] mermaid.js replaces the earlier node `A` with this declaration.
 ---
 
 
@@ -242,5 +242,5 @@ Code:
     | ^~~~~~~~~~~~~~~~~ [1]
   8 | }
 
-[1] mermaid.js replaces the node `P_X` registered from line 4 with this declaration.
+[1] mermaid.js replaces the earlier node `P_X` with this declaration.
 ---

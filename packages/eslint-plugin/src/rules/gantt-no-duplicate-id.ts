@@ -25,25 +25,24 @@ export const ganttNoDuplicateId: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js finds only this task for the id `{{id}}`, not the task on line {{line}} that has it too.",
+        "mermaid.js replaces the earlier target of the id `{{id}}` with this task.",
     },
   },
   create(context) {
-    /** For each written id, the line of the first task that writes it. */
-    const lines = new Map<string, number>()
+    /** Written ids already assigned to a task. */
+    const ids = new Set<string>()
     return {
       GanttTaskStatement(node) {
         const item = itemRolesOf(node).id
         if (item === null) return
-        const earlier = lines.get(item.value)
-        if (earlier === undefined) {
-          lines.set(item.value, node.loc.start.line)
+        if (!ids.has(item.value)) {
+          ids.add(item.value)
           return
         }
         context.report({
           node: item,
           messageId: "duplicate",
-          data: { id: item.value, line: String(earlier) },
+          data: { id: item.value },
         })
       },
     }

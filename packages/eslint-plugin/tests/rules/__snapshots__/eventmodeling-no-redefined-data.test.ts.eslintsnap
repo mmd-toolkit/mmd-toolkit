@@ -16,7 +16,7 @@ Code:
   8 | }
   9 |
 
-[1] mermaid.js shows the `Payload` data block declared on line 3; the content of this later block is not used.
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
 ---
 
 
@@ -34,7 +34,7 @@ Code:
   7 | second
   8 | }
 
-[1] mermaid.js shows the `Payload` data block declared on line 3; the content of this later block is not used.
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
 ---
 
 
@@ -52,7 +52,7 @@ Code:
   7 | }
   8 | tf 01 evt Bought [[Payload]]
 
-[1] mermaid.js shows the `Payload` data block declared on line 2; the content of this later block is not used.
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
 ---
 
 
@@ -72,7 +72,7 @@ Code:
   9 | second
  10 | }
 
-[1] mermaid.js shows the `Payload` data block declared on line 3; the content of this later block is not used.
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
 ---
 
 
@@ -90,7 +90,7 @@ Code:
   7 | second
   8 | }
 
-[1] mermaid.js shows the `Payload` data block declared on line 3; the content of this later block is not used.
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
 ---
 
 
@@ -107,7 +107,7 @@ Code:
     |      ^~~~~~~ [1]
   7 | }
 
-[1] mermaid.js shows the `Payload` data block declared on line 3; the content of this later block is not used.
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
 ---
 
 
@@ -125,7 +125,7 @@ Code:
   7 | #
   8 | }
 
-[1] mermaid.js shows the `Payload` data block declared on line 3; the content of this later block is not used.
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
 ---
 
 
@@ -144,7 +144,7 @@ Code:
   8 | }
   9 |
 
-[1] mermaid.js shows the `Payload` data block declared on line 3; the content of this later block is not used.
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
 ---
 
 
@@ -162,7 +162,7 @@ Code:
   7 | second
   8 | }
 
-[1] mermaid.js shows the `Payload` data block declared on line 2; the content of this later block is not used.
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
 ---
 
 
@@ -187,8 +187,8 @@ Code:
  13 | third
  14 | }
 
-[1] mermaid.js shows the `Payload` data block declared on line 3; the content of this later block is not used.
-[2] mermaid.js shows the `Payload` data block declared on line 3; the content of this later block is not used.
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
+[2] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
 ---
 
 
@@ -207,7 +207,7 @@ Code:
   8 | }
   9 |
 
-[1] mermaid.js shows the `Payload` data block declared on line 3; the content of this later block is not used.
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
 ---
 
 
@@ -225,7 +225,7 @@ Code:
   7 | second
   8 | }
 
-[1] mermaid.js shows the `Payload` data block declared on line 3; the content of this later block is not used.
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
 ---
 
 
@@ -243,7 +243,7 @@ Code:
   7 | }
   8 | resetframe 01 evt Bought [[Payload]]
 
-[1] mermaid.js shows the `Payload` data block declared on line 2; the content of this later block is not used.
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
 ---
 
 
@@ -261,7 +261,7 @@ Code:
   7 | second
   8 | }
 
-[1] mermaid.js shows the `Payload` data block declared on line 3; the content of this later block is not used.
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
 ---
 
 
@@ -280,5 +280,5 @@ Code:
   8 | }
   9 |
 
-[1] mermaid.js shows the `Payload` data block declared on line 3; the content of this later block is not used.
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
 ---

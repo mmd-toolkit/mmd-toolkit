@@ -1,7 +1,6 @@
 # @mmd-toolkit/radar-no-duplicate-option
 
-英語版:
-[radar-no-duplicate-option.md](./radar-no-duplicate-option.md)
+英語版: [radar-no-duplicate-option.md](./radar-no-duplicate-option.md)
 
 前の同じオプションの値を置き換えるオプションを禁止する。
 
@@ -59,8 +58,8 @@ radar-beta
 
 ## 背景
 
-[`setOptions`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L93-L117) は、
-オプションごとに最後の値を保ち、輪を 32 までしか描かない。
+[`setOptions`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L93-L117)
+は、オプションごとに最後の値を保ち、輪を 32 までしか描かない。
 
 <!-- begin auto-generated rule resources -->
 

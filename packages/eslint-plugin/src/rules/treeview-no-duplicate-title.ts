@@ -18,26 +18,21 @@ export const treeviewNoDuplicateTitle: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js replaces the accessible title set on line {{line}} with the one of this `accTitle`.",
+        "mermaid.js replaces the earlier accessible title with the one of this `accTitle`.",
     },
   },
   create(context) {
-    let previous: { value: string; line: number } | null = null
+    let previous: string | null = null
     return {
       TreeviewAccTitleStatement(node) {
         const value = commonTitleText(node.value?.value ?? "")
-        if (
-          previous !== null &&
-          previous.value !== "" &&
-          previous.value !== value
-        ) {
+        if (previous !== null && previous !== "" && previous !== value) {
           context.report({
             node,
             messageId: "duplicate",
-            data: { line: String(previous.line) },
           })
         }
-        previous = { value, line: node.loc.start.line }
+        previous = value
       },
     }
   },

@@ -12,7 +12,7 @@ Code:
   4 |   commit
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -28,8 +28,8 @@ Code:
     | ^~~~~~~~~~~~~~ [2]
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
-[2] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -43,7 +43,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -57,7 +57,7 @@ Code:
     | ^~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -72,7 +72,7 @@ Code:
   4 |   commit
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -90,7 +90,7 @@ Code:
     | ~ [1]
   6 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -110,7 +110,7 @@ Code:
   7 | commit
   8 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -127,7 +127,7 @@ Code:
     | ~~~~~ [1]
   6 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -142,7 +142,7 @@ Code:
   4 |   commit
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -157,7 +157,7 @@ Code:
   4 | commit
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -172,7 +172,7 @@ Code:
   4 | commit
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -187,7 +187,7 @@ Code:
   4 | commit
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -203,8 +203,8 @@ Code:
     | ^~~~~~~~~~~ [2]
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
-[2] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -219,5 +219,5 @@ Code:
   4 |   commit
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---

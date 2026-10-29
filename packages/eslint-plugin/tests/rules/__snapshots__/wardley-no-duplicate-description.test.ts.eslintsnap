@@ -12,7 +12,7 @@ Code:
   4 |   component API [0.6, 0.7]
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -25,7 +25,7 @@ Code:
   3 | accDescr { Future map }
     | ^~~~~~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -42,7 +42,7 @@ Code:
   5 | }
     | ~ [1]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -56,7 +56,7 @@ Code:
   4 | accDescr: Last
     | ^~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -69,7 +69,7 @@ Code:
   3 | accDescr:
     | ^~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -82,7 +82,7 @@ Code:
   3 | accDescr: #65;
     | ^~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -95,7 +95,7 @@ Code:
   3 | accDescr: <b x='a'>T</b>
     | ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -110,8 +110,8 @@ Code:
   4 | accDescr { A }
     | ^~~~~~~~~~~~~~ [2]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
-[2] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -126,5 +126,5 @@ Code:
   4 |   component API [0.6, 0.7]
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---

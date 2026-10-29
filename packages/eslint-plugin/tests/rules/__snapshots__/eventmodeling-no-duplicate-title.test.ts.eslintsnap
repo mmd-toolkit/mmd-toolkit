@@ -10,7 +10,7 @@ Code:
     |                    ^~~~~~~~~~~~~~~~ [1]
   3 |
 
-[1] mermaid.js replaces the accessible title set on line 1 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -23,7 +23,7 @@ Code:
     |             ^~~~~~~~~ [1]
   3 | tf 02 evt B accTitle: Third
 
-[1] mermaid.js replaces the accessible title set on line 1 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -35,7 +35,7 @@ Code:
   2 | tf 01 evt Bought accTitle: Second
     |                  ^~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the accessible title set on line 1 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -47,7 +47,7 @@ Code:
   2 | tf 01 evt Bought accTitle: Second
     |                  ^~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the accessible title set on line 1 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -59,7 +59,7 @@ Code:
   2 | tf 01 evt Bought accTitle:
     |                  ^~~~~~~~~ [1]
 
-[1] mermaid.js replaces the accessible title set on line 1 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -71,7 +71,7 @@ Code:
   2 | tf 01 evt Bought accTitle: <b x='a'>T</b>
     |                  ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the accessible title set on line 1 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -83,7 +83,7 @@ Code:
   2 | tf 01 evt Bought accTitle: #
     |                  ^~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the accessible title set on line 1 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -97,8 +97,8 @@ Code:
   3 | tf 02 evt B accTitle: First
     |             ^~~~~~~~~~~~~~~ [2]
 
-[1] mermaid.js replaces the accessible title set on line 1 with the one of this `accTitle`.
-[2] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+[2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -111,7 +111,7 @@ Code:
     |                    ^~~~~~~~~~~~ [1]
   3 |
 
-[1] mermaid.js replaces the accessible title set on line 1 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -124,5 +124,5 @@ Code:
     |                    ^~~~~~~~~~~~~~~~ [1]
   3 |
 
-[1] mermaid.js replaces the accessible title set on line 1 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---

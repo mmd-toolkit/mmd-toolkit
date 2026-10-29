@@ -12,7 +12,7 @@ Code:
     |   ^~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the evolution target of `API`, set on line 3, with this target.
+[1] mermaid.js replaces the evolution target of `API`, set earlier, with this target.
 ---
 
 
@@ -27,7 +27,7 @@ Code:
     |   ^~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the evolution target of `API`, set on line 3, with this target.
+[1] mermaid.js replaces the evolution target of `API`, set earlier, with this target.
 ---
 
 
@@ -41,7 +41,7 @@ Code:
   4 | evolve U 0.9
     | ^~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the evolution target of `U`, set on line 3, with this target.
+[1] mermaid.js replaces the evolution target of `U`, set earlier, with this target.
 ---
 
 
@@ -58,7 +58,7 @@ Code:
   6 | component X [0.7]
   7 | }
 
-[1] mermaid.js replaces the evolution target of `P_X`, set on line 2, with this target.
+[1] mermaid.js replaces the evolution target of `P_X`, set earlier, with this target.
 ---
 
 
@@ -72,7 +72,7 @@ Code:
     | ^~~~~~~~~~~~~~ [1]
   4 | component API [0.3,0.4]
 
-[1] mermaid.js replaces the evolution target of `API`, set on line 2, with this target.
+[1] mermaid.js replaces the evolution target of `API`, set earlier, with this target.
 ---
 
 
@@ -86,7 +86,7 @@ Code:
   4 | evolve API 0.9
     | ^~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the evolution target of `API`, set on line 3, with this target.
+[1] mermaid.js replaces the evolution target of `API`, set earlier, with this target.
 ---
 
 
@@ -102,6 +102,6 @@ Code:
   5 | evolve A 0.4
     | ^~~~~~~~~~~~ [2]
 
-[1] mermaid.js replaces the evolution target of `A`, set on line 3, with this target.
-[2] mermaid.js replaces the evolution target of `A`, set on line 4, with this target.
+[1] mermaid.js replaces the evolution target of `A`, set earlier, with this target.
+[2] mermaid.js replaces the evolution target of `A`, set earlier, with this target.
 ---

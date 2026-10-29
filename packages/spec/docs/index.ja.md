@@ -9,7 +9,9 @@
 描画とレイアウトは扱いません。
 埋め込みデータは解析も検査もしません。
 フロントマターの本文、ディレクティブの引数、
-`@{ ... }` のデータブロックは書かれたとおりに保持します（[`embedded-data-opaque`](./known-divergences/embedded-data-opaque.ja.md) を参照）。
+`@{ ... }` のデータブロックは書かれたとおりに保持します。
+[`embedded-data-opaque`](./known-divergences/embedded-data-opaque.ja.md)
+を参照してください。
 mermaid.js が設定をどう求めるかは、この仕様の範囲の外です。
 
 この文書のすべての記述は、pin した版の mermaid.js の挙動を基準にしています。
@@ -18,69 +20,75 @@ pin した版は [`@mmd-toolkit/tests`](../../tests) に記録されています
 ## pin した mermaid.js
 
 pin した版は mermaid 12.0.0 です。
-そのタグはコミット [`98a0945418c76238f15df2afaddbba4272656c3b`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b) を指し、
-この仕様が mermaid.js のソースを参照するときは、
+そのタグはコミット
+[`98a0945418c76238f15df2afaddbba4272656c3b`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b)
+を指し、この仕様が mermaid.js のソースを参照するときは、
 すべてこのコミットへのリンクにします。
 
 gitgraph の定義は、
-[構文](./diagrams/gitgraph.ja.md) と [木](./ast/gitgraph.ja.md) にあります。 [fixture: gitgraph/header-only]
-[fixture: gitgraph/gram-all-fields]
+[構文](./diagrams/gitgraph.ja.md) と [木](./ast/gitgraph.ja.md) にあります。
+[fixture: gitgraph/header-only] [fixture: gitgraph/gram-all-fields]
 
-info の定義は [構文](./diagrams/info.ja.md) と [木](./ast/info.ja.md) にあります。 [fixture: info/header-lf]
-[fixture: info/common-all]
+info の定義は [構文](./diagrams/info.ja.md) と [木](./ast/info.ja.md)
+にあります。 [fixture: info/header-lf] [fixture: info/common-all]
 
 packet の定義は、
-[構文](./diagrams/packet.ja.md) と [木](./ast/packet.ja.md) にあります。 [fixture: packet/gram-mixed]
-[fixture: packet/spec-packet-c4580507]
+[構文](./diagrams/packet.ja.md) と [木](./ast/packet.ja.md) にあります。
+[fixture: packet/gram-mixed] [fixture: packet/spec-packet-c4580507]
 
 architecture の定義は、[構文](./diagrams/architecture.ja.md) と、
 [木](./ast/architecture.ja.md) にあります。 [fixture: architecture/header-beta]
 [fixture: architecture/db-mixed]
 
 radar の定義は、
-[構文](./diagrams/radar.ja.md) と [木](./ast/radar.ja.md) にあります。 [fixture: radar/header-colon-inline]
-[fixture: radar/gram-written-tree]
+[構文](./diagrams/radar.ja.md) と [木](./ast/radar.ja.md) にあります。
+[fixture: radar/header-colon-inline] [fixture: radar/gram-written-tree]
 
 treemap の定義は、
-[構文](./diagrams/treemap.ja.md) と [木](./ast/treemap.ja.md) にあります。 [fixture: treemap/gram-written-tree]
-[fixture: treemap/header-beta]
+[構文](./diagrams/treemap.ja.md) と [木](./ast/treemap.ja.md) にあります。
+[fixture: treemap/gram-written-tree] [fixture: treemap/header-beta]
 
 railroad の定義は 4 方言を扱い、
-[構文](./diagrams/railroad.ja.md) と [木](./ast/railroad.ja.md) にあります。 [fixture: railroad/ir-gram-written-tree]
+[構文](./diagrams/railroad.ja.md) と [木](./ast/railroad.ja.md) にあります。
+[fixture: railroad/ir-gram-written-tree]
 [fixture: railroad/ebnf-gram-written-tree]
 [fixture: railroad/abnf-gram-written-tree]
 [fixture: railroad/peg-gram-written-tree]
 
 wardley の定義は、
-[構文](./diagrams/wardley.ja.md) と [木](./ast/wardley.ja.md) の文書にあります。 [fixture: wardley/header-only]
-[fixture: wardley/db-all-fields]
+[構文](./diagrams/wardley.ja.md) と [木](./ast/wardley.ja.md) の文書にあります。
+[fixture: wardley/header-only] [fixture: wardley/db-all-fields]
 
 cynefin の定義は、
-[構文](./diagrams/cynefin.ja.md) と [木](./ast/cynefin.ja.md) にあります。 [fixture: cynefin/header-only]
-[fixture: cynefin/db-all-fields]
+[構文](./diagrams/cynefin.ja.md) と [木](./ast/cynefin.ja.md) にあります。
+[fixture: cynefin/header-only] [fixture: cynefin/db-all-fields]
 
 eventmodeling は、[構文](./diagrams/eventmodeling.ja.md) と、
-[木](./ast/eventmodeling.ja.md) の文書で定義します。 [fixture: eventmodeling/header-only]
-[fixture: eventmodeling/gram-written-tree]
+[木](./ast/eventmodeling.ja.md) の文書で定義します。
+[fixture: eventmodeling/header-only] [fixture: eventmodeling/gram-written-tree]
 
 treeview の定義は、[構文](./diagrams/treeview.ja.md) と、
-[木](./ast/treeview.ja.md) の文書にあります。 [fixture: treeview/gram-written-tree]
-[fixture: treeview/box-written-tree]
+[木](./ast/treeview.ja.md) の文書にあります。
+[fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
 
 ## 元にしたもの
 
 仕様は、mermaid.js のリポジトリにある次の 3 つを元にしています。
 
-- [`diagrams/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams) の下の各図のディレクトリにある文法（例:
-  [`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison)）とその字句状態。
+- [`diagrams/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams)
+  の下の各図のディレクトリにある文法とその字句状態（例:
+  [`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison)）。
   Langium の図では、
-  [language/](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language) の下の文法とインポート先。
+  [language/](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language)
+  の下の文法とインポート先。
   例は、
-  [pie.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium) と、
+  [pie.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium)
+  と、
   [common.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium)。
 - 各図の `Db` クラス。
   解析の一部はここで行われます（例:
-  [`flowDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts) の、
+  [`flowDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts)
+  の、
   [`destructLink()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L915-L946)）。
 - パーサーのテスト（`*.spec.js`）。
   適合性の fixture として [`@mmd-toolkit/tests`](../../tests) に取り込みます。
@@ -101,7 +109,8 @@ treeview の定義は、[構文](./diagrams/treeview.ja.md) と、
    木はソースを何も失わない。
    どの文字も、単位、コメント、ディレクティブ、フロントマター、
    図の無視するテキストのノード、
-   行単位の規則が無視する `;` のどれかに含まれるか（[common.ja.md](./common.ja.md) と図の文書で定めます）、
+   行単位の規則が無視する `;`
+   のどれかに含まれるか（[common.ja.md](./common.ja.md) と図の文書で定めます）、
    [表記](./common.ja.md#表記) で定めた空白か、行終端である。
 
 実装が記録するトークン、木の位置、
@@ -117,12 +126,14 @@ treeview の定義は、[構文](./diagrams/treeview.ja.md) と、
 - **図種**: flowchart や sequence 図のような、図の種類。
   [detection.ja.md](./detection.ja.md) の検出器が選び、
   `flowchart-v2` や `sequence` のように、
-  mermaid.js が報告する id で呼びます（[ast.ja.md](./ast.ja.md#root) の DiagramType）。
+  mermaid.js が報告する id で呼びます（[ast.ja.md](./ast.ja.md#root) の
+  DiagramType）。
 - **トリビア**: ソースのうち、
   単位の書かれたテキストに入らない部分（[ノード](./ast.ja.md#ノード) を参照）。
   フロントマター、ディレクティブ、コメント、行単位の規則が無視する `;`、
   それらの書かれたテキストの外にある空白と行終端で、
-  [common.ja.md](./common.ja.md) と [ast.ja.md](./ast.ja.md#ディレクティブとフロントマター) で定めます。
+  [common.ja.md](./common.ja.md) と
+  [ast.ja.md](./ast.ja.md#ディレクティブとフロントマター) で定めます。
 - **単位**と**文脈**: 図の文書は、字句解析器を、図のテキストを単位ごとに読み、
   単位が文脈に入ったり出たりするものとして述べます。
   mermaid.js は多くの図を、
@@ -172,8 +183,11 @@ treeview の定義は、[構文](./diagrams/treeview.ja.md) と、
   語句が長くなる場合は、節の冒頭で意味の分かる語句で名前を付け（「**検出点**は、
   …の最初の位置である」）、その名前を使う。
 - mermaid.js のソースは、
-  pin したコミット（[pin した mermaid.js](#pin-した-mermaidjs) を参照）へのリンクで参照する。
-  形式は `https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/<パス>#L<開始>-L<終了>` です。
+  pin したコミット（[pin した mermaid.js](#pin-した-mermaidjs)
+  を参照）へのリンクで参照する。
+  形式は
+  `https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/<パス>#L<開始>-L<終了>`
+  です。
   リンクの文字列は関数名かファイル名にする（例:
   [`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)）。
   行の範囲は、指す内容にちょうど合わせ、

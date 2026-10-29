@@ -44,7 +44,8 @@ requirement や element の本体の中でも、mermaid.js は空のブロック
 規則は、そうしたブロックをどれも同じように報告し、 2 つ並べば 2 つ報告する。
 `accTitle:` のテキストの中では、`accDescr {}` はそのテキストの一部で、
 規則は報告しない。
-方向の後のものは [requirement-no-ignored-text](./requirement-no-ignored-text.ja.md) が報告する。
+方向の後のものは
+[requirement-no-ignored-text](./requirement-no-ignored-text.ja.md) が報告する。
 
 この規則に**反する**コードの例:
 

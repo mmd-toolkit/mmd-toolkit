@@ -3,9 +3,10 @@
 英語版: [wardley.md](./wardley.md)
 
 採用した 35 項目に従い、
-[Wardley の木](../../spec/docs/ast/wardley.md)を印字します。
+[Wardley の木](../../spec/docs/ast/wardley.ja.md)を印字します。
 最上位と pipeline の本文は共有 factory の同じ関数を通します。
-保持する原文と mermaid.js との差は [互換性](./compatibility.ja.md#wardley-の原文と必須の改行)に記録します。
+保持する原文と mermaid.js との差は
+[互換性](./compatibility.ja.md#wardley-の原文と必須の改行)に記録します。
 
 ## 規則
 
@@ -23,10 +24,10 @@ hidden form、保持 prefix、保護行には共有の境界規則を使いま�
 
 [fixture: wardley/header/header-empty]
 
-入力（escaped）:
-`"wardley-betacomponentHeader[0.3,0.6]"`.
+入力（escape 表記）: `"wardley-betacomponentHeader[0.3,0.6]"`
 
-出力 ([header/header-glued-output.mmd](../tests/fixtures/wardley/header/header-glued-output.mmd)):
+出力
+([header/header-glued-output.mmd](../tests/fixtures/wardley/header/header-glued-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -51,10 +52,10 @@ useTabs は幅 0 でもタブを使います。
 
 [fixture: wardley/indentation/indent-zero-tabs]
 
-入力（escaped）:
-`"wardley-beta\n component Indent [0.3,0.6]"`.
+入力（escape 表記）: `"wardley-beta\n component Indent [0.3,0.6]"`
 
-出力 ([indentation/indent-two-output.mmd](../tests/fixtures/wardley/indentation/indent-two-output.mmd)):
+出力
+([indentation/indent-two-output.mmd](../tests/fixtures/wardley/indentation/indent-two-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -74,10 +75,11 @@ pipeline Parent { と印字し、
 
 [fixture: wardley/pipeline/pipeline-tab]
 
-入力（escaped）:
-`"wardley-beta\ncomponent Parent[0.4,0.5]\npipelineParent{\n component Child[0.6]label[-1,2]\n      }"`.
+入力（escape 表記）:
+`"wardley-beta\ncomponent Parent[0.4,0.5]\npipelineParent{\n component Child[0.6]label[-1,2]\n      }"`
 
-出力 ([pipeline/pipeline-depth-output.mmd](../tests/fixtures/wardley/pipeline/pipeline-depth-output.mmd)):
+出力
+([pipeline/pipeline-depth-output.mmd](../tests/fixtures/wardley/pipeline/pipeline-depth-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -95,10 +97,11 @@ Wardley のセミコロンは文の区切りではないので足しません。
 
 [fixture: wardley/statements-one-per-line/statement-eol]
 
-入力（escaped）:
-`"wardley-beta\nanchor Sep [0.8,0.2]\ncomponent Step [0.2,0.4]"`.
+入力（escape 表記）:
+`"wardley-beta\nanchor Sep [0.8,0.2]\ncomponent Step [0.2,0.4]"`
 
-出力 ([statements-one-per-line/statement-eol-output.mmd](../tests/fixtures/wardley/statements-one-per-line/statement-eol-output.mmd)):
+出力
+([statements-one-per-line/statement-eol-output.mmd](../tests/fixtures/wardley/statements-one-per-line/statement-eol-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -131,10 +134,10 @@ trivia と hidden の境界には普通の空白規則を当てません。
 
 [fixture: wardley/component-spacing/keyword-evolution]
 
-入力（escaped）:
-`"wardley-beta\nanchorUser[0.8,0.3]"`.
+入力（escape 表記）: `"wardley-beta\nanchorUser[0.8,0.3]"`
 
-出力 ([component-spacing/keyword-anchor-output.mmd](../tests/fixtures/wardley/component-spacing/keyword-anchor-output.mmd)):
+出力
+([component-spacing/keyword-anchor-output.mmd](../tests/fixtures/wardley/component-spacing/keyword-anchor-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -161,10 +164,10 @@ Db が同じ引用符への変更も、原綴を失い escape の再解釈が必
 
 [fixture: wardley/names-and-quotes/name-hyphen]
 
-入力（escaped）:
-`"wardley-beta\ncomponent Foo  Bar\tBaz [0.3,0.6]"`.
+入力（escape 表記）: `"wardley-beta\ncomponent Foo  Bar\tBaz [0.3,0.6]"`
 
-出力 ([names-and-quotes/name-spaces-output.mmd](../tests/fixtures/wardley/names-and-quotes/name-spaces-output.mmd)):
+出力
+([names-and-quotes/name-spaces-output.mmd](../tests/fixtures/wardley/names-and-quotes/name-spaces-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -202,10 +205,10 @@ title の後の空白で metadata として読まれるためです。
 
 [fixture: wardley/name-boundaries/title-evolve-hidden]
 
-入力（escaped）:
-`"wardley-beta\ncomponent title[0.3,0.6]"`.
+入力（escape 表記）: `"wardley-beta\ncomponent title[0.3,0.6]"`
 
-出力 ([name-boundaries/component-title-contact-output.mmd](../tests/fixtures/wardley/name-boundaries/component-title-contact-output.mmd)):
+出力
+([name-boundaries/component-title-contact-output.mmd](../tests/fixtures/wardley/name-boundaries/component-title-contact-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -225,10 +228,10 @@ hidden と global trivia の gap には共有規則を使います。
 
 [fixture: wardley/coordinates/coordinates-integer]
 
-入力（escaped）:
-`"wardley-beta\nanchor Coord [ 0.3 \t,\t 0.6 ]"`.
+入力（escape 表記）: `"wardley-beta\nanchor Coord [ 0.3 \t,\t 0.6 ]"`
 
-出力 ([coordinates/coordinates-decimal-output.mmd](../tests/fixtures/wardley/coordinates/coordinates-decimal-output.mmd)):
+出力
+([coordinates/coordinates-decimal-output.mmd](../tests/fixtures/wardley/coordinates/coordinates-decimal-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -258,10 +261,10 @@ NumericLiteral は double 値を文字列化せず、source span を印字しま
 
 [corpus fixture: wardley/db-coordinate-double-hundred]
 
-入力（escaped）:
-`"wardley-beta\ncomponent Digits [000.30,01.00]"`.
+入力（escape 表記）: `"wardley-beta\ncomponent Digits [000.30,01.00]"`
 
-出力 ([numbers/decimal-leading-zero-output.mmd](../tests/fixtures/wardley/numbers/decimal-leading-zero-output.mmd)):
+出力
+([numbers/decimal-leading-zero-output.mmd](../tests/fixtures/wardley/numbers/decimal-leading-zero-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -300,10 +303,11 @@ inertia の両形は Db が同じでも、変更すると書かれたノード�
 
 [fixture: wardley/decorations/label-strategy-bare-inertia]
 
-入力（escaped）:
-`"wardley-beta\ncomponent Decor[0.3,0.6]label[1,-2]( build )( inertia )"`.
+入力（escape 表記）:
+`"wardley-beta\ncomponent Decor[0.3,0.6]label[1,-2]( build )( inertia )"`
 
-出力 ([decorations/decorations-all-output.mmd](../tests/fixtures/wardley/decorations/decorations-all-output.mmd)):
+出力
+([decorations/decorations-all-output.mmd](../tests/fixtures/wardley/decorations/decorations-all-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -321,10 +325,11 @@ label [-1, 2] とし、普通の minus は符号なし整数の大きさに付�
 
 [fixture: wardley/label-offsets/offset-negative-zero]
 
-入力（escaped）:
-`"wardley-beta\ncomponent Sign[0.3,0.6]label[ - 1 , -\t2 ]"`.
+入力（escape 表記）:
+`"wardley-beta\ncomponent Sign[0.3,0.6]label[ - 1 , -\t2 ]"`
 
-出力 ([label-offsets/offset-sign-gap-output.mmd](../tests/fixtures/wardley/label-offsets/offset-sign-gap-output.mmd)):
+出力
+([label-offsets/offset-sign-gap-output.mmd](../tests/fixtures/wardley/label-offsets/offset-sign-gap-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -366,10 +371,10 @@ A -->B の矢印は --> のままです。
 
 [fixture: wardley/links/link-multiword]
 
-入力（escaped）:
-`"wardley-beta\nAlpha->Beta"`.
+入力（escape 表記）: `"wardley-beta\nAlpha->Beta"`
 
-出力 ([links/link-short-output.mmd](../tests/fixtures/wardley/links/link-short-output.mmd)):
+出力
+([links/link-short-output.mmd](../tests/fixtures/wardley/links/link-short-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -402,10 +407,10 @@ flow の優先順位で見えなくても、両 port とセミコロンラベル
 
 [fixture: wardley/flows/flow-ports-and-label]
 
-入力（escaped）:
-`"wardley-beta\nAlpha+'moving'>Beta"`.
+入力（escape 表記）: `"wardley-beta\nAlpha+'moving'>Beta"`
 
-出力 ([flows/flow-forward-output.mmd](../tests/fixtures/wardley/flows/flow-forward-output.mmd)):
+出力
+([flows/flow-forward-output.mmd](../tests/fixtures/wardley/flows/flow-forward-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -414,8 +419,8 @@ wardley-beta
 
 ### セミコロンのラベル
 
-文法上のラベル開始 ; は前の部品に付け、後ろは物理行末まで source
-span のまま印字します。
+文法上のラベル開始 ; は前の部品に付け、
+後ろは物理行末まで source span のまま印字します。
 Db が同じ形から、link に属する区切りと分かる接した形を選びます。
 padding を足したり trim したりしません。 ; の後が空白なら、
 空白だけのラベルとして受理され、裸の ; は拒否されます。
@@ -432,10 +437,10 @@ native に見える形と percent テキストもラベルのままです。
 
 [fixture: wardley/semicolon-labels/label-comment-native]
 
-入力（escaped）:
-`"wardley-beta\nAlpha->Beta;; extra"`.
+入力（escape 表記）: `"wardley-beta\nAlpha->Beta;; extra"`
 
-出力 ([semicolon-labels/label-two-semicolons-output.mmd](../tests/fixtures/wardley/semicolon-labels/label-two-semicolons-output.mmd)):
+出力
+([semicolon-labels/label-two-semicolons-output.mmd](../tests/fixtures/wardley/semicolon-labels/label-two-semicolons-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -453,10 +458,11 @@ bare 名と数を結ぶと拒否されることがあります。
 
 [fixture: wardley/evolves/evolve-empty-name]
 
-入力（escaped）:
-`"wardley-beta\ncomponent Motion[0.3,0.6]\nevolveMotion\t0.80"`.
+入力（escape 表記）:
+`"wardley-beta\ncomponent Motion[0.3,0.6]\nevolveMotion\t0.80"`
 
-出力 ([evolves/evolve-numeric-gap-output.mmd](../tests/fixtures/wardley/evolves/evolve-numeric-gap-output.mmd)):
+出力
+([evolves/evolve-numeric-gap-output.mmd](../tests/fixtures/wardley/evolves/evolve-numeric-gap-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -481,10 +487,10 @@ annotation の外側の comma も前を詰め、後を空白 1 つにします�
 
 [fixture: wardley/notes-and-annotations/force-spacing]
 
-入力（escaped）:
-`"wardley-beta\nnote\t\"Body\"[ 0.3 ,0.6 ]"`.
+入力（escape 表記）: `"wardley-beta\nnote\t\"Body\"[ 0.3 ,0.6 ]"`
 
-出力 ([notes-and-annotations/note-spacing-output.mmd](../tests/fixtures/wardley/notes-and-annotations/note-spacing-output.mmd)):
+出力
+([notes-and-annotations/note-spacing-output.mmd](../tests/fixtures/wardley/notes-and-annotations/note-spacing-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -510,10 +516,11 @@ bare の title には Name boundaries を適用します。
 
 [fixture: wardley/evolution/stage-title-arrow]
 
-入力（escaped）:
-`"wardley-beta\nevolution  Early  @ 0.20/ Concept->Late@1.00 / Utility"`.
+入力（escape 表記）:
+`"wardley-beta\nevolution  Early  @ 0.20/ Concept->Late@1.00 / Utility"`
 
-出力 ([evolution/stage-all-gaps-output.mmd](../tests/fixtures/wardley/evolution/stage-all-gaps-output.mmd)):
+出力
+([evolution/stage-all-gaps-output.mmd](../tests/fixtures/wardley/evolution/stage-all-gaps-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -530,10 +537,10 @@ size [800, 600] とし、座標と同じ括弧の形にします。
 
 [fixture: wardley/size/size-zero]
 
-入力（escaped）:
-`"wardley-beta\nsize[ 800 \t,\t 600 ]"`.
+入力（escape 表記）: `"wardley-beta\nsize[ 800 \t,\t 600 ]"`
 
-出力 ([size/size-spacing-output.mmd](../tests/fixtures/wardley/size/size-spacing-output.mmd)):
+出力
+([size/size-spacing-output.mmd](../tests/fixtures/wardley/size/size-spacing-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -555,10 +562,10 @@ wardley-beta
 
 [fixture: wardley/title/title-next-line]
 
-入力（escaped）:
-`"wardley-beta\ntitle\t  A  subject \t"`.
+入力（escape 表記）: `"wardley-beta\ntitle\t  A  subject \t"`
 
-出力 ([title/title-trim-output.mmd](../tests/fixtures/wardley/title/title-trim-output.mmd)):
+出力
+([title/title-trim-output.mmd](../tests/fixtures/wardley/title/title-trim-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -595,10 +602,11 @@ Db が同じ共通の形を選び、空白だけの内部には囲むテキス�
 
 [fixture: wardley/accessibility/description-directive-only]
 
-入力（escaped）:
-`"wardley-beta\naccTitle \t:  A  B \t\naccDescr\t:  C  D \t"`.
+入力（escape 表記）:
+`"wardley-beta\naccTitle \t:  A  B \t\naccDescr\t:  C  D \t"`
 
-出力 ([accessibility/access-lines-output.mmd](../tests/fixtures/wardley/accessibility/access-lines-output.mmd)):
+出力
+([accessibility/access-lines-output.mmd](../tests/fixtures/wardley/accessibility/access-lines-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -639,10 +647,11 @@ hidden YAML と directive の内部と closer の列は保ちます。
 
 [corpus fixture: wardley/hidden-all-unit-gaps]
 
-入力（escaped）:
-`"wardley-beta\n%%{!native}%%\ncomponent HiddenBody[0.3,0.6]"`.
+入力（escape 表記）:
+`"wardley-beta\n%%{!native}%%\ncomponent HiddenBody[0.3,0.6]"`
 
-出力 ([hidden-forms/hidden-body-directive-output.mmd](../tests/fixtures/wardley/hidden-forms/hidden-body-directive-output.mmd)):
+出力
+([hidden-forms/hidden-body-directive-output.mmd](../tests/fixtures/wardley/hidden-forms/hidden-body-directive-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -751,10 +760,11 @@ hidden form が見出し行を保つときは、pipeline の開きもその行�
 
 [fixture: wardley/hidden-boundaries/pipeline-body-before-close]
 
-入力（escaped）:
-`"wardley-beta\ncomponent Spare[0.3,0.6]%%{!end}%%\n\ncomponent After[0.4,0.7]"`.
+入力（escape 表記）:
+`"wardley-beta\ncomponent Spare[0.3,0.6]%%{!end}%%\n\ncomponent After[0.4,0.7]"`
 
-出力 ([hidden-boundaries/hidden-spare-lf-output.mmd](../tests/fixtures/wardley/hidden-boundaries/hidden-spare-lf-output.mmd)):
+出力
+([hidden-boundaries/hidden-spare-lf-output.mmd](../tests/fixtures/wardley/hidden-boundaries/hidden-spare-lf-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -811,10 +821,10 @@ native の hidden directive は別のノードです。
 
 [fixture: wardley/global-directives/global-unclosed]
 
-入力（escaped）:
-`"wardley-beta\ncomponent%%{wrap}%%Glued[0.3,0.6]"`.
+入力（escape 表記）: `"wardley-beta\ncomponent%%{wrap}%%Glued[0.3,0.6]"`
 
-出力 ([global-directives/global-keyword-contact-output.mmd](../tests/fixtures/wardley/global-directives/global-keyword-contact-output.mmd)):
+出力
+([global-directives/global-keyword-contact-output.mmd](../tests/fixtures/wardley/global-directives/global-keyword-contact-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -841,10 +851,10 @@ mark、本文、末尾 padding を保ち、pipeline 内では子文の段にし�
 
 [fixture: wardley/comments/comment-triple-bare]
 
-入力（escaped）:
-`"wardley-beta\ncomponent InlineSpace[0.3,0.6] \t%% tail"`.
+入力（escape 表記）: `"wardley-beta\ncomponent InlineSpace[0.3,0.6] \t%% tail"`
 
-出力 ([comments/comment-inline-separated-output.mmd](../tests/fixtures/wardley/comments/comment-inline-separated-output.mmd)):
+出力
+([comments/comment-inline-separated-output.mmd](../tests/fixtures/wardley/comments/comment-inline-separated-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -866,10 +876,11 @@ pipeline の端も必須の可視 LF を残して空行を除きます。
 
 [fixture: wardley/blank-lines/blanks-comments]
 
-入力（escaped）:
-`"\n\nwardley-beta\n\n\ncomponent GroupA[0.3,0.6]\n \t\n\n\ncomponent GroupB[0.4,0.7]\n\n"`.
+入力（escape 表記）:
+`"\n\nwardley-beta\n\n\ncomponent GroupA[0.3,0.6]\n \t\n\n\ncomponent GroupB[0.4,0.7]\n\n"`
 
-出力 ([blank-lines/blanks-collapse-output.mmd](../tests/fixtures/wardley/blank-lines/blanks-collapse-output.mmd)):
+出力
+([blank-lines/blanks-collapse-output.mmd](../tests/fixtures/wardley/blank-lines/blanks-collapse-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -891,10 +902,11 @@ hidden の内部、必須の closer padding、保護区間は保ちます。
 
 [fixture: wardley/trailing-whitespace/trailing-blank-label-keep]
 
-入力（escaped）:
-`"wardley-beta \t\ncomponent Tail[0.3,0.6] \t\naccDescr { End } \t"`.
+入力（escape 表記）:
+`"wardley-beta \t\ncomponent Tail[0.3,0.6] \t\naccDescr { End } \t"`
 
-出力 ([trailing-whitespace/trailing-exterior-output.mmd](../tests/fixtures/wardley/trailing-whitespace/trailing-exterior-output.mmd)):
+出力
+([trailing-whitespace/trailing-exterior-output.mmd](../tests/fixtures/wardley/trailing-whitespace/trailing-exterior-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -970,10 +982,10 @@ mermaid が 1 行として読む範囲で数えます。
 
 [fixture: wardley/semicolons/style-trivia-line]
 
-入力（escaped）:
-`"wardley-beta\nAlpha  -> Beta; style:#tone;"`.
+入力（escape 表記）: `"wardley-beta\nAlpha  -> Beta; style:#tone;"`
 
-出力 ([semicolons/style-label-output.mmd](../tests/fixtures/wardley/semicolons/style-label-output.mmd)):
+出力
+([semicolons/style-label-output.mmd](../tests/fixtures/wardley/semicolons/style-label-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -996,12 +1008,13 @@ printWidth では折り返しません。
 
 [fixture: wardley/multiline-values/multiline-flow-columns]
 
-入力（escaped）:
-`"wardley-beta\ncomponent A very long component name with repeated words[0.123456789012345,0.987654321098765]label[-13,24](build)inertia"`.
+入力（escape 表記）:
+`"wardley-beta\ncomponent A very long component name with repeated words[0.123456789012345,0.987654321098765]label[-13,24](build)inertia"`
 
-Options: `{"printWidth":20}`.
+設定: `{"printWidth":20}`
 
-出力 ([multiline-values/long-component-output.mmd](../tests/fixtures/wardley/multiline-values/long-component-output.mmd)):
+出力
+([multiline-values/long-component-output.mmd](../tests/fixtures/wardley/multiline-values/long-component-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -1037,10 +1050,11 @@ textBeforeHeader があれば、先頭 LF、通過した trivia、second-scan fo
 
 [fixture: wardley/frontmatter-yaml/frontmatter-fence-guard]
 
-入力（escaped）:
-`"---\ntitle: 'Map'\nconfig: {wardley: {width: 600}}\n---\nwardley-beta\ncomponent Fm[0.3,0.6]"`.
+入力（escape 表記）:
+`"---\ntitle: 'Map'\nconfig: {wardley: {width: 600}}\n---\nwardley-beta\ncomponent Fm[0.3,0.6]"`
 
-出力 ([frontmatter-yaml/frontmatter-safe-output.mmd](../tests/fixtures/wardley/frontmatter-yaml/frontmatter-safe-output.mmd)):
+出力
+([frontmatter-yaml/frontmatter-safe-output.mmd](../tests/fixtures/wardley/frontmatter-yaml/frontmatter-safe-output.mmd)):
 
 ```mmd
 ---
@@ -1093,10 +1107,11 @@ LS/PS/NBSP/BOM は字句上の役割を保ちます。
 
 [fixture: wardley/source-order/order-pipeline-stages]
 
-入力（escaped）:
-`"wardley-beta\ncomponent Zorder[0.3,0.6]\ncomponent Aorder[0.4,0.7]\ncomponent Zorder[0.5,0.8]"`.
+入力（escape 表記）:
+`"wardley-beta\ncomponent Zorder[0.3,0.6]\ncomponent Aorder[0.4,0.7]\ncomponent Zorder[0.5,0.8]"`
 
-出力 ([source-order/order-repeated-components-output.mmd](../tests/fixtures/wardley/source-order/order-repeated-components-output.mmd)):
+出力
+([source-order/order-repeated-components-output.mmd](../tests/fixtures/wardley/source-order/order-repeated-components-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -1115,8 +1130,8 @@ wardley-beta
 
 普通の受理ファイルは設定の改行 1 個で終え、末尾の普通の空行を落とします。
 見出しだけ、コメント、閉じた hidden form も同じ終端に揃えます。
-EOF に達する global 終端、保持 prefix の境界、保護テキスト、必須の hidden closer
-padding を優先します。
+EOF に達する global 終端、保持 prefix の境界、保護テキスト、
+必須の hidden closer padding を優先します。
 ラベルの padding は値であり、末尾の余分な空行として落としません。
 
 [corpus fixture: wardley/header-only]
@@ -1125,10 +1140,10 @@ padding を優先します。
 
 [fixture: wardley/final-newline/final-hidden]
 
-入力（escaped）:
-`"wardley-beta\n%% final"`.
+入力（escape 表記）: `"wardley-beta\n%% final"`
 
-出力 ([final-newline/final-comment-output.mmd](../tests/fixtures/wardley/final-newline/final-comment-output.mmd)):
+出力
+([final-newline/final-comment-output.mmd](../tests/fixtures/wardley/final-newline/final-comment-output.mmd)):
 
 ```mmd
 wardley-beta
@@ -1144,8 +1159,8 @@ directive-as-token-boundary、ignored-semicolon-as-token-boundary、
 html-tag-in-frontmatter、embedded-data-opaque、
 bare-percent-line-before-header、c4-keyword-anywhere です。
 Wardley 固有の opaque な受理設定キーはありません。
-raw の拒否に raw Db はなく、利用できる specified
-reading と埋め込み効果を使います。
+raw の拒否に raw Db はなく、
+利用できる specified reading と埋め込み効果を使います。
 単独ファイルの解析失敗は出力せず構文エラーにし、
 Markdown では埋め込みを断ります。
 拒否構文は修復しません。

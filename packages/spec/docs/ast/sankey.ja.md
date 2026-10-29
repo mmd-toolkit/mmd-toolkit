@@ -4,7 +4,8 @@
 
 この文書は、図種 `sankey` の木のノードを定めます。
 木の共通部分は [ast.ja.md](../ast.ja.md) で定め、ソースの読み方と、
-どの文法の規則がどのノードを作るかは [diagrams/sankey.ja.md](../diagrams/sankey.ja.md) で定めます。
+どの文法の規則がどのノードを作るかは
+[diagrams/sankey.ja.md](../diagrams/sankey.ja.md) で定めます。
 
 この図種の本体は [SankeyDiagram](#sankeydiagram) です。
 欄の値は、
@@ -32,10 +33,9 @@
 子の欄: `body`。
 ヘッダーのキーワード `sankey` か `sankey-beta` は欄ではありません。
 どちらも同じ図種で、同じ Db を与えます。
-改行はどのリンクにも属さず、
-空行はノードを作りません。 [fixture: sankey/db-link-basic]
-[fixture: sankey/db-header-beta] [fixture: sankey/db-blank-lines-between]
-[fixture: sankey/header-only]
+改行はどのリンクにも属さず、空行はノードを作りません。
+[fixture: sankey/db-link-basic] [fixture: sankey/db-header-beta]
+[fixture: sankey/db-blank-lines-between] [fixture: sankey/header-only]
 
 ### SankeyLinkStatement
 
@@ -53,8 +53,8 @@
 どちらを書いたかはそのノードの型に表れます。
 `"a",b,1` は source に StringLiteral を、
 `a,b,1` は SankeyIdentifier を持ちます。
-mermaid.js が欄を Db にどう読むかは、
-tests パッケージの要約にあります。 [fixture: sankey/docs-syntax-sankey-9cc115a6]
+mermaid.js が欄を Db にどう読むかは、 tests パッケージの要約にあります。
+[fixture: sankey/docs-syntax-sankey-9cc115a6]
 [fixture: sankey/db-quoted-and-unquoted-same-id]
 [fixture: sankey/db-quoted-value]
 
@@ -72,8 +72,7 @@ tests パッケージの要約にあります。 [fixture: sankey/docs-syntax-sa
 両端に空白文字のある `Bio-conversion` は名前 `Bio-conversion` を、
 `a b` は名前 `a b` を持ちます。
 空白文字だけの欄は空の名前を持ちます。 [fixture: sankey/db-fields-trimmed]
-[fixture: sankey/db-text-with-spaces]
-[fixture: sankey/db-spaces-only-source-id]
+[fixture: sankey/db-text-with-spaces] [fixture: sankey/db-spaces-only-source-id]
 [fixture: sankey/db-spaces-only-target-id]
 
 ### SankeyLiteral
@@ -88,8 +87,8 @@ tests パッケージの要約にあります。 [fixture: sankey/docs-syntax-sa
 文法はここでどのテキストも取るので、
 [NumericLiteral](../ast.ja.md#numericliteral) ではありません。
 `12.5`、`1e3`、`abc`、`1 #c`、`0x10` は値です。
-別の記録の前の空白文字だけの欄は空の値を持ちます。 [fixture: sankey/db-value-decimal]
-[fixture: sankey/db-value-exponent]
+別の記録の前の空白文字だけの欄は空の値を持ちます。
+[fixture: sankey/db-value-decimal] [fixture: sankey/db-value-exponent]
 [fixture: sankey/db-value-not-a-number]
 [fixture: sankey/db-value-hash-after-number]
 [fixture: sankey/db-value-hexadecimal] [fixture: sankey/db-spaces-only-value]

@@ -42,18 +42,18 @@ export const wardleyNoDuplicateEvolution: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js replaces the evolution stages set on line {{line}} with these stages.",
+        "mermaid.js replaces the earlier evolution stages with these stages.",
     },
   },
   create(context) {
-    let previous: { stages: readonly Stage[]; line: number } | null = null
+    let previous: readonly Stage[] | null = null
     return {
       WardleyEvolutionStatement(node) {
         const stages = stagesOf(node)
         if (
           previous !== null &&
-          (previous.stages.length !== stages.length ||
-            previous.stages.some(
+          (previous.length !== stages.length ||
+            previous.some(
               (stage, at) =>
                 stage.label !== stages[at]?.label ||
                 stage.boundary !== stages[at]?.boundary,
@@ -62,10 +62,9 @@ export const wardleyNoDuplicateEvolution: MermaidRuleDefinition<{
           context.report({
             node,
             messageId: "duplicate",
-            data: { line: String(previous.line) },
           })
         }
-        previous = { stages, line: node.loc.start.line }
+        previous = stages
       },
     }
   },

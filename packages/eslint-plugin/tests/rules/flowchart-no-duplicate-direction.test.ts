@@ -21,7 +21,7 @@ new RuleTester(LANGUAGE_CONFIG).run(
         errors: [
           {
             message:
-              "mermaid.js replaces the direction set on line 3 for this subgraph with `BT`.",
+              "mermaid.js replaces the earlier direction for this subgraph with `BT`.",
             line: 5,
             column: 1,
             endLine: 5,
@@ -42,7 +42,7 @@ end
         errors: [
           {
             message:
-              "mermaid.js replaces the direction set on line 3 for this subgraph with `BT`.",
+              "mermaid.js replaces the earlier direction for this subgraph with `BT`.",
             line: 5,
             column: 1,
             endLine: 5,

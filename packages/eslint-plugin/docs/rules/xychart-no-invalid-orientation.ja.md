@@ -1,7 +1,6 @@
 # @mmd-toolkit/xychart-no-invalid-orientation
 
-英語版:
-[xychart-no-invalid-orientation.md](./xychart-no-invalid-orientation.md)
+英語版: [xychart-no-invalid-orientation.md](./xychart-no-invalid-orientation.md)
 
 mermaid.js が `horizontal` と読まない向きを禁止する。
 

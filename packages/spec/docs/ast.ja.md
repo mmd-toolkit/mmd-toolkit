@@ -83,7 +83,8 @@ ESLint の visitor keys で、
 単位の**書かれたテキスト**は、そのソースのテキストから、
 単位がその前か後に読む空白と行終端を除いたものです。
 flowchart の矢印の前後の空白がその例で、
-`A --> %%{init: {}}%% B` の矢印の書かれたテキストは `-->` です。 [fixture: flowchart/lex-directive-after-arrow]
+`A --> %%{init: {}}%% B` の矢印の書かれたテキストは `-->` です。
+[fixture: flowchart/lex-directive-after-arrow]
 
 値の書かれたテキストは、その最初の単位の書かれたテキストの始まりから、
 最後の単位の書かれたテキストの終わりまでで、単位の間の空白と行終端を含みます。
@@ -111,8 +112,8 @@ class 図のスタイル（[ClassLiteral](./ast/class.ja.md#classliteral) を参
 その区切りの内側に書かれた空白を、両端のものも含めて保ちます。
 `A[" x "]` のラベルの値は、空白、`x`、空白です。
 `A@{`、改行、`shape: rect`、改行、`}` の最初のデータブロックの値は、改行、
-`shape: rect`、
-改行です。 [fixture: flowchart/tokens-label-string-inner-whitespace]
+`shape: rect`、改行です。
+[fixture: flowchart/tokens-label-string-inner-whitespace]
 [fixture: flowchart/gram-data-consecutive-blocks]
 
 2 つのリテラルのノード、
@@ -126,13 +127,15 @@ mermaid.js が読まないテキストのノード、
 つまり `<図種>IgnoredText` か `<図種>IgnoredStatement` と名づけたノードの型は、
 書き手がそこに書いたものを、書かれたとおりに見せます。
 [FlowchartIgnoredText](./ast/flowchart.ja.md#flowchartignoredtext) や、
-[StateIgnoredStatement](./ast/state.ja.md#stateignoredstatement) などがそうです（[図ごとのノード](#図ごとのノード) を参照）。
+[StateIgnoredStatement](./ast/state.ja.md#stateignoredstatement)
+などがそうです（[図ごとのノード](#図ごとのノード) を参照）。
 その書かれたテキストは値の書かれたテキストで、コメントも除きます。
 単位の間の空白と行終端はその一部で、コメントはその一部ではありません。
 `state "d" as A` の後の行 `state %% c` と、本体のある `state {` は、 A に、
 `state`、空白、改行、空白 2 つ、`state` の `textBeforeBody` を与え、
 本体のある行 `{` が続く `state X "" %%{init: {}}%% ""` では、
-それは 2 つの空の文字列とその間の空白 2 つです。 [fixture: state/tokens-ignored-text-comment-between-units]
+それは 2 つの空の文字列とその間の空白 2 つです。
+[fixture: state/tokens-ignored-text-comment-between-units]
 [fixture: state/tokens-ignored-text-hash-comment-between-units]
 [fixture: state/tokens-ignored-text-directive-between-empty-strings]
 [fixture: state/tokens-ignored-statement-directive-between-empty-strings]
@@ -148,8 +151,8 @@ X の `textBeforeBody` は、`""`、空白、改行、空白 2 つ、`accDescr {
 `%% c` の代わりに `#c` を書いても、U+2028 の代わりに U+2029 を書いても、
 U+2028 の前に空白があっても、`[*]` の前に空白があっても、
 `[*]` の代わりに空白だけの行があっても、
-`[*]` の代わりに `x` と空白があっても同じで、
-その空白もコメントに入ります。 [fixture: state/tokens-ignored-text-comment-cut-by-comment-line]
+`[*]` の代わりに `x` と空白があっても同じで、その空白もコメントに入ります。
+[fixture: state/tokens-ignored-text-comment-cut-by-comment-line]
 [fixture: state/tokens-ignored-text-hash-comment-cut-by-comment-line]
 [fixture: state/tokens-ignored-text-comment-cut-by-comment-line-paragraph-separator]
 [fixture: state/tokens-ignored-text-hash-comment-cut-by-comment-line-paragraph-separator]
@@ -182,8 +185,8 @@ ESTree の配列の穴と同じです。
 
 ディレクティブは、ディレクティブの探索の 1 つの一致から、
 末尾の空白を除いたものです。
-探索は、
-フロントマターの後のソースのテキストに対して行います（[common.ja.md](./common.ja.md#ディレクティブの位置) を参照）。
+探索は、フロントマターの後のソースのテキストに対して行います。
+[common.ja.md](./common.ja.md#ディレクティブの位置) を参照してください。
 そのため、閉じていないディレクティブは、テキストの終わりまで伸びるか、
 語の引数の後で終わります。
 探索が引数の後に取る空白は、
@@ -197,7 +200,9 @@ ESTree の配列の穴と同じです。
 `Root.directives` は設定には関わりません。
 この仕様はディレクティブの引数を解析せず、
 mermaid.js は図を設定するディレクティブを専用の走査で見つけ、
-その結果はまれにこれらと異なります（[設定の走査](../../tests/docs/configuration.ja.md#設定の走査) を参照）。
+その結果はまれにこれらと異なります。
+[設定の走査](../../tests/docs/configuration.ja.md#設定の走査)
+を参照してください。
 
 ### Frontmatter
 
@@ -225,13 +230,15 @@ mermaid.js は図を設定するディレクティブを専用の走査で見つ
 `frontmatter` と `directives` は子の欄ではありません。
 
 `diagramType` は、
-[`mermaid.parse()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L96-L117) が `diagramType` として報告する id です。
+[`mermaid.parse()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L96-L117)
+が `diagramType` として報告する id です。
 fixture も同じ id を記録するからです。
 `graph` と `flowchart` のヘッダーはどちらも `flowchart-v2`、
 `flowchart-elk` は `flowchart-elk`、`swimlane-beta` は `swimlane` になります。
 
 **DiagramType** は、次の 38 個の文字列のどれかです。
-mermaid.js が検出器を試す順に並べます（[detection.ja.md](./detection.ja.md) を参照）。
+mermaid.js が検出器を試す順に並べます（[detection.ja.md](./detection.ja.md)
+を参照）。
 `error`、`flowchart-elk`、`mindmap`、`architecture`、`agentflow`、`c4`、
 `kanban`、`classDiagram`、`er`、`gantt`、`info`、`pie`、`requirement`、
 `sequence`、`swimlane`、`flowchart-v2`、`timeline`、`gitGraph`、`stateDiagram`、
@@ -247,8 +254,9 @@ mermaid.js は `---` 疑似図種も登録しますが、そのパーサーは�
 これを持つ木はなく、DiagramType にも含まれません。
 DiagramType の id の集合はこの仕様が定めます。
 一覧には `flowchart-elk`、`mindmap`、`architecture` が含まれます。
-mermaid.js はこれらを [`includeLargeFeatures`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L85-L87) が真のときだけ登録しますが、
-npm パッケージの既定の入口では真です。
+mermaid.js はこれらを
+[`includeLargeFeatures`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L85-L87)
+が真のときだけ登録しますが、 npm パッケージの既定の入口では真です。
 
 **DiagramBody** は、`ErrorDiagram` か、以下の図の節で定める本文のノードの型、
 つまり [`FlowchartDiagram`](./ast/flowchart.ja.md#flowchartdiagram)、
@@ -282,19 +290,15 @@ npm パッケージの既定の入口では真です。
 [`WardleyDiagram`](./ast/wardley.ja.md#wardleydiagram)、
 [`CynefinDiagram`](./ast/cynefin.ja.md#cynefindiagram)、
 [`EventmodelingDiagram`](./ast/eventmodeling.ja.md#eventmodelingdiagram)、
-[`TreeviewDiagram`](./ast/treeview.ja.md#treeviewdiagram) のどれかです。 [fixture: treeview/gram-written-tree]
-[fixture: eventmodeling/gram-written-tree]
-[fixture: cynefin/db-all-fields]
-[fixture: wardley/db-all-fields]
+[`TreeviewDiagram`](./ast/treeview.ja.md#treeviewdiagram) のどれかです。
+[fixture: treeview/gram-written-tree] [fixture: eventmodeling/gram-written-tree]
+[fixture: cynefin/db-all-fields] [fixture: wardley/db-all-fields]
 [fixture: railroad/ir-gram-written-tree]
 [fixture: railroad/ebnf-gram-written-tree]
 [fixture: railroad/abnf-gram-written-tree]
-[fixture: railroad/peg-gram-written-tree]
-[fixture: treemap/gram-written-tree]
-[fixture: radar/gram-written-tree]
-[fixture: packet/gram-mixed]
-[fixture: architecture/header-beta]
-[fixture: architecture/db-mixed]
+[fixture: railroad/peg-gram-written-tree] [fixture: treemap/gram-written-tree]
+[fixture: radar/gram-written-tree] [fixture: packet/gram-mixed]
+[fixture: architecture/header-beta] [fixture: architecture/db-mixed]
 
 ## ErrorDiagram
 
@@ -324,8 +328,10 @@ npm パッケージの既定の入口では真です。
   その終わりを文法が決める位置:
   [FlowchartLiteral](./ast/flowchart.ja.md#flowchartliteral) のような、
   図種のリテラル
-- 文法が、空白を含みうる名前として読む位置:
-  [SequenceIdentifier](./ast/sequence.ja.md#sequenceidentifier) や [ClassIdentifier](./ast/class.ja.md#classidentifier) のような、
+- 文法が、
+  空白を含みうる名前として読む位置:
+  [SequenceIdentifier](./ast/sequence.ja.md#sequenceidentifier) や
+  [ClassIdentifier](./ast/class.ja.md#classidentifier) のような、
   図種の名前のノード
 - 文法が、テキスト、引用符の文字列、markdown の文字列、またはその並びを許し、
   どれで書いたかが種類として意味を持つ位置:
@@ -341,7 +347,8 @@ npm パッケージの既定の入口では真です。
 図のノードの欄の文字列のままです。
 ESTree のノードの `kind` と同じです。
 矢印は、
-[FlowchartArrow](./ast/flowchart.ja.md#flowchartarrow) や [SequenceArrow](./ast/sequence.ja.md#sequencearrow) のような図のノードで、
+[FlowchartArrow](./ast/flowchart.ja.md#flowchartarrow) や
+[SequenceArrow](./ast/sequence.ja.md#sequencearrow) のような図のノードで、
 その `value` はテキスト、その記号と線はそのような語です。
 道具が、矢印の文字を読み直さずにそれらを読めるようにするためです。
 図どうしは、同じものに同じ欄の名前と同じ語を使い（`startMarker`、`endMarker`、
@@ -356,7 +363,8 @@ ESTree のノードの `kind` と同じです。
 そのようなテキストをノードにすることは、入力を拒否することより先です。
 図の文書がそのようなテキストのために入力を拒否するのは、
 木にそのノードを置く場所がないところだけで、
-それは既知の差異になります（[known-divergences.ja.md](./known-divergences.ja.md) を参照）。
+それは既知の差異になります（[known-divergences.ja.md](./known-divergences.ja.md)
+を参照）。
 
 ### Identifier
 
@@ -366,7 +374,8 @@ ESTree のノードの `kind` と同じです。
 使える文字はその位置の文法が決めるので、
 click の id や辺の id は記号を含むことがあります。
 空白を含みうる名前は、代わりに、
-[SequenceIdentifier](./ast/sequence.ja.md#sequenceidentifier) や [ClassIdentifier](./ast/class.ja.md#classidentifier) のような、
+[SequenceIdentifier](./ast/sequence.ja.md#sequenceidentifier) や
+[ClassIdentifier](./ast/class.ja.md#classidentifier) のような、
 図種の名前のノードです。
 ESTree と同じく、識別子かどうかは構文上の形で決まり、
 何かを参照する必要はありません。
@@ -389,8 +398,8 @@ ESTree と同じく、識別子かどうかは構文上の形で決まり、
 引用符は二重引用符で、class 図のバッククォートの名前と、
 ER 図のバッククォートの属性の語では、バッククォートです。
 図の字句規則が許す位置では、一重引用符の文字列も StringLiteral です。
-同じ引用符で閉じ、
-escape は復号しません。 [fixture: usecase/lex-native-single-quoted-keys]
+同じ引用符で閉じ、 escape は復号しません。
+[fixture: usecase/lex-native-single-quoted-keys]
 [fixture: usecase/lex-native-string-backslashes]
 
 | 欄       | 型     | 意味                                                                                                                                                                                                                                                                   |
@@ -403,12 +412,13 @@ escape は復号しません。 [fixture: usecase/lex-native-single-quoted-keys]
 
 `click A href "u"` の URL の値は `u` で、`raw` は `"u"` です。
 `click A "u" "one`、改行、`%% c`、改行、`two"` では、ツールチップの値は `one`、
-改行、`two` で、
-その `raw` はコメント行を含む文字列の全体です。 [fixture: flowchart/gram-click-href]
+改行、`two` で、その `raw` はコメント行を含む文字列の全体です。
+[fixture: flowchart/gram-click-href]
 [fixture: flowchart/tokens-string-literal-comment-line]
 
 同じように、`click A href "u%%{init: {}}%%v"` の URL の値は `uv` で、
-その `raw` はディレクティブを含む文字列の全体です。 [fixture: flowchart/lex-directive-in-click-href-string]
+その `raw` はディレクティブを含む文字列の全体です。
+[fixture: flowchart/lex-directive-in-click-href-string]
 
 文字列は図の字句規則に従い、次の対応する引用符で閉じます。
 図がテキストの終わりまで閉じていない文字列を受理するところでは、
@@ -416,28 +426,30 @@ escape は復号しません。 [fixture: usecase/lex-native-single-quoted-keys]
 ソースの最後の文字まで続き、終わりの空白と行終端を含みます。
 mermaid.js がそれらを名前に読むからです。
 その中の改行もその一部です。
-そのような文字列は、
-class 図のバッククォートの名前だけです（[文字列、バッククォートの名前、ジェネリクスの型](./diagrams/class.ja.md#文字列バッククォートの名前ジェネリクスの型) を参照）。
+そのような文字列は、class 図のバッククォートの名前だけです。
+[文字列、バッククォートの名前、ジェネリクスの型](./diagrams/class.ja.md#文字列バッククォートの名前ジェネリクスの型)
+を参照してください。
 その最後の文字の後のディレクティブは、文字列の一部ではありません。
 テキストの終わりの `A --> `、`` `b``、空白、`%%{init: {}}%%` は、
-文字列 `` `b`` と空白を持ち、
-値は `b` と空白です。 [fixture: class/lex-backquote-unclosed-directive-at-end]
+文字列 `` `b`` と空白を持ち、値は `b` と空白です。
+[fixture: class/lex-backquote-unclosed-directive-at-end]
 
 class 図で、`class`、`` `x``、改行、`%%{init: {}}%%`、改行は、
-ディレクティブの後の改行を含めて、
-値 `x` と改行 2 つを持ちます。 [fixture: class/lex-backquote-unclosed-directive-after-line-break]
+ディレクティブの後の改行を含めて、値 `x` と改行 2 つを持ちます。
+[fixture: class/lex-backquote-unclosed-directive-after-line-break]
 
 `raw` は閉じの引用符を持たず、
 `value` は書かれたテキストから開きの引用符を除いたものです。
 その `closed` は偽です。
 閉じていない [Directive](#directive) や、
-[FlowchartAccDescrBlockStatement](./ast/flowchart.ja.md#flowchartaccdescrblockstatement) のような説明ブロックの `closed` と同じです。
+[FlowchartAccDescrBlockStatement](./ast/flowchart.ja.md#flowchartaccdescrblockstatement)
+のような説明ブロックの `closed` と同じです。
 ほかの StringLiteral の `closed` は、すべて真です。
 道具は、文字列が閉じているかをこの欄から読み、
 `raw` の文字を比べる必要はありません。
 最後の行のバッククォート 1 つは、閉じていないバッククォートの名前で、
-その `raw` は、
-バッククォートとその後の改行です。 [fixture: class/lex-backquote-unclosed-alone]
+その `raw` は、バッククォートとその後の改行です。
+[fixture: class/lex-backquote-unclosed-alone]
 [fixture: class/lex-backquote-unclosed]
 [fixture: class/tokens-backquote-unclosed-trailing-whitespace]
 
@@ -452,8 +464,8 @@ class 図で、`class`、`` `x``、改行、`%%{init: {}}%%`、改行は、
 
 子の欄はありません。
 
-`linkStyle 0,1 stroke:red` の最初の数の値は 0 で、
-`raw` は `0` です。 [fixture: flowchart/db-linkstyle-shared-fill]
+`linkStyle 0,1 stroke:red` の最初の数の値は 0 で、 `raw` は `0` です。
+[fixture: flowchart/db-linkstyle-shared-fill]
 
 数が取れる形は、その位置の文法が決めます。
 flowchart では数字だけなので、どの数も整数です。
@@ -464,8 +476,8 @@ sequence では小数も取れるので、`autonumber .5` は 2 分の 1 から�
 
 値は書かれた数に最も近い倍精度の数で、書かれた数と違うことがあります。
 XY chart で、`bar [`、20 個の 9、`]` は値が 1 の後に 20 個の 0 が続く数で、
-`line [.`、400 個の 0、
-`1]` は値が 0 です。 [fixture: xychart/db-plot-values-large]
+`line [.`、400 個の 0、 `1]` は値が 0 です。
+[fixture: xychart/db-plot-values-large]
 [fixture: xychart/db-plot-values-underflow]
 
 倍精度に収まらない数は、 mermaid.js が読むとおり、無限大、
@@ -473,8 +485,8 @@ XY chart で、`bar [`、20 個の 9、`]` は値が 1 の後に 20 個の 0 が
 XY chart で、`bar [`、400 個の 9、`]` は値が無限大で、
 `-` の後の同じ数はマイナス無限大です。
 範囲、scale の幅、`autonumber` の始まりと増分、
-linkStyle の番号もそのような数になれ、
-linkStyle の番号では範囲の外です。 [fixture: xychart/db-plot-values-overflow]
+linkStyle の番号もそのような数になれ、 linkStyle の番号では範囲の外です。
+[fixture: xychart/db-plot-values-overflow]
 [fixture: xychart/db-plot-values-negative-overflow]
 [fixture: xychart/db-x-axis-range-overflow]
 [fixture: xychart/db-y-axis-range-negative-overflow]
@@ -485,8 +497,9 @@ linkStyle の番号では範囲の外です。 [fixture: xychart/db-plot-values-
 
 treemap の leaf の値の位置は、通常の十進表記だけでなく、
 数字・underscore・dot・comma を許します。
-value は [TreemapValueConverter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treemap/valueConverter.ts#L13-L15) に従い、
-comma を除いて十進の先頭部分を読んだ倍精度の数とし、
+value は
+[TreemapValueConverter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treemap/valueConverter.ts#L13-L15)
+に従い、 comma を除いて十進の先頭部分を読んだ倍精度の数とし、
 最初の underscore や余分な dot で読み終えます。
 十進の先頭部分を読めなければ value は NaN です。
 その部分は数字を一つ以上、dot を高々一つ含みます。
@@ -495,9 +508,8 @@ dot より前に数字があれば後続の数字はなくてもかまいませ�
 `1,234.50`、`1_234.50`、`1.2.3`、`.` の値は、それぞれ 1234.5、1、1.2、
 NaN となります。
 raw は数の先頭部分として読まれない文字も含め、元の綴り全体を保ちます。
-この位置に限った定義は、
-ほかの図種の数の文法を変えません。 [fixture: treemap/db-number-comma]
-[fixture: treemap/db-number-underscore]
+この位置に限った定義は、ほかの図種の数の文法を変えません。
+[fixture: treemap/db-number-comma] [fixture: treemap/db-number-underscore]
 [fixture: treemap/db-number-multiple-dots] [fixture: treemap/db-number-nan]
 [fixture: treemap/lex-number-dot-underscore]
 [fixture: treemap/number-leading-dot] [fixture: treemap/number-trailing-dot]
@@ -538,23 +550,26 @@ mermaid.js が読まないテキストのノードの型は `<図種>IgnoredText
 `FlowchartIgnoredText` や `StateIgnoredStatement` がそうです。
 ほかのノードの型の名前は、そのように終わりません。
 
-- [gitgraph](./ast/gitgraph.ja.md): 図種 `gitGraph`。 [fixture: gitgraph/header-only]
+- [gitgraph](./ast/gitgraph.ja.md): 図種 `gitGraph`。
+  [fixture: gitgraph/header-only]
 
 - [Info](./ast/info.ja.md): 図種 `info`。 [fixture: info/header-lf]
 
 - [Packet](./ast/packet.ja.md): 図種 `packet`。 [fixture: packet/gram-mixed]
 
-- [Architecture](./ast/architecture.ja.md): 図種 `architecture`。 [fixture: architecture/header-beta]
-  [fixture: architecture/db-mixed]
+- [Architecture](./ast/architecture.ja.md): 図種 `architecture`。
+  [fixture: architecture/header-beta] [fixture: architecture/db-mixed]
 
 - [Radar](./ast/radar.ja.md): 図種 `radar`。 [fixture: radar/gram-written-tree]
 
-- [Treemap](./ast/treemap.ja.md): 図種 `treemap`。 [fixture: treemap/gram-written-tree]
+- [Treemap](./ast/treemap.ja.md): 図種 `treemap`。
+  [fixture: treemap/gram-written-tree]
 
 - [Railroad](./ast/railroad.ja.md): 図種 `railroad`、`railroadEbnf`、
   `railroadAbnf`、`railroadPeg`。
   方言は Root.diagramType で選び、
-  共通する図の node に見出しの kind の欄は持ちません。 [fixture: railroad/ir-gram-written-tree]
+  共通する図の node に見出しの kind の欄は持ちません。
+  [fixture: railroad/ir-gram-written-tree]
   [fixture: railroad/ebnf-gram-written-tree]
   [fixture: railroad/abnf-gram-written-tree]
   [fixture: railroad/peg-gram-written-tree]
@@ -562,17 +577,17 @@ mermaid.js が読まないテキストのノードの型は `<図種>IgnoredText
 - [Wardley](./ast/wardley.ja.md): 図種 `wardley`。
   名前の位置は空白を許すため bare name は WardleyIdentifier、
   引用した名は共有 StringLiteral を使います。 [fixture: wardley/db-all-fields]
-  [fixture: wardley/db-id-underscore]
-  [fixture: wardley/db-unquoted-names] [fixture: wardley/lex-string-conversion]
+  [fixture: wardley/db-id-underscore] [fixture: wardley/db-unquoted-names]
+  [fixture: wardley/lex-string-conversion]
 - [Cynefin](./ast/cynefin.ja.md): 図種は `cynefin`。
   固定の領域の語は文字列の欄とし、
-  項目と遷移のラベルは共有の StringLiteral を使います。 [fixture: cynefin/db-all-fields]
-  [fixture: cynefin/lex-string-conversion]
+  項目と遷移のラベルは共有の StringLiteral を使います。
+  [fixture: cynefin/db-all-fields] [fixture: cynefin/lex-string-conversion]
 
 - [eventmodeling](./ast/eventmodeling.ja.md): 数字列の名前は Identifier、
   dot の名前は head/tail member を持つ EventmodelingQualifiedName を使います。
-  全出現、tag、
-  unassigned な GWT の型の語も書かれた node に保ちます。 [fixture: eventmodeling/gram-written-tree]
+  全出現、tag、 unassigned な GWT の型の語も書かれた node に保ちます。
+  [fixture: eventmodeling/gram-written-tree]
   [fixture: eventmodeling/db-source-leading-zero]
   [fixture: eventmodeling/lex-qualified-hidden-components]
   [fixture: eventmodeling/gram-gwt-unassigned-type]

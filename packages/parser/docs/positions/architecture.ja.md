@@ -13,8 +13,8 @@ ArchitectureDiagram は、ヘッダー前に保持する最初の形式、なけ
 最後の書かれた形式までを覆います。
 外側の余白、通過した裸の行と付随する trivia、コメント、
 追加の LF は範囲を延ばしません。
-textBeforeHeader は、
-保持する YAML と二回目の走査のネイティブ形式を所有します。 [fixture: architecture/header-beta]
+textBeforeHeader は、保持する YAML と二回目の走査のネイティブ形式を所有します。
+[fixture: architecture/header-beta]
 [fixture: architecture/detect-retained-before-second-scan]
 [fixture: architecture/detect-two-second-scan-forms]
 [fixture: architecture/detect-empty-braces-bare]
@@ -26,8 +26,8 @@ textBeforeHeader は、
 可視 EOL 前の最後の隠れた接尾形式まで延びます。
 junction にアイコンやラベルはありません。
 存在する任意要素の前の隠れた形式は、その要素の gap に属します。
-要素がなければ、
-次に存在する要素か textAfter に属します。 [fixture: architecture/gram-written-tree]
+要素がなければ、次に存在する要素か textAfter に属します。
+[fixture: architecture/gram-written-tree]
 [fixture: architecture/header-inline-group]
 [fixture: architecture/header-inline-service]
 [fixture: architecture/header-inline-junction]
@@ -40,9 +40,8 @@ junction にアイコンやラベルはありません。
 辺は左 ID から右修飾子の閉じ波括弧まで、なければ右 ID までで、
 textAfter まで延びます。
 矢印は両ポートのコロンを含み、内部の gap と任意ラベルを覆います。
-マーカーや任意要素がなければ、
-その名前の gap は空です。 [fixture: architecture/db-mixed]
-[fixture: architecture/end-edge-eof]
+マーカーや任意要素がなければ、その名前の gap は空です。
+[fixture: architecture/db-mixed] [fixture: architecture/end-edge-eof]
 [fixture: architecture/hidden-yaml-edge-eof]
 [fixture: architecture/hidden-yaml-edge-gaps]
 [fixture: architecture/gram-hidden-modifier-gaps]
@@ -51,8 +50,8 @@ textAfter まで延びます。
 整列は align から最後のメンバー ID までで、textAfter まで延びます。
 各メンバーは直前の最初の隠れた形式、なければ自身の ID から、
 自身の ID の終わりまでを覆います。
-メンバーと文の順序は、
-書かれた順序のままです。 [fixture: architecture/db-align-forward-repeat]
+メンバーと文の順序は、書かれた順序のままです。
+[fixture: architecture/db-align-forward-repeat]
 [fixture: architecture/hidden-yaml-align-gap]
 [fixture: architecture/hidden-directive-align-eof]
 [fixture: architecture/hidden-directive-unit-gaps]
@@ -62,7 +61,8 @@ Identifier はアイコンの丸括弧を含みません。
 raw はソースの切り出しそのものです。
 ラベルは両角括弧を覆い、値は kind が text なら角括弧だけを、
 string なら一致する引用符も除きます。
-裸のラベル内部の余白は保持します。 [fixture: architecture/lex-icon-leading-symbols]
+裸のラベル内部の余白は保持します。
+[fixture: architecture/lex-icon-leading-symbols]
 [fixture: architecture/directive-icon-delimiters]
 [fixture: architecture/lex-string-conversion]
 [fixture: architecture/db-empty-values]
@@ -98,7 +98,8 @@ ArchitectureIgnoredText は開始から選ばれた終端までを覆い、
 三つのフェンスの一致は一ノードで、別々の一致は別ノードです。
 共通ディレクティブ、コメント領域、選択されたセミコロンは、
 それらをまたぐノードの範囲内にありますが、値からは除きます。
-ソースの改行をそのまま保持します。 [fixture: architecture/hidden-yaml-open-padding]
+ソースの改行をそのまま保持します。
+[fixture: architecture/hidden-yaml-open-padding]
 [fixture: architecture/hidden-yaml-three-fences]
 [fixture: architecture/lex-yaml-two-nonempty]
 [fixture: architecture/lex-hidden-two-suffixes]

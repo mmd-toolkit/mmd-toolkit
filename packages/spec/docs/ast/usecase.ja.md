@@ -5,7 +5,8 @@
 `usecase` のソースの木を定義します。
 共有の欄は [ast.md](../ast.ja.md)、
 構文と受理条件は [diagrams/usecase.md](../diagrams/usecase.ja.md)、
-値の変換と Db は [tests の要約](../../../tests/docs/db-summaries.ja.md#usecase) に定義します。
+値の変換と Db は [tests の要約](../../../tests/docs/db-summaries.ja.md#usecase)
+に定義します。
 
 各節点は共通の `type`、範囲、位置も持ちます。
 任意の欄は省略せず null とし、書かれないリストは空にします。
@@ -13,8 +14,8 @@
 親の範囲は書かれた形全体で、文を終える行終端や前後の余白を除きます。
 値自身の規則が読む場合を除き、空白は節点ではありません。
 値からは共通の directive、コメント領域、選ばれたセミコロンを除きます。
-それ以外の文字、実体参照、行終端、
-大文字と小文字は書かれたままです。 [fixture: usecase/db-all-fields]
+それ以外の文字、実体参照、行終端、大文字と小文字は書かれたままです。
+[fixture: usecase/db-all-fields]
 
 ## 節点
 
@@ -46,7 +47,8 @@ UsecaseAccDescrBlockStatement。 [fixture: usecase/header-lf]
 子の欄: `actors`。
 範囲は `actor` から最後の項目の末尾までです。
 コンマの後に別の actor キーワードは置きません。
-関連を持たない actor リストの選択肢を表します。 [fixture: usecase/gram-actor-list]
+関連を持たない actor リストの選択肢を表します。
+[fixture: usecase/gram-actor-list]
 
 ### UsecaseActor
 
@@ -63,7 +65,8 @@ UsecaseAccDescrBlockStatement。 [fixture: usecase/header-lf]
 id が null なら label は string または markdown です。
 label が null なら id があります。
 生成された id ラベル、actor の type、icon、business の欄は作りません。
-metadata と stereotype は別々に書かれた形を保ちます。 [fixture: usecase/gram-actor-keyword-adjacent-string]
+metadata と stereotype は別々に書かれた形を保ちます。
+[fixture: usecase/gram-actor-keyword-adjacent-string]
 [fixture: usecase/gram-empty-actor-label]
 
 ### UsecaseEntityStatement
@@ -75,7 +78,8 @@ metadata と stereotype は別々に書かれた形を保ちます。 [fixture: 
 子の欄: `entity`。
 範囲は entity の範囲と同じです。
 境界内では id に metadata が続く形も宣言としてこの節点に入ります。
-同じ形でも最上位では metadata の更新です。 [fixture: usecase/gram-boundary-target-update-is-member]
+同じ形でも最上位では metadata の更新です。
+[fixture: usecase/gram-boundary-target-update-is-member]
 [fixture: usecase/gram-bare-source-metadata-forces-update]
 [fixture: usecase/gram-boundary-standalone-metadata-inside]
 [fixture: usecase/db-metadata-forward]
@@ -98,8 +102,8 @@ metadata と stereotype は別々に書かれた形を保ちます。 [fixture: 
 明示形状の両側の区切りは entity の書かれた句読点です。
 宣言か参照かの boolean は作らず、構文の欄と親の位置で決めます。
 actor や JSON に解決される端点も別の型に変えません。
-`rectangle` は toolkit の完全な形状名で、
-mermaid の `rect` ではありません。 [fixture: usecase/gram-labeled-source-metadata-declaration]
+`rectangle` は toolkit の完全な形状名で、 mermaid の `rect` ではありません。
+[fixture: usecase/gram-labeled-source-metadata-declaration]
 [fixture: usecase/gram-target-metadata-declaration]
 [fixture: usecase/lex-label-unquoted-hws-trim]
 
@@ -120,7 +124,8 @@ id が null なら title は string または markdown、
 表示名の括弧と角括弧は境界の形状を選ばず、追加の欄は不要です。
 推定した parentId や members は作りません。
 空の引用名に mermaid が親 id を付けなくても、書かれた本体を保持します。
-閉じない境界は拒否するので closed はありません。 [fixture: usecase/gram-boundary-empty-id-reference]
+閉じない境界は拒否するので closed はありません。
+[fixture: usecase/gram-boundary-empty-id-reference]
 [fixture: usecase/gram-boundary-empty-label]
 
 ### UsecaseRelationshipStatement
@@ -142,8 +147,8 @@ actor キーワードのある source なら範囲は `actor` から始まり、
 source と target は入れ替えません。
 opening と label は両方あるか両方 null です。
 意味つきの種類には、書かれたラベルの子はありません。
-コロンと大文字小文字を保った include/extend は文の書かれた単位です。 [fixture: usecase/db-labeled-arrows]
-[fixture: usecase/db-semantic-case]
+コロンと大文字小文字を保った include/extend は文の書かれた単位です。
+[fixture: usecase/db-labeled-arrows] [fixture: usecase/db-semantic-case]
 
 ### UsecaseOpeningArrow
 
@@ -156,7 +161,8 @@ opening と label は両方あるか両方 null です。
 
 子の欄はありません。
 範囲は演算子だけで、空白と続くラベルを除きます。
-完全な終点 marker や Db の minlen は持ちません。 [fixture: usecase/db-labeled-arrows]
+完全な終点 marker や Db の minlen は持ちません。
+[fixture: usecase/db-labeled-arrows]
 
 ### UsecaseArrow
 
@@ -173,7 +179,8 @@ opening と label は両方あるか両方 null です。
 `--|>` の endMarker は triangle、`..>` は dotted で末尾が arrow です。
 分割形の閉じ側の startMarker は none で、開き側が始点 marker を持ちます。
 Db が固定 minlen を使う場合も文字数を保ちます。
-triangle は ClassArrow と同じ語です。 [fixture: usecase/lex-forward-circle-id-prefix]
+triangle は ClassArrow と同じ語です。
+[fixture: usecase/lex-forward-circle-id-prefix]
 [fixture: usecase/db-labeled-arrows]
 
 ### UsecaseLabel
@@ -190,7 +197,8 @@ triangle は ClassArrow と同じ語です。 [fixture: usecase/lex-forward-circ
 その外側の ASCII 空白とタブは trivia です。
 Unicode 空白は普通のラベル内容です。
 引用ラベルは内部の余白をすべて保ち、空でも構いません。
-受理する文字列はすべて閉じるので closed はありません。 [fixture: usecase/lex-label-unquoted-hws-trim]
+受理する文字列はすべて閉じるので closed はありません。
+[fixture: usecase/lex-label-unquoted-hws-trim]
 [fixture: usecase/lex-label-unicode-whitespace-only]
 [fixture: usecase/gram-empty-actor-label]
 
@@ -208,8 +216,8 @@ CSS 値はコロン直後から始まり、先頭の空白とタブを含みま�
 アクセシビリティの行値はコロン直後から物理行末までです。
 ブロック値は波括弧の中身全体で、余白も保ちます。
 変換や trim は木の値ではありません。
-完全に空のアクセシビリティ内容は null、
-空白だけなら空でない Literal です。 [fixture: usecase/lex-css-property-padding]
+完全に空のアクセシビリティ内容は null、空白だけなら空でない Literal です。
+[fixture: usecase/lex-css-property-padding]
 [fixture: usecase/gram-a11y-line-raw-padding]
 [fixture: usecase/gram-a11y-block-raw-padding]
 [fixture: usecase/gram-stereotype-trimmed-conflict]
@@ -224,8 +232,8 @@ CSS 値はコロン直後から始まり、先頭の空白とタブを含みま�
 範囲は連続する `@{` から閉じ波括弧までです。
 空の metadata もプロパティなしの実在する節点です。
 改行とコンマの区切りは句読点か trivia で、null の項目は作りません。
-このブロックは opaque
-data ではありません。 [fixture: usecase/gram-metadata-empty]
+このブロックは opaque data ではありません。
+[fixture: usecase/gram-metadata-empty]
 [fixture: usecase/gram-native-trailing-comma-newline]
 
 ### UsecaseMetadataProperty
@@ -240,7 +248,8 @@ data ではありません。 [fixture: usecase/gram-metadata-empty]
 raw から引用符を除きません。
 裸の true/false は Identifier.name にそのままの語を持ちます。
 その引用されない綴りだけを native 検証と Db が boolean と読みます。
-整数に見える語も Identifier です。 [fixture: usecase/lex-native-single-quoted-keys]
+整数に見える語も Identifier です。
+[fixture: usecase/lex-native-single-quoted-keys]
 [fixture: usecase/lex-native-string-backslashes]
 [fixture: usecase/lex-identifier-leading-zero-icon]
 [fixture: usecase/gram-native-key-newline-colon]
@@ -272,8 +281,8 @@ UsecaseLabel の target は string または markdown で、裸の text では�
 
 子の欄: `target`、`label`。
 範囲は note からラベル末尾までです。
-生成する note id、接続辺、位置、
-別名の欄はありません。 [fixture: usecase/gram-note-adjacent-string-label]
+生成する note id、接続辺、位置、別名の欄はありません。
+[fixture: usecase/gram-note-adjacent-string-label]
 
 ### UsecaseJsonStatement
 
@@ -286,7 +295,8 @@ UsecaseLabel の target は string または markdown で、裸の text では�
 子の欄: `id`、`data`、`classes`。
 範囲は json から最後の接尾辞までです。
 JSON 接頭部の id は空でない ASCII 語文字列で、キーワード形でも構いません。
-普通の id の位置では identifier 単位を要求します。 [fixture: usecase/gram-json-keyword-id]
+普通の id の位置では identifier 単位を要求します。
+[fixture: usecase/gram-json-keyword-id]
 [fixture: usecase/gram-json-space-after-at]
 
 ### UsecaseJsonDataBlock
@@ -300,8 +310,8 @@ JSON 接頭部の id は空でない ASCII 語文字列で、キーワード形�
 value は実際の開き { の直後から対応する } の直前までです。
 入れ子のオブジェクトと配列、引用符、重複キー、escape の綴りを不透明に保ちます。
 usecase で共通の opaque block に入るのはこのブロックだけです。
-ブロックは常に閉じ、
-不釣り合いな括弧は拒否します。 [fixture: usecase/db-json-duplicate-order]
+ブロックは常に閉じ、不釣り合いな括弧は拒否します。
+[fixture: usecase/db-json-duplicate-order]
 [fixture: usecase/div-json-balanced-invalid-array]
 
 ### UsecaseDirectionStatement
@@ -312,8 +322,8 @@ usecase で共通の opaque block に入るのはこのブロックだけです�
 
 子の欄はありません。
 範囲は direction から値までです。
-固定集合のキーワードはスカラー欄で、
-Identifier の子を作りません。 [fixture: usecase/db-semantic-case]
+固定集合のキーワードはスカラー欄で、 Identifier の子を作りません。
+[fixture: usecase/db-semantic-case]
 [fixture: usecase/gram-direction-adjacent-quoted]
 [fixture: usecase/db-direction-all] [fixture: usecase/db-direction-td]
 
@@ -326,7 +336,8 @@ Identifier の子を作りません。 [fixture: usecase/db-semantic-case]
 
 子の欄: `classes`、`styles`。
 範囲は classDef から最後の CSS 構成単位までです。
-重複名と繰り返しの定義も別々の出現として保ちます。 [fixture: usecase/gram-styles-components]
+重複名と繰り返しの定義も別々の出現として保ちます。
+[fixture: usecase/gram-styles-components]
 
 ### UsecaseClassStatement
 
@@ -339,7 +350,8 @@ Identifier の子を作りません。 [fixture: usecase/db-semantic-case]
 範囲は class から最後の class 名までです。
 空の項目と末尾コンマは許しません。
 2 つのリストの間にコンマがないことが文法の境界で、
-ソースの空白やタブが両側の id を分けます。 [fixture: usecase/gram-class-target-hole]
+ソースの空白やタブが両側の id を分けます。
+[fixture: usecase/gram-class-target-hole]
 [fixture: usecase/gram-class-name-trailing-comma]
 
 ### UsecaseStyleStatement
@@ -351,7 +363,8 @@ Identifier の子を作りません。 [fixture: usecase/db-semantic-case]
 
 子の欄: `target`、`styles`。
 範囲は style から最後の CSS 構成単位までです。
-class のスタイルをこの節点の直接の styles に展開しません。 [fixture: usecase/lex-style-quoted-value-and-comma]
+class のスタイルをこの節点の直接の styles に展開しません。
+[fixture: usecase/lex-style-quoted-value-and-comma]
 
 ### UsecaseStyleDeclaration
 
@@ -364,8 +377,8 @@ class のスタイルをこの節点の直接の styles に展開しません。
 範囲は最初のプロパティ単位から最後の値の構成単位までです。
 コロン前の余白は範囲内の trivia、コロン後の余白は value に入ります。
 引用成分や `\,` で保護しないコンマは宣言を分けます。
-null の宣言や末尾コンマはなく、
-CSS 関数や文字列成分を解釈・復号しません。 [fixture: usecase/lex-css-property-padding]
+null の宣言や末尾コンマはなく、 CSS 関数や文字列成分を解釈・復号しません。
+[fixture: usecase/lex-css-property-padding]
 [fixture: usecase/lex-style-quoted-value-and-comma]
 [fixture: usecase/gram-css-empty-string-component]
 [fixture: usecase/gram-css-whitespace-without-component]
@@ -380,14 +393,15 @@ CSS 関数や文字列成分を解釈・復号しません。 [fixture: usecase/
 範囲は名前の最初から最後の単位までです。
 この位置は markerless のダッシュと後の語の間に空白やタブを許すので、
 共有の Identifier と分けます。
-コロン前の余白は除き、通常の id や native
-metadata のキーには使いません。 [fixture: usecase/lex-class-property-custom-gap]
+コロン前の余白は除き、通常の id や native metadata のキーには使いません。
+[fixture: usecase/lex-class-property-custom-gap]
 [fixture: usecase/lex-class-property-long-custom]
 [fixture: usecase/lex-css-name-custom-tab]
 [fixture: usecase/lex-css-name-custom-nbsp]
 
 `--` と後の語の間の HWS にある directive は共通 trivia です。
-`name` はその両側の空白を保持します。 [fixture: usecase/lex-directive-css-name-gap]
+`name` はその両側の空白を保持します。
+[fixture: usecase/lex-directive-css-name-gap]
 
 ### UsecaseAccTitleStatement
 
@@ -409,9 +423,9 @@ metadata のキーには使いません。 [fixture: usecase/lex-class-property-
 
 子の欄: `value`。
 範囲は accDescr からコロンか最後の値の文字までです。
-完全に空なら null、
-空白だけなら Literal を保ちます。 [fixture: usecase/db-accdescr-directive-gap]
-[fixture: usecase/db-accdescr-eof] [fixture: usecase/db-accdescr-empty-gap]
+完全に空なら null、空白だけなら Literal を保ちます。
+[fixture: usecase/db-accdescr-directive-gap] [fixture: usecase/db-accdescr-eof]
+[fixture: usecase/db-accdescr-empty-gap]
 
 ### UsecaseAccDescrBlockStatement
 
@@ -422,7 +436,7 @@ metadata のキーには使いません。 [fixture: usecase/lex-class-property-
 子の欄: `value`。
 範囲は accDescr から最初の閉じ波括弧までです。
 閉じないブロックは拒否するので closed はありません。
-空ブロックも普通の文で、
-任意の単位間に置ける無視される形ではありません。 [fixture: usecase/gram-a11y-whitespace-block]
+空ブロックも普通の文で、任意の単位間に置ける無視される形ではありません。
+[fixture: usecase/gram-a11y-whitespace-block]
 [fixture: usecase/gram-a11y-block-raw-padding]
 [fixture: usecase/db-accdescr-empty] [fixture: usecase/db-accdescr-unclosed]

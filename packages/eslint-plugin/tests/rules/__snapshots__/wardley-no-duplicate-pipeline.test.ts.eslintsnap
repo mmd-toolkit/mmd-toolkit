@@ -18,7 +18,7 @@ Code:
     | ~~~ [1]
   9 |
 
-[1] mermaid.js replaces the pipeline children of `Database`, set on line 3, with these children.
+[1] mermaid.js replaces the pipeline children of `Database`, set earlier, with these children.
 ---
 
 
@@ -39,7 +39,7 @@ Code:
     | ~~~ [1]
   9 |
 
-[1] mermaid.js replaces the pipeline children of `Database`, set on line 3, with these children.
+[1] mermaid.js replaces the pipeline children of `Database`, set earlier, with these children.
 ---
 
 
@@ -61,7 +61,7 @@ Code:
   9 | }
     | ~ [1]
 
-[1] mermaid.js replaces the pipeline children of `P`, set on line 3, with these children.
+[1] mermaid.js replaces the pipeline children of `P`, set earlier, with these children.
 ---
 
 
@@ -81,7 +81,7 @@ Code:
   8 | }
     | ~ [1]
 
-[1] mermaid.js replaces the pipeline children of `Database`, set on line 3, with these children.
+[1] mermaid.js replaces the pipeline children of `Database`, set earlier, with these children.
 ---
 
 
@@ -101,7 +101,7 @@ Code:
     | ~ [1]
   8 | component Database [0.4,0.8]
 
-[1] mermaid.js replaces the pipeline children of `Database`, set on line 2, with these children.
+[1] mermaid.js replaces the pipeline children of `Database`, set earlier, with these children.
 ---
 
 
@@ -127,8 +127,8 @@ Code:
  11 | }
     | ~ [2]
 
-[1] mermaid.js replaces the pipeline children of `P`, set on line 3, with these children.
-[2] mermaid.js replaces the pipeline children of `P`, set on line 6, with these children.
+[1] mermaid.js replaces the pipeline children of `P`, set earlier, with these children.
+[2] mermaid.js replaces the pipeline children of `P`, set earlier, with these children.
 ---
 
 
@@ -148,7 +148,7 @@ Code:
   8 | }
     | ~ [1]
 
-[1] mermaid.js replaces the pipeline children of `P`, set on line 3, with these children.
+[1] mermaid.js replaces the pipeline children of `P`, set earlier, with these children.
 ---
 
 
@@ -170,5 +170,5 @@ Code:
   9 | }
     | ~ [1]
 
-[1] mermaid.js replaces the pipeline children of `P`, set on line 3, with these children.
+[1] mermaid.js replaces the pipeline children of `P`, set earlier, with these children.
 ---

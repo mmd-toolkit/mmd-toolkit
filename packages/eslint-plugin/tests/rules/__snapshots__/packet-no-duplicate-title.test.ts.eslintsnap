@@ -12,7 +12,7 @@ Code:
   4 |   0-15: "Source Port"
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -28,7 +28,7 @@ Code:
   5 | 0: "Flag"
   6 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -43,7 +43,7 @@ Code:
   4 | accTitle: First
   5 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -58,7 +58,7 @@ Code:
   4 | 0: "Flag"
   5 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -74,8 +74,8 @@ Code:
     | ^~~~~~~~~~~ [2]
   5 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
-[2] mermaid.js replaces the accessible title set on line 3 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+[2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -91,8 +91,8 @@ Code:
     | ^~~~~~~~~~~~~~~ [2]
   5 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
-[2] mermaid.js replaces the accessible title set on line 3 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+[2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -107,7 +107,7 @@ Code:
   4 | 0: "Flag"
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -122,7 +122,7 @@ Code:
   4 |   0-15: "Source Port"
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -137,7 +137,7 @@ Code:
     | ^~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -152,7 +152,7 @@ Code:
     | ^~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -168,7 +168,7 @@ Code:
   5 | 0: "Flag"
   6 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -182,7 +182,7 @@ Code:
     | ^~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -197,7 +197,7 @@ Code:
   4 | title First
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -213,8 +213,8 @@ Code:
     | ^~~~~~~~~~~ [2]
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
-[2] mermaid.js replaces the title set on line 3 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+[2] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -229,7 +229,7 @@ Code:
   4 | 0: "Flag"
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -244,7 +244,7 @@ Code:
   4 | title First
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -262,7 +262,7 @@ Code:
   7 | 0: "Flag"
   8 |
 
-[1] mermaid.js replaces the title set on line 5 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -280,7 +280,7 @@ Code:
   7 | 0: "Flag"
   8 |
 
-[1] mermaid.js replaces the title set on line 5 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -297,7 +297,7 @@ Code:
     | ^~~~~~~~~~~~ [1]
   7 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -311,7 +311,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -327,8 +327,8 @@ Code:
     | ^~~~~ [2]
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
-[2] mermaid.js replaces the title set on line 3 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+[2] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -344,8 +344,8 @@ Code:
     | ^~~~~~~~~~~ [2]
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
-[2] mermaid.js replaces the title set on line 3 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+[2] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -364,8 +364,8 @@ Code:
   7 | accTitle: Second
   8 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
-[2] mermaid.js replaces the accessible title set on line 5 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+[2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -382,6 +382,6 @@ Code:
     | ^~~~~~~~~~~~~ [2]
   6 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
-[2] mermaid.js replaces the accessible title set on line 4 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+[2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---

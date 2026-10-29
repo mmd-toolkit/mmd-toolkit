@@ -29,7 +29,7 @@ export const classNoDuplicateTitle: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js replaces the title set on line {{line}} with the one of this `accTitle`.",
+        "mermaid.js replaces the earlier title with the one of this `accTitle`.",
     },
   },
   create(context) {
@@ -40,7 +40,6 @@ export const classNoDuplicateTitle: MermaidRuleDefinition<{
           context.report({
             node,
             messageId: "duplicate",
-            data: { line: String(previous.loc.start.line) },
           })
         }
         previous = node

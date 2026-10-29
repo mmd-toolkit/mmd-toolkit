@@ -12,7 +12,7 @@ Code:
   4 |   component API [0.6, 0.7]
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -25,7 +25,7 @@ Code:
   3 | accTitle: Last
     | ^~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -40,7 +40,7 @@ Code:
   4 | %% reminder
   5 | component API [0.6,0.7]
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -55,7 +55,7 @@ Code:
   4 |   component API [0.6, 0.7]
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -68,7 +68,7 @@ Code:
   3 | title Future strategy
     | ^~~~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -81,7 +81,7 @@ Code:
   3 | title Last
     | ^~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -96,7 +96,7 @@ Code:
   4 | %%{init:{}}%%
   5 | component API [0.6,0.7]
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -109,7 +109,7 @@ Code:
   3 | title
     | ^~~~~ [1]
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -123,7 +123,7 @@ Code:
     | ^~~~~ [1]
   4 | title Last
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -136,7 +136,7 @@ Code:
   3 | title #65;
     | ^~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -152,7 +152,7 @@ Code:
   6 | title
     | ^~~~~ [1]
 
-[1] mermaid.js replaces the title set on line 5 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -165,7 +165,7 @@ Code:
   3 | title <b x='a'>T</b>
     | ^~~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -180,6 +180,6 @@ Code:
   4 | title A
     | ^~~~~~~ [2]
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
-[2] mermaid.js replaces the title set on line 3 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+[2] mermaid.js replaces the earlier title with the one of this `title`.
 ---

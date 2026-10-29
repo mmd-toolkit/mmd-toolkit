@@ -26,12 +26,12 @@ export const erNoRedefinedEntity: MermaidRuleDefinition<{
     schema: [],
     messages: {
       redefined:
-        "mermaid.js keeps the alias `{{previous}}` that the entity `{{name}}` got on line {{line}}, and ignores this alias.",
+        "mermaid.js keeps the first alias `{{previous}}` of the entity `{{name}}` and ignores this alias.",
     },
   },
   create(context) {
-    /** For each entity name, the first alias that an entity statement gave it, and the line. */
-    const aliases = new Map<string, { alias: string; line: number }>()
+    /** For each entity name, the first alias that an entity statement gave it. */
+    const aliases = new Map<string, string>()
     return {
       ErEntityStatement(node) {
         if (node.alias === null) return
@@ -39,12 +39,12 @@ export const erNoRedefinedEntity: MermaidRuleDefinition<{
         const alias = erNameText(node.alias)
         const first = aliases.get(name)
         if (first === undefined) {
-          aliases.set(name, { alias, line: node.loc.start.line })
-        } else if (first.alias !== alias) {
+          aliases.set(name, alias)
+        } else if (first !== alias) {
           context.report({
             node,
             messageId: "redefined",
-            data: { previous: first.alias, name, line: String(first.line) },
+            data: { previous: first, name },
           })
         }
       },

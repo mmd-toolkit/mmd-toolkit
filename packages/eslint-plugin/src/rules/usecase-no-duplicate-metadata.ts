@@ -34,13 +34,13 @@ export const usecaseNoDuplicateMetadata: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js replaces the `{{key}}` value given on line {{line}} for `{{id}}` with this value.",
+        "mermaid.js replaces the `{{key}}` value given earlier for `{{id}}` with this value.",
     },
   },
   create(context) {
     const elements = new Map<
       string,
-      Map<string, { value: string; line: number; origin: MetadataOrigin }>
+      Map<string, { value: string; origin: MetadataOrigin }>
     >()
 
     /** A header followed by an update is the documented way to change its type. */
@@ -74,10 +74,10 @@ export const usecaseNoDuplicateMetadata: MermaidRuleDefinition<{
           context.report({
             node: property,
             messageId: "duplicate",
-            data: { key, id, line: String(previous.line) },
+            data: { key, id },
           })
         }
-        values.set(key, { value, line: property.loc.start.line, origin })
+        values.set(key, { value, origin })
       }
     }
 

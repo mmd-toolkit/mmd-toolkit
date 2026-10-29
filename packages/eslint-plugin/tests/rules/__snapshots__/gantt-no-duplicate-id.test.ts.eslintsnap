@@ -13,7 +13,7 @@ Code:
   5 |   Test :after des1, 2d
   6 |
 
-[1] mermaid.js finds only this task for the id `des1`, not the task on line 3 that has it too.
+[1] mermaid.js replaces the earlier target of the id `des1` with this task.
 ---
 
 
@@ -28,7 +28,7 @@ Code:
     |     ^ [1]
   5 | click x href "u2"
 
-[1] mermaid.js finds only this task for the id `x`, not the task on line 2 that has it too.
+[1] mermaid.js replaces the earlier target of the id `x` with this task.
 ---
 
 
@@ -43,7 +43,7 @@ Code:
   4 |   click a href "u"
   5 |
 
-[1] mermaid.js finds only this task for the id `a`, not the task on line 2 that has it too.
+[1] mermaid.js replaces the earlier target of the id `a` with this task.
 ---
 
 
@@ -59,7 +59,7 @@ Code:
   5 | b : after x, 1d
   6 |
 
-[1] mermaid.js finds only this task for the id `x`, not the task on line 3 that has it too.
+[1] mermaid.js replaces the earlier target of the id `x` with this task.
 ---
 
 
@@ -75,7 +75,7 @@ Code:
     |     ^ [1]
   6 |
 
-[1] mermaid.js finds only this task for the id `x`, not the task on line 3 that has it too.
+[1] mermaid.js replaces the earlier target of the id `x` with this task.
 ---
 
 
@@ -93,8 +93,8 @@ Code:
   6 | d : after x, 1d
   7 |
 
-[1] mermaid.js finds only this task for the id `x`, not the task on line 3 that has it too.
-[2] mermaid.js finds only this task for the id `x`, not the task on line 3 that has it too.
+[1] mermaid.js replaces the earlier target of the id `x` with this task.
+[2] mermaid.js replaces the earlier target of the id `x` with this task.
 ---
 
 
@@ -108,5 +108,5 @@ Code:
     |     ^ [1]
   4 | click x href "u"
 
-[1] mermaid.js finds only this task for the id `x`, not the task on line 2 that has it too.
+[1] mermaid.js replaces the earlier target of the id `x` with this task.
 ---

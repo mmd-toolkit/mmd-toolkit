@@ -6,8 +6,8 @@ mermaid.js の正となるソース：
 
 - [`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison)
 - [`requirementDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts)
-- [`requirement/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement) の中のテスト（`*.spec.js`、
-  `*.spec.ts`）
+- [`requirement/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement)
+  の中のテスト（`*.spec.js`、 `*.spec.ts`）
 
 この文書は、図種 `requirement`、要求図を扱います。
 木のノードは [ast/requirement.ja.md](../ast/requirement.ja.md) で定めます。
@@ -16,9 +16,10 @@ mermaid.js の正となるソース：
 
 [detection.ja.md](../detection.ja.md) の項目 14 がこの文法を選びます。
 テキストが、空白の後、
-ちょうどこの大文字小文字の `requirement` で始まるときです（[`requirementDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDetector.ts#L9-L11)）。
-`REQUIREMENTDIAGRAM` と `RequirementDiagram` はどの検出器にも合いません。 [fixture: requirement/header-only]
-[fixture:
+ちょうどこの大文字小文字の `requirement` で始まるときです（mermaid.js の
+[`requirementDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDetector.ts#L9-L11)）。
+`REQUIREMENTDIAGRAM` と `RequirementDiagram` はどの検出器にも合いません。
+[fixture: requirement/header-only] [fixture:
 requirement/docs-syntax-requirement-diagram-7919bd6c] [fixture:
 requirement/header-upper-case] [fixture: requirement/header-capitalized]
 
@@ -34,8 +35,9 @@ requirement/header-upper-case] [fixture: requirement/header-capitalized]
 `requirementDiagram #c`、`requirementDiagram %c`、
 `requirementDiagram accDescr {}` は、それぞれ改行が続けば受理されます。
 一方、
-`requirementDiagram element e {` のようにヘッダーの行でその後に文を書くと拒否され、
-テキストのある説明ブロック、`accTitle` の行、 `requirementDiagram-x`、
+`requirementDiagram element e {`
+のようにヘッダーの行でその後に文を書くと拒否され、テキストのある説明ブロック、
+`accTitle` の行、 `requirementDiagram-x`、
 `requirementDiagram;` も拒否されます。
 ヘッダーの後の、空白文字かタブで始まる空白は、
 その後の改行を取るので（[単位と文脈](#単位と文脈) を参照）、
@@ -43,17 +45,16 @@ requirement/header-upper-case] [fixture: requirement/header-capitalized]
 改行が続く `requirementDiagram %%{init: {}}%%` も、
 ディレクティブなしで読まれるので拒否されます。
 ヘッダーだけの入力は、後ろに改行がなくても受理されます。
-字句解析器が最後の文字の後に改行を読むからです（[テキストの終わり](../common.ja.md#テキストの終わり) を参照）。
-一方、
-テキストの終わりで空白文字 2 つが続くヘッダーは拒否されます。 [fixture: requirement/header-lower-case-d]
-[fixture:
+字句解析器が最後の文字の後に改行を読むからです。
+[テキストの終わり](../common.ja.md#テキストの終わり) を参照してください。
+一方、テキストの終わりで空白文字 2 つが続くヘッダーは拒否されます。
+[fixture: requirement/header-lower-case-d] [fixture:
 requirement/header-requirement-only] [fixture: requirement/header-word-suffix]
 [fixture: requirement/header-digit-suffix] [fixture:
 requirement/header-hash-comment] [fixture: requirement/header-percent-comment]
 [fixture: requirement/header-empty-description-block]
 [fixture: requirement/header-description-block] [fixture:
-requirement/header-acc-title]
-[fixture:
+requirement/header-acc-title] [fixture:
 requirement/header-statement-same-line] [fixture:
 requirement/header-dash-suffix] [fixture: requirement/header-semicolon]
 [fixture: requirement/header-trailing-spaces] [fixture:
@@ -66,7 +67,8 @@ requirement/header-crlf] [fixture: requirement/header-cr-only]
 `%%` だけの行です。
 検出はそれを読んで通り過ぎてヘッダーを見つけ、
 その行はどの図種でもそうであるように、
-ここでは印 `%%` の図のコメントです（[図種の検出](../common.ja.md#図種の検出) を参照）。
+ここでは印 `%%` の図のコメントです（[図種の検出](../common.ja.md#図種の検出)
+を参照）。
 コメントはどのノードにも属さず、RequirementDiagram はヘッダーから始まります。
 mermaid.js はどちらの場合も入力を拒否し、
 `%%` だけの行の後に空白だけの行があるときも拒否します。
@@ -91,20 +93,21 @@ requirement/header-after-empty-description-block]
 
 ## 字句構造
 
-字句解析器は [図のテキスト](../common.ja.md#ソースの読み方) を [変換後の形](../common.ja.md#ソースの読み方) で読みます。
+字句解析器は [図のテキスト](../common.ja.md#ソースの読み方) を
+[変換後の形](../common.ja.md#ソースの読み方) で読みます。
 各行終端を `\n` として、各属性の引用符を `'` として、
 各エンティティをそのプレースホルダーとして、
 コメント領域と行の規則が無視する `;` はないものとして読みます。
 そのため、アクセシビリティのテキストの中のエンティティは、
-そのプレースホルダーとして読まれ、
-属性の引用符は `'` として読まれます。 [fixture: requirement/entity-placeholder-in-acc-title]
-[fixture:
+そのプレースホルダーとして読まれ、属性の引用符は `'` として読まれます。
+[fixture: requirement/entity-placeholder-in-acc-title] [fixture:
 requirement/entity-placeholder-in-acc-descr] [fixture:
 requirement/entity-placeholder-in-acc-descr-block]
 [fixture: requirement/lex-html-attribute-quote-in-acc-title] [fixture:
 requirement/lex-html-attribute-quote-in-acc-descr] [fixture:
 requirement/lex-html-attribute-quote-in-acc-descr-block]
-最後の文字の後に字句解析器が読む `\n` （[テキストの終わり](../common.ja.md#テキストの終わり)）は図のテキストの一部です。
+最後の文字の後に字句解析器が読む `\n` は、
+図のテキストの一部です（[テキストの終わり](../common.ja.md#テキストの終わり)）。
 この節は、[ソースの読み方](../common.ja.md#ソースの読み方) の項目 4 である、
 この図自身の単位の規則を述べます。
 
@@ -113,19 +116,18 @@ requirement/lex-html-attribute-quote-in-acc-descr-block]
 `REQUIREMENT r {`、`ID: 1`、`RISK: HIGH`、`VERIFYMETHOD: INSPECTION`、
 `ELEMENT e {`、`DOCREF: d`、`a - SATISFIES -> b`、`DIRECTION BT`、 `CLASSDEF`、
 `STYLE`、`CLASS`、`ACCTITLE: T`、`ACCDESCR: D`、`accdescr {` は、
-この文書が書く形の語と同じに読まれます。 [fixture: requirement/db-keywords-upper-case]
-[fixture:
+この文書が書く形の語と同じに読まれます。
+[fixture: requirement/db-keywords-upper-case] [fixture:
 requirement/lex-relationship-upper-case] [fixture:
 requirement/lex-direction-upper-case]
 [fixture: requirement/lex-acc-keywords-upper-case] [fixture:
-requirement/lex-acc-descr-block-lower-case]
-[fixture:
+requirement/lex-acc-descr-block-lower-case] [fixture:
 requirement/lex-style-keywords-upper-case]
 以下で**キーワード**とは、大文字小文字を区別せずに照合する語で、
 語の文字が続かないものです（[表記](../common.ja.md#表記) を参照）。
 `test_x`、`tests`、`stylex` は名前で、
-`test` と `element` は単位が始まるところではどこでもキーワードです。 [fixture: requirement/lex-name-keyword-underscore]
-[fixture:
+`test` と `element` は単位が始まるところではどこでもキーワードです。
+[fixture: requirement/lex-name-keyword-underscore] [fixture:
 requirement/lex-value-keyword-prefix] [fixture:
 requirement/lex-name-style-word-suffix] [fixture:
 requirement/lex-name-starts-with-keyword] [fixture:
@@ -154,8 +156,8 @@ style の文脈は、最後の文字の後に字句解析器が読む改行が�
 後ろに何もない `accTitle:`（改行が続いても同じ）、改行が続く `accDescr:`、
 `}` のない `accDescr {`、閉じる引用符のない `"` は拒否されます。
 一方、テキストの終わりの `style r fill:red` は、
-後ろに空白文字 2 つがあっても受理されます。 [fixture: requirement/lex-acc-title-at-end]
-[fixture:
+後ろに空白文字 2 つがあっても受理されます。
+[fixture: requirement/lex-acc-title-at-end] [fixture:
 requirement/lex-acc-title-line-feed-at-end] [fixture:
 requirement/lex-acc-descr-at-end] [fixture:
 requirement/lex-acc-descr-block-unclosed] [fixture:
@@ -181,11 +183,10 @@ requirement/lex-style-trailing-spaces-at-end]
 引用符なしの名前や値は、その行の後ろの空白を読むので（規則 23）、
 空白文字と改行が続く `id: 1` はフィールドです。
 style の文脈では、単位の間に置けるのは空白文字だけで、改行はその文脈を出ます。
-それ以外の空白文字は、
-そこではどの規則も読みません。 [fixture: requirement/lex-brace-trailing-spaces]
+それ以外の空白文字は、そこではどの規則も読みません。
+[fixture: requirement/lex-brace-trailing-spaces]
 [fixture: requirement/lex-brace-trailing-tab] [fixture:
-requirement/lex-risk-value-trailing-space]
-[fixture:
+requirement/lex-risk-value-trailing-space] [fixture:
 requirement/lex-string-value-trailing-spaces] [fixture:
 requirement/lex-close-brace-trailing-spaces] [fixture:
 requirement/lex-relationship-string-trailing-spaces] [fixture:
@@ -214,10 +215,11 @@ requirement/lex-tab-before-field] [fixture: requirement/lex-blank-lines-in-body]
 `é`、`-r`、`a=b` は名前として、 `a-b`、`a:b`、`a,b`、`a > b`、
 `été` は値として拒否されます。
 文字列はどれも持てます（[要求](#要求) を参照）。
-エンティティのプレースホルダーは ASCII の外の文字でできているので（[エンティティ](../common.ja.md#エンティティ) を参照）、
-`a#amp; b` は 1 つの名前か値 `aﬂ°amp¶ß b` で、
-名前はエンティティでは始まれません。 [fixture: requirement/db-requirement-name-spaces]
-[fixture:
+エンティティのプレースホルダーは ASCII
+の外の文字でできているので（[エンティティ](../common.ja.md#エンティティ)
+を参照）、 `a#amp; b` は 1 つの名前か値 `aﬂ°amp¶ß b` で、
+名前はエンティティでは始まれません。
+[fixture: requirement/db-requirement-name-spaces] [fixture:
 requirement/lex-whitespace-nbsp-in-name] [fixture:
 requirement/lex-whitespace-nbsp-after-name] [fixture:
 requirement/lex-whitespace-line-separator-in-name] [fixture:
@@ -229,10 +231,10 @@ requirement/lex-value-hash] [fixture: requirement/lex-value-semicolon] [fixture:
 requirement/lex-value-percent] [fixture: requirement/lex-name-non-ascii-start]
 [fixture: requirement/lex-name-dash-start] [fixture:
 requirement/lex-name-equals] [fixture: requirement/lex-value-dash] [fixture:
-requirement/lex-value-colon]
-[fixture: requirement/lex-value-greater-than] [fixture:
-requirement/lex-value-non-ascii-start]
-[fixture: requirement/lex-value-comma] [fixture:
+requirement/lex-value-colon] [fixture: requirement/lex-value-greater-than]
+[fixture:
+requirement/lex-value-non-ascii-start] [fixture: requirement/lex-value-comma]
+[fixture:
 requirement/db-requirement-quoted-values] [fixture:
 requirement/entity-placeholder-in-unquoted-name] [fixture:
 requirement/entity-placeholder-in-unquoted-value] [fixture:
@@ -246,8 +248,8 @@ requirement/entity-placeholder-at-name-start]
 `}` はその文字です。
 その中の HTML タグの属性の引用符は `'` として読まれるので、
 文字列は最後の引用符まで続きます。
-`text: "<b a="x">t</b>"` のテキストは `<b a='x'>t</b>` です。 [fixture: requirement/db-relationship-quoted-names]
-[fixture:
+`text: "<b a="x">t</b>"` のテキストは `<b a='x'>t</b>` です。
+[fixture: requirement/db-relationship-quoted-names] [fixture:
 requirement/lex-string-line-feed] [fixture: requirement/lex-string-hash-percent]
 [fixture: requirement/db-requirement-quoted-values] [fixture:
 requirement/lex-html-tag-in-string-value] [fixture:
@@ -269,8 +271,8 @@ mermaid.js はそれにトークンを読まず、
 タイトル、説明、説明ブロックの文脈と、
 文字列の規則より先に行全体を取る方向の行では、2 つの引用符はテキストです。
 `accTitle: ""` のタイトルは `""`、`accDescr { "" }` の説明は `""` で、
-`direction LR ""` と `"" direction LR` は `LR` を決めます。 [fixture: requirement/div-empty-string-line]
-[fixture:
+`direction LR ""` と `"" direction LR` は `LR` を決めます。
+[fixture: requirement/div-empty-string-line] [fixture:
 requirement/div-empty-string-before-statement] [fixture:
 requirement/div-empty-string-after-header] [fixture:
 requirement/div-empty-string-after-close-brace] [fixture:
@@ -293,17 +295,17 @@ requirement/gram-requirement-value-empty-string] [fixture:
 requirement/lex-quotes-in-unquoted-name]
 [fixture: requirement/lex-acc-title-empty-quotes] [fixture:
 requirement/lex-acc-descr-block-empty-quotes]
-[fixture: requirement/lex-quotes-before-direction]
-[fixture:
-requirement/lex-direction-text-empty-quotes]
-[fixture:
+[fixture: requirement/lex-quotes-before-direction] [fixture:
+requirement/lex-direction-text-empty-quotes] [fixture:
 requirement/lex-quotes-in-unquoted-value]
 
 ### 単位の中のディレクティブ
 
 字句解析器は、ディレクティブのない図のテキストを、
 mermaid.js がディレクティブを取り除いた後のテキストを読むとおりに読みます。
-そのうえで [ディレクティブはトークンの境界](../common.ja.md#ディレクティブはトークンの境界) の規則が単位に当てはまります。
+そのうえで
+[ディレクティブはトークンの境界](../common.ja.md#ディレクティブはトークンの境界)
+の規則が単位に当てはまります。
 テキストの単位か文字列の単位の中のディレクティブは mermaid.js の読みを保ち、
 それ以外の単位（名前の単位を含む）の中のディレクティブは入力を拒否させます。
 **名前の単位**は、`style`、`classDef`、
@@ -315,7 +317,8 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 ASCII の空白で区切られた複数の語を持て、
 mermaid.js がそれを 1 つの名前として読むからです。
 `requirement  spaced name  {` は、
-要求 `spaced name` です（[名前と値](#単位と文脈) を参照）。 [fixture: requirement/db-requirement-name-spaces]
+要求 `spaced name` です（[名前と値](#単位と文脈) を参照）。
+[fixture: requirement/db-requirement-name-spaces]
 **文字列の単位**は `string` です。
 
 - `requirement a%%{init: {}}%%b {` は要求 `ab`、
@@ -329,7 +332,8 @@ mermaid.js がそれを 1 つの名前として読むからです。
   `fo%%{init: {}}%%o direction LR ba%%{init: {}}%%r` の方向は `LR`、
   `style r fi%%{init: {}}%%ll:red` のスタイルは `fill:red` で、
   mermaid.js と同じです。
-  スタイルはその単位のテキストをつないだものだからです。 [fixture: requirement/lex-directive-in-name]
+  スタイルはその単位のテキストをつないだものだからです。
+  [fixture: requirement/lex-directive-in-name]
   [fixture: requirement/lex-directive-in-target]
   [fixture: requirement/lex-directive-in-shorthand-class]
   [fixture: requirement/lex-directive-in-requirement-class]
@@ -342,13 +346,14 @@ mermaid.js がそれを 1 つの名前として読むからです。
   [fixture: requirement/lex-directive-in-direction-text]
   [fixture: requirement/lex-directive-in-acc-title]
   [fixture: requirement/lex-directive-in-style]
-  [RequirementLiteral](../ast/requirement.ja.md#requirementliteral) を参照してください。
+  [RequirementLiteral](../ast/requirement.ja.md#requirementliteral)
+  を参照してください。
 - 2 つの単位の間のディレクティブは、単位の種類によらず許されます。
   `requirement r%%{init: {}}%%{`、`id:%%{init: {}}%% 1`、
   `a -%%{init: {}}%%satisfies -> b`、
   改行が続く `requirementDiagram%%{init: {}}%%` は、
-  ディレクティブがないときと同じに読まれます。 [fixture: requirement/lex-directive-between-name-and-brace]
-  [fixture:
+  ディレクティブがないときと同じに読まれます。
+  [fixture: requirement/lex-directive-between-name-and-brace] [fixture:
   requirement/lex-directive-after-field-colon] [fixture:
   requirement/lex-directive-between-line-and-relation] [fixture:
   requirement/header-then-directive-same-line]
@@ -362,7 +367,8 @@ mermaid.js がそれを 1 つの名前として読むからです。
   `direction L%%{init: {}}%%R` では、キーワード、区切り、
   方向の値の中にあります。
   入力は拒否され、
-  mermaid.js は 2 つの部分を 1 つとして読んで受理します（[既知の差異](#既知の差異) を参照）。 [fixture:
+  mermaid.js は 2 つの部分を 1
+  つとして読んで受理します（[既知の差異](#既知の差異) を参照）。 [fixture:
   requirement/div-directive-in-style-name] [fixture:
   requirement/div-directive-in-class-name] [fixture:
   requirement/div-directive-in-header-keyword] [fixture:
@@ -383,15 +389,14 @@ mermaid.js がそれを 1 つの名前として読むからです。
 単独の CR は行終端で、
 改行として読まれ（[行終端](../common.ja.md#行終端) を参照）、CRLF も同じです。
 要求と `style` の文は単独の CR の間でも、フィールドは CRLF の間でも、
-改行の間と同じに読まれ、
-文字列の中の CRLF や単独の CR はそのテキストの改行です。 [fixture: requirement/header-crlf]
-[fixture: requirement/header-cr-only]
-[fixture: requirement/lex-string-lone-cr]
-[fixture: requirement/lex-string-crlf]
+改行の間と同じに読まれ、文字列の中の CRLF や単独の CR はそのテキストの改行です。
+[fixture: requirement/header-crlf] [fixture: requirement/header-cr-only]
+[fixture: requirement/lex-string-lone-cr] [fixture: requirement/lex-string-crlf]
 [fixture: requirement/lex-cr-only-style]
 2 つの単位の間の閉じたディレクティブは何もないものとして読まれ、
 そのまわりの空白は、
-ディレクティブのない同じテキストを [単位と文脈](#単位と文脈) の規則が読むとおりに読まれます。
+ディレクティブのない同じテキストを [単位と文脈](#単位と文脈)
+の規則が読むとおりに読まれます。
 そのため、行の終わりのディレクティブの前の空白文字は、改行の前の空白文字です。
 改行が続く `id: "1" %%{init: {}}%%`、`risk: high %%{init: {}}%%`、
 `requirement r { %%{init: {}}%%`、`requirementDiagram %%{init: {}}%%` は、
@@ -399,8 +404,8 @@ mermaid.js がそれを 1 つの名前として読むからです。
 空白文字のない `risk: high%%{init: {}}%%` と `requirement r {%%{init: {}}%%`、
 引用符なしの値が空白文字を読む `id: 1 %%{init: {}}%%`、
 `newline` の単位の要らない `} %%{init: {}}%%`、`class r "c" %%{init: {}}%%`、
-空白文字とディレクティブで終わる `style` の行は受理されます。 [fixture: requirement/lex-directive-at-end-of-field-line]
-[fixture:
+空白文字とディレクティブで終わる `style` の行は受理されます。
+[fixture: requirement/lex-directive-at-end-of-field-line] [fixture:
 requirement/lex-directive-at-end-of-style-line]
 [fixture: requirement/lex-directive-after-string-value-space] [fixture:
 requirement/lex-directive-after-risk-space] [fixture:
@@ -408,34 +413,34 @@ requirement/lex-directive-after-brace-space] [fixture:
 requirement/lex-directive-after-risk-glued] [fixture:
 requirement/lex-directive-after-brace-glued]
 [fixture: requirement/lex-directive-after-style-space]
-[fixture: requirement/lex-directive-after-class-string-space]
-[fixture:
-requirement/lex-directive-after-close-brace-space]
-[fixture:
+[fixture: requirement/lex-directive-after-class-string-space] [fixture:
+requirement/lex-directive-after-close-brace-space] [fixture:
 requirement/header-space-directive-line-feed]
-閉じていないディレクティブはテキストの残りを取ります（[ディレクティブの位置](../common.ja.md#ディレクティブの位置) を参照）。
+閉じていないディレクティブはテキストの残りを取ります。
+[ディレクティブの位置](../common.ja.md#ディレクティブの位置)
+を参照してください。
 本体の中の `id: 1 %%{init: {}` は本体を閉じないままにするので、
 入力は拒否されます。
 一方、
 後に行が続く `style r fill:red %%{init: {}` はスタイル `fill:red` を持ちます。
-最後の文字の後に読まれる改行が style の文脈を出るからです。 [fixture: requirement/tokens-unclosed-directive-in-body]
-[fixture:
+最後の文字の後に読まれる改行が style の文脈を出るからです。
+[fixture: requirement/tokens-unclosed-directive-in-body] [fixture:
 requirement/tokens-unclosed-directive-after-style]
-コメント行は、
-字句解析器がテキストを読む前に取り除かれます（[コメント行](../common.ja.md#コメント行) を参照）。
+コメント行は、字句解析器がテキストを読む前に取り除かれます。
+[コメント行](../common.ja.md#コメント行) を参照してください。
 本体の中、`{` の直後、説明ブロックの中、`accTitle:` とそのテキストの間、
 `direction` とその値の間でも同じで、複数行の文字列の中では、
 文字列のコメント領域です。
-`text: "a`、コメント行、`b"` のテキストは `a`、改行、
-`b` です。 [fixture: requirement/tokens-comment-line-in-body] [fixture:
+`text: "a`、コメント行、`b"` のテキストは `a`、改行、 `b` です。
+[fixture: requirement/tokens-comment-line-in-body] [fixture:
 requirement/tokens-comment-line-after-brace]
 [fixture: requirement/tokens-comment-line-after-acc-title-colon] [fixture:
 requirement/tokens-comment-line-after-direction] [fixture:
-requirement/tokens-comment-line-in-string-value]
-[fixture:
+requirement/tokens-comment-line-in-string-value] [fixture:
 requirement/tokens-comment-line-in-acc-block]
-`style` の規則か `classDef` の規則に合う行（[`style` 行と `classDef` 行](../common.ja.md#style-行と-classdef-行) を参照）では、
-最後の `;` が無視されます。
+`style` の規則か `classDef` の規則に合う行（詳しくは
+[`style` 行と `classDef` 行](../common.ja.md#style-行と-classdef-行)
+を参照）では、最後の `;` が無視されます。
 `style r fill:#f00;` のスタイルは、`;` の後に空白文字があっても `fill:#f00`、
 `classDef c fill:#f00;` のスタイルは `fill:#f00`、
 `accTitle: style:#x a;b` のタイトルは `style:#x ab` で、
@@ -449,7 +454,8 @@ requirement/tokens-comment-line-in-acc-block]
 要求 `"style:#x"` の後の `"style:#x" - satisfies -> b;c` の先は `bc` で、
 `class r`・改行・`"style:#x",c;d` は r にクラス `style:#x` と `cd` を与えます。
 それ以外の単位（キーワードや区切りを含む）の中では入力を拒否させ、
-mermaid.js は 2 つの部分を 1 つとして読みます。 [fixture: requirement/tokens-ignored-semicolon-in-name]
+mermaid.js は 2 つの部分を 1 つとして読みます。
+[fixture: requirement/tokens-ignored-semicolon-in-name]
 [fixture: requirement/tokens-ignored-semicolon-in-class-list-next-line]
 [fixture: requirement/tokens-ignored-semicolon-in-style-trailing-space]
 [fixture: requirement/tokens-ignored-semicolon-in-classdef]
@@ -469,9 +475,8 @@ mermaid.js は 2 つの部分を 1 つとして読みます。 [fixture: require
 文の文脈では、字句解析器は次の規則を順に試します。
 
 1. `title`、1 つの空白文字（改行を含む）、 `#`、改行、
-   `;` 以外の 1 つ以上の文字： `title` の単位で、
-   文法のどの規則も取りません。 [fixture: requirement/lex-title-statement]
-   [fixture:
+   `;` 以外の 1 つ以上の文字： `title` の単位で、文法のどの規則も取りません。
+   [fixture: requirement/lex-title-statement] [fixture:
    requirement/lex-title-line-feed]
 2. `accTitle`、0 個以上の空白文字（改行を含む）、`:`、
    0 個以上の空白文字（改行を含む）： `accTitle` の単位と `:` の単位。
@@ -489,14 +494,18 @@ mermaid.js は 2 つの部分を 1 つとして読みます。 [fixture: require
    [fixture:
    requirement/lex-acc-descr-block-no-space] [fixture:
    requirement/lex-acc-descr-line-feed-before-brace]
-5. **方向の行**（下を参照）。 [fixture: requirement/spec-requirement-diagram-08cfba06]
-6. 1 つ以上の改行：`newline` の単位。 [fixture: requirement/lex-blank-lines-in-body]
-7. 1 つ以上の空白文字（改行を含む）：何もなし。 [fixture: requirement/lex-close-brace-trailing-spaces]
-8. `#` と、
-   次の改行までの文字：図のコメント（[コメント](#コメント) を参照）。 [fixture: requirement/lex-hash-comment-line]
-9. `%` と、
-   次の改行までの文字：図のコメント。 [fixture: requirement/lex-percent-comment-line]
-10. キーワード `requirementDiagram`：`header` の単位。 [fixture: requirement/header-only]
+5. **方向の行**（下を参照）。
+   [fixture: requirement/spec-requirement-diagram-08cfba06]
+6. 1 つ以上の改行：`newline` の単位。
+   [fixture: requirement/lex-blank-lines-in-body]
+7. 1 つ以上の空白文字（改行を含む）：何もなし。
+   [fixture: requirement/lex-close-brace-trailing-spaces]
+8. `#` と、次の改行までの文字：図のコメント（[コメント](#コメント) を参照）。
+   [fixture: requirement/lex-hash-comment-line]
+9. `%` と、次の改行までの文字：図のコメント。
+   [fixture: requirement/lex-percent-comment-line]
+10. キーワード `requirementDiagram`：`header` の単位。
+    [fixture: requirement/header-only]
 11. `{`：`{` の単位。 [fixture: requirement/db-requirement-defaults]
 12. `}`：`}` の単位。 [fixture: requirement/db-requirement-defaults]
 13. `:::`：`:::` の単位。 [fixture: requirement/db-class-colon-form]
@@ -506,9 +515,8 @@ mermaid.js は 2 つの部分を 1 つとして読みます。 [fixture: require
     `physicalRequirement`、`designConstraint`、リスク `low`、`medium`、`high`、
     方法 `analysis`、`demonstration`、`inspection`、`test`、 `element`、
     関係 `contains`、`copies`、`derives`、`satisfies`、 `verifies`、`refines`、
-    `traces`、
-    および `type` と `docref`：キーワードの名前の単位。 [fixture: requirement/db-requirement-all-fields]
-    [fixture:
+    `traces`、および `type` と `docref`：キーワードの名前の単位。
+    [fixture: requirement/db-requirement-all-fields] [fixture:
     requirement/db-element-fields] [fixture: requirement/db-relationship-arrows]
 16. キーワード `style`：`style` の単位。
     style の文脈に入ります。 [fixture: requirement/db-style-statement]
@@ -519,8 +527,10 @@ mermaid.js は 2 つの部分を 1 つとして読みます。 [fixture: require
 19. `<-`：`<-` の単位。 [fixture: requirement/db-relationship-arrows]
 20. `->`：`->` の単位。 [fixture: requirement/db-relationship-arrows]
 21. `-`：`-` の単位。 [fixture: requirement/db-relationship-arrows]
-22. 文字列か空の文字列（[文字列](#単位と文脈) を参照）。 [fixture: requirement/db-relationship-quoted-names]
-23. 引用符なしのテキスト（[名前と値](#単位と文脈) を参照）。 [fixture: requirement/db-requirement-name-spaces]
+22. 文字列か空の文字列（[文字列](#単位と文脈) を参照）。
+    [fixture: requirement/db-relationship-quoted-names]
+23. 引用符なしのテキスト（[名前と値](#単位と文脈) を参照）。
+    [fixture: requirement/db-requirement-name-spaces]
 24. `,`：`,` の単位。 [fixture: requirement/db-class-colon-form]
 
 `title` の単位と、文法が取らないところの `newline` の単位は、
@@ -528,8 +538,8 @@ mermaid.js は 2 つの部分を 1 つとして読みます。 [fixture: require
 `title x`、`a - satisfies -> title x`、`title - satisfies -> b` は拒否され、
 `{` と同じ行のフィールドも拒否されます。
 単位の始まりの `;`、`<` だけ、`=` は、どの規則も読みません。
-1 行だけの `;` と `a < b` は拒否されます。 [fixture: requirement/lex-title-statement]
-[fixture:
+1 行だけの `;` と `a < b` は拒否されます。
+[fixture: requirement/lex-title-statement] [fixture:
 requirement/lex-title-after-arrow] [fixture:
 requirement/lex-title-before-relationship] [fixture:
 requirement/gram-requirement-field-after-brace] [fixture:
@@ -539,9 +549,8 @@ requirement/lex-semicolon-line] [fixture: requirement/lex-less-than-alone]
 - キーワードは単位が始まるところではどこでもキーワードで、
   名前や値はキーワードでは始まれません。
   `requirement test req {`、`text: test`、`text: high risk`、
-  `a - satisfies -> element` は拒否され、
-  `test_x` と `tests` は名前と値です。 [fixture: requirement/lex-name-starts-with-keyword]
-  [fixture:
+  `a - satisfies -> element` は拒否され、 `test_x` と `tests` は名前と値です。
+  [fixture: requirement/lex-name-starts-with-keyword] [fixture:
   requirement/lex-value-keyword] [fixture:
   requirement/lex-value-keyword-then-words] [fixture:
   requirement/lex-target-keyword] [fixture:
@@ -555,8 +564,8 @@ requirement/lex-semicolon-line] [fixture: requirement/lex-less-than-alone]
   `title ;x - satisfies -> b` は名前 `title ;x` からの関係、
   `titles - satisfies -> b` は `titles` からの関係で、
   テキストの最後の名前としての `title` は名前です。
-  frontmatter の `title` は図のタイトルです。 [fixture: requirement/lex-name-starts-with-title]
-  [fixture:
+  frontmatter の `title` は図のタイトルです。
+  [fixture: requirement/lex-name-starts-with-title] [fixture:
   requirement/lex-title-line-feed]
   [fixture: requirement/lex-title-then-semicolon]
   [fixture: requirement/lex-title-then-hash]
@@ -564,16 +573,16 @@ requirement/lex-semicolon-line] [fixture: requirement/lex-less-than-alone]
   requirement/lex-title-as-last-name] [fixture:
   requirement/db-frontmatter-title]
 - 規則 8 と 9 は、規則 7 の後の、単位が始まるところでだけ当てはまります。
-  引用符なしのテキストの中の `#` や `%` はその文字で（[名前と値](#単位と文脈) を参照）、
-  文字列の中でも同じです。
+  引用符なしのテキストの中の `#` や `%` はその文字で（[名前と値](#単位と文脈)
+  を参照）、文字列の中でも同じです。
 
 **キーワードとその後に続くもの。**
 キーワードは語の境目で終わるので、その後の ASCII の数字、文字、
 `_` は引用符なしのテキストを続け、
 語の文字ではない ASCII の外の文字はキーワードを終え、
 その後どの規則も読みません。
-`requirementé r {` は拒否されます。 [fixture: requirement/lex-name-keyword-underscore]
-[fixture:
+`requirementé r {` は拒否されます。
+[fixture: requirement/lex-name-keyword-underscore] [fixture:
 requirement/lex-keyword-then-e-acute]
 
 **方向の行。**
@@ -611,16 +620,15 @@ requirement/lex-keyword-then-e-acute]
 そうでなければ `BT` を試し、以下同じです。
 ある値について、字句解析器は、その値が続く並びの最後の `direction` を取ります。
 `direction BT x direction BT` は最後の `direction` で読まれ、
-`direction BT x` が `direction-text` の単位です。 [fixture: requirement/lex-title-direction]
-[fixture:
+`direction BT x` が `direction-text` の単位です。
+[fixture: requirement/lex-title-direction] [fixture:
 requirement/lex-direction-line-in-string-name]
 [fixture: requirement/lex-direction-line-text-before-and-after] [fixture:
 requirement/lex-direction-line-word-before] [fixture:
 requirement/lex-direction-in-relationship-line] [fixture:
 requirement/lex-direction-line-before-classdef] [fixture:
 requirement/lex-direction-line-in-requirement-name]
-[fixture: requirement/lex-acc-descr-block-direction]
-[fixture:
+[fixture: requirement/lex-acc-descr-block-direction] [fixture:
 requirement/lex-acc-title-direction] [fixture:
 requirement/lex-direction-in-body] [fixture:
 requirement/lex-direction-after-close-brace] [fixture:
@@ -638,9 +646,8 @@ requirement/lex-direction-upper-case]
 `a`、U+2028、`direction LR` は 1 つの引用符なしのテキストで、文ではなく、
 拒否されます。
 値の後のテキストは U+2028 を持てます。
-値のない、行に `direction` だけのものと、`directionLR` は名前で、
-拒否されます。 [fixture: requirement/lex-direction-line-feed-before-value]
-[fixture:
+値のない、行に `direction` だけのものと、`directionLR` は名前で、拒否されます。
+[fixture: requirement/lex-direction-line-feed-before-value] [fixture:
 requirement/lex-direction-blank-line-before-value] [fixture:
 requirement/lex-direction-tab-before-value] [fixture:
 requirement/lex-direction-value-line-separator] [fixture:
@@ -654,24 +661,27 @@ requirement/lex-direction-glued]
 style の文脈には、`style`、`classDef`、`class` で入ります。
 文の名前、クラス、スタイルを読みます。
 
-1. 1 つ以上の ASCII の語の文字：`style-word` の単位。 [fixture: requirement/db-style-statement]
+1. 1 つ以上の ASCII の語の文字：`style-word` の単位。
+   [fixture: requirement/db-style-statement]
 2. `:`：`style-colon` の単位。 [fixture: requirement/db-style-statement]
 3. `;`：`style-semicolon` の単位。 [fixture: requirement/lex-style-semicolon]
-4. `%`：`style-percent` の単位で、
-   文法のどの規則も取りません。 [fixture: requirement/lex-style-percent]
-5. `-`：`style-dash` の単位。 [fixture: requirement/spec-requirement-diagram-5305b791]
+4. `%`：`style-percent` の単位で、文法のどの規則も取りません。
+   [fixture: requirement/lex-style-percent]
+5. `-`：`style-dash` の単位。
+   [fixture: requirement/spec-requirement-diagram-5305b791]
 6. `#`：`style-hash` の単位。 [fixture: requirement/db-style-statement]
 7. 空白文字 1 つ：何もなし。 [fixture: requirement/lex-style-two-spaces]
-8. 文字列か空の文字列（[文字列](#単位と文脈) を参照）。 [fixture: requirement/lex-style-string-name]
+8. 文字列か空の文字列（[文字列](#単位と文脈) を参照）。
+   [fixture: requirement/lex-style-string-name]
 9. 改行：何もなし。
    style の文脈を出ます。 [fixture: requirement/lex-style-blank-line-after]
 10. `,`：`,` の単位。 [fixture: requirement/db-style-statement]
 
 規則 2 から 6 の単位は、文の文脈の `:` と `-` の単位とは別の名前を持つので、
-文法はスタイルを style の文脈の単位からだけ読みます（[スタイルとクラス](#スタイルとクラス) を参照）。
-スタイルの次の行の `:` や `-` は、
-スタイルの一部ではありません。 [fixture: requirement/lex-style-colon-next-line]
-[fixture:
+文法はスタイルを style
+の文脈の単位からだけ読みます（[スタイルとクラス](#スタイルとクラス) を参照）。
+スタイルの次の行の `:` や `-` は、スタイルの一部ではありません。
+[fixture: requirement/lex-style-colon-next-line] [fixture:
 requirement/lex-style-dash-next-line]
 タブ、それ以外のすべての空白文字、`.`、ASCII の外の文字、
 それ以外のすべての文字は、どの規則も読みません。
@@ -679,7 +689,8 @@ requirement/lex-style-dash-next-line]
 style の文脈には `accDescr {` の規則がないので、
 `style r accDescr {} fill:red` も拒否されます。
 style の文脈を出るのは規則 9 だけで、 class の文を終える文字列の後でも、
-`style` や `classDef` の文のスタイルの後にあって次の文を始める文字列の後でも同じです。
+`style` や `classDef`
+の文のスタイルの後にあって次の文を始める文字列の後でも同じです。
 そのため `class r "c" accDescr {}`、`style r fill:red "a" accDescr {}`、
 `class r "c" #x` は style の文脈で読まれます。
 そこでは `accDescr` は `style-word`、
@@ -693,14 +704,13 @@ style の文脈を出るのは規則 9 だけで、 class の文を終える文�
 一方、テキストの終わりの `style r fill:red "a"` は拒否されます。
 `style`、改行、`r fill:red` は拒否されます。
 スタイルは style の文脈でしか読めないからです。
-空行の 2 つ目の改行は `newline` の単位です。 [fixture: requirement/lex-style-tab]
-[fixture: requirement/lex-style-dot]
+空行の 2 つ目の改行は `newline` の単位です。
+[fixture: requirement/lex-style-tab] [fixture: requirement/lex-style-dot]
 [fixture: requirement/lex-style-non-ascii]
 [fixture: requirement/lex-classdef-string-then-empty-description-block]
 [fixture: requirement/lex-class-string-hash]
 [fixture: requirement/lex-style-string-then-empty-description-block]
-[fixture: requirement/lex-class-string-then-empty-description-block]
-[fixture:
+[fixture: requirement/lex-class-string-then-empty-description-block] [fixture:
 requirement/lex-style-empty-description-block] [fixture:
 requirement/lex-class-list-next-line] [fixture:
 requirement/lex-class-list-comma-next-line] [fixture:
@@ -725,11 +735,12 @@ requirement/lex-style-trailing-spaces]
 テキストの終わりでは入力は拒否されます（[単位と文脈](#単位と文脈) を参照）。
 `;`、`#`、`%%` はテキストの文字です。
 `accTitle: a;b #c %% d` のタイトルは `a;b #c %% d` です。
-テキストの終わりの空白は単位に読み込まれ、
-値からは外されます（[RequirementLiteral](../ast/requirement.ja.md#requirementliteral) を参照）。
+テキストの終わりの空白は単位に読み込まれ、値からは外されます。
+[RequirementLiteral](../ast/requirement.ja.md#requirementliteral)
+を参照してください。
 `accTitle` の行は、文が始まるところならどこでも始められます。
-`}` の直後、ディレクティブの後、
-コメント行の後です。 [fixture: requirement/db-acc-title-descr] [fixture:
+`}` の直後、ディレクティブの後、コメント行の後です。
+[fixture: requirement/db-acc-title-descr] [fixture:
 requirement/gram-acc-title-line-feed-then-text] [fixture:
 requirement/lex-acc-title-semicolon-hash-percent] [fixture:
 requirement/lex-acc-title-after-close-brace] [fixture:
@@ -738,25 +749,25 @@ requirement/lex-acc-title-after-comment-line]
 
 説明ブロックの文脈では、`}` は `}` の単位で文脈を出て、
 `}` 以外の 1 つ以上の文字（改行を含む）は `description-block-text` の単位です。
-`{` の後の空白は改行を含めて `{` の単位と一緒に読まれるので（文の文脈の規則 4）、
-テキストは空白ではない最初の文字から始まります。
+`{` の後の空白は改行を含めて `{` の単位と一緒に読まれるので（文の文脈の規則
+4）、テキストは空白ではない最初の文字から始まります。
 `accDescr {}` と、括弧がディレクティブだけ、
 またはコメント行だけを持つブロックは、テキストを持たず、
 mermaid.js ではトークンを作りません。
 **空の説明ブロック**です（[空の説明ブロック](#空の説明ブロック) を参照）。
 テキストは最初の `}` まで続きます。
-`accDescr { a {b }` の説明は `a {b` です。 [fixture: requirement/db-acc-descr-block]
-[fixture:
+`accDescr { a {b }` の説明は `a {b` です。
+[fixture: requirement/db-acc-descr-block] [fixture:
 requirement/gram-acc-descr-block-empty]
-[fixture: requirement/gram-acc-descr-block-comment-line-only]
-[fixture:
+[fixture: requirement/gram-acc-descr-block-comment-line-only] [fixture:
 requirement/gram-acc-descr-block-directive-only] [fixture:
 requirement/lex-acc-descr-block-brace-in-text] [fixture:
 requirement/lex-acc-descr-block-unclosed]
 
 これらの文脈に入る規則は文の文脈だけの規則です。
 style の文脈では、
-`accDescr` は `style-word` です（[style の文脈](#style-の文脈) を参照）。 [fixture: requirement/lex-style-empty-description-block]
+`accDescr` は `style-word` です（[style の文脈](#style-の文脈) を参照）。
+[fixture: requirement/lex-style-empty-description-block]
 
 ### コメント
 
@@ -765,9 +776,8 @@ style の文脈では、
 [common.ja.md](../common.ja.md#コメント行) のコメント行ではありません。
 コメント行は字句解析器がテキストを読む前に取り除かれます。
 図のコメントは行の途中から始まれ、ヘッダーの後の `%%` だけの行、`% c`、
-`%%{ }%%` は、
-コメント行ではなく図のコメントです。 [fixture: requirement/lex-hash-comment-line]
-[fixture:
+`%%{ }%%` は、コメント行ではなく図のコメントです。
+[fixture: requirement/lex-hash-comment-line] [fixture:
 requirement/lex-percent-comment-line] [fixture:
 requirement/lex-bare-percent-line-after-statement] [fixture:
 requirement/lex-percent-brace-line]
@@ -784,8 +794,7 @@ requirement/lex-percent-comment-after-brace] [fixture:
 requirement/lex-hash-comment-after-close-brace]
 [fixture: requirement/lex-hash-comment-after-risk] [fixture:
 requirement/lex-percent-comment-after-verify-method] [fixture:
-requirement/lex-hash-comment-after-string-target]
-[fixture:
+requirement/lex-hash-comment-after-string-target] [fixture:
 requirement/lex-percent-comment-after-string-value]
 図のコメントの**印**は、`#` で始まるときは `#`、 `%%` で始まるときは `%%`、
 それ以外は `%` で、値は印の後のテキストです。
@@ -798,9 +807,8 @@ requirement/lex-percent-comment-after-string-value]
 style の文脈の `#` は `style-hash` の単位で、スタイルは取り、
 class の文は取らないので、
 `class r c #x` は拒否されます（[style の文脈](#style-の文脈) を参照）。
-一方、文の文脈の `r:::"c"` の後では、
-`#x` はコメントです。 [fixture: requirement/lex-name-percent]
-[fixture: requirement/lex-value-hash]
+一方、文の文脈の `r:::"c"` の後では、 `#x` はコメントです。
+[fixture: requirement/lex-name-percent] [fixture: requirement/lex-value-hash]
 [fixture: requirement/lex-string-hash-percent] [fixture:
 requirement/lex-style-hash-after-style]
 [fixture: requirement/lex-hash-comment-after-shorthand-string-class]
@@ -813,8 +821,9 @@ requirement/lex-style-hash-after-style]
 `unquoted-text` のような単位の名前はその名前の 1 つの単位を表し、
 二重引用符の中のテキストは、`"element"` や `"{"` のように、
 そのテキストが名付ける単位を表します。
-文法は [`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L107-L267) の文法を言い直したもので、
-同じ単位の並びを受理します。
+文法は
+[`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L107-L267)
+の文法を言い直したもので、同じ単位の並びを受理します。
 
 以下の各規則は、
 [ast/requirement.ja.md](../ast/requirement.ja.md) で定める木のノードを作ります。
@@ -869,8 +878,8 @@ name      = unquoted-text | string
 `a - satisfies -> b - traces -> c` は、 `-` で始まる文がないので拒否されます。
 mermaid.js の文法には `title` の文の規則がなく、
 その字句解析器は `title` とその後のテキストを、
-文法が取らない単位として読みます（[文の文脈](#文の文脈) の規則 1）。 [fixture: requirement/lex-statement-after-close-brace]
-[fixture:
+文法が取らない単位として読みます（[文の文脈](#文の文脈) の規則 1）。
+[fixture: requirement/lex-statement-after-close-brace] [fixture:
 requirement/lex-statement-glued-after-close-brace] [fixture:
 requirement/lex-two-fields-on-a-line] [fixture:
 requirement/lex-relationship-chain] [fixture:
@@ -901,12 +910,11 @@ field-value           = unquoted-text | string
 `__proto__` と `constructor` は、ほかと同じ名前です。
 種類、リスク、方法は、どの大文字小文字で書いてもかまいません。
 mermaid.js が要求とそのフィールドとクラスを Db にどう読むかは、
-tests パッケージの要約にあります。 [fixture: requirement/db-requirement-all-fields]
-[fixture:
+tests パッケージの要約にあります。
+[fixture: requirement/db-requirement-all-fields] [fixture:
 requirement/db-requirement-defaults] [fixture:
 requirement/db-requirement-name-repeated]
-[fixture: requirement/db-requirement-second-definition-classes]
-[fixture:
+[fixture: requirement/db-requirement-second-definition-classes] [fixture:
 requirement/db-requirement-fields-repeated] [fixture:
 requirement/db-keywords-upper-case] [fixture:
 requirement/lex-risk-method-mixed-case] [fixture:
@@ -921,8 +929,8 @@ requirement/spec-requirement-diagram-29c59902]
   `requirement r{` は受理されます。
   一方、次の行に `{` がある `requirement r`、`requirement r {}`、
   `requirement r { id: 1` は拒否されます。
-  `{` とその改行の間にはコメントを置けます。 [fixture: requirement/gram-requirement-brace-glued]
-  [fixture:
+  `{` とその改行の間にはコメントを置けます。
+  [fixture: requirement/gram-requirement-brace-glued] [fixture:
   requirement/gram-requirement-brace-next-line] [fixture:
   requirement/gram-requirement-braces-one-line] [fixture:
   requirement/gram-requirement-field-after-brace] [fixture:
@@ -930,8 +938,8 @@ requirement/spec-requirement-diagram-29c59902]
 - 各フィールドはそれだけで 1 行で、`newline` の単位が続きます。
   `}` はフィールドが始まれるところに置きます。
   `id: 1 }` は `}` を値に持ち、本体を閉じないままにします。
-  フィールドの間には空行を置けます。 [fixture: requirement/gram-requirement-close-after-value]
-  [fixture:
+  フィールドの間には空行を置けます。
+  [fixture: requirement/gram-requirement-close-after-value] [fixture:
   requirement/lex-blank-lines-in-body]
 - `id` と `text` の値は、引用符なしのテキストか文字列です。
   値は必要で、`text:` だけは拒否されます。
@@ -939,8 +947,8 @@ requirement/spec-requirement-diagram-29c59902]
   文字列ではありません。
   `risk: extreme`、`risk: "high"`、`verifymethod: guess` は拒否されます。
   要素のフィールドは要求のフィールドではありません。
-  要求の中の `type: t` は拒否されます。 [fixture: requirement/gram-requirement-value-empty]
-  [fixture:
+  要求の中の `type: t` は拒否されます。
+  [fixture: requirement/gram-requirement-value-empty] [fixture:
   requirement/gram-requirement-risk-unknown] [fixture:
   requirement/gram-requirement-risk-quoted] [fixture:
   requirement/gram-requirement-verify-method-unknown] [fixture:
@@ -948,9 +956,8 @@ requirement/spec-requirement-diagram-29c59902]
 - `:::` の後のクラスは、`,` で区切った引用符なしのテキストか文字列です。
   引用符なしのクラスは `{` で終わり、空白文字を持てます。
   `requirement r:::a,b {`、`requirement r ::: c {`、`requirement r:::c{`、
-  `requirement r:::a b {`、
-  `requirement r:::"a b" {` は受理されます。 [fixture: requirement/db-class-in-definition]
-  [fixture:
+  `requirement r:::a b {`、 `requirement r:::"a b" {` は受理されます。
+  [fixture: requirement/db-class-in-definition] [fixture:
   requirement/gram-requirement-separator-spaced] [fixture:
   requirement/gram-requirement-separator-glued-brace] [fixture:
   requirement/gram-requirement-class-space] [fixture:
@@ -973,13 +980,12 @@ element-field     = ( "type" | "docref" ) ":" field-value
 mermaid.js が要素を Db にどう読むかは、tests パッケージの要約にあります。
 要求と要素は同じ名前を持てます。
 要素の中の `id: 1` は拒否され、 `docref` は中に `:` を持つ文字列にでき、
-引用符なしの `docref` は `-` で終わります。 [fixture: requirement/db-element-fields]
-[fixture:
+引用符なしの `docref` は `-` で終わります。
+[fixture: requirement/db-element-fields] [fixture:
 requirement/db-element-defaults] [fixture:
 requirement/db-element-name-repeated] [fixture:
 requirement/db-element-fields-repeated]
-[fixture: requirement/db-element-definition-with-class-of-requirement]
-[fixture:
+[fixture: requirement/db-element-definition-with-class-of-requirement] [fixture:
 requirement/db-requirement-and-element-same-name] [fixture:
 requirement/gram-element-requirement-field] [fixture:
 requirement/gram-element-docref-quoted-url] [fixture:
@@ -999,9 +1005,8 @@ relation               = "contains" | "copies" | "derives" | "satisfies"
 名前は要求や要素の名前でなくてもかまわず、同じ関係を 2 回書いてもかまいません。
 単位の間に空白は要りません。
 `a-satisfies->b` と `a<-satisfies-b` は関係です。
-`a - likes -> b`、`a - satisfies - > b`、
-`- satisfies -> b` は拒否されます。 [fixture: requirement/db-relationship-arrows]
-[fixture:
+`a - likes -> b`、`a - satisfies - > b`、 `- satisfies -> b` は拒否されます。
+[fixture: requirement/db-relationship-arrows] [fixture:
 requirement/db-relationship-undefined-names] [fixture:
 requirement/db-relationships-repeated] [fixture:
 requirement/gram-relationship-glued] [fixture:
@@ -1029,9 +1034,8 @@ accessibility-statement   = "accTitle" ":" title-text
                           | "accDescr" "{" description-block-text "}"
 ```
 
-- 方向の文は図の方向を決め、
-  何度書いてもかまいません。 [fixture: requirement/spec-requirement-diagram-7522200d]
-  [fixture:
+- 方向の文は図の方向を決め、何度書いてもかまいません。
+  [fixture: requirement/spec-requirement-diagram-7522200d] [fixture:
   requirement/spec-requirement-diagram-6d165a76] [fixture:
   requirement/spec-requirement-diagram-34fcfcee] [fixture:
   requirement/db-direction-last-wins]
@@ -1039,8 +1043,11 @@ accessibility-statement   = "accTitle" ":" title-text
   その後にスタイルが続き、少なくとも 1 つが要ります。
   スタイルは、次の `,` か style の文脈を出る改行までの `style-word`、
   `style-colon`、`style-semicolon`、`style-dash`、`style-hash` の単位で、
-  その値はそれらのテキストをつないだものです（[RequirementLiteral](../ast/requirement.ja.md#requirementliteral) を参照）。
-  `style r fill: red , stroke : blue` はスタイル `fill:red` と `stroke:blue` を持ち、
+  その値はそれらのテキストをつないだものです。
+  [RequirementLiteral](../ast/requirement.ja.md#requirementliteral)
+  を参照してください。
+  `style r fill: red , stroke : blue` はスタイル `fill:red` と `stroke:blue`
+  を持ち、
   `style r fill:red stroke:blue` は 1 つのスタイル `fill:redstroke:blue`、
   `style r fill:red;` はスタイル `fill:red;`、
   `style r fill:red #c` はスタイル `fill:red#c`、
@@ -1049,12 +1056,13 @@ accessibility-statement   = "accTitle" ":" title-text
   名前は文字列にでき、その後のスタイルは空白を挟んでも挟まなくても続けられます。
   `style r`、`classDef c`、`style r fill:red,`、`style r width:50%`、
   `style r fill:"red x"` は拒否されます。
-  style の文脈を出る改行の後ではスタイルの単位を読まず（[style の文脈](#style-の文脈) の規則 9）、
-  `style` や `classDef` の後の名前は `style-word` か文字列なので、
+  style
+  の文脈を出る改行の後ではスタイルの単位を読まず（[style の文脈](#style-の文脈)
+  の規則 9）、 `style` や `classDef` の後の名前は `style-word` か文字列なので、
   `style r fill:red`・改行・`: x - satisfies -> y`、 `style "r"`・改行・同じ行、
   `classDef c fill:red`・改行・`,stroke:blue`、
-  `style r`・改行・`,e fill:red` は拒否されます。 [fixture: requirement/lex-style-colon-next-line]
-  [fixture:
+  `style r`・改行・`,e fill:red` は拒否されます。
+  [fixture: requirement/lex-style-colon-next-line] [fixture:
   requirement/lex-style-string-name-colon-next-line] [fixture:
   requirement/lex-classdef-comma-next-line] [fixture:
   requirement/lex-style-names-comma-next-line]
@@ -1073,21 +1081,21 @@ accessibility-statement   = "accTitle" ":" title-text
   requirement/lex-classdef-without-style] [fixture:
   requirement/lex-style-trailing-comma] [fixture:
   requirement/lex-style-percent] [fixture: requirement/lex-style-string]
-- mermaid.js が `style` と `classDef` の文のスタイルを Db の要求と要素にどう与えるかは、
-  クラス `default` も含めて、 tests パッケージの要約にあります。
+- mermaid.js が `style` と `classDef` の文のスタイルを Db
+  の要求と要素にどう与えるかは、クラス `default` も含めて、
+  tests パッケージの要約にあります。
 - `class` の文は、`,` で区切った名前の 2 つのリストです。
   要求や要素の名前と、クラスです。
   最初のリストは `,` が前にない最初の名前で終わり、
   2 つ目は `newline` の単位か、`,` でも名前でもない単位で終わります。
   `class r,e a,b`、`class r , e c`、`class r "my c"` は受理され、
   `class r` と `class r c d` は拒否されます。
-  style の文脈を出る改行は単位ではないので（[style の文脈](#style-の文脈) を参照）、
-  その後では文の文脈の名前や `,` がリストを続けます。
-  `class r c`・改行・`,d`（`, d` や `,"d"` でも同じ）は r にクラス c と d を与え、
-  `class r`・改行・`c`・改行・`,d` では、
-  `c` の後の改行が文を終える `newline` の単位なので、
-  入力は拒否されます。 [fixture: requirement/lex-class-second-list-comma-next-line]
-  [fixture:
+  style の文脈を出る改行は単位ではないので（[style の文脈](#style-の文脈)
+  を参照）、その後では文の文脈の名前や `,` がリストを続けます。
+  `class r c`・改行・`,d`（`, d` や `,"d"` でも同じ）は r にクラス c と d
+  を与え、 `class r`・改行・`c`・改行・`,d` では、
+  `c` の後の改行が文を終える `newline` の単位なので、入力は拒否されます。
+  [fixture: requirement/lex-class-second-list-comma-next-line] [fixture:
   requirement/lex-class-second-list-comma-space-next-line] [fixture:
   requirement/lex-class-second-list-string-next-line] [fixture:
   requirement/lex-class-second-list-after-newline]
@@ -1105,14 +1113,12 @@ accessibility-statement   = "accTitle" ":" title-text
   requirement/db-class-styles-order] [fixture:
   requirement/db-class-styles-order-defined-first] [fixture:
   requirement/db-class-colon-form]
-  [fixture: requirement/db-class-shorthand-requirement-and-element]
-  [fixture:
+  [fixture: requirement/db-class-shorthand-requirement-and-element] [fixture:
   requirement/gram-class-shorthand-spaced]
 - アクセシビリティの文はタイトルか説明を決め、どちらも、行でもブロックでも、
   何度書いてもかまいません。
-  mermaid.js がそれらを Db にどう読むかは、
-  tests パッケージの要約にあります。 [fixture: requirement/db-acc-title-descr]
-  [fixture:
+  mermaid.js がそれらを Db にどう読むかは、 tests パッケージの要約にあります。
+  [fixture: requirement/db-acc-title-descr] [fixture:
   requirement/db-acc-descr-block] [fixture:
   requirement/db-acc-descr-block-then-line] [fixture:
   requirement/db-acc-descr-line-then-block]
@@ -1130,7 +1136,9 @@ mermaid.js はそれにトークンを読みません。
 何も変えません。
 行の始まり、ヘッダーの直後、`}` か文字列で終わる文の直後などで、
 `a - satisfies -> "b" accDescr {}` と `r:::"c" accDescr {}` もそうです。
-`accDescr {` を読むのは文の文脈だけです（[アクセシビリティの値](#アクセシビリティの値) を参照）。
+`accDescr {`
+を読むのは文の文脈だけです（[アクセシビリティの値](#アクセシビリティの値)
+を参照）。
 文字列で終わる class の文の後では、
 字句解析器はまだ style の文脈にあり（[style の文脈](#style-の文脈) を参照）、
 `accTitle:` や方向の値の後では、ブロックはテキストです。
@@ -1156,9 +1164,9 @@ mermaid.js はそれにトークンを読まず、
 `class r`・改行・`accDescr {} c` は、 `,b`、`,d`、
 クラス `c` が文を続けるので拒否されます。
 一方、
-`class r`・改行・`"c" accDescr {}` と `style r fill:red`・改行・`accDescr {}` は、
-後に文の単位が続かないので、
-ブロックは文です。 [fixture: requirement/div-empty-description-block-before-shorthand-class-comma]
+`class r`・改行・`"c" accDescr {}` と `style r fill:red`・改行・`accDescr {}`
+は、後に文の単位が続かないので、ブロックは文です。
+[fixture: requirement/div-empty-description-block-before-shorthand-class-comma]
 [fixture: requirement/div-empty-description-block-before-class-comma-next-line]
 [fixture: requirement/div-empty-description-block-before-class-next-line]
 [fixture: requirement/gram-empty-description-block-after-class-string-next-line]
@@ -1177,8 +1185,7 @@ requirement/gram-empty-description-block-in-element-body] [fixture:
 requirement/gram-empty-description-block-space-in-body]
 [fixture: requirement/gram-empty-description-block-multiline-in-body] [fixture:
 requirement/gram-empty-description-block-comment-line-in-body] [fixture:
-requirement/gram-empty-description-block-multiline-after-string-value]
-[fixture:
+requirement/gram-empty-description-block-multiline-after-string-value] [fixture:
 requirement/gram-empty-description-blocks-adjacent-in-body]
 [fixture: requirement/lex-class-string-then-empty-description-block]
 [fixture: requirement/gram-empty-description-block-after-shorthand-string-class]
@@ -1190,8 +1197,7 @@ requirement/lex-direction-line-empty-description-block]
 [fixture: requirement/div-empty-description-block-before-shorthand-separator]
 [fixture: requirement/div-empty-description-block-after-string-class] [fixture:
 requirement/div-empty-description-block-after-string-class-before-brace]
-[fixture: requirement/div-empty-description-block-after-class-comma]
-[fixture:
+[fixture: requirement/div-empty-description-block-after-class-comma] [fixture:
 requirement/lex-name-then-empty-description-block]
 [fixture: requirement/div-empty-description-block-between-keyword-and-name]
 [fixture: requirement/div-empty-description-block-after-class-separator]
@@ -1221,7 +1227,8 @@ requirement/lex-source-then-empty-description-block]
 - **[`directive-as-token-boundary`](../known-divergences/directive-as-token-boundary.ja.md)。**
   テキストの単位と文字列の単位以外の単位の中のディレクティブは、
   この仕様では入力を拒否させ、
-  mermaid.js は受理します（[単位の中のディレクティブ](#単位の中のディレクティブ) を参照）。
+  mermaid.js は受理します（[単位の中のディレクティブ](#単位の中のディレクティブ)
+  を参照）。
   `style`、`classDef`、`class` の後の名前やクラス、キーワード、矢印、`:::`、
   `direction`、方向の値の中です。 [fixture:
   requirement/div-directive-in-style-name] [fixture:
@@ -1247,15 +1254,14 @@ requirement/lex-source-then-empty-description-block]
   テキストの単位（引用符なしの名前を含む）の中では mermaid.js の読みを保ち、
   `"style:#x" - satisfies -> b;c` は両者で `bc` への関係です。 [fixture:
   requirement/div-ignored-semicolon-in-relationship-keyword]
-  [fixture: requirement/tokens-ignored-semicolon-in-name]
-  [fixture:
+  [fixture: requirement/tokens-ignored-semicolon-in-name] [fixture:
   requirement/tokens-ignored-semicolon-in-acc-title] [fixture:
   requirement/tokens-ignored-semicolon-in-direction-text]
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.ja.md)。**
   frontmatter に `title: <a` があると、
   mermaid.js では `text: "b="c">d"` のテキストは `b='c'>d` ですが、
-  ここでは文字列は 2 つ目の `"` で終わり、
-  入力は拒否されます。 [fixture: requirement/div-html-tag-starts-in-frontmatter-string]
+  ここでは文字列は 2 つ目の `"` で終わり、入力は拒否されます。
+  [fixture: requirement/div-html-tag-starts-in-frontmatter-string]
 - **[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.ja.md)。**
   有効な YAML ではない frontmatter は、この仕様では受理され、
   mermaid.js は拒否します。 [fixture: requirement/div-frontmatter-invalid-yaml]
@@ -1266,7 +1272,8 @@ requirement/lex-source-then-empty-description-block]
   [文字列](#単位と文脈) と、
   [空の説明ブロック](#空の説明ブロック) を参照してください。
   文の始まるところでは空の説明ブロックは文で、本体の行では本体の項目で、
-  入力は受理されます。 [fixture: requirement/div-empty-description-block-between-keyword-and-name]
+  入力は受理されます。
+  [fixture: requirement/div-empty-description-block-between-keyword-and-name]
   [fixture: requirement/div-empty-description-block-before-field-colon]
   [fixture: requirement/div-empty-description-block-in-relationship] [fixture:
   requirement/div-empty-string-line] [fixture:
@@ -1279,8 +1286,8 @@ requirement/lex-source-then-empty-description-block]
   `C4Component`、`C4Dynamic`、`C4Deployment` があると、
   mermaid.js はテキストを C4 のパーサーに渡し、それが拒否します。
   ここではテキストは要求図です。
-  `C4Context` はどちらでも名前です。 [fixture: requirement/div-c4-keyword-in-name]
-  [fixture:
+  `C4Context` はどちらでも名前です。
+  [fixture: requirement/div-c4-keyword-in-name] [fixture:
   requirement/div-c4-keyword-in-value] [fixture: requirement/lex-c4context-name]
 - **[`bare-percent-line-before-header`](../known-divergences/bare-percent-line-before-header.ja.md)。**
   ヘッダーの前の、`%%` だけの行、ディレクティブではない `%%{ }%%` の行、
@@ -1288,7 +1295,7 @@ requirement/lex-source-then-empty-description-block]
   mermaid.js は入力を拒否します。
   その字句解析器がその行をコメントとして、
   その後の改行を `newline` の単位として読み、
-  その文法がヘッダーの前でそれを取らないからです（[検出](#検出) を参照）。 [fixture: requirement/header-after-bare-percent-line]
-  [fixture:
+  その文法がヘッダーの前でそれを取らないからです（[検出](#検出) を参照）。
+  [fixture: requirement/header-after-bare-percent-line] [fixture:
   requirement/header-after-empty-braces-line] [fixture:
   requirement/header-after-bare-percent-line-and-whitespace-line]

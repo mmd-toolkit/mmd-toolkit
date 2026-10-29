@@ -11,7 +11,7 @@ Code:
     |   ^~~~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the evolution stages set on line 2 with these stages.
+[1] mermaid.js replaces the earlier evolution stages with these stages.
 ---
 
 
@@ -25,7 +25,7 @@ Code:
     |   ^~~~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the evolution stages set on line 2 with these stages.
+[1] mermaid.js replaces the earlier evolution stages with these stages.
 ---
 
 
@@ -38,7 +38,7 @@ Code:
   3 | evolution Early -> Late
     | ^~~~~~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the evolution stages set on line 2 with these stages.
+[1] mermaid.js replaces the earlier evolution stages with these stages.
 ---
 
 
@@ -51,7 +51,7 @@ Code:
   3 | evolution Early -> Late
     | ^~~~~~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the evolution stages set on line 2 with these stages.
+[1] mermaid.js replaces the earlier evolution stages with these stages.
 ---
 
 
@@ -64,7 +64,7 @@ Code:
   3 | evolution "#65;" -> B
     | ^~~~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the evolution stages set on line 2 with these stages.
+[1] mermaid.js replaces the earlier evolution stages with these stages.
 ---
 
 
@@ -77,7 +77,7 @@ Code:
   3 | evolution "<b x='a'>T</b>" -> B
     | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the evolution stages set on line 2 with these stages.
+[1] mermaid.js replaces the earlier evolution stages with these stages.
 ---
 
 
@@ -91,7 +91,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the evolution stages set on line 2 with these stages.
+[1] mermaid.js replaces the earlier evolution stages with these stages.
 ---
 
 
@@ -104,7 +104,7 @@ Code:
   3 | evolution A -> B -> C
     | ^~~~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the evolution stages set on line 2 with these stages.
+[1] mermaid.js replaces the earlier evolution stages with these stages.
 ---
 
 
@@ -119,8 +119,8 @@ Code:
   4 | evolution A -> B
     | ^~~~~~~~~~~~~~~~ [2]
 
-[1] mermaid.js replaces the evolution stages set on line 2 with these stages.
-[2] mermaid.js replaces the evolution stages set on line 3 with these stages.
+[1] mermaid.js replaces the earlier evolution stages with these stages.
+[2] mermaid.js replaces the earlier evolution stages with these stages.
 ---
 
 
@@ -133,5 +133,5 @@ Code:
   3 | evolution A -> B
     | ^~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the evolution stages set on line 2 with these stages.
+[1] mermaid.js replaces the earlier evolution stages with these stages.
 ---

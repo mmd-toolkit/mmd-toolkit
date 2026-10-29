@@ -28,10 +28,10 @@ flag の追加や削除はしません。
 
 [corpus fixture: info/header-flag-next-line]
 
-入力（エスケープ表記）:
-`" \tinfo  \n"`.
+入力（escape 表記）: `" \tinfo  \n"`
 
-出力 ([header/header-only-output.mmd](../tests/fixtures/info/header/header-only-output.mmd)):
+出力
+([header/header-only-output.mmd](../tests/fixtures/info/header/header-only-output.mmd)):
 
 ```mmd
 info
@@ -56,10 +56,11 @@ YAML には共有の正の最小幅を使います。
 
 [fixture: info/indentation/indent-zero-tabs]
 
-入力（エスケープ表記）:
-`"info\ntitle Topic\n%% note\n%%{wrap}%%\naccTitle: Access\n"`.
+入力（escape 表記）:
+`"info\ntitle Topic\n%% note\n%%{wrap}%%\naccTitle: Access\n"`
 
-出力 ([indentation/indent-default-output.mmd](../tests/fixtures/info/indentation/indent-default-output.mmd)):
+出力
+([indentation/indent-default-output.mmd](../tests/fixtures/info/indentation/indent-default-output.mmd)):
 
 ```mmd
 info
@@ -85,10 +86,10 @@ hidden の境界と保護 group を優先します。
 
 [fixture: info/statements-one-per-line/same-line-keyword-content]
 
-入力（エスケープ表記）:
-`"info title Topic\n"`.
+入力（escape 表記）: `"info title Topic\n"`
 
-出力 ([statements-one-per-line/first-title-inline-output.mmd](../tests/fixtures/info/statements-one-per-line/first-title-inline-output.mmd)):
+出力
+([statements-one-per-line/first-title-inline-output.mmd](../tests/fixtures/info/statements-one-per-line/first-title-inline-output.mmd)):
 
 ```mmd
 info
@@ -121,10 +122,10 @@ trivia を含む値、hidden suffix、semicolon 保護では原文の境界を�
 
 [corpus fixture: info/lex-title-directive-only]
 
-入力（エスケープ表記）:
-`"info\ntitle\t   Topic  words \t\n"`.
+入力（escape 表記）: `"info\ntitle\t   Topic  words \t\n"`
 
-出力 ([title/title-trim-output.mmd](../tests/fixtures/info/title/title-trim-output.mmd)):
+出力
+([title/title-trim-output.mmd](../tests/fixtures/info/title/title-trim-output.mmd)):
 
 ```mmd
 info
@@ -156,10 +157,11 @@ hidden suffix と保護 gap は保持します。
 
 [fixture: info/accessibility-lines/a11y-only-directive]
 
-入力（エスケープ表記）:
-`"info\naccTitle \t:  Access  words \t\naccDescr\t:   Details  words  \n"`.
+入力（escape 表記）:
+`"info\naccTitle \t:  Access  words \t\naccDescr\t:   Details  words  \n"`
 
-出力 ([accessibility-lines/a11y-lines-output.mmd](../tests/fixtures/info/accessibility-lines/a11y-lines-output.mmd)):
+出力
+([accessibility-lines/a11y-lines-output.mmd](../tests/fixtures/info/accessibility-lines/a11y-lines-output.mmd)):
 
 ```mmd
 info
@@ -194,10 +196,11 @@ keyword と opener、内部の辺の接触を保ち、ある外端空白列だ�
 
 [corpus fixture: info/lex-block-directive-only]
 
-入力（エスケープ表記）:
-`"info\naccDescr{D}\naccDescr   {  D  }\naccDescr {D }\naccDescr{ D}\n"`.
+入力（escape 表記）:
+`"info\naccDescr{D}\naccDescr   {  D  }\naccDescr {D }\naccDescr{ D}\n"`
 
-出力 ([description-blocks/block-gap-presence-output.mmd](../tests/fixtures/info/description-blocks/block-gap-presence-output.mmd)):
+出力
+([description-blocks/block-gap-presence-output.mmd](../tests/fixtures/info/description-blocks/block-gap-presence-output.mmd)):
 
 ```mmd
 info
@@ -228,10 +231,11 @@ escape、HTML、entity を保ちます。
 
 [corpus fixture: info/line-ls-block]
 
-入力（エスケープ表記）:
-`"info\ntitle \"open\\q\naccTitle: 'one\\n' \"two\"\naccDescr: \\u0041 \\t\n"`.
+入力（escape 表記）:
+`"info\ntitle \"open\\q\naccTitle: 'one\\n' \"two\"\naccDescr: \\u0041 \\t\n"`
 
-出力 ([authored-values/literal-quotes-escapes-output.mmd](../tests/fixtures/info/authored-values/literal-quotes-escapes-output.mmd)):
+出力
+([authored-values/literal-quotes-escapes-output.mmd](../tests/fixtures/info/authored-values/literal-quotes-escapes-output.mmd)):
 
 ```mmd
 info
@@ -288,10 +292,10 @@ opener の通常の字下げは整え、内部と第1列の閉じは列を保ち
 
 [corpus fixture: info/lex-yaml-three-fences]
 
-入力（エスケープ表記）:
-`"info\n---\nx: ignored\n---\nshowInfo\n"`.
+入力（escape 表記）: `"info\n---\nx: ignored\n---\nshowInfo\n"`
 
-出力 ([hidden-yaml/yaml-before-flag-output.mmd](../tests/fixtures/info/hidden-yaml/yaml-before-flag-output.mmd)):
+出力
+([hidden-yaml/yaml-before-flag-output.mmd](../tests/fixtures/info/hidden-yaml/yaml-before-flag-output.mmd)):
 
 ```mmd
 info
@@ -358,10 +362,10 @@ fallback comment はコメントのままにします。
 
 [corpus fixture: info/hidden-directive-unclosed]
 
-入力（エスケープ表記）:
-`"info showInfo\n%%{! ignored }%%\ntitle Topic\n"`.
+入力（escape 表記）: `"info showInfo\n%%{! ignored }%%\ntitle Topic\n"`
 
-出力 ([hidden-directives/hidden-body-output.mmd](../tests/fixtures/info/hidden-directives/hidden-body-output.mmd)):
+出力
+([hidden-directives/hidden-body-output.mmd](../tests/fixtures/info/hidden-directives/hidden-body-output.mmd)):
 
 ```mmd
 info showInfo
@@ -390,10 +394,10 @@ native comment は物理 LF で終わり、LS/PS は保ちます。
 
 [test: info/comments/comments-common-region-join]
 
-入力（エスケープ表記）:
-`"    %% before\ninfo\n       %% body\naccTitle: Access\n"`.
+入力（escape 表記）: `"    %% before\ninfo\n       %% body\naccTitle: Access\n"`
 
-出力 ([comments/comments-align-output.mmd](../tests/fixtures/info/comments/comments-align-output.mmd)):
+出力
+([comments/comments-align-output.mmd](../tests/fixtures/info/comments/comments-align-output.mmd)):
 
 ```mmd
 %% before
@@ -406,8 +410,8 @@ info
 
 ### Global directives
 
-共通の除去が両側を連結するため、 opaque な Root
-directive の原文と順序を保ちます。
+共通の除去が両側を連結するため、
+opaque な Root directive の原文と順序を保ちます。
 同じ印字行の中では、両側の接触・分離を保ちます。
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
@@ -436,10 +440,11 @@ info の Db が空でも init は設定を変えうるためです。
 
 [corpus fixture: info/directive-unclosed-after-header]
 
-入力（エスケープ表記）:
-`"info\naccTitle%%{wrap}%%: Access\naccDescr%%{wrap}%%{ D }\n"`.
+入力（escape 表記）:
+`"info\naccTitle%%{wrap}%%: Access\naccDescr%%{wrap}%%{ D }\n"`
 
-出力 ([global-directives/global-colon-brace-output.mmd](../tests/fixtures/info/global-directives/global-colon-brace-output.mmd)):
+出力
+([global-directives/global-colon-brace-output.mmd](../tests/fixtures/info/global-directives/global-colon-brace-output.mmd)):
 
 ```mmd
 info
@@ -482,10 +487,10 @@ semicolon は info の一般的な文区切りではありません。
 
 [corpus fixture: info/style-block-end-directive]
 
-入力（エスケープ表記）:
-`"info\ntitle A;; ;\naccTitle: B;\naccDescr: C;;\n"`.
+入力（escape 表記）: `"info\ntitle A;; ;\naccTitle: B;\naccDescr: C;;\n"`
 
-出力 ([semicolons/semicolon-line-values-output.mmd](../tests/fixtures/info/semicolons/semicolon-line-values-output.mmd)):
+出力
+([semicolons/semicolon-line-values-output.mmd](../tests/fixtures/info/semicolons/semicolon-line-values-output.mmd)):
 
 ```mmd
 info
@@ -501,16 +506,16 @@ info
 コメントの周囲も同じです。
 値、directive、hidden 内部、共通の結合領域、保持 prefix は、
 原文の役割に関わるため改行を保ちます。
-hidden form が LF を消費した後は、次の文に必要なときだけ予備の LF
-1 つを保ちます。
+hidden form が LF を消費した後は、
+次の文に必要なときだけ予備の LF 1 つを保ちます。
 文書の終わりは設定の終端改行1つにし、見出しの直後の空行は削除します。
 見出しと最初の文の間に EOL は必要ありません。
 それ以外は予備の LF の後に通常の空行の規則を適用し、連続空行を1行、
 空白だけの行を空行にします。
 予備の LF は文法の要件で、それ以降はコメントの後と同じ作者の区切りです。
 
-hidden の境界や semicolon の保護で文が見出しの行に残っても、その文の後置 hidden
-form の後は文と文の間として扱います。
+hidden の境界や semicolon の保護で文が見出しの行に残っても、
+その文の後置 hidden form の後は文と文の間として扱います。
 
 [fixture: info/blank-lines/hidden-following-blanks]
 
@@ -532,10 +537,10 @@ form の後は文と文の間として扱います。
 
 [fixture: info/blank-lines/blank-hidden-kept]
 
-入力（エスケープ表記）:
-`"\n\ninfo\n\n\ntitle Topic\n \t\n\naccTitle: Access\n\n"`.
+入力（escape 表記）: `"\n\ninfo\n\n\ntitle Topic\n \t\n\naccTitle: Access\n\n"`
 
-出力 ([blank-lines/blank-runs-output.mmd](../tests/fixtures/info/blank-lines/blank-runs-output.mmd)):
+出力
+([blank-lines/blank-runs-output.mmd](../tests/fixtures/info/blank-lines/blank-runs-output.mmd)):
 
 ```mmd
 info
@@ -561,10 +566,10 @@ hidden の閉じの padding は EOF でも保持します。
 
 [fixture: info/trailing-whitespace/trailing-hidden-eof-kept]
 
-入力（エスケープ表記）:
-`"info showInfo \t\naccDescr {D} \t\n"`.
+入力（escape 表記）: `"info showInfo \t\naccDescr {D} \t\n"`
 
-出力 ([trailing-whitespace/trailing-exterior-output.mmd](../tests/fixtures/info/trailing-whitespace/trailing-exterior-output.mmd)):
+出力
+([trailing-whitespace/trailing-exterior-output.mmd](../tests/fixtures/info/trailing-whitespace/trailing-exterior-output.mmd)):
 
 ```mmd
 info showInfo
@@ -573,7 +578,8 @@ info showInfo
 
 ### Frontmatter yaml
 
-実 frontmatter だけに[保護付き YAML 整形](./compatibility.ja.md#frontmatter)を使います。
+実 frontmatter
+だけに[フロントマター](./compatibility.ja.md#フロントマター)を使います。
 安全な本文を整形し、delimiter の padding は保ちます。
 malformed、字下げ delimiter、HTML hazard、delimiter を生む本文は保ちます。
 等価な YAML の引用符変更も Mermaid の HTML 変換で不正になりうるためです。
@@ -597,10 +603,11 @@ hidden YAML はこの formatter へ渡しません。
 
 [corpus fixture: info/div-frontmatter-invalid-yaml]
 
-入力（エスケープ表記）:
-`"---\ntitle:   Topic\nconfig: {theme: dark, look: classic}\n---\ninfo\n"`.
+入力（escape 表記）:
+`"---\ntitle:   Topic\nconfig: {theme: dark, look: classic}\n---\ninfo\n"`
 
-出力 ([frontmatter-yaml/frontmatter-safe-output.mmd](../tests/fixtures/info/frontmatter-yaml/frontmatter-safe-output.mmd)):
+出力
+([frontmatter-yaml/frontmatter-safe-output.mmd](../tests/fixtures/info/frontmatter-yaml/frontmatter-safe-output.mmd)):
 
 ```mmd
 ---
@@ -632,10 +639,11 @@ prefix 全体を保持します。
 
 [fixture: info/retained-prefix/prefix-between-retained-kept]
 
-入力（エスケープ表記）:
-`"\n---\ntitle: Hidden\nconfig: {theme: dark}\n---\ninfo\n"`.
+入力（escape 表記）:
+`"\n---\ntitle: Hidden\nconfig: {theme: dark}\n---\ninfo\n"`
 
-出力 ([retained-prefix/prefix-leading-lf-kept-output.mmd](../tests/fixtures/info/retained-prefix/prefix-leading-lf-kept-output.mmd)):
+出力
+([retained-prefix/prefix-leading-lf-kept-output.mmd](../tests/fixtures/info/retained-prefix/prefix-leading-lf-kept-output.mmd)):
 
 ```mmd
 
@@ -648,15 +656,15 @@ info
 
 ### Line terminators and unicode
 
-[共有の改行方針](./compatibility.ja.md#line-endings)に従い、
+共有の[行末](./compatibility.ja.md#行末)に従い、
 Prettier が CR/CRLF を正規化して設定の LF/CRLF/CR を出します。
 値、hidden text、frontmatter も同じです。
 内部の LS/PS/NBSP/BOM は字句上の役割どおり保ちます。
 共通行の外端は trim し、通常の block opener 空白は結合します。
 不正な native Unicode gap は拒否のままです。
-Prettier は先頭 BOM を除去・復元するため、opening
-fence の BOM があると host が hidden
-YAML を実 frontmatter と読む場合があります。
+Prettier は先頭 BOM を除去・復元するため、
+opening fence の BOM があると host が hidden YAML を実 frontmatter
+と読む場合があります。
 byte 同一は保証しません。
 
 [test: info/line-terminators-and-unicode/eol-cr-body]
@@ -688,17 +696,17 @@ byte 同一は保証しません。
 [corpus fixture: info/space-trailing-unicode]
 [corpus fixture: info/frontmatter-bom-both]
 
-入力 (escaped): `"info\rshowInfo\rtitle Topic\r"`.
+入力（escape 表記）: `"info\rshowInfo\rtitle Topic\r"`
 
-出力: `"info showInfo\n  title Topic\n"`.
+出力（escape 表記）: `"info showInfo\n  title Topic\n"`
 
 ### Final newline
 
 予測できる終端にするため、通常の受理ファイルは設定の改行1個で終えます。
-header、flag だけのファイル、共通行、空 block、裸・triple comment、閉じた hidden
-form が対象で、通常の末尾空行列は削除します。
-hidden の閉じの padding と必要な境界、 EOF に達する global
-directive の原終端は保ちます。
+header、flag だけのファイル、共通行、空 block、裸・triple comment、
+閉じた hidden form が対象で、通常の末尾空行列は削除します。
+hidden の閉じの padding と必要な境界、
+EOF に達する global directive の原終端は保ちます。
 C4 を含む EOF comment への LF 追加は raw の検出を変える場合がありますが、
 指定された info の読みは保ちます。
 
@@ -720,10 +728,10 @@ C4 を含む EOF comment への LF 追加は raw の検出を変える場合が�
 
 [corpus fixture: info/div-c4container-header-comment-eof]
 
-入力（エスケープ表記）:
-`"info\ntitle\naccTitle: Access"`.
+入力（escape 表記）: `"info\ntitle\naccTitle: Access"`
 
-出力 ([final-newline/final-common-output.mmd](../tests/fixtures/info/final-newline/final-common-output.mmd)):
+出力
+([final-newline/final-common-output.mmd](../tests/fixtures/info/final-newline/final-common-output.mmd)):
 
 ```mmd
 info
@@ -733,7 +741,8 @@ info
 
 ### Specified readings
 
-[仕様が受理する構造](../../spec/docs/diagrams/info.md#known-divergences)を使います。
+[仕様が受理する構造](../../spec/docs/diagrams/info.ja.md#既知の差異)
+を使います。
 keyword 内の atomic directive・selected-semicolon cut は修復せず拒否します。
 opaque embedded data、C4 keyword の検出、
 裸 percent 後の Unicode は識別子の付いた読みを使います。
@@ -790,8 +799,9 @@ Markdown は共有経路で embedding を辞退します。
 
 ### Markdown fences
 
-[共有の Markdown 経路](./compatibility.ja.md#markdown-code-blocks)を使い、
-dedent 済み payload に info の規則を適用します。
+共有の
+[Markdown のコードブロック](./compatibility.ja.md#markdown-のコードブロック)
+を使い、 dedent 済み payload に info の規則を適用します。
 fence、list、quote の字下げと EOL は host に任せます。
 実 host は payload の Db と原文とは別に確認します。
 Markdown は最終行の hidden 境界を含む padding を削除します。
@@ -822,6 +832,6 @@ Markdown は最終行の hidden 境界を含む padding を削除します。
 
 [test: info Markdown: rejected]
 
-入力 (escaped): `"```mermaid\ninfo showInfo title Topic\n```\n"`.
+入力（escape 表記）: `"```mermaid\ninfo showInfo title Topic\n```\n"`
 
-出力: `"```mermaid\ninfo showInfo\n  title Topic\n```\n"`.
+出力（escape 表記）: `"```mermaid\ninfo showInfo\n  title Topic\n```\n"`

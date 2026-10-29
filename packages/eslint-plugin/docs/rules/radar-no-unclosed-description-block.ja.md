@@ -87,8 +87,8 @@ radar-beta
 
 ## 背景
 
-[ブロックの終端記号](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L14-L14) は、
-その `{` の後の最初の `}` でブロックを終え、それのないブロックには合わない。
+[ブロックの終端記号](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L14-L14)
+は、その `{` の後の最初の `}` でブロックを終え、それのないブロックには合わない。
 
 <!-- begin auto-generated rule resources -->
 

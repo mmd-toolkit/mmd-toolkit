@@ -19,10 +19,9 @@ builder は parser の拒否検査を繰り返しません。
    StringLiteral の変換した引用符内を読み、
    b/f/n/r/t/v/0 の escape を制御文字へ戻します。
    ほかはバックスラッシュだけを除き、十六進・Unicode の escape は復号しません。
-   label の空白と空文字は残し、
-   文字置換を適用しません。 [fixture: packet/db-label-escapes]
-   [fixture: packet/db-label-single-escapes] [fixture: packet/db-label-space]
-   [fixture: packet/db-label-empty-double]
+   label の空白と空文字は残し、文字置換を適用しません。
+   [fixture: packet/db-label-escapes] [fixture: packet/db-label-single-escapes]
+   [fixture: packet/db-label-space] [fixture: packet/db-label-empty-double]
    [fixture: packet/db-label-empty-single] [fixture: packet/line-crlf-label]
    [fixture: packet/html-all-fields] [fixture: packet/entity-all-text]
    [fixture: packet/directive-label-middle] [fixture: packet/hidden-yaml-body]

@@ -121,10 +121,12 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   `collectValueNodes`、`accDescr` のブロック）。
   説明ブロックは共有の `layoutDescriptionBlock` を通し、
   空白だけの内側を `{}` にする決定を全図種で共有し、詰めを試み、
-  できなければ元の layout に戻す判断は共有の `layoutCompactEmptyDescriptionBlockWithFallback` に置き、
+  できなければ元の layout に戻す判断は共有の
+  `layoutCompactEmptyDescriptionBlockWithFallback` に置き、
   図種の printer に独自の空ブロックの判断を書かない。
   graph 系（flowchart・agentflow）だけは、
-  `graph-layout.ts` で文書が定める行の例外を先に判定してから共有の `layoutCompactEmptyDescriptionBlock` を呼び、
+  `graph-layout.ts` で文書が定める行の例外を先に判定してから共有の
+  `layoutCompactEmptyDescriptionBlock` を呼び、
   詰められなければ通常の文の配置に戻す。
   `kept-lines.ts` は、自分の `;` を持つ行と、行の始まりと終わりを決める。
   `source.ts` の `isStructural` は、
@@ -140,8 +142,8 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   決まった項目の隙間の規則は `<図種>-layout.ts` に置き、
   図種固有の処理が残る場合だけ、保つ行を `<図種>-kept-lines.ts` に置く。
   隠れた形を保つ平らな本文は、
-  `flat-hidden-diagram.ts` の `createFlatHiddenDiagramPrinter` に図種と無視するノードの型、
-  見出し・文の layout を渡して印字し、
+  `flat-hidden-diagram.ts` の `createFlatHiddenDiagramPrinter`
+  に図種と無視するノードの型、見出し・文の layout を渡して印字し、
   見出しの契約は最初の atom がヘッダーの語から始まることを定める。
   この関数は `keepsPrefix` も返すので、
   `src/printers/index.ts` の `diagramTextRules` に登録する。
@@ -153,7 +155,8 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   ほかの文を持たない文などである。
   その関数の switch は、文の型をすべて挙げ、各 case を種類の型と照らし、
   最後の `satisfies` の検査で、
-  挙げ忘れた文の型を捕まえる（`sequence-layout.ts` の `classifySequenceStatement`）。
+  挙げ忘れた文の型を捕まえる（`sequence-layout.ts` の
+  `classifySequenceStatement`）。
   ほかの所は型の一覧を持たず、その関数に問う。
 - 値のノード（`Identifier`、`StringLiteral`、ラベルなど）は、
   範囲のテキストをそのまま印字する。
@@ -235,18 +238,23 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   入力の値を使うので、
   `writtenEmbeddedTexts`（ディレクティブとデータブロックの書かれたテキスト）が、
   整形の前後で同じであること、フロントマターは、
-  書かれたままか Prettier の YAML 整形の出力であること（`describeFrontmatterChange`）も確かめる。
+  書かれたままか Prettier の YAML
+  整形の出力であること（`describeFrontmatterChange`）も確かめる。
   データブロックを持つテキストは、mermaid.js の効果がないと Db が作れないので、
   書かれたテキストだけを確かめる。
   データブロックのノードの型は、
   `@mmd-toolkit/tests` の `DATA_BLOCK_NODE_TYPES` で、
   仕様の AST の文書と同じであることはそちらのテストが保つ。
-- 記録との比較では `reading = fixture.specified ?? fixture.expected` と `embeddedValuesOf(fixture, reading)` を使い、
-  読みが受理で、Db が null でなく、埋め込み値があるときだけ Db を比べる。
-- `embedded-data-opaque` は仕様の [比較する Db](../../../packages/spec/docs/known-divergences/embedded-data-opaque.ja.md#比較する-db) に、
-  リポジトリのルートの `tools/src/specified-reading.ts` の共有の `specifiedRunOf` の経路で従い、
-  拒否の原因の埋め込みブロックか、受理条件が名指す設定の鍵だけを除き、
-  Mermaid が導くタイトルと、ほかの設定を保つ。
+- 記録との比較では `reading = fixture.specified ?? fixture.expected` と
+  `embeddedValuesOf(fixture, reading)` を使い、読みが受理で、Db が null でなく、
+  埋め込み値があるときだけ Db を比べる。
+- `embedded-data-opaque` は仕様の
+  [比較する Db](../../../packages/spec/docs/known-divergences/embedded-data-opaque.ja.md#比較する-db)
+  に、
+  リポジトリのルートの `tools/src/specified-reading.ts` の共有の
+  `specifiedRunOf` の経路で従い、拒否の原因の埋め込みブロックか、
+  受理条件が名指す設定の鍵だけを除き、 Mermaid が導くタイトルと、
+  ほかの設定を保つ。
 - 整形されるが比べる Db のない場合はテストと報告に明示し、
   共有の冪等と原文の検査はその場合にも当てる。
 - `tests/format.test.ts` と `tests/corpus.test.ts` は、
@@ -356,8 +364,9 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
     `-t` なしで `info`、`markdown-info`、`value-nodes`、`dispatch`。
   - `statement-rules.ts`、`accessibility-lines.ts`: それを使う図種、
     ER と requirement のテスト。
-  - `index.ts`、`parser.ts`、`printer.ts`、`root.ts`、`frontmatter-yaml.ts`:
-    `dispatch`、`failure`、`markdown`、`plugin`と、図種ごとのファイル。
+  - `index.ts`、`parser.ts`、`printer.ts`、`root.ts`、
+    `frontmatter-yaml.ts`: `dispatch`、`failure`、`markdown`、`plugin`と、
+    図種ごとのファイル。
   - `tests/db-reading.ts`、
     `tests/helpers.ts`: それを import するすべてのテスト。
 - 文書を読むテスト: `tests/docs.test.ts` は、
@@ -453,7 +462,8 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   plugin のソースを import して Node で動かすスクリプトは、テストと違い、
   `@mmd-toolkit/parser` と `@mmd-toolkit/tests` を `lib/` のビルドから読む。
   そのため、
-  先に `pnpm --filter @mmd-toolkit/parser run build` と `pnpm --filter @mmd-toolkit/tests run build` で作り直す。
+  先に `pnpm --filter @mmd-toolkit/parser run build` と
+  `pnpm --filter @mmd-toolkit/tests run build` で作り直す。
 - 文書の例を下書きから作り直すときは、
   下書きが最新か（ほかの人が文書を直接直していないか）を、作り直す前に確かめる。
 
@@ -464,8 +474,8 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
    その結果を入力にする。
 2. 通常のテスト一式を回す。
 3. 失敗を分類する:
-   - コーパスや fixture の Db が、整形の前後で違う:
-     mermaid.js の字句や文法が変わり、
+   - コーパスや fixture の Db が、
+     整形の前後で違う: mermaid.js の字句や文法が変わり、
      printer の規則の前提（仕様の節）が変わった。
      仕様を先に直し（spec の SKILL）、それから規則を直す。
    - 整形の前の入力の受理や Db が変わった: printer の問題ではない。

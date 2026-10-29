@@ -18,19 +18,18 @@ export const agentflowNoRedefinedConnector: MermaidRuleDefinition<{
     schema: [],
     messages: {
       redefined:
-        "mermaid.js replaces the {{field}} of `{{id}}` written on line {{line}} with that of this connector.",
+        "mermaid.js replaces the {{field}} of `{{id}}` written earlier with that of this connector.",
     },
   },
   create(context) {
     return agentflowElementDeclarations({
-      connector(node, id, replacement) {
+      connector(node, id, field) {
         context.report({
           node,
           messageId: "redefined",
           data: {
             id,
-            field: replacement.field,
-            line: String(replacement.previous.line),
+            field,
           },
         })
       },

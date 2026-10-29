@@ -72,9 +72,9 @@ export const sequenceNoInvalidJson: MermaidRuleDefinition<{
     schema: [],
     messages: {
       notJson:
-        "The text of this `{{keyword}}` statement is not JSON, so mermaid.js sets nothing from it.",
+        "mermaid.js sets nothing from this `{{keyword}}` statement because its text is not JSON.",
       notObject:
-        "The text of this `{{keyword}}` statement is JSON but not an object, so mermaid.js does not read names from it: a string and an array give their positions, and any other value gives nothing.",
+        "mermaid.js does not read names from this `{{keyword}}` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.",
     },
   },
   create(context) {

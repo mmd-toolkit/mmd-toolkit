@@ -1,7 +1,6 @@
 # @mmd-toolkit/quadrant-no-invalid-coordinate
 
-英語版:
-[quadrant-no-invalid-coordinate.md](./quadrant-no-invalid-coordinate.md)
+英語版: [quadrant-no-invalid-coordinate.md](./quadrant-no-invalid-coordinate.md)
 
 0 から 1 の数でない点の座標を禁止する。
 

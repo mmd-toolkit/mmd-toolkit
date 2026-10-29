@@ -54,7 +54,8 @@ U+2028 や U+2029 は `}%%` のないディレクティブを終え、
 この規則はそれを見ない。
 ヘッダーの前で `}%%` のないままのディレクティブはヘッダーを取る。
 ディレクティブが取った文字が init のディレクティブの JSON を壊すと、
-[no-invalid-init-directive](./no-invalid-init-directive.ja.md) もそれを報告する。
+[no-invalid-init-directive](./no-invalid-init-directive.ja.md)
+もそれを報告する。
 
 ディレクティブを `}%%` で閉じる。
 
@@ -88,11 +89,11 @@ flowchart LR
 
 ## 背景
 
-[ディレクティブのパターン](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L9-L10) は、
-語の引数か、最初の `}%%`、U+2028、U+2029、
+[ディレクティブのパターン](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L9-L10)
+は、語の引数か、最初の `}%%`、U+2028、U+2029、
 テキストの終わりまでの自由な文字の引数を取り、
-[`removeDirectives`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L200-L202) は、
-図を読む前に、それが合うものを取り除く。
+[`removeDirectives`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L200-L202)
+は、図を読む前に、それが合うものを取り除く。
 
 <!-- begin auto-generated rule resources -->
 

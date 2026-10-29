@@ -8,8 +8,7 @@
 値は Db の変換ではなく書かれたテキストを保ちます。
 任意の欄は null として存在し、書かれないリストは空です。
 以下の子の欄は訪問順で、各リストはソース順です。 [fixture: pie/db-all-fields]
-[fixture: pie/header-only]
-[fixture: pie/label-unknown-escapes]
+[fixture: pie/header-only] [fixture: pie/label-unknown-escapes]
 [fixture: pie/number-negative-zero]
 
 ## 節点
@@ -26,9 +25,8 @@
 子の欄: `textBeforeHeader`、`textBeforeShowData`、`body`。
 範囲は保持したヘッダー前の最初の形から、なければ pie から、
 最後に書かれたヘッダーか本体の形までで、無関係な外側の空白は除きます。
-別のヘッダーの節点や、
-実効のタイトルと区分は生成しません。 [fixture: pie/frontmatter-nonleading-comment]
-[fixture: pie/header-only]
+別のヘッダーの節点や、実効のタイトルと区分は生成しません。
+[fixture: pie/frontmatter-nonleading-comment] [fixture: pie/header-only]
 [fixture: pie/db-all-fields]
 [fixture: pie/lex-hidden-directive-second-detection-scan]
 
@@ -44,7 +42,8 @@ pie の字句規則は検出点から読みます。
 空白と改行はトリビアです。
 そのような裸の行と通過させたトリビアは、
 保持した形の後や保持した形の間にも置けます。
-textBeforeHeader に入るのは隠れた形だけです。 [fixture: pie/div-preheader-retained-directive-bare-bom]
+textBeforeHeader に入るのは隠れた形だけです。
+[fixture: pie/div-preheader-retained-directive-bare-bom]
 [fixture: pie/div-preheader-retained-directive-bare-ls]
 [fixture: pie/div-preheader-retained-directive-bare-ls-line]
 [fixture: pie/div-preheader-retained-yaml-bare-bom]
@@ -88,18 +87,16 @@ textBeforeHeader に入るのは隠れた形だけです。 [fixture: pie/div-pr
 PieBodyItem は PieSectionStatement、PieTitleStatement、PieAccTitleStatement、
 PieAccDescrStatement、PieAccDescrBlockStatement、PieIgnoredText のいずれかです。
 空行やコメントだけの行は本文の項目を作らず、コメントは共通の Comment 記録です。
-重複する区分と繰り返した共通の文をすべて別々に保ちます。 [fixture: pie/db-all-fields]
-[fixture: pie/lex-section-blank-comment-directive]
-[fixture: pie/db-three-definitions]
-[fixture: pie/title-repeat]
+重複する区分と繰り返した共通の文をすべて別々に保ちます。
+[fixture: pie/db-all-fields] [fixture: pie/lex-section-blank-comment-directive]
+[fixture: pie/db-three-definitions] [fixture: pie/title-repeat]
 [fixture: pie/yaml-inline-after-title]
 
 `showData` は、書かれたヘッダーのキーワードに対してだけ true です。
 なければ textBeforeShowData は空で、pie の後の隠れた形は body を始めます。
 書かれたフラグの後の隠れた形も body を始めます。
-隠れた形が物理改行を消費しても、
-これらの欄は書かれた構造を保ちます。 [fixture: pie/showdata]
-[fixture: pie/review-hidden-directive-before-showdata]
+隠れた形が物理改行を消費しても、これらの欄は書かれた構造を保ちます。
+[fixture: pie/showdata] [fixture: pie/review-hidden-directive-before-showdata]
 [fixture: pie/review-yaml-before-showdata]
 [fixture: pie/frontmatter-after-header]
 [fixture: pie/lex-yaml-after-showdata-before-first-section]
@@ -120,8 +117,8 @@ PieAccDescrStatement、PieAccDescrBlockStatement、PieIgnoredText のいずれ�
 範囲はラベルの開き引用符から数の値か最後の textAfter までです。
 コロンは含み、EOL は除きます。
 可視の EOL の改行の後にある隠れた形は、代わりに図の body に入ります。
-隙間で別々に認識した隠れた形は、
-それぞれリストの 1 項目です。 [fixture: pie/review-yaml-between-label-colon]
+隙間で別々に認識した隠れた形は、それぞれリストの 1 項目です。
+[fixture: pie/review-yaml-between-label-colon]
 [fixture: pie/frontmatter-between-section-parts]
 [fixture: pie/gram-section-eof-hidden-yaml]
 [fixture: pie/yaml-inline-after-title]
@@ -136,24 +133,18 @@ NumericLiteral は raw に元の綴り、value に共通の double を保ちま�
 負のゼロと正の無限大も含みます。
 両方の引用符、余白、実体参照、物理行終端、数の精度を、書かれたとおりに保ちます。
 数のようなラベルでも Identifier は作りません。 [fixture: pie/label-single-quote]
-[fixture: pie/label-escaped-quotes]
-[fixture: pie/label-unknown-escapes]
-[fixture: pie/label-whitespace]
-[fixture: pie/label-crlf]
-[fixture: pie/entity-single-quoted]
-[fixture: pie/number-negative-zero]
-[fixture: pie/number-overflow]
-[fixture: pie/number-decimal-leading-zero]
+[fixture: pie/label-escaped-quotes] [fixture: pie/label-unknown-escapes]
+[fixture: pie/label-whitespace] [fixture: pie/label-crlf]
+[fixture: pie/entity-single-quoted] [fixture: pie/number-negative-zero]
+[fixture: pie/number-overflow] [fixture: pie/number-decimal-leading-zero]
 [fixture: pie/review-number-fraction-precision]
 [fixture: pie/db-numeric-label-order]
 
 コロンと数がある空の引用符つきラベルも区分です。
 重複したラベルも別の節点として保ちます。
-重複の変換や抑制は Db の処理で、
-ソースのリストを置き換えません。 [fixture: pie/label-empty]
-[fixture: pie/review-label-empty-single]
-[fixture: pie/lex-empty-label-duplicate]
-[fixture: pie/db-three-definitions]
+重複の変換や抑制は Db の処理で、ソースのリストを置き換えません。
+[fixture: pie/label-empty] [fixture: pie/review-label-empty-single]
+[fixture: pie/lex-empty-label-duplicate] [fixture: pie/db-three-definitions]
 [fixture: pie/label-escaped-name-collision]
 
 ### PieTitleStatement
@@ -165,26 +156,21 @@ NumericLiteral は raw に元の綴り、value に共通の double を保ちま�
 
 title と ASCII 空白かタブ 1 個の後から行の値の末尾までです。
 残る両端の空白は保ちます。
-その区切りの後に何もない場合と、
-title に区切りがない場合は null です。 [fixture: pie/title-spaces]
-[fixture: pie/review-title-bare-lone-eof]
+その区切りの後に何もない場合と、 title に区切りがない場合は null です。
+[fixture: pie/title-spaces] [fixture: pie/review-title-bare-lone-eof]
 [fixture: pie/lex-empty-title-vs-null-reference]
-[fixture: pie/title-whitespace-last]
-[fixture: pie/title-comment]
-[fixture: pie/ast-title-tab-null-eof]
-[fixture: pie/lex-title-tab-separator]
+[fixture: pie/title-whitespace-last] [fixture: pie/title-comment]
+[fixture: pie/ast-title-tab-null-eof] [fixture: pie/lex-title-tab-separator]
 [fixture: pie/ast-common-values-directive-only]
 [fixture: pie/lex-common-values-comment-region-ls]
 
 子の欄: `value`、`textAfter`。
 範囲は title から、値の最後の文字までで、値が null ならキーワードまでです。
 textAfter があれば最後の形まで延ばし、EOL と無関係な外側の余白は除きます。
-可視の EOL の改行の後の隠れた形は、
-代わりに図の body に入ります。 [fixture: pie/title-spaces]
-[fixture: pie/review-title-bare-lone-eof]
+可視の EOL の改行の後の隠れた形は、代わりに図の body に入ります。
+[fixture: pie/title-spaces] [fixture: pie/review-title-bare-lone-eof]
 [fixture: pie/lex-empty-title-vs-null-reference]
-[fixture: pie/title-whitespace-last]
-[fixture: pie/title-comment]
+[fixture: pie/title-whitespace-last] [fixture: pie/title-comment]
 [fixture: pie/review-hidden-directive-title-eof]
 
 ### PieAccTitleStatement
@@ -197,20 +183,16 @@ textAfter があれば最後の形まで延ばし、EOL と無関係な外側の
 コロン直後から行の値の末尾までの、書かれたテキストです。
 両端の余白を保ちます。
 内容が空なら null、空白だけならリテラルです。 [fixture: pie/acctitle-spaces]
-[fixture: pie/acctitle-eof]
-[fixture: pie/review-acctitle-whitespace-final]
-[fixture: pie/acctitle-comment]
-[fixture: pie/ast-common-values-directive-only]
+[fixture: pie/acctitle-eof] [fixture: pie/review-acctitle-whitespace-final]
+[fixture: pie/acctitle-comment] [fixture: pie/ast-common-values-directive-only]
 [fixture: pie/lex-common-values-comment-region-ls]
 
 子の欄: `value`、`textAfter`。
 範囲は accTitle から、コロンか値の最後の文字までです。
 textAfter があれば最後の形まで延ばし、EOL と無関係な外側の余白は除きます。
-可視の EOL の改行の後の隠れた形は、
-代わりに図の body に入ります。 [fixture: pie/acctitle-spaces]
-[fixture: pie/acctitle-eof]
-[fixture: pie/review-acctitle-whitespace-final]
-[fixture: pie/acctitle-comment]
+可視の EOL の改行の後の隠れた形は、代わりに図の body に入ります。
+[fixture: pie/acctitle-spaces] [fixture: pie/acctitle-eof]
+[fixture: pie/review-acctitle-whitespace-final] [fixture: pie/acctitle-comment]
 [fixture: pie/review-hidden-directive-acctitle-eof]
 
 ### PieAccDescrStatement
@@ -223,20 +205,16 @@ textAfter があれば最後の形まで延ばし、EOL と無関係な外側の
 コロン直後から行の値の末尾までの、書かれたテキストです。
 両端の余白を保ちます。
 内容が空なら null、空白だけならリテラルです。 [fixture: pie/accdescr-spaces]
-[fixture: pie/accdescr-eof]
-[fixture: pie/review-accdescr-whitespace-final]
-[fixture: pie/accdescr-comment]
-[fixture: pie/ast-common-values-directive-only]
+[fixture: pie/accdescr-eof] [fixture: pie/review-accdescr-whitespace-final]
+[fixture: pie/accdescr-comment] [fixture: pie/ast-common-values-directive-only]
 [fixture: pie/lex-common-values-comment-region-ls]
 
 子の欄: `value`、`textAfter`。
 範囲は accDescr から、コロンか値の最後の文字までです。
 textAfter があれば最後の形まで延ばし、EOL と無関係な外側の余白は除きます。
-可視の EOL の改行の後の隠れた形は、
-代わりに図の body に入ります。 [fixture: pie/accdescr-spaces]
-[fixture: pie/accdescr-eof]
-[fixture: pie/review-accdescr-whitespace-final]
-[fixture: pie/accdescr-comment]
+可視の EOL の改行の後の隠れた形は、代わりに図の body に入ります。
+[fixture: pie/accdescr-spaces] [fixture: pie/accdescr-eof]
+[fixture: pie/review-accdescr-whitespace-final] [fixture: pie/accdescr-comment]
 [fixture: pie/review-hidden-directive-accdescr-eof]
 
 ### PieAccDescrBlockStatement
@@ -248,12 +226,10 @@ textAfter があれば最後の形まで延ばし、EOL と無関係な外側の
 
 波括弧の中身から両端の共通の空白を除いたものです。
 空白、共通のディレクティブ、コメント領域だけなら null です。
-内側の空白、行終端、引用符、
-エスケープは書かれたテキストを保ちます。 [fixture: pie/accdescr-block]
-[fixture: pie/accdescr-block-unicode-trim]
+内側の空白、行終端、引用符、エスケープは書かれたテキストを保ちます。
+[fixture: pie/accdescr-block] [fixture: pie/accdescr-block-unicode-trim]
 [fixture: pie/accdescr-space-block-last]
-[fixture: pie/accdescr-empty-block-last]
-[fixture: pie/directive-block-lines]
+[fixture: pie/accdescr-empty-block-last] [fixture: pie/directive-block-lines]
 [fixture: pie/accdescr-block-comment-lines]
 [fixture: pie/review-block-quotes-backslashes]
 [fixture: pie/gram-description-block-directive-only]
@@ -262,12 +238,10 @@ textAfter があれば最後の形まで延ばし、EOL と無関係な外側の
 子の欄: `value`、`textAfter`。
 範囲は accDescr から、最初の閉じ波括弧までです。
 textAfter があれば最後の形まで延ばし、EOL と無関係な外側の余白は除きます。
-可視の EOL の改行の後の隠れた形は、
-代わりに図の body に入ります。 [fixture: pie/accdescr-block]
-[fixture: pie/accdescr-block-unicode-trim]
+可視の EOL の改行の後の隠れた形は、代わりに図の body に入ります。
+[fixture: pie/accdescr-block] [fixture: pie/accdescr-block-unicode-trim]
 [fixture: pie/accdescr-space-block-last]
-[fixture: pie/accdescr-empty-block-last]
-[fixture: pie/directive-block-lines]
+[fixture: pie/accdescr-empty-block-last] [fixture: pie/directive-block-lines]
 [fixture: pie/accdescr-block-comment-lines]
 [fixture: pie/review-block-quotes-backslashes]
 [fixture: pie/gram-description-block-directive-only]
@@ -276,9 +250,8 @@ textAfter があれば最後の形まで延ばし、EOL と無関係な外側の
 
 ブロックは閉じる必要があるので、closed の欄は要りません。
 空の形もこの文で、前の説明の代入を置き換えられます。
-任意の単位間に置ける、
-自由な無視する形ではありません。 [fixture: pie/accdescr-block-unclosed]
-[fixture: pie/accdescr-empty-block-last]
+任意の単位間に置ける、自由な無視する形ではありません。
+[fixture: pie/accdescr-block-unclosed] [fixture: pie/accdescr-empty-block-last]
 [fixture: pie/lex-block-empty-followed-inline]
 
 ### PieLiteral
@@ -293,10 +266,9 @@ textAfter があれば最後の形まで延ばし、EOL と無関係な外側の
 null に空のリテラルは作りません。
 value からは共通のディレクティブ、コメント領域、選ばれたセミコロンを除き、
 ほかのソース文字は保ちます。
-引用符に見えるテキストも StringLiteral ではなく PieLiteral です。 [fixture: pie/title-spaces]
-[fixture: pie/acctitle-eof]
-[fixture: pie/accdescr-block]
-[fixture: pie/directive-title-middle]
+引用符に見えるテキストも StringLiteral ではなく PieLiteral です。
+[fixture: pie/title-spaces] [fixture: pie/acctitle-eof]
+[fixture: pie/accdescr-block] [fixture: pie/directive-title-middle]
 [fixture: pie/accdescr-block-comment-lines]
 [fixture: pie/style-acctitle-trigger]
 [fixture: pie/review-common-quotes-backslashes]
@@ -312,7 +284,8 @@ value からは共通のディレクティブ、コメント領域、選ばれ�
 範囲は認識した `---` か `%%{` の開きから閉じる区切りまでで、
 任意の前置 ASCII 空白と、字句規則が閉じの後で消費する LF は除きます。
 内側の行終端と余白は書かれたテキストに含めます。
-追加した LF は範囲にも値にも入りません。 [fixture: pie/frontmatter-between-section-parts]
+追加した LF は範囲にも値にも入りません。
+[fixture: pie/frontmatter-between-section-parts]
 [fixture: pie/review-directive-hidden-crlf]
 [fixture: pie/review-directive-hidden-space-boundary]
 [fixture: pie/gram-section-eof-hidden-yaml]
@@ -322,13 +295,15 @@ value からは共通のディレクティブ、コメント領域、選ばれ�
 [fixture: pie/lex-hidden-directive-lone-cr]
 
 YAML の閉じは、
-[隠れた YAML](../diagrams/pie.ja.md#隠れた-yaml) の本文がある一致を優先する順で選びます。
+[隠れた YAML](../diagrams/pie.ja.md#隠れた-yaml)
+の本文がある一致を優先する順で選びます。
 直後の閉じに見える区切りは、代わりに葉の value に入る場合があります。
-隣接する区切り 3 行は、
-中央の区切りを含む 1 個の葉です。 [fixture: pie/lex-yaml-three-adjacent-fences]
+隣接する区切り 3 行は、中央の区切りを含む 1 個の葉です。
+[fixture: pie/lex-yaml-three-adjacent-fences]
 [fixture: pie/lex-yaml-immediate-fence-before-later-closer]
 ヘッダー前に保持する隣接した区切り 3 行のブロックは、
-1 個の textBeforeHeader です。 [fixture: pie/lex-nonleading-yaml-three-adjacent-fences]
+1 個の textBeforeHeader です。
+[fixture: pie/lex-nonleading-yaml-three-adjacent-fences]
 
 隠れた YAML の各箇所は kind が yaml-block、
 隠れた DIRECTIVE の各箇所は directive です。
@@ -336,8 +311,8 @@ YAML の閉じは、
 value から共通のディレクティブ、コメント領域、選ばれたセミコロンを除いても、
 ソースの範囲はそれらをまたぎます。
 YAML のプロパティや独自の設定の効果は持ちません。
-その中で認識した共通のディレクティブは、
-共通の効果を保ちます。 [fixture: pie/review-yaml-hidden-empty]
+その中で認識した共通のディレクティブは、共通の効果を保ちます。
+[fixture: pie/review-yaml-hidden-empty]
 [fixture: pie/review-directive-empty-body]
 [fixture: pie/lex-yaml-body-directive-content]
 [fixture: pie/lex-yaml-body-comment-content]
@@ -357,8 +332,8 @@ YAML のプロパティや独自の設定の効果は持ちません。
 そこで始まる隠れた DIRECTIVE はその文の textAfter に入ります。
 行の値がすでに読んだ YAML のようなテキストは、内容のままです。
 代替の図のコメントは、PieIgnoredText ではなく共通の Comment です。
-読み飛ばすテキストを保てるので、
-差異として拒否する理由にはなりません。 [fixture: pie/review-yaml-between-label-colon]
+読み飛ばすテキストを保てるので、差異として拒否する理由にはなりません。
+[fixture: pie/review-yaml-between-label-colon]
 [fixture: pie/frontmatter-between-section-parts]
 [fixture: pie/frontmatter-nonleading-comment]
 [fixture: pie/review-hidden-directive-before-showdata]

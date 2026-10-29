@@ -23,30 +23,25 @@ export const quadrantNoRedefinedQuadrant: MermaidRuleDefinition<{
     schema: [],
     messages: {
       redefined:
-        "mermaid.js replaces the text of `quadrant-{{quadrant}}`, set on line {{line}}, with the one of this statement.",
+        "mermaid.js replaces the text of `quadrant-{{quadrant}}`, set earlier, with the one of this statement.",
     },
   },
   create(context) {
-    const texts = new Map<number, { value: string; line: number }>()
+    const texts = new Map<number, string>()
     return {
       QuadrantQuadrantStatement(node) {
         const value = node.text.value.trim()
         const earlier = texts.get(node.quadrant)
-        if (
-          earlier !== undefined &&
-          earlier.value !== "" &&
-          earlier.value !== value
-        ) {
+        if (earlier !== undefined && earlier !== "" && earlier !== value) {
           context.report({
             node,
             messageId: "redefined",
             data: {
               quadrant: String(node.quadrant),
-              line: String(earlier.line),
             },
           })
         }
-        texts.set(node.quadrant, { value, line: node.loc.start.line })
+        texts.set(node.quadrant, value)
       },
     }
   },

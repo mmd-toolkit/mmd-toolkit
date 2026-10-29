@@ -53,8 +53,8 @@ builder は parser の受理検査を繰り返さない。
    1 から始まる次の `generated-commit-N` を割り当てる。
    予約済み・割当済みの名前は飛ばす。
    cherry-pick の id option は source であり、target id ではない。
-   sequence は 0 から始まり、
-   置換も含めて作成ごとに増える。 [fixture: gitgraph/db-generated-ids] [fixture:
+   sequence は 0 から始まり、置換も含めて作成ごとに増える。
+   [fixture: gitgraph/db-generated-ids] [fixture:
    gitgraph/db-generated-name-collision] [fixture:
    gitgraph/db-random-shaped-custom-id] [fixture:
    gitgraph/gram-commit-repeated-options] [fixture:
@@ -93,8 +93,8 @@ builder は parser の受理検査を繰り返さない。
    書かれない order は 0 である。
    書かれた数字は共有の double として読み、精度の損失・overflow も含む。
    branch は名前だけを返す。
-   direction は書かれた LR・TB・BT、
-   なければ LR である。 [fixture: gitgraph/db-three-definitions] [fixture:
+   direction は書かれた LR・TB・BT、なければ LR である。
+   [fixture: gitgraph/db-three-definitions] [fixture:
    gitgraph/gram-branch-order] [fixture: gitgraph/gram-branch-order-tie]
    [fixture: gitgraph/config-main-order-negative] [fixture:
    gitgraph/number-precision] [fixture: gitgraph/number-overflow] [fixture:

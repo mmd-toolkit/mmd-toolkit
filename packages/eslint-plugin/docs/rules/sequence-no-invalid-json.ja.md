@@ -36,8 +36,9 @@ mermaid.js は、それを書き手の意図どおりには読まないからで
 フラグメントのある URL を持つ `links A: {"Docs": "https://x.example/#top"}` は、
 正しい JSON のオブジェクトである。
 mermaid.js が参加者にリンクを与えないのは、テキストを `#` で切るからにすぎず、
-これは mermaid.js の不具合に見える（[#5419](https://github.com/mermaid-js/mermaid/issues/5419) は open で、
-`#` が sequence 図のテキストを空にすると報告している）。
+これは mermaid.js
+の不具合に見える（[#5419](https://github.com/mermaid-js/mermaid/issues/5419) は
+open で、 `#` が sequence 図のテキストを空にすると報告している）。
 `links A: {"Docs": "https://x.example/"} # note` のように、
 `#` の前が JSON のオブジェクトであるテキストはリンクを与え、これも報告しない。
 

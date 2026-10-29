@@ -63,12 +63,13 @@ architecture-beta
 
 ## 背景
 
-[文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L111-L126) は、
-group の中の service にだけ `{group}` を認める。
-[Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L225-L236) は、
-1 つの group の 2 つの service の間の辺の `{group}` を受理しないが、
+[文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L111-L126)
+は、 group の中の service にだけ `{group}` を認める。
+[Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L225-L236)
+は、 1 つの group の 2 つの service の間の辺の `{group}` を受理しないが、
 group に属さない端のものは受理し、
-[描画](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/svgDraw.ts#L54-L71) は `{group}` を持つすべての端を group の余白と 4 だけ動かす。
+[描画](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/svgDraw.ts#L54-L71)
+は `{group}` を持つすべての端を group の余白と 4 だけ動かす。
 
 <!-- begin auto-generated rule resources -->
 

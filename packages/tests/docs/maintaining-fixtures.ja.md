@@ -62,8 +62,7 @@ fixture の読み方は [README](../README.ja.md) にあります。
 比較の参照入力では、Mermaid の設定導出で拒否されたブロックだけを除き、
 正しいテキスト内設定から、仕様が名指しする受理条件の鍵だけを除きます。
 ほかの導出値は保ちます。
-Mermaid の frontmatter タイトルや、
-`wrap` など Db に効く設定も保ちます。
+Mermaid の frontmatter タイトルや、 `wrap` など Db に効く設定も保ちます。
 [fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
 [fixture: sequence/div-invalid-frontmatter-preserves-wrap-directive]
 比較 Db がないことを明示し、Db を作り出したり、
@@ -132,8 +131,8 @@ NumericLiteral の `value` がそうで、ほかの欄はそのような数を�
 書かれたテキストがそのような数である NumericLiteral の `value` に、`null`、
 `Infinity`、`-Infinity` を認めます。
 ほかの `value` の `null` は認めません。
-`dbFromTree()` はノードのテキストから数を読むので、
-変換は要りません。 [fixture: xychart/db-plot-values-overflow]
+`dbFromTree()` はノードのテキストから数を読むので、変換は要りません。
+[fixture: xychart/db-plot-values-overflow]
 
 ## 道具のための export
 
@@ -222,9 +221,9 @@ pnpm run fixtures:set-note notes.json --dry-run
 - `generate`、`add`、`add-many` は、 `Error`、`MermaidParseError`、
   `UnknownDiagramError`、
   `YAMLException` 以外のエラーで拒否された fixture を一覧に出す。
-  1 件ずつ、
-  入力が原因であることを手で確かめる（[expected-results.ja.md](./expected-results.ja.md) の「拒否か、
-  ブラウザの機能の欠如か」を参照）。
+  1 件ずつ、入力が原因であることを手で確かめる。
+  [expected-results.ja.md](./expected-results.ja.md) の「拒否か、
+  ブラウザの機能の欠如か」を参照。
 
 ワークフロー `NodeCI.yml` は `.github/workflows_bk/` にあり、
 今は有効なワークフローがありません。

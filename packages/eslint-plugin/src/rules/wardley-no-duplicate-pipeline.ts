@@ -18,33 +18,27 @@ export const wardleyNoDuplicatePipeline: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js replaces the pipeline children of `{{name}}`, set on line {{line}}, with these children.",
+        "mermaid.js replaces the pipeline children of `{{name}}`, set earlier, with these children.",
     },
   },
   create(context) {
     return {
       WardleyDiagram(diagram) {
-        const previousByParent = new Map<
-          string,
-          { members: readonly string[]; line: number }
-        >()
+        const previousByParent = new Map<string, readonly string[]>()
         for (const pipeline of wardleyDeclarationsOf(diagram).pipelines) {
           const previous = previousByParent.get(pipeline.parent)
           if (
             previous !== undefined &&
-            (previous.members.length !== pipeline.members.length ||
-              previous.members.some((id, at) => id !== pipeline.members[at]))
+            (previous.length !== pipeline.members.length ||
+              previous.some((id, at) => id !== pipeline.members[at]))
           ) {
             context.report({
               node: pipeline.node,
               messageId: "duplicate",
-              data: { name: pipeline.parent, line: String(previous.line) },
+              data: { name: pipeline.parent },
             })
           }
-          previousByParent.set(pipeline.parent, {
-            members: pipeline.members,
-            line: pipeline.node.loc.start.line,
-          })
+          previousByParent.set(pipeline.parent, pipeline.members)
         }
       },
     }

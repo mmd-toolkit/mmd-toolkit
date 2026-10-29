@@ -8,7 +8,9 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
-💡 [エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions) を選んで適用できる。
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
 
 <!-- end auto-generated rule notice -->
 
@@ -48,8 +50,9 @@ subgraph の中の文を消すと、そのメンバーも消える。
 ただし、subgraph のほかの文が同じ id をメンバーにしていれば残る。
 文の後の `;` は、文を区切るものなら残す。
 `accTitle: style:#b;` のように、
-仕様の [`style` 行と `classDef` 行](../../../spec/docs/common.ja.md#style-行と-classdef-行) の決まりで mermaid.js が無視する `;` は、
-文と一緒に消す。
+仕様の
+[`style` 行と `classDef` 行](../../../spec/docs/common.ja.md#style-行と-classdef-行)
+の決まりで mermaid.js が無視する `;` は、文と一緒に消す。
 
 この規則に**反する**コードの例:
 

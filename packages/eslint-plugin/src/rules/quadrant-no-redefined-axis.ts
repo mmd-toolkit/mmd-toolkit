@@ -1,12 +1,10 @@
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 
-/** The current texts of one axis and the lines of the statements that set them. */
+/** The current texts of one axis set by preceding statements. */
 interface AxisState {
   start: string
-  startLine: number
   end: string
-  endLine: number
 }
 
 /**
@@ -36,8 +34,8 @@ export const quadrantNoRedefinedAxis: MermaidRuleDefinition<{
   },
   create(context) {
     const axes: Record<"x" | "y", AxisState> = {
-      x: { start: "", startLine: 0, end: "", endLine: 0 },
-      y: { start: "", startLine: 0, end: "", endLine: 0 },
+      x: { start: "", end: "" },
+      y: { start: "", end: "" },
     }
     return {
       QuadrantAxisStatement(node) {
@@ -48,10 +46,10 @@ export const quadrantNoRedefinedAxis: MermaidRuleDefinition<{
         const end = node.end?.value.trim() ?? null
         const replaced: string[] = []
         if (current.start !== "" && current.start !== start) {
-          replaced.push(`the first text set on line ${current.startLine}`)
+          replaced.push("the earlier first text")
         }
         if (end !== null && current.end !== "" && current.end !== end) {
-          replaced.push(`the second text set on line ${current.endLine}`)
+          replaced.push("the earlier second text")
         }
         if (replaced.length > 0) {
           context.report({
@@ -64,10 +62,8 @@ export const quadrantNoRedefinedAxis: MermaidRuleDefinition<{
           })
         }
         current.start = start
-        current.startLine = node.loc.start.line
         if (end !== null) {
           current.end = end
-          current.endLine = node.loc.start.line
         }
       },
     }

@@ -1,7 +1,6 @@
 # @mmd-toolkit/wardley-no-duplicate-evolution
 
-英語版:
-[wardley-no-duplicate-evolution.md](./wardley-no-duplicate-evolution.md)
+英語版: [wardley-no-duplicate-evolution.md](./wardley-no-duplicate-evolution.md)
 
 前に設定した段階を置き換える `evolution` を禁止する。
 
@@ -61,8 +60,9 @@ wardley-beta
 ## 背景
 
 パーサーは最後の `evolution` を保ち、
-[マップ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L76-L90) は、
-2 つ目の名前を、前後に空白を 1 つずつ置いた `/` でつないだ名前と境界を取る。
+[マップ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L76-L90)
+は、 2 つ目の名前を、
+前後に空白を 1 つずつ置いた `/` でつないだ名前と境界を取る。
 
 <!-- begin auto-generated rule resources -->
 

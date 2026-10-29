@@ -30,12 +30,11 @@ description:
    提案が確かめられない、など）、別の決定をせずに、その根拠を持って決定に戻る。
 2. まだ実装していない間は規則の覚え書き（`docs/rule-notes/<名前>.md`）。
    それと、テストが読む例を持つ、規則の英語の文書。
-3. SKILL
-   `eslint-plugin`（`.claude/skills/eslint-plugin/SKILL.md`）の「方針と基準」の節と、
-   SKILL `conventions`。
+3. SKILL `eslint-plugin` の「方針と基準」の節と、 SKILL `conventions`。
+   前者は `.claude/skills/eslint-plugin/SKILL.md` にある。
 4. 木の定義: `packages/spec/docs/ast.md` と `packages/spec/docs/ast/<図種>.md`。
-5. `packages/eslint-plugin/docs/development.md` の Writing a rule、The fixtures
-   of the rules、Snapshots、 Rules and their documents。
+5. `packages/eslint-plugin/docs/development.md` の Writing a rule、
+   The fixtures of the rules、Snapshots、 Rules and their documents。
 
 ## 2. 規則とは独立に、事実を確かめる
 
@@ -164,8 +163,8 @@ description:
 
 SKILL `conventions` の決まり（テストの実行）に従う。
 作業の途中は、
-変更が影響しうるテストのファイルだけを回し（`packages/eslint-plugin` で `npx vitest run <ファイル>`）、
-全体は、作業の完了を報告する前に 1 回だけ回す。
+変更が影響しうるテストのファイルだけを回し（`packages/eslint-plugin` で
+`npx vitest run <ファイル>`）、全体は、作業の完了を報告する前に 1 回だけ回す。
 
 | 変えたもの                                              | 回すテストのファイル                                                                                                                              |
 | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -205,8 +204,8 @@ SKILL `conventions` の決まり（テストの実行）に従う。
   これを同じ変更の中で行う。
   `recommended` は決定のとおりにする。
   それから `update` と `check:docs` を動かす。
-- 規則の振る舞いを変えたら、英語の文書と日本語の文書も一緒に直す（SKILL
-  `eslint-plugin`）。
+- 規則の振る舞いを変えたら、
+  英語の文書と日本語の文書も一緒に直す（SKILL `eslint-plugin`）。
 - 作業の完了を報告する前に、次の検査を 1 回動かし、変更による失敗でないものは、
   そう言う（作業の途中は、上の表のとおり、変更が影響しうるものだけを回す）。
   - `packages/eslint-plugin` の中で、

@@ -67,7 +67,7 @@ root/ :::first icon(pack:file) :::last icon() ##  detail\u0020\u0020
         errors: [
           {
             message:
-              "mermaid.js replaces the description set on line 4 with the one of this `accDescr`.",
+              "mermaid.js replaces the earlier description with the one of this `accDescr`.",
             line: 5,
             column: 1,
             endLine: 6,
@@ -86,7 +86,7 @@ root/
         errors: [
           {
             message:
-              "mermaid.js replaces the description set on line 2 with the one of this `accDescr`.",
+              "mermaid.js replaces the earlier description with the one of this `accDescr`.",
             line: 3,
             column: 1,
             endLine: 3,
@@ -105,7 +105,7 @@ root/
         errors: [
           {
             message:
-              "mermaid.js replaces the description set on line 2 with the one of this `accDescr`.",
+              "mermaid.js replaces the earlier description with the one of this `accDescr`.",
             line: 3,
             column: 1,
             endLine: 3,
@@ -125,7 +125,7 @@ root/
         errors: [
           {
             message:
-              "mermaid.js replaces the description set on line 2 with the one of this `accDescr`.",
+              "mermaid.js replaces the earlier description with the one of this `accDescr`.",
             line: 3,
             column: 1,
             endLine: 3,
@@ -144,7 +144,7 @@ root/
         errors: [
           {
             message:
-              "mermaid.js replaces the description set on line 2 with the one of this `accDescr`.",
+              "mermaid.js replaces the earlier description with the one of this `accDescr`.",
             line: 3,
             column: 1,
             endLine: 3,

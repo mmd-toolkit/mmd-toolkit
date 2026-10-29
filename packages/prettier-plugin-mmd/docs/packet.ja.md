@@ -23,10 +23,10 @@ hidden の境界と保護された見出し・本文の組を優先します。
 
 [fixture: packet/header/header-global-boundary]
 
-入力 (escaped):
-`" \tpacket \t\n0:\"Head\"\n"`.
+入力（escape 表記）: `" \tpacket \t\n0:\"Head\"\n"`
 
-出力 ([header/header-packet-output.mmd](../tests/fixtures/packet/header/header-packet-output.mmd)):
+出力
+([header/header-packet-output.mmd](../tests/fixtures/packet/header/header-packet-output.mmd)):
 
 ```mmd
 packet
@@ -52,10 +52,10 @@ YAML は共有の正の最小幅を使います。
 
 [fixture: packet/indentation/indent-zero-tabs]
 
-入力 (escaped):
-`"packet\n0:\"Indent\"\n       1:\"Next\"\n"`.
+入力（escape 表記）: `"packet\n0:\"Indent\"\n       1:\"Next\"\n"`
 
-出力 ([indentation/indent-default-output.mmd](../tests/fixtures/packet/indentation/indent-default-output.mmd)):
+出力
+([indentation/indent-default-output.mmd](../tests/fixtures/packet/indentation/indent-default-output.mmd)):
 
 ```mmd
 packet
@@ -88,10 +88,10 @@ packet
 
 [corpus fixture: packet/gram-empty-description-in-block]
 
-入力 (escaped):
-`"packet title Inline topic"`.
+入力（escape 表記）: `"packet title Inline topic"`
 
-出力 ([statements-one-per-line/inline-title-output.mmd](../tests/fixtures/packet/statements-one-per-line/inline-title-output.mmd)):
+出力
+([statements-one-per-line/inline-title-output.mmd](../tests/fixtures/packet/statements-one-per-line/inline-title-output.mmd)):
 
 ```mmd
 packet
@@ -114,10 +114,11 @@ Db から文を再構成したり併合したりしません。
 
 [fixture: packet/block-forms-and-order/cap-unpublished-kept]
 
-入力 (escaped):
-`"packet\n+2:\"relative\"\n2:\"single\"\n3-3:\"equal range\"\n"`.
+入力（escape 表記）:
+`"packet\n+2:\"relative\"\n2:\"single\"\n3-3:\"equal range\"\n"`
 
-出力 ([block-forms-and-order/block-three-forms-output.mmd](../tests/fixtures/packet/block-forms-and-order/block-three-forms-output.mmd)):
+出力
+([block-forms-and-order/block-three-forms-output.mmd](../tests/fixtures/packet/block-forms-and-order/block-three-forms-output.mmd)):
 
 ```mmd
 packet
@@ -140,10 +141,10 @@ global trivia と hidden の境界は詰めずに保ちます。
 
 [fixture: packet/range-dash/dash-global-after]
 
-入力 (escaped):
-`"packet\n0 \t- 2 : \"Dash\"\n"`.
+入力（escape 表記）: `"packet\n0 \t- 2 : \"Dash\"\n"`
 
-出力 ([range-dash/dash-tight-output.mmd](../tests/fixtures/packet/range-dash/dash-tight-output.mmd)):
+出力
+([range-dash/dash-tight-output.mmd](../tests/fixtures/packet/range-dash/dash-tight-output.mmd)):
 
 ```mmd
 packet
@@ -162,10 +163,10 @@ global trivia と hidden form の接触状態と消費 LF は保ちます。
 
 [fixture: packet/relative-plus/plus-global-after]
 
-入力 (escaped):
-`"packet\n+ \t3 :\"Plus\"\n"`.
+入力（escape 表記）: `"packet\n+ \t3 :\"Plus\"\n"`
 
-出力 ([relative-plus/plus-tight-output.mmd](../tests/fixtures/packet/relative-plus/plus-tight-output.mmd)):
+出力
+([relative-plus/plus-tight-output.mmd](../tests/fixtures/packet/relative-plus/plus-tight-output.mmd)):
 
 ```mmd
 packet
@@ -186,10 +187,11 @@ trivia がある隙間は境界を保ちます。
 
 [fixture: packet/block-colons/colon-global-after]
 
-入力 (escaped):
-`"packet\n0 - 2 \t:  \"Range\"\n3 \t:\t'Single'\n+ 2 :\"Relative\"\n"`.
+入力（escape 表記）:
+`"packet\n0 - 2 \t:  \"Range\"\n3 \t:\t'Single'\n+ 2 :\"Relative\"\n"`
 
-出力 ([block-colons/colon-compact-output.mmd](../tests/fixtures/packet/block-colons/colon-compact-output.mmd)):
+出力
+([block-colons/colon-compact-output.mmd](../tests/fixtures/packet/block-colons/colon-compact-output.mmd)):
 
 ```mmd
 packet
@@ -210,10 +212,11 @@ StringLiteral の範囲全体を保ちます。
 
 [fixture: packet/quotes/quotes-single-option]
 
-入力 (escaped):
-`"packet\n0:'single \"quote\"'\n1:\"double 'quote'\"\n2:''\n3:\"\"\n"`.
+入力（escape 表記）:
+`"packet\n0:'single \"quote\"'\n1:\"double 'quote'\"\n2:''\n3:\"\"\n"`
 
-出力 ([quotes/quotes-authored-output.mmd](../tests/fixtures/packet/quotes/quotes-authored-output.mmd)):
+出力
+([quotes/quotes-authored-output.mmd](../tests/fixtures/packet/quotes/quotes-authored-output.mmd)):
 
 ```mmd
 packet
@@ -238,10 +241,10 @@ trim、圧縮、decode は Db を変え得るためです。
 
 [fixture: packet/label-content/label-hidden-looking]
 
-入力 (escaped):
-`"packet\n0:\"  A  B\t C  \"\n1:\" \t \"\n"`.
+入力（escape 表記）: `"packet\n0:\"  A  B\t C  \"\n1:\" \t \"\n"`
 
-出力 ([label-content/label-padding-output.mmd](../tests/fixtures/packet/label-content/label-padding-output.mmd)):
+出力
+([label-content/label-padding-output.mmd](../tests/fixtures/packet/label-content/label-padding-output.mmd)):
 
 ```mmd
 packet
@@ -272,10 +275,10 @@ double は原綴を失い、拒否される指数や Infinity の構文にもな
 
 [corpus fixture: packet/db-overflow-wide]
 
-入力 (escaped):
-`"packet\n0-0:\"Zero\"\n"`.
+入力（escape 表記）: `"packet\n0-0:\"Zero\"\n"`
 
-出力 ([numbers/number-zero-output.mmd](../tests/fixtures/packet/numbers/number-zero-output.mmd)):
+出力
+([numbers/number-zero-output.mmd](../tests/fixtures/packet/numbers/number-zero-output.mmd)):
 
 ```mmd
 packet
@@ -301,10 +304,10 @@ null または空白だけの値は裸の `title` にします。
 
 [fixture: packet/title/title-frontmatter]
 
-入力 (escaped):
-`"packet\ntitle\t  Topic  words \t\n"`.
+入力（escape 表記）: `"packet\ntitle\t  Topic  words \t\n"`
 
-出力 ([title/title-trim-output.mmd](../tests/fixtures/packet/title/title-trim-output.mmd)):
+出力
+([title/title-trim-output.mmd](../tests/fixtures/packet/title/title-trim-output.mmd)):
 
 ```mmd
 packet
@@ -328,10 +331,11 @@ colon 後の brace は行値です。
 
 [corpus fixture: packet/common-comment-gap]
 
-入力 (escaped):
-`"packet\naccTitle \t:  Access  words \t\naccDescr\t:  Details  words \t\n"`.
+入力（escape 表記）:
+`"packet\naccTitle \t:  Access  words \t\naccDescr\t:  Details  words \t\n"`
 
-出力 ([accessibility-lines/a11y-lines-output.mmd](../tests/fixtures/packet/accessibility-lines/a11y-lines-output.mmd)):
+出力
+([accessibility-lines/a11y-lines-output.mmd](../tests/fixtures/packet/accessibility-lines/a11y-lines-output.mmd)):
 
 ```mmd
 packet
@@ -374,10 +378,11 @@ keyword と opener、内側の接触は保ち、存在する空白列は1個に�
 
 [corpus fixture: packet/accdescr-block-escaped-close]
 
-入力 (escaped):
-`"packet\naccDescr{A}\naccDescr   {  B  }\naccDescr {C }\naccDescr{ D}\n"`.
+入力（escape 表記）:
+`"packet\naccDescr{A}\naccDescr   {  B  }\naccDescr {C }\naccDescr{ D}\n"`
 
-出力 ([description-blocks/description-gaps-output.mmd](../tests/fixtures/packet/description-blocks/description-gaps-output.mmd)):
+出力
+([description-blocks/description-gaps-output.mmd](../tests/fixtures/packet/description-blocks/description-gaps-output.mmd)):
 
 ```mmd
 packet
@@ -398,12 +403,13 @@ block component 間の可視 LF は拒否され、label の改行変更は Db �
 
 [fixture: packet/multiline-values/multiline-label]
 
-入力 (escaped):
-`"packet\n0-30:\"Long authored label with enough words to exceed a narrow width\"\n"`.
+入力（escape 表記）:
+`"packet\n0-30:\"Long authored label with enough words to exceed a narrow width\"\n"`
 
-Options: `{"printWidth": 20}`.
+設定: `{"printWidth": 20}`
 
-出力 ([multiline-values/long-no-wrap-output.mmd](../tests/fixtures/packet/multiline-values/long-no-wrap-output.mmd)):
+出力
+([multiline-values/long-no-wrap-output.mmd](../tests/fixtures/packet/multiline-values/long-no-wrap-output.mmd)):
 
 ```mmd
 packet
@@ -428,10 +434,11 @@ native comment は物理 LF・CR までで、LS・PS は内容です。
 
 [test: packet/comments/comments-ls-ps]
 
-入力 (escaped):
-`"packet\n0:\"A%%B\"\naccDescr { A%%B }\ntitle Text%%comment\n"`.
+入力（escape 表記）:
+`"packet\n0:\"A%%B\"\naccDescr { A%%B }\ntitle Text%%comment\n"`
 
-出力 ([comments/comments-value-output.mmd](../tests/fixtures/packet/comments/comments-value-output.mmd)):
+出力
+([comments/comments-value-output.mmd](../tests/fixtures/packet/comments/comments-value-output.mmd)):
 
 ```mmd
 packet
@@ -467,10 +474,11 @@ native hidden DIRECTIVE は別の所有ノードのままです。
 
 [fixture: packet/global-directives/global-multiline]
 
-入力 (escaped):
-`"packet\n0%%{wrap}%%:\t\"Global\"\naccTitle%%{wrap}%%: Access\naccDescr%%{wrap}%%{ Detail }\n"`.
+入力（escape 表記）:
+`"packet\n0%%{wrap}%%:\t\"Global\"\naccTitle%%{wrap}%%: Access\naccDescr%%{wrap}%%{ Detail }\n"`
 
-出力 ([global-directives/global-positions-output.mmd](../tests/fixtures/packet/global-directives/global-positions-output.mmd)):
+出力
+([global-directives/global-positions-output.mmd](../tests/fixtures/packet/global-directives/global-positions-output.mmd)):
 
 ```mmd
 packet
@@ -531,10 +539,10 @@ opaque な本文は YAML 整形せず、直前に LF を追加しません。
 
 [corpus fixture: packet/lex-yaml-common-comment]
 
-入力 (escaped):
-`"packet\n+---\nopaque count\n---\n2:\"Ycount\"\n"`.
+入力（escape 表記）: `"packet\n+---\nopaque count\n---\n2:\"Ycount\"\n"`
 
-出力 ([hidden-yaml/yaml-gap-count-output.mmd](../tests/fixtures/packet/hidden-yaml/yaml-gap-count-output.mmd)):
+出力
+([hidden-yaml/yaml-gap-count-output.mmd](../tests/fixtures/packet/hidden-yaml/yaml-gap-count-output.mmd)):
 
 ```mmd
 packet
@@ -546,8 +554,8 @@ opaque count
 
 ### Hidden directives
 
-directive の PacketIgnoredText にも共有の source・境界保持を適用し、 Root
-directive と区別します。
+directive の PacketIgnoredText にも共有の source・境界保持を適用し、
+Root directive と区別します。
 range・single・relative の内部の全隙間、7種類の文の suffix、
 見出しとの接触と可視 EOL 後の body form を保ちます。
 任意・複数行の本文、遅い有効な閉じ、複数 form、global cut も保ちます。
@@ -590,10 +598,11 @@ range・single・relative の内部の全隙間、7種類の文の suffix、
 
 [corpus fixture: packet/lex-hidden-after-visible-eol]
 
-入力 (escaped):
-`"packet\n0%%{!d}%% -%%{!e}%% 1%%{!c}%% :%%{!l}%% \"Dgaps\"\n"`.
+入力（escape 表記）:
+`"packet\n0%%{!d}%% -%%{!e}%% 1%%{!c}%% :%%{!l}%% \"Dgaps\"\n"`
 
-出力 ([hidden-directives/hidden-all-range-gaps-output.mmd](../tests/fixtures/packet/hidden-directives/hidden-all-range-gaps-output.mmd)):
+出力
+([hidden-directives/hidden-all-range-gaps-output.mmd](../tests/fixtures/packet/hidden-directives/hidden-all-range-gaps-output.mmd)):
 
 ```mmd
 packet
@@ -603,8 +612,8 @@ packet
 ### Retained prefix
 
 textBeforeHeader に hidden form があれば、prefix 全体を保ちます。
-先頭 LF、コメントの列、通過した bare line の trivia、第2
-scan の form と real・hidden の順序も含みます。
+先頭 LF、コメントの列、通過した bare line の trivia、
+第2 scan の form と real・hidden の順序も含みます。
 先頭 LF の削除は、無視された YAML を有効な title・設定、
 または不正な frontmatter へ昇格させ得るためです。
 通常の通過コメントだけの prefix は、共有の root 整理を使います。
@@ -617,10 +626,11 @@ scan の form と real・hidden の順序も含みます。
 
 [fixture: packet/retained-prefix/prefix-between-retained]
 
-入力 (escaped):
-`"\n---\ntitle: Ignored title\nconfig: {packet: {bitsPerRow: 8}}\n---\npacket\n0-9:\"Prefix\"\n"`.
+入力（escape 表記）:
+`"\n---\ntitle: Ignored title\nconfig: {packet: {bitsPerRow: 8}}\n---\npacket\n0-9:\"Prefix\"\n"`
 
-出力 ([retained-prefix/prefix-retain-output.mmd](../tests/fixtures/packet/retained-prefix/prefix-retain-output.mmd)):
+出力
+([retained-prefix/prefix-retain-output.mmd](../tests/fixtures/packet/retained-prefix/prefix-retain-output.mmd)):
 
 ```mmd
 
@@ -661,10 +671,11 @@ atomic cut は失敗のままです。
 
 [test: packet/semicolons/semicolons-ls-segment]
 
-入力 (escaped):
-`"packet\ntitle Text;;\naccTitle: Access;\naccDescr: Detail;;\n0:\"Label;\"\n"`.
+入力（escape 表記）:
+`"packet\ntitle Text;;\naccTitle: Access;\naccDescr: Detail;;\n0:\"Label;\"\n"`
 
-出力 ([semicolons/semicolons-text-output.mmd](../tests/fixtures/packet/semicolons/semicolons-text-output.mmd)):
+出力
+([semicolons/semicolons-text-output.mmd](../tests/fixtures/packet/semicolons/semicolons-text-output.mmd)):
 
 ```mmd
 packet
@@ -681,16 +692,16 @@ packet
 コメント周辺も同じです。
 値、block、directive、hidden の内部、共通領域の結合、保持する prefix の空行は、
 内容や原文の役割に属するため保ちます。
-hidden form が LF を消費した後は、次の文に必要なときだけ予備の LF
-1 つを保ちます。
+hidden form が LF を消費した後は、
+次の文に必要なときだけ予備の LF 1 つを保ちます。
 文書の終わりは設定の終端改行1つにし、見出しの直後の空行は削除します。
 見出しと最初の文の間に EOL は必要ありません。
 それ以外は予備の LF の後に通常の空行の規則を適用し、連続空行を1行、
 空白だけの行を空行にします。
 予備の LF は文法の要件で、それ以降はコメントの後と同じ作者の区切りです。
 
-hidden の境界や semicolon の保護で文が見出しの行に残っても、その文の後置 hidden
-form の後は文と文の間として扱います。
+hidden の境界や semicolon の保護で文が見出しの行に残っても、
+その文の後置 hidden form の後は文と文の間として扱います。
 
 [fixture: packet/blank-lines/hidden-following-blanks]
 
@@ -716,10 +727,10 @@ form の後は文と文の間として扱います。
 
 [fixture: packet/blank-lines/blanks-values]
 
-入力 (escaped):
-`"\n\npacket\n\n\n0:\"Blank\"\n \t\n\n1:\"Group\"\n\n"`.
+入力（escape 表記）: `"\n\npacket\n\n\n0:\"Blank\"\n \t\n\n1:\"Group\"\n\n"`
 
-出力 ([blank-lines/blanks-collapse-output.mmd](../tests/fixtures/packet/blank-lines/blanks-collapse-output.mmd)):
+出力
+([blank-lines/blanks-collapse-output.mmd](../tests/fixtures/packet/blank-lines/blanks-collapse-output.mmd)):
 
 ```mmd
 packet
@@ -743,10 +754,10 @@ hidden の閉じの padding は EOF でも残します。
 
 [fixture: packet/trailing-whitespace/trailing-multiline]
 
-入力 (escaped):
-`"packet \t\n0:\"Exterior\" \t\naccDescr { Detail } \t\n"`.
+入力（escape 表記）: `"packet \t\n0:\"Exterior\" \t\naccDescr { Detail } \t\n"`
 
-出力 ([trailing-whitespace/trailing-safe-output.mmd](../tests/fixtures/packet/trailing-whitespace/trailing-safe-output.mmd)):
+出力
+([trailing-whitespace/trailing-safe-output.mmd](../tests/fixtures/packet/trailing-whitespace/trailing-safe-output.mmd)):
 
 ```mmd
 packet
@@ -775,10 +786,11 @@ hidden YAML と保持する prefix はこの整形へ渡しません。
 
 [fixture: packet/frontmatter-yaml/frontmatter-delimiter-producing]
 
-入力 (escaped):
-`"---\ntitle: \"<a b=\\\"c\\\">\"\n---\npacket\n0:\"Html guard\"\n"`.
+入力（escape 表記）:
+`"---\ntitle: \"<a b=\\\"c\\\">\"\n---\npacket\n0:\"Html guard\"\n"`
 
-出力 ([frontmatter-yaml/frontmatter-html-guard-output.mmd](../tests/fixtures/packet/frontmatter-yaml/frontmatter-html-guard-output.mmd)):
+出力
+([frontmatter-yaml/frontmatter-html-guard-output.mmd](../tests/fixtures/packet/frontmatter-yaml/frontmatter-html-guard-output.mmd)):
 
 ```mmd
 ---
@@ -831,9 +843,9 @@ byte の同一性は保証しません。
 
 [test: packet/line-terminators-and-unicode/bom-frontmatter-opening]
 
-入力 (escaped): `"packet\r0:\"Physical\"\r"`.
+入力（escape 表記）: `"packet\r0:\"Physical\"\r"`
 
-出力: `"packet\n  0: \"Physical\"\n"`.
+出力（escape 表記）: `"packet\n  0: \"Physical\"\n"`
 
 ### Final newline
 
@@ -858,10 +870,10 @@ EOF に達する global の末尾、hidden の閉じ padding、
 
 [corpus fixture: packet/div-c4-hidden-suffix-eof]
 
-入力 (escaped):
-`"packet\n0:\"Final\"\n\n"`.
+入力（escape 表記）: `"packet\n0:\"Final\"\n\n"`
 
-出力 ([final-newline/final-statement-output.mmd](../tests/fixtures/packet/final-newline/final-statement-output.mmd)):
+出力
+([final-newline/final-statement-output.mmd](../tests/fixtures/packet/final-newline/final-statement-output.mmd)):
 
 ```mmd
 packet
@@ -870,7 +882,7 @@ packet
 
 ### Specified readings
 
-[6つの既知の差異](../../spec/docs/diagrams/packet.md#known-divergences) に従います。
+[6つの既知の差異](../../spec/docs/diagrams/packet.ja.md#既知の差異) に従います。
 directive・選択セミコロンの atomic cut は失敗のままです。
 frontmatter HTML は本文だけの変換、opaque な埋め込みデータ、
 C4 検出と見出し前の bare percent trivia は指定読みを使います。
@@ -938,6 +950,6 @@ Markdown は code block の最終行の padding を trim します。
 
 [test: packet Markdown: rejected]
 
-入力 (escaped): `"```mermaid\npacket 0:\"Fence\"\n```\n"`.
+入力（escape 表記）: `"```mermaid\npacket 0:\"Fence\"\n```\n"`
 
-出力: `"```mermaid\npacket\n  0: \"Fence\"\n```\n"`.
+出力（escape 表記）: `"```mermaid\npacket\n  0: \"Fence\"\n```\n"`

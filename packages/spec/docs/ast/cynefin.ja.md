@@ -6,29 +6,28 @@ Cynefin の書かれた木を定義する。
 共有の node と不変条件は [ast.md](../ast.ja.md)、
 受理は[構文](../diagrams/cynefin.ja.md)に定義する。
 任意の欄も null として残し、存在しないリストは空とし、各リストはソース順を保つ。
-各表は一つの node を独立に定義し、
-子の欄は訪問順を示す。 [fixture: cynefin/db-all-fields]
-[fixture: cynefin/db-empty-texts]
+各表は一つの node を独立に定義し、子の欄は訪問順を示す。
+[fixture: cynefin/db-all-fields] [fixture: cynefin/db-empty-texts]
 [fixture: cynefin/common-repeat-empty]
 
-領域の語は決まった集合なので name、from、 to は Identifier
-node でなく文字列の欄である。
+領域の語は決まった集合なので name、from、
+to は Identifier node でなく文字列の欄である。
 項目と遷移のラベルの位置は引用符つきの文字列だけを許し、
 共有の StringLiteral を使う。
 raw は引用符と共通の trivia を含む正確な全ソース、
 value は共通の除去を除いた未変換の内側を保ち、closed は true である。
-領域名の node、数値の葉、
-合成した実効の宣言は加えない。 [fixture: cynefin/db-all-fields]
-[fixture: cynefin/lex-string-conversion]
+領域名の node、数値の葉、合成した実効の宣言は加えない。
+[fixture: cynefin/db-all-fields] [fixture: cynefin/lex-string-conversion]
 [fixture: cynefin/lex-transition-string-conversion]
 [fixture: cynefin/directive-every-field] [fixture: cynefin/db-empty-texts]
 
-以下の textBefore と textAfter の各欄は全体の CynefinIgnoredText
-node のリストで、空白、共有の Comment、共通の Directive は含まない。
+以下の textBefore と textAfter の各欄は全体の CynefinIgnoredText node
+のリストで、空白、共有の Comment、共通の Directive は含まない。
 各 hidden の一致には正確に一つの所有者がある。
 消費した後続の改行は、その ignored node 自身の範囲の外に置く。
 囲む範囲は内部のソースの空白と改行をまたげるが、
-無関係の外側の空白と可視の EOL は範囲を広げない。 [fixture: cynefin/hidden-all-unit-gaps]
+無関係の外側の空白と可視の EOL は範囲を広げない。
+[fixture: cynefin/hidden-all-unit-gaps]
 [fixture: cynefin/hidden-domain-item-members]
 [fixture: cynefin/hidden-directive-cr] [fixture: cynefin/hidden-directive-crlf]
 [fixture: cynefin/hidden-yaml-bare-cr]
@@ -57,17 +56,18 @@ CynefinTitleStatement、 CynefinAccTitleStatement、CynefinAccDescrStatement、
 CynefinAccDescrBlockStatement、CynefinIgnoredText のいずれかである。
 自己遷移、置き換えられるブロックや空のブロック、空の共通の文を含む全出現を保つ。
 空行とコメントだけの行は本文の項目を加えない。 [fixture: cynefin/db-self-loops]
-[fixture: cynefin/db-domain-duplicates]
-[fixture: cynefin/gram-domain-empty-eof] [fixture: cynefin/common-repeat-empty]
+[fixture: cynefin/db-domain-duplicates] [fixture: cynefin/gram-domain-empty-eof]
+[fixture: cynefin/common-repeat-empty]
 [fixture: cynefin/hidden-header-after-visible-eol]
 [fixture: cynefin/space-lines] [fixture: cynefin/comment-native-between-items]
 
-textBeforeHeader は retained
-YAML と本物の二度目の走査の directive を native の境目で所有する。
+textBeforeHeader は retained YAML と本物の二度目の走査の directive を native
+の境目で所有する。
 検出が通過した裸の行は共有の Comment、一緒に通過した空白と改行は trivia で、
 retained な形の間も同じである。
 見出しの後、文の前、文の可視の EOL の後の形は、
-以下の項目の前の所有の場合を除いて body に属する。 [fixture: cynefin/detect-real-before-retained-secondscan]
+以下の項目の前の所有の場合を除いて body に属する。
+[fixture: cynefin/detect-real-before-retained-secondscan]
 [fixture: cynefin/detect-retained-secondscan-bare-ascii]
 [fixture: cynefin/prefix-two-secondscans]
 [fixture: cynefin/hidden-header-after-visible-eol]
@@ -88,9 +88,9 @@ name は子でない。
 範囲は領域の語から最後の項目まで、items が空なら最後の textAfterName の形まで、
 両リストが空なら領域の語だけである。
 項目は同じ行でも可視の改行の後でも始められる。
-空のブロックも文であり、
-繰り返す各宣言は重複も含め自身のリストを保つ。 [fixture: cynefin/db-all-fields]
-[fixture: cynefin/gram-adjacent-items] [fixture: cynefin/gram-domain-empty-eof]
+空のブロックも文であり、繰り返す各宣言は重複も含め自身のリストを保つ。
+[fixture: cynefin/db-all-fields] [fixture: cynefin/gram-adjacent-items]
+[fixture: cynefin/gram-domain-empty-eof]
 [fixture: cynefin/hidden-domain-empty-suffix]
 [fixture: cynefin/gram-item-duplicates] [fixture: cynefin/db-domain-duplicates]
 
@@ -99,7 +99,8 @@ textAfterName は最初の可視の LF、次の項目、次の文、
 その LF を探す前に hidden の消費を決める。
 このブロックの最初の実際の項目の前に可視の LF があれば、
 その後の native の形は項目の textBefore に属し、
-その項目が無ければ Diagram.body に属する。 [fixture: cynefin/hidden-domain-item-members]
+その項目が無ければ Diagram.body に属する。
+[fixture: cynefin/hidden-domain-item-members]
 [fixture: cynefin/hidden-domain-empty-suffix]
 [fixture: cynefin/hidden-before-first-item-after-eol]
 [fixture: cynefin/hidden-empty-domain-after-visible-eol]
@@ -165,10 +166,10 @@ from と to はそれぞれ complex、 complicated、clear、chaotic、confusion
 label が null となるのは colon と文字列の組全体が無い場合だけである。
 その場合 textBeforeColon と textBeforeLabel は空で、
 to の後の native な形はすべて textAfter に属する。
-ラベルがあれば各名前つきの gap を保ち、: "" や :
-'' は non-null の空の StringLiteral とする。
-自己遷移、未宣言の両端、
-重複する遷移も書かれた文として保つ。 [fixture: cynefin/hidden-unlabeled-transition-gaps]
+ラベルがあれば各名前つきの gap を保ち、: "" や : '' は non-null の空の
+StringLiteral とする。
+自己遷移、未宣言の両端、重複する遷移も書かれた文として保つ。
+[fixture: cynefin/hidden-unlabeled-transition-gaps]
 [fixture: cynefin/hidden-two-transition-suffixes]
 [fixture: cynefin/hidden-all-unit-gaps] [fixture: cynefin/db-empty-texts]
 [fixture: cynefin/db-self-loops] [fixture: cynefin/gram-transition-first]
@@ -186,8 +187,8 @@ to の後の native な形はすべて textAfter に属する。
 子の欄はありません。
 範囲は最初の dash から > まで。
 四つの欄は常にこの固定の値で存在し、kind の欄や null の marker は加えない。
-矢印全体の前後の hidden な形は矢印でなく遷移に属する。 [fixture: cynefin/db-all-fields]
-[fixture: cynefin/hidden-all-unit-gaps]
+矢印全体の前後の hidden な形は矢印でなく遷移に属する。
+[fixture: cynefin/db-all-fields] [fixture: cynefin/hidden-all-unit-gaps]
 [fixture: cynefin/hidden-unlabeled-transition-gaps]
 
 ### CynefinTitleStatement
@@ -214,9 +215,10 @@ textAfter は空でもよく、可視の EOL の後の形は Diagram.body に属
 
 title の後に ASCII space か tab があれば、正確に一つを値の外の区切りとする。
 裸の keyword や区切り一つだけを含め、残りが無ければ null とする。
-それ以外の書かれた空白は non-null の literal に属する。 [fixture: cynefin/lex-title-one-space]
-[fixture: cynefin/lex-title-one-tab] [fixture: cynefin/lex-title-two-spaces]
-[fixture: cynefin/common-title-eof] [fixture: cynefin/common-line-whitespace]
+それ以外の書かれた空白は non-null の literal に属する。
+[fixture: cynefin/lex-title-one-space] [fixture: cynefin/lex-title-one-tab]
+[fixture: cynefin/lex-title-two-spaces] [fixture: cynefin/common-title-eof]
+[fixture: cynefin/common-line-whitespace]
 
 ### CynefinAccTitleStatement
 
@@ -232,8 +234,7 @@ textAfter があればその最後の形まで延ばす。
 必須の EOL は範囲の外に置く。
 textAfter は空でもよく、可視の EOL の後の形は Diagram.body に属する。
 繰り返す全出現を文として残す。 [fixture: cynefin/hidden-acctitle-suffix]
-[fixture: cynefin/common-repeat-empty]
-[fixture: cynefin/common-line-whitespace]
+[fixture: cynefin/common-repeat-empty] [fixture: cynefin/common-line-whitespace]
 
 value は colon の直後から始まり、その後の書かれた空白をすべて含む。
 残る文字が無い場合だけ null となり、
@@ -260,7 +261,8 @@ textAfter は空でもよく、可視の EOL の後の形は Diagram.body に属
 
 value は colon の直後から始まり、その後の書かれた空白をすべて含む。
 残る文字が無ければ null、空白だけなら non-null の literal とする。
-colon の後の波括弧はブロックでなく行の値の文字である。 [fixture: cynefin/lex-common-whitespace-literals]
+colon の後の波括弧はブロックでなく行の値の文字である。
+[fixture: cynefin/lex-common-whitespace-literals]
 [fixture: cynefin/common-repeat-empty] [fixture: cynefin/common-line-whitespace]
 [fixture: cynefin/common-colon-block-priority]
 
@@ -283,7 +285,8 @@ textAfter は空でもよく、可視の EOL の後の形は Diagram.body に属
 value は波括弧の内側の書かれた文字から、外端だけの共通空白を除いたものとする。
 空、空白だけ、共通の除去だけの本文は null となる。
 内部の字下げと改行は変えない。
-閉じの波括弧は必須なので closed の欄は加えない。 [fixture: cynefin/common-empty-interleaved]
+閉じの波括弧は必須なので closed の欄は加えない。
+[fixture: cynefin/common-empty-interleaved]
 [fixture: cynefin/lex-common-whitespace-literals]
 [fixture: cynefin/common-block-whitespace]
 [fixture: cynefin/common-block-comment-only]
@@ -324,7 +327,8 @@ literal は空にならず、その場合は親の value を null とする。
 value は同じ書かれた区切りと内部のソースの改行を保ち、共通の除去を除く。
 両方の形に閉じが必須なので closed の欄や null の value は無い。
 複数に見える fence が一つの native の一致と node になる場合があり、
-空でない二つの YAML ブロックは別の node にもなる。 [fixture: cynefin/hidden-directive-adjacent]
+空でない二つの YAML ブロックは別の node にもなる。
+[fixture: cynefin/hidden-directive-adjacent]
 [fixture: cynefin/hidden-yaml-adjacent-later]
 [fixture: cynefin/hidden-yaml-two-nonempty]
 [fixture: cynefin/hidden-yaml-opener-padding]
@@ -338,7 +342,8 @@ value は同じ書かれた区切りと内部のソースの改行を保ち、�
 埋め込み設定にはならない。
 directive 状の一致の失敗は共有の Comment にもなり、
 その後の本物の YAML ブロックは CynefinIgnoredText を作る。
-共通 directive は Root.directives に属する。 [fixture: cynefin/hidden-directive-comment-fallback-kept]
+共通 directive は Root.directives に属する。
+[fixture: cynefin/hidden-directive-comment-fallback-kept]
 [fixture: cynefin/detect-retained-yaml-properties]
 [fixture: cynefin/hidden-yaml-common-directive]
 [fixture: cynefin/hidden-native-directive-opener-raw]
@@ -348,8 +353,8 @@ directive 状の一致の失敗は共有の Comment にもなり、
 可視の LF を探す前に native の消費を決める。
 次の所有の規則は一致全体にソース順で適用し、空白やコメントの node は加えない。
 囲む文はその member をまたぐ。
-消費した改行を囲む文がまたいでも、ignored
-node 自身の範囲の外に置く。 [fixture: cynefin/hidden-domain-item-members]
+消費した改行を囲む文がまたいでも、 ignored node 自身の範囲の外に置く。
+[fixture: cynefin/hidden-domain-item-members]
 [fixture: cynefin/hidden-item-after-visible-eol]
 [fixture: cynefin/hidden-domain-end-after-visible-eol]
 [fixture: cynefin/hidden-directive-cr]
@@ -374,8 +379,8 @@ node 自身の範囲の外に置く。 [fixture: cynefin/hidden-domain-item-memb
 可視の LF の後では、同じブロックの次の項目が実際にある場合だけその項目へ移る。
 空の領域は直後の接尾を保つが、後の本文の形は所有しない。
 ラベルの無い遷移の行先の後の接尾は textAfter で、仮想のラベルの gap でない。
-共通の行の接尾は EOL の前で所有し、
-可視の EOL の後なら本文の項目である。 [fixture: cynefin/hidden-domain-item-members]
+共通の行の接尾は EOL の前で所有し、可視の EOL の後なら本文の項目である。
+[fixture: cynefin/hidden-domain-item-members]
 [fixture: cynefin/hidden-domain-empty-suffix]
 [fixture: cynefin/hidden-item-after-visible-eol]
 [fixture: cynefin/hidden-domain-end-after-visible-eol]

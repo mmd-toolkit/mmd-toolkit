@@ -4,7 +4,8 @@
 
 この文書は、図種 `gantt` の木のノードを定めます。
 木の共通部分は [ast.ja.md](../ast.ja.md) で定め、ソースの読み方と、
-どの文法の規則がどのノードを作るかは [diagrams/gantt.ja.md](../diagrams/gantt.ja.md) で定めます。
+どの文法の規則がどのノードを作るかは
+[diagrams/gantt.ja.md](../diagrams/gantt.ja.md) で定めます。
 
 この図種の本体は [GanttDiagram](#ganttdiagram) です。
 欄の値は、
@@ -12,7 +13,8 @@
 書き手が書いたものを保ち、
 [common.ja.md](../common.ja.md#ソースの読み方) の変換後の形ではありません。
 値が空白で始まったり終わったりするのは、 mermaid.js が読むとおりに、
-その単位が空白を自分の文字として持つところだけです（[ノード](../ast.ja.md#ノード) を参照）。
+その単位が空白を自分の文字として持つところだけです。
+[ノード](../ast.ja.md#ノード) を参照してください。
 この図種では、コロンの前の空白を保つタスクの説明、両端の空白を保つタイトル、
 section の名前、設定の値、 `(` の前の空白と改行を保つコールバック名がそうです。
 それ以外では、値の両端の空白は値の外です。
@@ -43,7 +45,8 @@ GanttAccDescrBlockStatement のいずれかです。
 
 改行はどの文にも属さず、空行はノードを作りません。
 以下のどのノードの子の欄もソースの順です。
-ただし GanttClickStatement の子の欄は 1 つの順を保ちます（[ノード](../ast.ja.md#ノード) を参照）。
+ただし GanttClickStatement の子の欄は 1
+つの順を保ちます（[ノード](../ast.ja.md#ノード) を参照）。
 
 ### GanttTaskStatement
 
@@ -63,14 +66,15 @@ GanttAccDescrBlockStatement のいずれかです。
 タグは、残りの最初の項目がその大文字小文字の 5 つの語のどれかであるかぎり、
 前から取った項目で、残りが `items` です。
 `tags` と `items` を合わせるとすべての項目を持つので、
-`items` が空になるのはデータがタグだけのときだけで、
-それは入力を拒否させます（[文法の外の拒否](../diagrams/gantt.ja.md#文法の外の拒否) を参照）。
+`items` が空になるのはデータがタグだけのときだけで、それは入力を拒否させます。
+[文法の外の拒否](../diagrams/gantt.ja.md#文法の外の拒否) を参照してください。
 タグは 1 つの `data-item` の単位、つまりテキストの単位なので、
 その中にディレクティブがあってもよく、
 名前はディレクティブを除いた書かれたテキストです。
-`do%%{init: {}}%%ne` は、
-mermaid.js と同じくタグ `done` です。 [fixture: gantt/gram-task-tag-cut-by-directive]
-[単位の中のディレクティブ](../diagrams/gantt.ja.md#単位の中のディレクティブ) を参照してください。
+`do%%{init: {}}%%ne` は、 mermaid.js と同じくタグ `done` です。
+[fixture: gantt/gram-task-tag-cut-by-directive]
+[単位の中のディレクティブ](../diagrams/gantt.ja.md#単位の中のディレクティブ)
+を参照してください。
 `a : 1d` は説明 `a ` と 1 つの項目 `1d` を持ち、
 `a : done, 1d` はタグ `done` と項目 `1d`、`a : , ,` は 3 つの null の項目、
 `a : id1,, 1d` は項目 `id1`、null、`1d`、
@@ -90,7 +94,8 @@ gantt/lex-task-text-trailing-spaces] [fixture: gantt/gram-task-tags-only]
 
 `click` の文。
 タスクの id と、リンク、コールバック、またはその両方です。
-`click des1 href "https://example.com"` や `click des1 call cb(1) href "u"` など。
+`click des1 href "https://example.com"` や `click des1 call cb(1) href "u"`
+など。
 
 | 欄     | 型                             | 意味                                                                                                        |
 | ------ | ------------------------------ | ----------------------------------------------------------------------------------------------------------- |
@@ -101,7 +106,8 @@ gantt/lex-task-text-trailing-spaces] [fixture: gantt/gram-task-tags-only]
 子の欄: `ids`、`call`、`href`。
 `call` と `href` の少なくとも一方は null でありません。
 2 つの部分はどちらの順にも書け、
-子の欄はソースの順によらずこの順を保ちます（[ノード](../ast.ja.md#ノード) を参照）。
+子の欄はソースの順によらずこの順を保ちます（[ノード](../ast.ja.md#ノード)
+を参照）。
 ソースの順が要るツールは範囲で並べ替えます。
 id は空白のない名前で、`,` が区切りで、
 `:` や `"` を含むそれ以外のどの文字も id の文字なので、
@@ -109,8 +115,8 @@ id は空白のない名前で、`,` が区切りで、
 id は解決されません。
 どのタスクも名指さない id も書かれたとおりに一覧にあります。
 URL は空にならず、
-常に閉じています（[href の文脈](../diagrams/gantt.ja.md#href-の文脈) を参照）。 [fixture: gantt/gram-click-href]
-[fixture: gantt/gram-click-call] [fixture:
+常に閉じています（[href の文脈](../diagrams/gantt.ja.md#href-の文脈) を参照）。
+[fixture: gantt/gram-click-href] [fixture: gantt/gram-click-call] [fixture:
 gantt/gram-click-href-then-call] [fixture: gantt/gram-click-call-then-href]
 [fixture: gantt/gram-click-ids-list] [fixture:
 gantt/gram-click-ids-trailing-comma] [fixture: gantt/gram-click-ids-comma-only]
@@ -132,8 +138,8 @@ click の文の call の部分。
 `call f()` は名前 `f` と null の引数、`call f ()` は名前 `f` と空白、
 `call f( )` は null の引数、`call f( 1)` は空白と `1` の引数、
 `call f(a, "b,c")` は引数 `a, "b,c"` を持ちます。
-mermaid.js はそれをコールバックを結ぶときにだけ分けます。 [fixture: gantt/gram-click-call]
-[fixture:
+mermaid.js はそれをコールバックを結ぶときにだけ分けます。
+[fixture: gantt/gram-click-call] [fixture:
 gantt/gram-click-call-name-space-before-parenthesis] [fixture:
 gantt/gram-click-call-name-line-feed-before-parenthesis] [fixture:
 gantt/gram-click-call-blank-arguments] [fixture:
@@ -153,8 +159,8 @@ gantt/gram-click-call-arguments-line-feed]
 値は両端の空白を保ちます。
 `dateFormat`、空白 2 つ、`X` は空白と `X` の値を持ちます。
 テキストは `#`、`;`、
-改行の前で終わります（[文の文脈](../diagrams/gantt.ja.md#文の文脈) を参照）。 [fixture: gantt/db-date-format]
-[fixture: gantt/lex-dateformat-two-spaces]
+改行の前で終わります（[文の文脈](../diagrams/gantt.ja.md#文の文脈) を参照）。
+[fixture: gantt/db-date-format] [fixture: gantt/lex-dateformat-two-spaces]
 [fixture: gantt/lex-dateformat-trailing-spaces]
 
 ### GanttAxisFormatStatement
@@ -188,9 +194,8 @@ GanttDateFormatStatement と同じです。 [fixture: gantt/db-tick-interval]
 | `value` | GanttLiteral | `todayMarker` と 1 つの空白文字の後の、行の終わりまでのテキスト。 |
 
 子の欄: `value`。
-テキストは `#` を含められ、
-`;` と改行の前で終わります。 [fixture: gantt/db-today-marker]
-[fixture: gantt/db-today-marker-off]
+テキストは `#` を含められ、 `;` と改行の前で終わります。
+[fixture: gantt/db-today-marker] [fixture: gantt/db-today-marker-off]
 [fixture: gantt/lex-todaymarker-hash]
 
 ### GanttIncludesStatement
@@ -206,9 +211,8 @@ GanttDateFormatStatement と同じです。 [fixture: gantt/db-tick-interval]
 項目は空白でも `,` でもない文字の極大の並びなので、
 [Identifier](../ast.ja.md#identifier) です。
 大文字小文字を保ち、mermaid.js はそれを小文字にします。
-間に何もないコンマと、
-空白だけのリストのテキストは項目を作りません。 [fixture: gantt/db-includes-tokens]
-[fixture:
+間に何もないコンマと、空白だけのリストのテキストは項目を作りません。
+[fixture: gantt/db-includes-tokens] [fixture:
 gantt/lex-excludes-commas-and-spaces] [fixture:
 gantt/lex-excludes-upper-case-items] [fixture: gantt/lex-excludes-empty-items]
 [fixture: gantt/lex-excludes-whitespace-value]
@@ -267,9 +271,8 @@ gantt/db-weekend-saturday]
 | `value` | GanttLiteral | `title` と 1 つの空白文字の後の、行の終わりまでのテキスト。 |
 
 子の欄: `value`。
-値は両端の空白を保ち、`:`、`#`、`;`、
-`%%` を文字として持ちます。 [fixture: gantt/db-title-statement]
-[fixture: gantt/lex-title-two-spaces]
+値は両端の空白を保ち、`:`、`#`、`;`、 `%%` を文字として持ちます。
+[fixture: gantt/db-title-statement] [fixture: gantt/lex-title-two-spaces]
 [fixture: gantt/lex-title-trailing-spaces] [fixture:
 gantt/lex-title-hash-semicolon-percent]
 
@@ -312,9 +315,8 @@ gantt/gram-acc-title-line-feed-then-text] [fixture: gantt/lex-acc-title-at-end]
 | `value` | GanttLiteral | `accDescr:` の後の、行の終わりまでのテキスト。 |
 
 子の欄: `value`。
-GanttAccTitleStatement と同じく、
-値は null になりません。 [fixture: gantt/gram-acc-descr]
-[fixture: gantt/lex-acc-descr-at-end]
+GanttAccTitleStatement と同じく、値は null になりません。
+[fixture: gantt/gram-acc-descr] [fixture: gantt/lex-acc-descr-at-end]
 
 ### GanttAccDescrBlockStatement
 
@@ -330,13 +332,15 @@ GanttAccTitleStatement と同じく、
 子の欄: `value`。
 `accDescr {}`、`accDescr { }`、空行のブロックは値 null を持ち、何も変えません。
 そのようなブロックが文であるのは文の始まる位置だけで、
-click の文の中のブロックは入力を拒否させます。 [fixture: gantt/gram-acc-descr-block]
+click の文の中のブロックは入力を拒否させます。
+[fixture: gantt/gram-acc-descr-block]
 [fixture: gantt/gram-acc-descr-block-multiline]
 [fixture: gantt/gram-acc-descr-block-empty]
 [fixture: gantt/gram-acc-descr-block-whitespace-only]
 [fixture: gantt/div-empty-description-block-between-click-id-and-href]
 [fixture: gantt/lex-acc-descr-block-unclosed]
-[空の説明ブロック](../diagrams/gantt.ja.md#空の説明ブロック) を参照してください。
+[空の説明ブロック](../diagrams/gantt.ja.md#空の説明ブロック)
+を参照してください。
 
 ### GanttLiteral
 
@@ -355,9 +359,8 @@ click の文の中のブロックは入力を拒否させます。 [fixture: gan
 コールバック引数は両端の空白を保ちます。
 タスクのデータの項目は両端に空白を持たず、アクセシビリティのテキストは、
 mermaid.js が切り落とす両端の空白を除いて読まれます。
-コールバック引数、コールバック名、
-説明ブロックの中の改行は値の一部です。 [fixture: gantt/lex-task-text-trailing-spaces]
-[fixture:
+コールバック引数、コールバック名、説明ブロックの中の改行は値の一部です。
+[fixture: gantt/lex-task-text-trailing-spaces] [fixture:
 gantt/lex-title-two-spaces] [fixture: gantt/lex-title-trailing-spaces]
 [fixture: gantt/lex-dateformat-two-spaces] [fixture:
 gantt/gram-click-call-name-space-before-parenthesis] [fixture:

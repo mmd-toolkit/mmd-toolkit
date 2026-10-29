@@ -13,8 +13,8 @@ MultiMarkdown や MikuMikuDance ではありません。
 ## Playground
 
 ブラウザーで、このプラグインによる整形結果を確認できます。
-**Formatted**タブは編集に合わせて更新され、 **Indent**と**Use
-tabs**で字下げを設定できます。
+**Formatted**タブは編集に合わせて更新され、
+**Indent**と**Use tabs**で字下げを設定できます。
 **Apply to source**で、入力を整形結果に置き換えられます。
 
 公開予定URL:
@@ -51,7 +51,8 @@ npx prettier --write "**/*.{mmd,mermaid,md}"
 
 ## 例
 
-入力 ([statements-one-per-line/separated-by-semicolons-input.mmd](./tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-input.mmd)):
+入力
+([statements-one-per-line/separated-by-semicolons-input.mmd](./tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -59,7 +60,8 @@ flowchart LR
   subgraph S; E; F; end
 ```
 
-出力 ([statements-one-per-line/separated-by-semicolons-output.mmd](./tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-output.mmd)):
+出力
+([statements-one-per-line/separated-by-semicolons-output.mmd](./tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -249,8 +251,8 @@ flowchart LR
 - [docs/er.ja.md](./docs/er.ja.md): ER 図の整形の規則。
 - [docs/gantt.ja.md](./docs/gantt.ja.md): Gantt 図の整形の規則。
 - [docs/journey.ja.md](./docs/journey.ja.md): journey 図の整形の規則。
-- [docs/requirement.ja.md](./docs/requirement.ja.md):
-  requirement 図の整形の規則。
+- [docs/requirement.ja.md](./docs/requirement.ja.md): requirement
+  図の整形の規則。
 - [docs/mindmap.ja.md](./docs/mindmap.ja.md): mindmap の整形の規則。
 - [docs/timeline.ja.md](./docs/timeline.ja.md): timeline の整形の規則。
 - [docs/sankey.ja.md](./docs/sankey.ja.md): sankey 図の整形の規則。
@@ -264,19 +266,19 @@ flowchart LR
 - [docs/pie.ja.md](./docs/pie.ja.md): pie 図の整形の規則。
 - [docs/info.ja.md](./docs/info.ja.md): info の整形の規則。
 - [docs/gitgraph.ja.md](./docs/gitgraph.ja.md): gitgraph の整形の規則。
-- [docs/architecture.ja.md](./docs/architecture.ja.md):
-  architecture 図の整形の規則。
+- [docs/architecture.ja.md](./docs/architecture.ja.md): architecture
+  図の整形の規則。
 - [docs/treemap.ja.md](./docs/treemap.ja.md): treemap 図の整形の規則。
 - [docs/treeview.ja.md](./docs/treeview.ja.md): treeview 図の整形の規則。
 - [docs/radar.ja.md](./docs/radar.ja.md): radar 図の整形の規則。
 - [docs/wardley.ja.md](./docs/wardley.ja.md): Wardley 図の整形の規則。
 - [docs/railroad.ja.md](./docs/railroad.ja.md): railroad 図の整形の規則。
 - [docs/cynefin.ja.md](./docs/cynefin.ja.md): cynefin 図の整形規則。
-- [docs/eventmodeling.ja.md](./docs/eventmodeling.ja.md):
-  eventmodeling 図の整形規則。
+- [docs/eventmodeling.ja.md](./docs/eventmodeling.ja.md): eventmodeling
+  図の整形規則。
 - [docs/packet.ja.md](./docs/packet.ja.md): packet 図の整形の規則。
 - [docs/block.ja.md](./docs/block.ja.md): ブロック図の整形の規則。
-- [docs/compatibility.ja.md](./docs/compatibility.ja.md):
-  mermaid.js と違う箇所と、その理由。
+- [docs/compatibility.ja.md](./docs/compatibility.ja.md): mermaid.js
+  と違う箇所と、その理由。
 - [docs/development.ja.md](./docs/development.ja.md): テストと fixture。
   プラグインを開発する人向けです。

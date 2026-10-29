@@ -39,7 +39,7 @@ title First report
         errors: [
           {
             messageId: "duplicate",
-            data: { kind: "title", statement: "title", line: "2" },
+            data: { kind: "title", statement: "title" },
             line: 3,
             column: 1,
             endLine: 3,
@@ -57,7 +57,7 @@ title First\u2028Second
         errors: [
           {
             messageId: "duplicate",
-            data: { kind: "title", statement: "title", line: "2" },
+            data: { kind: "title", statement: "title" },
             line: 3,
             column: 1,
             endLine: 3,
@@ -78,7 +78,6 @@ accTitle: First\u2029Second
             data: {
               kind: "accessible title",
               statement: "accTitle",
-              line: "2",
             },
             line: 3,
             column: 1,

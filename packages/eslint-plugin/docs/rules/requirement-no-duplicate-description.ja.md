@@ -34,7 +34,9 @@ mermaid.js は `accDescr` の文をすべて受理し、説明を設定する文
 コメント行だけ、ディレクティブだけのブロックと、
 requirement や element の本体の中のブロックも同じである。
 `accDescr: a` の後のブロック `accDescr {}` は、説明を `a` のままにする。
-テキストのないブロックは [requirement-no-empty-description-block](./requirement-no-empty-description-block.ja.md) が報告する。
+テキストのないブロックは
+[requirement-no-empty-description-block](./requirement-no-empty-description-block.ja.md)
+が報告する。
 
 図がすでに持つ説明を設定する文は、どちらの形でも報告しない。
 `accDescr: d` の後のブロック `accDescr { d }` は、何も失わない。

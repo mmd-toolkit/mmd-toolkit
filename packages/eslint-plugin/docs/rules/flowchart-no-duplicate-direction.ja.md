@@ -18,7 +18,8 @@ subgraph の中の `direction` 文は subgraph の方向を設定する。
 ## 規則の詳細
 
 この規則は、subgraph の `direction` 文のうち、
-同じ subgraph の前の `direction` 文が与えた方向と違う方向を与えるものを報告する。
+同じ subgraph の前の `direction`
+文が与えた方向と違う方向を与えるものを報告する。
 対象の図種は `flowchart-v2`、`flowchart-elk`、`swimlane` である。
 
 `subgraph S` の後の `direction LR`、`A`、`direction BT`、`end` では、
@@ -32,11 +33,12 @@ mermaid.js は、同じ id の 2 つの subgraph を、
 最初のものが方向を持たないときも含めて失われ、報告する。
 `direction` と方向の値を持つ行は、
 `A-->B; direction BT` のようにほかの文字があっても方向の文であり、これも比べる。
-ほかの文字は [flowchart-no-ignored-text](./flowchart-no-ignored-text.ja.md) が報告する。
+ほかの文字は [flowchart-no-ignored-text](./flowchart-no-ignored-text.ja.md)
+が報告する。
 
 subgraph がすでに持つ方向を与える文は報告しない。
-[mermaid.js の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L100-L100) が言うとおり、
-`TD` と `TB` は同じ上から下への方向であり、
+[mermaid.js の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L100-L100)
+が言うとおり、 `TD` と `TB` は同じ上から下への方向であり、
 `direction TD` の後の `direction TB` は報告しない。
 `direction LR` と `direction BT` の後の 3 つ目の `direction LR` は、
 `BT` を置き換えるので報告する。
@@ -76,9 +78,10 @@ flowchart TB
 
 ## 背景
 
-[`addSubGraph`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L674-L746) は、
-subgraph の本体の最後の `direction` 文をその方向とする。
-[`getData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L1210-L1255) は subgraph を最後のものから最初のものの順にレイアウトに与え、
+[`addSubGraph`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L674-L746)
+は、 subgraph の本体の最後の `direction` 文をその方向とする。
+[`getData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L1210-L1255)
+は subgraph を最後のものから最初のものの順にレイアウトに与え、
 レイアウトは id ごとに、最後に与えられた 1 つの節点を保つ。
 
 <!-- begin auto-generated rule resources -->

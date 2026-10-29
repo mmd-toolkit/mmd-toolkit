@@ -32,7 +32,8 @@ mermaid.js は、そのテキストを subgraph の要素にも加える。
 
 説明を持たないブロックは、数えない。
 それは、
-[er-no-empty-description-block](./er-no-empty-description-block.ja.md) が報告する。
+[er-no-empty-description-block](./er-no-empty-description-block.ja.md)
+が報告する。
 
 図がすでに持つ説明を設定する文は、どちらの形でも報告しない。
 `accDescr: d` の後のブロック `accDescr { d }` は、何も失わない。

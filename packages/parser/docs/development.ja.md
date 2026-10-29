@@ -12,7 +12,8 @@
   [`detection.md`](../../spec/docs/detection.ja.md) と、
   [`diagrams/`](../../spec/docs/diagrams) の下の各図の文書です。
 - 木のトークンと位置は、
-  このパッケージの [`tokens.md`](./tokens.ja.md) と [`positions.md`](./positions.ja.md) が定めます。
+  このパッケージの [`tokens.md`](./tokens.ja.md) と
+  [`positions.md`](./positions.ja.md) が定めます。
 - [`@mmd-toolkit/tests`](../../tests) の fixture も仕様の一部です。
 - mermaid.js のソースは、このパッケージの挙動の出どころではありません。
 - 仕様に書かれていないことは、ここで埋めずに仕様へ報告します。
@@ -73,13 +74,16 @@ treeview（`treeView`）です。
 [`diagrams/ishikawa.md`](../../spec/docs/diagrams/ishikawa.ja.md)、
 [`diagrams/agentflow.md`](../../spec/docs/diagrams/agentflow.ja.md)、
 [`diagrams/usecase.md`](../../spec/docs/diagrams/usecase.ja.md)、
-[`diagrams/pie.md`](../../spec/docs/diagrams/pie.ja.md) と [`diagrams/gitgraph.md`](../../spec/docs/diagrams/gitgraph.md) のどれかに従います。
+[`diagrams/pie.md`](../../spec/docs/diagrams/pie.ja.md) と
+[`diagrams/gitgraph.md`](../../spec/docs/diagrams/gitgraph.md)
+のどれかに従います。
 3 つの部分からなります。
 
 - 図のテキストを単位に分ける字句解析器（`src/diagrams/<図種>/units.ts`）
 - 単位の上の再帰下降パーサー（`src/diagrams/<図種>/grammar.ts`）
 - 単位から記録する、
-  図のトークンの文書が定めるトークン（[`tokens/flowchart.md`](./tokens/flowchart.ja.md) など）
+  図のトークンの文書が定めるトークン（たとえば
+  [`tokens/flowchart.md`](./tokens/flowchart.ja.md)）
 
 どの図の字句解析器とパーサーも同じように行うことは、それぞれ 1 か所にあります。
 単位とその読み方は `src/diagram-units.ts` にあります。
@@ -90,9 +94,10 @@ treeview（`treeView`）です。
 文法の項目のトークンは、`src/unit-grammar.ts` の `UnitGrammar` にあります。
 `tokenless-empty-forms` の空の形は `src/empty-forms.ts` にあります。
 複数の図の文書が共有する規則も 1 か所にあります。
-flowchart とクラス図と状態図と ER 図と要求図の方向の行は `src/direction-line.ts` にあり、
-状態図と ER 図と要求図はその語を大文字と小文字を区別せずに比べます。
-flowchart とクラス図の文字の規則の Unicode の文字は `src/unicode-letters.ts` にあります。
+flowchart とクラス図と状態図と ER 図と要求図の方向の行は `src/direction-line.ts`
+にあり、状態図と ER 図と要求図はその語を大文字と小文字を区別せずに比べます。
+flowchart とクラス図の文字の規則の Unicode の文字は `src/unicode-letters.ts`
+にあります。
 シーケンス図の字句解析器が `#` と `%` を、クラス図の字句解析器が `%%` を、
 状態図の字句解析器が `#` と `%%` を、 Gantt チャートの字句解析器が `%` を、
 journey 図と要求図と timeline の字句解析器が `#` と `%` を、 mindmap、
@@ -111,24 +116,30 @@ kanban 図の文法は、ノード行を読み、列とカードを組み立て�
 行を読んだところで 2 つの拒否を行います。
 timeline では、文法が event の文を読んだところで 1 つの拒否を行います。
 クラス図の字句解析器は、各メンバーの行を、
-[メンバーの行](../../spec/docs/diagrams/class.ja.md#メンバーの行) の手順で部分に分けます。
+[メンバーの行](../../spec/docs/diagrams/class.ja.md#メンバーの行)
+の手順で部分に分けます。
 その手順は `src/diagrams/class/member-lines.ts` にあります。
 クラスの本体でも、メンバーの文のラベルでも同じで、
 分けられないメソッドの行は拒否します。
 
 flowchart の subgraph の Db の id は、1 か所で作ります。
 `src/diagrams/flowchart/subgraph-ids.ts` が、単位から、名前のテキストの範囲と、
-[文法の外での拒否](../../spec/docs/diagrams/flowchart.ja.md#文法の外での拒否) の subgraph の id の規則で作ります。
+[文法の外での拒否](../../spec/docs/diagrams/flowchart.ja.md#文法の外での拒否) の
+subgraph の id の規則で作ります。
 文法は、mermaid.js が Db を作るときに行う拒否のために、
 subgraph の要素についてこれを読みます。
 
 図のテキストは、ディレクティブを除いて読みます。
 トークンは、記録するときに、ディレクティブと、
-行の規則が無視する `;` のところで切ります（[ディレクティブはトークンの境界](../../spec/docs/common.ja.md#ディレクティブはトークンの境界)、
-[`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行)）。
-単位が読み通すコメントの領域のところでも切ります（[`tokens.md` の Comment](./tokens.ja.md#comment)）。
+行の規則が無視する `;` のところで切ります。
+[ディレクティブはトークンの境界](../../spec/docs/common.ja.md#ディレクティブはトークンの境界)
+と、
+[`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行)
+を参照。
+単位が読み通すコメントの領域のところでも切ります。
 そのため、領域の中のコメントの `%%` より前のディレクティブは、
 どのトークンの外にもあります。
+[`tokens.md` の Comment](./tokens.ja.md#comment) を参照。
 `String` のトークンの断片は、`StringFragment` のトークンです。
 切ってよいのは、`RawText` と `String` のトークンだけです。
 ほかの種類のトークンの内側にディレクティブや無視される `;` があれば、
@@ -137,7 +148,8 @@ subgraph の要素についてこれを読みます。
 トークンとコメントの外にある各ディレクティブは、
 それだけで 1 つの `Directive` のトークンとして記録します。
 フロントマターは最初に、開く `---`、本文、
-閉じる `---` のトークンとして記録します（[`ast.md` の Frontmatter](../../spec/docs/ast.ja.md#frontmatter)）。
+閉じる `---` のトークンとして記録します。
+[`ast.md` の Frontmatter](../../spec/docs/ast.ja.md#frontmatter) を参照。
 
 C4 の文法は、消費する引数の位置にある `__proto__` キーを検査し、
 更新先の有無を判断するために、別名と関係の端点だけを保持します。
@@ -150,10 +162,11 @@ Ishikawa の文法は書かれた字下げを保ち、根の字下げにはよ�
 最初の原因の字下げを使って親を選びます。 [fixture: ishikawa/db-indent-clamped]
 [fixture: ishikawa/db-indent-root-deeper]
 
-architecture は [仕様](../../spec/docs/diagrams/architecture.md)の順序付き字句規則、
-文法、登録条件を実装します。
-共通 lexer が複合値と隠れた形式を読み、
-木は記述順と gap の所有を保持します。 [fixture: architecture/db-mixed]
+architecture は
+[仕様](../../spec/docs/diagrams/architecture.md)の順序付き字句規則、文法、
+登録条件を実装します。
+共通 lexer が複合値と隠れた形式を読み、木は記述順と gap の所有を保持します。
+[fixture: architecture/db-mixed]
 [fixture: architecture/hidden-directive-unit-gaps]
 
 ## 道具
@@ -173,8 +186,8 @@ architecture は [仕様](../../spec/docs/diagrams/architecture.md)の順序付�
   その後にトークンを出します。
   パーサーが拒否する fixture では、`parse-error.json` のエラーを出します。
   メッセージ、範囲、範囲のソースのテキストです。
-- `pnpm run diff-trees <写し> <図種>`:
-  `<写し>` は、変更の前に取った `packages/tests/fixtures/<図種>` の写しです。
+- `pnpm run diff-trees <写し> <図種>`: `<写し>` は、
+  変更の前に取った `packages/tests/fixtures/<図種>` の写しです。
   パースの結果、つまり `ast.json` と `parse-error.json` を比べます。
   新しくできたファイルと、なくなったファイルを出します。
   たとえば、いま拒否される入力は `new: <fixture>/parse-error.json` です。
@@ -183,7 +196,8 @@ architecture は [仕様](../../spec/docs/diagrams/architecture.md)の順序付�
   エラーの同じ欄です。
   その後に、違いを 1 つずつ、前と後の値とともに出します。
 
-agentflow の lexer と文法は `src/diagrams/agentflow/` に独自のファイルを持ちます。
+agentflow の lexer と文法は `src/diagrams/agentflow/`
+に独自のファイルを持ちます。
 flowchart と共通の字句規則には、
 `src/graph-unit-lexer.ts` の `GraphUnitLexer` を使います。
 data・shape・callback などの共通生成規則には、
@@ -191,8 +205,8 @@ data・shape・callback などの共通生成規則には、
 各図種は独自の AST ノードを構築し、矢印の語彙、コメント規則、名前の文法、
 波括弧の変換をそれぞれ持ちます。
 既存の共通 reader、方向行規則、Unicode 文字の補助も使います。
-テキストのラッパーは、
-終了波括弧後の最初の LF に直結する行空白だけを畳みます。 [fixture: agentflow/lex-brace-string-keeps-blank-line]
+テキストのラッパーは、終了波括弧後の最初の LF に直結する行空白だけを畳みます。
+[fixture: agentflow/lex-brace-string-keeps-blank-line]
 [fixture: agentflow/lex-brace-line-whitespace-ls]
 [fixture: agentflow/lex-brace-ls-without-lf]
 
@@ -200,7 +214,8 @@ frontmatter と directive の除去後、
 正規化した長さが UTF-16 で 50000 単位以下なら、
 SourceLexer は共通コメント領域を除去せずに行区間を読みます。
 agentflow が先頭の trivia と独自のコメントを読みます。
-上限を超える場合は共通のコメント除去経路を使います。 [fixture: agentflow/comment-default-size-equal-crlf]
+上限を超える場合は共通のコメント除去経路を使います。
+[fixture: agentflow/comment-default-size-equal-crlf]
 [fixture: agentflow/comment-default-size-above-crlf]
 [fixture: agentflow/comment-default-size-equal-inline-directive]
 [fixture: agentflow/comment-default-size-above-frontmatter]
@@ -212,8 +227,8 @@ JSON とステレオタイプには排他的な文脈を使います。
 名前空間、宣言の互換性、端点の種類、最終 metadata の検査は、
 `src/diagrams/usecase/rejections.ts` が行います。
 JSON table の本文は不透明で、
-仕様の波括弧と文字列の釣り合いだけで終わりを探します。 [fixture: usecase/db-all-fields]
-[fixture: usecase/lex-keyword-longer-number]
+仕様の波括弧と文字列の釣り合いだけで終わりを探します。
+[fixture: usecase/db-all-fields] [fixture: usecase/lex-keyword-longer-number]
 [fixture: usecase/gram-native-final-invalid-then-valid]
 [fixture: usecase/div-json-balanced-invalid-array]
 
@@ -225,16 +240,16 @@ pie の字句解析器は、仕様の優先順位で、最初に一致した規�
 pie は 2 回目の走査のディレクティブも読みます。
 検出が通過した裸の行はコメントのままです。 [fixture: pie/db-all-fields]
 [fixture: pie/frontmatter-nonleading-comment]
-[fixture: pie/lex-hidden-directive-second-detection-scan]
-[fixture:
+[fixture: pie/lex-hidden-directive-second-detection-scan] [fixture:
 pie/lex-hidden-before-colon-lf]
 [fixture: pie/review-hidden-directive-after-title]
-[fixture: pie/number-negative]
-[fixture: pie/number-negative-zero]
+[fixture: pie/number-negative] [fixture: pie/number-negative-zero]
 
 info の字句解析器は、
-仕様の [順序付き規則](../../spec/docs/diagrams/info.md#ordered-rules)に従います。
-再帰下降は共通文と隠し形式を [指定の隙間](../../spec/docs/ast/info.md#nodes)に保持します。
+仕様の
+[順序付き規則](../../spec/docs/diagrams/info.md#ordered-rules)に従います。
+再帰下降は共通文と隠し形式を
+[指定の隙間](../../spec/docs/ast/info.md#nodes)に保持します。
 検出は保持したヘッダー前の形式を字句解析器へ渡し、
 パーセントだけの行のトリビアは 1 回だけ通過します。 [fixture: info/common-all]
 [fixture: info/lex-flag-hidden-two]
@@ -245,34 +260,36 @@ gitgraph の構文解析器は、字句単位から復号した比較値を、
 共通のトークン検査の後、履歴検査は仕様の既定の比較表記と、
 ソース順の branch・HEAD・同一性・置換・直近の parent の規則を適用します。
 外部設定を持つテストも同じ内部ソース解析を使い、
-公開 API の parse(text) には設定引数を追加しません。 [fixture: gitgraph/db-compare-escape-once]
+公開 API の parse(text) には設定引数を追加しません。
+[fixture: gitgraph/db-compare-escape-once]
 [fixture: gitgraph/db-state-replacement-source-origin]
 [fixture: gitgraph/db-state-empty-ids-are-fresh]
 [fixture: gitgraph/db-cherry-pick-invalid-parent]
 [fixture: gitgraph/docs-community-contributing-05cdc44b]
 
-packet の字句解析器は仕様の [規則の順序](../../spec/docs/diagrams/packet.ja.md#規則の順序)に従い、
+packet の字句解析器は仕様の
+[規則の順序](../../spec/docs/diagrams/packet.ja.md#規則の順序)に従い、
 src/common-form-unit-lexer.ts で info と共通の形式を共有します。
 再帰下降で記述された 3 種のブロックと隠れた隙間を保持します。
 共通のトークン検査の後、src/diagrams/packet/acceptance.ts が、
 順序どおりの倍精度演算とデフォルト幅 32 の行反復を適用します。
-テストは同じ解析へ外部サイトの幅を適用し、
-parse(text) の API は固定のままです。 [fixture: packet/gram-mixed]
-[fixture: packet/gram-hidden-range-gap-spaced]
+テストは同じ解析へ外部サイトの幅を適用し、 parse(text) の API は固定のままです。
+[fixture: packet/gram-mixed] [fixture: packet/gram-hidden-range-gap-spaced]
 [fixture: packet/db-explicit-start-rounded]
 [fixture: packet/config-fraction-reject]
 
-radar の lexer は [最初に一致する字句規則](../../spec/docs/diagrams/radar.ja.md) に従います。
-再帰下降で記述されたコンマグループ、省略可能な entry のコロン、 hidden
-form の gap を保持します。
+radar の lexer は [最初に一致する字句規則](../../spec/docs/diagrams/radar.ja.md)
+に従います。
+再帰下降で記述されたコンマグループ、省略可能な entry のコロン、
+hidden form の gap を保持します。
 共通のトークン検査後、各名前付き曲線に宣言された全軸名があることを確かめます。
-後から宣言した軸も対象で、
-radar 設定は受理を変えません。 [fixture: radar/gram-written-tree]
-[fixture: radar/lex-hidden-entry-comma]
+後から宣言した軸も対象で、 radar 設定は受理を変えません。
+[fixture: radar/gram-written-tree] [fixture: radar/lex-hidden-entry-comma]
 [fixture: radar/db-forward-axis] [fixture: radar/error-reference-missing]
 [fixture: radar/config-site-invalid-cannot-rescue]
 
-treemap の lexer は [順序付き規則](../../spec/docs/diagrams/treemap.md#ordered-rules)に従います。
+treemap の lexer は
+[順序付き規則](../../spec/docs/diagrams/treemap.md#ordered-rules)に従います。
 共通形式の文字規則を共有し、EOL の文法は取り込みません。
 インデント、クラス定義、識別子、数値、引用符付きの名前は専用の終端に従います。
 section は子を持ち、
@@ -280,9 +297,8 @@ section は子を持ち、
 先行行の末尾空白を含む各行のインデントを保持します。
 検出の到達位置を保持し、保持されたネイティブコメントの周囲でも、
 通過した bare 行の trivia を除外します。
-公開の受理条件にルート数、数値の有限性、
-設定による検査を加えません。 [fixture: treemap/gram-written-tree]
-[fixture: treemap/db-header-tail-space]
+公開の受理条件にルート数、数値の有限性、設定による検査を加えません。
+[fixture: treemap/gram-written-tree] [fixture: treemap/db-header-tail-space]
 [fixture: treemap/div-retained-before-bare-unicode-line]
 [fixture: treemap/db-empty-names] [fixture: treemap/db-number-nan]
 [fixture: treemap/config-drawing-only]
@@ -290,22 +306,23 @@ section は子を持ち、
 Railroad は 4 方言で 1 つの authored AST を保持します。
 各方言は専用の順序付き字句規則と式文法を持ち、一致する終端、メタデータ、
 名前付き hidden gap、自然方言のリストとグループの生成規則だけを共有します。
-設定や意味による追加の受理条件はありません。 [fixture: railroad/ir-gram-written-tree]
+設定や意味による追加の受理条件はありません。
+[fixture: railroad/ir-gram-written-tree]
 [fixture: railroad/ebnf-native-ownership]
 [fixture: railroad/abnf-directive-repeat]
 [fixture: railroad/peg-config-init-drawing]
 
-Treeview は [順序付き単位](../../spec/docs/diagrams/treeview.md#ordered-units)を、
+Treeview は
+[順序付き単位](../../spec/docs/diagrams/treeview.md#ordered-units)を、
 共通文法なしで実装する。
 ソース reader は論理行を分類し、書き換えたテキストや行番号対応表を作らず、
 元の位置に直接の罫線規則を適用する。
 単位は接頭辞の割り当て字下げと枝マーカーを保持する。
 文法は外側の罫線形式を名前付きの所有先に割り当て、
 内包する形式は書かれた葉に残す。
-共通形式の reader から、一致する title・アクセシビリティ行と native
-comment の読みを共有する。
-ブロック reader は、
-必須の開始波括弧の前にある罫線形式も保持する。 [fixture: treeview/gram-written-tree]
-[fixture: treeview/box-written-tree]
+共通形式の reader から、
+一致する title・アクセシビリティ行と native comment の読みを共有する。
+ブロック reader は、必須の開始波括弧の前にある罫線形式も保持する。
+[fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
 [fixture: treeview/box-prefix-common-block-two-prefixes] [fixture:
 treeview/ast-prefix-inside-and-outside]

@@ -11,7 +11,7 @@ Code:
     |         ^ [1]
   4 |
 
-[1] The id `C` is not declared by any vertex, flow, connector, or link.
+[1] mermaid.js adds a new vertex with these styles for the undefined id `C`.
 ---
 
 
@@ -27,7 +27,7 @@ Code:
     |         ^~~~~~ [1]
   6 |
 
-[1] The id `reveiw` is not declared by any vertex, flow, connector, or link.
+[1] mermaid.js gives no element these classes for the undefined id `reveiw`.
 ---
 
 
@@ -41,7 +41,7 @@ Code:
     |       ^~~~~~~~~~ [1]
   4 |
 
-[1] The id `connectors` is not declared by any vertex, flow, connector, or link.
+[1] mermaid.js gives no element these classes for the undefined id `connectors`.
 ---
 
 
@@ -56,8 +56,8 @@ Code:
     |       ^~~~~~~~~~ [2]
   4 |
 
-[1] The id `connectors` is not declared by any vertex, flow, connector, or link.
-[2] The id `connectors` is not declared by any vertex, flow, connector, or link.
+[1] mermaid.js styles no element for the undefined id `connectors`.
+[2] mermaid.js styles no element for the undefined id `connectors`.
 ---
 
 
@@ -71,7 +71,7 @@ Code:
     |       ^~~~~~~~~~ [1]
   4 |
 
-[1] The id `connectors` is not declared by any vertex, flow, connector, or link.
+[1] mermaid.js makes no element clickable for the undefined id `connectors`.
 ---
 
 
@@ -84,7 +84,7 @@ Code:
     |       ^~~~~~~~~~ [1]
   3 |
 
-[1] The id `connectors` is not declared by any vertex, flow, connector, or link.
+[1] mermaid.js styles no element for the undefined id `connectors`.
 ---
 
 
@@ -99,8 +99,8 @@ Code:
     |       ^~~~~~~~~~ [2]
   4 |
 
-[1] The id `connectors` is not declared by any vertex, flow, connector, or link.
-[2] The id `connectors` is not declared by any vertex, flow, connector, or link.
+[1] mermaid.js styles no element for the undefined id `connectors`.
+[2] mermaid.js gives no element these classes for the undefined id `connectors`.
 ---
 
 
@@ -115,7 +115,7 @@ Code:
     |       ^~~~ [1]
   5 |
 
-[1] The id `Typo` is not declared by any vertex, flow, connector, or link.
+[1] mermaid.js gives no element these classes for the undefined id `Typo`.
 ---
 
 
@@ -129,7 +129,7 @@ Code:
     |         ^~~~ [1]
   4 |
 
-[1] The id `Typo` is not declared by any vertex, flow, connector, or link.
+[1] mermaid.js gives no element these classes for the undefined id `Typo`.
 ---
 
 
@@ -143,7 +143,7 @@ Code:
     |       ^~~~ [1]
   4 |
 
-[1] The id `Typo` is not declared by any vertex, flow, connector, or link.
+[1] mermaid.js makes no element clickable for the undefined id `Typo`.
 ---
 
 
@@ -157,7 +157,7 @@ Code:
     |       ^~~~ [1]
   4 |
 
-[1] The id `Typo` is not declared by any vertex, flow, connector, or link.
+[1] mermaid.js makes no element clickable for the undefined id `Typo`.
 ---
 
 
@@ -171,7 +171,7 @@ Code:
     |       ^ [1]
   4 |
 
-[1] The id `#` is not declared by any vertex, flow, connector, or link.
+[1] mermaid.js makes no element clickable for the undefined id `#`.
 ---
 
 
@@ -187,7 +187,7 @@ Code:
     |       ^~~~~~~ [1]
   6 |
 
-[1] The id `L_A_B_1` is not declared by any vertex, flow, connector, or link.
+[1] mermaid.js gives no element these classes for the undefined id `L_A_B_1`.
 ---
 
 
@@ -204,7 +204,7 @@ Code:
     |       ^~~~~~~~~ [1]
   7 |
 
-[1] The id `subGraph1` is not declared by any vertex, flow, connector, or link.
+[1] mermaid.js gives no element these classes for the undefined id `subGraph1`.
 ---
 
 
@@ -218,7 +218,7 @@ Code:
     |       ^~~~~~~~~~~~ [1]
   4 |
 
-[1] The id `<b="a">t</b>` is not declared by any vertex, flow, connector, or link.
+[1] mermaid.js makes no element clickable for the undefined id `<b="a">t</b>`.
 ---
 
 
@@ -232,7 +232,7 @@ Code:
     |       ^~~~ [1]
   4 |
 
-[1] The id `Typo` is not declared by any vertex, flow, connector, or link.
+[1] mermaid.js adds a new vertex with these styles for the undefined id `Typo`.
 ---
 
 
@@ -247,7 +247,7 @@ Code:
   4 | class Typo hot
   5 |
 
-[1] The id `Typo` is not declared by any vertex, flow, connector, or link.
+[1] mermaid.js adds a new vertex with these styles for the undefined id `Typo`.
 ---
 
 
@@ -263,5 +263,5 @@ Code:
     |       ^~~~ [1]
   6 |
 
-[1] The id `Typo` is not declared by any vertex, flow, connector, or link.
+[1] mermaid.js adds a new vertex with these styles for the undefined id `Typo`.
 ---

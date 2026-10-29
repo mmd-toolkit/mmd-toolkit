@@ -18,8 +18,9 @@ mermaid.js はエラーを出さない。
 ## 規則の詳細
 
 この規則は、
-同じ文か前の文で同じプロパティが対象に与えた値と違う値をその対象に与える `fill`、
-`color`、`stroke`、`stroke-width`、 `fill-opacity` のプロパティを報告する。
+同じ文か前の文で同じプロパティが対象に与えた値と違う値をその対象に与える
+`fill`、 `color`、`stroke`、`stroke-width`、
+`fill-opacity` のプロパティを報告する。
 対象の図種は `venn` である。
 
 対象は `style` の後の名前の並びで、順を問わずに比べる。
@@ -82,9 +83,10 @@ style A color:white
 
 ## 背景
 
-[`addStyleData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L63-L70) は 1 つの文のプロパティの最後の値を保ち、
-[`buildStyleByKey`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L17-L29) は 1 つの対象の文を合わせ、
-後の値が前の値を置き換える。
+[`addStyleData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L63-L70)
+は 1 つの文のプロパティの最後の値を保ち、
+[`buildStyleByKey`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L17-L29)
+は 1 つの対象の文を合わせ、後の値が前の値を置き換える。
 
 <!-- begin auto-generated rule resources -->
 

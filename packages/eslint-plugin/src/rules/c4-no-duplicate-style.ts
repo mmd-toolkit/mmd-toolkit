@@ -20,14 +20,11 @@ export const c4NoDuplicateStyle: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js replaces the `{{name}}` given by an update on line {{line}} with this value.",
+        "mermaid.js replaces the `{{name}}` given by an earlier update with this value.",
     },
   },
   create(context) {
-    const targets = new Map<
-      C4Declaration,
-      Map<string, { value: string; line: number }>
-    >()
+    const targets = new Map<C4Declaration, Map<string, string>>()
     return c4DeclarationVisitor({
       declared(target, fields) {
         const previous = targets.get(target)
@@ -44,17 +41,14 @@ export const c4NoDuplicateStyle: MermaidRuleDefinition<{
         for (const { argument, key, value } of c4Assignments(node)) {
           if (key === "alias" || key === "from" || key === "to") continue
           const previous = fields.get(key)
-          if (previous !== undefined && previous.value !== value) {
+          if (previous !== undefined && previous !== value) {
             context.report({
               node: argument ?? node,
               messageId: "duplicate",
-              data: { name: key, line: String(previous.line) },
+              data: { name: key },
             })
           }
-          fields.set(key, {
-            value,
-            line: argument?.loc.start.line ?? node.loc.start.line,
-          })
+          fields.set(key, value)
         }
       },
     })

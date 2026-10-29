@@ -78,8 +78,8 @@ kanban
 
 ## 背景
 
-[`getData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L61-L94) は、
-列ごとに列の id で項目を選ぶので、重複した id は同じ項目をもう一度選ぶ。
+[`getData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L61-L94)
+は、列ごとに列の id で項目を選ぶので、重複した id は同じ項目をもう一度選ぶ。
 
 <!-- begin auto-generated rule resources -->
 

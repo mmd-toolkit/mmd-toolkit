@@ -30,9 +30,10 @@ mermaid.js は、何もない `accDescr { }` のブロックをエラーなし�
 後で埋めるブロックは、 `accDescr {`、`%% TODO`、
 `}` のようにコメントを入れて書き、最初に書くと何も変えない。
 説明の後では、そのようなブロックもそれを取り除き、
-[wardley-no-duplicate-description](./wardley-no-duplicate-description.ja.md) が報告する。
-`accDescr {} %% later` のように `{` の前や `}` の後にあるコメントはブロックの中になく、
-そのブロックは報告する。
+[wardley-no-duplicate-description](./wardley-no-duplicate-description.ja.md)
+が報告する。
+`accDescr {} %% later` のように `{` の前や `}`
+の後にあるコメントはブロックの中になく、そのブロックは報告する。
 
 説明を書くか、ブロックを取り除く。
 
@@ -66,11 +67,11 @@ wardley-beta
 
 ## 背景
 
-[値の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L61-L68) は、
-空のブロックに空の説明を与える。
+[値の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L61-L68)
+は、空のブロックに空の説明を与える。
 パーサーは最後の説明を保ち、
-[`populateCommonDb`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14) は空でない説明だけを設定するので、
-最後に書いた空のブロックは説明を空にする。
+[`populateCommonDb`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14)
+は空でない説明だけを設定するので、最後に書いた空のブロックは説明を空にする。
 
 <!-- begin auto-generated rule resources -->
 

@@ -12,37 +12,24 @@ import {
 import { normalizeLineTerminators } from "./acc-text.ts"
 import { agentflowLinkIdsOf } from "./agentflow-links.ts"
 
-/** A value explicitly supplied by a shape or connector declaration. */
-interface WrittenValue {
-  readonly value: string
-  readonly line: number
-}
-
-/** Label, shape, and kind keep their own origins when only one is replaced. */
+/** Label, shape, and kind keep their current values when only one is replaced. */
 interface ElementValues {
-  label: WrittenValue | null
-  shape: WrittenValue
-  kind: WrittenValue
+  label: string | null
+  shape: string
+  kind: string
   readonly connector: boolean
 }
 
 /** The first written field that this occurrence replaces. */
-export interface ElementReplacement {
-  readonly field: "label" | "drawn shape" | "kind"
-  readonly previous: WrittenValue
-}
+type ReplacedField = "label" | "drawn shape" | "kind"
 
 /** Observers of the two declarations that can replace an element's fields. */
 interface ElementObserver {
-  vertex?(
-    node: AgentflowShape,
-    id: string,
-    replacement: ElementReplacement,
-  ): void
+  vertex?(node: AgentflowShape, id: string, field: ReplacedField): void
   connector?(
     node: AgentflowConnectorStatement,
     id: string,
-    replacement: ElementReplacement,
+    field: ReplacedField,
   ): void
 }
 
@@ -75,21 +62,21 @@ function vertexKind(shape: AgentflowShape): string {
 }
 
 /** Compare only fields written before; a null field keeps its earlier value. */
-function replacementOf(
+function replacedFieldOf(
   previous: ElementValues | undefined,
   label: string,
   shape: string | null,
   kind: string | null,
-): ElementReplacement | null {
+): ReplacedField | null {
   if (previous === undefined) return null
-  if (previous.label !== null && previous.label.value !== label) {
-    return { field: "label", previous: previous.label }
+  if (previous.label !== null && previous.label !== label) {
+    return "label"
   }
-  if (shape !== null && previous.shape.value !== shape) {
-    return { field: "drawn shape", previous: previous.shape }
+  if (shape !== null && previous.shape !== shape) {
+    return "drawn shape"
   }
-  if (kind !== null && previous.kind.value !== kind) {
-    return { field: "kind", previous: previous.kind }
+  if (kind !== null && previous.kind !== kind) {
+    return "kind"
   }
   return null
 }
@@ -117,14 +104,12 @@ export function agentflowElementDeclarations(
       const previous = elements.get(id)
       const kind =
         previous?.connector === true ? "connector" : vertexKind(node.shape)
-      const replacement = replacementOf(previous, label, shape, kind)
-      if (replacement !== null) observer.vertex?.(node.shape, id, replacement)
-      const line = node.shape.loc.start.line
+      const field = replacedFieldOf(previous, label, shape, kind)
+      if (field !== null) observer.vertex?.(node.shape, id, field)
       elements.set(id, {
-        label: { value: label, line },
-        shape: { value: shape, line },
-        kind:
-          previous?.connector === true ? previous.kind : { value: kind, line },
+        label,
+        shape,
+        kind: previous?.connector === true ? previous.kind : kind,
         connector: previous?.connector ?? false,
       })
     },
@@ -133,25 +118,24 @@ export function agentflowElementDeclarations(
       if (id === null) return
       const title = node.title === null ? "" : agentflowLabelText(node.title)
       const previous = elements.get(id)
-      const line = node.loc.start.line
       if (previous?.connector === true) {
         if (title === "") return
-        const replacement = replacementOf(previous, title, null, null)
-        if (replacement !== null) observer.connector?.(node, id, replacement)
-        previous.label = { value: title, line }
+        const field = replacedFieldOf(previous, title, null, null)
+        if (field !== null) observer.connector?.(node, id, field)
+        previous.label = title
         return
       }
-      const replacement = replacementOf(
+      const field = replacedFieldOf(
         previous,
         title || id,
         "rounded",
         "connector",
       )
-      if (replacement !== null) observer.connector?.(node, id, replacement)
+      if (field !== null) observer.connector?.(node, id, field)
       elements.set(id, {
-        label: title === "" ? null : { value: title, line },
-        shape: { value: "rounded", line },
-        kind: { value: "connector", line },
+        label: title === "" ? null : title,
+        shape: "rounded",
+        kind: "connector",
         connector: true,
       })
     },

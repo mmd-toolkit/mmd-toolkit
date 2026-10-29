@@ -12,7 +12,7 @@ Code:
     |            ^~~ [1]
   5 |
 
-[1] mermaid.js replaces the styles of the class `hot`, set on line 3, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -28,8 +28,8 @@ Code:
     |          ^~~ [2]
   5 |
 
-[1] mermaid.js replaces the styles of the class `hot`, set on line 2, with those of this `classDef`.
-[2] mermaid.js replaces the styles of the class `hot`, set on line 3, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+[2] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -44,7 +44,7 @@ Code:
     |          ^~~ [1]
   5 |
 
-[1] mermaid.js replaces the styles of the class `hot`, set on line 3, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -58,7 +58,7 @@ Code:
     |          ^~~ [1]
   4 |
 
-[1] mermaid.js replaces the styles of the class `hot`, set on line 2, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -72,7 +72,7 @@ Code:
     |          ^~~ [1]
   4 |
 
-[1] mermaid.js replaces the styles of the class `hot`, set on line 2, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -86,7 +86,7 @@ Code:
     |          ^~~ [1]
   4 |
 
-[1] mermaid.js replaces the styles of the class `hot`, set on line 2, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -101,7 +101,7 @@ Code:
     |          ^~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the styles of the class `default`, set on line 3, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `default`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -115,7 +115,7 @@ Code:
     |          ^~~ [1]
   4 |
 
-[1] mermaid.js replaces the styles of the class `hot`, set on line 2, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -130,7 +130,7 @@ Code:
     |          ^~~ [1]
   5 |
 
-[1] mermaid.js replaces the styles of the class `hot`, set on line 3, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -147,7 +147,7 @@ Code:
     |          ^~~ [1]
   7 |
 
-[1] mermaid.js replaces the styles of the class `hot`, set on line 2, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -161,7 +161,7 @@ Code:
     |          ^~~ [1]
   4 |
 
-[1] mermaid.js replaces the styles of the class `hot`, set on line 2, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -176,8 +176,8 @@ Code:
     |          [1] [2]
   4 |
 
-[1] mermaid.js replaces the styles of the class `hot`, set on line 2, with those of this `classDef`.
-[2] mermaid.js replaces the styles of the class `cold`, set on line 2, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+[2] mermaid.js replaces the styles of the class `cold`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -192,7 +192,7 @@ Code:
     |          ^~~ [1]
   5 |
 
-[1] mermaid.js replaces the styles of the class `hot`, set on line 3, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -207,7 +207,7 @@ Code:
     |          ^~~ [1]
   5 |
 
-[1] mermaid.js replaces the styles of the class `hot`, set on line 3, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -222,7 +222,7 @@ Code:
     |              ^~~~ [1]
   5 |
 
-[1] mermaid.js replaces the styles of the class `cold`, set on line 3, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `cold`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -236,7 +236,7 @@ Code:
     |          ^~~ [1]
   4 |
 
-[1] mermaid.js replaces the styles of the class `hot`, set on line 2, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -251,7 +251,7 @@ Code:
     |          ^~~ [1]
   5 |
 
-[1] mermaid.js replaces the styles of the class `hot`, set on line 3, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -266,7 +266,7 @@ Code:
     |          ^~~ [1]
   5 |
 
-[1] mermaid.js replaces the styles of the class `hot`, set on line 3, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -280,7 +280,7 @@ Code:
     |          ^~~ [1]
   4 |
 
-[1] mermaid.js replaces the styles of the class `hot`, set on line 2, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -295,7 +295,7 @@ Code:
     |          ^~~ [1]
   5 |
 
-[1] mermaid.js replaces the styles of the class `hot`, set on line 3, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -310,7 +310,7 @@ Code:
     |          ^~~ [1]
   5 |
 
-[1] mermaid.js replaces the styles of the class `hot`, set on line 3, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -326,6 +326,6 @@ Code:
     |          ^~~ [2]
   5 |
 
-[1] mermaid.js replaces the styles of the class `hot`, set on line 2, with those of this `classDef`.
-[2] mermaid.js replaces the styles of the class `hot`, set on line 3, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+[2] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
 ---

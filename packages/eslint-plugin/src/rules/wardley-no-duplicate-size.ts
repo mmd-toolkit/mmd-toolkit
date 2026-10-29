@@ -16,8 +16,7 @@ export const wardleyNoDuplicateSize: MermaidRuleDefinition<{
     },
     schema: [],
     messages: {
-      duplicate:
-        "mermaid.js replaces the map size set on line {{line}} with this size.",
+      duplicate: "mermaid.js replaces the earlier map size with this size.",
     },
   },
   create(context) {
@@ -32,7 +31,6 @@ export const wardleyNoDuplicateSize: MermaidRuleDefinition<{
           context.report({
             node,
             messageId: "duplicate",
-            data: { line: String(previous.loc.start.line) },
           })
         }
         previous = node

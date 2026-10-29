@@ -1,7 +1,6 @@
 # @mmd-toolkit/wardley-no-duplicate-size
 
-英語版:
-[wardley-no-duplicate-size.md](./wardley-no-duplicate-size.md)
+英語版: [wardley-no-duplicate-size.md](./wardley-no-duplicate-size.md)
 
 前に設定した大きさを置き換える `size` を禁止する。
 
@@ -52,7 +51,8 @@ wardley-beta
 ## 背景
 
 パーサーは最後の `size` を保ち、
-[マップ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L70-L73) はその幅と高さを取る。
+[マップ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L70-L73)
+はその幅と高さを取る。
 
 <!-- begin auto-generated rule resources -->
 

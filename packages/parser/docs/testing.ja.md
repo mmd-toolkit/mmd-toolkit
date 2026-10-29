@@ -19,16 +19,16 @@ fixture としてコーパスに足します。
 `tests/helpers/recorded-diagrams.ts` が挙げる図種のディレクトリの、
 すべての fixture を 1 回ずつ parse し、次を確かめます。
 
-- パースの結果が、
-  fixture がパーサーのために記録したものと同じであること（[記録したパースの結果](#記録したパースの結果)を参照）。
+- パースの結果が、 fixture がパーサーのために記録したものと同じであること。
+  [記録したパースの結果](#記録したパースの結果) を参照。
 - 受理・拒否と図種が、fixture が記録した mermaid.js のものと、
   fixture の `knownDivergence` の印が求めるとおりに合うこと。
   印がなければ mermaid.js の結果、印があれば仕様の結果です。
 
 ここでは木も Db も確かめません。
 `@mmd-toolkit/tests` が、
-記録した各木を確かめ（`check-tree-corpus.test.ts`。 [木の検査](#木の検査)を参照）、
-その木から Db を組んで、
+記録した各木を確かめ（`check-tree-corpus.test.ts`。
+[木の検査](#木の検査)を参照）、その木から Db を組んで、
 fixture が記録した Db と比べます（`db-from-tree.test.ts`）。
 
 `tests/kanban.test.ts` は、名前で指した fixture で、
@@ -64,7 +64,8 @@ CRLF を含む引用符付きのラベル、対にならない形の区切り、
 `tests/architecture.test.ts` は、名前で指した fixture で、木の構造、
 token の綴り・範囲、gap の所有を検査します。
 受理と記録は `tests/fixtures.test.ts` が関連 common fixture も含めて検査します。
-`tests/ast-architecture-examples.test.ts` はノード型コメントの例の範囲を検査します。
+`tests/ast-architecture-examples.test.ts`
+はノード型コメントの例の範囲を検査します。
 
 ## 既知の差異
 
@@ -78,12 +79,13 @@ token の綴り・範囲、gap の所有を検査します。
 記録した木から組んだ Db とそれを比べます。
 
 共通の fixture ループは、
-対応するすべての図種で `tests/helpers/divergence-form.ts` の expectDivergenceForm を呼びます。
+対応するすべての図種で `tests/helpers/divergence-form.ts` の
+expectDivergenceForm を呼びます。
 この関数が拒否する形、トークンを切る形の参照の読み、
 フロントマターの属性の引用符、読み過ごす % だけの行、
 ヘッダーの後の C4 キーワードを確かめ、 agentflow、gitgraph、info、Ishikawa、
-pie、usecase、venn のテストは、
-このループでの検査を共有します。 [fixture: gitgraph/div-directive-in-commit]
+pie、usecase、venn のテストは、このループでの検査を共有します。
+[fixture: gitgraph/div-directive-in-commit]
 [fixture: gitgraph/div-frontmatter-cross-string-enable]
 [fixture: usecase/div-comment-preheader-bare]
 [fixture: venn/div-c4-bare-identifier]
@@ -98,14 +100,18 @@ pie、usecase、venn のテストは、
   元の入力に対する mermaid.js の結果と、上と同じく一致すること。
   行の規則が無視する `;` は、パーサーの行の規則から求めます。
 - `click-reserved-word`: パーサーが入力を拒否すること。
-  仕様が参照入力に入力の Db を与えるところでは（[差異](../../spec/docs/known-divergences/click-reserved-word.ja.md#差異)、
-  [参照入力](#参照入力) を参照）、参照入力に対するパーサーの結果が、
-  元の入力に対する mermaid.js の結果と、上と同じく一致すること。
+  仕様が
+  [差異](../../spec/docs/known-divergences/click-reserved-word.ja.md#差異)
+  で参照入力に入力の Db を与えるところでは（[参照入力](#参照入力) を参照）、
+  参照入力に対するパーサーの結果が、元の入力に対する mermaid.js の結果と、
+  上と同じく一致すること。
   どの `click` がクリックの文を始めるかは、パーサーの単位から求めます。
 - `tokenless-empty-forms`: パーサーが入力を拒否すること。
-  仕様が参照入力に入力の Db を与えるところでは（[差異](../../spec/docs/known-divergences/tokenless-empty-forms.ja.md#差異)、
-  [参照入力](#参照入力) を参照）、パーサーが参照入力を受理し、その結果が、
-  元の入力に対する mermaid.js の結果と、上と同じく一致すること。
+  仕様が
+  [差異](../../spec/docs/known-divergences/tokenless-empty-forms.ja.md#差異)
+  で参照入力に入力の Db を与えるところでは（[参照入力](#参照入力) を参照）、
+  パーサーが参照入力を受理し、その結果が、元の入力に対する mermaid.js の結果と、
+  上と同じく一致すること。
 - `headerless-empty-ending`: パーサーが、
   ヘッダーがないことでクラス図を拒否すること。
   ヘッダーがないことは、パーサーの字句解析器が決める。
@@ -123,7 +129,8 @@ pie、usecase、venn のテストは、
   そのコメントは、パーサーの字句解析器と単位から求めます。
   Gantt チャートでは、 mermaid.js が直接たどり着く、
   印が `%` のコメントを持つこと。
-  直接たどり着くかどうかは [コメント](../../spec/docs/diagrams/gantt.ja.md#コメント) の定めのとおりで、
+  直接たどり着くかどうかは
+  [コメント](../../spec/docs/diagrams/gantt.ja.md#コメント) の定めのとおりで、
   パーサーの単位、コメント、図のテキストから求めます。
   `newline` 単位の改行は、`%` の前の空白として数えます。
   C4 では、後続の改行をコメントの外に残す図のコメントを持つこと。
@@ -156,14 +163,16 @@ pie、usecase、venn のテストは、
 `embedded-data-opaque` の印の付いた fixture では、中身を確かめません。
 パーサーは埋め込みのデータを読まないためです。
 gitgraph では、埋め込みの設定により受理判定がどちらの方向にも変わるため、
-指定の読みで判定します。 [fixture: gitgraph/docs-community-contributing-05cdc44b]
+指定の読みで判定します。
+[fixture: gitgraph/docs-community-contributing-05cdc44b]
 [fixture: gitgraph/div-frontmatter-main-branch-checkout-default-accepted]
 
 ### 参照入力
 
 参照入力は、パーサーが見つけた差異の形を、入力から除くか置き換えたものです。
 差異によっては、コメント領域やほかの形も除きます。
-`directive-as-token-boundary` と `ignored-semicolon-as-token-boundary` の参照入力の作り方と比べ方は上の一覧にあり、
+`directive-as-token-boundary` と `ignored-semicolon-as-token-boundary`
+の参照入力の作り方と比べ方は上の一覧にあり、
 ほかの差異のものは下の段落にあります。
 入力と参照入力をまたいでパーサーと mermaid.js が一致するなら、
 入力そのものの違いは、その形で説明できます。
@@ -182,8 +191,8 @@ gitgraph では、埋め込みの設定により受理判定がどちらの方�
 字句解析器が入ったクリックの文脈を出るときの空白 1 文字があれば、
 それを除いたものです。
 テストは、
-仕様が参照入力に入力の Db を与えるところ（[差異](../../spec/docs/known-divergences/click-reserved-word.ja.md#差異)）で比べ、
-それをパーサーで決めます。
+仕様が [差異](../../spec/docs/known-divergences/click-reserved-word.ja.md#差異)
+で参照入力に入力の Db を与えるところで比べ、それをパーサーで決めます。
 パーサーの字句解析器が、参照入力を、除いたもの以外の入力の単位として読むこと。
 ただし、それらの `click` の単位のクリックの id と `click-comma` の単位は、
 それぞれと同じ場所で始まり終わる単位として読みます。
@@ -191,8 +200,8 @@ gitgraph では、埋め込みの設定により受理判定がどちらの方�
 そして、それらのクリックの id のテキストが、
 参照入力の木の 1 つの葉ノードの範囲に収まることです。
 パーサーが参照入力を拒否するのは、 `subgraph a,b` の `,` のように、
-クリックの id が文の文脈が別に読む場所にあるときで、
-何も比べません。 [fixture: flowchart/db-subgraph-id-click-comma-blank-line]
+クリックの id が文の文脈が別に読む場所にあるときで、何も比べません。
+[fixture: flowchart/db-subgraph-id-click-comma-blank-line]
 
 `tokenless-empty-forms` の参照入力は、入力から、
 コメント領域と空の形を除いたものです。
@@ -209,8 +218,8 @@ state の文の `textBeforeBody` が持たないときです。
 濃度、線、`:`、`:::`、`,`、`[` の後と、
 `class` の文の最初の名前の並びの中がそれです。
 ブロックの後の単位がその文を続けるときもそうです。
-濃度、`:::`、`{`、`[`、`:`、
-`,` がそれです。 [fixture: er/div-empty-description-block-in-relationship]
+濃度、`:::`、`{`、`[`、`:`、 `,` がそれです。
+[fixture: er/div-empty-description-block-in-relationship]
 [fixture: er/div-empty-description-block-in-class]
 [fixture: er/gram-empty-description-block-between-names]
 Gantt チャートでは、空の href （`href` と、
@@ -219,7 +228,8 @@ Gantt チャートでは、空の href （`href` と、
 そこでは文を区切るものがなく、
 空の説明ブロックが文の中にあるのは click の文の中だけです。
 それは、id と最初の部分の間と、2 つの部分の間で、
-空の形の後の単位が 2 つ目の部分を始めるときです。 [fixture: gantt/div-empty-href-before-call]
+空の形の後の単位が 2 つ目の部分を始めるときです。
+[fixture: gantt/div-empty-href-before-call]
 [fixture: gantt/div-empty-description-block-between-href-and-call]
 [fixture: gantt/gram-empty-href-line]
 [fixture: gantt/gram-click-href-then-empty-href]
@@ -236,8 +246,8 @@ Gantt チャートでは、空の href （`href` と、
 `class` の文の 2 つ目の並びのクラスの後で、
 ブロックの後の単位が `,` のところです。
 スタイルは style の文脈を出る改行で終わるので、その後のブロックは文です。
-要求や要素の本文の行では、
-ブロックは本文の項目です。 [fixture: requirement/div-empty-string-line]
+要求や要素の本文の行では、ブロックは本文の項目です。
+[fixture: requirement/div-empty-string-line]
 [fixture: requirement/div-empty-description-block-in-relationship]
 [fixture: requirement/div-empty-description-block-after-string-class]
 [fixture: requirement/div-empty-description-block-before-shorthand-separator]
@@ -252,7 +262,8 @@ mindmap では、空の文字列、空の markdown 文字列、
 空の icon（`::icon(` 単位のすぐ後に `)` 単位が続くもの）、
 空の class の行（後に `class-text` 単位が続かない `:::` 単位）が、
 どこにあっても空の形です。
-この図種には空の説明ブロックはありません。 [fixture: mindmap/div-empty-string-in-shape]
+この図種には空の説明ブロックはありません。
+[fixture: mindmap/div-empty-string-in-shape]
 [fixture: mindmap/div-empty-markdown-string-in-shape]
 [fixture: mindmap/div-empty-icon-before-root]
 [fixture: mindmap/div-empty-class-before-root]
@@ -260,11 +271,13 @@ mindmap では、空の文字列、空の markdown 文字列、
 間に空白しかない、続けて書いたブロックは、
 最後のブロックの後に続くものでまとめて決めます。
 `""accDescr {}` に改行と `A` が続くものでは、
-空の文字列を除くとブロックが文を始めるので、
-ブロックは参照入力に残ります。 [fixture: flowchart/lex-empty-string-before-empty-description-block]
+空の文字列を除くとブロックが文を始めるので、ブロックは参照入力に残ります。
+[fixture: flowchart/lex-empty-string-before-empty-description-block]
 
 テストは、
-仕様が参照入力に入力の Db を与えるところ（[差異](../../spec/docs/known-divergences/tokenless-empty-forms.ja.md#差異)）で比べ、
+仕様が
+[差異](../../spec/docs/known-divergences/tokenless-empty-forms.ja.md#差異)
+で参照入力に入力の Db を与えるところで比べ、
 それをパーサーの字句解析器で決めます。
 字句解析器が、参照入力を、空の形の単位以外の入力の単位として読むところです。
 そこでは、パーサーは参照入力を受理しなければなりません。
@@ -294,8 +307,8 @@ fixture には参照入力が要りません。
 自分の入力の木にそれを使い（`tests/helpers/tree-problems.ts`）、
 一覧が空であることを求めます。
 
-子の欄の順は、
-各ノード型の節が述べるものです（[ast.ja.md の「ノード」](../../spec/docs/ast.ja.md#ノード)）。
+子の欄の順は、各ノード型の節が述べるものです。
+[ast.ja.md の「ノード」](../../spec/docs/ast.ja.md#ノード) を参照。
 `visitorKeys` の順に子の欄をたどる道具は、子のノードにソースの順で出会います。
 ただし、開く矢印とラベルを持つ FlowchartLink では、ラベルは矢印より前に書かれ、
 矢印より後にたどられます。
@@ -311,7 +324,8 @@ call より前にリンクが書かれた GanttClickStatement でも、
 ## 記録したパースの結果
 
 すべての fixture について、`parse()` の結果を、
-fixture の入力と並べて `packages/tests/fixtures/<diagram>/<fixture 名>/` に記録します。
+fixture の入力と並べて `packages/tests/fixtures/<diagram>/<fixture 名>/`
+に記録します。
 `tests/fixtures.test.ts` が、結果をそれと比べます。
 
 - パーサーが受理する入力では、`ast.json` に木を置きます。
@@ -320,8 +334,8 @@ fixture の入力と並べて `packages/tests/fixtures/<diagram>/<fixture 名>/`
   `ParseError` の `message`、`range`、
   `loc` を置きます（`index` は `range` の始まりです）。
   パーサーが拒否を報告する位置の記録です。
-  既知の差異では原因の形（[`error-positions.md`](./error-positions.ja.md) を参照）、
-  mermaid.js も拒否する入力では、一般の規則が決める位置です。
+  既知の差異では原因の形（[`error-positions.md`](./error-positions.ja.md)
+  を参照）、 mermaid.js も拒否する入力では、一般の規則が決める位置です。
   拒否も木と同じだけ記録され、
   報告する位置が変わればファイルの変化として現れます。
 - fixture は 2 つのうちどちらか一方を持ちます。
@@ -349,7 +363,8 @@ CI（`CI` が設定されている）では、ファイルがないとテスト�
 2. 新しい `ast.json` と `parse-error.json` を読み、
    木とエラーが仕様どおりであることを確かめる。
 3. `packages/tests` で、記録した木へのコーパスの確かめを回す。
-   `npx vitest run tests/check-tree-corpus.test.ts tests/db-from-tree.test.ts` である。
+   `npx vitest run tests/check-tree-corpus.test.ts tests/db-from-tree.test.ts`
+   である。
    パーサーのテストは、記録した木がどうであっても通るので、
    条件を破る木や別の Db を与える木は、これでしか分からない。
 4. fixture と一緒にコミットする。
@@ -365,8 +380,8 @@ fixture を改名・削除するときは、古いファイルも一緒に動か
   `^` が示す範囲を、ノードの範囲と比べます。
 - README の「使い方」の例を parse し、示している値と木を結果と比べます。
 - 単体テストが、`common.md` の各規則、検出器の表、
-  `visitorKeys`（子の欄の順も。 [木の検査](#木の検査)を参照）と `traverseNodes`、
-  flowchart の木とそのトークン、
+  `visitorKeys`（子の欄の順も。 [木の検査](#木の検査)を参照）と
+  `traverseNodes`、 flowchart の木とそのトークン、
   シーケンス図とクラス図と状態図の木とそのトークンと文法の外の拒否を扱います。
 
 `tests/agentflow.test.ts` は、名前で指した fixture で、 Name、コメント、見出し、
@@ -383,8 +398,9 @@ flowchart と同様に parse() と別に検査します。
 
 `tests/pie.test.ts` は、名前で指した fixture で、隠し形式の所有先、
 共通値の余白と null、重複、両方の引用符、 double 変換を検査します。
-不可分な境界の参照入力は、共通の fixture ループが元の expected
-Db と比べます（[既知の差異](#既知の差異)を参照）。
+不可分な境界の参照入力は、
+共通の fixture ループが元の expected Db
+と比べます（[既知の差異](#既知の差異)を参照）。
 `tests/ast-pie-examples.test.ts` は、8 ノードのコメント例を検査します。
 
 `tests/info.test.ts` は、
@@ -395,14 +411,14 @@ mermaid.js が埋め込みデータを拒否し、
 仕様がそのデータを不透明に保つ fixture では、
 木がフロントマターを保つことも検査します。
 共通の fixture ループが、宣言された不可分な形式の分断を、
-参照のトークン内で独立して検出し、
-参照入力も元の期待 Db と照合します。 [fixture: info/div-directive-flag-middle]
-`tests/ast-info-examples.test.ts` は 7 節点のコメント例を検査します。 [fixture: info/lex-flag-hidden-two]
-[fixture: info/lex-hidden-without-flag]
-[fixture: info/lex-hidden-tail-two]
-[fixture: info/lex-hidden-after-visible-eol] [fixture: info/title-tabs]
-[fixture: info/lex-title-one-tab] [fixture: info/accdescr-line-repeat]
-[fixture: info/title-open-quote] [fixture: info/div-frontmatter-invalid-yaml]
+参照のトークン内で独立して検出し、参照入力も元の期待 Db と照合します。
+[fixture: info/div-directive-flag-middle]
+`tests/ast-info-examples.test.ts` は 7 節点のコメント例を検査します。
+[fixture: info/lex-flag-hidden-two] [fixture: info/lex-hidden-without-flag]
+[fixture: info/lex-hidden-tail-two] [fixture: info/lex-hidden-after-visible-eol]
+[fixture: info/title-tabs] [fixture: info/lex-title-one-tab]
+[fixture: info/accdescr-line-repeat] [fixture: info/title-open-quote]
+[fixture: info/div-frontmatter-invalid-yaml]
 [fixture: info/div-frontmatter-html-invalid-yaml]
 [fixture: info/div-selected-showinfo] [fixture: common/detect-minimal-info]
 
@@ -424,12 +440,14 @@ outcomeOf は同じソース解析に fixture.config のサイト設定だけを
 フロントマターの config と init ディレクティブの引数は不透明なままで、
 受理判定の初期ブランチと escaping の既定値を変えません。
 したがって次の 2 fixture は、既定の checkout エラーの記録を保ち、
-指定された拒否の読みと比べます。 [fixture: gitgraph/docs-community-contributing-05cdc44b]
+指定された拒否の読みと比べます。
+[fixture: gitgraph/docs-community-contributing-05cdc44b]
 [fixture: gitgraph/docs-syntax-gitgraph-2ea99686]
 
 逆に、不透明な埋め込みの設定により mermaid.js が拒否する履歴でも、
 既定で受理されるものは木を保ちます。
-指定の読みが Db 比較の値を与えます。 [fixture: gitgraph/div-frontmatter-main-branch-checkout-default-accepted]
+指定の読みが Db 比較の値を与えます。
+[fixture: gitgraph/div-frontmatter-main-branch-checkout-default-accepted]
 [fixture: gitgraph/div-frontmatter-main-branch-duplicate-default-accepted]
 [fixture: gitgraph/div-init-main-branch-duplicate-default-accepted]
 
@@ -437,13 +455,12 @@ outcomeOf は同じソース解析に fixture.config のサイト設定だけを
 
 packet の fixture 記録と受理判定は tests/fixtures.test.ts だけが検査し、
 fixtureAccepts と outcomeOf の外部サイト設定を使います。
-サイトの幅が木を拒否しても、
-デフォルト記録は parse(text) の結果を保持します。 [fixture: packet/config-fraction-reject]
+サイトの幅が木を拒否しても、デフォルト記録は parse(text) の結果を保持します。
+[fixture: packet/config-fraction-reject]
 [fixture: packet/config-frontmatter-overrides-site]
 tests/packet.test.ts の単体テストは、名前で指した fixture で、
-記述されたブロック形式、隠れた形式の所有先、
-共通の値を検査します。 [fixture: packet/gram-mixed]
-[fixture: packet/gram-hidden-range-gap-spaced]
+記述されたブロック形式、隠れた形式の所有先、共通の値を検査します。
+[fixture: packet/gram-mixed] [fixture: packet/gram-hidden-range-gap-spaced]
 [fixture: packet/lex-hidden-two-suffixes] [fixture: packet/title-repeat-empty]
 [fixture: packet/error-single-rounded-end-wide]
 10 ノードのコメント例は tests/ast-packet-examples.test.ts が検査します。
@@ -453,8 +470,8 @@ fixtureAccepts を使って検査します。
 tests/radar.test.ts の単体検査は、名前で指した fixture で、
 記述されたコンマグループ、hidden form の所有先、両 entry 形式、トークンの種類、
 繰り返しと空の共通値、double の綴りを検査します。
-19 ノードのコメントの例は tests/ast-radar-examples.test.ts が検査します。 [fixture: radar/gram-written-tree]
-[fixture: radar/lex-hidden-axis-comma]
+19 ノードのコメントの例は tests/ast-radar-examples.test.ts が検査します。
+[fixture: radar/gram-written-tree] [fixture: radar/lex-hidden-axis-comma]
 [fixture: radar/lex-named-entry-hidden-across-lines]
 [fixture: radar/common-repeat-empty] [fixture: radar/db-number-rounded]
 [fixture: common/detect-minimal-radar]
@@ -464,8 +481,8 @@ fixtureAccepts を使って検査します。
 tests/treemap.test.ts の単体検査は、名前で指した fixture で、
 平坦な行のインデント、複合形式の境界、空・反復の共通値、
 書かれた数値と文字列の読みを検査します。
-全 9 ノードのコメント例は tests/ast-treemap-examples.test.ts が検査します。 [fixture: treemap/gram-written-tree]
-[fixture: treemap/db-leaf-tail-space]
+全 9 ノードのコメント例は tests/ast-treemap-examples.test.ts が検査します。
+[fixture: treemap/gram-written-tree] [fixture: treemap/db-leaf-tail-space]
 [fixture: treemap/gram-indent-around-global-directive]
 [fixture: treemap/common-repeat-empty]
 [fixture: treemap/db-number-multiple-dots]
@@ -475,23 +492,23 @@ tests/treemap.test.ts の単体検査は、名前で指した fixture で、
 `tests/wardley.test.ts` は、名前で指した fixture で、記述構造、
 構成要素のトークン、隠し形式の名前付き所有先を検証する。
 `tests/fixtures.test.ts` は共通の検出例も含む受理と記録を検証する。
-`tests/ast-wardley-examples.test.ts` は 28 ノード型のコメント例を検証する。 [fixture: wardley/db-all-fields]
-[fixture: wardley/hidden-all-unit-gaps]
+`tests/ast-wardley-examples.test.ts` は 28 ノード型のコメント例を検証する。
+[fixture: wardley/db-all-fields] [fixture: wardley/hidden-all-unit-gaps]
 [fixture: common/detect-minimal-wardley]
 
 `tests/cynefin.test.ts` は、名前で指した fixture で、フィールド、
 隠し形式の所有先、構成要素の境界を検査します。
 共通の検出ケースを含む受理と記録は `tests/fixtures.test.ts` が検査します。
-`tests/ast-cynefin-examples.test.ts` は 11 ノードのコメント例を検査します。 [fixture: cynefin/db-all-fields]
-[fixture: cynefin/hidden-domain-item-members]
-[fixture: cynefin/hidden-all-unit-gaps]
-[fixture: common/detect-minimal-cynefin]
+`tests/ast-cynefin-examples.test.ts` は 11 ノードのコメント例を検査します。
+[fixture: cynefin/db-all-fields] [fixture: cynefin/hidden-domain-item-members]
+[fixture: cynefin/hidden-all-unit-gaps] [fixture: common/detect-minimal-cynefin]
 
 `tests/eventmodeling.test.ts` は、名前で指した fixture で、構造、トークン表記、
 範囲、hidden form の所有先を検査します。
 受理と記録は共通検出 fixture も含め `tests/fixtures.test.ts` が担当します。
 `tests/ast-eventmodeling-examples.test.ts` は、
-全 22 ノードのコメント例を検査します。 [fixture: eventmodeling/gram-written-tree]
+全 22 ノードのコメント例を検査します。
+[fixture: eventmodeling/gram-written-tree]
 [fixture: eventmodeling/lex-hidden-frame-optional-gaps]
 [fixture: eventmodeling/lex-hidden-gwt-required-gaps]
 [fixture: common/detect-minimal-eventmodeling]
@@ -501,8 +518,7 @@ tests/treemap.test.ts の単体検査は、名前で指した fixture で、
 装飾の後のエラーの位置を検査する。
 共通検出 fixture を含む受理と記録は `tests/fixtures.test.ts` が担当する。
 `tests/ast-treeview-examples.test.ts` は全 13 ノードのコメント例を検査する。
-ASCII 表示用の escape を復元してから、
-印の付いたソース範囲を検査する。 [fixture: treeview/gram-written-tree]
-[fixture: treeview/box-written-tree]
+ASCII 表示用の escape を復元してから、印の付いたソース範囲を検査する。
+[fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
 [fixture: treeview/ast-annotation-prefixes] [fixture:
 common/detect-minimal-tree-view]

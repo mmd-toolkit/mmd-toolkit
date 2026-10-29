@@ -1,7 +1,6 @@
 # @mmd-toolkit/quadrant-no-duplicate-style
 
-英語版:
-[quadrant-no-duplicate-style.md](./quadrant-no-duplicate-style.md)
+英語版: [quadrant-no-duplicate-style.md](./quadrant-no-duplicate-style.md)
 
 点やクラスがもう一度与えるスタイルを禁止する。
 

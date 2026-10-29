@@ -1,3 +1,0 @@
-# Fixtures are compared byte for byte (input.mmd is the exact text under test,
-# some inputs use CRLF on purpose), so Git must never convert line endings here.
-* -text

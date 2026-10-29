@@ -36,7 +36,8 @@ id は大文字小文字を区別して比べるので、`class a c` はブロ�
 クラスの名前は確かめない。
 どの `classDef` も定義しないクラスも CSS のクラスとしてブロックに残り、
 ページのスタイルが使える。
-空白で始まる id は [block-no-spaced-class-id](./block-no-spaced-class-id.ja.md) が報告する。
+空白で始まる id は [block-no-spaced-class-id](./block-no-spaced-class-id.ja.md)
+が報告する。
 
 この規則に**反する**コードの例:
 

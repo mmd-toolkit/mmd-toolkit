@@ -27,7 +27,9 @@
 コメント行だけのブロックも、mermaid.js がコメントを取り除くので説明を空にし、
 `accDescr: d` の後のブロック `accDescr {`、`%% TODO`、
 `}` は `d` を取り除くので報告する。
-ほかに何も持たないブロックは [treeview-no-empty-description-block](./treeview-no-empty-description-block.ja.md) が報告する。
+ほかに何も持たないブロックは
+[treeview-no-empty-description-block](./treeview-no-empty-description-block.ja.md)
+が報告する。
 空の説明の後の文は何も失わず、報告しない。
 
 図がすでに持つ説明を設定する文は、どちらの形でも報告しない。
@@ -80,12 +82,12 @@ treeView-beta
 
 ## 背景
 
-[値の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L57-L68) は、
-説明の両端とブロックの各行の両端の空白と、ブロックの空の行を除き、
+[値の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L57-L68)
+は、説明の両端とブロックの各行の両端の空白と、ブロックの空の行を除き、
 2 つ以上の空白やタブの連なりを 1 つの空白にする。
 パーサーは最後の説明を保ち、
-[`populateCommonDb`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14) は、
-それが空でないときだけそれを設定する。
+[`populateCommonDb`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14)
+は、それが空でないときだけそれを設定する。
 
 <!-- begin auto-generated rule resources -->
 

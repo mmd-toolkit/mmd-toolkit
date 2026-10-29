@@ -81,12 +81,12 @@ second
 
 ## 背景
 
-[フレームのデータ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L348-L362) は、
-その名前の最初のデータブロックであり、
-[文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L95-L97) は、
-繰り返すエンティティのブロックに番号の付いた名前を与える。
-[文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L309-L311) は、
-描画がどのデータの型も特別に扱わないとも述べる。
+[フレームのデータ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L348-L362)
+は、その名前の最初のデータブロックであり、
+[文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L95-L97)
+は、繰り返すエンティティのブロックに番号の付いた名前を与える。
+[文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L309-L311)
+は、描画がどのデータの型も特別に扱わないとも述べる。
 
 <!-- begin auto-generated rule resources -->
 

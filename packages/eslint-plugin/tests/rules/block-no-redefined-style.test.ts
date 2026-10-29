@@ -26,7 +26,7 @@ new RuleTester(LANGUAGE_CONFIG).run(
         errors: [
           {
             message:
-              "mermaid.js replaces the whole style list of `A`, losing a style set on line 3.",
+              "mermaid.js replaces the whole style list of `A`, losing a style set earlier.",
             line: 4,
             column: 3,
             endLine: 4,

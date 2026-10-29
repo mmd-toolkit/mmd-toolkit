@@ -23,7 +23,7 @@ export const gitgraphNoDuplicateOption: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js uses this `{{name}}:` value instead of the earlier one in this statement.",
+        "mermaid.js replaces the earlier `{{name}}:` value in this statement with this value.",
     },
   },
   create(context) {

@@ -9,8 +9,8 @@ description:
 
 # 規則のアイディアの探し方と採否の決め方（rule-ideas）
 
-`@mmd-toolkit/eslint-plugin` （Mermaid の図のテキストのための ESLint の言語プラグイン）について、
-規則の候補を探し、持つかどうか、名前、範囲、
+`@mmd-toolkit/eslint-plugin` （Mermaid の図のテキストのための ESLint
+の言語プラグイン）について、規則の候補を探し、持つかどうか、名前、範囲、
 `recommended` に入れるかを決める手順。
 会話の履歴や記憶がなくても、この文書だけで同じ判断ができるように書く。
 採否の基準そのものは 2 節の「方針と基準」にあり、この文書のほかの所には、
@@ -35,7 +35,8 @@ description:
     落とした規則の文書が既にあれば、同じ手順で、規則のファイルと一緒に削除する。
   - 根拠の fixture が足りなければ、最小の入力と、
     その fixture が答える主張を添えて、tests パッケージに頼む。
-    tests パッケージが足して mermaid.js の結果を記録し（`packages/tests/docs/maintaining-fixtures.md`）、
+    tests パッケージが足して mermaid.js
+    の結果を記録し（`packages/tests/docs/maintaining-fixtures.md`）、
     届いた名前を規則の覚え書きに載せる。
 - 主張ごとに、【実行】（動かして確かめた）、【読解】（読んで確かめた）、
   未確認を区別して示す。
@@ -91,7 +92,8 @@ description:
     失われるものを避けられないときである。
     その例は、`links` の中のフラグメントのある URL である。
     何も失わない形を文書が示しているときは、
-    その場合は誤りのままである（`note left of A:hi`。文書は `:` の後に空白を置いて書く）。
+    その場合は誤りのままである（`note left of A:hi`。文書は `:`
+    の後に空白を置いて書く）。
     持つ規則の条件からは、木が誤りと見分けられるところでそうした不具合を除く。
     木が見分けられないところでは、7 節が言うとおり、
     誤りと一緒に報告する（ラベルの中の `direction LR` のテキスト）。
@@ -380,14 +382,14 @@ description:
 
 ## 3. 材料の探し方
 
-- 仕様:
-  `packages/spec/docs/common.md` と `packages/spec/docs/diagrams/<図種>.md`。
+- 仕様: `packages/spec/docs/common.md` と
+  `packages/spec/docs/diagrams/<図種>.md`。
   規則の「帰結」として書かれた、受理されるが意外な読み方の例を拾う。
 - fixture: `packages/tests/fixtures/<図種>/` の `input.mmd`、`expected.json`、
   `ast.json`。
   名前が `lex-`、`gram-`、`db-` で始まるものに、意外な読み方の記録が多い。
-- フォーマッターの制限:
-  `packages/prettier-plugin-mmd/docs/<図種>.md` と `docs/compatibility.md`。
+- フォーマッターの制限: `packages/prettier-plugin-mmd/docs/<図種>.md` と
+  `docs/compatibility.md`。
   空白 1 つや `;` 1 つで意味が変わる箇所が並んでいる。
 - 既存の規則: `packages/eslint-plugin/docs/rules/`。
   同じものを出さない。
@@ -611,7 +613,8 @@ for (const input of inputs) {
    拒否する図種では規則は要らない。
 4. 受理する図種で結果が変わるかは、pin した mermaid のビルドで、
    その図種の字句規則を読んで確かめる。
-   - 場所は `node_modules/.pnpm/mermaid@<版>/node_modules/mermaid/dist/chunks/mermaid.core/`。
+   - 場所は
+     `node_modules/.pnpm/mermaid@<版>/node_modules/mermaid/dist/chunks/mermaid.core/`。
      ファイル名は図種によって次のどれかになる。
      - `<名前>Diagram-*.mjs`（sequenceDiagram、pieDiagram など）
      - `<名前>-definition-*.mjs`（timeline、mindmap、kanban）
@@ -935,7 +938,8 @@ mermaid.js はそのテキストも捨てるので、報告は事実であり（
 
 タイトルと説明の規則、つまり flowchart、sequence、class、state、er、gantt、
 journey、
-requirement の `<diagram>-no-duplicate-title` と `<diagram>-no-duplicate-description` （16 件）:
+requirement の `<diagram>-no-duplicate-title` と
+`<diagram>-no-duplicate-description` （16 件）:
 
 1. 報告するどの文も、前に設定した値を置き換える。
    行の形とブロックの形。
@@ -956,9 +960,11 @@ requirement の `<diagram>-no-duplicate-title` と `<diagram>-no-duplicate-descr
 3. 「accTitle multiple」「title twice」「accDescr
    multiple」「accTitle」「accDescr」。
    見つかったものは、
-   ほかの図種にこれらの文を足すもの（[#8437](https://github.com/mermaid-js/mermaid/pull/8437)、
-   [#8140](https://github.com/mermaid-js/mermaid/pull/8140)）か、
-   C4 についてのもの（[#8040](https://github.com/mermaid-js/mermaid/issues/8040)）である。
+   ほかの図種にこれらの文を足す
+   [#8437](https://github.com/mermaid-js/mermaid/pull/8437) と
+   [#8140](https://github.com/mermaid-js/mermaid/pull/8140) か、
+   C4 についての [#8040](https://github.com/mermaid-js/mermaid/issues/8040)
+   である。
 4. 文を 1 つ残す。
    flowchart の規則は、どちらかを除く提案を出す。
 
@@ -1001,8 +1007,9 @@ state-no-ignored-text、er-no-ignored-text、requirement-no-ignored-text:
    state では、`note left of A:hi` のように、
    ノートの `:` の後で mermaid.js が捨てる文字を報告する。
    mermaid.js の文書は `:` の後に空白を置いてノートを書き、
-   `note left of A : hi` のようにそう書けば、何も捨てられない（実行）（「state
-   note colon character」「note first character missing」「state note text」、
+   `note left of A : hi` のようにそう書けば、
+   何も捨てられない（実行）（「state note colon character」「note first
+   character missing」「state note text」、
    題名の「note state」。それについてのものはない）。
 2. なし。
    `direction TB // vertical` のように、
@@ -1025,21 +1032,19 @@ state-no-ignored-text、er-no-ignored-text、requirement-no-ignored-text:
 4. 文をそれだけの行に書く。
    flowchart は、行を分ける提案を出す。
 
-sequence-no-ignored-text:
-(1) その文字を捨てる。
+sequence-no-ignored-text: (1) その文字を捨てる。
 (2) なし。
 (3) 「sequence message newline parenthesis」。
 (4) メッセージの終わりをその行に書く。
 
-journey-no-ignored-text:
-(1) 3 つ目のコロンの後の人を捨てる。
+journey-no-ignored-text: (1) 3 つ目のコロンの後の人を捨てる。
 (2) なし。
 人はコンマで区切る。
 (3) 「journey colon」「journey」。
 (4) 人をコンマで区切る。
 
-flowchart-no-undef:
-(1) `style` は書き手が書かなかった頂点を作り、`class` と `click` は何もしない。
+flowchart-no-undef: (1) `style` は書き手が書かなかった頂点を作り、
+`class` と `click` は何もしない。
 (2) なし。
 (3) 「style undefined node」「class nonexistent node」「style node」。
 [#7040](https://github.com/mermaid-js/mermaid/issues/7040) （closed、
@@ -1053,32 +1058,28 @@ id なしで書いたリンクに mermaid.js が与える `L_A_B_0` のような
 リンクが変わるとそのような id も変わることは、
 出力の事実ではない（2026-10-22 に決めた）。
 
-class-no-undef:
-(1) 文は何も変えないか、注釈が線を持たない。
+class-no-undef: (1) 文は何も変えないか、注釈が線を持たない。
 (2) なし。
 (3) 「cssClass not applied」「classDiagram style nonexistent」「cssClass」「note
 for class」。
-[#2234](https://github.com/mermaid-js/mermaid/issues/2234) （open、"Status:
-Awaiting PR"）は、エラーか、`link` がクラスを宣言することを求め、どちらでも、
-書き間違えた名前は誤りのままである。
+[#2234](https://github.com/mermaid-js/mermaid/issues/2234) （open、
+"Status: Awaiting PR"）は、エラーか、`link` がクラスを宣言することを求め、
+どちらでも、書き間違えた名前は誤りのままである。
 (4) 名前を直す。
 
-state-no-undef:
-(1) `style`、`class`、`click` は何も変えず、ほかのどの文も書かない状態の注釈は、
-その状態を加える。
+state-no-undef: (1) `style`、`class`、`click` は何も変えず、
+ほかのどの文も書かない状態の注釈は、その状態を加える。
 (2) なし。
 注釈だけで書いた状態の注釈は、どの文も書かない状態を加え、報告はそれを言う。
 (3) 「state note nonexistent」。
 (4) 名前を直すか、状態を書く。
 
-er-no-undef:
-(1) 文は何も変えず、別名は名前でない。
+er-no-undef: (1) 文は何も変えず、別名は名前でない。
 (2) なし。
 (3) 「erDiagram style class」。
 (4) 実体の名前を使う。
 
-gantt-no-undef:
-(1) どのタスクもリンクにならず、開始や終わりは今日の日付になる。
+gantt-no-undef: (1) どのタスクもリンクにならず、開始や終わりは今日の日付になる。
 (2) なし。
 (3) 「gantt after nonexistent」「gantt after today」「after gantt」。
 [#8254](https://github.com/mermaid-js/mermaid/pull/8254)（merged）は、
@@ -1091,26 +1092,23 @@ gantt-no-undef:
 後に書いた id についてのもので、規則はそれを報告しない。
 (4) id を直す。
 
-requirement-no-undef:
-(1) 文は何も変えず、関係はその端に箱を持たない。
+requirement-no-undef: (1) 文は何も変えず、関係はその端に箱を持たない。
 (2) なし。
 (3) 「requirement relationship missing」「requirement」。
 (4) 名前を直す。
 
-flowchart-no-redefined-vertex:
-(1) 後の形やラベルは、前のものを置き換える。
+flowchart-no-redefined-vertex: (1) 後の形やラベルは、前のものを置き換える。
 改行だけが違うラベルは報告せず、ラベルはそのほかは書いたとおりに比べるので、
 mermaid.js が同じに保つ、HTML の属性の引用符だけが違う 2 つのラベルは、
 文書が言うとおり報告する（2026-10-22 に、引用符を変換して比べる形から、
 規則は書いた値を比べるという決定に合わせて変えた）。
 (2) なし。
 (3) 「node label overwritten」「redefine node label」「node label」。
-[#3789](https://github.com/mermaid-js/mermaid/issues/3789) （open、Type:
-Enhancement）は、ラベルのための別の文を提案している。
+[#3789](https://github.com/mermaid-js/mermaid/issues/3789) （open、
+Type: Enhancement）は、ラベルのための別の文を提案している。
 (4) 別の id を使うか、ラベルを 1 度だけ書く。
 
-flowchart-no-duplicate-direction:
-(1) subgraph の本体の後の `direction` 文は、
+flowchart-no-duplicate-direction: (1) subgraph の本体の後の `direction` 文は、
 subgraph の方向を置き換える（`flowchart`、`flowchart-elk`、
 `swimlane-beta` で実行）。
 同じ id の 2 つの subgraph は、
@@ -1125,20 +1123,17 @@ subgraph の方向を置き換える（`flowchart`、`flowchart-elk`、
 同じ事実を報告する agentflow-no-duplicate-direction とともに、
 2026-10-22 に決めた。
 
-class-no-redefined-class:
-(1) 前のラベルは失われる。
+class-no-redefined-class: (1) 前のラベルは失われる。
 (2) なし。
 (3) 「class label redefine」。
 (4) 別の名前を使うか、ラベルを 1 度だけ書く。
 
-er-no-redefined-entity:
-(1) 後の別名は無視される。
+er-no-redefined-entity: (1) 後の別名は無視される。
 (2) なし。
 (3) 「entity alias」「alias erDiagram」。
 (4) 別の名前を使うか、別名を 1 度だけ書く。
 
-no-unclosed-directive:
-(1) 指令が取る行の文、
+no-unclosed-directive: (1) 指令が取る行の文、
 または `%%{wrap` の後の語が失われる（すべての図種で実行）。
 (2) なし。
 名前と引数の JSON のオブジェクトや配列は複数の行にわたってよく、
@@ -1147,21 +1142,21 @@ no-unclosed-directive:
 後の指令の `}%%` に閉じられた指令も報告し、これは前の条件、
 閉じていない指令が見落としていたものである（2026-10-27 に決めた）。
 (3) 「directive not closed」「unclosed directive」「directive」。
-見つかったものは設定についてのもので、
-mermaid.js の文書は指令をフロントマターに置き換えている（[#7989](https://github.com/mermaid-js/mermaid/pull/7989)、
-merged）が、読み方は変わらない。
+見つかったものは設定についてのもので、mermaid.js の文書は、
+merged の [#7989](https://github.com/mermaid-js/mermaid/pull/7989) で、
+指令をフロントマターに置き換えているが、読み方は変わらない。
 (4) 指令を `}%%` で閉じる。
 規則は共通である。
 共通の前処理がどの図種の字句解析よりも前に指令を取り除き、
 残りを受理しない図種は報告を与えない（検出の表の 44 のヘッダーで実行）。
 
-no-invalid-init-directive:
-(1) どの init の指令の設定も捨てられるか、
+no-invalid-init-directive: (1) どの init の指令の設定も捨てられるか、
 大文字小文字の違う名前ではその指令の設定が捨てられる（すべての図種で実行）。
 (2) なし。
 書いたとおりで正しく、
-`'` を `"` に変えると壊れる JSON は mermaid.js の不具合で、
-報告しない（[#3640](https://github.com/mermaid-js/mermaid/issues/3640)（open）は引用符に関する）。
+`'` を `"` に変えると壊れる JSON は mermaid.js の不具合で、報告しない。
+[#3640](https://github.com/mermaid-js/mermaid/issues/3640)（open）は、
+引用符に関するものである。
 語の引数やなしは構文を知らないことによる。
 その行の `%%}%%` の後の指令は、後に文字があれば自分の設定だけを捨て、
 最後の行ではすべての init の指令の設定を捨て、
@@ -1176,8 +1171,7 @@ no-invalid-regexp と、
 報告する 2 つの形、正しくない JSON と大文字小文字の違う名前はそうした形であり、
 直しは正しく書くことである。
 
-no-duplicate-init-key:
-(1) JSON の 1 つのオブジェクトが 2 度持つキーでは、
+no-duplicate-init-key: (1) JSON の 1 つのオブジェクトが 2 度持つキーでは、
 前の値が失われる（すべての図種で実行）。
 (2) なし。
 同じ値でもう一度書いたキーと、
@@ -1189,17 +1183,15 @@ mermaid.js が読む JSON だけを調べる（2026-10-27 に決めた）。
 
 class-no-inline-comment: これらの注の後の段落を参照。
 
-sequence-no-create-destroy:
-(1) 何も破棄として記録しない。
+sequence-no-create-destroy: (1) 何も破棄として記録しない。
 (2) なし。
 (3) 「create destroy」。
 [#4833](https://github.com/mermaid-js/mermaid/issues/4833)（open）は、
 `create` を置く場所についてのものである。
 (4) `create` と `destroy` を 2 つの文に書く。
 
-sequence-no-invalid-json:
-(1) JSON のオブジェクトでないテキストは、何も与えないか、
-文字列や配列の文字や要素を与える。
+sequence-no-invalid-json: (1) JSON のオブジェクトでないテキストは、
+何も与えないか、文字列や配列の文字や要素を与える。
 フラグメントのある URL のように、
 `#` とその後を含めて JSON のオブジェクトであるテキストは報告しない。
 mermaid.js は正しい JSON のオブジェクトを `#` で切るからである。
@@ -1207,56 +1199,53 @@ mermaid.js は正しい JSON のオブジェクトを `#` で切るからであ�
 `links A:` と `properties A:` は何も与えず、後で埋めるために残す場面もない。
 (3) 「links json」「properties sequence json」「links」「links hash」「links
 fragment」、題名の「hash sequence」。
-[#5419](https://github.com/mermaid-js/mermaid/issues/5419) （open、Type: Bug /
-Error）は、 `#` が sequence 図のテキストを空にすると報告している。
+[#5419](https://github.com/mermaid-js/mermaid/issues/5419) （open、
+Type: Bug / Error）は、 `#` が sequence 図のテキストを空にすると報告している。
 (4) JSON のオブジェクトを書く。
 
-sequence-no-link-without-separator:
-(1) ラベルは最後の 2 文字を失い、`link A:` は空のリンクを与える。
+sequence-no-link-without-separator: (1) ラベルは最後の 2 文字を失い、
+`link A:` は空のリンクを与える。
 (2) なし。
 (3) 「link @ sequence menu」「link sequence」。
 (4) 文書は `label @ url` の形を挙げている。
 
-class-no-bare-class-name:
-(1) 文は何も宣言しない。
+class-no-bare-class-name: (1) 文は何も宣言しない。
 (2) なし。
 (3) 「classDiagram direction lowercase」「classDiagram title」「class diagram
 title」。
 (4) 文書は、`class Foo`、関係、メンバー、
 そしてタイトルにはフロントマターを挙げている。
 
-class-no-unclosed-backquote:
-(1) テキストの残りが 1 つの名前になる。
+class-no-unclosed-backquote: (1) テキストの残りが 1 つの名前になる。
 (2) なし。
 (3) 「class name backtick」「backtick」。
 (4) 逆引用符を閉じる。
 
-gantt-no-duplicate-id:
-(1) id は後のタスクを名指す。
+gantt-no-duplicate-id: (1) id は後のタスクを名指す。
 (2) なし。
 (3) 「gantt duplicate id」「gantt id」。
 (4) タスクに別の id を与える。
 
-gantt-no-duplicate-setting:
-(1) 後の値は、チャート全体について前の値を置き換える。
+gantt-no-duplicate-setting: (1) 後の値は、
+チャート全体について前の値を置き換える。
 mermaid.js が持つとおりに比べて同じ値を繰り返す文は、報告しない。
 (2) なし。
 (3) 「gantt dateFormat twice」「gantt multiple dateFormat」「dateFormat」。
 (4) 文を 1 つ残す。
 
-gantt-no-unknown-exclude:
-(1) その語は何も除かない。
+gantt-no-unknown-exclude: (1) その語は何も除かない。
 (2) なし。
 (3) 「excludes weekend」「gantt excludes」「excludes weekdays」。
 見つかったものは、
 [#7038](https://github.com/mermaid-js/mermaid/pull/7038) のように、
 除く日をまたぐタスクの終わりの日付についてのものと、
-セクションごとの excludes （[#5680](https://github.com/mermaid-js/mermaid/issues/5680)）である。
+セクションごとの excludes
+（[#5680](https://github.com/mermaid-js/mermaid/issues/5680)）である。
 (4) `weekends` か、曜日の完全な名前を書く。
 
-gantt-no-invalid-tag:
-(1) 開始や終わりの場所の語は、日付として読まれるが日付でなく、
-チャートは描かれないか、タスクは長さを持たない（実行）。
+gantt-no-invalid-tag: (1) 開始や終わりの場所の語は、
+日付として読まれるが日付でなく、チャートは描かれないか、
+タスクは長さを持たない（実行）。
 mermaid.js はそこのどんな語も id として読むので、id は調べない。
 (2) なし。
 (3) 「gantt tag case」「gantt done crit」。
@@ -1271,8 +1260,7 @@ no-invalid-init-directive と同じく ESLint 自身の規則の語に合わせ�
 黙って意図どおりに働かない。
 直しは正しく書くことである。
 
-journey-no-empty-person:
-(1) ジャーニーとその凡例が、名前の空の人を持つ。
+journey-no-empty-person: (1) ジャーニーとその凡例が、名前の空の人を持つ。
 (2) なし。
 人を後で書くつもりの `Make tea: 5:` は、
 書いていない人をジャーニーとその凡例に加える。
@@ -1280,8 +1268,8 @@ journey-no-empty-person:
 (3) 「journey actor empty」「journey」。
 (4) コンマを除くか、名前を書く。
 
-journey-no-invalid-score:
-(1) 数でない score は、その中に書いた人とともに失われる。
+journey-no-invalid-score: (1) 数でない score は、
+その中に書いた人とともに失われる。
 目盛りの外の数は効かない。
 mermaid.js の文書は、score を、顔を目盛りの上に置く 1 から 5 の数と定める。
 空の score は、書いていない score 0 を加える。
@@ -1291,39 +1279,38 @@ mermaid.js の文書は、score を、顔を目盛りの上に置く 1 から 5 
 (3) 「journey score」「journey」。
 [#6262](https://github.com/mermaid-js/mermaid/issues/6262) （open、
 approved）は、尺度の外の顔をどう描くかについてのもので、
-[#4248](https://github.com/mermaid-js/mermaid/issues/4248) （open、Type:
-Enhancement、Status: Triage）は、自分の尺度を求めており、PR はない。
+[#4248](https://github.com/mermaid-js/mermaid/issues/4248) （open、
+Type: Enhancement、Status: Triage）は、自分の尺度を求めており、PR はない。
 (4) 文書は、最初と 2 つ目のコロンの間の、1 から 5 の数というスコアを挙げている。
 
-requirement-no-duplicate-field:
-(1) 最初の値を残し、
+requirement-no-duplicate-field: (1) 最初の値を残し、
 mermaid.js が持つとおりに比べて同じ値の後のフィールドは報告しない。
 (2) なし。
 長いテキストを続けるつもりの 2 つ目の `text:` は、報告する誤りである。
 (3) 「requirement field」「requirement duplicate」。
 (4) 欄を 1 つ残す。
 
-requirement-no-duplicate-name:
-(1) 同じ種類の後の文は、種類や、残る文が持たない値の欄を失う。
+requirement-no-duplicate-name: (1) 同じ種類の後の文は、種類や、
+残る文が持たない値の欄を失う。
 違う種類の文はその名前の 2 つ目の箱を作り、両方が残るので、
 報告しない（実行。 2 つのノード `x`）。
 (2) なし。
 (3) 「requirement duplicate」「requirement」。
 (4) どちらかに別の名前を与える。
 
-mindmap-no-duplicate-decoration:
-(1) 最後のアイコンの行と最後のクラスの行を残し、
+mindmap-no-duplicate-decoration: (1)
+最後のアイコンの行と最後のクラスの行を残し、
 ノードがすでに持つ値の行は報告しない。
 (2) なし。
 最初のアイコンを置き換えるために 2 つ目のアイコンの行を書く書き手はおらず、
 2 つのクラスのための 2 つのクラスの行は、報告する誤りである。
 (3) 「mindmap icon class」「mindmap」。
-[#7025](https://github.com/mermaid-js/mermaid/pull/7025)（open）と [#7615](https://github.com/mermaid-js/mermaid/issues/7615)（open）は、
+[#7025](https://github.com/mermaid-js/mermaid/pull/7025)（open）と
+[#7615](https://github.com/mermaid-js/mermaid/issues/7615)（open）は、
 アイコンをどう描くかについてのものである。
 (4) 文書は、`:::urgent large` のような 1 つのクラスの行を挙げている。
 
-mindmap-no-mismatched-shape:
-(1) ノードは開きの形を持つ。
+mindmap-no-mismatched-shape: (1) ノードは開きの形を持つ。
 (2) なし。
 (3) 「mindmap shape」「mindmap」。
 (4) 開きに合う閉じを書く。
@@ -1336,8 +1323,8 @@ timeline-no-duplicate-description、timeline-no-empty-description-block は、
 検索の「timeline title」「timeline section」「timeline accTitle」「timeline
 colon」「timeline hash」は、読み方を変えるものを見つけなかった。
 
-sankey-no-invalid-value:
-(1) 先頭に数のない値は `NaN` で、リンクは大きさを持たない。
+sankey-no-invalid-value: (1) 先頭に数のない値は `NaN` で、
+リンクは大きさを持たない。
 数の後のテキストは捨てられ、`"1,234"` は 1 になる（実行）。
 数の後の `%%` で始まるテキストは報告しない。
 (2) なし。
@@ -1348,9 +1335,8 @@ parseFloat」、題名の「sankey」。
 負の値の描き方を求めるもので、規則はそれを報告しない。
 (4) 桁区切りや単位を付けずに数だけを書く。
 
-sankey-no-empty-node:
-(1) 引用符の中も含め、空白だけの source や target は、名前のないノードを、
-そこへのリンクとともに加える（実行）。
+sankey-no-empty-node: (1) 引用符の中も含め、空白だけの source や target は、
+名前のないノードを、そこへのリンクとともに加える（実行）。
 (2) なし。
 空白を残して名前を消したものは、 journey-no-empty-person と同じく、
 報告する誤りである。
@@ -1366,27 +1352,24 @@ XY チャートの規則の注は次のとおりである。
   空のブロックの規則の注を持つ。
   語のタイトルは mermaid.js がつなぐとおりに比べ、
   テキストの終わりの `accTitle:` は空のタイトルを設定する（実行）。
-- xychart-no-unclosed-description-block:
-  (1) ブロックはテキストの終わりまで続き、後の文を取り、説明を空にする（実行）。
+- xychart-no-unclosed-description-block: (1)
+  ブロックはテキストの終わりまで続き、後の文を取り、説明を空にする（実行）。
   規則は `}` のないブロックだけを報告するので、
   mermaid.js が書いたとおりに読む説明は報告しない。
   (2) なし。
   (4) ブロックを閉じる。
-- xychart-no-invalid-orientation:
-  (1) `Horizontal` と `HORIZONTAL` は、
+- xychart-no-invalid-orientation: (1) `Horizontal` と `HORIZONTAL` は、
   設定 `chartOrientation: horizontal` があっても、
   縦向きのチャートを与える（実行）。
   (2) なし。
   どの大文字小文字の `vertical` も報告しない。
   (4) 文書は小文字の `horizontal` を挙げている。
-- xychart-no-redefined-axis:
-  (1) 軸の後の文は、タイトルを、なければ空のタイトルに置き換え、
-  データを持てばデータを置き換える（実行）。
+- xychart-no-redefined-axis: (1) 軸の後の文は、タイトルを、
+  なければ空のタイトルに置き換え、データを持てばデータを置き換える（実行）。
   軸が持たないものを足すだけの文は報告しない。
   (2) なし。
   (4) 軸ごとに 1 つの文を書く。
-- xychart-no-extra-value:
-  (1) カテゴリーを超える値は捨てられる（実行）。
+- xychart-no-extra-value: (1) カテゴリーを超える値は捨てられる（実行）。
   (2) なし。
   (3) [#7798](https://github.com/mermaid-js/mermaid/pull/7798)（open）は、
   最後の `x-axis` より前のプロットに最後の x 軸を与えるので、規則は、
@@ -1408,31 +1391,30 @@ open の [#8084](https://github.com/mermaid-js/mermaid/pull/8084) は、
   空のブロックの規則の注を持つ。
   タイトルは引用符と行の残りを持ち、閉じていない説明のブロックは拒否されるので、
   それを報告する規則はない（実行）。
-- quadrant-no-redefined-axis、quadrant-no-redefined-quadrant:
-  (1) 後の文は、設定するそれぞれのテキストを置き換える（実行）。
+- quadrant-no-redefined-axis、quadrant-no-redefined-quadrant: (1) 後の文は、
+  設定するそれぞれのテキストを置き換える（実行）。
   空だったテキストは、失われたと数えない。
   (2) なし。
   (4) 軸ごと、象限ごとに 1 つの文を書く。
-- quadrant-no-redefined-class:
-  (1) クラスは、併合なしに、最後の定義のスタイルだけを持つ（実行）。
+- quadrant-no-redefined-class: (1) クラスは、併合なしに、
+  最後の定義のスタイルだけを持つ（実行）。
   後の定義が落とすか変えるスタイルは失われ、
   足すスタイルは何も失わない（usecase-no-redefined-class と同じく、
   2026-10-23 に変えた。規則は足したスタイルを報告していた）。
   (2) なし。
   (4) スタイルを 1 つの定義に書く。
-- quadrant-no-undef:
-  (1) クラス名は点に残り、その名前のクラスは定義されない（実行）。
+- quadrant-no-undef: (1) クラス名は点に残り、
+  その名前のクラスは定義されない（実行）。
   配置はそのクラスを見つけず、
   描いた点はその名前の CSS クラスを持たない（読んだ）。
   (2) なし。
   (4) クラスを定義するか、名前を直す。
-- quadrant-no-duplicate-style:
-  (1) スタイルの後の値が前の値を置き換える（実行）。
+- quadrant-no-duplicate-style: (1)
+  スタイルの後の値が前の値を置き換える（実行）。
   (2) なし。
   点のスタイルとそのクラスのスタイルは比べない。
   (4) スタイルをそれぞれ 1 度だけ与える。
-- quadrant-no-invalid-coordinate:
-  (1) 座標は書いたとおりに持たれ（実行）、
+- quadrant-no-invalid-coordinate: (1) 座標は書いたとおりに持たれ（実行）、
   配置は d3 の線形の尺度でそれを変換する。
   尺度は `0,3` に数を与えず、`0x5` に 5 を与える（d3-scale 4.0.2 で実行）。
   規則は、数でない座標と 0 から 1 の外の数の座標だけを報告するので、
@@ -1450,29 +1432,31 @@ direction、label、link の語も添えた。
 読み方を変えるものはなかった。
 open の [#8279](https://github.com/mermaid-js/mermaid/pull/8279) は、
 どのブロックも持たない id への `style`（いまは拒否される）を変え、
-[#8310](https://github.com/mermaid-js/mermaid/pull/8310)（open）はアクセシビリティの文を足す。
+[#8310](https://github.com/mermaid-js/mermaid/pull/8310)（open）は、
+アクセシビリティの文を足す。
 [#5588](https://github.com/mermaid-js/mermaid/issues/5588)（open、triage）は、
 2 つの複合ブロックで id を使い回すことを求めており、
 mermaid.js はそれを 1 度描く。
 変えると言った保守者はいない。
 
-- block-no-edge-chain、block-no-edge-in-composite-head:
-  (1) 連なりは最後のリンクだけを始点なしに残し、最初のブロックを置かない。
+- block-no-edge-chain、
+  block-no-edge-in-composite-head: (1)
+  連なりは最後のリンクだけを始点なしに残し、最初のブロックを置かない。
   リンクのある頭は、id も辺もない複合ブロックを与える（実行）。
   (2) なし。
   mermaid.js の文書は、辺に 1 つのリンクを書き、
   `block:` の後にリンクを書かない。
   (4) リンクごとに辺を書き、複合ブロックは `end` の後でつなぐ。
-- block-no-duplicate-block:
-  (1) もう一度書いたブロックは何も置かず、
+- block-no-duplicate-block: (1) もう一度書いたブロックは何も置かず、
   もう一度書いたラベルや形は最初のものを置き換え、幅、子、
   `columns` は失われる（実行）。
   (2) ブロックに最初の形を与える文は、ラベルと形を与えるので報告せず、
   ただしその方法では向きを得ないブロック矢印は報告する。
   形を繰り返す辺も報告しない。
   (4) ブロックごとに自分の id を与え、テキストはラベルに書く。
-- block-no-spaced-class-id、block-no-invalid-direction:
-  (1) 空白を含む id はブロックを見つけずに新しいものを作り、
+- block-no-spaced-class-id、
+  block-no-invalid-direction: (1) 空白を含む id
+  はブロックを見つけずに新しいものを作り、
   コンマの前の空白は行の残りをクラスの名前にし、
   空白を含む向きは描画が読まない（Db は実行、描画は `blockArrow.ts` を読んだ）。
   (2) なし。
@@ -1480,22 +1464,22 @@ mermaid.js はそれを 1 度描く。
   何も失わない `class Backend,Database back` と `(x, down)` を書くので、
   その空白は `note left of A:hi` と同じく、文書が示さない書き方である。
   (4) そこに空白を書かない。
-- block-no-undef:
-  (1) クラスは置かれない新しいブロックに行く（実行）。
+- block-no-undef: (1) クラスは置かれない新しいブロックに行く（実行）。
   (2) なし。
   `class` の文の後で宣言した id は報告せず、
   `classDef` のないクラスの名前は確かめない。
   (4) id を直す。
-- block-no-duplicate-columns、block-no-redefined-style:
-  (1) 最後の `columns` がブロック全体の数を設定し、
+- block-no-duplicate-columns、
+  block-no-redefined-style: (1) 最後の `columns` がブロック全体の数を設定し、
   後の `style` は並び全体を置き換える（実行）。
   (2) なし。
   同じ数と、CSS が空白を読むとおり（両端とコロンの前後はなし、
   連なりは 1 つ）に比べてスタイルを残す並びは報告しない。
   (4) ブロックごとに 1 つの `columns` と、
   すべてのスタイルを持つ 1 つの `style` を書く。
-- block-no-mismatched-shape、block-no-mismatched-edge、block-no-useless-width:
-  (1) ブロックは形を持たず、辺は線と印をラベルの後の矢印だけから取り、
+- block-no-mismatched-shape、block-no-mismatched-edge、
+  block-no-useless-width: (1) ブロックは形を持たず、
+  辺は線と印をラベルの後の矢印だけから取り、
   リンクの前の幅はリンクとともに捨てられる（実行）。
   (2) なし。
   文書の組、両側の同じ線、ブロックが持つ幅と同じ幅は報告しない。
@@ -1514,12 +1498,11 @@ mermaid.js はそれを 1 度描く。
 検索は題名と本文の「kanban」で、 metadata、priority、duplicate、
 icon の語も添えた。
 読み方を変えるものはなかった。
-[#8117](https://github.com/mermaid-js/mermaid/issues/8117)（open）はキー `status` を提案しているが、
-mermaid.js はいまそれを読まない。
+[#8117](https://github.com/mermaid-js/mermaid/issues/8117)（open）はキー
+`status` を提案しているが、 mermaid.js はいまそれを読まない。
 
-- kanban-no-invalid-metadata-key、kanban-no-invalid-priority:
-  (1) `assigned`、`ticket`、`priority`、`icon`、`label`、
-  `shape` 以外のキーは何も設定しない。
+- kanban-no-invalid-metadata-key、kanban-no-invalid-priority: (1) `assigned`、
+  `ticket`、`priority`、`icon`、`label`、 `shape` 以外のキーは何も設定しない。
   別の大文字小文字のキーと、
   YAML が 1 つのキーと読む空白のない `ticket:DOC-1` も同じである。
   `Very High`、`High`、`Medium`、`Low`、`Very Low` 以外の priority は、
@@ -1549,9 +1532,8 @@ mermaid.js はいまそれを読まない。
   flowchart のノードのデータのキーの綴り違い（`A@{ shpe: circle }` は、
   エラーなしにノードに形を与えない。実行）も同じ種類の候補であり、
   同じく保留する。
-- kanban-no-duplicate-section:
-  (1) 同じ id のどの列も、その id のすべての項目を並べるので、
-  項目は列ごとに描かれる（実行）。
+- kanban-no-duplicate-section: (1) 同じ id のどの列も、
+  その id のすべての項目を並べるので、項目は列ごとに描かれる（実行）。
   (2) なし。
   項目のない同じ id の列は報告しない。
   (4) 列ごとに自分の id を与える。
@@ -1564,37 +1546,36 @@ UpdateElementStyle before、attribute case、accTitle、sprite、offset の語�
 - c4-no-duplicate-title、
   c4-no-duplicate-description: 上のタイトルと説明の規則の注を持つ。
   `accTitle:` は、mermaid.js の不具合で見える題名を設定するので、比べない。
-- c4-no-undef:
-  (1) 読まれるときに対象のないスタイル更新は、対象より前に書いたものも、
-  何も変えない（実行）。
+- c4-no-undef: (1) 読まれるときに対象のないスタイル更新は、
+  対象より前に書いたものも、何も変えない（実行）。
   (2) なし。
   mermaid.js の文書は更新を図の終わりに書くので、
   対象より前の更新は文書が示すとおりに書かれていない。
   順について文書が何も言わない flowchart の、頂点より前の `class` とは違う。
   知らない alias への関係は、描くときにエラーで止まるので報告しない。
   (4) alias を直すか、更新を対象の後へ移す。
-- c4-no-invalid-attribute-key、c4-no-useless-argument:
-  (1) 大文字小文字の違うスタイルのキーは別の欄として持たれ、
+- c4-no-invalid-attribute-key、
+  c4-no-useless-argument: (1)
+  大文字小文字の違うスタイルのキーは別の欄として持たれ、
   呼び出しの引数を超える引数は持たれない（実行）。
   (2) なし。
   ほかの知らないキーと、引数を超える空の項目は報告しない。
   (4) キーをその大文字小文字で書き、値をその引数に書く。
-- c4-no-redefined-element:
-  (1) alias の後の宣言は、要素のラベルと種類、
+- c4-no-redefined-element: (1) alias の後の宣言は、要素のラベルと種類、
   境界のラベルと型を置き換える（実行）。
   (2) なし。
   同じラベルの繰り返し、最初のラベル、要素を足すために書き直した境界、
   誰も書いていない既定の型は報告しない。
   (4) 要素と境界ごとに自分の alias を与える。
-- c4-no-duplicate-style:
-  (1) 欄をもう一度与える後のスタイル更新や同じ更新の後の引数は、
+- c4-no-duplicate-style: (1)
+  欄をもう一度与える後のスタイル更新や同じ更新の後の引数は、
   空の引数の空の値でも、前の値を置き換える（実行）。
   (2) なし。
   欄が持つ値を与えるもの、対象がまだ持たない欄、 `$alias`、`$from`、`$to`、
   宣言の値は報告しない。
   (3) 「UpdateElementStyle」「UpdateRelStyle」:
-  [#8087](https://github.com/mermaid-js/mermaid/pull/8087)（open）は色を検査するが、
-  どの値が保たれるかは変えない。
+  [#8087](https://github.com/mermaid-js/mermaid/pull/8087)（open）は、
+  色を検査するが、どの値が保たれるかは変えない。
   (4) 欄はそれぞれ 1 度与え、1 つの欄には名前付きの属性を使う。
   2026-10-21 に venn の規則の後で決めた。
   前の判定は、2 度書いたスタイル更新を何も失わないとして除いていたが、
@@ -1610,15 +1591,15 @@ open の [#8089](https://github.com/mermaid-js/mermaid/pull/8089) は、
 Db はすでに並べ替えている。
 open の [#8471](https://github.com/mermaid-js/mermaid/pull/8471) は、
 集合のない図をエラーにする。
-[#8076](https://github.com/mermaid-js/mermaid/issues/8076) と [#7692](https://github.com/mermaid-js/mermaid/issues/7692)（open）は、
+[#8076](https://github.com/mermaid-js/mermaid/issues/8076) と
+[#7692](https://github.com/mermaid-js/mermaid/issues/7692)（open）は、
 文字と円を置く場所についてである。
 描画は `vennRenderer.ts` と @upsetjs/venn.js 2.0.0 で読み、
 そのレイアウトを例の Db で実行もした（SVG は描いていない）。
 
 - venn-no-duplicate-title: 上のタイトルの規則の注を持つ。
   タイトルは引用符と行の残りを持ち、フロントマターのタイトルは比べない。
-- venn-no-duplicate-subset:
-  (1) 描画は文ごとに 1 度領域を描く。
+- venn-no-duplicate-subset: (1) 描画は文ごとに 1 度領域を描く。
   もう一度書いた集合は次の色の 2 つ目の円になり、後のラベルは前のラベルを、
   集合の後の大きさは前の大きさを置き換え、
   和の 2 つの大きさはその間の重なりを与える（大きさは実行、
@@ -1630,8 +1611,8 @@ open の [#8471](https://github.com/mermaid-js/mermaid/pull/8471) は、
   subset は、
   木（VennSubsetStatement）と mermaid.js の Db（`getSubsetData`）と同じく、
   `set` 文か `union` 文である。
-- venn-no-duplicate-style、venn-no-invalid-style-key:
-  (1) プロパティの後の値は、1 つの文の中で（実行）、
+- venn-no-duplicate-style、venn-no-invalid-style-key: (1) プロパティの後の値は、
+  1 つの文の中で（実行）、
   また 1 つの対象の文どうしで（`buildStyleByKey` を読んだ）、
   前の値を置き換える。
   描画は文書が挙げる 5 つのプロパティだけを読み、
@@ -1641,16 +1622,14 @@ open の [#8471](https://github.com/mermaid-js/mermaid/pull/8471) は、
   (4) プロパティはそれぞれ 1 度与え、5 つのどれかを書く。
   venn-no-invalid-style-key の名前は、上の invalid の名前と同じく、
   ESLint 自身の規則の語に合わせる。
-- venn-no-undef:
-  (1) どの文も宣言しない領域の文字のノードは置かれず、
+- venn-no-undef: (1) どの文も宣言しない領域の文字のノードは置かれず、
   そのスタイルは何にも付かない（レイアウトの領域は実行、
   `renderTextNodes` とスタイルの探し方は読んだ）。
   (2) なし。
   後で宣言する領域、より大きな和が足す組、
   名前が 1 つのスタイルに対する文字のノードの id は報告しない。
   (4) 名前を直すか、領域を宣言する。
-- venn-no-ignored-text:
-  (1) その文字はコメントとともに捨てられる（実行）。
+- venn-no-ignored-text: (1) その文字はコメントとともに捨てられる（実行）。
   (2) なし。
   `%%` の前の空白と、ラベルや引用符の付いた名前の中の `%%` は報告しない。
   (4) その文字を取り除くか、文を書き終える。
@@ -1659,10 +1638,10 @@ agentflow の規則の注は次のとおりである。
 検索は題名の「agentflow」と「agentflow-beta」と、「agentflow」に connector、
 flow title、direction、accDescr、duplicate、shape の語を加えたもので、
 読み方を変えるものはなかった。
-mermaid.js
-12.0.0 の後にマージされた [#8443](https://github.com/mermaid-js/mermaid/pull/8443) は `[/…/]` を入力として描くので、
-agentflow-no-redefined-vertex はそれへの、またはそれからの変化を見逃すが、
-何も変えないものは報告しない。
+mermaid.js 12.0.0 の後にマージされた
+[#8443](https://github.com/mermaid-js/mermaid/pull/8443) は `[/…/]`
+を入力として描くので、 agentflow-no-redefined-vertex はそれへの、
+またはそれからの変化を見逃すが、何も変えないものは報告しない。
 
 - agentflow-no-duplicate-title、agentflow-no-duplicate-description、
   agentflow-no-empty-description-block、
@@ -1675,9 +1654,10 @@ agentflow-no-redefined-vertex はそれへの、またはそれからの変化�
   flow や connector の名前の中と `click` の欄の前の空のブロックは、
   説明を設定せず、これも報告する（実行）。
   閉じないブロックの規則は flowchart の規則の条件を持ち、同じ理由で入れない。
-- agentflow-no-redefined-vertex、agentflow-no-redefined-connector:
-  (1) 形を付けた頂点や connector の宣言は id が持っていたラベル、描かれる形、
-  種類を置き換え、connector の最初の宣言はその id の頂点を置き換える（実行）。
+- agentflow-no-redefined-vertex、
+  agentflow-no-redefined-connector: (1) 形を付けた頂点や connector の宣言は id
+  が持っていたラベル、描かれる形、種類を置き換え、
+  connector の最初の宣言はその id の頂点を置き換える（実行）。
   形は描かれるとおりに、ひし形、六角形、サブルーチンを別に、
   ほかの括弧の形を角の丸い長方形として比べる。
   `getTypeFromVertex` と `normaliseNodeShapes` を読んだ。
@@ -1691,22 +1671,20 @@ agentflow-no-redefined-vertex はそれへの、またはそれからの変化�
   描かれる形、種類は報告しない。
   (4) 要素ごとに自分の id を与える。
   2 つの規則は id ごとの 1 つの記録を共有し、報告する文で分かれる。
-- agentflow-no-redefined-flow:
-  (1) 同じ id の flow は合わされ、空でない後のタイトルが前のものを、
-  flow が終わる順に置き換える（実行）。
+- agentflow-no-redefined-flow: (1) 同じ id の flow は合わされ、
+  空でない後のタイトルが前のものを、 flow が終わる順に置き換える（実行）。
   (2) なし。
   メンバーを足すためにタイトルなしでもう一度書いた flow は報告しない。
   (4) id ごとにタイトルを 1 つ書く。
-- agentflow-no-duplicate-direction:
-  (1) flow の本体の中か、その id の後の宣言の中の後の方向は、
-  前の方向を置き換える（実行）。
+- agentflow-no-duplicate-direction: (1) flow の本体の中か、
+  その id の後の宣言の中の後の方向は、前の方向を置き換える（実行）。
   flowchart の文書が言うとおり、`TD` と `TB` は 1 つの方向である。
   (2) なし。
   (4) flow ごとに方向を 1 つ書く。
-  flowchart の 1 つの subgraph の 2 つの `direction` 文も同じに振る舞い（実行）、
+  flowchart の 1 つの subgraph の 2 つの `direction`
+  文も同じに振る舞い（実行）、
   flowchart-no-duplicate-direction がそれを報告する。
-- agentflow-no-undef:
-  flowchart-no-undef の注を持つ。
+- agentflow-no-undef: flowchart-no-undef の注を持つ。
   flow と connector の名前は id であり、
   mermaid.js が自分で与える id （`subGraph0`、`L_A_B_0`）も図の id で、
   名指すものに届くので報告しない（実行。 2026-10-22 に決めた）。
@@ -1734,14 +1712,12 @@ include と extend のギュメに関するものである。
   そこまでの行を取る（実行）。
   閉じないブロックの規則は、それを flowchart の規則の条件で報告し、
   同じ理由で入れない。
-- usecase-no-duplicate-direction:
-  (1) 最後の `direction` 文が方向を設定し、
+- usecase-no-duplicate-direction: (1) 最後の `direction` 文が方向を設定し、
   `TD` は `TB` として記録される（`usecaseModelBuilder` を読んだ。実行）。
   (2) なし。
   (4) `direction` 文を 1 つ書く。
-- usecase-no-duplicate-metadata:
-  (1) キーの更新は、前の更新がアクター、ユースケース、境界、
-  関係に与えた値を置き換える（実行）。
+- usecase-no-duplicate-metadata: (1) キーの更新は、前の更新がアクター、
+  ユースケース、境界、関係に与えた値を置き換える（実行）。
   境界の見出しのメタデータは書いた順に加わり、見出しの後の更新は報告しない。
   文書は見出しの型を変えるためにそれを書くからである（2026-10-23 に決めた）。
   更新はアクターやユースケースの宣言のメタデータに、どこにあっても勝ち、
@@ -1754,14 +1730,16 @@ include と extend のギュメに関するものである。
   mermaid.js が 1 つの id に変える名前（`"Place order"` と `Place_order`）は、
   書いたとおりに比べ、文書がそれを述べる（実行）。
   (4) 要素のキーごとに値を 1 つ与える。
-- usecase-no-redefined-class:
-  (1) 後の `classDef` はクラスの定義全体を置き換え（`applyClassDefinitions` を読んだ）、
-  描画はその中の各プロパティの最後の値を取る（`getCompiledStyles` を読んだ。実行）。
+- usecase-no-redefined-class: (1) 後の `classDef`
+  はクラスの定義全体を置き換え（`applyClassDefinitions` を読んだ）、
+  描画はその中の各プロパティの最後の値を取る（`getCompiledStyles`
+  を読んだ。実行）。
   そのため、後の定義が落とすか変えるスタイルは失われ、
   足すスタイルは何も失わない。
   flowchart、ブロック図、agentflow では、代わりに CSS が決める（2 節を見る）。
   プロパティの名前は書いたとおりに比べる。
-  描画は書いた名前でスタイルをラベルか図形に与えるからである（`styles2String` を読んだ）。
+  描画は書いた名前でスタイルをラベルか図形に与えるからである（`styles2String`
+  を読んだ）。
   値は CSS が読むとおりに、引用符で囲んだ文字列の文字を保って比べる（実行）。
   どちらも 2026-10-23 に決めた。
   (2) なし。
@@ -1769,8 +1747,8 @@ include と extend のギュメに関するものである。
   (4) クラスごとに `classDef` を 1 つ書く。
 
 pie の規則の注は次のとおりである。
-検索は「pie duplicate label」「pie same label」、題名の「pie」と title、「pie
-accDescr」「populateCommonDb」で、読み方を変えるものはなかった。
+検索は「pie duplicate label」「pie same label」、題名の「pie」と title、
+「pie accDescr」「populateCommonDb」で、読み方を変えるものはなかった。
 [#6485](https://github.com/mermaid-js/mermaid/pull/6485)（closed、未マージ）は、
 Langium のパーサーではタイトルの最後の値だけを取るのが意図どおりだとしている。
 [#7855](https://github.com/mermaid-js/mermaid/pull/7855)（open）は、
@@ -1779,8 +1757,7 @@ pie のパーサーを、今のパーサーとバイト単位で同じ値を与�
 それがもたらす変化は、
 固定した mermaid.js を更新するときに扱う（2026-10-23 に決めた）。
 
-- pie-no-duplicate-label:
-  (1) ラベルの後の区分は足されず、
+- pie-no-duplicate-label: (1) ラベルの後の区分は足されず、
   扇形は最初の区分の値を保つ（`addSection` を読んだ。実行）。
   (2) なし。
   最初の区分と数として同じ値を与える区分は報告しない。
@@ -1804,37 +1781,41 @@ gitgraph の規則の注は次のとおりである。
 parent」「gitGraph message」「gitGraph tag」「gitGraph title」で、
 読み方を変えるものはなかった。
 下の #6707 のほかは、
-マージ（open の [#7950](https://github.com/mermaid-js/mermaid/pull/7950) はより多くの親を持つマージを足す）、
-配置、クリックに関するものである。
+マージ（open の [#7950](https://github.com/mermaid-js/mermaid/pull/7950)
+はより多くの親を持つマージを足す）、配置、クリックに関するものである。
 
-- gitgraph-no-duplicate-option:
-  (1) 文法は `id`、`type`、`parent` にそれぞれ 1 つの値を当てるので、
-  最後に書いたものが保たれ、前のものは、
-  mermaid.js が受理しなかったはずの値でも失われる（`gitGraph.langium` を読んだ。実行）。
+- gitgraph-no-duplicate-option: (1) 文法は `id`、`type`、
+  `parent` にそれぞれ 1 つの値を当てるので、最後に書いたものが保たれ、
+  前のものは、
+  mermaid.js が受理しなかったはずの値でも失われる（`gitGraph.langium`
+  を読んだ。実行）。
   (2) なし。
   もう一度与えた同じ値、足されるタグ、描画が示さないメッセージは報告しない。
   (4) オプションごとに値を 1 つ与える。
-- gitgraph-no-redefined-commit:
-  (1) id の後のコミットはコミットの順で前のものの場所を取り、
+- gitgraph-no-redefined-commit: (1) id
+  の後のコミットはコミットの順で前のものの場所を取り、
   前のコミットとそのタグと型は失われ、コミットの親が変わる（実行）。
   `merge` の id を持つ `commit` はそのマージを置き換える（実行）。
   mermaid.js は `Commit ID A already exists` を、
   レベル `warn` でログに書く（`commit()` を読んだ）。
   このログは、
   merged の [#6707](https://github.com/mermaid-js/mermaid/pull/6707) が、
-  繰り返した id が描画を壊した [#4838](https://github.com/mermaid-js/mermaid/issues/4838) を閉じるために足した。
+  繰り返した id が描画を壊した
+  [#4838](https://github.com/mermaid-js/mermaid/issues/4838)
+  を閉じるために足した。
   既定の `logLevel` の `fatal` はそれを示さないので、
   その入力は黙って受理される。
-  [#7441](https://github.com/mermaid-js/mermaid/pull/7441) が警告を足した flowchart-no-undef と同じである（2026-10-23 に決めた）。
-  [文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md#L481-L500) の鉄道の例は `commit id:"Boston"` を 2 度書き、
-  2 つ目が 1 つ目を置き換える。
+  [#7441](https://github.com/mermaid-js/mermaid/pull/7441) が警告を足した
+  flowchart-no-undef と同じである（2026-10-23 に決めた）。
+  [文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md#L481-L500)
+  の鉄道の例は `commit id:"Boston"` を 2 度書き、 2 つ目が 1 つ目を置き換える。
   これは #4838 が報告した振る舞いであり、文書が意図して示す書き方ではない。
   (2) なし。
   文の最後の `id:` がその id であり、 mermaid.js が作る id は比べない。
   (4) コミットごとに自分の id を与える。
 - gitgraph-no-duplicate-title、gitgraph-no-duplicate-description、
-  gitgraph-no-empty-description-block:
-  gitgraph はタイトルと説明を同じに読むので、
+  gitgraph-no-empty-description-block: gitgraph
+  はタイトルと説明を同じに読むので、
   上の pie の規則の注を持つ（`gitGraphParser.ts` を読んだ。実行）。
 
 packet の規則は、packet がタイトルと説明を同じに読み、タイトルを描くので、
@@ -1848,25 +1829,26 @@ architecture の規則の注は次のとおりである。
 edge」「architecture group」「architecture-beta group」「architecture diagram
 title」「architecture accTitle」「architecture accDescr」で、
 読み方を変えるものはなかった。
-[#7211](https://github.com/mermaid-js/mermaid/issues/7211)（open）は別の group を囲む group からの辺に、
-[#7313](https://github.com/mermaid-js/mermaid/issues/7313)（closed）は矢印の長さに関するものである。
+[#7211](https://github.com/mermaid-js/mermaid/issues/7211)（open）は、
+別の group を囲む group からの辺に、
+[#7313](https://github.com/mermaid-js/mermaid/issues/7313)（closed）は、
+矢印の長さに関するものである。
 
 - architecture-no-duplicate-title、architecture-no-duplicate-description、
-  architecture-no-empty-description-block:
-  architecture はタイトルと説明を同じに読むので、
+  architecture-no-empty-description-block: architecture
+  はタイトルと説明を同じに読むので、
   上の pie の規則の注を持つ（`architectureParser.ts` を読んだ。実行）。
   `title` は描かれない（`architectureRenderer.ts` を読んだ）ので、
   タイトルの規則は、タイトルを描かない図種のタイトルの規則と同じく、
   `accTitle` だけを比べる（2026-10-25 に決めた）。
-- architecture-no-reversed-marker:
-  (1) 文法は `<` と `>` を、
-  どちらもそれが立つ端の矢じりとして読む（`architecture.langium` を読んだ）ので、
-  `>--<` は `<-->` として描かれ、矢じりは書いたのと逆を向く（実行）。
+- architecture-no-reversed-marker: (1) 文法は `<` と `>` を、
+  どちらもそれが立つ端の矢じりとして読む（`architecture.langium`
+  を読んだ）ので、 `>--<` は `<-->` として描かれ、
+  矢じりは書いたのと逆を向く（実行）。
   (2) なし。
   文書は左に `<`、右に `>` を書き、ラベルの中の `<` や `>` は文字である。
   (4) 左に `<`、右に `>` を書く。
-- architecture-no-ungrouped-modifier:
-  (1) group に属さない端では、
+- architecture-no-ungrouped-modifier: (1) group に属さない端では、
   `{group}` は辺の端を group の余白と 4 だけ動かすので、
   辺は service に届かずに止まり、
   group は描かれない（`svgDraw.ts` を読んだ。実行）。
@@ -1881,14 +1863,16 @@ radar の規則の注は次のとおりである。
 検索は「radar curve」「radar entry」「radar duplicate」「radar ticks」「radar
 min max」「radar title」「radar accDescr」「radar axis」で、
 読み方を変えるものはなかった。
-[#8522](https://github.com/mermaid-js/mermaid/pull/8522)（open）は等しい上下限を中心に描き、
+[#8522](https://github.com/mermaid-js/mermaid/pull/8522)（open）は、
+等しい上下限を中心に描き、
 最大値より大きい最小値はそのままにする（その変更を読んだ）。
 [#8301](https://github.com/mermaid-js/mermaid/pull/8301) と、
 [#6481](https://github.com/mermaid-js/mermaid/pull/6481)（open）は、
 範囲の値と輪のラベルを足す。
 
-- radar-no-undef、radar-no-duplicate-entry:
-  (1) 曲線は宣言した軸ごとにそれを名指す最初の値を取るので、
+- radar-no-undef、
+  radar-no-duplicate-entry: (1)
+  曲線は宣言した軸ごとにそれを名指す最初の値を取るので、
   どの軸も持たない名前の値と、
   軸の後の値は除かれる（`computeCurveEntries` を読んだ。実行）。
   (2) なし。
@@ -1897,20 +1881,19 @@ min max」「radar title」「radar accDescr」「radar axis」で、
   (4) 名前を直すか、軸ごとに値を 1 つ与える。
   radar-no-undef の名前は、何も宣言しない名前についての、
   ほかの図種の `<diagram>-no-undef` の規則にならう（2026-10-25 に決めた）。
-- radar-no-mismatched-entry-count:
-  (1) 値の数が軸の数でない値の曲線はまったく描かれず、
+- radar-no-mismatched-entry-count: (1)
+  値の数が軸の数でない値の曲線はまったく描かれず、
   凡例の項目だけが残る（`drawCurves` を読んだ。実行）。
   (2) なし。
   すべての軸を数え、軸の名前を持つ曲線はほかの規則に任せる。
   (4) 軸ごとに値を 1 つ与える。
-- radar-no-duplicate-option:
-  (1) オプションごとに最後の値が使われる（`setOptions` を読んだ。実行）。
+- radar-no-duplicate-option: (1)
+  オプションごとに最後の値が使われる（`setOptions` を読んだ。実行）。
   (2) なし。
   もう一度与えた同じ値は報告せず、 mermaid.js は輪を 32 までしか描かないので、
   32 を越える `ticks` は 32 として比べる。
   (4) オプションごとに値を 1 つ与える。
-- radar-no-reversed-range:
-  (1) 最小値が最大値より大きいと、
+- radar-no-reversed-range: (1) 最小値が最大値より大きいと、
   すべての点が外側の輪に描かれる（`relativeRadius` を読んだ。実行）。
   (2) なし。
   等しい最小値、値を切る範囲、描かれる曲線のない図は報告しない。
@@ -1920,9 +1903,11 @@ min max」「radar title」「radar accDescr」「radar axis」で、
   名前は、逆に書いた値についての、
   architecture-no-reversed-marker にならう（2026-10-25 に決めた）。
 - radar-no-duplicate-title、radar-no-duplicate-description、
-  radar-no-empty-description-block、radar-no-unclosed-description-block:
-  radar はタイトルと説明を同じに読み、タイトルを描くので、
-  上の pie の規則の注を持つ（radar の `parser.ts` と `renderer.ts` を読んだ。実行）。
+  radar-no-empty-description-block、
+  radar-no-unclosed-description-block: radar はタイトルと説明を同じに読み、
+  タイトルを描くので、
+  上の pie の規則の注を持つ（radar の `parser.ts` と `renderer.ts`
+  を読んだ。実行）。
   どの曲線も `}` を持つので、閉じていないブロックは次の曲線で閉じ、
   そこまでの軸と曲線を取る（実行）。
   閉じないブロックの規則はそれを usecase の規則の条件で報告し、
@@ -1933,9 +1918,8 @@ treemap の規則の注は次のとおりである。
 accDescr」「treemap classDef」「treemap whitespace」で、
 読み方を変えるものはなかった。
 
-- treemap-no-invalid-value:
-  (1) 値の変換はカンマを除き、残りを `parseFloat` で読むので、 `1_000` は 1、
-  `1.2.3` は 1.2、
+- treemap-no-invalid-value: (1) 値の変換はカンマを除き、
+  残りを `parseFloat` で読むので、 `1_000` は 1、 `1.2.3` は 1.2、
   `.` は数でない（treemap の `valueConverter.ts` を読んだ。実行）。
   値は数字、`_`、`.`、`,` だけを持つので、条件の `_`、2 つ以上の `.`、
   数字がないことは、全体を読まれない値とちょうど一致する。
@@ -1953,8 +1937,8 @@ accDescr」「treemap classDef」「treemap whitespace」で、
   (4) 数は、数字と 1 つの `.` と、桁区切りのカンマで書く。
   名前は、同じ `parseFloat` の読みを報告する sankey-no-invalid-value にならう。
 - treemap-no-duplicate-title、treemap-no-duplicate-description、
-  treemap-no-empty-description-block:
-  treemap はタイトルと説明を同じに読み、タイトルを描くので、
+  treemap-no-empty-description-block: treemap はタイトルと説明を同じに読み、
+  タイトルを描くので、
   上の pie の規則の注を持つ（treemap の `parser.ts` を読んだ。実行）。
   ブロックの U+2028 は mermaid.js が保つので、
   前のブロックと改行の代わりの U+2028 だけが違うブロックはそれを置き換え、
@@ -1972,12 +1956,14 @@ duplicate」「railroad repeat」「railroad」で、
 cynefin の規則の注は次のとおりである。
 検索は「cynefin」「cynefin domain」「cynefin title」「cynefin duplicate」で、
 読み方を変えるものはなかった。
-[#7922](https://github.com/mermaid-js/mermaid/pull/7922)（open）は枠組みの中心と境界を変え、
+[#7922](https://github.com/mermaid-js/mermaid/pull/7922)（open）は、
+枠組みの中心と境界を変え、
 領域の保ち方と共通の値はそのままにする（下書きのセッションがその変更を読んだ）。
 
-- cynefin-no-redefined-domain:
-  (1) Db は領域の項目をその名前の下に、前に保った項目の上から保つので、
-  後の文が繰り返さない項目は Db と描画から失われる（`cynefinDb.ts` を読んだ。実行）。
+- cynefin-no-redefined-domain: (1) Db は領域の項目をその名前の下に、
+  前に保った項目の上から保つので、
+  後の文が繰り返さない項目は Db と描画から失われる（`cynefinDb.ts`
+  を読んだ。実行）。
   (2) なし。
   項目を足したり並べ替えたりしても、すべての項目を保つ文は報告せず、
   2 度書いた項目は 2 つと数える。
@@ -1987,19 +1973,19 @@ cynefin の規則の注は次のとおりである。
   (4) 領域はそれぞれ 1 度書く。
   名前は、後の定義が前を置き換える `<diagram>-no-redefined-*` の規則にならう。
 - cynefin-no-duplicate-title、cynefin-no-duplicate-description、
-  cynefin-no-empty-description-block:
-  cynefin はタイトルと説明を同じに読み、タイトルを描くので、
-  上の pie の規則の注を持つ（実行）。
+  cynefin-no-empty-description-block: cynefin はタイトルと説明を同じに読み、
+  タイトルを描くので、上の pie の規則の注を持つ（実行）。
 
 wardley の規則の注は次のとおりである。
 検索は「wardley」「wardley link label」「wardley pipeline」「wardley
 evolve」「wardley annotations」「wardley title」で、
 読み方を変えるものはなかった。
-[#7767](https://github.com/mermaid-js/mermaid/pull/7767)（open）は求めに応じてラベルを置き、
-[#8379](https://github.com/mermaid-js/mermaid/pull/8379)（open）は設定に関するものである。
+[#7767](https://github.com/mermaid-js/mermaid/pull/7767)（open）は、
+求めに応じてラベルを置き、
+[#8379](https://github.com/mermaid-js/mermaid/pull/8379)（open）は、
+設定に関するものである。
 
-- wardley-no-undef:
-  (1) ノードでない名前へのリンクは保たれるが描かれず、
+- wardley-no-undef: (1) ノードでない名前へのリンクは保たれるが描かれず、
   どのノードの id でもない名前の `evolve` は、
   矢印を足さない（`resolveNodeId` とパーサーを読んだ。実行）。
   (2) なし。
@@ -2009,31 +1995,30 @@ evolve」「wardley annotations」「wardley title」で、
   mermaid.js が 1 つにする名前は、
   文書が述べる限界である（2026-10-26 に決めた）。
   (4) 名前を直す。
-- wardley-no-redefined-node:
-  (1) もう一度宣言したノードは、anchor、component、pipeline の子の順に、
-  前の位置、戦略、慣性を置き換える（パーサーと `addNode` を読んだ。実行）。
+- wardley-no-redefined-node: (1) もう一度宣言したノードは、anchor、component、
+  pipeline の子の順に、前の位置、戦略、
+  慣性を置き換える（パーサーと `addNode` を読んだ。実行）。
   (2) なし。
   同じ値、小数の代わりの百分率、省いたラベルのずれは報告せず、
   pipeline の親の進化の向きの位置は、親が子の上に描かれるので比べない（実行）。
   (4) ノードごとに自分の id を与える。
 - wardley-no-duplicate-evolve、wardley-no-duplicate-pipeline、
-  wardley-no-duplicate-size、wardley-no-duplicate-evolution:
-  (1) ノードの後の `evolve`、親の後の pipeline、後の `size` や `evolution` は、
-  前のものを置き換える（`addTrend`、`startPipeline`、パーサーを読んだ。実行）。
+  wardley-no-duplicate-size、
+  wardley-no-duplicate-evolution: (1) ノードの後の `evolve`、親の後の pipeline、
+  後の `size` や `evolution` は、前のものを置き換える（`addTrend`、
+  `startPipeline`、パーサーを読んだ。実行）。
   (2) なし。
   同じ値は報告せず、子は順によらずに、段階の境界は描かれるとおりに比べる。
   (4) それぞれ 1 度書く。
-- wardley-no-duplicate-annotations:
-  (1) 最初の `annotations` だけが枠を置き、
+- wardley-no-duplicate-annotations: (1) 最初の `annotations` だけが枠を置き、
   後のものは効果を持たない（パーサーを読んだ。実行）。
   (2) なし。
   最初の位置の後のものと、注釈の文字のないマップのものは報告しない。
   mermaid.js は端を越える枠を内側に動かすので、
   端の近くの 2 つの位置は 1 つの枠を与えることがあり、文書がそれを述べる。
   (4) `annotations` は 1 つ書く。
-- wardley-no-ignored-link-label:
-  (1) 矢印の中のラベルが `;` の後のラベルを置き換え、
-  後者は失われる（パーサーを読んだ。実行）。
+- wardley-no-ignored-link-label: (1) 矢印の中のラベルが `;`
+  の後のラベルを置き換え、後者は失われる（パーサーを読んだ。実行）。
   (2) なし。
   同じラベル、空白だけのラベル、何も描かないリンクは報告しない。
   矢印がラベルを持つと知らずに `;` の後のラベルを足す書き手もいるが、
@@ -2041,50 +2026,54 @@ evolve」「wardley annotations」「wardley title」で、
   規則はつもりの推測を要しない（2026-10-26 に決めた）。
   (4) ラベルは 1 つ書く。
 - wardley-no-duplicate-title、wardley-no-duplicate-description、
-  wardley-no-empty-description-block:
-  wardley はタイトルと説明を同じに読み、タイトルを描くので、
-  上の pie の規則の注を持つ（実行）。
+  wardley-no-empty-description-block: wardley はタイトルと説明を同じに読み、
+  タイトルを描くので、上の pie の規則の注を持つ（実行）。
 
 Event Modeling の規則の注は次のとおりである。
 検索は「eventmodeling」「eventmodeling accDescr」「eventmodeling
 accTitle」「eventmodeling data block」「eventmodeling source
 frame」「eventmodeling duplicate」で、読み方を変えるものはなかった。
 [#8288](https://github.com/mermaid-js/mermaid/issues/8288)（closed）と、
-[#8296](https://github.com/mermaid-js/mermaid/pull/8296)（固定版より後に merge）は、
-reset frame の source に関するものである。
+[#8296](https://github.com/mermaid-js/mermaid/pull/8296)（固定版より後に
+merge）は、 reset frame の source に関するものである。
 [#8287](https://github.com/mermaid-js/mermaid/issues/8287)（closed）と、
-[#8297](https://github.com/mermaid-js/mermaid/pull/8297)（固定版より後に merge）は、
-2 度書いたフレームの番号を受理しない。
-[#7935](https://github.com/mermaid-js/mermaid/issues/7935)（open）はインラインのデータの最後の文字に関するものである。
-[#8290](https://github.com/mermaid-js/mermaid/issues/8290)（open）はほかの参照と矢印を提案する。
-[#7588](https://github.com/mermaid-js/mermaid/pull/7588)（merged）は validator を足し、
-公開の parse はそれを走らせない。
+[#8297](https://github.com/mermaid-js/mermaid/pull/8297)（固定版より後に
+merge）は、 2 度書いたフレームの番号を受理しない。
+[#7935](https://github.com/mermaid-js/mermaid/issues/7935)（open）は、
+インラインのデータの最後の文字に関するものである。
+[#8290](https://github.com/mermaid-js/mermaid/issues/8290)（open）は、
+ほかの参照と矢印を提案する。
+[#7588](https://github.com/mermaid-js/mermaid/pull/7588)（merged）は validator
+を足し、公開の parse はそれを走らせない。
 
-- eventmodeling-no-undef:
-  (1) どのフレームも名指さない source は関係を描かず、
+- eventmodeling-no-undef: (1) どのフレームも名指さない source は関係を描かず、
   source を持つフレームは前のフレームからの関係を推さない。
   どのデータブロックも名指さないデータの参照はデータを示さないか、
-  ブロックの代わりにインラインのデータを示す（`getState` と `calculateTextProps` を読んだ。実行）。
+  ブロックの代わりにインラインのデータを示す（`getState` と `calculateTextProps`
+  を読んだ。実行）。
   (2) なし。
-  後に宣言したフレームやブロックも数え、名前は書いたとおりに比べ、 reset
-  frame の source と `note` と `gwt` が名指すフレームは、
+  後に宣言したフレームやブロックも数え、名前は書いたとおりに比べ、
+  reset frame の source と `note` と `gwt` が名指すフレームは、
   mermaid.js がどれも描かないので調べない。
   インラインのデータのある参照も、
   参照が効果を持たず何も名指さないので報告する（2026-10-27 に決めた）。
   (4) 名前を直す。
-- eventmodeling-no-redefined-data:
-  (1) フレームはその名前の最初のデータブロックを示し、
-  その名前の後のブロックは決して示されない（`calculateTextProps` を読んだ。実行）。
+- eventmodeling-no-redefined-data: (1)
+  フレームはその名前の最初のデータブロックを示し、
+  その名前の後のブロックは決して示されない（`calculateTextProps`
+  を読んだ。実行）。
   (2) なし。
   どのフレームも参照しない名前と同じ中身は報告せず、データの型は比べない。
   mermaid.js は空白と行を書いたとおりに示すので、中身は書いたとおりに比べ、
   後の空のブロックも空白の違いも報告し、
   文字参照は文書が述べる限界である（2026-10-27 に決めた）。
   (4) 中身ごとに名前を与える。
-- eventmodeling-no-duplicate-title、eventmodeling-no-duplicate-description:
-  (1) パーサーは最後の `accTitle` と最後の `accDescr` を保ち、
+- eventmodeling-no-duplicate-title、
+  eventmodeling-no-duplicate-description: (1) パーサーは最後の `accTitle`
+  と最後の `accDescr` を保ち、
   mermaid.js はキーワードを含めた文全体を保ってそれが空にならないので、
-  `populateCommonDb` はそれを設定する（終端記号と `populateCommonDb` を読んだ。実行）。
+  `populateCommonDb` はそれを設定する（終端記号と `populateCommonDb`
+  を読んだ。実行）。
   (2) なし。
   前の文字が空なら何も失われない。
   文字は共通の helper で語として比べるので、
@@ -2092,9 +2081,8 @@ reset frame の source に関するものである。
   mermaid.js が値にキーワードを保つことは比べない（2026-10-27 に決めた）。
   mermaid.js は `title` を描かないので、それは比べない（実行）。
   (4) 文は 1 つにする。
-- eventmodeling-no-empty-description-block:
-  (1) ブロックは `accDescr {}` のような文の文字を説明として設定し、
-  前の説明を取り除く（実行）。
+- eventmodeling-no-empty-description-block: (1) ブロックは `accDescr {}`
+  のような文の文字を説明として設定し、前の説明を取り除く（実行）。
   (2) なし。
   ほかの図種と同じく、コメントを入れたブロックは報告しない。
   (4) 説明を書くか、ブロックを取り除く。
@@ -2109,12 +2097,14 @@ reset frame の source に関するものである。
 検索は「treeView」「treeview annotation」「treeview icon」「treeview
 accDescr」「treeview description」「treeview trailing whitespace」「treeview
 class」で、読み方を変えるものはなかった。
-[#7527](https://github.com/mermaid-js/mermaid/pull/7527)（merged）は注釈とアイコンを隠すことを足し、
-[#7840](https://github.com/mermaid-js/mermaid/pull/7840)（merged）は iconify と `defaultIconPack` でアイコンを解決し、
-[#7721](https://github.com/mermaid-js/mermaid/pull/7721)（merged）は罫線の形を足す。
+[#7527](https://github.com/mermaid-js/mermaid/pull/7527)（merged）は、
+注釈とアイコンを隠すことを足し、
+[#7840](https://github.com/mermaid-js/mermaid/pull/7840)（merged）は、
+iconify と `defaultIconPack` でアイコンを解決し、
+[#7721](https://github.com/mermaid-js/mermaid/pull/7721)（merged）は、
+罫線の形を足す。
 
-- treeview-no-duplicate-annotation:
-  (1) ある種類の後の注釈は、
+- treeview-no-duplicate-annotation: (1) ある種類の後の注釈は、
   後の行にあっても前のものを置き換える（文法と `populate` を読んだ。実行）。
   (2) なし。
   3 つの種類は別であり、前の空の説明は何も失わない。
@@ -2122,7 +2112,8 @@ class」で、読み方を変えるものはなかった。
   `icon()` と `icon(none)` は 1 つで、`file` は `mermaid-treeview:file` である。
   アイコンを隠すことも値なので、`icon()` の後のアイコンは報告する。
   規則は設定を読まず、
-  `defaultIconPack` が解決する名前は文書が述べる限界である（2026-10-27 に決めた）。
+  `defaultIconPack` が解決する名前は文書が述べる限界である（2026-10-27
+  に決めた）。
   (4) 注釈は種類ごとに 1 つにする。
   名前は、それを注釈と呼ぶ文書に従う。
 - treeview-no-duplicate-title、treeview-no-duplicate-description、
@@ -2131,8 +2122,8 @@ class」で、読み方を変えるものはなかった。
   `title` は描かれず、比べない。
   ブロックの行の先頭の罫線の文字と、それで始まる行のタブは、
   文書が述べる限界である（2026-10-27 に決めた）。
-- treeview-no-unclosed-description-block:
-  (1) `}` のないブロックは、ブロックの文字を名前とするノードとして読まれ、
+- treeview-no-unclosed-description-block: (1) `}` のないブロックは、
+  ブロックの文字を名前とするノードとして読まれ、
   説明は空のままである（終端記号を読んだ。実行）。
   (2) なし。
   条件は、`accDescr`、省ける空白かタブ、`{` の順で始まる引用符のない名前であり、
@@ -2150,8 +2141,8 @@ mermaid.js が変わるかは定まっていない。
 [#6401](https://github.com/mermaid-js/mermaid/issues/6401) は、
 その振る舞いを意図どおりとしている（基準 3）。
 
-2026-10-02 の判定から変わったもの:
-flowchart-no-unclosed-description-block を、入れるから入れないにした。
+2026-10-02 の判定から変わったもの: flowchart-no-unclosed-description-block を、
+入れるから入れないにした。
 mermaid.js が書いたとおりに読むのに報告すると文書が書く場所があるからである。
 その判定は場合ごとの点検を記録していなかった。
 
@@ -2245,13 +2236,12 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 | no-invalid-init-directive               | いまはなし（2026-10-27。この節の終わりを見る）   |
 | no-duplicate-init-key                   | いまはなし（2026-10-27。この節の終わりを見る）   |
 
-- この行の終わりで閉じる:
-  `{` のある行の終わりに ` }` を足す。
+- この行の終わりで閉じる: `{` のある行の終わりに ` }` を足す。
   その行で `{` の後に空白でないテキストがあるときだけ出す。
   テキストの終わりで閉じる: 最後の行の後に `}` だけの行を足す。
   ブロックの、
-  `{` の行より後の行にテキストがあるときだけ出す（テキストが `{` の行にしかないと、
-  2 つの書き換えは同じ結果になる）。
+  `{` の行より後の行にテキストがあるときだけ出す（テキストが `{`
+  の行にしかないと、 2 つの書き換えは同じ結果になる）。
   ディレクティブはテキストでないので、
   `{` の行で `{` の後にディレクティブしかないときは、
   行の終わりで閉じない（ブロックが空になる）。
@@ -2295,8 +2285,8 @@ mermaid.js がそれをつもりどおりに読むときだけである。
   行にひとりの `}`（`accDescr { x {` の後の `}` は説明 `x {`）は、
   書いたとおりにブロックを閉じるので、報告しない【実行】。
   そうしたブロックには、
-  `{` の行の終わりで閉じる提案だけを出す（`accDescr { first }` の後に同じ行があると、
-  B から C への辺と、頂点 A と D が読まれる【実行】）。
+  `{` の行の終わりで閉じる提案だけを出す（`accDescr { first }`
+  の後に同じ行があると、 B から C への辺と、頂点 A と D が読まれる【実行】）。
 - 消す: 文を消す。
   行にほかに何もなければ行ごと、同じ行に後の文があれば、その文までの空白も消す。
   文を区切る後ろの `;` は、決して消さない。
@@ -2333,21 +2323,22 @@ mermaid.js がそれをつもりどおりに読むときだけである。
   それはその行を終える改行で、それのない最後の行では前の行を終える改行である。
   書き手が `;` の後で行を分けたのと同じになる。
   `;` を消すと、
-  mermaid.js の読み方が変わることがある（`A[style:#x;];` と `A[style:#x;]` では、
-  `A` のラベルが違う【実行】）。
+  mermaid.js の読み方が変わることがある（`A[style:#x;];` と `A[style:#x;]`
+  では、 `A` のラベルが違う【実行】）。
   ただし、結果を parse すると、
   残した `;` が区切りでなくテキストの一部になるときは、`;` も空白と一緒に消す。
   行の終わりまでがテキストになる `accTitle: What to buy` の後や、
   行の残りが捨てられる方向の値の後がそうである。
   タイトルは `What to buy;` でなく `What to buy` になる【実行】。
   説明のブロックの後のように、残した `;` が単独で文になるときも、
-  同じである（subgraph の中の `accDescr { x }; direction TB` を `;` を残して分けると、
-  メンバーは `x` と `;` になる【実行】）。
+  同じである（subgraph の中の `accDescr { x }; direction TB` を `;`
+  を残して分けると、メンバーは `x` と `;` になる【実行】）。
   どちらでも、その行の `;` をすべて消す。
   さらに、分けた結果を parser が読み、分けたテキストが文に、
   方向が方向の文になり、
-  その行に報告するテキストがないときだけ出す（ラベルの中の `A[x; direction LR; y]` を分けると、
-  ラベルが 3 行になり、方向はなくなる【実行】）。
+  その行に報告するテキストがないときだけ出す（ラベルの中の
+  `A[x; direction LR; y]` を分けると、ラベルが 3 行になり、
+  方向はなくなる【実行】）。
   `;` の前後のテキストが単独では文にならないことがあるからである。
   `direction TB; -->B` を分けると拒否される【実行】。
   subgraph の中の `A --> B; direction TB` を分けると、

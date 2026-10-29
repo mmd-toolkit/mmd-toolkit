@@ -98,8 +98,8 @@ agentflow-beta TB
 
 ## 背景
 
-[`accTitle` 文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow.jison#L426-L426) は、
-前に設定したタイトルを置き換える共通の `setAccTitle` を呼び、
+[`accTitle` 文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow.jison#L426-L426)
+は、前に設定したタイトルを置き換える共通の `setAccTitle` を呼び、
 flow がメンバーとして取る値を返す。
 
 <!-- begin auto-generated rule resources -->

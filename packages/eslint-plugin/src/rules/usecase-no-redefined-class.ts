@@ -50,14 +50,11 @@ export const usecaseNoRedefinedClass: MermaidRuleDefinition<{
     schema: [],
     messages: {
       redefined:
-        "mermaid.js replaces the styles of the class `{{name}}`, set on line {{line}}, with those of this `classDef`.",
+        "mermaid.js replaces the styles of the class `{{name}}`, set earlier, with those of this `classDef`.",
     },
   },
   create(context) {
-    const classes = new Map<
-      string,
-      { styles: ReadonlyMap<string, string>; line: number }
-    >()
+    const classes = new Map<string, ReadonlyMap<string, string>>()
     return {
       UsecaseClassDefStatement(node) {
         const styles = stylesOf(node.styles)
@@ -65,15 +62,15 @@ export const usecaseNoRedefinedClass: MermaidRuleDefinition<{
           const previous = classes.get(name.name)
           if (
             previous !== undefined &&
-            dropsOrChangesStyles(previous.styles, styles)
+            dropsOrChangesStyles(previous, styles)
           ) {
             context.report({
               node: name,
               messageId: "redefined",
-              data: { name: name.name, line: String(previous.line) },
+              data: { name: name.name },
             })
           }
-          classes.set(name.name, { styles, line: node.loc.start.line })
+          classes.set(name.name, styles)
         }
       },
     }

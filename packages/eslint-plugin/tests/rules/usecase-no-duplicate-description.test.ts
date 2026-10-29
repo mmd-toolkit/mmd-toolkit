@@ -46,7 +46,6 @@ accDescr: First\u2028Second
         errors: [
           {
             messageId: "duplicate",
-            data: { line: "2" },
             line: 3,
             column: 1,
             endLine: 3,
@@ -64,7 +63,6 @@ accDescr {First\u2029Second}
         errors: [
           {
             messageId: "duplicate",
-            data: { line: "2" },
             line: 3,
             column: 1,
             endLine: 3,

@@ -82,11 +82,12 @@ treeView-beta
 
 ## 背景
 
-[文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treeView/treeView.langium#L59-L64) はノードの各種類の最後の注釈を保ち、
-[パーサー](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/parser.ts#L11-L39) はノードに、
-そのクラス、空のものを `none` としたそのアイコン、その説明を与える。
-[`getNodeIcon`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/icons.ts#L57-L100) は `none` でアイコンを隠し、
-`defaultIconPack` がほかのパックを名指さなければ、
+[文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treeView/treeView.langium#L59-L64)
+はノードの各種類の最後の注釈を保ち、
+[パーサー](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/parser.ts#L11-L39)
+はノードに、そのクラス、空のものを `none` としたそのアイコン、その説明を与える。
+[`getNodeIcon`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/icons.ts#L57-L100)
+は `none` でアイコンを隠し、 `defaultIconPack` がほかのパックを名指さなければ、
 パックのない名前を組み込みのパックに入れる。
 
 <!-- begin auto-generated rule resources -->

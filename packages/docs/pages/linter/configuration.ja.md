@@ -32,7 +32,8 @@ Markdownのprocessorは、
 
 最後の設定オブジェクトは、Mermaidの図のルール設定を上書きします。
 この例では、`@mmd-toolkit/flowchart-no-undef`を警告に変更し、
-推奨設定に含まれない`@mmd-toolkit/flowchart-no-unclosed-description-block`を有効にします。
+推奨設定に含まれない、
+`@mmd-toolkit/flowchart-no-unclosed-description-block`を有効にします。
 ルールを無効にするには`"off"`を指定します。
 後にある、対象ファイルに一致した設定オブジェクトが、
 前のルール設定を上書きします。

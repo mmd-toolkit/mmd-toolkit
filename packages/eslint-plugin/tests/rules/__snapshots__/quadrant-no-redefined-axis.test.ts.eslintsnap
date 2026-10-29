@@ -12,7 +12,7 @@ Code:
   4 |   A: [0.3, 0.6]
   5 |
 
-[1] mermaid.js replaces the first text set on line 2 and the second text set on line 2 of the `x-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier first text and the earlier second text of the `x-axis` with the values of this statement.
 ---
 
 
@@ -27,7 +27,7 @@ Code:
   4 |   A: [0.3, 0.6]
   5 |
 
-[1] mermaid.js replaces the first text set on line 2 of the `y-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier first text of the `y-axis` with the values of this statement.
 ---
 
 
@@ -42,7 +42,7 @@ Code:
   4 |   A: [0.3, 0.6]
   5 |
 
-[1] mermaid.js replaces the first text set on line 2 of the `x-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier first text of the `x-axis` with the values of this statement.
 ---
 
 
@@ -59,8 +59,8 @@ Code:
   5 |   A: [0.3, 0.6]
   6 |
 
-[1] mermaid.js replaces the first text set on line 2 and the second text set on line 2 of the `x-axis` with the values of this statement.
-[2] mermaid.js replaces the first text set on line 3 and the second text set on line 3 of the `x-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier first text and the earlier second text of the `x-axis` with the values of this statement.
+[2] mermaid.js replaces the earlier first text and the earlier second text of the `x-axis` with the values of this statement.
 ---
 
 
@@ -75,7 +75,7 @@ Code:
   4 |   A: [0.3, 0.6]
   5 |
 
-[1] mermaid.js replaces the first text set on line 2 of the `x-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier first text of the `x-axis` with the values of this statement.
 ---
 
 
@@ -90,7 +90,7 @@ Code:
   4 |   A: [0.3, 0.6]
   5 |
 
-[1] mermaid.js replaces the first text set on line 2 and the second text set on line 2 of the `x-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier first text and the earlier second text of the `x-axis` with the values of this statement.
 ---
 
 
@@ -106,7 +106,7 @@ Code:
   5 |   A: [0.3, 0.6]
   6 |
 
-[1] mermaid.js replaces the first text set on line 2 of the `x-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier first text of the `x-axis` with the values of this statement.
 ---
 
 
@@ -121,7 +121,7 @@ Code:
   4 |   A: [0.3, 0.6]
   5 |
 
-[1] mermaid.js replaces the first text set on line 2 of the `x-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier first text of the `x-axis` with the values of this statement.
 ---
 
 
@@ -136,7 +136,7 @@ Code:
   4 |   A: [0.3, 0.6]
   5 |
 
-[1] mermaid.js replaces the first text set on line 2 of the `x-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier first text of the `x-axis` with the values of this statement.
 ---
 
 
@@ -151,7 +151,7 @@ Code:
   4 |   A: [0.3, 0.6]
   5 |
 
-[1] mermaid.js replaces the first text set on line 2 of the `x-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier first text of the `x-axis` with the values of this statement.
 ---
 
 
@@ -166,7 +166,7 @@ Code:
   4 |   A: [0.3, 0.6]
   5 |
 
-[1] mermaid.js replaces the first text set on line 2 of the `x-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier first text of the `x-axis` with the values of this statement.
 ---
 
 
@@ -180,7 +180,7 @@ Code:
   3 |   A: [0.3, 0.6]
   4 |
 
-[1] mermaid.js replaces the first text set on line 2 of the `x-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier first text of the `x-axis` with the values of this statement.
 ---
 
 
@@ -195,7 +195,7 @@ Code:
   4 |   A: [0.3, 0.6]
   5 |
 
-[1] mermaid.js replaces the first text set on line 2 of the `x-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier first text of the `x-axis` with the values of this statement.
 ---
 
 
@@ -210,7 +210,7 @@ Code:
   4 |   A: [0.3, 0.6]
   5 |
 
-[1] mermaid.js replaces the first text set on line 2 of the `y-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier first text of the `y-axis` with the values of this statement.
 ---
 
 
@@ -225,5 +225,5 @@ Code:
   4 |   A: [0.3, 0.6]
   5 |
 
-[1] mermaid.js replaces the second text set on line 2 of the `y-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier second text of the `y-axis` with the values of this statement.
 ---

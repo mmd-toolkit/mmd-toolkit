@@ -22,28 +22,25 @@ export const eventmodelingNoRedefinedData: MermaidRuleDefinition<{
     schema: [],
     messages: {
       redefined:
-        "mermaid.js shows the `{{name}}` data block declared on line {{line}}; the content of this later block is not used.",
+        "mermaid.js shows the first `{{name}}` data block; the content of this later block is not used.",
     },
   },
   create(context) {
     return {
       EventmodelingDiagram(diagram) {
         const declarations = eventmodelingDeclarationsOf(diagram)
-        const firstByName = new Map<string, { value: string; line: number }>()
+        const firstByName = new Map<string, string>()
         for (const node of declarations.dataDeclarations) {
           const name = eventmodelingNameText(node.name)
           const value = normalizeLineTerminators(node.data.value.value)
           const first = firstByName.get(name)
           if (first === undefined) {
-            firstByName.set(name, { value, line: node.loc.start.line })
-          } else if (
-            declarations.referencedData.has(name) &&
-            first.value !== value
-          ) {
+            firstByName.set(name, value)
+          } else if (declarations.referencedData.has(name) && first !== value) {
             context.report({
               node: node.name,
               messageId: "redefined",
-              data: { name, line: String(first.line) },
+              data: { name },
             })
           }
         }

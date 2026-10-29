@@ -12,7 +12,7 @@ Code:
     |   ^~~~~~~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the whole style list of `A`, losing a style set on line 3.
+[1] mermaid.js replaces the whole style list of `A`, losing a style set earlier.
 ---
 
 
@@ -30,7 +30,7 @@ Code:
   7 |   end
   8 |
 
-[1] mermaid.js replaces the whole style list of `A`, losing a style set on line 3.
+[1] mermaid.js replaces the whole style list of `A`, losing a style set earlier.
 ---
 
 
@@ -47,8 +47,8 @@ Code:
     |   ^~~~~~~~~~~~~~~~~ [2]
   6 |
 
-[1] mermaid.js replaces the whole style list of `A`, losing a style set on line 3.
-[2] mermaid.js replaces the whole style list of `A`, losing a style set on line 4.
+[1] mermaid.js replaces the whole style list of `A`, losing a style set earlier.
+[2] mermaid.js replaces the whole style list of `A`, losing a style set earlier.
 ---
 
 
@@ -63,7 +63,7 @@ Code:
     |   ^~~~~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the whole style list of `A`, losing a style set on line 3.
+[1] mermaid.js replaces the whole style list of `A`, losing a style set earlier.
 ---
 
 
@@ -78,7 +78,7 @@ Code:
     |   ^~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the whole style list of `A`, losing a style set on line 3.
+[1] mermaid.js replaces the whole style list of `A`, losing a style set earlier.
 ---
 
 
@@ -93,7 +93,7 @@ Code:
     |   ^~~~~~~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the whole style list of `A`, losing a style set on line 3.
+[1] mermaid.js replaces the whole style list of `A`, losing a style set earlier.
 ---
 
 
@@ -108,5 +108,5 @@ Code:
     |   ^~~~~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the whole style list of `A`, losing a style set on line 3.
+[1] mermaid.js replaces the whole style list of `A`, losing a style set earlier.
 ---

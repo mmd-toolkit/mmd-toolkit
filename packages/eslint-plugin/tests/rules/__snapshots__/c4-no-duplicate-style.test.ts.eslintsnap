@@ -12,7 +12,7 @@ Code:
     |                         ^~~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+[1] mermaid.js replaces the `bgColor` given by an earlier update with this value.
 ---
 
 
@@ -27,7 +27,7 @@ Code:
     |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+[1] mermaid.js replaces the `bgColor` given by an earlier update with this value.
 ---
 
 
@@ -44,7 +44,7 @@ Code:
     |                       ^~~~~~~~~~~~~~~ [1]
   7 |
 
-[1] mermaid.js replaces the `bgColor` given by an update on line 5 with this value.
+[1] mermaid.js replaces the `bgColor` given by an earlier update with this value.
 ---
 
 
@@ -59,7 +59,7 @@ Code:
     |                    ^~~~~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `textColor` given by an update on line 3 with this value.
+[1] mermaid.js replaces the `textColor` given by an earlier update with this value.
 ---
 
 
@@ -74,7 +74,7 @@ Code:
     |                    ^~~~~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `lineColor` given by an update on line 3 with this value.
+[1] mermaid.js replaces the `lineColor` given by an earlier update with this value.
 ---
 
 
@@ -89,7 +89,7 @@ Code:
     |                       ^~~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+[1] mermaid.js replaces the `bgColor` given by an earlier update with this value.
 ---
 
 
@@ -104,7 +104,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+[1] mermaid.js replaces the `bgColor` given by an earlier update with this value.
 ---
 
 
@@ -119,7 +119,7 @@ Code:
     |                       ^~ [1]
   5 |
 
-[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+[1] mermaid.js replaces the `bgColor` given by an earlier update with this value.
 ---
 
 
@@ -134,7 +134,7 @@ Code:
     |                            ^~~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+[1] mermaid.js replaces the `bgColor` given by an earlier update with this value.
 ---
 
 
@@ -149,7 +149,7 @@ Code:
     |                       ^~~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+[1] mermaid.js replaces the `bgColor` given by an earlier update with this value.
 ---
 
 
@@ -163,7 +163,7 @@ Code:
     |                                       ^~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+[1] mermaid.js replaces the `bgColor` given by an earlier update with this value.
 ---
 
 
@@ -177,7 +177,7 @@ Code:
     |                              ^~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+[1] mermaid.js replaces the `bgColor` given by an earlier update with this value.
 ---
 
 
@@ -192,7 +192,7 @@ Code:
     |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `shape` given by an update on line 3 with this value.
+[1] mermaid.js replaces the `shape` given by an earlier update with this value.
 ---
 
 
@@ -207,7 +207,7 @@ Code:
     |                       ^~~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+[1] mermaid.js replaces the `bgColor` given by an earlier update with this value.
 ---
 
 
@@ -223,7 +223,7 @@ Code:
     |                       ^~~~~~~~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+[1] mermaid.js replaces the `bgColor` given by an earlier update with this value.
 ---
 
 
@@ -240,7 +240,7 @@ Code:
     |                      ^~~~~~~~~~~~~~~~~ [1]
   7 |
 
-[1] mermaid.js replaces the `textColor` given by an update on line 5 with this value.
+[1] mermaid.js replaces the `textColor` given by an earlier update with this value.
 ---
 
 
@@ -257,7 +257,7 @@ Code:
     |                      ^~~~~~~~~~~~~ [1]
   7 |
 
-[1] mermaid.js replaces the `offsetX` given by an update on line 5 with this value.
+[1] mermaid.js replaces the `offsetX` given by an earlier update with this value.
 ---
 
 
@@ -274,7 +274,7 @@ Code:
     |                                     ^~~~~ [1]
   7 |
 
-[1] mermaid.js replaces the `offsetX` given by an update on line 5 with this value.
+[1] mermaid.js replaces the `offsetX` given by an earlier update with this value.
 ---
 
 
@@ -291,7 +291,7 @@ Code:
     |                      ^~~~~~~~~~~~~~~~~ [1]
   7 |
 
-[1] mermaid.js replaces the `textColor` given by an update on line 5 with this value.
+[1] mermaid.js replaces the `textColor` given by an earlier update with this value.
 ---
 
 
@@ -307,7 +307,7 @@ Code:
     |                       ^~~~~~~~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js replaces the `bgColor` given by an update on line 4 with this value.
+[1] mermaid.js replaces the `bgColor` given by an earlier update with this value.
 ---
 
 
@@ -324,8 +324,8 @@ Code:
     |                       ^~~~~~~~~~~~~~ [2]
   6 |
 
-[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
-[2] mermaid.js replaces the `bgColor` given by an update on line 4 with this value.
+[1] mermaid.js replaces the `bgColor` given by an earlier update with this value.
+[2] mermaid.js replaces the `bgColor` given by an earlier update with this value.
 ---
 
 
@@ -343,5 +343,5 @@ Code:
     |                       ^~~~~~~~~~~~~~~ [1]
   8 |
 
-[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+[1] mermaid.js replaces the `bgColor` given by an earlier update with this value.
 ---

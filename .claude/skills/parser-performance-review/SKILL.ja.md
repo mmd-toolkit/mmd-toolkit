@@ -235,8 +235,8 @@ README、総括の報告、入力 fixture、共有のテスト枠組みは追加
 サイバー安全機構や Daybreak に言及する通知を報告したら、
 応答の中断として状況を確認する。
 パーサーの拒否や、性能テストの失敗として扱わない。
-[OpenAI の公式ドキュメント](https://learn.chatgpt.com/docs/cyber-safety#false-positives) は、
-正当な作業や無関係な作業でも安全機構が働く場合があると述べている。
+[OpenAI の公式ドキュメント](https://learn.chatgpt.com/docs/cyber-safety#false-positives)
+は、正当な作業や無関係な作業でも安全機構が働く場合があると述べている。
 ただし、個別の通知の原因や、誤判定であることを確定する証拠ではない。
 
 - 確認できる通知を記録し、直接見たのか、ユーザーから報告されたのかも示す。

@@ -26,7 +26,7 @@ export const agentflowNoDuplicateDescription: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js replaces the description set on line {{line}} with the one of this `accDescr`.",
+        "mermaid.js replaces the earlier description with the one of this `accDescr`.",
     },
   },
   create(context) {
@@ -38,7 +38,6 @@ export const agentflowNoDuplicateDescription: MermaidRuleDefinition<{
         context.report({
           node,
           messageId: "duplicate",
-          data: { line: String(previous.loc.start.line) },
         })
       }
       previous = node

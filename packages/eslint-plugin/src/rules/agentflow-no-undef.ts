@@ -35,8 +35,7 @@ export const agentflowNoUndef: MermaidRuleDefinition<{
     },
     schema: [],
     messages: {
-      undef:
-        "The id `{{id}}` is not declared by any vertex, flow, connector, or link.",
+      undef: "mermaid.js {{effect}} for the undefined id `{{id}}`.",
     },
   },
   create(context) {
@@ -78,7 +77,12 @@ export const agentflowNoUndef: MermaidRuleDefinition<{
           context.report({
             node: style.id,
             messageId: "undef",
-            data: { id },
+            data: {
+              id,
+              effect: isAgentflowOrdinaryVertexId(id)
+                ? "adds a new vertex with these styles"
+                : "styles no element",
+            },
           })
         }
         for (const statement of statements) {
@@ -89,7 +93,13 @@ export const agentflowNoUndef: MermaidRuleDefinition<{
               context.report({
                 node: operand,
                 messageId: "undef",
-                data: { id },
+                data: {
+                  id,
+                  effect:
+                    statement.type === "AgentflowClassStatement"
+                      ? "gives no element these classes"
+                      : "makes no element clickable",
+                },
               })
             }
           }

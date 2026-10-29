@@ -13,8 +13,8 @@
 `UpdateElementStyle` と `UpdateRelStyle` は、要素、境界、
 関係のスタイルを設定し、後の更新は、それが与える欄だけを置き換える。
 ある欄をもう一度与えると、前の値はエラーなしに失われる。
-`UpdateElementStyle(a, $bgColor="red")` の後の `UpdateElementStyle(a, $bgColor="blue")` は、
-青い背景だけを残す。
+`UpdateElementStyle(a, $bgColor="red")` の後の
+`UpdateElementStyle(a, $bgColor="blue")` は、青い背景だけを残す。
 
 ## 規則の詳細
 
@@ -47,8 +47,8 @@ mermaid.js の文法にほかのスタイル更新はない。
 宣言が変えない欄の更新の値は保つ。
 
 空の引数は、その欄に空の値を与える。
-`UpdateElementStyle(a, $bgColor="red")` の後の `UpdateElementStyle(a, , "white")` は、
-`red` を空の値で置き換える。
+`UpdateElementStyle(a, $bgColor="red")` の後の
+`UpdateElementStyle(a, , "white")` は、 `red` を空の値で置き換える。
 空の引数はそれ自身の文字を持たないので、規則はその更新を報告する。
 
 欄がすでに持つ値と、対象がまだ持たない欄は報告しない。
@@ -112,9 +112,9 @@ C4Context
 
 ## 背景
 
-[`updateElStyle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L494-L590) と、
-[`updateRelStyle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L593-L638) は、
-空の引数を含めて引数が与える欄を、それぞれ対象が持っていた値の上に代入する。
+[`updateElStyle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L494-L590)、
+[`updateRelStyle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L593-L638)
+は、空の引数を含めて引数が与える欄を、それぞれ対象が持っていた値の上に代入する。
 
 <!-- begin auto-generated rule resources -->
 

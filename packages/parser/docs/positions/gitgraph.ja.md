@@ -5,8 +5,8 @@
 [図](../../../spec/docs/ast/gitgraph.md#gitgraphdiagram)は、
 ヘッダー前に保持した最初の形式、なければヘッダーの語から、
 最後に書かれたヘッダーまたは本文の成分までです。
-外側の空白・Comment・通過した裸の行は範囲を延ばしません。 [fixture: gitgraph/header-only]
-[fixture: gitgraph/header-tb]
+外側の空白・Comment・通過した裸の行は範囲を延ばしません。
+[fixture: gitgraph/header-only] [fixture: gitgraph/header-tb]
 [fixture: gitgraph/lex-yaml-after-comment]
 [fixture: gitgraph/lex-hidden-directive-second-scan]
 [fixture: gitgraph/detect-bare-brace-eof-header]
@@ -36,7 +36,8 @@ EOL を含めません。 [fixture: gitgraph/gram-all-fields]
 [共有の葉](../../../spec/docs/ast.md#shared-leaf-nodes)は、
 書かれた範囲全体を持ちます。
 文字列は引用符を含み、
-数値は double 変換で精度を失う場合やオーバーフローする場合も全桁を含みます。 [fixture: gitgraph/gram-branch-single-quotes]
+数値は double 変換で精度を失う場合やオーバーフローする場合も全桁を含みます。
+[fixture: gitgraph/gram-branch-single-quotes]
 [fixture: gitgraph/gram-branch-empty] [fixture: gitgraph/lex-reference-shape]
 [fixture: gitgraph/number-precision] [fixture: gitgraph/number-overflow]
 
@@ -51,18 +52,20 @@ null にはリテラルを作りません。 [fixture: gitgraph/title-conversion
 
 [無視されるテキスト](../../../spec/docs/ast/gitgraph.md#gitgraphignoredtext)は、
 開始から選択した終端までで、先行する空白と消費する直後の LF を除きます。
-内部の trivia は範囲に含め、
-値からは除きます。 [fixture: gitgraph/lex-yaml-empty-body]
+内部の trivia は範囲に含め、値からは除きます。
+[fixture: gitgraph/lex-yaml-empty-body]
 [fixture: gitgraph/lex-yaml-three-adjacent-fences]
 [fixture: gitgraph/lex-yaml-body-ls-ps]
 [fixture: gitgraph/lex-hidden-directive-commit-eof]
 [fixture: gitgraph/lex-hidden-yaml-global-directive-body]
 [fixture: gitgraph/lex-hidden-yaml-global-comment-body]
 
-[書かれた履歴](../../../spec/docs/diagrams/gitgraph.md#state-of-the-written-history) のためにノード範囲は追加しません。
+[書かれた履歴](../../../spec/docs/diagrams/gitgraph.md#state-of-the-written-history)
+のためにノード範囲は追加しません。
 空の id は引用された葉のままで、繰り返した定義は別々の文として残り、
 履歴検査が受理のために commit を別の種類として扱う場合も、
-型オプションは書かれた位置を保持します。 [fixture: gitgraph/db-state-empty-ids-are-fresh]
+型オプションは書かれた位置を保持します。
+[fixture: gitgraph/db-state-empty-ids-are-fresh]
 [fixture: gitgraph/db-state-replacement-removes-merge-kind]
 [fixture: gitgraph/db-state-replacement-source-origin]
 [fixture: gitgraph/db-state-visual-type-still-merge]

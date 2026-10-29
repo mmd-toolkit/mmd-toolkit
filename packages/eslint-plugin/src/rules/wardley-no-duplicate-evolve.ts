@@ -22,28 +22,28 @@ export const wardleyNoDuplicateEvolve: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js replaces the evolution target of `{{name}}`, set on line {{line}}, with this target.",
+        "mermaid.js replaces the evolution target of `{{name}}`, set earlier, with this target.",
     },
   },
   create(context) {
     return {
       WardleyDiagram(diagram) {
         const declarations = wardleyDeclarationsOf(diagram)
-        const targets = new Map<string, { value: number; line: number }>()
+        const targets = new Map<string, number>()
         for (const node of diagram.body) {
           if (node.type !== "WardleyEvolveStatement") continue
           const name = wardleyNameText(node.component)
           if (!declarations.nodes.has(name)) continue
           const value = wardleyPercent(node.target)
           const previous = targets.get(name)
-          if (previous !== undefined && previous.value !== value) {
+          if (previous !== undefined && previous !== value) {
             context.report({
               node,
               messageId: "duplicate",
-              data: { name, line: String(previous.line) },
+              data: { name },
             })
           }
-          targets.set(name, { value, line: node.loc.start.line })
+          targets.set(name, value)
         }
       },
     }

@@ -1,7 +1,6 @@
 # @mmd-toolkit/radar-no-reversed-range
 
-英語版:
-[radar-no-reversed-range.md](./radar-no-reversed-range.md)
+英語版: [radar-no-reversed-range.md](./radar-no-reversed-range.md)
 
 図の `max` より大きい `min` を禁止する。
 
@@ -61,8 +60,8 @@ radar-beta
 
 ## 背景
 
-[`relativeRadius`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L175-L184) は、
-値をまず最小値で、次に最大値で抑えるので、
+[`relativeRadius`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L175-L184)
+は、値をまず最小値で、次に最大値で抑えるので、
 最小値が最大値より大きいとすべての値が最大値になり、外側の輪に来る。
 
 <!-- begin auto-generated rule resources -->

@@ -5,20 +5,21 @@
 [構文](../../../spec/docs/diagrams/architecture.ja.md) が受理を定義し、
 [木](../../../spec/docs/ast/architecture.ja.md) が書かれた形を保持します。
 `architectureDbOf` は受理済みの木を読み、意味上の検査を繰り返しません。
-結果の欄は [architecture の要約](../db-summaries.ja.md#architecture) のとおりです。 [fixture: architecture/db-mixed]
+結果の欄は [architecture の要約](../db-summaries.ja.md#architecture)
+のとおりです。 [fixture: architecture/db-mixed]
 [fixture: architecture/header-beta]
 
 ## 木から要約を組み立てる
 
 1. **読みと順序。**
-   [db-from-tree.ja.md](../db-from-tree.ja.md#変換した形) の共有の変換で値を読む。
+   [db-from-tree.ja.md](../db-from-tree.ja.md#変換した形)
+   の共有の変換で値を読む。
    groups、services、junctions、edges、alignments の順に公開し、
    種類ごとに原文順を保つ。
    `nodes` は services の後に junctions を並べる。
    保持した hidden の形は何も公開しない。
-   frontmatter の title を含む図全体の title は、
-   この要約に入らない。 [fixture: architecture/db-mixed]
-   [fixture: architecture/db-junction-order]
+   frontmatter の title を含む図全体の title は、この要約に入らない。
+   [fixture: architecture/db-mixed] [fixture: architecture/db-junction-order]
    [fixture: architecture/db-edge-forward-nodes]
    [fixture: architecture/db-align-forward-repeat]
    [fixture: architecture/hidden-yaml-three-fences]
@@ -51,9 +52,8 @@
    ほかの文字の前のバックスラッシュは除く。
    Unicode escape の形も Unicode の符号位置には変えない。
    空の文字 icon も公開する。
-   label と icon に追加の HTML
-   sanitization は行わない。 [fixture: architecture/db-prototype-ids]
-   [fixture: architecture/db-id-case]
+   label と icon に追加の HTML sanitization は行わない。
+   [fixture: architecture/db-prototype-ids] [fixture: architecture/db-id-case]
    [fixture: architecture/db-service-forward-parent]
    [fixture: architecture/lex-icon-leading-symbols]
    [fixture: architecture/lex-string-conversion]
@@ -71,7 +71,8 @@
    どちらの場合も最後にもう一度 trim する。
    ほかの escape は解かない。
    null の title は省き、変換後の空の title は保つ。
-   この変換は木の字句上の kind を変えない。 [fixture: architecture/lex-title-conversion]
+   この変換は木の字句上の kind を変えない。
+   [fixture: architecture/lex-title-conversion]
    [fixture: architecture/lex-title-padded-quotes]
    [fixture: architecture/lex-title-unquoted-fallback]
    [fixture: architecture/lex-title-cross-quote-escape]
@@ -93,8 +94,8 @@
    group に入らないノードの modifier も保つ。
    arrow の title は工程 4 で変換し、null だけを省く。
    辺の順序、重複辺、自己辺、同じ port 方向を保つ。
-   生成した辺の ID、隣接情報、
-   解決した group の端点は持たない。 [fixture: architecture/db-directions]
+   生成した辺の ID、隣接情報、解決した group の端点は持たない。
+   [fixture: architecture/db-directions]
    [fixture: architecture/db-duplicate-edges]
    [fixture: architecture/gram-edge-reversed-labeled-markers]
    [fixture: architecture/db-group-modifier-one-group]
@@ -117,9 +118,10 @@
 印の読みが拒否する場合だけエラーの記録を除外し、
 受理されて比較可能な読みの木がなければ報告します。
 比較用の Db がない場合は、
-[比較用の Db](../../../spec/docs/known-divergences/embedded-data-opaque.ja.md#比較する-db) の規則に従って明示します。
-native
-hidden の属性は埋め込み設定ではありません。 [fixture: architecture/div-invalid-keeps-config]
+[比較用の Db](../../../spec/docs/known-divergences/embedded-data-opaque.ja.md#比較する-db)
+の規則に従って明示します。
+native hidden の属性は埋め込み設定ではありません。
+[fixture: architecture/div-invalid-keeps-config]
 [fixture: architecture/div-frontmatter-invalid-yaml]
 [fixture: architecture/div-retained-bare-second-scan-ls]
 [fixture: architecture/lex-yaml-global-directive]

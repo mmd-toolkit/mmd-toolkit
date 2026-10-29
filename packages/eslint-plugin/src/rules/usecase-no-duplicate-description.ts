@@ -27,11 +27,11 @@ export const usecaseNoDuplicateDescription: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js replaces the description set on line {{line}} with the one of this `accDescr`.",
+        "mermaid.js replaces the earlier description with the one of this `accDescr`.",
     },
   },
   create(context) {
-    let previous: { value: string; line: number } | null = null
+    let previous: string | null = null
 
     /** Empty blocks still reset the history, although another rule reports them. */
     function check(node: DescriptionStatement): void {
@@ -42,16 +42,15 @@ export const usecaseNoDuplicateDescription: MermaidRuleDefinition<{
       if (
         !emptyBlock &&
         previous !== null &&
-        previous.value !== "" &&
-        previous.value !== value
+        previous !== "" &&
+        previous !== value
       ) {
         context.report({
           node,
           messageId: "duplicate",
-          data: { line: String(previous.line) },
         })
       }
-      previous = { value, line: node.loc.start.line }
+      previous = value
     }
 
     return {

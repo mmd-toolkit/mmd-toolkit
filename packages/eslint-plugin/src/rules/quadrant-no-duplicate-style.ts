@@ -1,6 +1,5 @@
 import type {
   QuadrantClassDefStatement,
-  QuadrantLiteral,
   QuadrantPointStatement,
 } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
@@ -28,7 +27,7 @@ export const quadrantNoDuplicateStyle: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js replaces the `{{name}}` set on line {{line}} with the value of this style.",
+        "mermaid.js replaces the earlier `{{name}}` with the value of this style.",
     },
   },
   create(context) {
@@ -36,21 +35,18 @@ export const quadrantNoDuplicateStyle: MermaidRuleDefinition<{
     function check(
       node: QuadrantPointStatement | QuadrantClassDefStatement,
     ): void {
-      const previous = new Map<
-        string,
-        { value: string | number; node: QuadrantLiteral }
-      >()
+      const previous = new Map<string, string | number>()
       for (const style of node.styles) {
         const { name, value } = styleOf(style)
         const earlier = previous.get(name)
-        if (earlier !== undefined && earlier.value !== value) {
+        if (earlier !== undefined && earlier !== value) {
           context.report({
             node: style,
             messageId: "duplicate",
-            data: { name, line: String(earlier.node.loc.start.line) },
+            data: { name },
           })
         }
-        previous.set(name, { value, node: style })
+        previous.set(name, value)
       }
     }
 

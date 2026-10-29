@@ -1,7 +1,6 @@
 # @mmd-toolkit/no-invalid-init-directive
 
-英語版:
-[no-invalid-init-directive.md](./no-invalid-init-directive.md)
+英語版: [no-invalid-init-directive.md](./no-invalid-init-directive.md)
 
 図を設定するつもりで正しく書かれず、
 mermaid.js が無視するディレクティブを禁止する。
@@ -22,7 +21,8 @@ mermaid.js が無視するディレクティブを禁止する。
 ## 規則の詳細
 
 この規則は、JSON が正しくない init のディレクティブと、
-大文字小文字の違いだけで `init` か `initialize` で終わる名前のディレクティブを報告する。
+大文字小文字の違いだけで `init` か `initialize`
+で終わる名前のディレクティブを報告する。
 対象はすべての図種である。
 
 名前が小文字の `init` か `initialize` で終わるディレクティブが設定を与え、
@@ -36,7 +36,8 @@ mermaid.js は JSON を読む前にテキストのすべての `'` を `"` に�
 その前後のほかのすべての init のディレクティブの設定を捨てる。
 
 書いたとおりで正しい JSON は、
-`{"fontFamily": "O'Brien"}` のように `'` を `"` に変えると壊れる場合も報告しない。
+`{"fontFamily": "O'Brien"}` のように `'` を `"`
+に変えると壊れる場合も報告しない。
 書き手は正しい JSON を書き、mermaid.js が自分の読み方で設定を捨てる。
 `%%{init: dark}%%` のような語の引数や、引数のないものは設定を与えず、
 報告しない。
@@ -93,12 +94,13 @@ flowchart LR
 
 ## 背景
 
-[`detectInit`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L98-L130) は `init` か `initialize` で終わる名前のディレクティブを読み、
-[`detectDirective`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L159-L198) は、
-すべての `'` を `"` に変え、各 JSON の引数を読み、
+[`detectInit`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L98-L130)
+は `init` か `initialize` で終わる名前のディレクティブを読み、
+[`detectDirective`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L159-L198)
+は、すべての `'` を `"` に変え、各 JSON の引数を読み、
 その 1 つでも正しくないとディレクティブをまったく与えない。
-[文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/config/directives.md#L75-L75) は、
-正しくない引数は無視されると述べる。
+[文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/config/directives.md#L75-L75)
+は、正しくない引数は無視されると述べる。
 
 <!-- begin auto-generated rule resources -->
 

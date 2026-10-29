@@ -23,13 +23,13 @@
 種類を変える connector の宣言を報告する。
 対象の図種は `agentflow` である。
 
-`connector C[First]` の後の宣言 `connector C[Second]` は connector にタイトル `Second` を与え、
-`First` は失われる。
+`connector C[First]` の後の宣言 `connector C[Second]` は connector にタイトル
+`Second` を与え、 `First` は失われる。
 タイトルなしの宣言と空白だけのタイトルの宣言は、
 connector が持つタイトルを保ち、報告しない。
 connector がすでに持つタイトルの宣言も報告しない。
-`connector C[First]` と `connector C[Second]` の後の 3 つ目の `connector C[First]` は、
-`Second` を置き換えるので報告する。
+`connector C[First]` と `connector C[Second]` の後の 3 つ目の
+`connector C[First]` は、 `Second` を置き換えるので報告する。
 最初にタイトルなしで宣言した connector は、
 誰も書いていない id をタイトルとして持ち、後のタイトルは報告しない。
 
@@ -46,7 +46,9 @@ task が connector になるので報告する。
 そこでは `connector C` も報告する。
 `A --> C` の `C` のように参照されるだけの頂点は、
 誰かが書いたラベルや形を持たず、その id の connector は報告しない。
-形と種類は [agentflow-no-redefined-vertex](./agentflow-no-redefined-vertex.ja.md) が比べるとおりに比べ、
+形と種類は
+[agentflow-no-redefined-vertex](./agentflow-no-redefined-vertex.ja.md)
+が比べるとおりに比べ、
 connector のタイトルを置き換える頂点はその規則が報告する。
 
 両端の空白を除いた名前が空の connector は何も作らず、比べない。
@@ -105,8 +107,8 @@ agentflow-beta TB
 
 ## 背景
 
-[`addConnector`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1380-L1411) は、
-id の最初の宣言をその id の頂点の代わりに新しい要素として保ち、
+[`addConnector`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1380-L1411)
+は、 id の最初の宣言をその id の頂点の代わりに新しい要素として保ち、
 後には空でないタイトルだけを設定する。
 
 <!-- begin auto-generated rule resources -->

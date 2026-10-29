@@ -1,7 +1,6 @@
 # @mmd-toolkit/gitgraph-no-duplicate-option
 
-英語版:
-[gitgraph-no-duplicate-option.md](./gitgraph-no-duplicate-option.md)
+英語版: [gitgraph-no-duplicate-option.md](./gitgraph-no-duplicate-option.md)
 
 1 つの文の中で、前の同じオプションの値を置き換えるオプションを禁止する。
 
@@ -72,9 +71,9 @@ gitGraph
 
 ## 背景
 
-[文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/gitGraph/gitGraph.langium#L26-L56) は `id`、
-`type`、`parent` にそれぞれ 1 つの値を当てるので、最後に書いたものが保たれ、
-`tag` はすべてをリストに足す。
+[文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/gitGraph/gitGraph.langium#L26-L56)
+は `id`、 `type`、`parent` にそれぞれ 1 つの値を当てるので、
+最後に書いたものが保たれ、 `tag` はすべてをリストに足す。
 
 <!-- begin auto-generated rule resources -->
 

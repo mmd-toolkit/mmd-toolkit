@@ -13,7 +13,7 @@ Code:
   5 |     "Investigate"
   6 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -27,7 +27,7 @@ Code:
   4 | accDescr: Second
     | ^~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -40,7 +40,7 @@ Code:
   3 | accDescr { Second }
     | ^~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -53,7 +53,7 @@ Code:
   3 | accDescr: Second
     | ^~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -70,7 +70,7 @@ Code:
   5 | }
     | ~ [1]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -84,7 +84,7 @@ Code:
     | ^~~~~~~~~~ [1]
   4 | complex "Investigate"
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -98,7 +98,7 @@ Code:
     | ^~~~~~~~~ [1]
   4 | accDescr { A }
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -111,7 +111,7 @@ Code:
   3 | accDescr: <b x='a'>A</b>
     | ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -124,7 +124,7 @@ Code:
   3 | accDescr { Second }
     | ^~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -138,7 +138,7 @@ Code:
     | ^~~~~~~~~~~~~~~~ [1]
   4 | complex "Investigate"
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -153,7 +153,7 @@ Code:
   4 |
   5 | complex "Investigate"
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -168,7 +168,7 @@ Code:
   4 | %% comment
   5 | complex "Investigate"
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -183,8 +183,8 @@ Code:
   4 | accDescr: A
     | ^~~~~~~~~~~ [2]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
-[2] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -200,7 +200,7 @@ Code:
   5 |     "Investigate"
   6 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -213,5 +213,5 @@ Code:
   3 | accDescr { #65; }
     | ^~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---

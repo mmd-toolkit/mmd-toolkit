@@ -13,7 +13,7 @@ Code:
   5 |   C
   6 |
 
-[1] mermaid.js replaces the column count set on line 2 with this count for the whole block.
+[1] mermaid.js replaces the earlier column count with this count for the whole block.
 ---
 
 
@@ -28,7 +28,7 @@ Code:
   4 |   A
   5 |
 
-[1] mermaid.js replaces the column count set on line 2 with this count for the whole block.
+[1] mermaid.js replaces the earlier column count with this count for the whole block.
 ---
 
 
@@ -45,8 +45,8 @@ Code:
   5 |   A
   6 |
 
-[1] mermaid.js replaces the column count set on line 2 with this count for the whole block.
-[2] mermaid.js replaces the column count set on line 3 with this count for the whole block.
+[1] mermaid.js replaces the earlier column count with this count for the whole block.
+[2] mermaid.js replaces the earlier column count with this count for the whole block.
 ---
 
 
@@ -62,7 +62,7 @@ Code:
   5 |   A
   6 |
 
-[1] mermaid.js replaces the column count set on line 2 with this count for the whole block.
+[1] mermaid.js replaces the earlier column count with this count for the whole block.
 ---
 
 
@@ -78,7 +78,7 @@ Code:
   5 |   A
   6 |
 
-[1] mermaid.js replaces the column count set on line 2 with this count for the whole block.
+[1] mermaid.js replaces the earlier column count with this count for the whole block.
 ---
 
 
@@ -96,7 +96,7 @@ Code:
     |   ^~~~~~~~~ [1]
   8 |
 
-[1] mermaid.js replaces the column count set on line 2 with this count for the whole block.
+[1] mermaid.js replaces the earlier column count with this count for the whole block.
 ---
 
 
@@ -112,7 +112,7 @@ Code:
   5 |   C
   6 |
 
-[1] mermaid.js replaces the column count set on line 2 with this count for the whole block.
+[1] mermaid.js replaces the earlier column count with this count for the whole block.
 ---
 
 
@@ -129,7 +129,7 @@ Code:
   6 |   end
   7 |
 
-[1] mermaid.js replaces the column count set on line 3 with this count for the whole block.
+[1] mermaid.js replaces the earlier column count with this count for the whole block.
 ---
 
 
@@ -144,5 +144,5 @@ Code:
   4 |   A
   5 |
 
-[1] mermaid.js replaces the column count set on line 2 with this count for the whole block.
+[1] mermaid.js replaces the earlier column count with this count for the whole block.
 ---

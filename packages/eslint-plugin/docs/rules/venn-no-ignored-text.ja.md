@@ -56,8 +56,8 @@ set A:20 %% size
 
 ## 背景
 
-[字句解析のコメントの規則](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/parser/venn.jison#L8-L8) は、
-`%%` の前の `}` 以外のどの文字もコメントの一部として読む。
+[字句解析のコメントの規則](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/parser/venn.jison#L8-L8)
+は、 `%%` の前の `}` 以外のどの文字もコメントの一部として読む。
 
 <!-- begin auto-generated rule resources -->
 

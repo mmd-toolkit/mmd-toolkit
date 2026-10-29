@@ -12,7 +12,7 @@ Code:
   4 |   line [1, 2]
   5 |
 
-[1] mermaid.js replaces the title set on line 2 and the data set on line 2 of the `x-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier title and the earlier data of the `x-axis` with the values of this statement.
 ---
 
 
@@ -27,7 +27,7 @@ Code:
   4 |   line [1, 2]
   5 |
 
-[1] mermaid.js replaces the title set on line 2 of the `y-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier title of the `y-axis` with the values of this statement.
 ---
 
 
@@ -41,7 +41,7 @@ Code:
     |   ^~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the data set on line 2 of the `x-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier data of the `x-axis` with the values of this statement.
 ---
 
 
@@ -56,7 +56,7 @@ Code:
     |   ^~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the data set on line 2 of the `x-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier data of the `x-axis` with the values of this statement.
 ---
 
 
@@ -72,8 +72,8 @@ Code:
     |   ^~~~~~~~~~~~ [2]
   5 |
 
-[1] mermaid.js replaces the title set on line 2 and the data set on line 2 of the `x-axis` with the values of this statement.
-[2] mermaid.js replaces the title set on line 3 and the data set on line 3 of the `x-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier title and the earlier data of the `x-axis` with the values of this statement.
+[2] mermaid.js replaces the earlier title and the earlier data of the `x-axis` with the values of this statement.
 ---
 
 
@@ -87,7 +87,7 @@ Code:
     |   ^~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the data set on line 2 of the `x-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier data of the `x-axis` with the values of this statement.
 ---
 
 
@@ -101,7 +101,7 @@ Code:
     |   ^~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the title set on line 2 of the `x-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier title of the `x-axis` with the values of this statement.
 ---
 
 
@@ -115,7 +115,7 @@ Code:
     |   ^~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the title set on line 2 and the data set on line 2 of the `x-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier title and the earlier data of the `x-axis` with the values of this statement.
 ---
 
 
@@ -129,5 +129,5 @@ Code:
     |   ^~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the data set on line 2 of the `y-axis` with the values of this statement.
+[1] mermaid.js replaces the earlier data of the `y-axis` with the values of this statement.
 ---

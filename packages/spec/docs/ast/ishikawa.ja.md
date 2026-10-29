@@ -5,13 +5,16 @@
 図種 `ishikawa` の木を定めます。
 共通部分は [ast.md](../ast.ja.md)、
 構文と受理は [diagrams/ishikawa.md](../diagrams/ishikawa.ja.md)、
-値の変換と Db は [tests パッケージの要約](../../../tests/docs/db-summaries.ja.md#ishikawa) に定めます。
+値の変換と Db は
+[tests パッケージの要約](../../../tests/docs/db-summaries.ja.md#ishikawa)
+に定めます。
 
 本文は IshikawaDiagram で、各節点の字下げを保つ入れ子の木を持ちます。
-親は Ishikawa 自身の「[字下げと親](../diagrams/ishikawa.ja.md#字下げと親)」の規則で定めます。
-兄弟はソース順で、
-重複するテキストも別々に保ちます。 [fixture: ishikawa/db-indent-first-cause]
-[fixture: ishikawa/db-indent-clamped] [fixture: ishikawa/db-three-definitions]
+親は Ishikawa
+自身の「[字下げと親](../diagrams/ishikawa.ja.md#字下げと親)」の規則で定めます。
+兄弟はソース順で、重複するテキストも別々に保ちます。
+[fixture: ishikawa/db-indent-first-cause] [fixture: ishikawa/db-indent-clamped]
+[fixture: ishikawa/db-three-definitions]
 
 ## ノード
 
@@ -25,9 +28,8 @@
 見出しのノードや beta の欄はありません。
 空行、コメント、 directive は図固有のノードを作りません。
 タイトルやアクセシビリティの欄もありません。
-そのように見えるテキストは節点であり、
-frontmatter は共通の根に保持します。 [fixture: ishikawa/header-only-lf]
-[fixture: ishikawa/header-beta-only-lf]
+そのように見えるテキストは節点であり、 frontmatter は共通の根に保持します。
+[fixture: ishikawa/header-only-lf] [fixture: ishikawa/header-beta-only-lf]
 [fixture: ishikawa/header-lf-directive-eof]
 [fixture: ishikawa/gram-root-comment-only-document]
 [fixture: ishikawa/gram-whitespace-only-document]
@@ -37,8 +39,7 @@ frontmatter は共通の根に保持します。 [fixture: ishikawa/header-only-
 
 範囲は、見出しと全子孫の節点を含む図の本文を覆います。
 根のない図にも見出しがあります。 [fixture: ishikawa/header-only-lf]
-[fixture: ishikawa/db-all-fields]
-[fixture: ishikawa/header-same-line-root]
+[fixture: ishikawa/db-all-fields] [fixture: ishikawa/header-same-line-root]
 
 ### IshikawaNode
 
@@ -52,17 +53,16 @@ frontmatter は共通の根に保持します。 [fixture: ishikawa/header-only-
 子がない節点の `children` は空です。
 範囲は自身のテキストから最後の子孫までを覆い、
 子孫がなければ自身のテキストだけです。
-先頭の字下げは空白であり、
-テキストの値ではありません。 [fixture: ishikawa/gram-root-lf]
-[fixture: ishikawa/db-indent-first-cause]
+先頭の字下げは空白であり、テキストの値ではありません。
+[fixture: ishikawa/gram-root-lf] [fixture: ishikawa/db-indent-first-cause]
 [fixture: ishikawa/db-indent-pop-several]
 
 `indent` はタブ、U+00A0、U+3000、
 先行する図のコメントを終える U+2028 や U+2029 も含め、
 行内空白を 1 つずつ数えます。
 directive は除き、見出しの行では見出しの後の空白を数えます。
-根の字下げも保ちますが、
-親の決定には使いません。 [fixture: ishikawa/db-indent-tab-character]
+根の字下げも保ちますが、親の決定には使いません。
+[fixture: ishikawa/db-indent-tab-character]
 [fixture: ishikawa/db-indent-equal-mixed-whitespace]
 [fixture: ishikawa/lex-ideographic-positions]
 [fixture: ishikawa/comment-preserved-u2028]
@@ -75,7 +75,8 @@ directive は除き、見出しの行では見出しの後の空白を数えま�
 最初の原因は根の子です。
 それ以後の節点は、字下げが最初の原因以下なら根の子、
 それ以外なら先行する原因で字下げが厳密に小さい最も近いものの子です。
-推定した字下げや段階で `indent` を置き換えません。 [fixture: ishikawa/db-indent-first-cause]
+推定した字下げや段階で `indent` を置き換えません。
+[fixture: ishikawa/db-indent-first-cause]
 [fixture: ishikawa/db-indent-clamp-below-base]
 [fixture: ishikawa/db-indent-relative-zero]
 [fixture: ishikawa/db-indent-nearest-smaller-cause]
@@ -91,7 +92,8 @@ directive は除き、見出しの行では見出しの後の空白を数えま�
 `value` は「[書かれたテキスト](../ast.ja.md#ノード)」の規則に従い、引用符、
 バッククォート、実体参照、内部と末尾の空白を保ちます。
 directive、共通のコメント領域、選ばれた無視するセミコロンは値から除きます。
-範囲はそれらの除外領域も含むことがあります。 [fixture: ishikawa/gram-root-trailing-space]
+範囲はそれらの除外領域も含むことがあります。
+[fixture: ishikawa/gram-root-trailing-space]
 [fixture: ishikawa/lex-trailing-ls-ps-whitespace]
 [fixture: ishikawa/gram-quotes-padding]
 [fixture: ishikawa/gram-empty-backticks-text]
@@ -119,10 +121,11 @@ directive、共通のコメント領域、選ばれた無視するセミコロ�
 
 値は空になりません。
 数に見えるテキストも、空の引用符や括弧の綴りも IshikawaLiteral であり、
-StringLiteral や NumericLiteral にはしません。 [fixture: ishikawa/db-number-labels]
-[fixture: ishikawa/gram-empty-quotes]
+StringLiteral や NumericLiteral にはしません。
+[fixture: ishikawa/db-number-labels] [fixture: ishikawa/gram-empty-quotes]
 [fixture: ishikawa/gram-empty-brackets]
 [fixture: ishikawa/lex-directive-in-numeric-looking-text]
 
 引用符は区切りではなく内容なので、
-閉じ引用符がない形にも `closed` の欄は不要です。 [fixture: ishikawa/gram-root-unclosed-quote]
+閉じ引用符がない形にも `closed` の欄は不要です。
+[fixture: ishikawa/gram-root-unclosed-quote]

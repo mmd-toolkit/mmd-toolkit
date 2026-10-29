@@ -47,8 +47,7 @@ parser の結果の記録が決める。
    semicolon の除去で native directive の closer と LF が直結する場合も含む。
    選ばれない semicolon は構文として、空の説明ブロックは文の境目として残る。
    どちらも除かれたかのように prefix をつながない。
-   共通 converter の trim、空白の畳み込み、
-   escape の復号を施さない。
+   共通 converter の trim、空白の畳み込み、 escape の復号を施さない。
    [fixture: eventmodeling/gram-common-leading-directive-both-sides]
    [fixture: eventmodeling/gram-common-leading-directive-before-padding]
    [fixture: eventmodeling/gram-common-leading-directive-after-padding]
@@ -97,8 +96,8 @@ parser の結果の記録が決める。
    kind は `time` または `reset`、name は書かれた数字列、
    modelEntityType は書かれた語のまま、entityIdentifier は修飾名をつなぐ。
    sourceFrames は書かれた数字列の集合を文字列順にソートして公開する。
-   未定義・前方・自己参照も解決せず、
-   先頭のゼロを区別する。 [fixture: eventmodeling/db-frame-order]
+   未定義・前方・自己参照も解決せず、先頭のゼロを区別する。
+   [fixture: eventmodeling/db-frame-order]
    [fixture: eventmodeling/db-frame-duplicates]
    [fixture: eventmodeling/db-all-aliases]
    [fixture: eventmodeling/db-qualified-names]
@@ -151,7 +150,8 @@ frontmatter の HTML による値の違いは指定の読みで比較する。
 受理の木が欠けていれば入力とともに報告し、違いも入力とともに報告する。
 error の記録は `fixtureAccepts` がその読みを拒否するときだけ飛ばす。
 受理しても比較 Db がない場合は、
-[共有の規則](../../../spec/docs/known-divergences/embedded-data-opaque.ja.md#比較する-db)に従って明示する。 [fixture: common/detect-minimal-eventmodeling]
+[共有の規則](../../../spec/docs/known-divergences/embedded-data-opaque.ja.md#比較する-db)
+に従って明示する。 [fixture: common/detect-minimal-eventmodeling]
 [fixture: eventmodeling/config-security-level-other]
 [fixture: eventmodeling/div-html-frontmatter-value]
 [fixture: eventmodeling/config-fontfamily-keeps-title]

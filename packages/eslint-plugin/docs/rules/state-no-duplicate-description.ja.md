@@ -1,7 +1,6 @@
 # @mmd-toolkit/state-no-duplicate-description
 
-英語版:
-[state-no-duplicate-description.md](./state-no-duplicate-description.md)
+英語版: [state-no-duplicate-description.md](./state-no-duplicate-description.md)
 
 説明をもう一度設定する `accDescr` の文を禁止する。
 
@@ -33,11 +32,13 @@ mermaid.js はどの `accDescr` の文も受理し、説明を設定する文は
 
 説明を持たないブロックは、数えない。
 それは、
-[state-no-empty-description-block](./state-no-empty-description-block.ja.md) が報告する。
+[state-no-empty-description-block](./state-no-empty-description-block.ja.md)
+が報告する。
 閉じていないブロックも数えない。
 そのブロックはテキストの終わりまで続き、説明を空にする。
 それは、
-[state-no-unclosed-description-block](./state-no-unclosed-description-block.ja.md) が報告する。
+[state-no-unclosed-description-block](./state-no-unclosed-description-block.ja.md)
+が報告する。
 合成状態の中の `accDescr: x` は、`accDescr` の文ではない。
 mermaid.js はそれを、説明 `x` を持つ状態 `accDescr` として読み、
 規則はそれを数えない。

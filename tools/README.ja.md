@@ -5,7 +5,9 @@
 `@mmd-toolkit/tests` の fixture を保守する人のための、コマンドラインの道具です。
 fixture の作り直し、追加と印付け、mermaid.js からの入力の収集を行います。
 `packages/tests` のパッケージスクリプトから実行します。
-コマンドと規則は [maintaining-fixtures.ja.md](../packages/tests/docs/maintaining-fixtures.ja.md) にあります。
+コマンドと規則は
+[maintaining-fixtures.ja.md](../packages/tests/docs/maintaining-fixtures.ja.md)
+にあります。
 
 | ファイル      | スクリプト                                                                                                                 |
 | ------------- | -------------------------------------------------------------------------------------------------------------------------- |
@@ -16,7 +18,9 @@ fixture の作り直し、追加と印付け、mermaid.js からの入力の収�
 
 `collect.ts` は、1 つの図種について、 mermaid のチェックアウトのテストファイル、
 文書、デモのページを読みます。
-何を取るかは [maintaining-fixtures.ja.md](../packages/tests/docs/maintaining-fixtures.ja.md) の「mermaid から取った入力」にあります。
+何を取るかは
+[maintaining-fixtures.ja.md](../packages/tests/docs/maintaining-fixtures.ja.md)
+の「mermaid から取った入力」にあります。
 図種を足すときと、mermaid を上げた後に、
 新しい版が持ち込む入力を足すために行います。
 
@@ -79,7 +83,8 @@ mermaid の無関係なテストファイル、例えば `mermaid.spec.ts`、
    pnpm --filter @mmd-toolkit/tests run fixtures:add-many sequence /tmp/sequence.json
    ```
 
-4. mermaid が拒否する入力を確かめます（`add-many` がエラーとともに一覧に出します）。
+4. mermaid が拒否する入力を確かめます（`add-many`
+   がエラーとともに一覧に出します）。
    仕様は埋め込まれたデータを読まないので（既知の差異 `embedded-data-opaque`）、
    mermaid がそれだけを理由に拒否する入力は、仕様では受理されます。
    `@{ ... }` のデータブロックの中の未知の shape や壊れた YAML、

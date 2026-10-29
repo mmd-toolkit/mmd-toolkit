@@ -30,7 +30,7 @@ accTitle: C\u2029accTitle: D
         errors: [
           {
             messageId: "duplicate",
-            data: { line: "2", kind: "title", statement: "title" },
+            data: { kind: "title", statement: "title" },
             line: 3,
             column: 1,
             endLine: 3,
@@ -39,7 +39,6 @@ accTitle: C\u2029accTitle: D
           {
             messageId: "duplicate",
             data: {
-              line: "4",
               kind: "accessible title",
               statement: "accTitle",
             },

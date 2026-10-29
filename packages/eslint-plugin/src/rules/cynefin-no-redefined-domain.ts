@@ -33,28 +33,25 @@ export const cynefinNoRedefinedDomain: MermaidRuleDefinition<{
     schema: [],
     messages: {
       redefined:
-        "mermaid.js replaces the items of the domain `{{name}}`, set on line {{line}}, with those of this statement.",
+        "mermaid.js replaces the items of the domain `{{name}}`, set earlier, with those of this statement.",
     },
   },
   create(context) {
-    const domains = new Map<
-      string,
-      { items: readonly string[]; line: number }
-    >()
+    const domains = new Map<string, readonly string[]>()
     return {
       CynefinDomainStatement(node) {
         const items = node.items.map((item) =>
           normalizeLineTerminators(item.label.value),
         )
         const previous = domains.get(node.name)
-        if (previous !== undefined && losesItems(previous.items, items)) {
+        if (previous !== undefined && losesItems(previous, items)) {
           context.report({
             node,
             messageId: "redefined",
-            data: { name: node.name, line: String(previous.line) },
+            data: { name: node.name },
           })
         }
-        domains.set(node.name, { items, line: node.loc.start.line })
+        domains.set(node.name, items)
       },
     }
   },

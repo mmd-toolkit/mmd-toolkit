@@ -99,11 +99,14 @@ The procedures of a package are in the skill of that package.
   span, or bracketed reference is itself longer is left as it is. A sentence
   that cannot be laid out this way is left as written and reported, for its
   author to split or to give a `、`. A `。` inside brackets does not end a
-  sentence; a closing emphasis mark and the `[fixture: …]` citations that follow
-  a sentence stay on its line; where a line break between a full-width and a
-  half-width character is removed, one space takes its place. `pnpm run lint:ja`
-  checks all of this.
-
+  sentence, and a closing emphasis mark stays with its sentence. The body is
+  wrapped before its following `[fixture: …]` citations are placed: they
+  continue from the body's last line with one space, and those that do not fit
+  go on continuation lines. One space is added before a citation that
+  immediately follows `。`; directly adjacent citations remain adjacent. Where a
+  line break between a full-width and a half-width character, or between two
+  half-width characters, is removed, one space takes its place.
+  `pnpm run lint:ja` checks all of this.
 - A code block that holds Mermaid text has the info string `mmd`, not `mermaid`
   and not `text`. GitHub highlights it and does not try to render it as a
   diagram, which matters because many examples are rejected or are edge cases on

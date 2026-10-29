@@ -10,7 +10,7 @@ Code:
     |                                                  ^~~~~~~~~ [1]
   3 |
 
-[1] mermaid.js replaces the `radius` set on line 2 with the value of this style.
+[1] mermaid.js replaces the earlier `radius` with the value of this style.
 ---
 
 
@@ -24,7 +24,7 @@ Code:
   3 |   A:::c: [0.3, 0.6]
   4 |
 
-[1] mermaid.js replaces the `radius` set on line 2 with the value of this style.
+[1] mermaid.js replaces the earlier `radius` with the value of this style.
 ---
 
 
@@ -37,7 +37,7 @@ Code:
     |                                         ^~~~~~~~~~~ [1]
   3 |
 
-[1] mermaid.js replaces the `color` set on line 2 with the value of this style.
+[1] mermaid.js replaces the earlier `color` with the value of this style.
 ---
 
 
@@ -51,8 +51,8 @@ Code:
     |                            [1]        [2]
   3 |
 
-[1] mermaid.js replaces the `radius` set on line 2 with the value of this style.
-[2] mermaid.js replaces the `radius` set on line 2 with the value of this style.
+[1] mermaid.js replaces the earlier `radius` with the value of this style.
+[2] mermaid.js replaces the earlier `radius` with the value of this style.
 ---
 
 
@@ -65,7 +65,7 @@ Code:
     |                             ^~~~~~~~~ [1]
   3 |
 
-[1] mermaid.js replaces the `radius` set on line 2 with the value of this style.
+[1] mermaid.js replaces the earlier `radius` with the value of this style.
 ---
 
 
@@ -78,7 +78,7 @@ Code:
     |                            ^~~~~~~~~ [1]
   3 |
 
-[1] mermaid.js replaces the `radius` set on line 2 with the value of this style.
+[1] mermaid.js replaces the earlier `radius` with the value of this style.
 ---
 
 
@@ -91,7 +91,7 @@ Code:
     |                                     ^~~~~~~~~~~~~~~~~ [1]
   3 |
 
-[1] mermaid.js replaces the `stroke-color` set on line 2 with the value of this style.
+[1] mermaid.js replaces the earlier `stroke-color` with the value of this style.
 ---
 
 
@@ -104,5 +104,5 @@ Code:
     |                                    ^~~~~~~~~~~~~~~~~ [1]
   3 |
 
-[1] mermaid.js replaces the `stroke-width` set on line 2 with the value of this style.
+[1] mermaid.js replaces the earlier `stroke-width` with the value of this style.
 ---

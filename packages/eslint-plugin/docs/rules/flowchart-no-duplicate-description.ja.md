@@ -9,7 +9,9 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
-💡 [エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions) を選んで適用できる。
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
 
 <!-- end auto-generated rule notice -->
 
@@ -39,8 +41,9 @@ mermaid.js は、その文の値を id としてその subgraph のメンバー�
 
 説明を持たないブロックと、説明を空にする閉じていないブロックは、数えない。
 それらは、
-[flowchart-no-empty-description-block](./flowchart-no-empty-description-block.ja.md) と、
-[flowchart-no-unclosed-description-block](./flowchart-no-unclosed-description-block.ja.md) が報告する。
+[flowchart-no-empty-description-block](./flowchart-no-empty-description-block.ja.md)、
+[flowchart-no-unclosed-description-block](./flowchart-no-unclosed-description-block.ja.md)
+が報告する。
 
 図がすでに持つ説明を設定する文は、どちらの形でも報告しない。
 `accDescr: d` の後のブロック `accDescr { d }` は、何も失わない。
@@ -59,8 +62,9 @@ subgraph の中の文を消すと、そのメンバーも消える。
 ただし、subgraph のほかの文が同じ id をメンバーにしていれば残る。
 文の後の `;` は、文を区切るものなら残す。
 `accDescr: style:#b;` や `accDescr { style:#b };` のように、
-仕様の [`style` 行と `classDef` 行](../../../spec/docs/common.ja.md#style-行と-classdef-行) の決まりで mermaid.js が無視する `;` は、
-文と一緒に消す。
+仕様の
+[`style` 行と `classDef` 行](../../../spec/docs/common.ja.md#style-行と-classdef-行)
+の決まりで mermaid.js が無視する `;` は、文と一緒に消す。
 
 この規則に**反する**コードの例:
 

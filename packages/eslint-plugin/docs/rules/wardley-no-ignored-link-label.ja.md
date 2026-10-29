@@ -1,7 +1,6 @@
 # @mmd-toolkit/wardley-no-ignored-link-label
 
-英語版:
-[wardley-no-ignored-link-label.md](./wardley-no-ignored-link-label.md)
+英語版: [wardley-no-ignored-link-label.md](./wardley-no-ignored-link-label.md)
 
 リンクの矢印の中のラベルが置き換える、`;` の後のラベルを禁止する。
 
@@ -67,8 +66,9 @@ wardley-beta
 
 ## 背景
 
-[パーサー](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L178-L186) は、
-矢印の中のラベルを取り、 `;` の後のラベルは矢印がラベルを持たないときだけ取る。
+[パーサー](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L178-L186)
+は、矢印の中のラベルを取り、
+`;` の後のラベルは矢印がラベルを持たないときだけ取る。
 
 <!-- begin auto-generated rule resources -->
 

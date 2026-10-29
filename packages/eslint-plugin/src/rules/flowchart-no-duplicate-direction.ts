@@ -1,7 +1,4 @@
-import type {
-  FlowchartDirectionStatement,
-  FlowchartSubgraphStatement,
-} from "@mmd-toolkit/parser"
+import type { FlowchartDirectionStatement } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { comparableDirection } from "../utils/direction-text.ts"
@@ -23,20 +20,14 @@ export const flowchartNoDuplicateDirection: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js replaces the direction set on line {{line}} for this subgraph with `{{direction}}`.",
+        "mermaid.js replaces the earlier direction for this subgraph with `{{direction}}`.",
       ignored:
-        "mermaid.js keeps the direction of subgraph `{{id}}` declared on line {{line}}: this `direction {{direction}}` is lost.",
+        "mermaid.js keeps the direction of the first subgraph `{{id}}` and ignores this `direction {{direction}}`.",
     },
   },
   create(context) {
     const ids = subgraphIdsOf(context.sourceCode)
-    const firsts = new Map<
-      string,
-      {
-        node: FlowchartSubgraphStatement
-        direction: FlowchartDirectionStatement | null
-      }
-    >()
+    const firsts = new Map<string, FlowchartDirectionStatement | null>()
     return {
       "FlowchartSubgraphStatement:exit"(node) {
         const id = ids.get(node)
@@ -47,8 +38,8 @@ export const flowchartNoDuplicateDirection: MermaidRuleDefinition<{
           if (statement.type !== "FlowchartDirectionStatement") continue
           if (
             first !== undefined &&
-            (first.direction === null ||
-              comparableDirection(first.direction.direction) !==
+            (first === null ||
+              comparableDirection(first.direction) !==
                 comparableDirection(statement.direction))
           ) {
             context.report({
@@ -56,7 +47,6 @@ export const flowchartNoDuplicateDirection: MermaidRuleDefinition<{
               messageId: "ignored",
               data: {
                 id,
-                line: String(first.node.loc.start.line),
                 direction: statement.direction,
               },
             })
@@ -69,14 +59,13 @@ export const flowchartNoDuplicateDirection: MermaidRuleDefinition<{
               node: statement,
               messageId: "duplicate",
               data: {
-                line: String(previous.loc.start.line),
                 direction: statement.direction,
               },
             })
           }
           previous = statement
         }
-        if (first === undefined) firsts.set(id, { node, direction: previous })
+        if (first === undefined) firsts.set(id, previous)
       },
     }
   },

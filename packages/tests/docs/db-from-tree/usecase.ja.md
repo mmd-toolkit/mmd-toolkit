@@ -36,8 +36,8 @@ JSON の内部は不透明に保ちます。
    裸と通常の引用文字列は `text` です。
    ラベルがなければ明示 id と `text` を使います。
    互換な明示宣言の反復はクラスを蓄積し、元の位置を保ちます。
-   生成 id の宣言は、
-   同じラベルでも衝突します。 [fixture: usecase/gram-entity-derived-id]
+   生成 id の宣言は、同じラベルでも衝突します。
+   [fixture: usecase/gram-entity-derived-id]
    [fixture: usecase/gram-empty-quoted-name]
    [fixture: usecase/gram-generated-label-repeat]
    [fixture: usecase/db-three-definitions]
@@ -83,8 +83,7 @@ JSON の内部は不透明に保ちます。
    宣言メタデータの後で、単独更新をその記述順に適用します。
    最終 icon/type/business の組合せを検証し、後の修復は許しますが、
    宣言の衝突や無効なプロパティは消しません。
-   edge の animation は、
-   明示 animate false の後でも animate を true にします。
+   edge の animation は、明示 animate false の後でも animate を true にします。
    [fixture: usecase/lex-native-single-quoted-keys]
    [fixture: usecase/gram-native-quoted-business]
    [fixture: usecase/gram-metadata-unknown-key]
@@ -104,10 +103,9 @@ JSON の内部は不透明に保ちます。
    意味付きの種類は arrowType 0、minlen 1 で、
    include/extend は小文字の意味語を text ラベルとして補います。
    関連とノートのラベルは、空の引用内容も含め、変換内容と kind を保ちます。
-   明示関連 id だけを残し、
-   生成 edge/note id や派生コネクターは作りません。 [fixture: usecase/db-arrows]
-   [fixture: usecase/db-arrow-length] [fixture: usecase/db-labeled-arrows]
-   [fixture: usecase/db-semantic-case]
+   明示関連 id だけを残し、生成 edge/note id や派生コネクターは作りません。
+   [fixture: usecase/db-arrows] [fixture: usecase/db-arrow-length]
+   [fixture: usecase/db-labeled-arrows] [fixture: usecase/db-semantic-case]
    [fixture: usecase/gram-edge-empty-markdown-label]
    [fixture: usecase/gram-edge-whitespace-label]
    [fixture: usecase/db-edge-id-style] [fixture: usecase/db-note-order]
@@ -121,8 +119,8 @@ JSON の内部は不透明に保ちます。
    直接スタイルは追記します。
    CSS 宣言はコロン前後の空白を含む変換範囲全体で、外側だけ trim し、
    各 `\,` を `,` に変えます。
-   引用された CSS 成分は記述を残し、
-   クラス定義をノードに展開しません。 [fixture: usecase/db-three-definitions]
+   引用された CSS 成分は記述を残し、クラス定義をノードに展開しません。
+   [fixture: usecase/db-three-definitions]
    [fixture: usecase/db-classdef-replace] [fixture: usecase/db-style-append]
    [fixture: usecase/lex-css-property-padding]
    [fixture: usecase/lex-style-quoted-value-and-comma]

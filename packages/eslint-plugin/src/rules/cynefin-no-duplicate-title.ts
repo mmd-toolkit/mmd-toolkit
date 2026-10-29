@@ -22,11 +22,11 @@ export const cynefinNoDuplicateTitle: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js replaces the {{kind}} set on line {{line}} with the one of this `{{statement}}`.",
+        "mermaid.js replaces the earlier {{kind}} with the one of this `{{statement}}`.",
     },
   },
   create(context) {
-    const titles = new Map<string, { value: string; line: number }>()
+    const titles = new Map<string, string>()
 
     /** Each kind keeps its own history, including an empty value that clears it. */
     function check(
@@ -34,11 +34,7 @@ export const cynefinNoDuplicateTitle: MermaidRuleDefinition<{
     ): void {
       const value = commonTitleText(node.value?.value ?? "")
       const previous = titles.get(node.type)
-      if (
-        previous !== undefined &&
-        previous.value !== "" &&
-        previous.value !== value
-      ) {
+      if (previous !== undefined && previous !== "" && previous !== value) {
         const accessible = node.type === "CynefinAccTitleStatement"
         context.report({
           node,
@@ -46,11 +42,10 @@ export const cynefinNoDuplicateTitle: MermaidRuleDefinition<{
           data: {
             kind: accessible ? "accessible title" : "title",
             statement: accessible ? "accTitle" : "title",
-            line: String(previous.line),
           },
         })
       }
-      titles.set(node.type, { value, line: node.loc.start.line })
+      titles.set(node.type, value)
     }
 
     return {

@@ -6,7 +6,8 @@
 [treemap の木](../../spec/docs/ast/treemap.ja.md)から整形します。
 各規則で選択の理由を説明します。
 semicolon の保護は普通の整形より優先します。
-保持する文字と mermaid.js との差は [compatibility.ja.md](./compatibility.ja.md)に記します。
+保持する文字と mermaid.js との差は
+[compatibility.ja.md](./compatibility.ja.md)に記します。
 
 ## Rules
 
@@ -25,10 +26,10 @@ Db が等しい別名へ統一せず、作者が書いた `treemap` と `treemap
 
 [fixture: treemap/header/empty]
 
-入力（エスケープ表記）:
-`" treemap\"HeadingRoot\"\n \"HeadingChild\":3"`.
+入力（escape 表記）: `" treemap\"HeadingRoot\"\n \"HeadingChild\":3"`
 
-出力 ([header/stable-output.mmd](../tests/fixtures/treemap/header/stable-output.mmd)):
+出力
+([header/stable-output.mmd](../tests/fixtures/treemap/header/stable-output.mmd)):
 
 ```mmd
 treemap
@@ -74,10 +75,11 @@ style と終端のない classDef に行が接する場合は接触を保ち、
 
 [fixture: treemap/indentation/glued-tabs]
 
-入力（エスケープ表記）:
-`"treemap\n    \"Top\"\n           \"Branch\"\n             \"Tip\":3\n      \"Sibling\":4\n \"Other\":5"`.
+入力（escape 表記）:
+`"treemap\n    \"Top\"\n           \"Branch\"\n             \"Tip\":3\n      \"Sibling\":4\n \"Other\":5"`
 
-出力 ([indentation/irregular-output.mmd](../tests/fixtures/treemap/indentation/irregular-output.mmd)):
+出力
+([indentation/irregular-output.mmd](../tests/fixtures/treemap/indentation/irregular-output.mmd)):
 
 ```mmd
 treemap
@@ -117,10 +119,10 @@ treemap
 
 [fixture: treemap/carried-indentation/closer]
 
-入力（エスケープ表記）:
-`"treemap\n\"Top\"  \n\"Tip\":2"`.
+入力（escape 表記）: `"treemap\n\"Top\"  \n\"Tip\":2"`
 
-出力 ([carried-indentation/section-space-output.mmd](../tests/fixtures/treemap/carried-indentation/section-space-output.mmd)):
+出力
+([carried-indentation/section-space-output.mmd](../tests/fixtures/treemap/carried-indentation/section-space-output.mmd)):
 
 ```mmd
 treemap
@@ -141,8 +143,7 @@ useTabs なら深さごとに 1 tab、それ以外は設定の正の幅の space
 
 [fixture: treemap/tabs/same-count]
 
-入力（エスケープ表記）:
-`"treemap\n \"TabRoot\"\n\t \"Branch\"\n \t \"Tip\":3"`.
+入力（escape 表記）: `"treemap\n \"TabRoot\"\n\t \"Branch\"\n \t \"Tip\":3"`
 
 出力 ([tabs/mixed-output.mmd](../tests/fixtures/treemap/tabs/mixed-output.mmd)):
 
@@ -175,10 +176,10 @@ title や class style が既に所有する文字は、別文にしません。
 
 [fixture: treemap/statements-one-per-line/title-owns-row]
 
-入力（エスケープ表記）:
-`"treemap\"Top\"  \"Left\":1   \"Right\",2\"Last\""`.
+入力（escape 表記）: `"treemap\"Top\"  \"Left\":1   \"Right\",2\"Last\""`
 
-出力 ([statements-one-per-line/adjacent-output.mmd](../tests/fixtures/treemap/statements-one-per-line/adjacent-output.mmd)):
+出力
+([statements-one-per-line/adjacent-output.mmd](../tests/fixtures/treemap/statements-one-per-line/adjacent-output.mmd)):
 
 ```mmd
 treemap
@@ -203,10 +204,10 @@ trivia のある gap は接触を保ちます。
 
 [fixture: treemap/separators/trivia]
 
-入力（エスケープ表記）:
-`"treemap\n\"Colon\" \t: \t1,234.5"`.
+入力（escape 表記）: `"treemap\n\"Colon\" \t: \t1,234.5"`
 
-出力 ([separators/colon-output.mmd](../tests/fixtures/treemap/separators/colon-output.mmd)):
+出力
+([separators/colon-output.mmd](../tests/fixtures/treemap/separators/colon-output.mmd)):
 
 ```mmd
 treemap
@@ -232,10 +233,10 @@ trivia のない marker と名前の間の改行を詰め、 `:::` の前後に�
 
 [fixture: treemap/selectors/keyword-prefix]
 
-入力（エスケープ表記）:
-`"treemap\n\"Section\"\n:::\nzz"`.
+入力（escape 表記）: `"treemap\n\"Section\"\n:::\nzz"`
 
-出力 ([selectors/section-newlines-output.mmd](../tests/fixtures/treemap/selectors/section-newlines-output.mmd)):
+出力
+([selectors/section-newlines-output.mmd](../tests/fixtures/treemap/selectors/section-newlines-output.mmd)):
 
 ```mmd
 treemap
@@ -275,10 +276,10 @@ Mermaid は `1_000` を 1 と読みます。
 
 [corpus fixture: treemap/db-number-underflow]
 
-入力（エスケープ表記）:
-`"treemap\n\"Underscore\":1_000"`.
+入力（escape 表記）: `"treemap\n\"Underscore\":1_000"`
 
-出力 ([numbers/underscore-output.mmd](../tests/fixtures/treemap/numbers/underscore-output.mmd)):
+出力
+([numbers/underscore-output.mmd](../tests/fixtures/treemap/numbers/underscore-output.mmd)):
 
 ```mmd
 treemap
@@ -310,12 +311,12 @@ backslash は引用符を escape せず、`\n` も decode しません。
 
 [corpus fixture: treemap/lex-string-backslash-line-feed]
 
-入力（エスケープ表記）:
-`"treemap\n'  Other \"quote\"  ':1"`.
+入力（escape 表記）: `"treemap\n'  Other \"quote\"  ':1"`
 
-オプション: `{"singleQuote":true}`.
+設定: `{"singleQuote":true}`
 
-出力 ([names/quotes-output.mmd](../tests/fixtures/treemap/names/quotes-output.mmd)):
+出力
+([names/quotes-output.mmd](../tests/fixtures/treemap/names/quotes-output.mmd)):
 
 ```mmd
 treemap
@@ -338,10 +339,10 @@ selector と違い、class 名は 2 文字以上必要です。
 
 [test: treemap/class-definitions/unicode-gap]
 
-入力（エスケープ表記）:
-`"treemap\nclassDef\n\t zz"`.
+入力（escape 表記）: `"treemap\nclassDef\n\t zz"`
 
-出力 ([class-definitions/keyword-newline-output.mmd](../tests/fixtures/treemap/class-definitions/keyword-newline-output.mmd)):
+出力
+([class-definitions/keyword-newline-output.mmd](../tests/fixtures/treemap/class-definitions/keyword-newline-output.mmd)):
 
 ```mmd
 treemap
@@ -366,10 +367,10 @@ AST が既に style として所有しているためです。
 
 [fixture: treemap/style-gaps/directive]
 
-入力（エスケープ表記）:
-`"treemap\nclassDef zz\n\n  \"Apparent\":2"`.
+入力（escape 表記）: `"treemap\nclassDef zz\n\n  \"Apparent\":2"`
 
-出力 ([style-gaps/row-on-next-line-output.mmd](../tests/fixtures/treemap/style-gaps/row-on-next-line-output.mmd)):
+出力
+([style-gaps/row-on-next-line-output.mmd](../tests/fixtures/treemap/style-gaps/row-on-next-line-output.mmd)):
 
 ```mmd
 treemap
@@ -395,10 +396,11 @@ CSS として分割、統合、整形しません。
 
 [fixture: treemap/styles/quotes]
 
-入力（エスケープ表記）:
-`"treemap\nclassDef zz color:red , fill:blue,stroke:rgb(1\\,2\\,3),;"`.
+入力（escape 表記）:
+`"treemap\nclassDef zz color:red , fill:blue,stroke:rgb(1\\,2\\,3),;"`
 
-出力 ([styles/written-output.mmd](../tests/fixtures/treemap/styles/written-output.mmd)):
+出力
+([styles/written-output.mmd](../tests/fixtures/treemap/styles/written-output.mmd)):
 
 ```mmd
 treemap
@@ -436,10 +438,10 @@ class の終端、選ばれて無視されるもの、値の文字を区別し�
 
 [test: treemap/semicolons/protected-later-atom]
 
-入力（エスケープ表記）:
-`"treemap\nclassDef zz\n   color:#navy;;"`.
+入力（escape 表記）: `"treemap\nclassDef zz\n   color:#navy;;"`
 
-出力 ([semicolons/protected-class-column-output.mmd](../tests/fixtures/treemap/semicolons/protected-class-column-output.mmd)):
+出力
+([semicolons/protected-class-column-output.mmd](../tests/fixtures/treemap/semicolons/protected-class-column-output.mmd)):
 
 ```mmd
 treemap
@@ -467,10 +469,10 @@ trivia を持つ値は書かれた境界を保ちます。
 
 [fixture: treemap/title/quotes]
 
-入力（エスケープ表記）:
-`"treemap\ntitle\t  Topic  words \t\n\"AfterTitle\":3"`.
+入力（escape 表記）: `"treemap\ntitle\t  Topic  words \t\n\"AfterTitle\":3"`
 
-出力 ([title/padding-output.mmd](../tests/fixtures/treemap/title/padding-output.mmd)):
+出力
+([title/padding-output.mmd](../tests/fixtures/treemap/title/padding-output.mmd)):
 
 ```mmd
 treemap
@@ -501,10 +503,10 @@ trivia の境界を保ち、次行の値を連結しません。
 
 [test: treemap/accessibility-lines/unicode-edges]
 
-入力（エスケープ表記）:
-`"treemap\naccTitle \t: \t Access  words \t"`.
+入力（escape 表記）: `"treemap\naccTitle \t: \t Access  words \t"`
 
-出力 ([accessibility-lines/title-padding-output.mmd](../tests/fixtures/treemap/accessibility-lines/title-padding-output.mmd)):
+出力
+([accessibility-lines/title-padding-output.mmd](../tests/fixtures/treemap/accessibility-lines/title-padding-output.mmd)):
 
 ```mmd
 treemap
@@ -550,10 +552,11 @@ opener 前の普通の空白は詰めます。
 
 [test: treemap/description-blocks/unicode-opener]
 
-入力（エスケープ表記）:
-`"treemap\naccDescr  {\n  first\n\n    second\n}\n\"AfterDescription\":3"`.
+入力（escape 表記）:
+`"treemap\naccDescr  {\n  first\n\n    second\n}\n\"AfterDescription\":3"`
 
-出力 ([description-blocks/continuation-output.mmd](../tests/fixtures/treemap/description-blocks/continuation-output.mmd)):
+出力
+([description-blocks/continuation-output.mmd](../tests/fixtures/treemap/description-blocks/continuation-output.mmd)):
 
 ```mmd
 treemap
@@ -575,12 +578,13 @@ printWidth によって名前、数、style、common 値を折り返しません
 
 [fixture: treemap/long-lines/style-and-title]
 
-入力（エスケープ表記）:
-`"treemap\n\"A deliberately long name preserves every word and its internal spaces\":12345678901234567890"`.
+入力（escape 表記）:
+`"treemap\n\"A deliberately long name preserves every word and its internal spaces\":12345678901234567890"`
 
-オプション: `{"printWidth":20}`.
+設定: `{"printWidth":20}`
 
-出力 ([long-lines/name-and-number-output.mmd](../tests/fixtures/treemap/long-lines/name-and-number-output.mmd)):
+出力
+([long-lines/name-and-number-output.mmd](../tests/fixtures/treemap/long-lines/name-and-number-output.mmd)):
 
 ```mmd
 treemap
@@ -614,10 +618,10 @@ leaf の区切りと数の継続行は文にそろえます。
 
 [corpus fixture: treemap/comment-leaf-separator-indent]
 
-入力（エスケープ表記）:
-`"treemap\n\"Selector\":2%% gap\n:::zz"`.
+入力（escape 表記）: `"treemap\n\"Selector\":2%% gap\n:::zz"`
 
-出力 ([component-newlines/selector-comment-output.mmd](../tests/fixtures/treemap/component-newlines/selector-comment-output.mmd)):
+出力
+([component-newlines/selector-comment-output.mmd](../tests/fixtures/treemap/component-newlines/selector-comment-output.mmd)):
 
 ```mmd
 treemap
@@ -653,10 +657,11 @@ native コメント内の LS と PS は内容として保ちます。
 
 [test: treemap/comments/native-ls-ps]
 
-入力（エスケープ表記）:
-`"treemap\n\"Top\"\n%% before child\n    \"Tip\":2\n%% final comment"`.
+入力（escape 表記）:
+`"treemap\n\"Top\"\n%% before child\n    \"Tip\":2\n%% final comment"`
 
-出力 ([comments/standalone-output.mmd](../tests/fixtures/treemap/comments/standalone-output.mmd)):
+出力
+([comments/standalone-output.mmd](../tests/fixtures/treemap/comments/standalone-output.mmd)):
 
 ```mmd
 treemap
@@ -697,10 +702,10 @@ class keyword と名前の必須空白を保ち、directive で代用しませ�
 
 [fixture: treemap/directives/selector]
 
-入力（エスケープ表記）:
-`"treemap\n\"Top\"\n %%{wrap}%% \"Tip\":2"`.
+入力（escape 表記）: `"treemap\n\"Top\"\n %%{wrap}%% \"Tip\":2"`
 
-出力 ([directives/leading-output.mmd](../tests/fixtures/treemap/directives/leading-output.mmd)):
+出力
+([directives/leading-output.mmd](../tests/fixtures/treemap/directives/leading-output.mmd)):
 
 ```mmd
 treemap
@@ -711,8 +716,8 @@ treemap
 ### Prefix
 
 見出し前の普通のコメント、directive、空行は共有の root 配置を使います。
-検出の second scan で残った単行の percent 形式は、 Comment として、内部の Root
-directive を一度だけ印字します。
+検出の second scan で残った単行の percent 形式は、 Comment として、
+内部の Root directive を一度だけ印字します。
 frontmatter に昇格させる native hidden YAML はありません。
 読めない retained YAML は拒否のままです。
 
@@ -726,10 +731,10 @@ frontmatter に昇格させる native hidden YAML はありません。
 
 [corpus fixture: treemap/retained-yaml-no-bare]
 
-入力（エスケープ表記）:
-`"\n  %% leading note\ntreemap\n\"Prefix\":2"`.
+入力（escape 表記）: `"\n  %% leading note\ntreemap\n\"Prefix\":2"`
 
-出力 ([prefix/comment-output.mmd](../tests/fixtures/treemap/prefix/comment-output.mmd)):
+出力
+([prefix/comment-output.mmd](../tests/fixtures/treemap/prefix/comment-output.mmd)):
 
 ```mmd
 %% leading note
@@ -752,10 +757,10 @@ treemap
 
 [fixture: treemap/blank-lines/name-interior]
 
-入力（エスケープ表記）:
-`"treemap\n\n\"Top\"\n\n\n \"Tip\":2\n\n"`.
+入力（escape 表記）: `"treemap\n\n\"Top\"\n\n\n \"Tip\":2\n\n"`
 
-出力 ([blank-lines/ordinary-output.mmd](../tests/fixtures/treemap/blank-lines/ordinary-output.mmd)):
+出力
+([blank-lines/ordinary-output.mmd](../tests/fixtures/treemap/blank-lines/ordinary-output.mmd)):
 
 ```mmd
 treemap
@@ -832,12 +837,13 @@ YAML の入れ子と block scalar は、tabWidth 0 でも 1 space 以上にし�
 
 [corpus fixture: treemap/div-frontmatter-invalid]
 
-入力（エスケープ表記）:
-`"---\ntitle: |\n  First\n  Second\nconfig: {treemap: {padding: 3}}\n---\ntreemap\n\"YamlZero\":2"`.
+入力（escape 表記）:
+`"---\ntitle: |\n  First\n  Second\nconfig: {treemap: {padding: 3}}\n---\ntreemap\n\"YamlZero\":2"`
 
-オプション: `{"tabWidth":0}`.
+設定: `{"tabWidth":0}`
 
-出力 ([frontmatter-yaml/zero-output.mmd](../tests/fixtures/treemap/frontmatter-yaml/zero-output.mmd)):
+出力
+([frontmatter-yaml/zero-output.mmd](../tests/fixtures/treemap/frontmatter-yaml/zero-output.mmd)):
 
 ```mmd
 ---
@@ -868,10 +874,11 @@ class の蓄積、リセット、順序、親子を変えうるため、 sort、
 
 [corpus fixture: treemap/db-class-unused]
 
-入力（エスケープ表記）:
-`"treemap\n\"Top\"\n \"Right\":2\n \"Left\":1\nclassDef zz color:red;\nclassDef zz fill:blue;\ntitle Earlier\ntitle"`.
+入力（escape 表記）:
+`"treemap\n\"Top\"\n \"Right\":2\n \"Left\":1\nclassDef zz color:red;\nclassDef zz fill:blue;\ntitle Earlier\ntitle"`
 
-出力 ([source-order/repetitions-output.mmd](../tests/fixtures/treemap/source-order/repetitions-output.mmd)):
+出力
+([source-order/repetitions-output.mmd](../tests/fixtures/treemap/source-order/repetitions-output.mmd)):
 
 ```mmd
 treemap
@@ -904,10 +911,10 @@ EOF まで届く未完の Root directive と保護された本文の末尾は、
 
 [fixture: treemap/final-newline/open-directive]
 
-入力（エスケープ表記）:
-`"treemap\n\"FinalComment\":2\n%% final"`.
+入力（escape 表記）: `"treemap\n\"FinalComment\":2\n%% final"`
 
-出力 ([final-newline/comment-output.mmd](../tests/fixtures/treemap/final-newline/comment-output.mmd)):
+出力
+([final-newline/comment-output.mmd](../tests/fixtures/treemap/final-newline/comment-output.mmd)):
 
 ```mmd
 treemap

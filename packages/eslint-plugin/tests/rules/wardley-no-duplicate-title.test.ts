@@ -36,7 +36,7 @@ title A B`,
         errors: [
           {
             message:
-              "mermaid.js replaces the title set on line 2 with the one of this `title`.",
+              "mermaid.js replaces the earlier title with the one of this `title`.",
             line: 3,
             column: 1,
             endLine: 3,
@@ -51,7 +51,7 @@ title A B`,
         errors: [
           {
             message:
-              "mermaid.js replaces the title set on line 2 with the one of this `title`.",
+              "mermaid.js replaces the earlier title with the one of this `title`.",
             line: 3,
             column: 1,
             endLine: 3,
@@ -68,7 +68,7 @@ accTitle: A B`,
         errors: [
           {
             message:
-              "mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.",
+              "mermaid.js replaces the earlier accessible title with the one of this `accTitle`.",
             line: 3,
             column: 1,
             endLine: 3,

@@ -35,7 +35,7 @@ new RuleTester(LANGUAGE_CONFIG).run(
         errors: [
           {
             message:
-              "mermaid.js replaces the title set on line 3 with the one of this `accTitle`.",
+              "mermaid.js replaces the earlier title with the one of this `accTitle`.",
             line: 4,
             column: 3,
             endLine: 4,
@@ -49,7 +49,7 @@ new RuleTester(LANGUAGE_CONFIG).run(
 `,
               },
               {
-                desc: "Remove the `accTitle` statement on line 3: mermaid.js uses the last title that remains.",
+                desc: "Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.",
                 output: `flowchart LR
   A
   accTitle: c
@@ -70,7 +70,7 @@ new RuleTester(LANGUAGE_CONFIG).run(
         errors: [
           {
             message:
-              "mermaid.js replaces the title set on line 2 with the one of this `accTitle`.",
+              "mermaid.js replaces the earlier title with the one of this `accTitle`.",
             line: 3,
             column: 3,
             endLine: 3,
@@ -84,7 +84,7 @@ new RuleTester(LANGUAGE_CONFIG).run(
 `,
               },
               {
-                desc: "Remove the `accTitle` statement on line 2: mermaid.js uses the last title that remains.",
+                desc: "Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.",
                 output: `flowchart LR
   accTitle: style:#b;\u2028
   A

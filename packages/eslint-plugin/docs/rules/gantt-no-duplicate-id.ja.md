@@ -67,10 +67,13 @@ gantt
 
 ## 背景
 
-mermaid.js は id ごとに 1 つのタスクを持ち、それぞれのタスクは、
-同じ id で前に持っていたタスクを置き換える（[`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L588-L590)）。
+mermaid.js は id ごとに 1 つのタスクを持ち、
+[`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L588-L590)
+で、それぞれのタスクは、同じ id で前に持っていたタスクを置き換える。
 データが 1 つの項目を持つタスクは、その前のタスクの id を持ち、
-チャートを描くときにその id を探す（[`compileTasks`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L624-L625)）。
+チャートを描くときに、
+[`compileTasks`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L624-L625)
+で、その id を探す。
 
 <!-- begin auto-generated rule resources -->
 

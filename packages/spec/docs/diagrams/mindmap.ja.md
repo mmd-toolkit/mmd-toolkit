@@ -6,8 +6,8 @@ mermaid.js の正となるソース：
 
 - [`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison)
 - [`mindmapDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts)
-- [`mindmap/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap) の中のテスト（`*.spec.ts`、
-  `*.test.ts`）
+- [`mindmap/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap)
+  の中のテスト（`*.spec.ts`、 `*.test.ts`）
 
 この文書は、図種 `mindmap`、マインドマップを扱います。
 木のノードは [ast/mindmap.ja.md](../ast/mindmap.ja.md) で定めます。
@@ -16,11 +16,13 @@ mermaid.js の正となるソース：
 
 [detection.ja.md](../detection.ja.md) の項目 4 がこの文法を選びます。
 テキストが、空白の後、
-ちょうどこの大文字小文字の `mindmap` で始まるときです（[`detector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/detector.ts#L8-L10)）。
+ちょうどこの大文字小文字の `mindmap` で始まるときです（mermaid.js の
+[`detector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/detector.ts#L8-L10)）。
 `MINDMAP` と `Mindmap` はどの検出器にも合いません。
-ヘッダーの前の空行と空白だけの行は何も変えません。 [fixture: mindmap/db-header-only]
-[fixture: mindmap/db-header-indented] [fixture: mindmap/header-upper-case]
-[fixture: mindmap/header-capitalized] [fixture:
+ヘッダーの前の空行と空白だけの行は何も変えません。
+[fixture: mindmap/db-header-only] [fixture: mindmap/db-header-indented]
+[fixture: mindmap/header-upper-case] [fixture: mindmap/header-capitalized]
+[fixture:
 mindmap/header-after-empty-lines] [fixture:
 mindmap/header-after-whitespace-line]
 
@@ -31,16 +33,16 @@ mindmap/header-after-whitespace-line]
 一方、`mindmap-x` はヘッダーとその行の根 `-x` で、 `mindmap(x)` はヘッダーと、
 根である形です。
 最初のノードはヘッダーの行に置けます。
-空白の後に置けて、
-形か語の文字以外の文字で始まるならヘッダーの直後にも置けます。 [fixture: mindmap/header-word-suffix]
-[fixture:
+空白の後に置けて、形か語の文字以外の文字で始まるならヘッダーの直後にも置けます。
+[fixture: mindmap/header-word-suffix] [fixture:
 mindmap/header-dash-suffix] [fixture: mindmap/header-shape-glued] [fixture:
 mindmap/db-first-node-on-header-line] [fixture:
 mindmap/db-first-node-after-header-tab]
 
 ヘッダーで図のテキストを終えることはできません。
 字句解析器が読む、ディレクティブのないテキストで、ヘッダーの後に、
-字句解析器が最後の文字の後に読む `\n` （[テキストの終わり](../common.ja.md#テキストの終わり) を参照）しかないときは、
+字句解析器が最後の文字の後に読む `\n`
+（[テキストの終わり](../common.ja.md#テキストの終わり) を参照）しかないときは、
 入力は拒否されます。
 そのため、後ろに何もない `mindmap`、`  mindmap`、`mindmap%%{init: {}}%%` と、
 フロントマター、ディレクティブの行、コメント行、`%%` だけの行の後の、
@@ -49,8 +51,8 @@ mindmap/db-first-node-after-header-tab]
 改行、単独の CR、空白、U+2028、コメント、根です。
 改行が続く `mindmap`、`mindmap `、`mindmap %% c`、`mindmap%% c`、
 `mindmap %%{init: {}}%%`、 `mindmap`・改行・コメント行かディレクティブの行は、
-どれもテキストの終わりにあるとき、
-ノードのない図です。 [fixture: mindmap/db-header-without-line-feed] [fixture:
+どれもテキストの終わりにあるとき、ノードのない図です。
+[fixture: mindmap/db-header-without-line-feed] [fixture:
 mindmap/header-indented-at-end] [fixture: mindmap/header-directive-at-end]
 [fixture: mindmap/header-after-frontmatter-at-end] [fixture:
 mindmap/header-after-directive-line-at-end]
@@ -69,8 +71,8 @@ mindmap/header-directive-line-at-end] [fixture: mindmap/header-root-at-end]
 図のコメントです（[図種の検出](../common.ja.md#図種の検出) を参照）。
 mermaid.js も、その字句解析器がそれをコメントとして読むので受理します。
 ヘッダーの前の行のコメント行とディレクティブ、ヘッダーの直後のディレクティブ、
-フロントマターは何も変えません。 [fixture: mindmap/header-after-bare-percent-line]
-[fixture:
+フロントマターは何も変えません。
+[fixture: mindmap/header-after-bare-percent-line] [fixture:
 mindmap/header-after-empty-braces-line] [fixture:
 mindmap/db-comment-before-header] [fixture: mindmap/header-after-directive-line]
 [fixture: mindmap/header-then-directive-same-line] [fixture:
@@ -78,11 +80,13 @@ mindmap/db-frontmatter-before-header]
 
 ## 字句構造
 
-字句解析器は [図のテキスト](../common.ja.md#ソースの読み方) を [変換後の形](../common.ja.md#ソースの読み方) で読みます。
+字句解析器は [図のテキスト](../common.ja.md#ソースの読み方) を
+[変換後の形](../common.ja.md#ソースの読み方) で読みます。
 各行終端を `\n` として、各属性の引用符を `'` として、
 各エンティティをそのプレースホルダーとして、
 コメント領域と行の規則が無視する `;` はないものとして読みます。
-最後の文字の後に字句解析器が読む `\n` （[テキストの終わり](../common.ja.md#テキストの終わり)）は図のテキストの一部です。
+最後の文字の後に字句解析器が読む `\n` は、
+図のテキストの一部です（[テキストの終わり](../common.ja.md#テキストの終わり)）。
 この節は、[ソースの読み方](../common.ja.md#ソースの読み方) の項目 4 である、
 この図自身の単位の規則を述べます。
 
@@ -119,7 +123,8 @@ mindmap/db-crlf-line-ends] [fixture: mindmap/db-lone-cr-line-ends]
 **空白と行。**
 文の文脈では、改行以外の空白は単位の間にあります。
 改行は `newline` の単位で、
-U+2028 か U+2029 が終える図のコメントの終わりもそうです（[コメント](#コメント) を参照）。
+U+2028 か U+2029 が終える図のコメントの終わりもそうです（[コメント](#コメント)
+を参照）。
 空白だけの行と空行は、何もないものとして読まれます（[空行](#空行) を参照）。
 ノードの**字下げ**は、その行でノードの前にある空白文字で、
 ディレクティブを除いたテキストで数えます。
@@ -135,7 +140,8 @@ mindmap/lex-indent-around-directive]
 
 **ノードのテキスト。**
 文の文脈では、 `(`、`[`、`)`、`{`、`}`、改行以外の、
-できるだけ多くの 1 つ以上の文字が `node-text` の単位です（[文の文脈](#文の文脈) の規則 8）。
+できるだけ多くの 1 つ以上の文字が `node-text` の単位です（[文の文脈](#文の文脈)
+の規則 8）。
 そのテキストは終わりの空白を保ち、mermaid.js もそれをノードに保ちます。
 空白文字 3 つが続く `root` はノード `root   ` です。
 最初の文字の後の `]`、`:`、`#`、`"`、`%%`、`:::`、U+2028 はその文字です。
@@ -143,7 +149,9 @@ mindmap/lex-indent-around-directive]
 `b` はノードのテキストで、ほかのどの規則も読まない `::x` と `-x` もそうです。
 単独の `{`、`}`、ノードのテキストの後の `}}` は、どの規則も読みません。
 `a{b`、`a}b`、`a}}` は拒否されます。
-エンティティは 1 つのプレースホルダーです（[エンティティ](../common.ja.md#エンティティ) を参照）。 [fixture:
+エンティティは 1
+つのプレースホルダーです（[エンティティ](../common.ja.md#エンティティ)
+を参照）。 [fixture:
 mindmap/db-node-trailing-whitespace] [fixture:
 mindmap/lex-node-text-closing-bracket] [fixture:
 mindmap/db-text-with-colon-and-hash] [fixture: mindmap/db-text-with-quote]
@@ -161,7 +169,9 @@ mindmap/entity-placeholder-numeric]
 
 字句解析器は、ディレクティブのない図のテキストを、
 mermaid.js がディレクティブを取り除いた後のテキストを読むとおりに読みます。
-そのうえで [ディレクティブはトークンの境界](../common.ja.md#ディレクティブはトークンの境界) の規則が単位に当てはまります。
+そのうえで
+[ディレクティブはトークンの境界](../common.ja.md#ディレクティブはトークンの境界)
+の規則が単位に当てはまります。
 テキストの単位か文字列の単位の中のディレクティブは mermaid.js の読みを保ち、
 それ以外の単位の中のディレクティブは入力を拒否させます。
 **テキストの単位**は、 `node-text`、`shape-text`、`icon-text`、
@@ -190,7 +200,8 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
   `::%%{init: {}}%%:c`、ヘッダーとしての `mind%%{init: {}}%%map` では、
   ディレクティブは開き、閉じ、キーワードの中にあります。
   入力は拒否され、
-  mermaid.js は 2 つの部分を 1 つとして読んで受理します（[既知の差異](#既知の差異) を参照）。 [fixture:
+  mermaid.js は 2 つの部分を 1
+  つとして読んで受理します（[既知の差異](#既知の差異) を参照）。 [fixture:
   mindmap/div-directive-in-opener] [fixture:
   mindmap/div-directive-in-bang-opener] [fixture:
   mindmap/div-directive-in-hexagon-opener] [fixture:
@@ -202,24 +213,29 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 
 **単位の間のトリビア。**
 コメント行と、それだけの行のディレクティブは、
-字句解析器がテキストを読む前に取り除かれます（[コメント行](../common.ja.md#コメント行) を参照）。
+字句解析器がテキストを読む前に取り除かれます。
+[コメント行](../common.ja.md#コメント行) を参照してください。
 コメント行はその改行ごと取り除かれ、ディレクティブはその行を空にします。
-閉じていないディレクティブはテキストの残りを取ります（[ディレクティブの位置](../common.ja.md#ディレクティブの位置) を参照）。
+閉じていないディレクティブはテキストの残りを取ります。
+[ディレクティブの位置](../common.ja.md#ディレクティブの位置)
+を参照してください。
 `  a`、行 `%%{x`、行 `  b` はノード b を持ちません。
-`style` の規則に合う行（[`style` 行と `classDef` 行](../common.ja.md#style-行と-classdef-行) を参照）では、
-最後の `;` が無視され、
+`style` の規則に合う行（詳しくは
+[`style` 行と `classDef` 行](../common.ja.md#style-行と-classdef-行)
+を参照）では、最後の `;` が無視され、
 字句解析器はどのテキストの単位と文字列の単位の中でもそれを読み通します。
 `style:#x;y` はノード `style:#xy` で、
 `a[style:#x;y]` と `a["style:#x;y"]` はテキスト `style:#xy` を持ち、
-`::icon(style:#x;y)` と `:::style:#x;y` は icon と class
-`style:#xy` を持ちます。
+`::icon(style:#x;y)` と `:::style:#x;y` は icon と class `style:#xy`
+を持ちます。
 無視されるのはその行の最後の `;` だけなので、
 2 つあると最初のものがエンティティを終えることがあります。
 `style:#x;y;z` は、
 `style:` の後に `#x;` のプレースホルダーと `yz` が続くノードのテキストです。
 開きか閉じの中の無視される `;` は入力を拒否させ、
 mermaid.js は 2 つの部分を 1 つとして読みます。
-`style:#x{;{b}}` は mermaid.js では六角形です（[既知の差異](#既知の差異) を参照）。 [fixture:
+`style:#x{;{b}}` は mermaid.js では六角形です（[既知の差異](#既知の差異)
+を参照）。 [fixture:
 mindmap/db-comment-line-between-nodes] [fixture:
 mindmap/db-comment-line-indented-deeper] [fixture:
 mindmap/db-directive-line-between-nodes] [fixture:
@@ -238,7 +254,8 @@ mindmap/div-ignored-semicolon-in-opener]
 文の文脈では、字句解析器は次の規則を順に試します。
 
 1. `%%` と、その行区間の終わりまでの文字。
-   図のコメントです（[コメント](#コメント) を参照）。 [fixture: mindmap/lex-bare-percent-line-between-nodes]
+   図のコメントです（[コメント](#コメント) を参照）。
+   [fixture: mindmap/lex-bare-percent-line-between-nodes]
 2. キーワード `mindmap`。
    `header` の単位です。 [fixture: mindmap/db-header-only]
 3. `:::`。
@@ -267,8 +284,8 @@ mindmap/div-ignored-semicolon-in-opener]
   mindmap/lex-keyword-inside-node-text]
 - ノードのテキストは最初の `(`、`[`、`)`、`{`、`}` まで続くので、
   その後の開きは形を始め、 `-)` は単位が始まるところでだけ形を始めます。
-  `r-)text(-` はノードのテキスト `r-` と形 `)text(-` で、
-  `-)x(-` は形だけです。 [fixture: mindmap/db-shape-explode-dash-form] [fixture:
+  `r-)text(-` はノードのテキスト `r-` と形 `)text(-` で、 `-)x(-` は形だけです。
+  [fixture: mindmap/db-shape-explode-dash-form] [fixture:
   mindmap/gram-shape-dash-opener-without-id]
 - `::icon(` と `:::` は、単位が始まるところでだけ icon か class の行を始めます。
   `root ::icon(x)` はノードのテキスト `root ::icon` と形 `(x)` です。 [fixture:
@@ -285,8 +302,8 @@ mindmap/div-ignored-semicolon-in-opener]
    `` "` `` の後に、ほかのもの、つまり `"`、`"` が続かない `` ` ``、
    テキストの終わりが先に来るときは、入力は拒否され、規則 2 は試しません。
    ``a["`x"]``、``a["`x" ]``、``a["`"]``、 ``a["`x`y"]``、```a["`x``"]```、
-   テキストの終わりの ``a["`x`` は拒否されます。 [fixture: mindmap/db-shape-markdown-string]
-   [fixture:
+   テキストの終わりの ``a["`x`` は拒否されます。
+   [fixture: mindmap/db-shape-markdown-string] [fixture:
    mindmap/lex-markdown-string-quote] [fixture:
    mindmap/lex-markdown-string-quote-then-space] [fixture:
    mindmap/lex-markdown-string-backquote-only] [fixture:
@@ -294,8 +311,8 @@ mindmap/div-ignored-semicolon-in-opener]
    mindmap/lex-markdown-string-two-backquotes] [fixture:
    mindmap/lex-markdown-string-unclosed]
 2. `"`、`"` 以外の 0 個以上の文字（改行を含む）、`"`。
-   `string` の単位で、
-   間に何もないときは `empty-string` の単位です。 [fixture: mindmap/db-shape-string]
+   `string` の単位で、間に何もないときは `empty-string` の単位です。
+   [fixture: mindmap/db-shape-string]
 3. 閉じ、つまり `))`、`)`、`]`、`}}`、`(-`、`-)`、`((`、
    `(` をこの順に試したもの。
    `closer` の単位で、形の文脈を出ます。 [fixture: mindmap/db-shape-rect]
@@ -351,7 +368,8 @@ mindmap/lex-percent-brace-line-between-nodes]
 図のコメントは、文の文脈で単位が始まるところの `%%` で始まります（規則 1）。
 それだけの行、ヘッダーの後、形の後、icon の後で、
 前に空白があってもなくてもかまいません。
-コメントはその行区間の終わりまで続きます（[表記](../common.ja.md#表記) を参照）。
+コメントはその行区間の終わりまで続きます（[表記](../common.ja.md#表記)
+を参照）。
 改行、U+2028、U+2029 がそれを終え、
 U+2028 か U+2029 の後のテキストは新しい行として読まれ、
 その字下げはその文字から始まります。
@@ -373,7 +391,9 @@ mindmap/db-comment-after-node-text] [fixture: mindmap/lex-percent-in-shape-text]
 文字の代わりに単位の上で使います。
 単位の名前はその名前の 1 つの単位を表し、二重引用符の中のテキストは、
 そのテキストが名付ける単位を表します。
-文法は [`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L66-L127) の文法を言い直したものです。
+文法は
+[`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L66-L127)
+の文法を言い直したものです。
 ただし [空行](#空行) が別に言うところは除きます。
 
 以下の各規則は、
@@ -407,7 +427,8 @@ class-line = ":::" class-text
 `a["x"]y`、`a[x] y`、`a[x]]`、`a[x] :::c`、`::icon(x) y`、
 `::icon(x)::icon(y)`、`::icon(x):::c` は拒否され、形の後の空白は何も変えません。
 最初のノードはヘッダーの行に置けて、
-ヘッダーで図のテキストを終えることはできません（[検出](#検出) を参照）。 [fixture: mindmap/gram-shape-then-text-glued]
+ヘッダーで図のテキストを終えることはできません（[検出](#検出) を参照）。
+[fixture: mindmap/gram-shape-then-text-glued]
 [fixture: mindmap/db-shape-text-after-end] [fixture:
 mindmap/gram-shape-then-bracket] [fixture: mindmap/gram-shape-then-class]
 [fixture: mindmap/gram-icon-then-text] [fixture: mindmap/gram-icon-then-icon]
@@ -497,8 +518,8 @@ icon の行は icon を、class の行は class を、最後に足されたノ�
 その前の最も近いノードの行のノードです。
 ノードは icon の行と class の行を 2 つ以上持てます。
 子の行の前の icon の行は、その前のノードを飾ります。
-icon は括弧の中の空白を保ち、
-class は両端の空白を保ちます。 [fixture: mindmap/db-icon-line] [fixture:
+icon は括弧の中の空白を保ち、 class は両端の空白を保ちます。
+[fixture: mindmap/db-icon-line] [fixture:
 mindmap/db-icon-twice] [fixture: mindmap/db-icon-and-class-on-child] [fixture:
 mindmap/db-icon-indent-ignored] [fixture: mindmap/gram-icon-then-child]
 [fixture: mindmap/db-icon-surrounding-whitespace] [fixture:
@@ -562,7 +583,8 @@ mermaid.js の Db は 2 種類の入力で例外を投げ、それらは拒否�
   前に字下げの小さいノードを持たないノード。
   2 つ目の根になるからです。
   タブは 1 文字なので、
-  空白文字 4 つで字下げした根の後の行 `\tchild` は拒否されます。 [fixture: mindmap/db-indent-same-as-root]
+  空白文字 4 つで字下げした根の後の行 `\tchild` は拒否されます。
+  [fixture: mindmap/db-indent-same-as-root]
   [fixture: mindmap/db-indent-less-than-root] [fixture:
   mindmap/db-indent-tab-not-expanded-below-root]
 - 最初のノードの前の icon の行か class の行。
@@ -574,7 +596,8 @@ mermaid.js の Db は 2 種類の入力で例外を投げ、それらは拒否�
 - **[`blank-line-after-header-or-comments`](../known-divergences/blank-line-after-header-or-comments.ja.md)。**
   ヘッダーの後や図のコメントの後の空行か空白だけの行は、
   その差異の文書が挙げる位置では、この仕様では受理され、
-  mermaid.js は入力を拒否します（[空行](#空行) を参照）。 [fixture: mindmap/db-blank-line-after-header]
+  mermaid.js は入力を拒否します（[空行](#空行) を参照）。
+  [fixture: mindmap/db-blank-line-after-header]
   [fixture: mindmap/db-whitespace-line-after-header] [fixture:
   mindmap/db-directive-between-header-and-first-node] [fixture:
   mindmap/div-header-trailing-spaces-then-node] [fixture:
@@ -585,8 +608,8 @@ mermaid.js の Db は 2 種類の入力で例外を投げ、それらは拒否�
   空の icon、空の class の行、形の中の空の文字列か空の markdown 文字列は、
   どこにあっても、この仕様では入力を拒否させ、
   mermaid.js はそれにトークンを読まず、
-  そうした入力の多くを受理します（[空の形](#空の形) を参照）。 [fixture: mindmap/db-icon-empty]
-  [fixture:
+  そうした入力の多くを受理します（[空の形](#空の形) を参照）。
+  [fixture: mindmap/db-icon-empty] [fixture:
   mindmap/div-empty-icon-before-root] [fixture: mindmap/db-class-empty]
   [fixture: mindmap/div-empty-class-before-root] [fixture:
   mindmap/div-empty-string-in-shape] [fixture:
@@ -594,7 +617,8 @@ mermaid.js の Db は 2 種類の入力で例外を投げ、それらは拒否�
 - **[`directive-as-token-boundary`](../known-divergences/directive-as-token-boundary.ja.md)。**
   開き、閉じ、`::icon(`、`:::`、ヘッダーの中のディレクティブは、
   この仕様では入力を拒否させ、
-  mermaid.js は受理します（[単位の中のディレクティブ](#単位の中のディレクティブ) を参照）。 [fixture:
+  mermaid.js は受理します（[単位の中のディレクティブ](#単位の中のディレクティブ)
+  を参照）。 [fixture:
   mindmap/div-directive-in-opener] [fixture: mindmap/div-directive-in-closer]
   [fixture: mindmap/div-directive-in-icon-keyword] [fixture:
   mindmap/div-directive-in-class-marker] [fixture:
@@ -611,12 +635,13 @@ mermaid.js の Db は 2 種類の入力で例外を投げ、それらは拒否�
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.ja.md)。**
   フロントマターに `title: <a` があると、
   `root["b="c">d"]` は mermaid.js ではテキスト `b='c'>d` を持ち、
-  ここでは文字列が 2 つ目の `"` で終わって、
-  入力は拒否されます。 [fixture: mindmap/div-html-tag-starts-in-frontmatter-string]
+  ここでは文字列が 2 つ目の `"` で終わって、入力は拒否されます。
+  [fixture: mindmap/div-html-tag-starts-in-frontmatter-string]
 - **[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.ja.md)。**
   正しい YAML でないフロントマターは、この仕様では受理され、
   mermaid.js は拒否します。 [fixture: mindmap/div-frontmatter-invalid-yaml]
 
 既知の差異 `c4-keyword-anywhere` はこの図種には表れません。
 mermaid.js は mindmap の検出器を C4 のものより先に試すからです。
-`C4Container` はノードのテキストです。 [fixture: mindmap/lex-c4-keyword-as-node-text]
+`C4Container` はノードのテキストです。
+[fixture: mindmap/lex-c4-keyword-as-node-text]

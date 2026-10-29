@@ -99,8 +99,7 @@ Root.diagramType で IR、EBNF、ABNF、PEG を選び、
    公開する両方の境界に共有の `numberOrText()` を適用し、
    非有限値を文字列にする。
    NumericValue は変換済みの綴り全体を terminal とし、基数の大文字小文字、数字、
-   dot、
-   hyphen を保つ。 [fixture: railroad/abnf-db-repeat-optional]
+   dot、 hyphen を保つ。 [fixture: railroad/abnf-db-repeat-optional]
    [fixture: railroad/abnf-db-repeat-implicit-optional]
    [fixture: railroad/abnf-db-repeat-zero-padded-optional]
    [fixture: railroad/abnf-db-repeat-implicit-zero]

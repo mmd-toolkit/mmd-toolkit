@@ -10,7 +10,7 @@ Code:
     |                    ^~~~~~~~~~~~~~~~ [1]
   3 |
 
-[1] mermaid.js replaces the description set on line 1 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -22,7 +22,7 @@ Code:
   2 | gwt 99 given evt Bought then cmd Buy accDescr: Second
     |                                      ^~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 1 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -34,7 +34,7 @@ Code:
   2 | tf 01 evt Bought accDescr { Second }
     |                  ^~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 1 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -50,7 +50,7 @@ Code:
   4 | }
     | ~ [1]
 
-[1] mermaid.js replaces the description set on line 1 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -66,7 +66,7 @@ Code:
   4 | } tf 02 evt B accDescr: Second
     | ~ [1]
 
-[1] mermaid.js replaces the description set on line 1 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -79,7 +79,7 @@ Code:
     |             ^~~~~~~~~ [1]
   3 | tf 02 evt B accDescr: Third
 
-[1] mermaid.js replaces the description set on line 1 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -90,7 +90,7 @@ Code:
   1 | eventmodeling accDescr { #35; } tf 01 evt Bought accDescr { # }
     |                                                  ^~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 1 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -102,7 +102,7 @@ Code:
   2 | tf 01 evt Bought accDescr: <b x='a'>T</b>
     |                  ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 1 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -114,7 +114,7 @@ Code:
   2 | tf 01 evt Bought accDescr: #
     |                  ^~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 1 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -128,8 +128,8 @@ Code:
   3 | tf 02 evt B accDescr: First
     |             ^~~~~~~~~~~~~~~ [2]
 
-[1] mermaid.js replaces the description set on line 1 with the one of this `accDescr`.
-[2] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -142,7 +142,7 @@ Code:
     |                    ^~~~~~~~~~~~ [1]
   3 |
 
-[1] mermaid.js replaces the description set on line 1 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -155,5 +155,5 @@ Code:
     |                    ^~~~~~~~~~~~~~~~ [1]
   3 |
 
-[1] mermaid.js replaces the description set on line 1 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---

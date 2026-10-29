@@ -88,8 +88,8 @@ usecase-beta
 
 ## 背景
 
-[ブロックの字句解析](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.tokens.ts#L70-L80) は、
-その `{` の後の最初の `}` でブロックを終え、それのないブロックには合わない。
+[ブロックの字句解析](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.tokens.ts#L70-L80)
+は、その `{` の後の最初の `}` でブロックを終え、それのないブロックには合わない。
 
 <!-- begin auto-generated rule resources -->
 

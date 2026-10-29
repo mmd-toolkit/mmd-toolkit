@@ -1,7 +1,8 @@
 # ドキュメントサイト
 
 この非公開パッケージは、
-[mmd-toolkitのドキュメントサイト](https://mmd-toolkit.github.io/mmd-toolkit/)を VitePressで構築します。
+[mmd-toolkitのドキュメントサイト](https://mmd-toolkit.github.io/mmd-toolkit/)を
+VitePressで構築します。
 
 ```sh
 pnpm --filter @mmd-toolkit/parser --filter @mmd-toolkit/eslint-plugin build
@@ -30,7 +31,8 @@ pnpm --filter @mmd-toolkit/docs test
 反する例だけでなく、従う例にも必要です。
 リンターパッケージの `check:docs` がこの要件を検査します。
 例をテストでも使う仕組みは、
-[開発ガイド](../eslint-plugin/docs/development.ja.md#規則と文書) に記載しています。
+[開発ガイド](../eslint-plugin/docs/development.ja.md#規則と文書)
+に記載しています。
 
 フォーマッターの互換性を含め、サイトのガイドは `pages/` で編集します。
 取り込むルール文書は `packages/eslint-plugin/docs/rules/` で編集します。
@@ -44,8 +46,9 @@ pnpm --filter @mmd-toolkit/docs test
 サイドバーの表示名には仕様文書の各言語の見出しを使います。
 新しい図種を追加しても、サイト設定への項目の追加は不要です。
 表示順は、
-Mermaidの [`sidebarSyntax()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/.vitepress/config.ts#L160-L207) に合わせ、
-`.vitepress/documents.js`に定義しています。
+Mermaidの
+[`sidebarSyntax()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/.vitepress/config.ts#L160-L207)
+に合わせ、 `.vitepress/documents.js`に定義しています。
 順序をまだ定義していない図種も、末尾にファイル名順で表示します。
 
 リンターのルールのサイドバーは、言語ごとの取り込み済み文書から生成します。

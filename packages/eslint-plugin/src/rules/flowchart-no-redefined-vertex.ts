@@ -36,7 +36,7 @@ export const flowchartNoRedefinedVertex: MermaidRuleDefinition<{
     schema: [],
     messages: {
       redefined:
-        "mermaid.js replaces the shape and the label of `{{id}}` written on line {{line}} with these.",
+        "mermaid.js replaces the shape and the label of `{{id}}` written earlier with these.",
     },
   },
   create(context) {
@@ -62,7 +62,6 @@ export const flowchartNoRedefinedVertex: MermaidRuleDefinition<{
             messageId: "redefined",
             data: {
               id: node.id.name,
-              line: String(previous.loc.start.line),
             },
           })
         }

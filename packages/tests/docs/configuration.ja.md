@@ -14,7 +14,9 @@
 入力が受理されるかどうかや、その木がどうなるかの判定には関わりません。
 この仕様の実装は、
 フロントマターの本文とディレクティブの引数を書かれたとおりに保持し、
-解析も検査もしません（[`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.ja.md) を参照）。
+解析も検査もしません。
+[`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.ja.md)
+を参照。
 この節は、
 mermaid.js がフロントマターとディレクティブから設定をどう求めるかを述べます。
 一部の図の Db がその設定を読むからです。
@@ -53,10 +55,12 @@ null の要素は空文字列になります。
 
 ### フロントマターの本文の読み方
 
-[`extractFrontMatter()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L69) は、
-本文から字下げを取り除き（[フロントマター](../../spec/docs/common.ja.md#フロントマター) を参照）、
-その結果を YAML 1.2 として、 pin した mermaid.js に同梱された js-yaml
-4.3.0 がその JSON スキーマ（`JSON_SCHEMA`）で読むのと同じように読みます。
+[`extractFrontMatter()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L69)
+は、本文から字下げを取り除き、その結果を YAML 1.2 として、
+pin した mermaid.js に同梱された js-yaml 4.3.0 がその JSON
+スキーマで読むのと同じように読みます。
+出典は [フロントマター](../../spec/docs/common.ja.md#フロントマター)、
+`JSON_SCHEMA` です。
 
 - YAML の構文エラーがあると、mermaid.js は入力を `YAMLException` で拒否します。
   同じキーを 2 回持つマッピングと、YAML の文書を 2 つ以上含む本文は、
@@ -125,8 +129,7 @@ null の要素は空文字列になります。
   それが**フロントマターの設定**です。
   そうでなければ、フロントマターの設定は空のマッピングです。
   書いたとおりに適用されます。
-  たとえば、
-  その中の `flowchart` のマッピングは flowchart を設定します。
+  たとえば、その中の `flowchart` のマッピングは flowchart を設定します。
   [fixture: flowchart/config-inherit-dir-frontmatter]
 - フロントマターのマッピングの `displayMode` が空でなければ、
   その文字列形をフロントマターの設定にコピーします。
@@ -140,8 +143,7 @@ null の要素は空文字列になります。
     ないか空であれば、空のマッピングに置き換えられます。
     その後 `gantt` が文字列、数、真のどれかであれば、
     mermaid.js は入力を `TypeError` で拒否します。
-    そうでなければ、
-    `gantt` の `displayMode` に文字列形を入れます。
+    そうでなければ、 `gantt` の `displayMode` に文字列形を入れます。
     [fixture: common/config-display-mode-gantt-primitive]
   - フロントマターの設定がリストなら、何もコピーされず、
     そのリストは何ももたらしません（[テキストの設定](#テキストの設定) を参照）。
@@ -171,8 +173,8 @@ mermaid.js は、図を設定するディレクティブを、
    次の行終端までの間に U+2028 か U+2029 がある `%%}%%` は、
    閉じ記号の行を始めません。
 3. すべての `'` を `"` として読みます。
-   そのため、単一引用符のキーや文字列を使った引数も、
-   正しい JSON になります。 [fixture: common/directive-single-quotes]
+   そのため、単一引用符のキーや文字列を使った引数も、正しい JSON になります。
+   [fixture: common/directive-single-quotes]
 
 その結果の中で、
 [ディレクティブの位置](../../spec/docs/common.ja.md#ディレクティブの位置)
@@ -233,8 +235,7 @@ common/config-bad-json-drops-other-inits]
   を参照）を適用し、その後、値をソースの順に、
   深さを限った合成（[有効な設定](#有効な設定)
   を参照）で空のマッピングに合成します。
-  入れ物でない値は何ももたらさず、
-  リストはその要素を 1 つずつもたらします。
+  入れ物でない値は何ももたらさず、リストはその要素を 1 つずつもたらします。
   [fixture: common/config-two-inits-merged] [fixture:
   common/directive-two-primitive-inits-wrap]
 
@@ -251,17 +252,16 @@ mermaid.js は入力を `UnknownDiagramError` で拒否します。
 `error`、改行、テキストの最後の `%% x` は `error` 疑似図種ですが、
 その前に init ディレクティブがあると、mermaid.js は拒否します。
 ここでは `%%` の後に改行がないので、`%%` の除去はそれを残すからです。
-この仕様は、
-この 2 回目の検出を行いません。 [fixture: common/error-trailing-comment-line]
-[fixture:
+この仕様は、この 2 回目の検出を行いません。
+[fixture: common/error-trailing-comment-line] [fixture:
 common/config-init-detection-rejects]
 
 検出器が一致し、init の設定が `config` の項目を持つマッピングであれば、
 その項目は、検出された id の名前のキーに移り、そこにあった項目を置き換えます。
 キーは id そのものですが、`flowchart-v2` は `flowchart` になります。
 init ディレクティブが 2 つ以上のときは、
-キーの絞り込みがすでに `config` を取り除いているので、
-何も移りません。 [fixture: common/config-key-moves-to-diagram] [fixture:
+キーの絞り込みがすでに `config` を取り除いているので、何も移りません。
+[fixture: common/config-key-moves-to-diagram] [fixture:
 common/config-key-dropped-with-two-inits]
 
 ### wrap ディレクティブ
@@ -333,11 +333,16 @@ common/config-primitive-replaces-frontmatter-mapping]
 - キーが `__` で始まるか、`proto` を含むか、`constr` を含むか、
   設定のキーでないとき、または値が null のとき、項目を取り除きます。
   ある名前が、pin した mermaid.js の既定の設定のどこかの深さで、
-  リストでない値のキーとして現れるとき、
-  その名前は**設定のキー**です（[`configKeys`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/defaultConfig.ts#L346-L356)、
-  [既定の設定](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/defaultConfig.ts#L18-L343) から求め、
-  その値は、
-  [`config.schema.yaml`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/schemas/config.schema.yaml) と既定のテーマの変数から取ります）。
+  リストでない値のキーとして現れるとき、その名前は**設定のキー**です。
+  設定のキーの集合は
+  [`configKeys`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/defaultConfig.ts#L346-L356)
+  で、
+  [既定の設定](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/defaultConfig.ts#L18-L343)
+  から求めたものです。
+  既定の設定は、
+  値を
+  [`config.schema.yaml`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/schemas/config.schema.yaml)
+  と既定のテーマの変数から取ります。
 - 値が入れ物なら、それにも絞り込みを適用します。
   キー `nodeColors`、`filenameIcons`、
   `extensionIcons` は別の方法で絞り込みます。
@@ -393,8 +398,8 @@ mermaid.js は入力を `TypeError` で拒否します。
 [既定の `secure` の一覧](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/schemas/config.schema.yaml#L334-L347)
 は、 `secure`、`securityLevel`、`startOnLoad`、`maxTextSize`、
 `suppressErrorRendering`、`maxEdges` です。
-`secure` 自身が含まれるので、
-テキストはこの一覧を変えられません。 [fixture: common/config-secure-key-ignored]
+`secure` 自身が含まれるので、テキストはこの一覧を変えられません。
+[fixture: common/config-secure-key-ignored]
 
 その結果がテキストの設定です。
 [`mermaid.parse()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L96-L117)
@@ -409,7 +414,10 @@ mermaid.js は入力を `TypeError` で拒否します。
 それを `expected.json` の `config` 欄に記録します。
 
 **有効な設定**は、サイト設定の複製に、
-テキストの設定を**深さを限った合成** （[`assignWithDepth()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/assignWithDepth.ts#L30-L91)）で合成したものです。
+テキストの設定を**深さを限った合成**で合成したものです。
+出典は
+[`assignWithDepth()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/assignWithDepth.ts#L30-L91)
+です。
 まずテキストの設定を空のマッピングに合成し、その結果を複製に合成します。
 合成元の値を合成先の値に、深さ（2 から始まります）を付けて合成するには、
 次のようにします。

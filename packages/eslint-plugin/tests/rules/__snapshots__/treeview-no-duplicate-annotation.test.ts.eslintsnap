@@ -10,7 +10,7 @@ Code:
     |                     ^~~~~~~~ [1]
   3 |
 
-[1] mermaid.js replaces the class given on line 2 for this node with this class.
+[1] mermaid.js replaces the class given earlier for this node with this class.
 ---
 
 
@@ -26,7 +26,7 @@ Code:
     |  ^~~~~~~~ [1]
   6 |
 
-[1] mermaid.js replaces the class given on line 2 for this node with this class.
+[1] mermaid.js replaces the class given earlier for this node with this class.
 ---
 
 
@@ -39,7 +39,7 @@ Code:
     |                     ^~~~~~~~ [1]
   3 |
 
-[1] mermaid.js replaces the class given on line 2 for this node with this class.
+[1] mermaid.js replaces the class given earlier for this node with this class.
 ---
 
 
@@ -54,7 +54,7 @@ Code:
     |  ^~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the class given on line 2 for this node with this class.
+[1] mermaid.js replaces the class given earlier for this node with this class.
 ---
 
 
@@ -72,12 +72,12 @@ Code:
     |   ^~~~~~~~ [6]
   5 |
 
-[1] mermaid.js replaces the class given on line 2 for this node with this class.
-[2] mermaid.js keeps only this icon setting, replacing the one given on line 2 for this node.
-[3] mermaid.js replaces the class given on line 2 for this node with this class.
-[4] mermaid.js keeps only this icon setting, replacing the one given on line 2 for this node.
-[5] mermaid.js replaces the description given on line 2 for this node with this description.
-[6] mermaid.js replaces the description given on line 3 for this node with this description.
+[1] mermaid.js replaces the class given earlier for this node with this class.
+[2] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+[3] mermaid.js replaces the class given earlier for this node with this class.
+[4] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+[5] mermaid.js replaces the description given earlier for this node with this description.
+[6] mermaid.js replaces the description given earlier for this node with this description.
 ---
 
 
@@ -90,7 +90,7 @@ Code:
     |                       ^~~~~~~~ [1]
   3 |
 
-[1] mermaid.js replaces the class given on line 2 for this node with this class.
+[1] mermaid.js replaces the class given earlier for this node with this class.
 ---
 
 
@@ -103,7 +103,7 @@ Code:
     |                       ^~~~~~~~ [1]
   3 |
 
-[1] mermaid.js replaces the class given on line 2 for this node with this class.
+[1] mermaid.js replaces the class given earlier for this node with this class.
 ---
 
 
@@ -116,7 +116,7 @@ Code:
     |                   ^~~~~~~~~~~~ [1]
   3 |
 
-[1] mermaid.js replaces the class given on line 2 for this node with this class.
+[1] mermaid.js replaces the class given earlier for this node with this class.
 ---
 
 
@@ -129,7 +129,7 @@ Code:
     |                ^~~~~~~ [1]
   3 |
 
-[1] mermaid.js replaces the class given on line 2 for this node with this class.
+[1] mermaid.js replaces the class given earlier for this node with this class.
 ---
 
 
@@ -142,7 +142,7 @@ Code:
     |                     ^~~~~~~~ [1]
   3 |
 
-[1] mermaid.js replaces the class given on line 2 for this node with this class.
+[1] mermaid.js replaces the class given earlier for this node with this class.
 ---
 
 
@@ -156,7 +156,7 @@ Code:
     |   ^~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the class given on line 2 for this node with this class.
+[1] mermaid.js replaces the class given earlier for this node with this class.
 ---
 
 
@@ -169,7 +169,7 @@ Code:
     |                 ^~~~~~~~~~~~ [1]
   3 |
 
-[1] mermaid.js replaces the class given on line 2 for this node with this class.
+[1] mermaid.js replaces the class given earlier for this node with this class.
 ---
 
 
@@ -183,8 +183,8 @@ Code:
     |                                [1]      [2]
   3 |
 
-[1] mermaid.js replaces the class given on line 2 for this node with this class.
-[2] mermaid.js replaces the class given on line 2 for this node with this class.
+[1] mermaid.js replaces the class given earlier for this node with this class.
+[2] mermaid.js replaces the class given earlier for this node with this class.
 ---
 
 
@@ -197,7 +197,7 @@ Code:
   3 |  ## second
     |  ^~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description given on line 2 for this node with this description.
+[1] mermaid.js replaces the description given earlier for this node with this description.
 ---
 
 
@@ -210,8 +210,8 @@ Code:
     |            ^~~~~~~~~ ^~~~~~~~
     |            [1]       [2]
 
-[1] mermaid.js replaces the class given on line 2 for this node with this class.
-[2] mermaid.js replaces the class given on line 2 for this node with this class.
+[1] mermaid.js replaces the class given earlier for this node with this class.
+[2] mermaid.js replaces the class given earlier for this node with this class.
 ---
 
 
@@ -223,7 +223,7 @@ Code:
   2 | a icon() icon(folder)
     |          ^~~~~~~~~~~~ [1]
 
-[1] mermaid.js keeps only this icon setting, replacing the one given on line 2 for this node.
+[1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
 ---
 
 
@@ -236,7 +236,7 @@ Code:
     |                     ^~~~~~~~ [1]
   3 |
 
-[1] mermaid.js replaces the class given on line 2 for this node with this class.
+[1] mermaid.js replaces the class given earlier for this node with this class.
 ---
 
 
@@ -249,7 +249,7 @@ Code:
     |                     ^~~~~~~~~~~~ [1]
   3 |
 
-[1] mermaid.js keeps only this icon setting, replacing the one given on line 2 for this node.
+[1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
 ---
 
 
@@ -262,7 +262,7 @@ Code:
     |                       ^~~~~~~~~~ [1]
   3 |
 
-[1] mermaid.js keeps only this icon setting, replacing the one given on line 2 for this node.
+[1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
 ---
 
 
@@ -280,7 +280,7 @@ Code:
     |                   ^~~~~~~~~~~~~~~~~ [1]
   8 |
 
-[1] mermaid.js keeps only this icon setting, replacing the one given on line 7 for this node.
+[1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
 ---
 
 
@@ -298,7 +298,7 @@ Code:
     |                 ^~~~~~~~~~~~~~~~~~~~~~ [1]
   8 |
 
-[1] mermaid.js keeps only this icon setting, replacing the one given on line 7 for this node.
+[1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
 ---
 
 
@@ -316,7 +316,7 @@ Code:
     |                             ^~~~~~~~~~ [1]
   8 |
 
-[1] mermaid.js keeps only this icon setting, replacing the one given on line 7 for this node.
+[1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
 ---
 
 
@@ -329,7 +329,7 @@ Code:
     |                   ^~~~~~~~~~~~ [1]
   3 |
 
-[1] mermaid.js keeps only this icon setting, replacing the one given on line 2 for this node.
+[1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
 ---
 
 
@@ -342,7 +342,7 @@ Code:
     |               ^~~~~~~~~~ [1]
   3 |
 
-[1] mermaid.js keeps only this icon setting, replacing the one given on line 2 for this node.
+[1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
 ---
 
 
@@ -355,7 +355,7 @@ Code:
     |                   ^~~~~~ [1]
   3 |
 
-[1] mermaid.js keeps only this icon setting, replacing the one given on line 2 for this node.
+[1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
 ---
 
 
@@ -368,7 +368,7 @@ Code:
     |                 ^~~~~~~~~~ [1]
   3 |
 
-[1] mermaid.js keeps only this icon setting, replacing the one given on line 2 for this node.
+[1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
 ---
 
 
@@ -381,7 +381,7 @@ Code:
     |                          ^~~~~~~~~~~~~~~ [1]
   3 |
 
-[1] mermaid.js keeps only this icon setting, replacing the one given on line 2 for this node.
+[1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
 ---
 
 
@@ -394,7 +394,7 @@ Code:
     |                     ^~~~~~~~~~ [1]
   3 |
 
-[1] mermaid.js keeps only this icon setting, replacing the one given on line 2 for this node.
+[1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
 ---
 
 
@@ -408,8 +408,8 @@ Code:
     |                   [1]    [2]
   3 |
 
-[1] mermaid.js keeps only this icon setting, replacing the one given on line 2 for this node.
-[2] mermaid.js keeps only this icon setting, replacing the one given on line 2 for this node.
+[1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+[2] mermaid.js replaces the earlier icon setting for this node with this icon setting.
 ---
 
 
@@ -423,8 +423,8 @@ Code:
     |                 [1]               [2]
   3 |
 
-[1] mermaid.js keeps only this icon setting, replacing the one given on line 2 for this node.
-[2] mermaid.js keeps only this icon setting, replacing the one given on line 2 for this node.
+[1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+[2] mermaid.js replaces the earlier icon setting for this node with this icon setting.
 ---
 
 
@@ -440,7 +440,7 @@ Code:
     |                         ^~~~~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js keeps only this icon setting, replacing the one given on line 5 for this node.
+[1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
 ---
 
 
@@ -455,7 +455,7 @@ Code:
     |                   ^~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the class given on line 4 for this node with this class.
+[1] mermaid.js replaces the class given earlier for this node with this class.
 ---
 
 
@@ -469,7 +469,7 @@ Code:
     | ^~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the description given on line 2 for this node with this description.
+[1] mermaid.js replaces the description given earlier for this node with this description.
 ---
 
 
@@ -483,7 +483,7 @@ Code:
     | ^~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the description given on line 2 for this node with this description.
+[1] mermaid.js replaces the description given earlier for this node with this description.
 ---
 
 
@@ -499,7 +499,7 @@ Code:
     |   ^~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js replaces the description given on line 2 for this node with this description.
+[1] mermaid.js replaces the description given earlier for this node with this description.
 ---
 
 
@@ -513,7 +513,7 @@ Code:
     |   ^~ [1]
   4 |
 
-[1] mermaid.js replaces the description given on line 2 for this node with this description.
+[1] mermaid.js replaces the description given earlier for this node with this description.
 ---
 
 
@@ -527,7 +527,7 @@ Code:
     |   ^~~~ [1]
   4 |
 
-[1] mermaid.js replaces the description given on line 2 for this node with this description.
+[1] mermaid.js replaces the description given earlier for this node with this description.
 ---
 
 
@@ -541,7 +541,7 @@ Code:
     |   ^~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the description given on line 2 for this node with this description.
+[1] mermaid.js replaces the description given earlier for this node with this description.
 ---
 
 
@@ -555,7 +555,7 @@ Code:
     |  ^~~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the description given on line 2 for this node with this description.
+[1] mermaid.js replaces the description given earlier for this node with this description.
 ---
 
 
@@ -569,7 +569,7 @@ Code:
     |   ^~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the description given on line 2 for this node with this description.
+[1] mermaid.js replaces the description given earlier for this node with this description.
 ---
 
 
@@ -583,7 +583,7 @@ Code:
     |   ^~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the description given on line 2 for this node with this description.
+[1] mermaid.js replaces the description given earlier for this node with this description.
 ---
 
 
@@ -598,7 +598,7 @@ Code:
   4 |   ## Third
   5 |
 
-[1] mermaid.js replaces the description given on line 2 for this node with this description.
+[1] mermaid.js replaces the description given earlier for this node with this description.
 ---
 
 
@@ -614,8 +614,8 @@ Code:
     |   ^~~~~~~~ [2]
   5 |
 
-[1] mermaid.js replaces the description given on line 2 for this node with this description.
-[2] mermaid.js replaces the description given on line 3 for this node with this description.
+[1] mermaid.js replaces the description given earlier for this node with this description.
+[2] mermaid.js replaces the description given earlier for this node with this description.
 ---
 
 
@@ -631,6 +631,6 @@ Code:
     |  ^~~~~~~~ [2]
   5 |
 
-[1] mermaid.js replaces the description given on line 2 for this node with this description.
-[2] mermaid.js replaces the description given on line 3 for this node with this description.
+[1] mermaid.js replaces the description given earlier for this node with this description.
+[2] mermaid.js replaces the description given earlier for this node with this description.
 ---

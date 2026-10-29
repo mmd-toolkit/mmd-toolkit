@@ -31,19 +31,20 @@ composite の中の文は `block:` の行より 1 段深く置き、
 入れ子は composite の始まりと終わりを見せます。
 `block:` と `end` だけでは、深く入れ子になると読みにくいからで、
 mermaid.js の文書もそう書き、
-ほかの図もブロックを入れ子にします（flowchart の[字下げ](./flowchart.ja.md#字下げ)を参照）。
-ヘッダーと、
-その前のコメント行は 1 列目に置きます。 [fixture: indentation/statements-one-level-deeper]
+ほかの図もブロックを入れ子にします（flowchart
+の[字下げ](./flowchart.ja.md#字下げ)を参照）。
+ヘッダーと、その前のコメント行は 1 列目に置きます。
+[fixture: indentation/statements-one-level-deeper]
 [fixture: indentation/composite-body-one-level-deeper-end-at-the-level-of-block]
 [fixture: indentation/nested-composites]
 [fixture: indentation/written-indentation-dropped]
 [fixture: indentation/header-leading-whitespace]
-[fixture: indentation/tab-width-4]
-[fixture: indentation/use-tabs]
+[fixture: indentation/tab-width-4] [fixture: indentation/use-tabs]
 [fixture: indentation/comment-before-the-header-at-the-first-column]
 [fixture: indentation/header-block]
 
-入力 ([indentation/composite-body-one-level-deeper-end-at-the-level-of-block-input.mmd](../tests/fixtures/block/indentation/composite-body-one-level-deeper-end-at-the-level-of-block-input.mmd)):
+入力
+([indentation/composite-body-one-level-deeper-end-at-the-level-of-block-input.mmd](../tests/fixtures/block/indentation/composite-body-one-level-deeper-end-at-the-level-of-block-input.mmd)):
 
 ```mmd
 block-beta
@@ -57,7 +58,8 @@ end
 d
 ```
 
-出力 ([indentation/composite-body-one-level-deeper-end-at-the-level-of-block-output.mmd](../tests/fixtures/block/indentation/composite-body-one-level-deeper-end-at-the-level-of-block-output.mmd)):
+出力
+([indentation/composite-body-one-level-deeper-end-at-the-level-of-block-output.mmd](../tests/fixtures/block/indentation/composite-body-one-level-deeper-end-at-the-level-of-block-output.mmd)):
 
 ```mmd
 block-beta
@@ -78,12 +80,13 @@ composite は 3 種類の行でできています。
 `block:G`、`block`、`block-beta` は書かれたままに印字し、
 `block:` はその node に接します。
 mermaid.js は `block: G` と `block:G` を同じに読むので、
-形は 1 つのほうが読みやすいからです（mermaid.js の文書の `block:group1:2` の形です）。
+形は 1 つのほうが読みやすいからです（mermaid.js の文書の `block:group1:2`
+の形です）。
 見出しの後の最初の文と、`end` の後の文は、自分の行に移します。
 1 行に書かれた composite（`block:G a b end`）も同じで、
 どの composite も同じ形に置き、字下げが中身を示します。
-`end` は自分の行に置き、
-`block:` と同じ段にします。 [fixture: composites/colon-touches-the-node]
+`end` は自分の行に置き、 `block:` と同じ段にします。
+[fixture: composites/colon-touches-the-node]
 [fixture: composites/colon-and-node-on-different-lines]
 [fixture: composites/width-kept]
 [fixture: composites/width-colon-touches-the-node]
@@ -97,7 +100,8 @@ mermaid.js は `block: G` と `block:G` を同じに読むので、
 [fixture: composites/end-on-a-line-of-its-own]
 [fixture: composites/head-over-lines-joined]
 
-入力 ([composites/colon-touches-the-node-input.mmd](../tests/fixtures/block/composites/colon-touches-the-node-input.mmd)):
+入力
+([composites/colon-touches-the-node-input.mmd](../tests/fixtures/block/composites/colon-touches-the-node-input.mmd)):
 
 ```mmd
 block-beta
@@ -106,7 +110,8 @@ a
 end
 ```
 
-出力 ([composites/colon-touches-the-node-output.mmd](../tests/fixtures/block/composites/colon-touches-the-node-output.mmd)):
+出力
+([composites/colon-touches-the-node-output.mmd](../tests/fixtures/block/composites/colon-touches-the-node-output.mmd)):
 
 ```mmd
 block-beta
@@ -115,14 +120,16 @@ block-beta
   end
 ```
 
-入力 ([composites/composite-on-one-line-split-input.mmd](../tests/fixtures/block/composites/composite-on-one-line-split-input.mmd)):
+入力
+([composites/composite-on-one-line-split-input.mmd](../tests/fixtures/block/composites/composite-on-one-line-split-input.mmd)):
 
 ```mmd
 block-beta
 block:G a b end
 ```
 
-出力 ([composites/composite-on-one-line-split-output.mmd](../tests/fixtures/block/composites/composite-on-one-line-split-output.mmd)):
+出力
+([composites/composite-on-one-line-split-output.mmd](../tests/fixtures/block/composites/composite-on-one-line-split-output.mmd)):
 
 ```mmd
 block-beta
@@ -140,8 +147,8 @@ block-beta
 mermaid.js の文書もそう書いています（`a b c`、`a["A label"] b:2 c:2 d`、
 `Start(("Start")) space:2`）。
 node を 1 行ずつに分けると、その行が見えなくなり、
-列の数を `columns` の文から数えなおすことになります。 [fixture: rows/documentation-row-with-widths]
-[fixture: rows/space-in-a-row]
+列の数を `columns` の文から数えなおすことになります。
+[fixture: rows/documentation-row-with-widths] [fixture: rows/space-in-a-row]
 
 そのため、1 行にある node の文（幅、形、辺も含む）と `space` の連なりは、
 その行に残し、文の間は空白 1 つにします。
@@ -154,8 +161,7 @@ node を 1 行ずつに分けると、その行が見えなくなり、
 連なりの中の 2 つの文の間に、印字は改行を足さず、取りもしないので、
 もう一度整形しても、同じ行が見つかります。 [fixture: rows/rows-kept]
 [fixture: rows/line-break-between-statements-kept]
-[fixture: rows/edges-in-a-row]
-[fixture: rows/touching-statements-apart]
+[fixture: rows/edges-in-a-row] [fixture: rows/touching-statements-apart]
 [fixture: rows/space-then-node-touching-apart]
 [fixture: rows/continuation-line-then-statement-stays-in-the-row]
 [fixture: rows/columns-then-row-split]
@@ -163,8 +169,7 @@ node を 1 行ずつに分けると、その行が見えなくなり、
 [fixture: rows/style-on-a-line-of-its-own]
 [fixture: rows/class-on-a-line-of-its-own]
 [fixture: rows/empty-description-block-on-a-line-of-its-own]
-[fixture: rows/composite-on-lines-of-its-own]
-[fixture: rows/row-in-a-composite]
+[fixture: rows/composite-on-lines-of-its-own] [fixture: rows/row-in-a-composite]
 
 `%%` で始まる文は、行頭に動かしません。
 mermaid.js は node の後の `%%x` を id として読みますが、
@@ -172,7 +177,8 @@ mermaid.js は node の後の `%%x` を id として読みますが、
 取り除かれるからです（[コメント](#コメント)を参照）。
 そのような文がある行は、1 行のまま残し、中の文は他の文と同じに整えて、
 どの文も自分の行に移しません。
-`columns 3 a %%x b` も `block-beta %%x` も 1 行のままです。 [fixture: rows/percent-id-stays-in-its-row]
+`columns 3 a %%x b` も `block-beta %%x` も 1 行のままです。
+[fixture: rows/percent-id-stays-in-its-row]
 [fixture: rows/percent-id-keeps-columns-with-it]
 [fixture: rows/percent-id-after-columns-not-moved]
 [fixture: rows/percent-id-keeps-statements-before-it]
@@ -182,7 +188,8 @@ mermaid.js は node の後の `%%x` を id として読みますが、
 [fixture: rows/percent-id-in-a-composite]
 [fixture: rows/percent-id-after-the-header-stays-on-the-line]
 
-入力 ([rows/rows-kept-input.mmd](../tests/fixtures/block/rows/rows-kept-input.mmd)):
+入力
+([rows/rows-kept-input.mmd](../tests/fixtures/block/rows/rows-kept-input.mmd)):
 
 ```mmd
 block-beta
@@ -191,7 +198,8 @@ a b c
 d   e   f
 ```
 
-出力 ([rows/rows-kept-output.mmd](../tests/fixtures/block/rows/rows-kept-output.mmd)):
+出力
+([rows/rows-kept-output.mmd](../tests/fixtures/block/rows/rows-kept-output.mmd)):
 
 ```mmd
 block-beta
@@ -200,14 +208,16 @@ block-beta
   d e f
 ```
 
-入力 ([rows/columns-then-row-split-input.mmd](../tests/fixtures/block/rows/columns-then-row-split-input.mmd)):
+入力
+([rows/columns-then-row-split-input.mmd](../tests/fixtures/block/rows/columns-then-row-split-input.mmd)):
 
 ```mmd
 block-beta
 columns 3 a b c
 ```
 
-出力 ([rows/columns-then-row-split-output.mmd](../tests/fixtures/block/rows/columns-then-row-split-output.mmd)):
+出力
+([rows/columns-then-row-split-output.mmd](../tests/fixtures/block/rows/columns-then-row-split-output.mmd)):
 
 ```mmd
 block-beta
@@ -215,14 +225,16 @@ block-beta
   a b c
 ```
 
-入力 ([rows/percent-id-keeps-columns-with-it-input.mmd](../tests/fixtures/block/rows/percent-id-keeps-columns-with-it-input.mmd)):
+入力
+([rows/percent-id-keeps-columns-with-it-input.mmd](../tests/fixtures/block/rows/percent-id-keeps-columns-with-it-input.mmd)):
 
 ```mmd
 block-beta
 columns 3 a %%x b
 ```
 
-出力 ([rows/percent-id-keeps-columns-with-it-output.mmd](../tests/fixtures/block/rows/percent-id-keeps-columns-with-it-output.mmd)):
+出力
+([rows/percent-id-keeps-columns-with-it-output.mmd](../tests/fixtures/block/rows/percent-id-keeps-columns-with-it-output.mmd)):
 
 ```mmd
 block-beta
@@ -237,13 +249,13 @@ block-beta
 1 つの空行がそれを最小の手間で示します（[空行](./flowchart.ja.md#空行)を参照）。
 Prettier がコードでそうするのと同じです。 [fixture: blank-lines/runs-become-one]
 [fixture: blank-lines/none-after-the-header]
-[fixture: blank-lines/none-at-the-end]
-[fixture: blank-lines/between-rows]
+[fixture: blank-lines/none-at-the-end] [fixture: blank-lines/between-rows]
 [fixture: blank-lines/none-at-the-start-and-end-of-a-composite]
 [fixture: blank-lines/after-a-composite]
 [fixture: blank-lines/whitespace-only-lines]
 
-入力 ([blank-lines/runs-become-one-input.mmd](../tests/fixtures/block/blank-lines/runs-become-one-input.mmd)):
+入力
+([blank-lines/runs-become-one-input.mmd](../tests/fixtures/block/blank-lines/runs-become-one-input.mmd)):
 
 ```mmd
 block-beta
@@ -254,7 +266,8 @@ a
 b
 ```
 
-出力 ([blank-lines/runs-become-one-output.mmd](../tests/fixtures/block/blank-lines/runs-become-one-output.mmd)):
+出力
+([blank-lines/runs-become-one-output.mmd](../tests/fixtures/block/blank-lines/runs-become-one-output.mmd)):
 
 ```mmd
 block-beta
@@ -267,21 +280,22 @@ block-beta
 
 ヘッダー `block-beta` と `block` は書かれたままに印字します。
 mermaid.js はどちらも同じ図種として読むので、綴りは書き手のものです。
-前の空白は落とし、
-同じ行の後ろの文は自分の行に移します（[行](#行)を参照）。 [fixture: header/block-beta-kept]
-[fixture: header/block-kept]
+前の空白は落とし、同じ行の後ろの文は自分の行に移します（[行](#行)を参照）。
+[fixture: header/block-beta-kept] [fixture: header/block-kept]
 [fixture: header/statement-after-the-header-on-a-line-of-its-own]
 [fixture: header/columns-after-the-header-on-a-line-of-its-own]
 [fixture: header/leading-whitespace-dropped]
 
-入力 ([header/statement-after-the-header-on-a-line-of-its-own-input.mmd](../tests/fixtures/block/header/statement-after-the-header-on-a-line-of-its-own-input.mmd)):
+入力
+([header/statement-after-the-header-on-a-line-of-its-own-input.mmd](../tests/fixtures/block/header/statement-after-the-header-on-a-line-of-its-own-input.mmd)):
 
 ```mmd
 block-beta a b
 c
 ```
 
-出力 ([header/statement-after-the-header-on-a-line-of-its-own-output.mmd](../tests/fixtures/block/header/statement-after-the-header-on-a-line-of-its-own-output.mmd)):
+出力
+([header/statement-after-the-header-on-a-line-of-its-own-output.mmd](../tests/fixtures/block/header/statement-after-the-header-on-a-line-of-its-own-output.mmd)):
 
 ```mmd
 block-beta
@@ -298,7 +312,8 @@ mermaid.js はそこのどの空白も同じに読むので、形は 1 行にな
 mermaid.js は `space :2` と `space: 2` を拒否するからです。
 `space` と `columns` は、ほかの場所へ動かしません。
 ブロックの最後の `columns` が、どこにあってもそのブロックの列数で、
-ブロックの順はテキストの順だからです。 [fixture: columns-and-space/one-space-after-columns]
+ブロックの順はテキストの順だからです。
+[fixture: columns-and-space/one-space-after-columns]
 [fixture: columns-and-space/tab-after-columns]
 [fixture: columns-and-space/line-break-after-columns]
 [fixture: columns-and-space/auto]
@@ -308,7 +323,8 @@ mermaid.js は `space :2` と `space: 2` を拒否するからです。
 [fixture: columns-and-space/columns-in-a-composite]
 [fixture: columns-and-space/comment-line-inside-kept]
 
-入力 ([columns-and-space/line-break-after-columns-input.mmd](../tests/fixtures/block/columns-and-space/line-break-after-columns-input.mmd)):
+入力
+([columns-and-space/line-break-after-columns-input.mmd](../tests/fixtures/block/columns-and-space/line-break-after-columns-input.mmd)):
 
 ```mmd
 block-beta
@@ -316,14 +332,16 @@ columns
 3
 ```
 
-出力 ([columns-and-space/line-break-after-columns-output.mmd](../tests/fixtures/block/columns-and-space/line-break-after-columns-output.mmd)):
+出力
+([columns-and-space/line-break-after-columns-output.mmd](../tests/fixtures/block/columns-and-space/line-break-after-columns-output.mmd)):
 
 ```mmd
 block-beta
   columns 3
 ```
 
-入力 ([columns-and-space/last-columns-kept-where-written-input.mmd](../tests/fixtures/block/columns-and-space/last-columns-kept-where-written-input.mmd)):
+入力
+([columns-and-space/last-columns-kept-where-written-input.mmd](../tests/fixtures/block/columns-and-space/last-columns-kept-where-written-input.mmd)):
 
 ```mmd
 block-beta
@@ -333,7 +351,8 @@ columns 3
 d
 ```
 
-出力 ([columns-and-space/last-columns-kept-where-written-output.mmd](../tests/fixtures/block/columns-and-space/last-columns-kept-where-written-output.mmd)):
+出力
+([columns-and-space/last-columns-kept-where-written-output.mmd](../tests/fixtures/block/columns-and-space/last-columns-kept-where-written-output.mmd)):
 
 ```mmd
 block-beta
@@ -352,15 +371,15 @@ mermaid.js は id と形の始まりの間の空白を同じに読むので、�
 `A ("x") B` が 3 つと読まれません。
 mermaid.js の文書の形です。
 幅の `:` は前に接します（`A:3`、`B["b"]:2`）。
-`space:2` の `:` が接していなければならないのと同じです。 [fixture: shapes/shape-touches-the-id]
+`space:2` の `:` が接していなければならないのと同じです。
+[fixture: shapes/shape-touches-the-id]
 [fixture: shapes/shape-on-the-next-line-joined]
 [fixture: shapes/shape-touching-kept]
 [fixture: shapes/other-openings-and-closings]
 [fixture: shapes/width-colon-touches-the-id]
 [fixture: shapes/width-after-a-shape]
 [fixture: shapes/width-colon-on-the-next-line-joined]
-[fixture: shapes/shape-and-width-in-a-row]
-[fixture: shapes/shape-on-a-target]
+[fixture: shapes/shape-and-width-in-a-row] [fixture: shapes/shape-on-a-target]
 [fixture: shapes/directive-between-the-id-and-the-shape]
 [fixture: shapes/comment-line-between-the-id-and-the-shape-kept]
 
@@ -370,8 +389,8 @@ mermaid.js の文書の形です。
 mermaid.js は向きの後の空白と、
 最初の向きの前の空白を保つので（`(right down)` の向きは `right ` で、
 `( up)` の向きは ` up`）、そこの空白は Db に入ります。
-`(right,down)`、`(right, down)`、
-`(rightdown)` の向きは同じです。 [fixture: shapes/block-arrow-touches-the-id]
+`(right,down)`、`(right, down)`、 `(rightdown)` の向きは同じです。
+[fixture: shapes/block-arrow-touches-the-id]
 [fixture: shapes/block-arrow-parenthesis-touches-the-closing]
 [fixture: shapes/block-arrow-directions-as-written]
 [fixture: shapes/block-arrow-directions-whitespace-kept]
@@ -382,7 +401,8 @@ mermaid.js は向きの後の空白と、
 引用符は構文の一部です。
 mermaid.js は引用符のないラベルを拒否します。 [fixture: shapes/label-as-written]
 
-入力 ([shapes/shape-touches-the-id-input.mmd](../tests/fixtures/block/shapes/shape-touches-the-id-input.mmd)):
+入力
+([shapes/shape-touches-the-id-input.mmd](../tests/fixtures/block/shapes/shape-touches-the-id-input.mmd)):
 
 ```mmd
 block-beta
@@ -391,7 +411,8 @@ B   [["y"]]
 D {"d"}
 ```
 
-出力 ([shapes/shape-touches-the-id-output.mmd](../tests/fixtures/block/shapes/shape-touches-the-id-output.mmd)):
+出力
+([shapes/shape-touches-the-id-output.mmd](../tests/fixtures/block/shapes/shape-touches-the-id-output.mmd)):
 
 ```mmd
 block-beta
@@ -400,7 +421,8 @@ block-beta
   D{"d"}
 ```
 
-入力 ([shapes/block-arrow-directions-as-written-input.mmd](../tests/fixtures/block/shapes/block-arrow-directions-as-written-input.mmd)):
+入力
+([shapes/block-arrow-directions-as-written-input.mmd](../tests/fixtures/block/shapes/block-arrow-directions-as-written-input.mmd)):
 
 ```mmd
 block-beta
@@ -411,7 +433,8 @@ D<["d"]>(right,down)
 E<["e"]>(rightdown)
 ```
 
-出力 ([shapes/block-arrow-directions-as-written-output.mmd](../tests/fixtures/block/shapes/block-arrow-directions-as-written-output.mmd)):
+出力
+([shapes/block-arrow-directions-as-written-output.mmd](../tests/fixtures/block/shapes/block-arrow-directions-as-written-output.mmd)):
 
 ```mmd
 block-beta
@@ -422,7 +445,8 @@ block-beta
   E<["e"]>(rightdown)
 ```
 
-入力 ([shapes/label-as-written-input.mmd](../tests/fixtures/block/shapes/label-as-written-input.mmd)):
+入力
+([shapes/label-as-written-input.mmd](../tests/fixtures/block/shapes/label-as-written-input.mmd)):
 
 ```mmd
 block-beta
@@ -431,7 +455,8 @@ B["a
    b"]
 ```
 
-出力 ([shapes/label-as-written-output.mmd](../tests/fixtures/block/shapes/label-as-written-output.mmd)):
+出力
+([shapes/label-as-written-output.mmd](../tests/fixtures/block/shapes/label-as-written-output.mmd)):
 
 ```mmd
 block-beta
@@ -448,19 +473,15 @@ block-beta
 mermaid.js は、矢印の周りの空白があってもなくても同じ辺として読むので、
 この形は選択です。
 mermaid.js の文書の辺の書き方で、矢印と後ろの id の間の空白は、
-印がどこで終わり id がどこで始まるかを示します（`I --x J`。 `I--xJ` では見えません）。
+印がどこで終わり id がどこで始まるかを示します（`I --x J`。 `I--xJ`
+では見えません）。
 `x` か `o` で終わる id も、後ろの矢印から離れます（`A x --x B`、`Ao --> B`）。
-線の長さ（`---->`）は Db に入りませんが、
-書き手が書いたものなので残します。 [fixture: edges/spaces-around-an-arrow]
-[fixture: edges/spaces-around-a-label]
-[fixture: edges/end-marker-apart-from-the-id]
-[fixture: edges/start-marker]
-[fixture: edges/id-ending-in-x-or-o]
-[fixture: edges/length-kept]
-[fixture: edges/line-kinds]
-[fixture: edges/label-with-other-opening-arrow]
-[fixture: edges/edge-over-lines-joined]
-[fixture: edges/width-before-the-arrow]
+線の長さ（`---->`）は Db に入りませんが、書き手が書いたものなので残します。
+[fixture: edges/spaces-around-an-arrow] [fixture: edges/spaces-around-a-label]
+[fixture: edges/end-marker-apart-from-the-id] [fixture: edges/start-marker]
+[fixture: edges/id-ending-in-x-or-o] [fixture: edges/length-kept]
+[fixture: edges/line-kinds] [fixture: edges/label-with-other-opening-arrow]
+[fixture: edges/edge-over-lines-joined] [fixture: edges/width-before-the-arrow]
 [fixture: edges/edge-with-shapes]
 
 辺の連鎖 `A --> B --> C` は 1 つの文で、1 行に印字します。
@@ -470,7 +491,8 @@ mermaid.js はそれを正しく読まず、Db が最後の前の node を落と
 それは lint の規則の仕事です。 [fixture: edges/chain-on-one-line]
 [fixture: edges/chain-over-lines-joined]
 
-入力 ([edges/spaces-around-a-label-input.mmd](../tests/fixtures/block/edges/spaces-around-a-label-input.mmd)):
+入力
+([edges/spaces-around-a-label-input.mmd](../tests/fixtures/block/edges/spaces-around-a-label-input.mmd)):
 
 ```mmd
 block-beta
@@ -478,7 +500,8 @@ A--"x"-->B
 C  --  "x"  -->  D
 ```
 
-出力 ([edges/spaces-around-a-label-output.mmd](../tests/fixtures/block/edges/spaces-around-a-label-output.mmd)):
+出力
+([edges/spaces-around-a-label-output.mmd](../tests/fixtures/block/edges/spaces-around-a-label-output.mmd)):
 
 ```mmd
 block-beta
@@ -486,14 +509,16 @@ block-beta
   C -- "x" --> D
 ```
 
-入力 ([edges/chain-on-one-line-input.mmd](../tests/fixtures/block/edges/chain-on-one-line-input.mmd)):
+入力
+([edges/chain-on-one-line-input.mmd](../tests/fixtures/block/edges/chain-on-one-line-input.mmd)):
 
 ```mmd
 block-beta
 A-->B-->C
 ```
 
-出力 ([edges/chain-on-one-line-output.mmd](../tests/fixtures/block/edges/chain-on-one-line-output.mmd)):
+出力
+([edges/chain-on-one-line-output.mmd](../tests/fixtures/block/edges/chain-on-one-line-output.mmd)):
 
 ```mmd
 block-beta
@@ -515,12 +540,14 @@ block-beta
 `class A , B   c1` のクラス名は `, B   c1` です。
 `A` の後の空白が id を終わらせるからです。
 `classDef` の空白は Db に入りませんが、スタイルは同じに書かれたまま印字します。
-flowchart と同じ規則で（[トークンの間の空白](./flowchart.ja.md#トークンの間の空白)を参照）、
-3 つの文を 1 つの規則にし、印字がスタイルの並びを分けないようにするためです。
+flowchart
+と同じ規則で（[トークンの間の空白](./flowchart.ja.md#トークンの間の空白)
+を参照）、 3 つの文を 1 つの規則にし、
+印字がスタイルの並びを分けないようにするためです。
 文の最後の空白は、
-flowchart の[スタイルの行末の空白](./flowchart.ja.md#スタイルの行末の空白)と同じに落とします。 [fixture: styles/class-definition-spaces]
-[fixture: styles/style-spaces]
-[fixture: styles/class-spaces]
+flowchart の [スタイルの行末の空白](./flowchart.ja.md#スタイルの行末の空白)
+と同じに落とします。 [fixture: styles/class-definition-spaces]
+[fixture: styles/style-spaces] [fixture: styles/class-spaces]
 [fixture: styles/style-commas-as-written]
 [fixture: styles/class-definition-commas-as-written]
 [fixture: styles/class-ids-as-written]
@@ -529,7 +556,8 @@ flowchart の[スタイルの行末の空白](./flowchart.ja.md#スタイルの�
 [fixture: styles/trailing-whitespace-dropped]
 [fixture: styles/styles-with-a-directive]
 
-入力 ([styles/class-definition-spaces-input.mmd](../tests/fixtures/block/styles/class-definition-spaces-input.mmd)):
+入力
+([styles/class-definition-spaces-input.mmd](../tests/fixtures/block/styles/class-definition-spaces-input.mmd)):
 
 ```mmd
 block-beta
@@ -537,7 +565,8 @@ A
 classDef   c1    color:#fff , fill:#000
 ```
 
-出力 ([styles/class-definition-spaces-output.mmd](../tests/fixtures/block/styles/class-definition-spaces-output.mmd)):
+出力
+([styles/class-definition-spaces-output.mmd](../tests/fixtures/block/styles/class-definition-spaces-output.mmd)):
 
 ```mmd
 block-beta
@@ -545,7 +574,8 @@ block-beta
   classDef c1 color:#fff , fill:#000
 ```
 
-入力 ([styles/style-spaces-input.mmd](../tests/fixtures/block/styles/style-spaces-input.mmd)):
+入力
+([styles/style-spaces-input.mmd](../tests/fixtures/block/styles/style-spaces-input.mmd)):
 
 ```mmd
 block-beta
@@ -553,7 +583,8 @@ A
 style  A   fill:#f00 , stroke:#333
 ```
 
-出力 ([styles/style-spaces-output.mmd](../tests/fixtures/block/styles/style-spaces-output.mmd)):
+出力
+([styles/style-spaces-output.mmd](../tests/fixtures/block/styles/style-spaces-output.mmd)):
 
 ```mmd
 block-beta
@@ -561,7 +592,8 @@ block-beta
   style A fill:#f00 , stroke:#333
 ```
 
-入力 ([styles/class-ids-as-written-input.mmd](../tests/fixtures/block/styles/class-ids-as-written-input.mmd)):
+入力
+([styles/class-ids-as-written-input.mmd](../tests/fixtures/block/styles/class-ids-as-written-input.mmd)):
 
 ```mmd
 block-beta
@@ -571,7 +603,8 @@ class A,B c1
 class   A, B   c1
 ```
 
-出力 ([styles/class-ids-as-written-output.mmd](../tests/fixtures/block/styles/class-ids-as-written-output.mmd)):
+出力
+([styles/class-ids-as-written-output.mmd](../tests/fixtures/block/styles/class-ids-as-written-output.mmd)):
 
 ```mmd
 block-beta
@@ -587,21 +620,23 @@ mermaid.js が複数行にわたって読む文は、1 行に印字します。
 改行は字句解析器にとって空白で、 `columns`、辺、幅、形、
 composite の見出しの中の改行もそうです。
 改行は空白 1 つに置き換えます。
-ほかの図も同じ規則で文の行をつなぎます（[複数行の文](./xychart.ja.md#複数行の文)を参照）。
+ほかの図も同じ規則で文の行をつなぎます（[複数行の文](./xychart.ja.md#複数行の文)
+を参照）。
 コメント行か指令を含む文は、書かれたまま残します。
 コメント行は置かれた行の残りを取り込むからで、すべての図で同じ判断をします。
 `;` を含む文も、行の規則があるので、
-書かれたまま残します（[行](#行)を参照。 [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)も参照）。
+書かれたまま残します（[行](#行)を参照。
+[`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)も参照）。
 mermaid.js の行の規則は、`style` か `classDef`、その後の `:`、その後の、
 `:` との間に空白のない `#`、その後の `;` を持つ行の、最後の `;` を取り除きます。
 そのような行から文を動かすと、
-どの `;` が最後かが変わるので（`A["style:#a"] B;C D;` で取り除かれるのは `D;` の `;` で、
-id は `B;C` です。 `D;` のない行では、`B;C` の `;` が取り除かれます）、
+どの `;` が最後かが変わるので（`A["style:#a"] B;C D;` で取り除かれるのは `D;` の
+`;` で、 id は `B;C` です。 `D;` のない行では、`B;C` の `;` が取り除かれます）、
 その行の文はその行に残し、`;` も書かれたままにします。
 `:` と `#` の間の空白も、規則が効くかどうかを決めるので、そのままです。
 `A["style:"]-->B["#z"];` は矢印が接したままで、
-矢印の周りに空白があると規則は効かず、
-`;` はそれだけの id になります。 [fixture: multi-line-statements/columns-over-lines-joined]
+矢印の周りに空白があると規則は効かず、 `;` はそれだけの id になります。
+[fixture: multi-line-statements/columns-over-lines-joined]
 [fixture: multi-line-statements/edge-over-lines-joined]
 [fixture: multi-line-statements/shape-over-lines-joined]
 [fixture: multi-line-statements/class-definition-line-break-in-the-head]
@@ -631,7 +666,8 @@ id は `B;C` です。 `D;` のない行では、`B;C` の `;` が取り除か�
 最後の文の後のコメント行は、その後ろに残ります。
 ヘッダーより前のコメント行は 1 列目に置きます。
 行頭でない `%%` は id の文字で、書かれた場所に、
-始まる文と一緒に残します（[行](#行)を参照）。 [fixture: comments/comment-line-at-the-level-of-the-next-statement]
+始まる文と一緒に残します（[行](#行)を参照）。
+[fixture: comments/comment-line-at-the-level-of-the-next-statement]
 [fixture: comments/comment-before-the-header]
 [fixture: comments/comment-after-the-last-statement]
 [fixture: comments/comment-in-a-composite]
@@ -640,7 +676,8 @@ id は `B;C` です。 `D;` のない行では、`B;C` の `;` が取り除か�
 [fixture: comments/comment-text-kept]
 [fixture: comments/comment-after-a-composite-head]
 
-入力 ([comments/comment-line-at-the-level-of-the-next-statement-input.mmd](../tests/fixtures/block/comments/comment-line-at-the-level-of-the-next-statement-input.mmd)):
+入力
+([comments/comment-line-at-the-level-of-the-next-statement-input.mmd](../tests/fixtures/block/comments/comment-line-at-the-level-of-the-next-statement-input.mmd)):
 
 ```mmd
 block-beta
@@ -651,7 +688,8 @@ a b
     %% c
 ```
 
-出力 ([comments/comment-line-at-the-level-of-the-next-statement-output.mmd](../tests/fixtures/block/comments/comment-line-at-the-level-of-the-next-statement-output.mmd)):
+出力
+([comments/comment-line-at-the-level-of-the-next-statement-output.mmd](../tests/fixtures/block/comments/comment-line-at-the-level-of-the-next-statement-output.mmd)):
 
 ```mmd
 block-beta
@@ -662,7 +700,8 @@ block-beta
   %% c
 ```
 
-入力 ([comments/comment-before-the-header-input.mmd](../tests/fixtures/block/comments/comment-before-the-header-input.mmd)):
+入力
+([comments/comment-before-the-header-input.mmd](../tests/fixtures/block/comments/comment-before-the-header-input.mmd)):
 
 ```mmd
 %% a
@@ -672,7 +711,8 @@ block-beta
 a
 ```
 
-出力 ([comments/comment-before-the-header-output.mmd](../tests/fixtures/block/comments/comment-before-the-header-output.mmd)):
+出力
+([comments/comment-before-the-header-output.mmd](../tests/fixtures/block/comments/comment-before-the-header-output.mmd)):
 
 ```mmd
 %% a
@@ -687,10 +727,12 @@ block-beta
 指令は元の単位の間に残します。
 同じ印字行の中では、両側の空白の有無を保ちます。
 空白が書かれていれば空白 1 つ、接していれば接したままです。
-mermaid.js は読む前に指令を取り除くので、文の内部では、
-指令の隣が接しているか離れているかを保ちます（[ディレクティブ](./journey.ja.md#ディレクティブ)を参照）。
+mermaid.js は読む前に指令を取り除くので、文の内部では、指令の隣が接しているか、
+離れているかを保ちます（[ディレクティブ](./journey.ja.md#ディレクティブ)
+を参照）。
 単独の行にある指令は、後ろの文と同じ段に置き、ヘッダーより前の指令は、
-コメント行と同じに 1 列目に置きます。 [fixture: directives/directive-before-the-header]
+コメント行と同じに 1 列目に置きます。
+[fixture: directives/directive-before-the-header]
 [fixture: directives/directive-line-at-the-level-of-the-next-statement]
 [fixture: directives/directive-between-statements-of-a-row]
 [fixture: directives/directive-between-statements-touching]
@@ -714,21 +756,24 @@ mermaid.js は読む前に指令を取り除くので、文の内部では、
 
 [fixture: block/directives/directive-after-columns]
 
-入力 ([directives/directive-between-statements-of-a-row-input.mmd](../tests/fixtures/block/directives/directive-between-statements-of-a-row-input.mmd)):
+入力
+([directives/directive-between-statements-of-a-row-input.mmd](../tests/fixtures/block/directives/directive-between-statements-of-a-row-input.mmd)):
 
 ```mmd
 block-beta
 a %%{init: {}}%% b
 ```
 
-出力 ([directives/directive-between-statements-of-a-row-output.mmd](../tests/fixtures/block/directives/directive-between-statements-of-a-row-output.mmd)):
+出力
+([directives/directive-between-statements-of-a-row-output.mmd](../tests/fixtures/block/directives/directive-between-statements-of-a-row-output.mmd)):
 
 ```mmd
 block-beta
   a %%{init: {}}%% b
 ```
 
-入力 ([directives/directive-line-at-the-level-of-the-next-statement-input.mmd](../tests/fixtures/block/directives/directive-line-at-the-level-of-the-next-statement-input.mmd)):
+入力
+([directives/directive-line-at-the-level-of-the-next-statement-input.mmd](../tests/fixtures/block/directives/directive-line-at-the-level-of-the-next-statement-input.mmd)):
 
 ```mmd
 block-beta
@@ -738,7 +783,8 @@ block-beta
 a b
 ```
 
-出力 ([directives/directive-line-at-the-level-of-the-next-statement-output.mmd](../tests/fixtures/block/directives/directive-line-at-the-level-of-the-next-statement-output.mmd)):
+出力
+([directives/directive-line-at-the-level-of-the-next-statement-output.mmd](../tests/fixtures/block/directives/directive-line-at-the-level-of-the-next-statement-output.mmd)):
 
 ```mmd
 block-beta
@@ -754,14 +800,14 @@ block-beta
 内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
 囲む空白を要する本文がないためです。
 すでに空の内側は空のままです。
-接した keyword は接したまま、
-`accDescr{  }` は `accDescr{}` にします。 [fixture: empty-description-blocks/empty-whitespace-interiors]
+接した keyword は接したまま、 `accDescr{  }` は `accDescr{}` にします。
+[fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: block Unicode and tab interiors]
 指令かコメント行を持つブロックは、書かれたまま印字します。
 ヘッダーの後でも、2 つの node の間でも、自分の行に置きます。
 文法がブロックを受け入れるのは、文が始まる場所です。
-mermaid.js は、
-どこにあってもトークンのないものとして読みます。 [fixture: empty-description-blocks/whitespace-removed]
+mermaid.js は、どこにあってもトークンのないものとして読みます。
+[fixture: empty-description-blocks/whitespace-removed]
 [fixture: empty-description-blocks/braces-touching-kept]
 [fixture: empty-description-blocks/line-break-inside-joined]
 [fixture: empty-description-blocks/between-two-nodes]
@@ -771,14 +817,16 @@ mermaid.js は、
 [fixture: empty-description-blocks/in-a-composite]
 [fixture: empty-description-blocks/empty-line-inside-joined]
 
-入力 ([empty-description-blocks/whitespace-removed-input.mmd](../tests/fixtures/block/empty-description-blocks/whitespace-removed-input.mmd)):
+入力
+([empty-description-blocks/whitespace-removed-input.mmd](../tests/fixtures/block/empty-description-blocks/whitespace-removed-input.mmd)):
 
 ```mmd
 block-beta
 accDescr {   } a
 ```
 
-出力 ([empty-description-blocks/whitespace-removed-output.mmd](../tests/fixtures/block/empty-description-blocks/whitespace-removed-output.mmd)):
+出力
+([empty-description-blocks/whitespace-removed-output.mmd](../tests/fixtures/block/empty-description-blocks/whitespace-removed-output.mmd)):
 
 ```mmd
 block-beta
@@ -786,14 +834,16 @@ block-beta
   a
 ```
 
-入力 ([empty-description-blocks/between-two-nodes-input.mmd](../tests/fixtures/block/empty-description-blocks/between-two-nodes-input.mmd)):
+入力
+([empty-description-blocks/between-two-nodes-input.mmd](../tests/fixtures/block/empty-description-blocks/between-two-nodes-input.mmd)):
 
 ```mmd
 block-beta
 a accDescr {} b
 ```
 
-出力 ([empty-description-blocks/between-two-nodes-output.mmd](../tests/fixtures/block/empty-description-blocks/between-two-nodes-output.mmd)):
+出力
+([empty-description-blocks/between-two-nodes-output.mmd](../tests/fixtures/block/empty-description-blocks/between-two-nodes-output.mmd)):
 
 ```mmd
 block-beta
@@ -804,14 +854,14 @@ block-beta
 
 ### フロントマターの YAML
 
-フロントマターは、
-ほかの図と同じに Prettier が YAML として整形します（[フロントマターの YAML](./flowchart.ja.md#フロントマターの-yaml)を参照）。
-正しい YAML でないフロントマターは、
-書かれたまま残します。 [fixture: frontmatter-yaml/formatted]
-[fixture: frontmatter-yaml/malformed-kept]
+フロントマターは、ほかの図と同じに Prettier が YAML として整形します（詳しくは、
+[フロントマターの YAML](./flowchart.ja.md#フロントマターの-yaml) を参照）。
+正しい YAML でないフロントマターは、書かれたまま残します。
+[fixture: frontmatter-yaml/formatted] [fixture: frontmatter-yaml/malformed-kept]
 [fixture: frontmatter-yaml/comment-after-frontmatter-before-header]
 
-入力 ([frontmatter-yaml/formatted-input.mmd](../tests/fixtures/block/frontmatter-yaml/formatted-input.mmd)):
+入力
+([frontmatter-yaml/formatted-input.mmd](../tests/fixtures/block/frontmatter-yaml/formatted-input.mmd)):
 
 ```mmd
 ---
@@ -822,7 +872,8 @@ block-beta
 a
 ```
 
-出力 ([frontmatter-yaml/formatted-output.mmd](../tests/fixtures/block/frontmatter-yaml/formatted-output.mmd)):
+出力
+([frontmatter-yaml/formatted-output.mmd](../tests/fixtures/block/frontmatter-yaml/formatted-output.mmd)):
 
 ```mmd
 ---
@@ -839,18 +890,16 @@ U+2028 と U+2029 は、ブロック図の単位の間の空白で、空白と�
 それを含む、行の中の隙間は、書かれたまま印字します。
 ほかの図と同じです（[行区切り文字](./journey.ja.md#行区切り文字)を参照）。
 隙間の代わりに印字が改行を置く所と、行末の隙間では、一緒に落とします。
-それらの後のコメント行は、
-mermaid.js が 1 行として読む行をつなぎ（[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)を参照）、
-その行の文は書かれたまま印字します。
-ラベルの中では文字で、
-そのまま残ります。 [test: U+2028 between two statements of a row]
+それらの後のコメント行は、 mermaid.js が 1 行として読む行をつなぎ（詳しくは、
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照）、その行の文は書かれたまま印字します。
+ラベルの中では文字で、そのまま残ります。
+[test: U+2028 between two statements of a row]
 [test: U+2029 between two statements of a row]
 [test: U+2028 around the arrow of an edge]
 [test: U+2028 between an id and its shape]
-[test: U+2028 before the colon of a width]
-[test: U+2028 after columns]
-[test: U+2028 in a label]
-[test: U+2028 at the end of a statement of a row]
+[test: U+2028 before the colon of a width] [test: U+2028 after columns]
+[test: U+2028 in a label] [test: U+2028 at the end of a statement of a row]
 [test: U+2028 before a comment line that joins lines]
 [test: U+2029 before comment lines that join lines]
 [test: U+2028 between a composite head and its body]
@@ -867,10 +916,7 @@ U+0085 は mermaid.js にとって空白ではなく、前後の単語を 1 つ�
 [test: a tab, a vertical tab, a form feed, U+3000, and U+FEFF between units]
 [test: U+00A0 around the arrow of an edge]
 [test: U+00A0 between an id and its shape]
-[test: U+00A0 before the directions of a block arrow]
-[test: U+00A0 in a label]
-[test: U+00A0 in a class definition]
-[test: U+00A0 in a style]
+[test: U+00A0 before the directions of a block arrow] [test: U+00A0 in a label]
+[test: U+00A0 in a class definition] [test: U+00A0 in a style]
 [test: U+00A0 inside an empty description block]
-[test: U+00A0 in a composite head]
-[test: U+0085 inside an id]
+[test: U+00A0 in a composite head] [test: U+0085 inside an id]

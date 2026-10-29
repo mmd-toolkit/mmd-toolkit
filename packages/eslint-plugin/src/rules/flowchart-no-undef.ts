@@ -42,8 +42,7 @@ export const flowchartNoUndef: MermaidRuleDefinition<{
     },
     schema: [],
     messages: {
-      undef:
-        "The id `{{id}}` is not declared by any vertex, subgraph, or link.",
+      undef: "mermaid.js {{effect}} for the undefined id `{{id}}`.",
     },
   },
   create(context) {
@@ -85,7 +84,10 @@ export const flowchartNoUndef: MermaidRuleDefinition<{
           context.report({
             node: style.id,
             messageId: "undef",
-            data: { id: style.id.name },
+            data: {
+              id: style.id.name,
+              effect: "adds a new vertex with these styles",
+            },
           })
         }
         for (const statement of idsStatements) {
@@ -94,7 +96,13 @@ export const flowchartNoUndef: MermaidRuleDefinition<{
             context.report({
               node: id,
               messageId: "undef",
-              data: { id: id.name },
+              data: {
+                id: id.name,
+                effect:
+                  statement.type === "FlowchartClassStatement"
+                    ? "gives no element these classes"
+                    : "makes no element clickable",
+              },
             })
           }
         }

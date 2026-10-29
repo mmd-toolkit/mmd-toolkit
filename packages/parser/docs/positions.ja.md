@@ -29,22 +29,22 @@
 
 - オフセットは、ESTree や Prettier と同じく、UTF-16 のコード単位で数えます。
   `range` の 2 つのオフセットの間のソースのテキストが、それを持つノード、
-  トークン、コメント、ディレクティブ、
-  フロントマターのテキストです。 [fixture: sequence/lex-text-after-non-bmp-character]
+  トークン、コメント、ディレクティブ、フロントマターのテキストです。
+  [fixture: sequence/lex-text-after-non-bmp-character]
 - `range` はオフセットの組です。
-  0 から数える開始オフセットと、
-  含まない終了オフセットです。 [fixture: common/crlf]
+  0 から数える開始オフセットと、含まない終了オフセットです。
+  [fixture: common/crlf]
 - `loc` は場所です。
   `start` と `end` の位置を持ちます。
   各位置は、1 から数える `line` と、
-  UTF-16 のコード単位で 0 から数える `column` を持ちます。 [fixture: common/crlf]
-  [fixture: sequence/lex-text-after-non-bmp-character]
+  UTF-16 のコード単位で 0 から数える `column` を持ちます。
+  [fixture: common/crlf] [fixture: sequence/lex-text-after-non-bmp-character]
 - `\r\n`、単独の `\r`、`\n` は、どれも行を終えます。
-  mermaid.js が `\n` に正規化するのがこれらの並びだからです（[行終端](../../spec/docs/common.ja.md#行終端) を参照）。
+  mermaid.js が `\n` に正規化するのがこれらの並びだからです。
+  [行終端](../../spec/docs/common.ja.md#行終端) を参照。
   U+2028 と U+2029 は行を終えません。 [fixture: common/crlf]
   [fixture: common/directive-spans-lone-cr]
-  [fixture: common/comment-after-u2028]
-  [fixture: common/comment-after-u2029]
+  [fixture: common/comment-after-u2028] [fixture: common/comment-after-u2029]
 
 | 記録 | 欄       | 型   | 意味                                   |
 | ---- | -------- | ---- | -------------------------------------- |
@@ -55,10 +55,12 @@
 
 この仕様は、意図して 2 つの単位を使います。
 [common.ja.md](../../spec/docs/common.ja.md) の規則は文字について述べ、
-文字は Unicode のコードポイントです（[表記](../../spec/docs/common.ja.md#表記) を参照）。
+文字は Unicode のコードポイントです（[表記](../../spec/docs/common.ja.md#表記)
+を参照）。
 位置は UTF-16 のコード単位で数えます。
 基本多言語面の外の文字は、1 文字ですが 2 コード単位なので、
-`range` のオフセットと `column` を 2 進めます。 [fixture: sequence/lex-text-after-non-bmp-character]
+`range` のオフセットと `column` を 2 進めます。
+[fixture: sequence/lex-text-after-non-bmp-character]
 
 ## ノードの範囲
 
@@ -81,11 +83,13 @@
 つまりその範囲の中にあることはあります。
 それが自明でない場合は、各ノードの型がどれかを述べます。
 区切りのように 2 つのノードの間にあるトークンは、
-どちらにも属さないことがあります。 [fixture: flowchart/tokens-label-string-directive-then-text]
+どちらにも属さないことがあります。
+[fixture: flowchart/tokens-label-string-directive-then-text]
 [fixture: flowchart/tokens-diagram-trailing-separator]
 どの文法も読まない `IgnoredSemicolon` のトークンも、同じく、
 どのノードのトークンでもなく、ノードの 2 つのトークンの間、
-つまりその範囲の中にあることがあります。 [fixture: common/entity-css-in-string-label]
+つまりその範囲の中にあることがあります。
+[fixture: common/entity-css-in-string-label]
 そのため、`Root.body` のノードのトークンは、
 `Directive` と `IgnoredSemicolon` のトークンを除く、
 図のテキストのすべてのトークンで、最初のものから最後のものまでです。
@@ -96,8 +100,8 @@
 ただし、EOF で終わる子によって、図の範囲がそれらの後まで延びる場合があります。
 flowchart の `A;` の図の範囲は、区切りである `;` の後で終わり、
 最後の行が `classDef c fill:#f00;` の class 図の範囲は、
-行の規則が無視する `;` の前で終わります。 [fixture: flowchart/tokens-diagram-trailing-separator]
-[fixture:
+行の規則が無視する `;` の前で終わります。
+[fixture: flowchart/tokens-diagram-trailing-separator] [fixture:
 class/tokens-class-def-ignored-semicolon]
 [fixture: flowchart/gram-separator-before-directive]
 ノードの範囲は、その子のノードの範囲をすべて覆います。
@@ -107,7 +111,8 @@ ESTree の木をたどる道具はこれを前提にします。
 ノードの型が範囲の広げ方を述べます。
 未閉鎖の AgentflowAccDescrBlockStatement とそれを含む図は、
 末尾の空白や directive を含めてソースの EOF までを覆います。
-読み飛ばした trivia のためにトークンを追加することはありません。 [fixture: agentflow/db-accessibility-unclosed-block]
+読み飛ばした trivia のためにトークンを追加することはありません。
+[fixture: agentflow/db-accessibility-unclosed-block]
 [fixture: agentflow/db-accessibility-empty-unclosed]
 
 `Root.range` は `[0, input.length]` です。 [fixture: common/crlf]
@@ -119,23 +124,21 @@ ESTree の木をたどる道具はこれを前提にします。
 - 入力のどの文字も、トークンかコメントに含まれるか、空白か行終端である。
   空白は [表記](../../spec/docs/common.ja.md#表記) で定めた集合で、 U+00A0、
   U+FEFF、U+2028、 U+2029 を含む。 [fixture: common/whitespace-characters]
-  [fixture: common/nbsp-as-space]
-  [fixture: common/bom-mid-text]
-  [fixture: common/comment-after-u2028]
-  [fixture: common/comment-after-u2029]
+  [fixture: common/nbsp-as-space] [fixture: common/bom-mid-text]
+  [fixture: common/comment-after-u2028] [fixture: common/comment-after-u2029]
 - どのトークン、コメント、ディレクティブ、フロントマターのテキストも、
   その範囲のソースのテキストと一致する。
-  トークンでは、
-  そのテキストが `value` である。 [fixture: common/directive-spans-lone-cr]
-- `Root.tokens` はソースの順に並び、
-  そのトークンは互いに重ならない。 [fixture: flowchart/tokens-label-string-directive-then-text]
+  トークンでは、そのテキストが `value` である。
+  [fixture: common/directive-spans-lone-cr]
+- `Root.tokens` はソースの順に並び、そのトークンは互いに重ならない。
+  [fixture: flowchart/tokens-label-string-directive-then-text]
 - トークンが空白や行終端で始まるか終わるのは、それが、
   mermaid.js が値として読むテキストの始まりか終わりにあるところ、
   そのテキストを切るディレクティブ、コメント領域、
   無視される `;` の隣にあるところ、
   前のトークンが始めた値を続けるトークンの始まりだけである。
-  最後のものは、
-  flowchart のラベルが始める文字列の後のテキストなどである。 [fixture: class/db-generic-spaces]
+  最後のものは、 flowchart のラベルが始める文字列の後のテキストなどである。
+  [fixture: class/db-generic-spaces]
   [fixture: flowchart/tokens-directive-label-space-after]
   [fixture: common/comment-in-string]
   [fixture: class/tokens-style-ignored-semicolon-after-space]
@@ -144,8 +147,8 @@ ESTree の木をたどる道具はこれを前提にします。
   [flowchart のトークン](./tokens/flowchart.ja.md#トークン) を参照。
   空白だけのトークンは、それが属する値に属するトークンが直後に続くところでも、
   空白で終わりうる。
-  sequence の箱のテキストの、
-  色の候補と残りの間の空白がそうである。 [fixture: sequence/tokens-box-text-space-between-parts]
+  sequence の箱のテキストの、色の候補と残りの間の空白がそうである。
+  [fixture: sequence/tokens-box-text-space-between-parts]
   [fixture: sequence/db-box-colour-then-spaces-and-line-separator]
   [sequence のトークン](./tokens/sequence.ja.md#トークン) を参照。
 - コメントは、どのトークンの外にもある。 [fixture: common/comment-in-string]
@@ -153,53 +156,56 @@ ESTree の木をたどる道具はこれを前提にします。
   コメントの中、つまりその印の後か、 `%%` の印の 2 つの `%` の間にはありうる。
   どのトークンとコメントの外にもある各ディレクティブには、
   その範囲を持つ `Directive` のトークンがちょうど 1 つあり、
-  どの `Directive` のトークンも、
-  そのようなディレクティブのものである。 [fixture: common/directive-in-comment]
+  どの `Directive` のトークンも、そのようなディレクティブのものである。
+  [fixture: common/directive-in-comment]
   [fixture: common/comment-percent-joined-by-directive]
   [fixture: common/comment-after-directive]
 - 行単位の規則が無視し、どのコメントの外にもある各 `;` には、
   その範囲を持つ `IgnoredSemicolon` のトークンがちょうど 1 つあり、
-  どの `IgnoredSemicolon` のトークンも、
-  そのような `;` のものである。 [fixture: common/entity-css-in-string-label]
+  どの `IgnoredSemicolon` のトークンも、そのような `;` のものである。
+  [fixture: common/entity-css-in-string-label]
   [fixture: sequence/tokens-comment-then-ignored-semicolon]
   [fixture: state/tokens-ignored-semicolon-in-comment-before-comment-line]
-- コメントどうし、
-  ディレクティブどうしは重ならない。 [fixture: common/comment-after-directive]
+- コメントどうし、ディレクティブどうしは重ならない。
+  [fixture: common/comment-after-directive]
   [fixture: flowchart/tokens-string-two-comment-lines]
   [fixture: flowchart/tokens-directives-label-space-between]
 - フロントマターがあるとき、最初のトークンは、その範囲の中のトークンである。
   開始の `---`、すべて空白でなければ本文、
-  閉じる `---` がそうである（[Frontmatter](../../spec/docs/ast.ja.md#frontmatter) を参照）。
-  それらはすべてのコメントとディレクティブより前にある。 [fixture: common/config-directive-after-frontmatter]
+  閉じる `---`
+  がそうである（[Frontmatter](../../spec/docs/ast.ja.md#frontmatter) を参照）。
+  それらはすべてのコメントとディレクティブより前にある。
+  [fixture: common/config-directive-after-frontmatter]
   [fixture: common/frontmatter-empty-body]
 - ソースの EOF まで明示的に延びる型と、それを含むノードを除き、
   ノードの範囲は最初のトークンの始まりから最後のトークンの終わりまでである。
   `Root.range` は入力全体を覆う。
   `Root` を除いて、この文書で定めるどのノードも 1 つ以上のトークンを持つ。
-  `ErrorDiagram` は、
-  `error` の文字を持つ 1 つ以上のトークンを持ち（[error 疑似図種のトークン](./tokens.ja.md#error-疑似図種のトークン) を参照）、
-  すべて空白の [FlowchartLabel](../../spec/docs/ast/flowchart.ja.md#flowchartlabel) は、
+  `ErrorDiagram` は、 `error` の文字を持つ 1 つ以上のトークンを持ち、
+  すべて空白の
+  [FlowchartLabel](../../spec/docs/ast/flowchart.ja.md#flowchartlabel) は、
   その空白のトークンを持つ。 [fixture: common/error-split-by-directive]
   [fixture: flowchart/gram-label-space]
+  [error 疑似図種のトークン](./tokens.ja.md#error-疑似図種のトークン) と、
   [flowchart のトークン](./tokens/flowchart.ja.md#トークン) を参照。
 - ノードの範囲は、その子のノードの範囲を覆う。
   ノードの子のノードは重ならない。
   文書がそうでないと述べるノードを除き、子の欄の順に、
-  各一覧はその中の順に取ると、
-  子のノードはソースの順に並ぶ。 [fixture: flowchart/gram-data-consecutive-blocks]
+  各一覧はその中の順に取ると、子のノードはソースの順に並ぶ。
+  [fixture: flowchart/gram-data-consecutive-blocks]
   [fixture: flowchart/gram-pipe-label-space-after]
   [fixture: flowchart/db-arrow-dash-head-length]
   [ノード](../../spec/docs/ast.ja.md#ノード) を参照。
 - `raw` を持つノード、つまり StringLiteral と NumericLiteral の `raw` は、
-  その範囲のソースのテキストに等しい。 [fixture: flowchart/gram-label-space-string]
-  [fixture: state/gram-scale]
+  その範囲のソースのテキストに等しい。
+  [fixture: flowchart/gram-label-space-string] [fixture: state/gram-scale]
 - どのトークン、コメント、ディレクティブも、空の範囲を持たない。
   mermaid.js が空として読む値はトークンを持たず、
   空の断片はトークンにもコメントにもならず、
   コメントとディレクティブは少なくともその印を含む。
   空として読む値でトークンを持つのは、sankey 図の空白だけの欄だけである。
-  これはノードを作るので、
-  その空白のトークンを持つ。 [fixture: flowchart/gram-acc-title-empty-at-end]
+  これはノードを作るので、その空白のトークンを持つ。
+  [fixture: flowchart/gram-acc-title-empty-at-end]
   [fixture: flowchart/tokens-rawtext-comment-line-then-closing-bracket]
   [fixture: class/lex-bare-percent-line-between-statements]
   [fixture: common/directive-empty-argument]
@@ -214,7 +220,8 @@ ESTree の木をたどる道具はこれを前提にします。
 
 packet の範囲は [packet](./positions/packet.ja.md#範囲) で定めます。
 
-architecture の範囲は [architecture](./positions/architecture.ja.md#範囲) で定めます。
+architecture の範囲は [architecture](./positions/architecture.ja.md#範囲)
+で定めます。
 
 radar の範囲は [radar](./positions/radar.ja.md#範囲) で定めます。
 
@@ -226,6 +233,7 @@ Wardley の範囲は [wardley](./positions/wardley.ja.md#範囲)で定める。
 
 Cynefin の範囲は [cynefin](./positions/cynefin.ja.md#範囲)に従います。
 
-Eventmodeling の範囲は [eventmodeling](./positions/eventmodeling.ja.md#範囲)に従います。
+Eventmodeling の範囲は
+[eventmodeling](./positions/eventmodeling.ja.md#範囲)に従います。
 
 Treeview の範囲は [treeview](./positions/treeview.ja.md#範囲)に従う。

@@ -2,11 +2,13 @@
 
 英語版: [treeview.md](./treeview.md)
 
-字句解析は仕様の [順序付き単位](../../../spec/docs/diagrams/treeview.md#ordered-units)に従う。
+字句解析は仕様の
+[順序付き単位](../../../spec/docs/diagrams/treeview.md#ordered-units)に従う。
 より長い bare-name との比較はヘッダーだけに適用する。
 共通文法、native YAML、hidden directive、可視 newline 単位はない。
-ASCII の字下げが hidden whitespace に先行するため、別の hidden-whitespace
-reader は使わない。 [fixture: treeview/header-only] [fixture:
+ASCII の字下げが hidden whitespace に先行するため、
+別の hidden-whitespace reader は使わない。 [fixture: treeview/header-only]
+[fixture:
 treeview/header-nbsp-custom-boundary] [fixture: treeview/gram-body-yaml]
 [fixture: treeview/detect-secondscan-singleline] [fixture:
 treeview/gram-quoted-tail-space-next-indent]
@@ -27,9 +29,8 @@ treeview/gram-quoted-tail-space-next-indent]
 割り当てた字下げから合成トークンを作らない。
 接頭辞のテキストをキーワードや注釈として読み直さない。
 枝と各横棒は別の書かれた構成要素であり、その間に共通 trivia を置ける。
-その trivia は共通契約に従って、
-この RawText 項目を分断する。 [fixture: treeview/box-written-tree]
-[fixture: treeview/box-prefix-arbitrary]
+その trivia は共通契約に従って、この RawText 項目を分断する。
+[fixture: treeview/box-written-tree] [fixture: treeview/box-prefix-arbitrary]
 [fixture: treeview/box-branch-no-dash] [fixture:
 treeview/box-branch-directive-parts] [fixture:
 treeview/box-dash-selected-semicolon] [fixture:
@@ -62,7 +63,8 @@ accDescr ブロックの RawText 項目は、有効な閉じ波括弧の直前�
 書かれた内部全体を覆う。
 末尾の装飾の行終端と、閉じを導く枝接頭辞もこの項目に残る。
 外端を縮めたりトークンを分断したりするのは共有の除去だけであり、
-重なる罫線項目は作らない。 [fixture: treeview/box-block-tail-decoration-light-vertical]
+重なる罫線項目は作らない。
+[fixture: treeview/box-block-tail-decoration-light-vertical]
 [fixture: treeview/box-block-tail-decoration-heavy-vertical]
 [fixture: treeview/box-block-tail-decoration-light-dash]
 [fixture: treeview/box-block-tail-decoration-heavy-dash]
@@ -105,8 +107,8 @@ RawText と String を分断し、 String の断片は StringFragment になる�
 ヘッダー・共通キーワード、`icon`、クラス名、完全なアイコン参照、 `:::`、
 `##` の内部の分断は拒否する。
 完全な構成要素間の trivia は許すが、欠けた空白を補わない。
-枝と横棒の各要素の間にも、
-その trivia を置ける。 [fixture: treeview/directive-bare-middle] [fixture:
+枝と横棒の各要素の間にも、その trivia を置ける。
+[fixture: treeview/directive-bare-middle] [fixture:
 treeview/directive-double-middle] [fixture: treeview/common-block-comments]
 [fixture: treeview/directive-header-inside] [fixture:
 treeview/directive-acctitle-inside] [fixture:
@@ -136,9 +138,8 @@ treeview/common-title-percent-boundary]
 検出が通過した裸の percent 行は共通 Comment であり、伴う trivia を読み直さない。
 保持された一行の二回目走査形式には native Comment 規則を適用する。
 内部のソース directive は共通 Directive のまま残る。
-論理的に追加された LF は、
-書かれたトークンのテキストではない。 [fixture: treeview/db-tabs-one-unit]
-[fixture: treeview/gram-body-hidden-eof]
+論理的に追加された LF は、書かれたトークンのテキストではない。
+[fixture: treeview/db-tabs-one-unit] [fixture: treeview/gram-body-hidden-eof]
 [fixture: treeview/bare-line-space] [fixture:
 treeview/detect-secondscan-bare-unicode] [fixture:
 treeview/detect-bare-before-secondscan] [fixture:

@@ -70,10 +70,11 @@ journey
 
 ## 背景
 
-mermaid.js は人のそれぞれの端の空白を除き、すべてのタスクの人を、
-空の名前も含めて、
-凡例が示すジャーニーの actor に集める（[`updateActors`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L49-L58) と、
-[`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)）。
+mermaid.js は、
+[`updateActors`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L49-L58)、
+[`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)
+で、人のそれぞれの端の空白を除き、すべてのタスクの人を、空の名前も含めて、
+凡例が示すジャーニーの actor に集める。
 
 <!-- begin auto-generated rule resources -->
 

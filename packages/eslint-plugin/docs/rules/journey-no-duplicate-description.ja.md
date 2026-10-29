@@ -32,7 +32,9 @@ mermaid.js は `accDescr` の文をすべて受理し、説明を設定する文
 
 説明を持たないブロックは数えない。
 `accDescr: a` の後のブロック `accDescr {}` は、説明を `a` のままにする。
-これは [journey-no-empty-description-block](./journey-no-empty-description-block.ja.md) が報告する。
+これは
+[journey-no-empty-description-block](./journey-no-empty-description-block.ja.md)
+が報告する。
 
 図がすでに持つ説明を設定する文は、どちらの形でも報告しない。
 `accDescr: d` の後のブロック `accDescr { d }` は、何も失わない。

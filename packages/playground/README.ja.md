@@ -14,7 +14,8 @@ Prettierによる整形結果を確認できます。
 
 **Examples**で図種のサブメニューを開いてサンプルを選ぶか、
 **Source**にMermaidのテキストを貼り付けます。
-サンプルは[Mermaid Live Editor](https://mermaid.ai/live/edit)と同じデータから読み込み、
+サンプルは、
+[Mermaid Live Editor](https://mermaid.ai/live/edit)と同じデータから読み込み、
 パーサーが未対応の図種も含みます。
 
 編集すると、パーサーの結果が自動で更新されます。
@@ -58,5 +59,5 @@ Sourceの編集や、**Indent**・**Use tabs**の変更に合わせて更新さ�
 
 - [パーサー](../parser/README.ja.md): 対応構文、ASTのフィールド、互換性。
 - [フォーマッター](../prettier-plugin-mmd/README.ja.md): 整形の動作と設定。
-- [開発](./docs/development.ja.md): ローカルでの起動、実装の説明、検証とGitHub
-  Pagesへの公開。
+- [開発](./docs/development.ja.md): ローカルでの起動、実装の説明、
+  検証とGitHub Pagesへの公開。

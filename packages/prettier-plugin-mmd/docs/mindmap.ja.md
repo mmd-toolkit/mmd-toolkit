@@ -35,52 +35,31 @@ Indentation and parents）。
 段の幅が 4 文字の図と 2 文字の図は Db が違い、
 1 つの図の中で段の幅が違ってもかまいません。
 印字は、どの段の幅も書かれたまま残し、
-以下の規則は Db に入らないものだけを変えます。 [fixture: indentation/step-widths-kept]
+以下の規則は Db に入らないものだけを変えます。
+[fixture: indentation/step-widths-kept]
 [fixture: indentation/tree-from-the-indentation]
 [fixture: indentation/siblings-after-deeper-nodes]
 
 根の字下げは Db に入りません。
 根は、どの図種の文とも同じく、ヘッダーより 1 段深く置きます。
 ほかのノードは、根より書かれた文字数だけ深く置くので、level は変わりません。
-それ以上に、
-入力に書かれた字下げは残しません。 [fixture: indentation/root-shifted-to-one-level]
+それ以上に、入力に書かれた字下げは残しません。
+[fixture: indentation/root-shifted-to-one-level]
 [fixture: indentation/root-at-the-first-column]
 [fixture: indentation/written-indentation-dropped]
-1 段は Prettier の `useTabs` と `tabWidth` の指定どおりで、
-既定は空白 2 つです。 [fixture: indentation/tab-width-4]
+1 段は Prettier の `useTabs` と `tabWidth` の指定どおりで、既定は空白 2 つです。
+[fixture: indentation/tab-width-4]
 
 ノードの前の空白文字は、タブ、U+00A0、U+3000 も含め、どれも字下げの 1 文字で、
 数だけが意味を持ちます。
 印字は、字下げの文字をオプションの文字（空白、`useTabs` ならタブ）にし、
 文字数は変えません。
 `useTabs` では、n 文字の段の幅は n 個のタブになります。
-これで、1 行の字下げが、
-オプションの指定する 1 種類の文字になります。 [fixture: indentation/use-tabs]
-[fixture: indentation/characters-replaced]
+これで、1 行の字下げが、オプションの指定する 1 種類の文字になります。
+[fixture: indentation/use-tabs] [fixture: indentation/characters-replaced]
 
-入力 ([indentation/step-widths-kept-input.mmd](../tests/fixtures/mindmap/indentation/step-widths-kept-input.mmd)):
-
-```mmd
-mindmap
-  root((mindmap))
-    Origins
-      Long history
-      ::icon(fa fa-book)
-      Popularisation
-        British popular psychology author Tony Buzan
-    Research
-      On effectiveness<br/>and features
-      On Automatic creation
-        Uses
-            Creative techniques
-            Strategic planning
-            Argument mapping
-    Tools
-      Pen and paper
-      Mermaid
-```
-
-出力 ([indentation/step-widths-kept-output.mmd](../tests/fixtures/mindmap/indentation/step-widths-kept-output.mmd)):
+入力
+([indentation/step-widths-kept-input.mmd](../tests/fixtures/mindmap/indentation/step-widths-kept-input.mmd)):
 
 ```mmd
 mindmap
@@ -102,7 +81,31 @@ mindmap
       Mermaid
 ```
 
-入力 ([indentation/root-shifted-to-one-level-input.mmd](../tests/fixtures/mindmap/indentation/root-shifted-to-one-level-input.mmd)):
+出力
+([indentation/step-widths-kept-output.mmd](../tests/fixtures/mindmap/indentation/step-widths-kept-output.mmd)):
+
+```mmd
+mindmap
+  root((mindmap))
+    Origins
+      Long history
+      ::icon(fa fa-book)
+      Popularisation
+        British popular psychology author Tony Buzan
+    Research
+      On effectiveness<br/>and features
+      On Automatic creation
+        Uses
+            Creative techniques
+            Strategic planning
+            Argument mapping
+    Tools
+      Pen and paper
+      Mermaid
+```
+
+入力
+([indentation/root-shifted-to-one-level-input.mmd](../tests/fixtures/mindmap/indentation/root-shifted-to-one-level-input.mmd)):
 
 ```mmd
 mindmap
@@ -112,7 +115,8 @@ mindmap
           Research
 ```
 
-出力 ([indentation/root-shifted-to-one-level-output.mmd](../tests/fixtures/mindmap/indentation/root-shifted-to-one-level-output.mmd)):
+出力
+([indentation/root-shifted-to-one-level-output.mmd](../tests/fixtures/mindmap/indentation/root-shifted-to-one-level-output.mmd)):
 
 ```mmd
 mindmap
@@ -122,7 +126,8 @@ mindmap
       Research
 ```
 
-入力 ([indentation/tab-width-4-input.mmd](../tests/fixtures/mindmap/indentation/tab-width-4-input.mmd)):
+入力
+([indentation/tab-width-4-input.mmd](../tests/fixtures/mindmap/indentation/tab-width-4-input.mmd)):
 
 ```mmd
 mindmap
@@ -131,7 +136,8 @@ mindmap
       b
 ```
 
-出力 ([indentation/tab-width-4-output.mmd](../tests/fixtures/mindmap/indentation/tab-width-4-output.mmd)):
+出力
+([indentation/tab-width-4-output.mmd](../tests/fixtures/mindmap/indentation/tab-width-4-output.mmd)):
 
 ```mmd
 mindmap
@@ -147,22 +153,24 @@ mindmap
 根は自分の行に、ヘッダーより 1 段深く置き、
 その下のノードは根からの段の幅を保ちます（[インデント](#インデント)を参照）。
 Db は同じです。
-根は、
-他の図種でヘッダーの後の文が自分の行に移るのと同じに置きます。 [fixture: root-on-header-line/moved-to-its-own-line]
+根は、他の図種でヘッダーの後の文が自分の行に移るのと同じに置きます。
+[fixture: root-on-header-line/moved-to-its-own-line]
 [fixture: root-on-header-line/shape-glued-to-the-header]
 [fixture: root-on-header-line/text-after-spaces]
 [fixture: root-on-header-line/after-a-tab]
-根のテキストの後ろの `%%` は、
-コメントではなくテキストの一部です。 [fixture: root-on-header-line/text-with-percent]
+根のテキストの後ろの `%%` は、コメントではなくテキストの一部です。
+[fixture: root-on-header-line/text-with-percent]
 
-入力 ([root-on-header-line/moved-to-its-own-line-input.mmd](../tests/fixtures/mindmap/root-on-header-line/moved-to-its-own-line-input.mmd)):
+入力
+([root-on-header-line/moved-to-its-own-line-input.mmd](../tests/fixtures/mindmap/root-on-header-line/moved-to-its-own-line-input.mmd)):
 
 ```mmd
 mindmap root((x))
    a
 ```
 
-出力 ([root-on-header-line/moved-to-its-own-line-output.mmd](../tests/fixtures/mindmap/root-on-header-line/moved-to-its-own-line-output.mmd)):
+出力
+([root-on-header-line/moved-to-its-own-line-output.mmd](../tests/fixtures/mindmap/root-on-header-line/moved-to-its-own-line-output.mmd)):
 
 ```mmd
 mindmap
@@ -170,14 +178,16 @@ mindmap
     a
 ```
 
-入力 ([root-on-header-line/shape-glued-to-the-header-input.mmd](../tests/fixtures/mindmap/root-on-header-line/shape-glued-to-the-header-input.mmd)):
+入力
+([root-on-header-line/shape-glued-to-the-header-input.mmd](../tests/fixtures/mindmap/root-on-header-line/shape-glued-to-the-header-input.mmd)):
 
 ```mmd
 mindmap((x))
  a
 ```
 
-出力 ([root-on-header-line/shape-glued-to-the-header-output.mmd](../tests/fixtures/mindmap/root-on-header-line/shape-glued-to-the-header-output.mmd)):
+出力
+([root-on-header-line/shape-glued-to-the-header-output.mmd](../tests/fixtures/mindmap/root-on-header-line/shape-glued-to-the-header-output.mmd)):
 
 ```mmd
 mindmap
@@ -190,18 +200,21 @@ mindmap
 icon の行と class の行は、直前に書かれたノードを飾ります。
 字下げによらないので、字下げは Db に入りません。
 飾る先のノードと同じ列に置きます。
-mermaid.js の文書の例の書き方と同じです。 [fixture: decorations/at-the-column-of-the-node]
+mermaid.js の文書の例の書き方と同じです。
+[fixture: decorations/at-the-column-of-the-node]
 [fixture: decorations/before-and-after-children]
 2 つ目の class の行（icon の行も同じ）は Db では最初のものに置き換わりますが、
 どちらも書かれたまま残します。
-作者が書いたテキストを、
-印字は落とさないからです。 [fixture: decorations/second-class-kept]
+作者が書いたテキストを、印字は落とさないからです。
+[fixture: decorations/second-class-kept]
 
 icon と class のテキストは、両端と中の空白を Db が持つので残します。
-icon の閉じ括弧の後ろの空白は Db に入らないので落とします。 [fixture: decorations/whitespace-in-icon-and-class-kept]
+icon の閉じ括弧の後ろの空白は Db に入らないので落とします。
+[fixture: decorations/whitespace-in-icon-and-class-kept]
 [fixture: decorations/trailing-whitespace-after-icon-dropped]
 
-入力 ([decorations/at-the-column-of-the-node-input.mmd](../tests/fixtures/mindmap/decorations/at-the-column-of-the-node-input.mmd)):
+入力
+([decorations/at-the-column-of-the-node-input.mmd](../tests/fixtures/mindmap/decorations/at-the-column-of-the-node-input.mmd)):
 
 ```mmd
 mindmap
@@ -212,7 +225,8 @@ mindmap
       b
 ```
 
-出力 ([decorations/at-the-column-of-the-node-output.mmd](../tests/fixtures/mindmap/decorations/at-the-column-of-the-node-output.mmd)):
+出力
+([decorations/at-the-column-of-the-node-output.mmd](../tests/fixtures/mindmap/decorations/at-the-column-of-the-node-output.mmd)):
 
 ```mmd
 mindmap
@@ -223,7 +237,8 @@ mindmap
       b
 ```
 
-入力 ([decorations/before-and-after-children-input.mmd](../tests/fixtures/mindmap/decorations/before-and-after-children-input.mmd)):
+入力
+([decorations/before-and-after-children-input.mmd](../tests/fixtures/mindmap/decorations/before-and-after-children-input.mmd)):
 
 ```mmd
 mindmap
@@ -235,7 +250,8 @@ mindmap
   :::c
 ```
 
-出力 ([decorations/before-and-after-children-output.mmd](../tests/fixtures/mindmap/decorations/before-and-after-children-output.mmd)):
+出力
+([decorations/before-and-after-children-output.mmd](../tests/fixtures/mindmap/decorations/before-and-after-children-output.mmd)):
 
 ```mmd
 mindmap
@@ -251,15 +267,16 @@ mindmap
 
 ノードのテキストは、末尾の空白を id の一部として Db が持つので残します。
 `root` の後ろに空白 3 つがあれば、ノードは `root   ` で、
-`a (x)` の id は `a ` なので、
-形の前の空白も残ります。 [fixture: node-text/trailing-whitespace-kept]
+`a (x)` の id は `a ` なので、形の前の空白も残ります。
+[fixture: node-text/trailing-whitespace-kept]
 [fixture: node-text/space-before-a-shape-kept]
 ノードのテキストは、`]`、`:`、`#`、`"`、`%%`、`:::` を文字として含み、
-単独の `%` で始まる行はコメントではなくノードのテキストです。 [fixture: node-text/special-characters]
-[fixture: node-text/percent-in-text]
+単独の `%` で始まる行はコメントではなくノードのテキストです。
+[fixture: node-text/special-characters] [fixture: node-text/percent-in-text]
 [fixture: node-text/keywords-in-text]
 
-入力 ([node-text/special-characters-input.mmd](../tests/fixtures/mindmap/node-text/special-characters-input.mmd)):
+入力
+([node-text/special-characters-input.mmd](../tests/fixtures/mindmap/node-text/special-characters-input.mmd)):
 
 ```mmd
 mindmap
@@ -271,7 +288,8 @@ mindmap
     -x
 ```
 
-出力 ([node-text/special-characters-output.mmd](../tests/fixtures/mindmap/node-text/special-characters-output.mmd)):
+出力
+([node-text/special-characters-output.mmd](../tests/fixtures/mindmap/node-text/special-characters-output.mmd)):
 
 ```mmd
 mindmap
@@ -283,7 +301,8 @@ mindmap
     -x
 ```
 
-入力 ([node-text/space-before-a-shape-kept-input.mmd](../tests/fixtures/mindmap/node-text/space-before-a-shape-kept-input.mmd)):
+入力
+([node-text/space-before-a-shape-kept-input.mmd](../tests/fixtures/mindmap/node-text/space-before-a-shape-kept-input.mmd)):
 
 ```mmd
 mindmap
@@ -292,7 +311,8 @@ mindmap
     b  [y]
 ```
 
-出力 ([node-text/space-before-a-shape-kept-output.mmd](../tests/fixtures/mindmap/node-text/space-before-a-shape-kept-output.mmd)):
+出力
+([node-text/space-before-a-shape-kept-output.mmd](../tests/fixtures/mindmap/node-text/space-before-a-shape-kept-output.mmd)):
 
 ```mmd
 mindmap
@@ -305,31 +325,22 @@ mindmap
 
 形の開きと閉じは、書かれたまま印字します。
 閉じは開きに合わなくてよく、`[text)` は rectangle、`((x)` は circle です。
-合う閉じに直すと、
-作者が書いたテキストを書き換えることになります。 [fixture: shapes/openers-and-closers-kept]
+合う閉じに直すと、作者が書いたテキストを書き換えることになります。
+[fixture: shapes/openers-and-closers-kept]
 [fixture: shapes/mismatched-closers-kept]
 形はノードのテキストなしに単独でも書けます。 [fixture: shapes/shape-alone]
 
 形のテキストは、空白を Db が持つので残します。
 文字列は開きの直後だけが文字列で、
 `a[ "x" ]` のテキストは引用符を含む `"x"` です。
-`a["x"]` と `a[x]` のテキストは同じですが、
-どちらも書き換えません。 [fixture: shapes/inner-whitespace-kept]
-[fixture: shapes/text-and-string-forms]
+`a["x"]` と `a[x]` のテキストは同じですが、どちらも書き換えません。
+[fixture: shapes/inner-whitespace-kept] [fixture: shapes/text-and-string-forms]
 [fixture: shapes/markdown-string]
-形の後ろの空白は Db に入らないので落とします。 [fixture: shapes/trailing-whitespace-dropped]
+形の後ろの空白は Db に入らないので落とします。
+[fixture: shapes/trailing-whitespace-dropped]
 
-入力 ([shapes/mismatched-closers-kept-input.mmd](../tests/fixtures/mindmap/shapes/mismatched-closers-kept-input.mmd)):
-
-```mmd
-mindmap
-  root((x)
-    a[y)
-    b(z]
-    c)w(
-```
-
-出力 ([shapes/mismatched-closers-kept-output.mmd](../tests/fixtures/mindmap/shapes/mismatched-closers-kept-output.mmd)):
+入力
+([shapes/mismatched-closers-kept-input.mmd](../tests/fixtures/mindmap/shapes/mismatched-closers-kept-input.mmd)):
 
 ```mmd
 mindmap
@@ -339,7 +350,19 @@ mindmap
     c)w(
 ```
 
-入力 ([shapes/text-and-string-forms-input.mmd](../tests/fixtures/mindmap/shapes/text-and-string-forms-input.mmd)):
+出力
+([shapes/mismatched-closers-kept-output.mmd](../tests/fixtures/mindmap/shapes/mismatched-closers-kept-output.mmd)):
+
+```mmd
+mindmap
+  root((x)
+    a[y)
+    b(z]
+    c)w(
+```
+
+入力
+([shapes/text-and-string-forms-input.mmd](../tests/fixtures/mindmap/shapes/text-and-string-forms-input.mmd)):
 
 ```mmd
 mindmap
@@ -350,7 +373,8 @@ mindmap
     d["x"]
 ```
 
-出力 ([shapes/text-and-string-forms-output.mmd](../tests/fixtures/mindmap/shapes/text-and-string-forms-output.mmd)):
+出力
+([shapes/text-and-string-forms-output.mmd](../tests/fixtures/mindmap/shapes/text-and-string-forms-output.mmd)):
 
 ```mmd
 mindmap
@@ -366,14 +390,13 @@ mindmap
 形のテキスト、文字列、markdown 文字列、icon は、複数行にまたがれます。
 後の行の行頭の空白は字下げではなくテキストの一部なので、
 行は書かれたまま印字します。
-その下のノードは、
-上の規則のとおり段の幅を保ちます。 [fixture: multi-line-texts/shape-text]
-[fixture: multi-line-texts/string]
-[fixture: multi-line-texts/markdown-string]
-[fixture: multi-line-texts/icon]
+その下のノードは、上の規則のとおり段の幅を保ちます。
+[fixture: multi-line-texts/shape-text] [fixture: multi-line-texts/string]
+[fixture: multi-line-texts/markdown-string] [fixture: multi-line-texts/icon]
 [fixture: multi-line-texts/rest-of-the-tree-shifted]
 
-入力 ([multi-line-texts/shape-text-input.mmd](../tests/fixtures/mindmap/multi-line-texts/shape-text-input.mmd)):
+入力
+([multi-line-texts/shape-text-input.mmd](../tests/fixtures/mindmap/multi-line-texts/shape-text-input.mmd)):
 
 ```mmd
 mindmap
@@ -383,7 +406,8 @@ mindmap
     b
 ```
 
-出力 ([multi-line-texts/shape-text-output.mmd](../tests/fixtures/mindmap/multi-line-texts/shape-text-output.mmd)):
+出力
+([multi-line-texts/shape-text-output.mmd](../tests/fixtures/mindmap/multi-line-texts/shape-text-output.mmd)):
 
 ```mmd
 mindmap
@@ -393,7 +417,8 @@ mindmap
     b
 ```
 
-入力 ([multi-line-texts/rest-of-the-tree-shifted-input.mmd](../tests/fixtures/mindmap/multi-line-texts/rest-of-the-tree-shifted-input.mmd)):
+入力
+([multi-line-texts/rest-of-the-tree-shifted-input.mmd](../tests/fixtures/mindmap/multi-line-texts/rest-of-the-tree-shifted-input.mmd)):
 
 ```mmd
 mindmap
@@ -403,7 +428,8 @@ mindmap
    q]
 ```
 
-出力 ([multi-line-texts/rest-of-the-tree-shifted-output.mmd](../tests/fixtures/mindmap/multi-line-texts/rest-of-the-tree-shifted-output.mmd)):
+出力
+([multi-line-texts/rest-of-the-tree-shifted-output.mmd](../tests/fixtures/mindmap/multi-line-texts/rest-of-the-tree-shifted-output.mmd)):
 
 ```mmd
 mindmap
@@ -425,25 +451,28 @@ mindmap
 
 仕様は受理しても mermaid.js が拒否する入力があります。
 mermaid.js の字句解析器は、
-診断コメントを前の空白と一緒に読むからです（既知の差異 `blank-line-after-header-or-comments`）。
+診断コメントを前の空白と一緒に読むからです（既知の差異
+`blank-line-after-header-or-comments`）。
 ヘッダーの後の空行と、差異が挙げる場所の診断コメントの後の空行がそうです。
 印字は、2 つ目の種類を直しません。
 ヘッダーの後の空行は、ヘッダーの行末の空白と同じく落とすので、
-出力は mermaid.js に受理されます。 [fixture: blank-lines/after-the-header-dropped]
+出力は mermaid.js に受理されます。
+[fixture: blank-lines/after-the-header-dropped]
 [fixture: blank-lines/header-trailing-whitespace-dropped]
 [fixture: blank-lines/whitespace-line-dropped-at-the-start]
 ノードの間の診断コメントの後や、ヘッダーの後のコメントの後の空行は、
 1 つに畳んで残します。
-mermaid.js は、入力を拒否したのと同じく、
-出力も拒否します。 [fixture: blank-lines/after-two-comments-after-the-header]
+mermaid.js は、入力を拒否したのと同じく、出力も拒否します。
+[fixture: blank-lines/after-two-comments-after-the-header]
 [fixture: blank-lines/after-a-comment-between-nodes-kept]
 [fixture: blank-lines/after-a-comment-between-nodes-collapsed]
 [fixture: blank-lines/after-a-trailing-comment-kept]
-mermaid.js が空行を受理する形では、
-出力も受理します。 [fixture: blank-lines/after-one-comment-after-the-header]
+mermaid.js が空行を受理する形では、出力も受理します。
+[fixture: blank-lines/after-one-comment-after-the-header]
 [fixture: blank-lines/after-two-comments-between-nodes]
 
-入力 ([blank-lines/collapsed-input.mmd](../tests/fixtures/mindmap/blank-lines/collapsed-input.mmd)):
+入力
+([blank-lines/collapsed-input.mmd](../tests/fixtures/mindmap/blank-lines/collapsed-input.mmd)):
 
 ```mmd
 mindmap
@@ -457,7 +486,8 @@ mindmap
     b
 ```
 
-出力 ([blank-lines/collapsed-output.mmd](../tests/fixtures/mindmap/blank-lines/collapsed-output.mmd)):
+出力
+([blank-lines/collapsed-output.mmd](../tests/fixtures/mindmap/blank-lines/collapsed-output.mmd)):
 
 ```mmd
 mindmap
@@ -468,7 +498,8 @@ mindmap
     b
 ```
 
-入力 ([blank-lines/after-the-header-dropped-input.mmd](../tests/fixtures/mindmap/blank-lines/after-the-header-dropped-input.mmd)):
+入力
+([blank-lines/after-the-header-dropped-input.mmd](../tests/fixtures/mindmap/blank-lines/after-the-header-dropped-input.mmd)):
 
 ```mmd
 mindmap
@@ -477,7 +508,8 @@ mindmap
     a
 ```
 
-出力 ([blank-lines/after-the-header-dropped-output.mmd](../tests/fixtures/mindmap/blank-lines/after-the-header-dropped-output.mmd)):
+出力
+([blank-lines/after-the-header-dropped-output.mmd](../tests/fixtures/mindmap/blank-lines/after-the-header-dropped-output.mmd)):
 
 ```mmd
 mindmap
@@ -485,7 +517,8 @@ mindmap
     a
 ```
 
-入力 ([blank-lines/after-a-comment-between-nodes-kept-input.mmd](../tests/fixtures/mindmap/blank-lines/after-a-comment-between-nodes-kept-input.mmd)):
+入力
+([blank-lines/after-a-comment-between-nodes-kept-input.mmd](../tests/fixtures/mindmap/blank-lines/after-a-comment-between-nodes-kept-input.mmd)):
 
 ```mmd
 mindmap
@@ -496,7 +529,8 @@ mindmap
     b
 ```
 
-出力 ([blank-lines/after-a-comment-between-nodes-kept-output.mmd](../tests/fixtures/mindmap/blank-lines/after-a-comment-between-nodes-kept-output.mmd)):
+出力
+([blank-lines/after-a-comment-between-nodes-kept-output.mmd](../tests/fixtures/mindmap/blank-lines/after-a-comment-between-nodes-kept-output.mmd)):
 
 ```mmd
 mindmap
@@ -515,25 +549,24 @@ mindmap
 `%%{` の行に特別な字下げは要りません。
 テキストと印は書かれたまま残します。
 他の図種と同じ規則です。 [fixture: comments/lines-at-the-level-of-the-next-line]
-[fixture: comments/at-the-end]
-[fixture: comments/bare-and-brace-lines]
+[fixture: comments/at-the-end] [fixture: comments/bare-and-brace-lines]
 [fixture: comments/only-comments]
-ヘッダーの前のコメント行は 1 桁目に置きます。 [fixture: comments/before-the-header]
+ヘッダーの前のコメント行は 1 桁目に置きます。
+[fixture: comments/before-the-header]
 
 ヘッダー、形、icon の後ろのコメントは、その行に書かれたまま残します。
 空白が書かれていれば空白 1 つを置き、接していれば接したままにします。
 そのコメントの前の空白は Db に入らないので、この形は選択です。
 空白の連なりは 1 つにし、空白があるかどうかは保ちます。
-コメントが前のものに接するかどうかは書き手が決めるからで、
-ほかの図種も同じです。 [fixture: comments/after-the-header]
-[fixture: comments/after-the-header-touching]
-[fixture: comments/after-a-shape]
+コメントが前のものに接するかどうかは書き手が決めるからで、ほかの図種も同じです。
+[fixture: comments/after-the-header]
+[fixture: comments/after-the-header-touching] [fixture: comments/after-a-shape]
 [fixture: comments/after-an-icon]
-ノードのテキストの後ろと class の中の `%%` は、
-テキストの文字です。 [fixture: comments/in-text-is-text]
-[fixture: comments/single-percent-is-text]
+ノードのテキストの後ろと class の中の `%%` は、テキストの文字です。
+[fixture: comments/in-text-is-text] [fixture: comments/single-percent-is-text]
 
-入力 ([comments/lines-at-the-level-of-the-next-line-input.mmd](../tests/fixtures/mindmap/comments/lines-at-the-level-of-the-next-line-input.mmd)):
+入力
+([comments/lines-at-the-level-of-the-next-line-input.mmd](../tests/fixtures/mindmap/comments/lines-at-the-level-of-the-next-line-input.mmd)):
 
 ```mmd
 mindmap
@@ -545,7 +578,8 @@ mindmap
       ::icon(x)
 ```
 
-出力 ([comments/lines-at-the-level-of-the-next-line-output.mmd](../tests/fixtures/mindmap/comments/lines-at-the-level-of-the-next-line-output.mmd)):
+出力
+([comments/lines-at-the-level-of-the-next-line-output.mmd](../tests/fixtures/mindmap/comments/lines-at-the-level-of-the-next-line-output.mmd)):
 
 ```mmd
 mindmap
@@ -557,7 +591,8 @@ mindmap
     ::icon(x)
 ```
 
-入力 ([comments/after-a-shape-input.mmd](../tests/fixtures/mindmap/comments/after-a-shape-input.mmd)):
+入力
+([comments/after-a-shape-input.mmd](../tests/fixtures/mindmap/comments/after-a-shape-input.mmd)):
 
 ```mmd
 mindmap
@@ -567,7 +602,8 @@ mindmap
     c((z))   %%  e
 ```
 
-出力 ([comments/after-a-shape-output.mmd](../tests/fixtures/mindmap/comments/after-a-shape-output.mmd)):
+出力
+([comments/after-a-shape-output.mmd](../tests/fixtures/mindmap/comments/after-a-shape-output.mmd)):
 
 ```mmd
 mindmap
@@ -583,29 +619,28 @@ mindmap
 ノードの行にあるディレクティブは、両側に空白が書かれているかを残します。
 あれば空白 1 つを置き、接していれば接したままにします。
 他の図種と同じ規則です。 [fixture: directives/kept]
-[fixture: directives/between-nodes]
-[fixture: directives/before-the-header]
+[fixture: directives/between-nodes] [fixture: directives/before-the-header]
 [fixture: directives/after-the-header-on-the-same-line]
 [fixture: directives/after-the-header-touching]
 [fixture: directives/after-a-shape]
 
 2 つの単位の間のディレクティブは、その場に残します。
-テキストの中のディレクティブは、
-テキストの一部です。 [fixture: directives/between-units]
-[fixture: directives/inside-a-text]
-閉じられていないディレクティブはテキストの残りを取り、
-書かれたまま残します。 [fixture: directives/unclosed]
-[fixture: directives/unclosed-after-a-node]
+テキストの中のディレクティブは、テキストの一部です。
+[fixture: directives/between-units] [fixture: directives/inside-a-text]
+閉じられていないディレクティブはテキストの残りを取り、書かれたまま残します。
+[fixture: directives/unclosed] [fixture: directives/unclosed-after-a-node]
 
 行頭のディレクティブの後ろの空白は、ノードの字下げの数に入ります。
 Db は字下げを、ディレクティブを除いたテキストで読むからです。
 そのような行は、ディレクティブから書かれたまま印字し、
 ディレクティブの前の空白は、
-その段の幅に必要な字下げの文字数になるよう印字が決めます。 [fixture: directives/before-a-node-on-its-line]
+その段の幅に必要な字下げの文字数になるよう印字が決めます。
+[fixture: directives/before-a-node-on-its-line]
 [fixture: directives/before-a-node-after-spaces]
 [fixture: directives/before-the-root]
 
-入力 ([directives/between-nodes-input.mmd](../tests/fixtures/mindmap/directives/between-nodes-input.mmd)):
+入力
+([directives/between-nodes-input.mmd](../tests/fixtures/mindmap/directives/between-nodes-input.mmd)):
 
 ```mmd
 mindmap
@@ -616,7 +651,8 @@ mindmap
     b
 ```
 
-出力 ([directives/between-nodes-output.mmd](../tests/fixtures/mindmap/directives/between-nodes-output.mmd)):
+出力
+([directives/between-nodes-output.mmd](../tests/fixtures/mindmap/directives/between-nodes-output.mmd)):
 
 ```mmd
 mindmap
@@ -627,7 +663,8 @@ mindmap
     b
 ```
 
-入力 ([directives/before-a-node-on-its-line-input.mmd](../tests/fixtures/mindmap/directives/before-a-node-on-its-line-input.mmd)):
+入力
+([directives/before-a-node-on-its-line-input.mmd](../tests/fixtures/mindmap/directives/before-a-node-on-its-line-input.mmd)):
 
 ```mmd
 mindmap
@@ -635,7 +672,8 @@ root
  %%{init: {}}%% a
 ```
 
-出力 ([directives/before-a-node-on-its-line-output.mmd](../tests/fixtures/mindmap/directives/before-a-node-on-its-line-output.mmd)):
+出力
+([directives/before-a-node-on-its-line-output.mmd](../tests/fixtures/mindmap/directives/before-a-node-on-its-line-output.mmd)):
 
 ```mmd
 mindmap
@@ -650,7 +688,8 @@ mermaid.js は `::icon(` をどの大文字小文字でも読み、Db は同じ�
 大文字小文字は強制されないので、作者が選んだものとして、書き換えません。
 ヘッダーは小文字でだけ検出されます。 [fixture: keyword-case/icon-keyword]
 
-入力 ([keyword-case/icon-keyword-input.mmd](../tests/fixtures/mindmap/keyword-case/icon-keyword-input.mmd)):
+入力
+([keyword-case/icon-keyword-input.mmd](../tests/fixtures/mindmap/keyword-case/icon-keyword-input.mmd)):
 
 ```mmd
 mindmap
@@ -659,7 +698,8 @@ mindmap
   ::Icon(y)
 ```
 
-出力 ([keyword-case/icon-keyword-output.mmd](../tests/fixtures/mindmap/keyword-case/icon-keyword-output.mmd)):
+出力
+([keyword-case/icon-keyword-output.mmd](../tests/fixtures/mindmap/keyword-case/icon-keyword-output.mmd)):
 
 ```mmd
 mindmap
@@ -672,14 +712,16 @@ mindmap
 
 フローチャートと同じです。
 `---` の行の間の YAML は Prettier の YAML 整形で整形し、 `---` の行は、
-行末の空白とタブも含め、
-書かれたまま残します。 [fixture: frontmatter-yaml/formatted]
+行末の空白とタブも含め、書かれたまま残します。
+[fixture: frontmatter-yaml/formatted]
 [fixture: frontmatter-yaml/closing-delimiter-whitespace-kept]
-Prettier が YAML を読めないときは、
-書かれたまま残します。 [fixture: frontmatter-yaml/malformed-kept]
-フロントマターとヘッダーの間のコメント行は残します。 [fixture: frontmatter-yaml/comment-after-frontmatter-before-header]
+Prettier が YAML を読めないときは、書かれたまま残します。
+[fixture: frontmatter-yaml/malformed-kept]
+フロントマターとヘッダーの間のコメント行は残します。
+[fixture: frontmatter-yaml/comment-after-frontmatter-before-header]
 
-入力 ([frontmatter-yaml/formatted-input.mmd](../tests/fixtures/mindmap/frontmatter-yaml/formatted-input.mmd)):
+入力
+([frontmatter-yaml/formatted-input.mmd](../tests/fixtures/mindmap/frontmatter-yaml/formatted-input.mmd)):
 
 ```mmd
 ---
@@ -691,7 +733,8 @@ mindmap
   root
 ```
 
-出力 ([frontmatter-yaml/formatted-output.mmd](../tests/fixtures/mindmap/frontmatter-yaml/formatted-output.mmd)):
+出力
+([frontmatter-yaml/formatted-output.mmd](../tests/fixtures/mindmap/frontmatter-yaml/formatted-output.mmd)):
 
 ```mmd
 ---
@@ -711,32 +754,29 @@ mindmap の診断コメントは U+2028 か U+2029 で終わり、その後ろ�
 区切り文字を 1 文字と数えて Db が読む字下げを付けます。
 ノードのテキスト、形のテキスト、icon の中では、これらは文字で、
 そのまま残します。
-例は文字列で書かれていて、`\u2028` は U+2028、
-`\n` は改行です。 [test: U+2028 after a comment on the header line]
+例は文字列で書かれていて、`\u2028` は U+2028、 `\n` は改行です。
+[test: U+2028 after a comment on the header line]
 [test: U+2028 after a comment after a shape]
 [test: U+2028 after a comment after an icon]
 [test: U+2028 after a bare comment between nodes]
-[test: U+2028 inside a node text]
-[test: U+2029 inside a shape text]
-[test: U+2028 inside an icon]
-[test: U+2028 after the header]
+[test: U+2028 inside a node text] [test: U+2029 inside a shape text]
+[test: U+2028 inside an icon] [test: U+2028 after the header]
 
 区切り文字のそばの `;` は、これらを何も変えません。
 行の規則が無視する `;` はコメントの末尾に残り、
 区切り文字の後ろのノードのテキストにある `;` は、
 icon の後ろでもそのテキストの文字です。
 区切り文字の後ろの広い字下げは、段の幅に書き直します。
-タブ幅 0 のときもタブを使うときも、
-その行は他の行と同じに字下げします。 [test: mindmap: selected-comment-ls-kept]
+タブ幅 0 のときもタブを使うときも、その行は他の行と同じに字下げします。
+[test: mindmap: selected-comment-ls-kept]
 [test: mindmap: comment-ps-semicolon-after]
-[test: mindmap: comment-ls-semicolon-both]
-[test: mindmap: icon-comment-ps-kept]
+[test: mindmap: comment-ls-semicolon-both] [test: mindmap: icon-comment-ps-kept]
 [test: mindmap: selected-comment-ps-wide]
-[test: mindmap: selected-comment-ls-zero]
-[test: mindmap: icon-comment-ls-tabs]
+[test: mindmap: selected-comment-ls-zero] [test: mindmap: icon-comment-ls-tabs]
 
 区切り文字の後ろの行頭にあるディレクティブは、
-他の行と同じ行頭のディレクティブです（[ディレクティブ](#ディレクティブ)を参照）。
+他の行と同じ行頭のディレクティブです（[ディレクティブ](#ディレクティブ)
+を参照）。
 その行はディレクティブから書かれたまま印字し、
 ディレクティブの前の空白は印字が決めます。
 区切り文字と、ディレクティブの後ろの空白は、ノードの字下げの文字で、
@@ -752,8 +792,8 @@ icon の後ろでもそのテキストの文字です。
 行の規則が無視する `;` があるか、行がどれだけ深いか、
 どのオプションを指定したかは、結果を変えません。
 このようなノードのコメントの後ろの区切り文字も同じように次の行を始め、
-その後ろの行は、
-これまでどおり字下げします。 [test: U+2028 before a directive that starts the line]
+その後ろの行は、これまでどおり字下げします。
+[test: U+2028 before a directive that starts the line]
 [test: U+2029 before a directive that touches the text]
 [test: U+2028 and whitespace before and after a directive]
 [test: U+2028 before two directives]
@@ -772,16 +812,18 @@ mermaid.js は、区切り文字の後ろのコメント行を、
 コメント行が持つものは、ノードの字下げの数に入りません。
 コメント行の後ろのディレクティブは、上と同じくノードの行を始めます。
 コメント行は、その前のディレクティブとともに、
-ノードの段に独立した行として置きます（[コメント](#コメント)を参照）。 [test: U+2028 before a comment line and a directive]
+ノードの段に独立した行として置きます（[コメント](#コメント)を参照）。
+[test: U+2028 before a comment line and a directive]
 [test: U+2028 before a comment line and an indented directive]
 [test: U+2028 before a directive, a comment line, and a directive]
 [test: U+2028 before two comment lines and a directive]
 
 区切り文字の後ろの単独の行のディレクティブや空行は、
 コメントの後ろの空白だけの行で、他の場所の同じ行と同じに印字します。
-ディレクティブは後ろの行と同じ段に置き（[ディレクティブ](#ディレクティブ)を参照）、
-空行は 1 つの空行にします（[空行](#空行)を参照）。
-mermaid.js はどちらの置き方も拒否します（既知の差異 [`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.ja.md)）。
+ディレクティブは後ろの行と同じ段に置き（[ディレクティブ](#ディレクティブ)
+を参照）、空行は 1 つの空行にします（[空行](#空行) を参照）。
+mermaid.js はどちらの置き方も拒否します（既知の差異
+[`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.ja.md)）。
 印字はそれを直しません。 [test: U+2028 before a directive line of its own]
 [test: U+2028 before an empty line]
 
@@ -794,10 +836,7 @@ U+00A0、U+3000、U+FEFF は、字句解析器にとって空白です。
 ノードのテキストと形のテキストの中では、テキストの文字なので残します。
 例は文字列で書かれていて、`\u00a0` は U+00A0、`\u3000` は U+3000、
 `\ufeff` は U+FEFF です。 [test: U+00A0 in the indentation]
-[test: U+3000 in the indentation]
-[test: U+FEFF in the indentation]
-[test: U+00A0 after the header]
-[test: U+00A0 inside a node text]
-[test: U+00A0 inside a shape text]
-[test: U+00A0 and U+3000 after a shape]
+[test: U+3000 in the indentation] [test: U+FEFF in the indentation]
+[test: U+00A0 after the header] [test: U+00A0 inside a node text]
+[test: U+00A0 inside a shape text] [test: U+00A0 and U+3000 after a shape]
 [test: U+00A0 before a comment after a shape]

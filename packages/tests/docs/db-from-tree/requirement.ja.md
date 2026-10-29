@@ -12,21 +12,25 @@ requirement 図の木から Db の要約を作る手順です。
 要約の欄は [db-summaries.ja.md](../db-summaries.ja.md#requirement) にあります。
 
 mermaid.js は、構文解析の間に Db を作ります。
-文法は、
-文が終わるたびに Db のメソッドを呼びます（[`requirementDef`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L146-L149)、
+文法は、文が終わるたびに Db のメソッドを呼びます。
+出典は
+[`requirementDef`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L146-L149)、
 [`elementDef`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L192-L195)、
 [`relationshipDef`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L205-L209)、
 [`classDefStatement` と `classStatement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L227-L234)、
-[`styleStatement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L243-L245)）。
-Db は、
-メソッドに渡されたものを保ちます（[`addRequirement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L126-L142)、
+[`styleStatement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L243-L245)
+です。
+Db は、メソッドに渡されたものを保ちます。
+出典は
+[`addRequirement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L126-L142)、
 [`addElement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L172-L186)、
 [`addRelationship`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L204-L210)、
 [`setCssStyle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L226-L240)、
 [`setClass`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L242-L255)、
 [`defineClass`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L257-L286)、
 [`setDirection`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L91-L93)、
-[`setDiagramTitle`、`setAccTitle`、`setAccDescription`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L16-L30)）。
+[`setDiagramTitle`、`setAccTitle`、`setAccDescription`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L16-L30)
+です。
 要約も同じように作ります。
 文を出現順に実行し、Db が持つ列がそのまま要約です。
 レイアウトのデータではなく、
@@ -75,8 +79,8 @@ requirement と element の本体だけです（**Requirements** を参照）。
   `value` がある場合、それは木が持つ書かれたとおりのテキストで、
   Db が持つのは mermaid.js が読むとおりのテキストです。
   そのため、`a`、U+00A0、`b` は、ノーブレークスペースを含む 1 つの名前です。
-  行の上で名前や値の後ろにある空白は、
-  その一部ではありません。 [fixture: requirement/db-requirement-name-spaces]
+  行の上で名前や値の後ろにある空白は、その一部ではありません。
+  [fixture: requirement/db-requirement-name-spaces]
   [fixture: requirement/lex-whitespace-nbsp-in-name]
   [fixture: requirement/lex-whitespace-nbsp-after-name]
   [fixture: requirement/lex-whitespace-line-separator-in-name]
@@ -84,8 +88,8 @@ requirement と element の本体だけです（**Requirements** を参照）。
 - StringLiteral は、その範囲から引用符を除いた変換した形を持ちます。
   引用符の間の文字はすべて保ち、空白も改行も、
   引用符なしのテキストが持てない `#`、`%`、`:`、`,`、`-`、`{`、`}` も保ちます。
-  引用符付きの名前と、同じテキストの引用符なしの名前は、
-  1 つの名前です。 [fixture: requirement/db-requirement-quoted-values]
+  引用符付きの名前と、同じテキストの引用符なしの名前は、 1 つの名前です。
+  [fixture: requirement/db-requirement-quoted-values]
   [fixture: requirement/db-relationship-quoted-names]
   [fixture: requirement/lex-string-hash-percent]
   [fixture: requirement/lex-string-line-feed]
@@ -121,8 +125,7 @@ requirement と element の本体だけです（**Requirements** を参照）。
   `accTitle: style:#x a;b` のタイトルは `style:#x ab`、
   `"style:#x" - satisfies -> b;c` の端は `bc` です。
   `style` の行でない行の `;` は、テキストの文字です。
-  `id: 1;` の id は `1;`、
-  `style r fill:red;` の style は `fill:red;` です。
+  `id: 1;` の id は `1;`、 `style r fill:red;` の style は `fill:red;` です。
   [fixture: requirement/tokens-ignored-semicolon-in-style]
   [fixture: requirement/tokens-ignored-semicolon-in-acc-title]
   [fixture: requirement/tokens-ignored-semicolon-in-acc-descr]
@@ -179,9 +182,8 @@ requirement と element の本体だけです（**Requirements** を参照）。
 文がなければ、Db の direction は `TB` で、
 `accTitle` と `accDescr` は空のテキスト、
 タイトルはフロントマターのタイトル（なければ空のテキスト）です。
-requirement、element、リレーションシップ、
-クラス定義はありません。 [fixture: requirement/header-only]
-[fixture: requirement/db-frontmatter-title]
+requirement、element、リレーションシップ、クラス定義はありません。
+[fixture: requirement/header-only] [fixture: requirement/db-frontmatter-title]
 
 **direction、タイトル、アクセシビリティ。**
 `direction` は、本体の最後の direction の文の direction で、
@@ -201,8 +203,8 @@ direction の行は行全体で読みます。
 そのあと文字の置き換えをします。
 テキストのない description ブロックは何も変えません。
 テキストは後の行から始まってもかまいません。
-`accTitle:` の次の行が `T` なら、
-タイトルは `T` です。 [fixture: requirement/db-direction-last-wins]
+`accTitle:` の次の行が `T` なら、タイトルは `T` です。
+[fixture: requirement/db-direction-last-wins]
 [fixture: requirement/db-direction-lower-case]
 [fixture: requirement/lex-direction-tb-first]
 [fixture: requirement/lex-direction-line-text-before-and-after]
@@ -290,8 +292,7 @@ requirement は名前で保ち、文が初めてその名前を挙げた順に�
 - すでにある requirement と同じ名前の文は、kind が何であっても、
   その requirement の欄を、本体も含めて何も変えません。
   requirement と element は同じ名前を持てます。
-  名前はどんな名前でもよく、
-  `__proto__` や `constructor` も同じです。
+  名前はどんな名前でもよく、 `__proto__` や `constructor` も同じです。
   [fixture: requirement/db-requirement-name-repeated]
   [fixture: requirement/db-requirement-and-element-same-name]
   [fixture: requirement/spec-requirement-diagram-7e4de658]
@@ -299,8 +300,7 @@ requirement は名前で保ち、文が初めてその名前を挙げた順に�
   [fixture: requirement/db-requirement-definition-again-with-class]
 - `requirementId` と `text` は、
   最初の `id` の欄と最初の `text` の欄の値のテキストです。
-  引用符付きの値は空白も含め、
-  引用符なしの値は両端の空白を除いたものです。
+  引用符付きの値は空白も含め、引用符なしの値は両端の空白を除いたものです。
   [fixture: requirement/db-requirement-quoted-values]
   [fixture: requirement/db-requirement-value-spaces]
 
@@ -332,8 +332,8 @@ element は、
 `src` と `dst` は、arrow が `forward` なら左の名前と右の名前、
 `backward` なら右の名前と左の名前です。
 `b <- copies - a` は a から b へのリレーションシップです。
-名前は requirement や element のものでなくてもよく、
-文はどちらも加えません。 [fixture: requirement/db-relationship-arrows]
+名前は requirement や element のものでなくてもよく、文はどちらも加えません。
+[fixture: requirement/db-relationship-arrows]
 [fixture: requirement/gram-relationship-glued]
 [fixture: requirement/gram-relationship-backward-glued]
 [fixture: requirement/lex-relationship-upper-case]
@@ -376,8 +376,8 @@ requirement と element は、どれも最初にクラス `default` を持ちま
   クラスごとに、対象は、
   その時点でそのクラスが持つ style を `cssStyles` の後ろに加えます。
   クラスに `classDef` は要りません。
-  同じクラスを 2 回挙げれば、
-  2 回残ります。 [fixture: requirement/db-class-statement]
+  同じクラスを 2 回挙げれば、 2 回残ります。
+  [fixture: requirement/db-class-statement]
   [fixture: requirement/db-class-statement-unknown-name-first]
   [fixture: requirement/db-class-colon-form]
   [fixture: requirement/db-class-in-definition]

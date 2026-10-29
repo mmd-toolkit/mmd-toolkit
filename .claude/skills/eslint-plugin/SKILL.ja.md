@@ -43,8 +43,8 @@ fixture で確かめて書く手順。
   その文書は取り除く。
 - ESLint の言語プラグイン（プラグインの `languages`）であり、
   カスタムパーサーではない。
-  `@mmd-toolkit/parser` の木、トークンとコメント、 visitor
-  keys を ESLint に渡す。
+  `@mmd-toolkit/parser` の木、トークンとコメント、
+  visitor keys を ESLint に渡す。
 - 規則は木とトークンを読み、テキストを字句解析し直さない。
   規則が報告するものが木にどう現れるかは、
   条件を `parse()` の結果に当てて確かめる。
@@ -57,8 +57,9 @@ fixture で確かめて書く手順。
    基準は変わるので、毎回読む。
 2. SKILL `conventions`（`.claude/skills/conventions/SKILL.md`）。
    英語の文書と日本語の対、見えない文字を書かないこと、
-   Prettier による文章の折り返し、 Mermaid のテキストのコードブロックの info
-   string は `mmd`、 mermaid.js のソースへのリンクの書き方。
+   Prettier による文章の折り返し、
+   Mermaid のテキストのコードブロックの info string は `mmd`、
+   mermaid.js のソースへのリンクの書き方。
 3. 木の定義: `packages/spec/docs/ast.md` と `packages/spec/docs/ast/<図種>.md`。
    規則の条件は、ここにあるノードの型、欄、トークンの種類で書く。
 4. `packages/eslint-plugin/docs/rules/index.md` と、同じ種類の既存の文書 1 つ。
@@ -68,7 +69,8 @@ fixture で確かめて書く手順。
    コマンド `update` と `check:docs` が書いてある。
 
 規則の採否、名前、範囲は、
-先に rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の手順と基準で決める。
+先に rule-ideas の
+SKILL（`.claude/skills/rule-ideas/SKILL.md`）の手順と基準で決める。
 この手順は、そうして決めた規則の文書を書く。
 確かめた結果、条件が成り立たない、木とトークンから見つけられない、
 例が mermaid.js に拒否される、などが分かったら、
@@ -189,7 +191,8 @@ mermaid.js が報告するテキストをどう読むかを書く。
   日本語の文は、`index.ja.md` での規則の説明になる。
   題とこの文の間には、箇条書きなど、ほかのものを置かない。
 - 告知: 最初の段落の後の、
-  `<!-- begin auto-generated rule notice -->` から `<!-- end auto-generated rule notice -->` までの部分で、
+  `<!-- begin auto-generated rule notice -->` から
+  `<!-- end auto-generated rule notice -->` までの部分で、
   `recommended` の設定がこの規則を有効にするかどうかを書く。
   これは生成する部分で、手で書いたり変えたりしない。
   新しい文書には `update` が入れる。
@@ -207,8 +210,8 @@ mermaid.js が報告するテキストをどう読むかを書く。
   図種に対応したら、その項目を足す（7 節）。
   項目を足すことになるという断りは、文書に書かない。
 - 例: 「この規則に**反する**コードの例:」と、
-  「この規則に**従う**コードの例:」の後に、 info
-  string が `mmd` のコードブロックを、1 つのブロックに 1 つの例で書く。
+  「この規則に**従う**コードの例:」の後に、
+  info string が `mmd` のコードブロックを、1 つのブロックに 1 つの例で書く。
   共通の規則では、その前に、
   どの図種の例かを書く（「例は flowchart である。」）。
   例は、その誤りの普通の書き方にする。
@@ -218,7 +221,8 @@ mermaid.js が報告するテキストをどう読むかを書く。
   従う例には、条件の境界を示すものを選ぶ。
   正しい書き方と、条件が当たらない最も近いテキストである。
   従う例や、これらの例の組の外にあるものも含め、
-  すべての `mmd` のコードブロックを `%% eslint @mmd-toolkit/<名前>: error` で始める。
+  すべての `mmd` のコードブロックを `%% eslint @mmd-toolkit/<名前>: error`
+  で始める。
   そのページが説明する規則の id を使い、字下げせず、
   図のヘッダーや Mermaid のディレクティブより前に置く。
   サイトで `twoslash-eslint` の診断を有効にするためである。
@@ -277,7 +281,8 @@ mermaid.js が報告するテキストをどう読むかを書く。
   テストは、写しが fixture の入力とバイト単位で同じことを確かめる。
   規則のためだけに書く入力は、`valid/` か `invalid/` の直下に置く。
   fixture のファイルに、
-  `pnpm run lint:chars` が調べる文字は入れない（一覧は `packages/spec/docs/index.ja.md`）。
+  `pnpm run lint:chars` が調べる文字は入れない（一覧は
+  `packages/spec/docs/index.ja.md`）。
   それが要るコーパスの fixture は写さない。
   テストが不可視文字を含む入力を要するときは、
   テストのコードか JSON の fixture に、エスケープで書く。
@@ -322,7 +327,8 @@ rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある
 mermaid.js の呼び出しは直列で遅いので、入力が多いときは、
 バックグラウンドで動かし、出力をファイルに書く。
 
-1. mermaid.js の読み方: 各例を `packages/tests/src/mermaid.ts` の `runMermaid(text)` に掛ける。
+1. mermaid.js の読み方: 各例を `packages/tests/src/mermaid.ts` の
+   `runMermaid(text)` に掛ける。
    どの例も受理されなければならない（拒否される入力は構文エラーで、
    規則は報告しない）。
    Db の値は、文書に書いたとおりでなければならない。
@@ -412,15 +418,15 @@ mermaid.js の呼び出しは直列で遅いので、入力が多いときは、
    両方から、コードブロックの行と fixture を挙げた行を抜き出して比べる。
 6. 挙げた fixture がすべて `packages/tests/fixtures` にあり、
    相対リンクの先がすべてあること。
-7. 文書だけの変更では、この検査を動かし、テストは回さない（SKILL
-   `conventions` の「テストの実行」）。
+7. 文書だけの変更では、この検査を動かし、
+   テストは回さない（SKILL `conventions` の「テストの実行」）。
    例外は、テストが読むものを変えたときである。
    つまり、例（3 節の 2 行の後のコードブロック）か規則のファイルである。
    そのときは、
-   `tests/rule-cases.test.ts` と規則のテスト `tests/rules/<名前>.test.ts` を回し、
-   最初の段落と生成する部分のために `pnpm run check:docs` を動かす。
-   どの変更にどのテストが対応するかは、 SKILL
-   `eslint-plugin-rules` の 4 節にある。
+   `tests/rule-cases.test.ts` と規則のテスト `tests/rules/<名前>.test.ts`
+   を回し、最初の段落と生成する部分のために `pnpm run check:docs` を動かす。
+   どの変更にどのテストが対応するかは、
+   SKILL `eslint-plugin-rules` の 4 節にある。
 
 ## 6. 規則のファイルと、生成する部分
 
@@ -437,11 +443,14 @@ mermaid.js の呼び出しは直列で遅いので、入力が多いときは、
 - 実装していない規則のファイルでは、`recommended` は `false` である。
   規則を実装するときに、rule-ideas の SKILL の 7 節の判定から設定する。
   そこの判定がいったんの案なら、先に決め直す。
-- `pnpm --filter @mmd-toolkit/eslint-plugin run update` が書くもの: すべての文書の題と告知。
+- `pnpm --filter @mmd-toolkit/eslint-plugin run update` が書くもの:
+  すべての文書の題と告知。
   実装した規則の文書の末尾の、
-  `<!-- begin auto-generated rule resources -->` から `<!-- end auto-generated rule resources -->` までのリソースの節。
+  `<!-- begin auto-generated rule resources -->` から
+  `<!-- end auto-generated rule resources -->` までのリソースの節。
   `index.md` と `index.ja.md` の、
-  `<!-- begin auto-generated rules list -->` から `<!-- end auto-generated rules list -->` までのすべて。
+  `<!-- begin auto-generated rules list -->` から
+  `<!-- end auto-generated rules list -->` までのすべて。
   そこには共通の規則の表と図種ごとの表があり、行は英語の説明、
   日本語の文書の最初の段落、 `recommended` が有効にする規則の ✅、
   まだ実装していない規則の 🚧 を持つ。
@@ -462,7 +471,8 @@ mermaid.js の呼び出しは直列で遅いので、入力が多いときは、
    index の図種の表は、その規則ができると `update` が生成する（6 節）。
    図種を `tools/rule-docs.ts` の `DIAGRAM_ORDER` に足す。
    場所は、
-   サイトがサイドバーに使う `packages/docs/.vitepress/documents.js` の `diagramOrder` での位置である。
+   サイトがサイドバーに使う `packages/docs/.vitepress/documents.js` の
+   `diagramOrder` での位置である。
    2 つの順序が違うと `tests/rule-docs.test.ts` が失敗し、
    `DIAGRAM_ORDER` にない図種の規則があると `update` が失敗する。
 2. 共通の規則ごとに、新しい図種の普通の書き方の例を mermaid.js に掛ける。

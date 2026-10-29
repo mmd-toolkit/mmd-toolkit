@@ -96,8 +96,9 @@ mindmap
 
 ## 背景
 
-mermaid.js は、最後に加えたノードの icon や class を、
-それまでの値を置き換えて設定する（[`decorateNode`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L154-L167)）。
+mermaid.js は、
+[`decorateNode`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L154-L167)
+で、最後に加えたノードの icon や class を、それまでの値を置き換えて設定する。
 
 <!-- begin auto-generated rule resources -->
 

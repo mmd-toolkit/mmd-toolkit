@@ -20,7 +20,7 @@ export const agentflowNoRedefinedFlow: MermaidRuleDefinition<{
     schema: [],
     messages: {
       redefined:
-        "mermaid.js replaces the title of flow `{{id}}` written on line {{line}} with this title.",
+        "mermaid.js replaces the title of flow `{{id}}` written earlier with this title.",
     },
   },
   create(context) {
@@ -34,7 +34,7 @@ export const agentflowNoRedefinedFlow: MermaidRuleDefinition<{
         context.report({
           node: node.title,
           messageId: "redefined",
-          data: { id, line: String(previous.loc.start.line) },
+          data: { id },
         })
       }
       titles.set(id, node.title)

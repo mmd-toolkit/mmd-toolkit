@@ -27,23 +27,22 @@ export const c4NoDuplicateDescription: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js replaces the description set on line {{line}} with this description.",
+        "mermaid.js replaces the earlier description with this description.",
     },
   },
   create(context) {
-    let previous: { text: string; line: number } | null = null
+    let previous: string | null = null
 
     /** Values already retain or trim exterior whitespace according to the form. */
     function check(node: DescriptionStatement): void {
       const text = accDescrTextOf(node.value?.value ?? "")
-      if (previous !== null && previous.text !== text) {
+      if (previous !== null && previous !== text) {
         context.report({
           node,
           messageId: "duplicate",
-          data: { line: String(previous.line) },
         })
       }
-      previous = { text, line: node.loc.start.line }
+      previous = text
     }
 
     return {

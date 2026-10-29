@@ -37,8 +37,8 @@ pnpm run format:check
 ## リリース
 
 リリースは [Changesets](https://github.com/changesets/changesets) で行います。
-`main` に push すると、Release のワークフローが、版を上げて変更履歴を書く pull
-request を開きます。
+`main` に push すると、Release のワークフローが、
+版を上げて変更履歴を書く pull request を開きます。
 その pull request は `pnpm run version:ci` で作られます。
 `changeset version` の後に `pnpm run update` を実行するので、
 その中の生成するファイルは最新です。

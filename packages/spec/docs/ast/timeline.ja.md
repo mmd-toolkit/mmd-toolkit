@@ -4,7 +4,8 @@
 
 この文書は、図種 `timeline` の木のノードを定めます。
 木の共通部分は [ast.ja.md](../ast.ja.md) で定め、ソースの読み方と、
-どの文法の規則がどのノードを作るかは [diagrams/timeline.ja.md](../diagrams/timeline.ja.md) で定めます。
+どの文法の規則がどのノードを作るかは
+[diagrams/timeline.ja.md](../diagrams/timeline.ja.md) で定めます。
 
 この図種の本体は [TimelineDiagram](#timelinediagram) です。
 欄の値は、
@@ -12,7 +13,8 @@
 書き手が書いたものを保ち、
 [common.ja.md](../common.ja.md#ソースの読み方) の変換後の形ではありません。
 値が空白で始まったり終わったりするのは、mermaid.js が読むとおり、
-その単位が空白を自分の文字として持つところだけです（[ノード](../ast.ja.md#ノード) を参照）。
+その単位が空白を自分の文字として持つところだけです。
+[ノード](../ast.ja.md#ノード) を参照してください。
 この図種では、コロン、`#`、改行の前の空白を保つ period と、
 両端の空白を保つ event、タイトル、section の名前です。
 アクセシビリティのテキストは両端の空白なしで読まれます。
@@ -67,7 +69,8 @@ period の event は、間に空白、改行、コメントしかなく、
 `a : e1 : e2` のように period の行にあるものと、
 `a` の後に行 `: e1` と `: e2` が続くように、その後の行にあるものです。
 空行、コメント行、行 `# c` の後でもそうです。
-ほかの文の後の event は [TimelineEventStatement](#timelineeventstatement) です。 [fixture:
+ほかの文の後の event は [TimelineEventStatement](#timelineeventstatement) です。
+[fixture:
 timeline/db-event-two-on-a-line] [fixture: timeline/db-event-own-line] [fixture:
 timeline/db-event-own-line-after-event] [fixture:
 timeline/db-event-own-line-after-blank-line] [fixture:
@@ -104,8 +107,8 @@ period ではない文の後の event です。
 `section S : x` の `: x` も同じです。
 mermaid.js がそれをどの period に与えるかは、tests パッケージの要約にあります。
 [文法の外の拒否](../diagrams/timeline.ja.md#文法の外の拒否) にあるとおり、
-最初の period より前の event の文は、
-入力を拒否させます。 [fixture: timeline/db-event-after-section-joins-earlier-task]
+最初の period より前の event の文は、入力を拒否させます。
+[fixture: timeline/db-event-after-section-joins-earlier-task]
 [fixture: timeline/db-section-with-event-after-task]
 [fixture: timeline/db-event-own-line-after-title]
 [fixture: timeline/db-event-own-line-after-acc-title]
@@ -122,8 +125,8 @@ mermaid.js がそれをどの period に与えるかは、tests パッケージ�
 | `value` | TimelineLiteral | `title` と空白文字 1 つの後の、改行までのテキスト。 |
 
 子の欄: `value`。
-値は両端の空白を保ち、`:`、`#`、
-`%%` を文字として持ちます。 [fixture: timeline/db-title-statement] [fixture:
+値は両端の空白を保ち、`:`、`#`、 `%%` を文字として持ちます。
+[fixture: timeline/db-title-statement] [fixture:
 timeline/db-title-two-spaces] [fixture: timeline/db-title-trailing-spaces]
 [fixture: timeline/db-title-colon] [fixture: timeline/db-title-hash] [fixture:
 timeline/db-title-percent]
@@ -138,8 +141,8 @@ timeline/db-title-percent]
 
 子の欄: `name`。
 名前は空白を含みうるテキストで、何もそれを参照しないので TimelineLiteral です。
-両端の空白を保ち、
-空白だけの名前はその空白の値です。 [fixture: timeline/db-section-statement]
+両端の空白を保ち、空白だけの名前はその空白の値です。
+[fixture: timeline/db-section-statement]
 [fixture: timeline/db-section-two-spaces] [fixture:
 timeline/db-section-trailing-spaces] [fixture: timeline/db-section-only-space]
 [fixture: timeline/db-section-two-with-tasks]
@@ -169,8 +172,8 @@ timeline/gram-acc-title-empty] [fixture: timeline/db-acc-title-trailing-spaces]
 | `value` | TimelineLiteral | `accDescr:` の後の、その行の終わりまでのテキスト。 |
 
 子の欄: `value`。
-TimelineAccTitleStatement と同じく、
-値は null になりません。 [fixture: timeline/db-acc-descr-statement] [fixture:
+TimelineAccTitleStatement と同じく、値は null になりません。
+[fixture: timeline/db-acc-descr-statement] [fixture:
 timeline/gram-acc-descr-empty]
 
 ### TimelineAccDescrBlockStatement
@@ -187,10 +190,10 @@ timeline/gram-acc-descr-empty]
 子の欄: `value`。
 `accDescr {}`、空白と改行だけのブロック、
 ディレクティブかコメント行だけのブロックは値 null を持ち、何も変えません。
-その前に書いた説明は残ります。 [fixture: timeline/gram-empty-description-block-directive-only]
+その前に書いた説明は残ります。
+[fixture: timeline/gram-empty-description-block-directive-only]
 [fixture: timeline/gram-empty-description-block-comment-line-only]
-[fixture: timeline/gram-empty-description-block-keeps-description]
-[fixture:
+[fixture: timeline/gram-empty-description-block-keeps-description] [fixture:
 timeline/db-acc-descr-block] [fixture: timeline/db-acc-descr-block-braces-only]
 [fixture: timeline/db-acc-descr-block-empty] [fixture:
 timeline/gram-acc-descr-block-unclosed]

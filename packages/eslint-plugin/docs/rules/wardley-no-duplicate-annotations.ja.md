@@ -59,8 +59,8 @@ wardley-beta
 
 ## 背景
 
-[パーサー](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L199-L204) は、
-最初の `annotations` だけから枠の位置を取る。
+[パーサー](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L199-L204)
+は、最初の `annotations` だけから枠の位置を取る。
 
 <!-- begin auto-generated rule resources -->
 

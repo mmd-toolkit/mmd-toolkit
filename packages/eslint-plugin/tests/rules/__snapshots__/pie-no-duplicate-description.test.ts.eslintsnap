@@ -12,7 +12,7 @@ Code:
   4 |   "A" : 1
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -25,7 +25,7 @@ Code:
   3 | accDescr {Second}
     | ^~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -42,7 +42,7 @@ Code:
   5 | }
     | ~ [1]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -60,7 +60,7 @@ Code:
     | ~ [1]
   6 | accDescr: Third
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -74,7 +74,7 @@ Code:
     | ^~~~~~~~~ [1]
   4 | "A":1
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -88,7 +88,7 @@ Code:
     | ^~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -102,7 +102,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -115,7 +115,7 @@ Code:
   3 | accDescr {Second}
     | ^~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -128,7 +128,7 @@ Code:
   3 | accDescr:Second
     | ^~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -141,7 +141,7 @@ Code:
   3 | accDescr {Second}
     | ^~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -157,7 +157,7 @@ Code:
   5 | C}
     | ~~ [1]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -172,7 +172,7 @@ Code:
   4 | "A":1
   5 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -187,8 +187,8 @@ Code:
   4 | accDescr:Third
     | ^~~~~~~~~~~~~~ [2]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
-[2] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -204,7 +204,7 @@ Code:
   6 | accDescr: Second
     | ^~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -217,7 +217,7 @@ Code:
   3 | accDescr: Sec%%{init: {}}%%ond
     | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---
 
 
@@ -231,5 +231,5 @@ Code:
     | ^~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---

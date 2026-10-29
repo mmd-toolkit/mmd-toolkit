@@ -19,7 +19,7 @@ export const radarNoMismatchedEntryCount: MermaidRuleDefinition<{
     schema: [],
     messages: {
       mismatched:
-        "mermaid.js does not draw curve `{{name}}`: it has {{entries}} values, but the diagram has {{axes}} axes.",
+        "mermaid.js does not draw curve `{{name}}`: it has {{entries}} {{valueWord}}, but the diagram has {{axes}} {{axisWord}}.",
     },
   },
   create(context) {
@@ -39,7 +39,9 @@ export const radarNoMismatchedEntryCount: MermaidRuleDefinition<{
             data: {
               name: node.name.name,
               entries: String(node.entries.length),
+              valueWord: node.entries.length === 1 ? "value" : "values",
               axes: String(axes.count),
+              axisWord: axes.count === 1 ? "axis" : "axes",
             },
           })
         }

@@ -12,7 +12,7 @@ Code:
     | ^~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js draws this area again; a declaration on line 2 already has these names.
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
 ---
 
 
@@ -28,7 +28,7 @@ Code:
     | ^~~~~~~~~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js draws this area again; a declaration on line 4 already has these names.
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
 ---
 
 
@@ -45,7 +45,7 @@ Code:
   6 |   text A3["Vue"]
   7 |
 
-[1] mermaid.js draws this area again; a declaration on line 2 already has these names.
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
 ---
 
 
@@ -59,7 +59,7 @@ Code:
     | ^~~~~ [1]
   4 |
 
-[1] mermaid.js draws this area again; a declaration on line 2 already has these names.
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
 ---
 
 
@@ -73,7 +73,7 @@ Code:
     | ^~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js draws this area again; a declaration on line 2 already has these names.
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
 ---
 
 
@@ -87,7 +87,7 @@ Code:
     | ^~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js draws this area again; a declaration on line 2 already has these names.
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
 ---
 
 
@@ -104,7 +104,7 @@ Code:
     | ~~ [1]
   6 |
 
-[1] mermaid.js draws this area again; a declaration on line 2 already has these names.
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
 ---
 
 
@@ -118,7 +118,7 @@ Code:
     | ^~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js draws this area again; a declaration on line 2 already has these names.
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
 ---
 
 
@@ -132,7 +132,7 @@ Code:
     | ^~~~~~~~ [1]
   4 |
 
-[1] mermaid.js draws this area again; a declaration on line 2 already has these names.
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
 ---
 
 
@@ -145,7 +145,7 @@ Code:
     | ^~~~~ [1]
   3 |
 
-[1] mermaid.js draws this area again; a declaration on line 1 already has these names.
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
 ---
 
 
@@ -159,7 +159,7 @@ Code:
     | ^~~~~ [1]
   4 |
 
-[1] mermaid.js draws this area again; a declaration on line 2 already has these names.
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
 ---
 
 
@@ -176,7 +176,7 @@ Code:
     | ^~~~~ [1]
   7 |
 
-[1] mermaid.js draws this area again; a declaration on line 2 already has these names.
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
 ---
 
 
@@ -192,7 +192,7 @@ Code:
     | ^~~~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js draws this area again; a declaration on line 4 already has these names.
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
 ---
 
 
@@ -212,9 +212,9 @@ Code:
     | ^~~~~~~~~~~ [3]
   8 |
 
-[1] mermaid.js draws this area again; a declaration on line 2 already has these names.
-[2] mermaid.js draws this area again; a declaration on line 2 already has these names.
-[3] mermaid.js draws this area again; a declaration on line 5 already has these names.
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
+[2] mermaid.js draws this area again; an earlier declaration already has these names.
+[3] mermaid.js draws this area again; an earlier declaration already has these names.
 ---
 
 
@@ -230,7 +230,7 @@ Code:
     | ^~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js draws this area again; a declaration on line 4 already has these names.
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
 ---
 
 
@@ -246,7 +246,7 @@ Code:
     | ^~~~~~~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js draws this area again; a declaration on line 4 already has these names.
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
 ---
 
 
@@ -262,7 +262,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js draws this area again; a declaration on line 4 already has these names.
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
 ---
 
 
@@ -278,7 +278,7 @@ Code:
     | ^~~~~~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js draws this area again; a declaration on line 4 already has these names.
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
 ---
 
 
@@ -298,6 +298,6 @@ Code:
     | ^~~~~~~~~~~ [2]
   9 |
 
-[1] mermaid.js draws this area again; a declaration on line 5 already has these names.
-[2] mermaid.js draws this area again; a declaration on line 5 already has these names.
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
+[2] mermaid.js draws this area again; an earlier declaration already has these names.
 ---

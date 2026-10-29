@@ -70,7 +70,6 @@ curve sales{1,2,3}
         errors: [
           {
             messageId: "duplicate",
-            data: { line: "2" },
             line: 3,
             column: 1,
             endLine: 3,
@@ -88,7 +87,6 @@ accDescr { First\u2029 Second }
         errors: [
           {
             messageId: "duplicate",
-            data: { line: "2" },
             line: 3,
             column: 1,
             endLine: 3,
@@ -106,7 +104,6 @@ accDescr: First report
         errors: [
           {
             messageId: "duplicate",
-            data: { line: "2" },
             line: 3,
             column: 1,
             endLine: 3,

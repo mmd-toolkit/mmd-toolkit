@@ -36,8 +36,8 @@ x 軸は**分類**か、2 つの数の**範囲**を持ち、y 軸は範囲だけ
 最初のヘッダーの後の 2 つ目のヘッダーも、同じ行でも後の行でもヘッダーで、
 文の後のヘッダーは入力を拒否させます。
 改行、`;`、空行はどの文にも属さず、ノードを作りません。
-ヘッダーがあって文のないテキストは受理されます。 [fixture: xychart/db-header-plain]
-[fixture: xychart/header-twice]
+ヘッダーがあって文のないテキストは受理されます。
+[fixture: xychart/db-header-plain] [fixture: xychart/header-twice]
 [fixture: xychart/header-twice-same-line]
 [fixture: xychart/header-second-with-orientation]
 [fixture: xychart/gram-header-after-statement]
@@ -62,8 +62,8 @@ XychartAccDescrStatement、XychartAccDescrBlockStatement のどれかです。
 向きはキーワードの後の語を書かれたとおりに持ちます。
 `xychart Horizontal` は向き `Horizontal` を、
 `xychart horizontal` は向き `horizontal` を持ち、向きがなければ null です。
-mermaid.js が向きを Db にどう読むかは、
-tests パッケージの要約にあります。 [fixture: xychart/db-orientation-capitalized]
+mermaid.js が向きを Db にどう読むかは、 tests パッケージの要約にあります。
+[fixture: xychart/db-orientation-capitalized]
 [fixture: xychart/db-orientation-horizontal]
 [fixture: xychart/db-orientation-upper-case]
 [fixture: xychart/db-orientation-vertical] [fixture: xychart/db-header-plain]
@@ -81,8 +81,7 @@ tests パッケージの要約にあります。 [fixture: xychart/db-orientatio
 `title Two words` は XychartLiteral `Twowords` を持ちます。
 テキストは空になりません。
 `title ""` は拒否されます。 [fixture: xychart/db-title-bare-words]
-[fixture: xychart/db-title-quoted]
-[fixture: xychart/gram-title-empty-string]
+[fixture: xychart/db-title-quoted] [fixture: xychart/gram-title-empty-string]
 
 ### XychartXAxisStatement
 
@@ -100,8 +99,8 @@ tests パッケージの要約にあります。 [fixture: xychart/db-orientatio
 引用符の中のタイトルが空でもよいのは、分類か範囲の前だけです。
 `x-axis "" [a]` は空の値の StringLiteral をタイトルに持ち、
 `x-axis ""` だけは拒否されます。 [fixture: xychart/db-x-axis-band-title]
-[fixture: xychart/db-x-axis-range]
-[fixture: xychart/db-x-axis-title-quoted] [fixture: xychart/gram-x-axis-empty]
+[fixture: xychart/db-x-axis-range] [fixture: xychart/db-x-axis-title-quoted]
+[fixture: xychart/gram-x-axis-empty]
 [fixture: xychart/db-empty-string-as-x-axis-title-before-band]
 [fixture: xychart/db-empty-string-as-x-axis-title-before-range]
 [fixture: xychart/gram-grid-empty-x-title-quoted]
@@ -139,7 +138,7 @@ y 軸は分類を持ちません。
 子の欄: `categories`。
 同じテキストの 2 つの分類は 2 つの分類です。
 空の分類はありません。
-`[]`、`[a, ""]`、`[, b]` は拒否されます。 [fixture: xychart/db-x-axis-band]
+`[]`、`[a, ""]`、 `[, b]` は拒否されます。 [fixture: xychart/db-x-axis-band]
 [fixture: xychart/db-x-axis-band-quoted]
 [fixture: xychart/db-x-axis-band-numbers]
 [fixture: xychart/db-x-axis-band-same-category]
@@ -186,8 +185,8 @@ y 軸は分類を持ちません。
 種類は、書かれた大文字小文字によらず、キーワードを小文字にしたものです。
 `LINE [1]` と `Bar [1]` は種類 `line` と `bar` を持ちます。
 引用符の中のタイトルは空でもかまいません。
-`line "" [1]` は空の値の StringLiteral をタイトルに持ちます。 [fixture: xychart/db-line-values]
-[fixture: xychart/db-bar-values]
+`line "" [1]` は空の値の StringLiteral をタイトルに持ちます。
+[fixture: xychart/db-line-values] [fixture: xychart/db-bar-values]
 [fixture: xychart/db-line-title-bare] [fixture: xychart/db-bar-title-quoted]
 [fixture: xychart/db-plot-upper-case-keyword]
 [fixture: xychart/db-plot-capitalized-keyword]
@@ -210,9 +209,8 @@ bar の値も line の値と同じくラベルを持て、空の文字列は空�
 `bar [1 "a"]` はラベル `a` を、`line [1 ""]` は空の値のラベルを持ちます。
 mermaid.js が line と bar のラベルを Db にどう読むかは、
 tests パッケージの要約にあります。 [fixture: xychart/db-label-one]
-[fixture: xychart/db-label-all]
-[fixture: xychart/db-plot-values-decimal] [fixture: xychart/db-label-on-bar]
-[fixture: xychart/db-label-empty-string]
+[fixture: xychart/db-label-all] [fixture: xychart/db-plot-values-decimal]
+[fixture: xychart/db-label-on-bar] [fixture: xychart/db-label-empty-string]
 
 ### XychartAccTitleStatement
 
@@ -260,13 +258,15 @@ XychartAccTitleStatement と同じく、テキストはテキストを持つ最�
 `accDescr {}`、`accDescr { }`、空行だけのブロックは値 null を持ちます。
 閉じていないブロックはテキストの終わりまで続きます。
 テキストの終わりの `accDescr {`、改行、`a` は値 `a` を持ち、閉じていません。
-空の説明ブロックは、文が始まるところでだけ文で、
-ほかでは入力を拒否させます（[空の説明ブロック](../diagrams/xychart.ja.md#空の説明ブロック) を参照）。 [fixture: xychart/db-acc-descr-block]
+空の説明ブロックは、文が始まるところでだけ文で、ほかでは入力を拒否させます。
+[fixture: xychart/db-acc-descr-block]
 [fixture: xychart/db-acc-descr-block-empty]
 [fixture: xychart/db-acc-descr-empty-block-spaces-then-plot]
 [fixture: xychart/db-acc-descr-empty-block-line-feed-inside]
 [fixture: xychart/db-acc-descr-unclosed-block]
 [fixture: xychart/div-empty-description-block-inside-title-text]
+[空の説明ブロック](../diagrams/xychart.ja.md#空の説明ブロック)
+を参照してください。
 
 ### XychartLiteral
 

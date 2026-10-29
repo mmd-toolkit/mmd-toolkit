@@ -15,13 +15,10 @@
    CR・CRLF を LF にし、frontmatter より後の本文全体で属性の引用符を変換する。
    実体参照はマーカーにし、復号しない。
    木は書かれた値を保つ。
-   hidden
-   YAML・DIRECTIVE のノードは Db に何も加えない。 [fixture: pie/directive-label-middle]
-   [fixture: pie/comment-label-line]
-   [fixture: pie/style-label-trigger]
-   [fixture: pie/label-crlf]
-   [fixture: pie/html-all-texts]
-   [fixture: pie/entity-all-texts]
+   hidden YAML・DIRECTIVE のノードは Db に何も加えない。
+   [fixture: pie/directive-label-middle] [fixture: pie/comment-label-line]
+   [fixture: pie/style-label-trigger] [fixture: pie/label-crlf]
+   [fixture: pie/html-all-texts] [fixture: pie/entity-all-texts]
    [fixture: pie/frontmatter-between-section-parts]
 
 2. **ラベル。**
@@ -31,22 +28,18 @@
    Unicode・十六進の綴りを数値として復号しない。
    ラベルを trim・sanitize しない。
    引用符は両方を使える。
-   空のラベル、
-   prototype にある名前も通常の Map キーである。 [fixture: pie/label-escapes]
-   [fixture: pie/label-unknown-escapes]
-   [fixture: pie/label-escaped-quotes]
-   [fixture: pie/label-whitespace]
-   [fixture: pie/label-empty]
-   [fixture: pie/db-prototype-labels]
+   空のラベル、 prototype にある名前も通常の Map キーである。
+   [fixture: pie/label-escapes] [fixture: pie/label-unknown-escapes]
+   [fixture: pie/label-escaped-quotes] [fixture: pie/label-whitespace]
+   [fixture: pie/label-empty] [fixture: pie/db-prototype-labels]
 
 3. **数値と区分。**
    数の綴りを共有の double として読む。
    変換後の値がゼロ未満なら、重複ラベルでも拒否する。
    負のゼロと負の underflow は通る。
    変換後のラベルごとに最初の値だけを、初出の順に保つ。
-   `numberOrText` により負のゼロはゼロ、
-   overflow は `"Infinity"` になる。 [fixture: pie/db-slice-order]
-   [fixture: pie/db-three-definitions]
+   `numberOrText` により負のゼロはゼロ、 overflow は `"Infinity"` になる。
+   [fixture: pie/db-slice-order] [fixture: pie/db-three-definitions]
    [fixture: pie/review-db-converted-duplicate-single-double]
    [fixture: pie/db-duplicate-negative]
    [fixture: pie/db-duplicate-negative-zero]
@@ -82,12 +75,9 @@
    description は共有の common Db と同じく、LF の後の空白も除く。
    `showData` は図から写す。
    描画設定から要約のフィールドを増やさない。 [fixture: pie/frontmatter-html]
-   [fixture: pie/frontmatter-title]
-   [fixture: pie/frontmatter-title-overridden]
-   [fixture: pie/accdescr-block]
-   [fixture: pie/config-security-other]
-   [fixture: pie/config-other-root-false]
-   [fixture: pie/showdata-section-inline]
+   [fixture: pie/frontmatter-title] [fixture: pie/frontmatter-title-overridden]
+   [fixture: pie/accdescr-block] [fixture: pie/config-security-other]
+   [fixture: pie/config-other-root-false] [fixture: pie/showdata-section-inline]
    [fixture: pie/config-drawing-only]
 
 ## 記録された結果との比較
@@ -104,8 +94,7 @@ pie 固有の指定読みの分岐は加えない。 [fixture: pie/div-directive
 [fixture: pie/div-atomic-semicolon-number]
 [fixture: pie/div-review-yaml-leading-invalid]
 [fixture: pie/div-review-frontmatter-html-cross-label]
-[fixture: pie/div-detect-c4-label]
-[fixture: pie/div-preheader-bare-ls-blank]
+[fixture: pie/div-detect-c4-label] [fixture: pie/div-preheader-bare-ls-blank]
 [fixture: pie/div-preheader-retained-yaml-bare-ls]
 [fixture: pie/div-preheader-retained-yaml-bare-bom]
 [fixture: pie/div-preheader-retained-yaml-bare-ls-line]

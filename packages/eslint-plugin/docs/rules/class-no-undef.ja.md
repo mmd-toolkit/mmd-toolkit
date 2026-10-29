@@ -33,9 +33,10 @@ flowchart では `style` が名指しした頂点を作るのと違い、
 クラス `Z` のない図の `style Z fill:#f00` はクラスを作らず、何も変えない。
 クラス `C` のない図の `cssClass "C" c`、`click C href "…"`、`link C "…"`、
 `callback C "f"` も、何も変えない。
-`note for Z "x"` はノートを残すが、
-mermaid.js は図を描くときにクラス `Z` を見つけられないので、
-クラスへの線のないノートを描く（ [`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L810-L829) ）。
+`note for Z "x"` はノートを残すが、mermaid.js は、
+図を描くときに
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L810-L829)
+で、クラス `Z` を見つけられないので、クラスへの線のないノートを描く。
 
 クラスを宣言する前に書いた文も、mermaid.js では何も変えない。
 `class A` より前の `style A fill:#f00`、`cssClass "A" c`、`click A href "…"`、

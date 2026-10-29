@@ -20,8 +20,9 @@ mermaid.js は、欄の先頭から数として読み、残りをエラーなし
 この規則は、mermaid.js がテキストの全体を数として読まないリンクの値を報告する。
 対象の図種は `sankey` である。
 
-mermaid.js は値を、両端の空白を除いてから、
-JavaScript の `parseFloat` で読む（[`sankey.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L55)）。
+mermaid.js は、
+[`sankey.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L55)
+で、値を、両端の空白を除いてから、JavaScript の `parseFloat` で読む。
 読むのは、省略できる符号と、省略できる小数点と指数を持つ数字の並び、
 または `Infinity` である。
 その数の後のテキストは捨てられ、規則はそれを報告する。
@@ -38,8 +39,9 @@ mermaid.js が全体を読む値は報告しない。
 書き手はそれをコメントとして印を付けており、
 mermaid.js も書き手の意図どおりにそれを捨てる。
 値は、指令と、文字列の中のコメント行と、
-仕様の [`style` 行と `classDef` 行](../../../spec/docs/common.ja.md#style-行と-classdef-行) の決まりが無視する `;` を除いて、
-mermaid.js が読むとおりに読む。
+仕様の
+[`style` 行と `classDef` 行](../../../spec/docs/common.ja.md#style-行と-classdef-行)
+の決まりが無視する `;` を除いて、 mermaid.js が読むとおりに読む。
 `1%%{init: {}}%%0` は値 10 であり、 `a,style:#x,1;2` の行の値は 12 であって、
 どちらも報告しない。
 文字列 `"1`、コメント行、`2"` は 1、改行、`2` であり、報告する。

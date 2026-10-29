@@ -12,7 +12,7 @@ Code:
   4 |   A ->> B: x
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -27,7 +27,7 @@ Code:
     |   ^~~~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the accessible title set on line 3 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -44,8 +44,8 @@ Code:
   5 |   A ->> B: x
   6 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
-[2] mermaid.js replaces the accessible title set on line 3 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+[2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -61,7 +61,7 @@ Code:
     | ~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -79,7 +79,7 @@ Code:
     | ~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -97,7 +97,7 @@ Code:
     | ~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -107,7 +107,7 @@ Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/db-a
 Code:
   1 | sequenceDiagramaccTitle: taccTitle:foo
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -123,7 +123,7 @@ Code:
     | ~~~ [1]
   5 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -141,7 +141,7 @@ Code:
     | ~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -156,7 +156,7 @@ Code:
   4 | %% c
   5 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -171,7 +171,7 @@ Code:
   4 | %%{init: {}}%%
   5 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -187,7 +187,7 @@ Code:
   5 |
   6 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -203,7 +203,7 @@ Code:
   5 | A->>B: x
   6 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -216,7 +216,7 @@ Code:
   3 | accTitle:   
     | ^~~~~~~~~ [1]
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -231,7 +231,7 @@ Code:
     | ^~~~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the accessible title set on line 3 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -245,7 +245,7 @@ Code:
     | ^~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -262,7 +262,7 @@ Code:
   6 | end
   7 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -277,7 +277,7 @@ Code:
   4 | A->>B: x
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -292,7 +292,7 @@ Code:
   4 | A->>B: x
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -305,7 +305,7 @@ Code:
   3 | accTitle:
     | ^~~~~~~~~ [1]
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -322,7 +322,7 @@ Code:
     | ^~~~~~~~~~~~~~~ [1]
   7 |
 
-[1] mermaid.js replaces the accessible title set on line 4 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -337,5 +337,5 @@ Code:
   4 |   A ->> B: x
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---

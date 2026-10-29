@@ -13,7 +13,7 @@ Code:
     |     ^~~~~~~~ [1]
   6 |
 
-[1] This node already has a class line; mermaid.js keeps only the last class line and drops the earlier ones. Write the classes on one line.
+[1] mermaid.js keeps only the last class line and drops the earlier ones for this node.
 ---
 
 
@@ -29,7 +29,7 @@ Code:
     |     ^~~~~~~~~~~~~~~~~ [1]
   6 |
 
-[1] This node already has an icon line; mermaid.js keeps only the last icon and drops the earlier ones.
+[1] mermaid.js keeps only the last icon and drops the earlier ones for this node.
 ---
 
 
@@ -45,7 +45,7 @@ Code:
     |     ^~~~~~~~ [1]
   6 |
 
-[1] This node already has a class line; mermaid.js keeps only the last class line and drops the earlier ones. Write the classes on one line.
+[1] mermaid.js keeps only the last class line and drops the earlier ones for this node.
 ---
 
 
@@ -63,8 +63,8 @@ Code:
     |     ^~~~~~~~~ [2]
   7 |
 
-[1] This node already has a class line; mermaid.js keeps only the last class line and drops the earlier ones. Write the classes on one line.
-[2] This node already has a class line; mermaid.js keeps only the last class line and drops the earlier ones. Write the classes on one line.
+[1] mermaid.js keeps only the last class line and drops the earlier ones for this node.
+[2] mermaid.js keeps only the last class line and drops the earlier ones for this node.
 ---
 
 
@@ -80,7 +80,7 @@ Code:
     |     ^~~~~~~~ [1]
   6 |
 
-[1] This node already has a class line; mermaid.js keeps only the last class line and drops the earlier ones. Write the classes on one line.
+[1] mermaid.js keeps only the last class line and drops the earlier ones for this node.
 ---
 
 
@@ -95,7 +95,7 @@ Code:
     |     ^~~~~~~~ [1]
   5 |
 
-[1] This node already has a class line; mermaid.js keeps only the last class line and drops the earlier ones. Write the classes on one line.
+[1] mermaid.js keeps only the last class line and drops the earlier ones for this node.
 ---
 
 
@@ -111,7 +111,7 @@ Code:
     |     ^~~~~~~~ [1]
   6 |
 
-[1] This node already has a class line; mermaid.js keeps only the last class line and drops the earlier ones. Write the classes on one line.
+[1] mermaid.js keeps only the last class line and drops the earlier ones for this node.
 ---
 
 
@@ -127,7 +127,7 @@ Code:
     |     ^~~~ [1]
   6 |
 
-[1] This node already has a class line; mermaid.js keeps only the last class line and drops the earlier ones. Write the classes on one line.
+[1] mermaid.js keeps only the last class line and drops the earlier ones for this node.
 ---
 
 
@@ -143,7 +143,7 @@ Code:
     |     ^~~~~~~~~~~~~~~ [1]
   6 |
 
-[1] This node already has a class line; mermaid.js keeps only the last class line and drops the earlier ones. Write the classes on one line.
+[1] mermaid.js keeps only the last class line and drops the earlier ones for this node.
 ---
 
 
@@ -158,7 +158,7 @@ Code:
     |     ^~~~ [1]
   5 |
 
-[1] This node already has a class line; mermaid.js keeps only the last class line and drops the earlier ones. Write the classes on one line.
+[1] mermaid.js keeps only the last class line and drops the earlier ones for this node.
 ---
 
 
@@ -173,7 +173,7 @@ Code:
     |     ^~~~~~~~~ [1]
   5 |
 
-[1] This node already has an icon line; mermaid.js keeps only the last icon and drops the earlier ones.
+[1] mermaid.js keeps only the last icon and drops the earlier ones for this node.
 ---
 
 
@@ -189,7 +189,7 @@ Code:
     |     ^~~~~~~~~~~~~~~~~ [1]
   6 |
 
-[1] This node already has an icon line; mermaid.js keeps only the last icon and drops the earlier ones.
+[1] mermaid.js keeps only the last icon and drops the earlier ones for this node.
 ---
 
 
@@ -206,8 +206,8 @@ Code:
     |     ^~~~~~~~~~~~~~~~~ [2]
   6 |
 
-[1] This node already has an icon line; mermaid.js keeps only the last icon and drops the earlier ones.
-[2] This node already has an icon line; mermaid.js keeps only the last icon and drops the earlier ones.
+[1] mermaid.js keeps only the last icon and drops the earlier ones for this node.
+[2] mermaid.js keeps only the last icon and drops the earlier ones for this node.
 ---
 
 
@@ -223,7 +223,7 @@ Code:
     |     ^~~~~~~~~~~~~~~~~ [1]
   6 |
 
-[1] This node already has an icon line; mermaid.js keeps only the last icon and drops the earlier ones.
+[1] mermaid.js keeps only the last icon and drops the earlier ones for this node.
 ---
 
 
@@ -238,5 +238,5 @@ Code:
     |     ^~~~~~~~~~~~~~~~~ [1]
   5 |
 
-[1] This node already has an icon line; mermaid.js keeps only the last icon and drops the earlier ones.
+[1] mermaid.js keeps only the last icon and drops the earlier ones for this node.
 ---

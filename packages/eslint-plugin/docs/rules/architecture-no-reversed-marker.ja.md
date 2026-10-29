@@ -59,10 +59,10 @@ architecture-beta
 
 ## 背景
 
-[文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/architecture/architecture.langium#L31-L57) は `<` と `>` を、
-どちらもそれが立つ端の矢じりとして読み、
-[文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L99-L109) は左に `<`、
-右に `>` を書く。
+[文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/architecture/architecture.langium#L31-L57)
+は `<` と `>` を、どちらもそれが立つ端の矢じりとして読み、
+[文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L99-L109)
+は左に `<`、右に `>` を書く。
 
 <!-- begin auto-generated rule resources -->
 

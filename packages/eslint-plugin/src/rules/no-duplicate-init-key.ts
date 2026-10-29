@@ -18,7 +18,7 @@ export const noDuplicateInitKey: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js keeps only the later value of key {{key}} in this init directive.",
+        "mermaid.js replaces the earlier value of key {{key}} in this init directive with this value.",
     },
   },
   create(context) {

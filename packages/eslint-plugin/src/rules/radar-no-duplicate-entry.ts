@@ -19,7 +19,7 @@ export const radarNoDuplicateEntry: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js uses the first value for axis `{{name}}` on line {{line}} in this curve, and drops this value.",
+        "mermaid.js uses the first value for axis `{{name}}` in this curve, and drops this value.",
     },
   },
   create(context) {
@@ -43,7 +43,6 @@ export const radarNoDuplicateEntry: MermaidRuleDefinition<{
               messageId: "duplicate",
               data: {
                 name: entry.axis.name,
-                line: String(previous.loc.start.line),
               },
             })
           }

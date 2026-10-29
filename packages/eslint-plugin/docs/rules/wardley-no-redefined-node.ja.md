@@ -1,7 +1,6 @@
 # @mmd-toolkit/wardley-no-redefined-node
 
-英語版:
-[wardley-no-redefined-node.md](./wardley-no-redefined-node.md)
+英語版: [wardley-no-redefined-node.md](./wardley-no-redefined-node.md)
 
 別の値でもう一度宣言したノードを禁止する。
 
@@ -22,8 +21,9 @@ mermaid.js はエラーなしに前の宣言の位置、戦略、慣性を置き
 pipeline の子の宣言を報告する。
 対象の図種は `wardley` である。
 
-`component API [0.6, 0.7] (build) inertia` と `component API [0.3, 0.8]` の後では、
-マップは後の位置に、`build` の表示も慣性の印もない 1 つのノード `API` を持つ。
+`component API [0.6, 0.7] (build) inertia` と `component API [0.3, 0.8]`
+の後では、マップは後の位置に、
+`build` の表示も慣性の印もない 1 つのノード `API` を持つ。
 
 mermaid.js は、テキストの中の順によらず、anchor、component、
 pipeline の子の順にノードを取るので、 component は、
@@ -69,10 +69,10 @@ wardley-beta
 
 ## 背景
 
-[パーサー](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L92-L171) は anchor、
-component、pipeline の子をその順に足し、
-[`addNode`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L92-L102) は同じ id のノードの上にノードを保ち、
-ラベルのずれだけを残す。
+[パーサー](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L92-L171)
+は anchor、 component、pipeline の子をその順に足し、
+[`addNode`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L92-L102)
+は同じ id のノードの上にノードを保ち、ラベルのずれだけを残す。
 
 <!-- begin auto-generated rule resources -->
 

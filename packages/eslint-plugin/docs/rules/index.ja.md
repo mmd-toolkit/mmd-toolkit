@@ -23,7 +23,8 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 ✅ は、`recommended` の設定が有効にする規則。
 
 💡 は、
-[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions) がある規則。
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+がある規則。
 
 🚧 は、まだ実装していない規則。
 何も報告しない。

@@ -67,8 +67,10 @@ usecase-beta
 
 ## 背景
 
-[`accTitle` 文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.visitor.ts#L127-L131) は両端の空白を除いたタイトルを与え、
-[モデル](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L240-L242) は最後のものだけを保つ。
+[`accTitle` 文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.visitor.ts#L127-L131)
+は両端の空白を除いたタイトルを与え、
+[モデル](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L240-L242)
+は最後のものだけを保つ。
 
 <!-- begin auto-generated rule resources -->
 

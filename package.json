@@ -30,7 +30,7 @@
     "update": "pnpm --filter \"./packages/*\" run --if-present update",
     "version:ci": "changeset version && pnpm run update",
     "prerelease": "pnpm run build",
-    "release": "changeset publish"
+    "release": "node scripts/copy-license.mjs && changeset publish"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^1.0.1",

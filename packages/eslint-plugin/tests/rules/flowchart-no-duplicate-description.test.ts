@@ -35,7 +35,7 @@ new RuleTester(LANGUAGE_CONFIG).run(
         errors: [
           {
             message:
-              "mermaid.js replaces the description set on line 3 with the one of this `accDescr`.",
+              "mermaid.js replaces the earlier description with the one of this `accDescr`.",
             line: 4,
             column: 3,
             endLine: 4,
@@ -49,7 +49,7 @@ new RuleTester(LANGUAGE_CONFIG).run(
 `,
               },
               {
-                desc: "Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.",
+                desc: "Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.",
                 output: `flowchart LR
   A
   accDescr: c

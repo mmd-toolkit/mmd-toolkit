@@ -37,8 +37,8 @@ Node.js ではそれを 2 月 1 日でなく 2024 年 1 月 2 日と読む。
 キーワードとその後の空白 1 つより後のテキストを、空白も含めて比べ、
 `weekday` と `weekend` は小文字にして比べる。
 そのため、`weekday monday` の後の `weekday Monday` は、同じ値を設定する。
-`dateFormat YYYY-MM-DD` と `dateFormat DD-MM-YYYY` の後の 3 つ目の `dateFormat YYYY-MM-DD` は、
-`DD-MM-YYYY` を置き換えるので報告する。
+`dateFormat YYYY-MM-DD` と `dateFormat DD-MM-YYYY` の後の 3 つ目の
+`dateFormat YYYY-MM-DD` は、 `DD-MM-YYYY` を置き換えるので報告する。
 
 `excludes` と `includes` は報告しない。
 mermaid.js は、そうした文のすべての項目を合わせる。

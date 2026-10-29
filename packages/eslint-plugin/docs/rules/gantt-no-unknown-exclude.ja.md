@@ -80,12 +80,15 @@ gantt
 
 ## 背景
 
-mermaid.js は `excludes` の項目を小文字にし、一覧が `weekends` を持ち、
+mermaid.js は、
+[`isInvalidDate`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L183-L201)
+で、`excludes` の項目を小文字にし、一覧が `weekends` を持ち、
 その日が週末にあるとき、その日の英語の名前を持つとき、
 `dateFormat` の形か `YYYY-MM-DD` で書いたその日の日付を持つときに、
-その日を除く（[`isInvalidDate`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L183-L201)）。
-その文書（[syntax/gantt.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gantt.md#L131)）は、
-`excludes` が `YYYY-MM-DD` の日付、曜日、`weekends` を取り、
+その日を除く。
+その文書は、
+[syntax/gantt.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gantt.md#L131)
+で、`excludes` が `YYYY-MM-DD` の日付、曜日、`weekends` を取り、
 語 `weekdays` は取らないと言う。
 
 <!-- begin auto-generated rule resources -->

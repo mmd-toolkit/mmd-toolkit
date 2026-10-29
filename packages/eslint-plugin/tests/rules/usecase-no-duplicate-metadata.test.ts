@@ -23,7 +23,7 @@ A@{icon:"fa:user\u2029x"}
         errors: [
           {
             messageId: "duplicate",
-            data: { key: "icon", id: "A", line: "3" },
+            data: { key: "icon", id: "A" },
             line: 4,
             column: 4,
             endLine: 4,

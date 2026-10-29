@@ -12,7 +12,7 @@ Code:
   4 |   A
   5 |
 
-[1] mermaid.js replaces the direction set on line 2 with `BT`.
+[1] mermaid.js replaces the earlier direction with `BT`.
 ---
 
 
@@ -29,8 +29,8 @@ Code:
     | ^~~~~~~~~~~~ [2]
   6 |
 
-[1] mermaid.js replaces the direction set on line 2 with `TD`.
-[2] mermaid.js replaces the direction set on line 4 with `RL`.
+[1] mermaid.js replaces the earlier direction with `TD`.
+[2] mermaid.js replaces the earlier direction with `RL`.
 ---
 
 
@@ -44,7 +44,7 @@ Code:
     | ^~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the direction set on line 2 with `RL`.
+[1] mermaid.js replaces the earlier direction with `RL`.
 ---
 
 
@@ -61,7 +61,7 @@ Code:
     | ^~~~~~~~~~~~ [1]
   7 |
 
-[1] mermaid.js replaces the direction set on line 2 with `RL`.
+[1] mermaid.js replaces the earlier direction with `RL`.
 ---
 
 
@@ -77,6 +77,6 @@ Code:
     | ^~~~~~~~~~~~ [2]
   5 |
 
-[1] mermaid.js replaces the direction set on line 2 with `BT`.
-[2] mermaid.js replaces the direction set on line 3 with `LR`.
+[1] mermaid.js replaces the earlier direction with `BT`.
+[2] mermaid.js replaces the earlier direction with `LR`.
 ---

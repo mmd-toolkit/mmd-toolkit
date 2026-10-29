@@ -12,7 +12,7 @@ Code:
     |          ^~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `type` value given on line 3 for `User` with this value.
+[1] mermaid.js replaces the `type` value given earlier for `User` with this value.
 ---
 
 
@@ -28,7 +28,7 @@ Code:
     |    ^~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js replaces the `type` value given on line 4 for `S` with this value.
+[1] mermaid.js replaces the `type` value given earlier for `S` with this value.
 ---
 
 
@@ -46,7 +46,7 @@ Code:
   7 | end
   8 |
 
-[1] mermaid.js replaces the `type` value given on line 2 for `S` with this value.
+[1] mermaid.js replaces the `type` value given earlier for `S` with this value.
 ---
 
 
@@ -60,7 +60,7 @@ Code:
   3 | end
   4 |
 
-[1] mermaid.js replaces the `type` value given on line 2 for `S` with this value.
+[1] mermaid.js replaces the `type` value given earlier for `S` with this value.
 ---
 
 
@@ -78,7 +78,7 @@ Code:
   7 | end
   8 |
 
-[1] mermaid.js replaces the `type` value given on line 2 for `S` with this value.
+[1] mermaid.js replaces the `type` value given earlier for `S` with this value.
 ---
 
 
@@ -94,7 +94,7 @@ Code:
     |    ^~~~~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js replaces the `type` value given on line 4 for `S` with this value.
+[1] mermaid.js replaces the `type` value given earlier for `S` with this value.
 ---
 
 
@@ -109,7 +109,7 @@ Code:
     |    ^~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `business` value given on line 3 for `A` with this value.
+[1] mermaid.js replaces the `business` value given earlier for `A` with this value.
 ---
 
 
@@ -125,7 +125,7 @@ Code:
   5 | B@{type:hollow}
   6 |
 
-[1] mermaid.js replaces the `type` value given on line 3 for `A` with this value.
+[1] mermaid.js replaces the `type` value given earlier for `A` with this value.
 ---
 
 
@@ -140,7 +140,7 @@ Code:
   4 | end
   5 |
 
-[1] mermaid.js replaces the `type` value given on line 2 for `S` with this value.
+[1] mermaid.js replaces the `type` value given earlier for `S` with this value.
 ---
 
 
@@ -157,7 +157,7 @@ Code:
   6 | S@{type:rect}
   7 |
 
-[1] mermaid.js replaces the `type` value given on line 2 for `S` with this value.
+[1] mermaid.js replaces the `type` value given earlier for `S` with this value.
 ---
 
 
@@ -171,7 +171,7 @@ Code:
     |                  ^~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `business` value given on line 3 for `A` with this value.
+[1] mermaid.js replaces the `business` value given earlier for `A` with this value.
 ---
 
 
@@ -188,7 +188,7 @@ Code:
     |    ^~~~~~~~~~~~ [1]
   7 |
 
-[1] mermaid.js replaces the `type` value given on line 3 for `A` with this value.
+[1] mermaid.js replaces the `type` value given earlier for `A` with this value.
 ---
 
 
@@ -203,7 +203,7 @@ Code:
     |    ^~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `type` value given on line 3 for `A` with this value.
+[1] mermaid.js replaces the `type` value given earlier for `A` with this value.
 ---
 
 
@@ -218,7 +218,7 @@ Code:
     |    ^~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `animation` value given on line 3 for `e` with this value.
+[1] mermaid.js replaces the `animation` value given earlier for `e` with this value.
 ---
 
 
@@ -232,7 +232,7 @@ Code:
     |                   ^~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `animation` value given on line 3 for `e` with this value.
+[1] mermaid.js replaces the `animation` value given earlier for `e` with this value.
 ---
 
 
@@ -248,7 +248,7 @@ Code:
     |    ^~~~~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js replaces the `type` value given on line 3 for `A` with this value.
+[1] mermaid.js replaces the `type` value given earlier for `A` with this value.
 ---
 
 
@@ -263,7 +263,7 @@ Code:
   4 | actor A
   5 |
 
-[1] mermaid.js replaces the `type` value given on line 2 for `A` with this value.
+[1] mermaid.js replaces the `type` value given earlier for `A` with this value.
 ---
 
 
@@ -280,8 +280,8 @@ Code:
     |    ^~~~~~~~~~~~~~ [2]
   6 |
 
-[1] mermaid.js replaces the `icon` value given on line 3 for `A` with this value.
-[2] mermaid.js replaces the `icon` value given on line 4 for `A` with this value.
+[1] mermaid.js replaces the `icon` value given earlier for `A` with this value.
+[2] mermaid.js replaces the `icon` value given earlier for `A` with this value.
 ---
 
 
@@ -296,7 +296,7 @@ Code:
     |    ^~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `icon` value given on line 3 for `A` with this value.
+[1] mermaid.js replaces the `icon` value given earlier for `A` with this value.
 ---
 
 
@@ -311,7 +311,7 @@ Code:
     |    ^~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `icon` value given on line 3 for `A` with this value.
+[1] mermaid.js replaces the `icon` value given earlier for `A` with this value.
 ---
 
 
@@ -326,7 +326,7 @@ Code:
     |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `icon` value given on line 3 for `A` with this value.
+[1] mermaid.js replaces the `icon` value given earlier for `A` with this value.
 ---
 
 
@@ -341,7 +341,7 @@ Code:
     |    ^~~~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `icon` value given on line 3 for `A` with this value.
+[1] mermaid.js replaces the `icon` value given earlier for `A` with this value.
 ---
 
 
@@ -355,7 +355,7 @@ Code:
     |                  ^~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `business` value given on line 3 for `A` with this value.
+[1] mermaid.js replaces the `business` value given earlier for `A` with this value.
 ---
 
 
@@ -370,7 +370,7 @@ Code:
     |    ^~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `type` value given on line 3 for `A` with this value.
+[1] mermaid.js replaces the `type` value given earlier for `A` with this value.
 ---
 
 
@@ -385,7 +385,7 @@ Code:
     |    ^~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `type` value given on line 3 for `A` with this value.
+[1] mermaid.js replaces the `type` value given earlier for `A` with this value.
 ---
 
 
@@ -401,7 +401,7 @@ Code:
   5 | A@{icon:"b"}
   6 |
 
-[1] mermaid.js replaces the `icon` value given on line 3 for `A` with this value.
+[1] mermaid.js replaces the `icon` value given earlier for `A` with this value.
 ---
 
 
@@ -418,8 +418,8 @@ Code:
     |    ^~~~~~~~~~~ [2]
   6 |
 
-[1] mermaid.js replaces the `type` value given on line 3 for `A` with this value.
-[2] mermaid.js replaces the `type` value given on line 4 for `A` with this value.
+[1] mermaid.js replaces the `type` value given earlier for `A` with this value.
+[2] mermaid.js replaces the `type` value given earlier for `A` with this value.
 ---
 
 
@@ -433,7 +433,7 @@ Code:
     |                ^~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `type` value given on line 3 for `A` with this value.
+[1] mermaid.js replaces the `type` value given earlier for `A` with this value.
 ---
 
 
@@ -448,5 +448,5 @@ Code:
     |    ^~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `business` value given on line 3 for `A` with this value.
+[1] mermaid.js replaces the `business` value given earlier for `A` with this value.
 ---

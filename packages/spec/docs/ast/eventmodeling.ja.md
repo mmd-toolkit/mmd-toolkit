@@ -7,7 +7,8 @@ eventmodeling の書かれた木を定義する。
 [構文](../diagrams/eventmodeling.ja.md)は受理を定義する。
 任意の欄は不在時も null として存在し、list は原文順、子の欄は訪問順を示す。
 model entity、note、GWT、tag、重複参照、
-比較 Db が使わない data も全出現を保持する。 [fixture: eventmodeling/gram-written-tree]
+比較 Db が使わない data も全出現を保持する。
+[fixture: eventmodeling/gram-written-tree]
 [fixture: eventmodeling/db-data-first]
 [fixture: eventmodeling/db-entities-notes-gwt]
 [fixture: eventmodeling/db-source-order]
@@ -33,8 +34,8 @@ backslash を decode しない。
 見出し前に残る形は textBeforeHeader、
 見出しの後や完全な top-level 文の間の形は body に属する。
 可視の EOL がなく、次の EOL までの textAfter の欄は作らない。
-最後の完全な文の後の native form も body
-item。 [fixture: eventmodeling/gram-written-tree]
+最後の完全な文の後の native form も body item。
+[fixture: eventmodeling/gram-written-tree]
 [fixture: eventmodeling/detect-real-retained-secondscan]
 [fixture: eventmodeling/lex-hidden-between-statements]
 [fixture: eventmodeling/lex-native-directive-object-eof]
@@ -44,8 +45,8 @@ item。 [fixture: eventmodeling/gram-written-tree]
 部品がなければ完成した frame の後の形は body に戻る。
 qualified-name の tail member は dot の前と名前の前の形を所有する。
 後続の GWT item は自身の textBefore、次の clause も自身の textBefore を所有し、
-最後の then item の後の形は top-level
-body に戻る。 [fixture: eventmodeling/lex-hidden-frame-type-gap]
+最後の then item の後の形は top-level body に戻る。
+[fixture: eventmodeling/lex-hidden-frame-type-gap]
 [fixture: eventmodeling/lex-hidden-frame-entity-gap]
 [fixture: eventmodeling/lex-hidden-frame-optional-gaps]
 [fixture: eventmodeling/lex-qualified-hidden-components]
@@ -58,10 +59,11 @@ native の無視される形がなければ gap は空。
 不在の任意の構成の内部 gap も空。
 literal の内側が包む native に見える text は内容として残し、
 hidden の子へ取り出さない。
-native YAML、directive、 block
-data が消費する closing の改行は node の range の外。
+native YAML、directive、
+block data が消費する closing の改行は node の range の外。
 論理上加わる LF を合成しない。
-内部の原文の改行と padding は囲む range に残る。 [fixture: eventmodeling/gram-written-tree]
+内部の原文の改行と padding は囲む range に残る。
+[fixture: eventmodeling/gram-written-tree]
 [fixture: eventmodeling/hidden-data-yaml-text]
 [fixture: eventmodeling/lex-native-yaml-inside-common]
 [fixture: eventmodeling/hidden-yaml-after-frame]
@@ -91,8 +93,8 @@ LF、LS、PS は ASCII space/tab の連なりに含めない。
 選ばれない semicolon はこの gap では拒否され、
 空の説明ブロックは文の境目として残る。
 どちらも除かれたかのように、前後の padding をつながない。
-この prefix を本文の欄に重複させたり、
-共通 converter の trim を施したりしない。 [fixture: eventmodeling/gram-common-leading-directive-both-sides]
+この prefix を本文の欄に重複させたり、共通 converter の trim を施したりしない。
+[fixture: eventmodeling/gram-common-leading-directive-both-sides]
 [fixture: eventmodeling/gram-common-leading-directive-before-padding]
 [fixture: eventmodeling/gram-common-leading-directive-after-padding]
 [fixture: eventmodeling/gram-common-leading-directive-after-header]
@@ -126,9 +128,8 @@ header node や alias の欄はない。
 EventmodelingBodyItem は二種の frame 文、ModelEntityStatement、
 DataEntityStatement、NoteStatement、GwtStatement、共通の四種の文、
 IgnoredText のいずれかで、すべて Eventmodeling の prefix を持つ。
-body は空でもよく、
-保存先の型ごとに文をまとめない。 [fixture: eventmodeling/header-only]
-[fixture: eventmodeling/gram-written-tree]
+body は空でもよく、保存先の型ごとに文をまとめない。
+[fixture: eventmodeling/header-only] [fixture: eventmodeling/gram-written-tree]
 [fixture: eventmodeling/detect-real-retained-secondscan]
 [fixture: eventmodeling/lex-native-directive-object-eof]
 
@@ -156,8 +157,8 @@ processor のいずれかで、省略名を正規化しない。
 sourceFrames は空でもよい。
 dataReference と data は書かれた形全体がなければ null。
 data 参照があっても inline data を残す。
-短い frame keyword と長い keyword は構文に残し、
-alias の欄を作らない。 [fixture: eventmodeling/gram-written-tree]
+短い frame keyword と長い keyword は構文に残し、 alias の欄を作らない。
+[fixture: eventmodeling/gram-written-tree]
 [fixture: eventmodeling/lex-hidden-frame-type-gap]
 [fixture: eventmodeling/lex-hidden-frame-entity-gap]
 [fixture: eventmodeling/lex-hidden-frame-optional-gaps]
@@ -189,8 +190,8 @@ processor のいずれかで、省略名を正規化しない。
 sourceFrames は空でもよい。
 dataReference と data は書かれた形全体がなければ null。
 data 参照があっても inline data を残す。
-短い frame keyword と長い keyword は構文に残し、
-alias の欄を作らない。 [fixture: eventmodeling/gram-written-tree]
+短い frame keyword と長い keyword は構文に残し、 alias の欄を作らない。
+[fixture: eventmodeling/gram-written-tree]
 [fixture: eventmodeling/db-all-aliases]
 [fixture: eventmodeling/validator-reset-invalid]
 [fixture: eventmodeling/spec-eventmodeling-test-ts-8573a603]
@@ -207,7 +208,8 @@ range は最初の segment の先頭から最後の segment の終わりまで�
 一個だけの名前もこの node を使い、tail は空。
 部品間の空白と hidden は原文とその gap に保つ。
 空白を許す名前全体を共有 Identifier に入れず、
-namespace や解決済みの宣言も合成しない。 [fixture: eventmodeling/db-qualified-names]
+namespace や解決済みの宣言も合成しない。
+[fixture: eventmodeling/db-qualified-names]
 [fixture: eventmodeling/space-qualified-name]
 [fixture: eventmodeling/lex-qualified-hidden-components]
 [fixture: eventmodeling/gram-written-tree]
@@ -224,8 +226,8 @@ namespace や解決済みの宣言も合成しない。 [fixture: eventmodeling/
 range は最初の所有する textBeforeDot の形、なければ dot から名前の終わりまで。
 dot は句読点。
 並行する配列でなく、各名前とその gap を対にする。
-name は必須で、
-いずれの gap も普通の空白やコメントは含めない。 [fixture: eventmodeling/space-qualified-name]
+name は必須で、いずれの gap も普通の空白やコメントは含めない。
+[fixture: eventmodeling/space-qualified-name]
 [fixture: eventmodeling/lex-qualified-hidden-components]
 [fixture: eventmodeling/gram-written-tree]
 
@@ -241,8 +243,8 @@ name は必須で、
 子の欄: `textBefore`、`arrow`、`textBeforeFrame`、`frame`。
 range は最初の textBefore の形、なければ arrow から frame 名の終わりまで。
 重複、未解決、前方、自己参照の名前も各 member と位置を保持する。
-frame は一〜三桁の書かれた identity で、
-参照先 node の pointer にしない。 [fixture: eventmodeling/db-source-order]
+frame は一〜三桁の書かれた identity で、参照先 node の pointer にしない。
+[fixture: eventmodeling/db-source-order]
 [fixture: eventmodeling/db-source-missing]
 [fixture: eventmodeling/db-source-forward]
 [fixture: eventmodeling/db-source-self]
@@ -261,8 +263,8 @@ frame は一〜三桁の書かれた identity で、
 子の欄はありません。
 range は三文字の arrow 全体。
 value は原綴、startMarker は none、line は solid、endMarker は arrow。
-欄は書かれた arrow を記述し、
-描画の向きに合わせて参照を反転しない。 [fixture: eventmodeling/db-source-order]
+欄は書かれた arrow を記述し、描画の向きに合わせて参照を反転しない。
+[fixture: eventmodeling/db-source-order]
 [fixture: eventmodeling/gram-written-tree]
 
 ### EventmodelingDataReference
@@ -304,8 +306,8 @@ tag がなければ内部の三つの gap は空。
 quote の本文は空の string も StringLiteral。
 brace の本文は EventmodelingLiteral で、共通の除去後の内側が空のときだけ null。
 空白だけの brace の内容は null でない。
-braces と tag の backtick は句読点で、
-本文の文字でない。 [fixture: eventmodeling/lex-inline-empty]
+braces と tag の backtick は句読点で、本文の文字でない。
+[fixture: eventmodeling/lex-inline-empty]
 [fixture: eventmodeling/space-data-values]
 [fixture: eventmodeling/data-all-types]
 [fixture: eventmodeling/lex-hidden-type-tag]
@@ -325,16 +327,17 @@ braces と tag の backtick は句読点で、
 
 子の欄: `textBefore`、`textBeforeDataType`、`textBeforeTypeClose`、
 `textBeforeValue`、`value`。
-range は最初の textBefore の形、なければ opening
-backtick または brace から closing brace まで。
+range は最初の textBefore の形、
+なければ opening backtick または brace から closing brace まで。
 dataType は json、jsobj、figma、salt、uri、md、html、text、
 または tag がなければ null で、その場合内部の三つの gap は空。
 value は常に非 null。
 空 block にも braces の内側の opening 行の padding と LF がある。
 内部の空白、原文の改行、先の closing に見える行、文に見える text をすべて保つ。
 消費した closing LF と論理上の追加 LF はこの node の外。
-[tests の要約](../../../tests/docs/db-summaries.md#eventmodeling)が説明するとおり、
-Db の導出は原文からその境目を読む。 [fixture: eventmodeling/data-block-empty]
+[tests の要約](../../../tests/docs/db-summaries.md#eventmodeling)
+が説明するとおり、 Db の導出は原文からその境目を読む。
+[fixture: eventmodeling/data-block-empty]
 [fixture: eventmodeling/lex-block-empty-whitespace]
 [fixture: eventmodeling/line-block-values]
 [fixture: eventmodeling/lex-block-adjacent-later-close]
@@ -352,8 +355,8 @@ Db の導出は原文からその境目を読む。 [fixture: eventmodeling/data
 
 子の欄: `textBeforeName`、`name`。
 range は entity から名前の最後の segment まで。
-重複と未使用の宣言も独立に残し、
-暗黙の frame や解決済みの親を合成しない。 [fixture: eventmodeling/db-entities-notes-gwt]
+重複と未使用の宣言も独立に残し、暗黙の frame や解決済みの親を合成しない。
+[fixture: eventmodeling/db-entities-notes-gwt]
 [fixture: eventmodeling/lex-hidden-yaml-name-gap]
 [fixture: eventmodeling/lex-qualified-hidden-components]
 [fixture: eventmodeling/gram-written-tree]
@@ -369,9 +372,8 @@ range は entity から名前の最後の segment まで。
 子の欄: `textBeforeName`、`name`、`data`。
 range は data keyword から data block の closing brace まで。
 name と data はどちらも非 null。
-未使用の宣言と後の同名宣言も別の文とし、
-有効な宣言だけを選ばない。 [fixture: eventmodeling/db-data-first]
-[fixture: eventmodeling/db-data-unused]
+未使用の宣言と後の同名宣言も別の文とし、有効な宣言だけを選ばない。
+[fixture: eventmodeling/db-data-first] [fixture: eventmodeling/db-data-unused]
 [fixture: eventmodeling/lex-hidden-data-name-gap]
 [fixture: eventmodeling/lex-hidden-data-tag-gaps]
 [fixture: eventmodeling/gram-written-tree]
@@ -387,8 +389,8 @@ name と data はどちらも非 null。
 子の欄: `textBeforeSourceFrame`、`sourceFrame`、`data`。
 range は note から block の closing brace まで。
 参照と block はどちらも必須。
-空 block、未解決や前方の参照名も保持し、描画される note
-node を推測しない。 [fixture: eventmodeling/gram-note-empty]
+空 block、未解決や前方の参照名も保持し、描画される note node を推測しない。
+[fixture: eventmodeling/gram-note-empty]
 [fixture: eventmodeling/link-note-forward]
 [fixture: eventmodeling/db-entities-notes-gwt]
 [fixture: eventmodeling/lex-hidden-note-frame-gap]
@@ -410,8 +412,8 @@ range は gwt から then の最後の item の名前まで。
 given.kind は given、then.kind は then、存在する when.kind は when。
 when は clause 全体がないときだけ null。
 sourceFrame を解決せず、clause を保存先の list に置き換えない。
-後続する完全な top-level 文はこの node の外。 [fixture: eventmodeling/gwt-complete]
-[fixture: eventmodeling/gwt-without-when]
+後続する完全な top-level 文はこの node の外。
+[fixture: eventmodeling/gwt-complete] [fixture: eventmodeling/gwt-without-when]
 [fixture: eventmodeling/lex-hidden-gwt-required-gaps]
 [fixture: eventmodeling/gram-gwt-next-top-level]
 [fixture: eventmodeling/gram-written-tree]
@@ -425,12 +427,12 @@ sourceFrame を解決せず、clause を保存先の list に置き換えない�
 | `body`       | list of EventmodelingGwtItem     | 一個以上の書かれた item。 |
 
 子の欄: `textBefore`、`body`。
-range は最初の textBefore の形、なければ clause
-keyword から最後の item の名前まで。
+range は最初の textBefore の形、
+なければ clause keyword から最後の item の名前まで。
 kind は書かれた固定語。
 body は空にせず、item の順序と重複を残す。
-次の clause の前の形は次の clause に属し、
-この body に属さない。 [fixture: eventmodeling/gwt-complete]
+次の clause の前の形は次の clause に属し、この body に属さない。
+[fixture: eventmodeling/gwt-complete]
 [fixture: eventmodeling/gram-gwt-unassigned-type]
 [fixture: eventmodeling/lex-hidden-gwt-clause]
 [fixture: eventmodeling/lex-hidden-gwt-required-gaps]
@@ -472,7 +474,8 @@ value は title とちょうど一つの ASCII space/tab の後からで、
 その separator がないか、その後と共通の除去の後に何もなければ null。
 残る空白だけの内容は literal。
 空の出現と上書き前の出現も残す。
-原文からの Db の導出は[共通の文の値](#共通の文の値)に従う。 [fixture: eventmodeling/common-title-only]
+原文からの Db の導出は[共通の文の値](#共通の文の値)に従う。
+[fixture: eventmodeling/common-title-only]
 [fixture: eventmodeling/common-title-empty]
 [fixture: eventmodeling/lex-common-title-two-spaces]
 [fixture: eventmodeling/gram-empty-payload-after-removals]
@@ -491,7 +494,8 @@ value は colon の直後からで、書かれた padding をすべて保つ。
 共通の除去後に内容がないときだけ null。
 空白だけも literal。
 繰り返しも別の文にする。
-原文からの Db の導出は[共通の文の値](#共通の文の値)に従う。 [fixture: eventmodeling/common-acctitle-eof]
+原文からの Db の導出は[共通の文の値](#共通の文の値)に従う。
+[fixture: eventmodeling/common-acctitle-eof]
 [fixture: eventmodeling/common-whitespace]
 [fixture: eventmodeling/common-repeat]
 [fixture: eventmodeling/common-repeat-empty]
@@ -511,7 +515,8 @@ value は colon の直後からで、padding と brace に見える text も保�
 共通の除去後に内容がないときだけ null。
 空白だけも literal。
 colon 形を block 文に変えない。
-原文からの Db の導出は[共通の文の値](#共通の文の値)に従う。 [fixture: eventmodeling/common-description-eof]
+原文からの Db の導出は[共通の文の値](#共通の文の値)に従う。
+[fixture: eventmodeling/common-description-eof]
 [fixture: eventmodeling/common-colon-block-priority]
 [fixture: eventmodeling/common-quoted-values]
 [fixture: eventmodeling/gram-empty-payload-after-removals]
@@ -530,7 +535,8 @@ brace の内側を trim せず保つ。
 空白だけも literal。
 closer が必須なので closed の欄はない。
 空や上書き前の block もそれぞれ文として残す。
-原文からの Db の導出は[共通の文の値](#共通の文の値)に従う。 [fixture: eventmodeling/common-description-repeat]
+原文からの Db の導出は[共通の文の値](#共通の文の値)に従う。
+[fixture: eventmodeling/common-description-repeat]
 [fixture: eventmodeling/common-whitespace]
 [fixture: eventmodeling/lex-common-block-whitespace-only]
 [fixture: eventmodeling/lex-common-empty-line-whitespace]
@@ -550,8 +556,8 @@ value は共通 directive、コメント領域、選ばれた semicolon を除�
 backslash を含む他の原文の文字をすべて保つ。
 data の braces は親の構文。
 null の欄のために空の literal を作らない。
-block-data の braces 内には少なくとも opening LF があり、 metadata と inline
-brace の本文は null にもなれる。
+block-data の braces 内には少なくとも opening LF があり、
+metadata と inline brace の本文は null にもなれる。
 quote のない text に raw の欄は不要。 [fixture: eventmodeling/line-block-values]
 [fixture: eventmodeling/lex-block-empty-whitespace]
 [fixture: eventmodeling/common-whitespace]
@@ -569,15 +575,16 @@ quote のない text に raw の欄は不要。 [fixture: eventmodeling/line-blo
 | `value` | string | 書かれた native の無視される形。 |
 
 子の欄はありません。
-range は最初の opening dash または percent から最後の closing
-dash または percent までで、前置の水平 padding と消費した後続 LF を除く。
+range は最初の opening dash または percent から最後の closing dash または
+percent までで、前置の水平 padding と消費した後続 LF を除く。
 kind は hidden-yaml なら yaml-block、hidden-directive なら directive。
-value は共通 trivia を除く共有の written text の規則に従い、 native
-delimiter と内部の空白を含む。
+value は共通 trivia を除く共有の written text の規則に従い、
+native delimiter と内部の空白を含む。
 内容を YAML/JSON として解析せず、設定として公開しない。
 失敗した native directive が comment になった場合は共有 Comment であり、
 この node でない。
-所有する gap と body/textBeforeHeader に完全な形をちょうど一度残す。 [fixture: eventmodeling/hidden-yaml-unit-gap]
+所有する gap と body/textBeforeHeader に完全な形をちょうど一度残す。
+[fixture: eventmodeling/hidden-yaml-unit-gap]
 [fixture: eventmodeling/hidden-yaml-after-frame]
 [fixture: eventmodeling/hidden-yaml-after-frame-space]
 [fixture: eventmodeling/lex-native-directive-object]
@@ -593,7 +600,8 @@ delimiter と内部の空白を含む。
 この例は意図的に共通の文を同じ行に置き、すべての文の種類、重複 source、
 data 参照と並ぶ inline 値、型付き data block、空 note、
 top-level の無視される block を保つ。
-この文法では共通の文をすべて行頭に移す配置は等価でない。 [fixture: eventmodeling/gram-written-tree]
+この文法では共通の文をすべて行頭に移す配置は等価でない。
+[fixture: eventmodeling/gram-written-tree]
 
 ```mmd
 eventmodeling accTitle: Title
@@ -617,8 +625,8 @@ tf 03 ui Shop.Screen accDescr {} title All
 GWT item の型の語は Item の欄に残る。
 空 note は DataBlock と LF を持つ Literal、
 空の説明 block は null の value を持つ。
-宣言、source、
-tag を合成せず捨てない。 [fixture: eventmodeling/gram-written-tree]
+宣言、source、 tag を合成せず捨てない。
+[fixture: eventmodeling/gram-written-tree]
 
 [grammar]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L1-L70
 [entry]: https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L49

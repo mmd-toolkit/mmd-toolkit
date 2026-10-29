@@ -48,7 +48,6 @@ accDescr: A\u2028B
         errors: [
           {
             messageId: "duplicate",
-            data: { line: "2" },
             line: 3,
             column: 1,
             endLine: 3,
@@ -66,7 +65,6 @@ accDescr: A\u2029B
         errors: [
           {
             messageId: "duplicate",
-            data: { line: "2" },
             line: 3,
             column: 1,
             endLine: 3,
@@ -84,7 +82,6 @@ accDescr { A \u2028 B }
         errors: [
           {
             messageId: "duplicate",
-            data: { line: "2" },
             line: 3,
             column: 1,
             endLine: 3,

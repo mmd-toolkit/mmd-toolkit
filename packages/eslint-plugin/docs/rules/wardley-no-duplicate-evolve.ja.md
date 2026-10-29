@@ -1,7 +1,6 @@
 # @mmd-toolkit/wardley-no-duplicate-evolve
 
-英語版:
-[wardley-no-duplicate-evolve.md](./wardley-no-duplicate-evolve.md)
+英語版: [wardley-no-duplicate-evolve.md](./wardley-no-duplicate-evolve.md)
 
 前の同じノードの `evolve` の行き先を置き換える `evolve` を禁止する。
 
@@ -61,8 +60,8 @@ wardley-beta
 
 ## 背景
 
-[`addTrend`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L108-L110) は、
-ノードの矢印を前に保ったものの上に保つ。
+[`addTrend`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L108-L110)
+は、ノードの矢印を前に保ったものの上に保つ。
 
 <!-- begin auto-generated rule resources -->
 

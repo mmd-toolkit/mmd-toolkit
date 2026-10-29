@@ -12,7 +12,7 @@ Code:
     |   ^~~~~~~~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the styles of the class `c`, set on line 3, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -27,7 +27,7 @@ Code:
     |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the styles of the class `c`, set on line 3, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -42,7 +42,7 @@ Code:
     |   ^~~~~~~~~~~~~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the styles of the class `c`, set on line 3, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -59,8 +59,8 @@ Code:
   5 |   A: [0.3, 0.6]
   6 |
 
-[1] mermaid.js replaces the styles of the class `c`, set on line 2, with those of this `classDef`.
-[2] mermaid.js replaces the styles of the class `c`, set on line 3, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
+[2] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -75,7 +75,7 @@ Code:
   4 |   A: [0.3, 0.6]
   5 |
 
-[1] mermaid.js replaces the styles of the class `c`, set on line 2, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -90,7 +90,7 @@ Code:
   4 |   A:::c: [0.3, 0.6]
   5 |
 
-[1] mermaid.js replaces the styles of the class `c`, set on line 2, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -106,7 +106,7 @@ Code:
   5 |   A: [0.3, 0.6]
   6 |
 
-[1] mermaid.js replaces the styles of the class `c`, set on line 2, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -121,7 +121,7 @@ Code:
   4 |   A:::c: [0.3, 0.6]
   5 |
 
-[1] mermaid.js replaces the styles of the class `c`, set on line 2, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -136,7 +136,7 @@ Code:
   4 |   A: [0.3, 0.6]
   5 |
 
-[1] mermaid.js replaces the styles of the class `c`, set on line 2, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
 ---
 
 
@@ -151,5 +151,5 @@ Code:
   4 |   A: [0.3, 0.6]
   5 |
 
-[1] mermaid.js replaces the styles of the class `c`, set on line 2, with those of this `classDef`.
+[1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
 ---

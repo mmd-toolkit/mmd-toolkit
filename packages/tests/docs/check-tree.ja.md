@@ -51,8 +51,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
   フロントマターの後のソース全体から一度求めます。
   コメントや前の文も含めた文脈を、文字列、ラベル、データブロックの範囲に当て、
   値の中だけでタグを探し直しません。
-  ノードの値とトークンは、
-  書かれた引用符を保ちます。 [fixture: venn/db-html-tag-from-title-name]
+  ノードの値とトークンは、書かれた引用符を保ちます。
+  [fixture: venn/db-html-tag-from-title-name]
   [fixture: venn/db-html-tag-from-title-label]
   [fixture: venn/db-html-tag-from-title-style]
   [fixture: venn/db-html-tag-from-comment-name]
@@ -329,8 +329,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
     アクセシビリティ文は、キーワード、`:` か波括弧、
     値です（空のブロックには値がありません）。
     欄の語は、書かれたキーワードのとおりです。
-    requirement の種類は、
-    文を始めるキーワードを種類の名前の形にしたもの（`functionalRequirement`）です。
+    requirement の種類は、文を始めるキーワードを種類の名前の形にしたものです。
+    例は `functionalRequirement` です。
     field、risk、検証方法、関係はキーワードを小文字にしたもの、
     direction は値を大文字にしたもので、どれも文書の語の 1 つです。
     names、classes、styles のリストは空ではありません。
@@ -362,8 +362,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
     `style` と `classDef` の後と `class` の文の names では `Identifier`、
     requirement、element、関係、省略形では `RawText`、
     `class` の文のクラスでは `Identifier` か `RawText` です。
-    文の範囲は、
-    トークンと子ノードの最初から最後までです（`parser/docs/positions/requirement.md`）。
+    文の範囲は、トークンと子ノードの最初から最後までです。
+    出典は `parser/docs/positions/requirement.md` です。
   - mindmap: 検査は木とソースのテキストを読みます。
     欄の子ノードの型は、その表の型です（`MINDMAP_CHILD_TYPES`、
     ast/mindmap.md の Type の列と合うことをテストが確かめます）。
@@ -419,8 +419,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
     図では小文字の `mindmap`（diagrams/mindmap.md の Detection）、
     icon の行では `::icon(`（大文字小文字は問いません）と `)`、
     class の行では `:::`、形では開き記号と閉じ記号、ノードでは空です。
-    ノードと文の範囲は、
-    トークンと子ノードの最初から最後までです（`parser/docs/positions/mindmap.md`）。
+    ノードと文の範囲は、トークンと子ノードの最初から最後までです。
+    出典は `parser/docs/positions/mindmap.md` です。
     リテラルとラベルの範囲は、トークンの始まりから終わりまでで、
     これはすべての木の検査が読みます。
   - timeline: 検査は木とソースのテキストを読みます。
@@ -473,8 +473,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
     アクセシビリティの文ではキーワードと `:`、
     ブロックではキーワードと波括弧です。
     `direction` はヘッダーの後ろのトークンで、なければ null です。
-    ノードと文の範囲は、
-    トークンと子ノードの最初から最後までです（`parser/docs/positions/timeline.md`）。
+    ノードと文の範囲は、トークンと子ノードの最初から最後までです。
+    出典は `parser/docs/positions/timeline.md` です。
     リテラルの範囲は、トークンの始まりから終わりまでで、
     これはすべての木の検査が読みます。
   - sankey: 検査は木とソースのテキストを読みます。
@@ -564,8 +564,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
     テキストの後ろに空白しかありません。
     引用符のないテキストで、間に何もなく続く語は 1 つのトークンなので、
     そのようなテキストの 2 つのトークンの間には、空白か切れ目があります。
-    図、文、その下のノードの範囲は、
-    トークンと子ノードの最初から最後までです（`parser/docs/positions/xychart.md`）。
+    図、文、その下のノードの範囲は、トークンと子ノードの最初から最後までです。
+    出典は `parser/docs/positions/xychart.md` です。
   - quadrant: 検査は木とソースのテキストを読みます。
     欄の子ノードは表の型です（`QUADRANT_CHILD_TYPES`、
     テストが ast/quadrant.md の Type の列と合わせます）。
@@ -661,8 +661,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     DIRECTIVE は境界を満たす最初の閉じを使う。
     消費した直後の LF は範囲の外に置く。
     次の文には残る可視 LF が要り、余分な LF、閉じの空白、EOF を区別する。
-    通常の gap は ASCII space・tab と、
-    許す位置の可視 LF だけである。
+    通常の gap は ASCII space・tab と、許す位置の可視 LF だけである。
     [fixture: gitgraph/header-hidden-before-colon] [fixture:
     gitgraph/lex-hidden-directive-before-branch-name] [fixture:
     gitgraph/lex-option-between-options-hidden] [fixture:
@@ -687,8 +686,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     保持した形式の間でも trivia のままである。
     本文の gap と hidden の境界は広げない。
     共有の coverage、raw・written 値、token kind、範囲の hull も検査する。
-    履歴の受理条件は、
-    parser と上記の fixture の受理の比較で確かめる。
+    履歴の受理条件は、 parser と上記の fixture の受理の比較で確かめる。
     [fixture: gitgraph/title-tab] [fixture:
     gitgraph/lex-description-line-null] [fixture:
     gitgraph/lex-description-block-only-directive] [fixture:
@@ -729,8 +727,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
     保持した形式の間でも trivia である。
     本文の通常の gap は広げない。
     RawText は共通の切断だけで分割できる。
-    共有の coverage、欄、written 値、範囲、
-    token の検査も行う。 [fixture: info/lex-flag-hidden-two] [fixture:
+    共有の coverage、欄、written 値、範囲、 token の検査も行う。
+    [fixture: info/lex-flag-hidden-two] [fixture:
     info/lex-hidden-after-visible-eol] [fixture: info/lex-yaml-three-fences]
     [fixture: info/lex-yaml-two-empty] [fixture:
     info/hidden-directive-after-title] [fixture:
@@ -780,8 +778,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
     なければ body を親にする。
     file も親になれる。
     範囲は最初の所有構文から最後の子孫までを覆い、兄弟は重ならない。
-    同一性、icon の登録、
-    意味上の受理の gate は足さない。 [fixture: treeview/box-written-tree]
+    同一性、icon の登録、意味上の受理の gate は足さない。
+    [fixture: treeview/box-written-tree]
     [fixture: treeview/box-decoration-pending-name-gap]
     [fixture: treeview/box-decoration-before-annotation]
     [fixture: treeview/ast-annotation-prefixes]
@@ -801,9 +799,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
     共有の coverage、欄、ソース範囲、token の種類、atom の境目、
     書かれた値の検査を適用する。
     treeview に native のブロックコメントはない。
-    共有の契約では引き続き、閉じを範囲に含め、
-    値からは除く。 [fixture: treeview/comment-in-quotes]
-    [fixture: treeview/comment-in-bare]
+    共有の契約では引き続き、閉じを範囲に含め、値からは除く。
+    [fixture: treeview/comment-in-quotes] [fixture: treeview/comment-in-bare]
     [fixture: treeview/common-block-bare-percent]
     [fixture: treeview/detect-secondscan-bare-unicode]
     [fixture: treeview/detect-retained-comment-unicode-header]
@@ -823,8 +820,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     Arrow の値 ->> と none/solid/arrow の欄を一致させる。
     Data tag はタグがないときだけ null。
     Clause は kind、空でない item の body、必須・任意の順序を保つ。
-    参照は書かれた名前のままで、
-    validator や linking の条件は足さない。
+    参照は書かれた名前のままで、 validator や linking の条件は足さない。
     [fixture: eventmodeling/gram-written-tree]
     [fixture: eventmodeling/lex-keyword-prefix-name]
     [fixture: eventmodeling/lex-name-custom-header-dot]
@@ -882,8 +878,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     その後、共通 terminal が次の行の字下げを取れるのは、
     その LF が消費されたときだけ。
     LS と PS は空白として残る。
-    空の説明ブロックは文、
-    選ばれない semicolon は構文のまま。
+    空の説明ブロックは文、選ばれない semicolon は構文のまま。
     [fixture: eventmodeling/lex-common-yaml-comment-line-padding]
     [fixture: eventmodeling/lex-common-block-comment-line-padding]
     [fixture: eventmodeling/lex-common-native-directive-comment-line-padding]
@@ -936,10 +931,10 @@ const problems: TreeProblem[] = checkTree(text, tree)
     共通の keyword の部品、引用符つきの文字列全体を検査する。
     領域の name・from・to は、書かれた Keyword と一致する。
     CynefinArrow は全体の --> と、none・solid・arrow の固定の欄を持つ。
-    自己遷移、未宣言の端点、領域の再宣言、
-    空文字列も書かれたノードとして保つ。 [fixture: cynefin/db-all-fields]
-    [fixture: cynefin/header-colon-inline] [fixture: cynefin/gram-glued-domains]
-    [fixture: cynefin/db-self-loops] [fixture: cynefin/gram-transition-first]
+    自己遷移、未宣言の端点、領域の再宣言、空文字列も書かれたノードとして保つ。
+    [fixture: cynefin/db-all-fields] [fixture: cynefin/header-colon-inline]
+    [fixture: cynefin/gram-glued-domains] [fixture: cynefin/db-self-loops]
+    [fixture: cynefin/gram-transition-first]
     [fixture: cynefin/db-domain-duplicates] [fixture: cynefin/db-empty-texts]
 
     native の一致は全体で一つの名前つきの欄に属する。
@@ -952,8 +947,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
     遷移の欄は textBeforeArrow、textBeforeTo、textBeforeColon、
     textBeforeLabel、textAfter。
     label が無ければコロンと label の gap は空。
-    共通文の末尾の形は可視 EOL の前までで、
-    その後の形は body に属する。 [fixture: cynefin/hidden-domain-item-members]
+    共通文の末尾の形は可視 EOL の前までで、その後の形は body に属する。
+    [fixture: cynefin/hidden-domain-item-members]
     [fixture: cynefin/hidden-before-first-item-after-eol]
     [fixture: cynefin/hidden-item-after-visible-eol]
     [fixture: cynefin/hidden-domain-end-after-visible-eol]
@@ -1081,8 +1076,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     式の子は方言と優先順位の役割に従います。
     IR の call と書かれた group をすべて保ちます。
     自然記法の sequence/choice は member を 2 つ以上必要とします。
-    規則名、
-    代入と必須の visible な semicolon は別々の部品です。
+    規則名、代入と必須の visible な semicolon は別々の部品です。
     [fixture: railroad/ir-gram-written-tree]
     [fixture: railroad/ebnf-gram-written-tree]
     [fixture: railroad/abnf-gram-written-tree]
@@ -1127,8 +1121,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     閉じの後の空白、EOF の対照例を受け入れます。
     native Comment は方言の行または block の規則に従い、
     先行する字句の代わりになったり、先に始まる文字列、special sequence、
-    metadata、
-    hidden の形の中で始まったりできません。
+    metadata、 hidden の形の中で始まったりできません。
     [fixture: railroad/ir-hidden-yaml-adjacent-later]
     [fixture: railroad/ir-hidden-yaml-adjacent-eof]
     [fixture: railroad/ir-native-directive-adjacent]
@@ -1159,8 +1152,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
 
     これらは木の条件であり、意味的な受理の gate ではありません。
     参照の解決、名前の一意性、repeat の境界の大小は要求しません。
-    parser の結果の記録は fixtureAccepts と別に比べ、
-    設定は再検証しません。 [fixture: railroad/ir-gram-reference-resolution]
+    parser の結果の記録は fixtureAccepts と別に比べ、設定は再検証しません。
+    [fixture: railroad/ir-gram-reference-resolution]
     [fixture: railroad/peg-db-duplicates]
     [fixture: railroad/abnf-db-repeat-reversed]
     [fixture: railroad/ir-config-frontmatter-fontfamily-number]
@@ -1259,8 +1252,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     先行する keyword・数・boolean・graticule・共通形を調べる。
     境界のある bare 見出しは、 label bracket・entry brace の直前なら名前になる。
     string は同じ quote で閉じ、定めた escape 境界を守る。
-    これらは木の条件であり、
-    軸参照の不足など意味上の受理条件は parser が扱う。
+    これらは木の条件であり、軸参照の不足など意味上の受理条件は parser が扱う。
     [fixture: radar/gram-written-tree] [fixture: radar/gram-inline-statements]
     [fixture: radar/gram-curve-kind-per-curve]
     [fixture: radar/gram-detailed-colon-mixed-spelling]
@@ -1322,9 +1314,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     裸の percent Comment とともに通された区間だけが、
     保持形の間も含めて付随する Unicode trivia を認める。
     本文の通常の gap は広げない。
-    共有の欄、coverage、原文の値、
-    範囲と token の検査も適用する。 [fixture: radar/header-colon-inline]
-    [fixture: radar/header-separated-colon] [fixture: radar/header-colon-hidden]
+    共有の欄、coverage、原文の値、範囲と token の検査も適用する。
+    [fixture: radar/header-colon-inline] [fixture: radar/header-separated-colon]
+    [fixture: radar/header-colon-hidden]
     [fixture: radar/header-native-no-boundary]
     [fixture: radar/detect-retained-two]
     [fixture: radar/detect-secondscan-native-glued]
@@ -1401,8 +1393,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     検出が渡した裸の行と付随する Unicode trivia は、
     保持した形の間も含めて読み直さない。
     渡した行がなければ native gap の厳密さを保つ。
-    通常の body gap は、
-    仕様の位置で ASCII 空白・タブと可視 LF だけを認める。
+    通常の body gap は、仕様の位置で ASCII 空白・タブと可視 LF だけを認める。
     [fixture: architecture/common-all]
     [fixture: architecture/common-repeat-empty]
     [fixture: architecture/common-block-first-close]
@@ -1532,12 +1523,11 @@ const problems: TreeProblem[] = checkTree(text, tree)
     先頭のゼロは小数だけで許す。
     共有の double が負かどうかは、重複の場合も含め、
     木の検査ではなく parser の受理条件に属する。
-    負のゼロ・負の underflow も、
-    書かれた数値との一致を検査する。 [fixture: pie/header-letter-suffix]
-    [fixture: pie/showdata-quote-glued] [fixture: pie/lex-header-nbsp]
-    [fixture: pie/label-single-quote] [fixture: pie/label-escaped-quotes]
-    [fixture: pie/label-multiline] [fixture: pie/label-backslash-ls]
-    [fixture: pie/number-leading-zero]
+    負のゼロ・負の underflow も、書かれた数値との一致を検査する。
+    [fixture: pie/header-letter-suffix] [fixture: pie/showdata-quote-glued]
+    [fixture: pie/lex-header-nbsp] [fixture: pie/label-single-quote]
+    [fixture: pie/label-escaped-quotes] [fixture: pie/label-multiline]
+    [fixture: pie/label-backslash-ls] [fixture: pie/number-leading-zero]
     [fixture: pie/number-decimal-leading-zero]
     [fixture: pie/db-duplicate-negative] [fixture: pie/number-negative-zero]
     [fixture: pie/review-number-negative-underflow-final]
@@ -1557,8 +1547,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     PieIgnoredText は完全な hidden YAML・DIRECTIVE の形を 1 つ持つ。
     文字を明示的に走査し、YAML は本文を 1 行以上含んで、
     境界を満たす最初の閉じを検査する。
-    その閉じがない場合だけ、
-    開きの直後の fence で空の本文を閉じる。
+    その閉じがない場合だけ、開きの直後の fence で空の本文を閉じる。
     [fixture: pie/lex-yaml-three-adjacent-fences] [fixture:
     pie/lex-yaml-immediate-fence-before-later-closer] [fixture:
     pie/lex-yaml-three-fences-before-value] [fixture:
@@ -1627,8 +1616,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     kind は認識された消される形式に一致する必要があります。
     click、empty-string、empty-markdown-string、empty-call、
     empty-description-block のいずれかです。
-    direction の前後は、
-    綴りによらず direction-text です。
+    direction の前後は、綴りによらず direction-text です。
     [fixture: agentflow/lex-flow-name-click-state]
     [fixture: agentflow/lex-empty-string-in-flow-name]
     [fixture: agentflow/lex-empty-markdown-in-flow-name]
@@ -1637,8 +1625,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     [fixture: agentflow/lex-direction-line-greedy]
     出典は ast/agentflow.md の AgentflowIgnoredText です。
     URL の前の閉じた空の説明ブロックは kind empty-description-block です。
-    URL と callback のツールチップの前も、
-    同じ消される形式の規則に従います。
+    URL と callback のツールチップの前も、同じ消される形式の規則に従います。
     [fixture: agentflow/gram-empty-description-before-href]
     [fixture: agentflow/lex-mixed-empty-forms-before-url-tooltip]
     [fixture: agentflow/gram-click-erased-before-callback-tooltip]
@@ -1664,8 +1651,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     kind はそれぞれ empty-string と empty-markdown-string です。
     先頭や末尾のセミコロン、
     名前の最初の寄与する断片も含みます（diagrams/agentflow.md の Names, strings,
-    and click text、
-    ast/agentflow.md の AgentflowName）。
+    and click text、 ast/agentflow.md の AgentflowName）。
     [fixture: agentflow/lex-connector-name-click-empty-string-adjacent-text]
     [fixture: agentflow/lex-connector-name-click-empty-string-adjacent-semicolon]
     [fixture: agentflow/lex-connector-name-click-empty-string-no-id-adjacent-semicolon]
@@ -1675,8 +1661,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     [fixture: agentflow/lex-connector-name-click-empty-markdown-trailing-semicolon]
     [fixture: agentflow/lex-connector-name-click-empty-markdown-no-id-adjacent-semicolon]
     その Label の前で、空文字列に空 markdown 文字列が接して構いません。
-    消される各形式は、
-    個別の IgnoredText part として保ちます。
+    消される各形式は、個別の IgnoredText part として保ちます。
     [fixture: agentflow/lex-connector-name-click-empty-string-then-markdown]
     flow と connector の見出しは一つの空白、タイトルの括弧、
     接する隣接データを検査します。
@@ -1768,8 +1753,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     空ブロックと隣接ブロックも別々に保ちます。
     内部のキャレットや閉じ括弧を保護するのは二重引用符だけで、
     バックスラッシュは引用符のエスケープではありません。
-    YAML、エイリアスの解決、メタデータの型、
-    図形一覧は検証しません。
+    YAML、エイリアスの解決、メタデータの型、図形一覧は検証しません。
     [fixture: agentflow/gram-data-adjacent-multiline-blocks]
     [fixture: agentflow/db-data-block-empty-multiline]
     [fixture: agentflow/lex-data-block-caret]
@@ -1780,8 +1764,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     共通の前処理後のテキストでは、データブロック、リテラル、名前、
     分割リンクのテキスト、初期文字列を図のコメントで切れません。
     これらの文脈はパーセントの対を内容として読みます。
-    既定のサイズ上限を超えると、
-    共通のコメント領域が字句解析前に値を切れます。
+    既定のサイズ上限を超えると、共通のコメント領域が字句解析前に値を切れます。
     [fixture: agentflow/div-data-percent-line-is-content]
     [fixture: agentflow/comment-split-edge-label]
     [fixture: agentflow/lex-flow-name-string-comment-content]
@@ -1791,8 +1774,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     style/class/linkStyle のリストは、
     末尾も含めカンマの枠と null の穴を保ちます。
     id リストには実際の id かカンマが必要です。
-    null のスタイルも、
-    必要な隙間とは別に書かれた空白単位を必要とします。
+    null のスタイルも、必要な隙間とは別に書かれた空白単位を必要とします。
     [fixture: agentflow/gram-class-one-operand]
     [fixture: agentflow/gram-style-empty-value]
     後続コメントに取られる ASCII の余白はスタイル単位になりません。
@@ -1854,8 +1836,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
     ブロックの closed は書かれた括弧に従い、閉じていなければ EOF まで伸びます。
     字句上の隙間は dbFromTree と同じ既定サイズのコメント規則と、
     閉じ括弧直後の変換を使います。
-    ブロックの値は最初の閉じ括弧で止まり、
-    後続の文を値に含めません。 [fixture: agentflow/db-accessibility-block]
+    ブロックの値は最初の閉じ括弧で止まり、後続の文を値に含めません。
+    [fixture: agentflow/db-accessibility-block]
     [fixture: agentflow/lex-direction-value-priority]
     [fixture: agentflow/lex-direction-last-selected-occurrence]
     [fixture: agentflow/lex-direction-unclosed-bracket-prefix]
@@ -1879,8 +1861,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     id の重複、未解決の参照、包含の循環、既知の削除済み図形は拒否しません。
     共有の単位全体の検査が、
     内部の directive と無視されるセミコロンを拒否します。
-    保持先のない空形式用に、
-    自由な文や隙間のフィールドはありません。
+    保持先のない空形式用に、自由な文や隙間のフィールドはありません。
     [fixture: agentflow/gram-flow-named-member-hasownproperty]
     [fixture: agentflow/gram-hasownproperty-last-member]
     [fixture: agentflow/gram-flow-hasownproperty-before-empty-statement]
@@ -1913,8 +1894,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     CSS 名は Identifier の原子一つ、
     またはダッシュ接頭部の Punctuator と Identifier の語一つです。
     間の HWS は名前に残り、どのトークンにも入りません。
-    RawText と String の単位は、
-    共通のソース分割がある場合だけ分かれます。
+    RawText と String の単位は、共通のソース分割がある場合だけ分かれます。
     [fixture: usecase/lex-class-property-custom-gap]
     [fixture: usecase/lex-css-name-custom-tab]
     [fixture: usecase/directive-in-label]
@@ -2000,8 +1980,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     [fixture: usecase/gram-edge-metadata-three-newlines]
     [fixture: usecase/gram-metadata-no-trailing-comma-comment-two-newlines]
     [fixture: usecase/gram-metadata-no-trailing-comma-comment-three-newlines]
-    コンマと次のプロパティの間では、
-    引き続き複数の改行を許します。
+    コンマと次のプロパティの間では、引き続き複数の改行を許します。
     [fixture: usecase/gram-metadata-property-comma-two-newlines]
     [fixture: usecase/gram-metadata-property-comma-three-newlines]
 
@@ -2066,8 +2045,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
     [fixture: ishikawa/comment-ls-region-in-text]
     [fixture: ishikawa/lex-root-style-semicolon]
     文字列は字下げ、`%%`、境界を持つヘッダーの単語で始まりません。
-    除かれる trivia の外に改行を持たず、
-    論理行の末尾まで続きます。 [fixture: ishikawa/lex-header-nonascii-child]
+    除かれる trivia の外に改行を持たず、論理行の末尾まで続きます。
+    [fixture: ishikawa/lex-header-nonascii-child]
     [fixture: ishikawa/lex-header-middle-label]
     [fixture: ishikawa/gram-root-unclosed-quote]
     [fixture: ishikawa/directive-multiline-joins-node-text]
@@ -2169,11 +2148,12 @@ const problems: TreeProblem[] = checkTree(text, tree)
     [fixture: venn/lex-comment-swallowed-ideographic]
     [fixture: venn/lex-comment-swallowed-bom]
     [fixture: venn/lex-comment-swallowed-cr]
-    U+0085 は空白ではなく、
-    この位置では無視されるテキストに残ります。
+    U+0085 は空白ではなく、この位置では無視されるテキストに残ります。
     [fixture: venn/lex-swallowed-nel-gap]
-    図のコメントは LF の前で終わり、
-    U+2028 と U+2029 では終わりません（[diagrams/venn.md の Comments](../../spec/docs/diagrams/venn.md#comments-and-swallowed-fragments)）。
+    図のコメントは LF の前で終わり、 U+2028 と U+2029 では終わりません。
+    出典は
+    [diagrams/venn.md の Comments](../../spec/docs/diagrams/venn.md#comments-and-swallowed-fragments)
+    です。
     文間と末尾の検査で使うコメントの範囲は、
     共通のコメント領域が切ったソースの断片間の区切り文字と空白も含み、
     図のテキストの次の LF か EOF まで続きます。
@@ -2234,15 +2214,16 @@ const problems: TreeProblem[] = checkTree(text, tree)
     無視されるセミコロンで切られた `StringFragment` トークンです。
     データの区切りは別々の `Punctuator` トークンで、
     空の内部にトークンはありません。
-    範囲は各ノードのトークンと子の外包です（`parser/docs/positions/kanban.md`）。
+    範囲は各ノードのトークンと子の外包です。
+    出典は `parser/docs/positions/kanban.md` です。
     `check-tree-kanban.test.ts` は手作りの木を検査し、
     名前を指定したフィクスチャの記録済みの木を壊します。
     コーパスの検査は kanban の記録済みの木すべてと common の検出例を含み、
     kanban を記録済みの木の検査から除外しません。
     範囲は自身の構文から最後の子孫までを覆い、兄弟は重なりません。
     装飾は字下げにかかわらず、最後に書かれた node に一度だけ置きます。
-    受理は parser の結果の記録で確かめ、
-    ここでは再実装しません。 [fixture: kanban/db-indent-deeper]
+    受理は parser の結果の記録で確かめ、ここでは再実装しません。
+    [fixture: kanban/db-indent-deeper]
     [fixture: kanban/db-indent-shallower-last]
     [fixture: kanban/gram-decoration-then-child]
     [fixture: kanban/gram-nesting-item-decoration-before-deeper-item]

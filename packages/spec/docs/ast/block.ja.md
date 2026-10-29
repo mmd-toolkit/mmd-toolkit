@@ -55,8 +55,8 @@ BlockAccDescrBlockStatement のどれかです。
 `A:2 --> B` は幅 2 を持ち、`A --> B:2` は拒否されます。
 リンクの連鎖は 1 つの文です。
 `A --> B --> C` は書かれたとおり 2 つのリンクを持ち、mermaid.js は、
-それを誤って読みます（[辺の文](../diagrams/block.ja.md#辺の文) を参照）。 [fixture: block/db-width-before-edge]
-[fixture: block/db-width-with-label]
+それを誤って読みます（[辺の文](../diagrams/block.ja.md#辺の文) を参照）。
+[fixture: block/db-width-before-edge] [fixture: block/db-width-with-label]
 [fixture: block/db-edge-arrow] [fixture: block/db-edge-chain]
 
 ### BlockNode
@@ -68,7 +68,7 @@ BlockAccDescrBlockStatement のどれかです。
 | `id`    | Identifier                          | id。                              |
 | `shape` | BlockShape、BlockArrowShape か null | 形かブロック矢印。なければ null。 |
 
-子の欄: `id`、`shape`。 [fixture: block/db-shape-square]
+子の欄: `id`、 `shape`。 [fixture: block/db-shape-square]
 [fixture: block/db-arrow-two]
 
 ### BlockShape
@@ -82,13 +82,12 @@ BlockAccDescrBlockStatement のどれかです。
 | `label` | StringLiteral | その間の文字列。                             |
 
 子の欄: `label`。
-開きと閉じは続けて別々に読まれるので（[形](../diagrams/block.ja.md#形) を参照）、
-どの開きもどの閉じに出会えます。
+開きと閉じは続けて別々に読まれるので（[形](../diagrams/block.ja.md#形)
+を参照）、どの開きもどの閉じに出会えます。
 `A["x")` は開き `[` と閉じ `)` を持ちます。
 どの組が mermaid.js の形で、Db が組にどの型を与えるかは、
 tests パッケージの要約にあります。 [fixture: block/db-shape-square]
-[fixture: block/db-shape-round]
-[fixture: block/db-shape-mixed-square-round]
+[fixture: block/db-shape-round] [fixture: block/db-shape-mixed-square-round]
 
 ### BlockArrowShape
 
@@ -106,24 +105,24 @@ tests パッケージの要約にあります。 [fixture: block/db-shape-square
 mermaid.js が方向をそう読むからです。
 `,` とその後の空白は、どの方向にも属しません。
 空白は改行も含めて文字を保ち、書かれたテキストと同じく、
-ディレクティブとコメントの範囲を除きます（[ast.ja.md](../ast.ja.md#ノード) を参照）。
+ディレクティブとコメントの範囲を除きます（[ast.ja.md](../ast.ja.md#ノード)
+を参照）。
 方向は BlockLiteral で、その範囲は空白も覆うので、
 その中の行終端を mermaid.js がどう読むかは範囲で決まります。
-間にディレクティブのある `\r` と `\n` は 2 つの行終端です（[行終端](../common.ja.md#行終端) を参照）。
+間にディレクティブのある `\r` と `\n` は 2
+つの行終端です（[行終端](../common.ja.md#行終端) を参照）。
 `(right, down)` と `(rightdown)` は方向 `right` と `down` を、
 `(right , down )` はそれぞれにスペースが続く方向 `right` と `down` を、
 `(right down)` はスペースが続く方向 `right` と方向 `down` を、
 `( right)` はスペースと `right` の方向を、
-`( right , down)` は両側にスペースのある方向 `right` と方向 `down` を持ちます。 [fixture: block/db-arrow-two]
-[fixture: block/db-grid-empty-directions]
+`( right , down)` は両側にスペースのある方向 `right` と方向 `down` を持ちます。
+[fixture: block/db-arrow-two] [fixture: block/db-grid-empty-directions]
 [fixture: block/db-arrow-spaces-around-comma]
 [fixture: block/db-arrow-spaces-around-first]
 [fixture: block/db-arrow-comment-line-before-first]
 [fixture: block/db-arrow-directive-before-first]
-[fixture: block/db-arrow-cr-directive-lf]
-[fixture: block/db-arrow-spaces]
-[fixture: block/db-arrow-leading-space]
-[fixture: block/db-arrow-trailing-space]
+[fixture: block/db-arrow-cr-directive-lf] [fixture: block/db-arrow-spaces]
+[fixture: block/db-arrow-leading-space] [fixture: block/db-arrow-trailing-space]
 [fixture: block/db-spec-spaces-around-directions]
 [fixture: block/db-spec-directions-line-feeds]
 [fixture: block/db-grid-spaces-directions]
@@ -172,7 +171,8 @@ id が矢印より先に読まれるので、始まりの印 `cross` と `circle
 ### BlockOpeningArrow
 
 ラベルを持つリンクの開きの矢印です。
-[FlowchartOpeningArrow](./flowchart.ja.md#flowchartopeningarrow) の欄を持ちます。
+[FlowchartOpeningArrow](./flowchart.ja.md#flowchartopeningarrow)
+の欄を持ちます。
 
 | 欄            | 型     | 意味                                                       |
 | ------------- | ------ | ---------------------------------------------------------- |
@@ -181,9 +181,8 @@ id が矢印より先に読まれるので、始まりの印 `cross` と `circle
 | `line`        | 文字列 | `--` なら `solid`、`==` なら `thick`、`-.` なら `dotted`。 |
 
 子の欄はありません。
-flowchart と違い、
-その線はラベルの後の矢印の線と同じでなくてかまいません。 [fixture: block/db-edge-label]
-[fixture: block/db-edge-label-mismatched]
+flowchart と違い、その線はラベルの後の矢印の線と同じでなくてかまいません。
+[fixture: block/db-edge-label] [fixture: block/db-edge-label-mismatched]
 
 ### BlockSpaceStatement
 
@@ -220,10 +219,9 @@ flowchart と違い、
 頭はほかと同じノードの文で、幅と形を持てます（`block:G:2`、
 `block:G["label"]`）。
 `block:` の後の辺の文は、書かれたとおり頭で、
-mermaid.js はそれを id のない入れ子のブロックとして読みます。 [fixture: block/db-composite-end-crlf]
-[fixture: block/db-composite-no-id]
-[fixture: block/db-composite-edge-header]
-[fixture: block/db-composite-width]
+mermaid.js はそれを id のない入れ子のブロックとして読みます。
+[fixture: block/db-composite-end-crlf] [fixture: block/db-composite-no-id]
+[fixture: block/db-composite-edge-header] [fixture: block/db-composite-width]
 [fixture: block/db-composite-label]
 
 ### BlockClassDefStatement
@@ -238,7 +236,8 @@ mermaid.js はそれを id のない入れ子のブロックとして読みま�
 子の欄: `name`、`styles`。
 スタイルは名前の次の行から始められます。
 `classDef c` に行 `class A c` が続くと、1 つのスタイル `class A c` を持ちます。
-スタイルがどの空白を持つかは [BlockLiteral](#blockliteral) にあります。 [fixture: block/db-class-def-color-fill]
+スタイルがどの空白を持つかは [BlockLiteral](#blockliteral) にあります。
+[fixture: block/db-class-def-color-fill]
 [fixture: block/db-class-def-empty-style]
 [fixture: block/db-spec-class-def-name-only-then-class]
 
@@ -282,7 +281,8 @@ id とスタイルを持つ `style`: `style A fill:#f00`。
 
 子の欄: `id`、`styles`。
 flowchart と同じく、id はコンマも含む 1 つの id で、Db は、
-それを 1 つのテキストとして探します（[文法の外の拒否](../diagrams/block.ja.md#文法の外の拒否) を参照）。 [fixture: block/db-style-plain]
+それを 1 つのテキストとして探します。 [fixture: block/db-style-plain]
+[文法の外の拒否](../diagrams/block.ja.md#文法の外の拒否) を参照してください。
 
 ### BlockAccDescrBlockStatement
 
@@ -292,9 +292,10 @@ flowchart と同じく、id はコンマも含む 1 つの id で、Db は、
 欄もありません。
 block diagram には説明がありません。
 テキストを持つブロックは拒否され、
-文の中の空のブロックは既知の差異 `tokenless-empty-forms` です。 [fixture: block/db-empty-block-line]
-[fixture: block/div-empty-block-in-edge]
-[空の説明ブロック](../diagrams/block.ja.md#空の説明ブロック) を参照してください。
+文の中の空のブロックは既知の差異 `tokenless-empty-forms` です。
+[fixture: block/db-empty-block-line] [fixture: block/div-empty-block-in-edge]
+[空の説明ブロック](../diagrams/block.ja.md#空の説明ブロック)
+を参照してください。
 
 ### BlockLiteral
 
@@ -307,7 +308,8 @@ block diagram には説明がありません。
 子の欄はありません。
 値は中の空白を保ちます。
 クラスの名前は端に空白を持たず、
-`class` の id はその前の `,` の後の空白を保ちます（[BlockClassStatement](#blockclassstatement) を参照）。
+`class` の id はその前の `,`
+の後の空白を保ちます（[BlockClassStatement](#blockclassstatement) を参照）。
 方向は [BlockArrowShape](#blockarrowshape) が定める空白を保ちます。
 `classDef` と `style` のスタイルは、両端の空白を除いた行の残りの、
 `,` の間の部分です。
@@ -329,10 +331,9 @@ mermaid.js が `style` のスタイルにそれを保つからです。
 `style A fill:#f00,  ` は最後に null を持ちます。
 行の残りの両端の空白は、どのスタイルにも属さないからです。
 `classDef` のスタイルも同じ形です。
-Db がそれをどう trim するかは、
-tests パッケージの要約にあります。 [fixture: block/db-class-apply-names-spaces]
-[fixture: block/db-class-def-color-fill]
-[fixture: block/db-style-spaces]
+Db がそれをどう trim するかは、 tests パッケージの要約にあります。
+[fixture: block/db-class-apply-names-spaces]
+[fixture: block/db-class-def-color-fill] [fixture: block/db-style-spaces]
 [fixture: block/db-style-spaces-at-line-ends]
 [fixture: block/db-style-whitespace-only-between-commas]
 [fixture: block/db-style-tab-only-between-commas]

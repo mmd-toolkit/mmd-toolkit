@@ -34,8 +34,8 @@ flow は方向 `BT` を取り、`LR` は失われる。
 その外側の flow については数えない。
 
 flow がすでに持つ方向を与える文は報告しない。
-[flowchart の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L100-L100) が言うとおり、
-`TD` と `TB` は同じ上から下への方向であり、
+[flowchart の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L100-L100)
+が言うとおり、 `TD` と `TB` は同じ上から下への方向であり、
 `direction TD` の後の `direction TB` は報告しない。
 mermaid.js は flow の `end` に達したときに方向を設定するので、
 ほかの flow の中に書いた flow が先に設定され、その文はその順で比べる。
@@ -76,8 +76,8 @@ agentflow-beta TB
 
 ## 背景
 
-[`addSubGraph`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1175-L1284) は、
-flow の本体の最後の `direction` 文を取り、
+[`addSubGraph`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1175-L1284)
+は、 flow の本体の最後の `direction` 文を取り、
 同じ id の前の flow に後のものの方向を与える。
 
 <!-- begin auto-generated rule resources -->

@@ -11,7 +11,7 @@ Code:
     |   ^~~~~~~~ [1]
   4 |
 
-[1] mermaid.js keeps the alias `Person` that the entity `p` got on line 2, and ignores this alias.
+[1] mermaid.js keeps the first alias `Person` of the entity `p` and ignores this alias.
 ---
 
 
@@ -27,7 +27,7 @@ Code:
     | ^~~~~~~~ [1]
   6 |
 
-[1] mermaid.js keeps the alias `Person` that the entity `p` got on line 3, and ignores this alias.
+[1] mermaid.js keeps the first alias `Person` of the entity `p` and ignores this alias.
 ---
 
 
@@ -45,7 +45,7 @@ Code:
     | ~ [1]
   6 |
 
-[1] mermaid.js keeps the alias `P` that the entity `p` got on line 2, and ignores this alias.
+[1] mermaid.js keeps the first alias `P` of the entity `p` and ignores this alias.
 ---
 
 
@@ -60,7 +60,7 @@ Code:
   4 |   A
   5 |
 
-[1] mermaid.js keeps the alias `first` that the entity `A` got on line 2, and ignores this alias.
+[1] mermaid.js keeps the first alias `first` of the entity `A` and ignores this alias.
 ---
 
 
@@ -73,7 +73,7 @@ Code:
   3 | p[Q]
     | ^~~~ [1]
 
-[1] mermaid.js keeps the alias `P` that the entity `p` got on line 2, and ignores this alias.
+[1] mermaid.js keeps the first alias `P` of the entity `p` and ignores this alias.
 ---
 
 
@@ -89,6 +89,6 @@ Code:
     | ^~~~ [2]
   5 |
 
-[1] mermaid.js keeps the alias `P` that the entity `p` got on line 2, and ignores this alias.
-[2] mermaid.js keeps the alias `P` that the entity `p` got on line 2, and ignores this alias.
+[1] mermaid.js keeps the first alias `P` of the entity `p` and ignores this alias.
+[2] mermaid.js keeps the first alias `P` of the entity `p` and ignores this alias.
 ---

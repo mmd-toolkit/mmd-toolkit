@@ -18,7 +18,7 @@ new RuleTester(LANGUAGE_CONFIG).run("agentflow-no-undef", agentflowNoUndef, {
       errors: [
         {
           message:
-            "The id `Typo` is not declared by any vertex, flow, connector, or link.",
+            "mermaid.js gives no element these classes for the undefined id `Typo`.",
           line: 3,
           column: 9,
           endLine: 3,
@@ -36,7 +36,7 @@ class A,Typo hot\r
       errors: [
         {
           message:
-            "The id `Typo` is not declared by any vertex, flow, connector, or link.",
+            "mermaid.js gives no element these classes for the undefined id `Typo`.",
           line: 3,
           column: 9,
           endLine: 3,

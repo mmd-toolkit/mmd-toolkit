@@ -3,24 +3,31 @@
 English version: [timeline.md](./timeline.md)
 
 timeline 図の Db の要約を、その木から作る手順です。
-`src/db-from-tree/timeline.ts` が実装します（[db-from-tree.md](../db-from-tree.ja.md) を参照）。
+`src/db-from-tree/timeline.ts`
+が実装します（[db-from-tree.md](../db-from-tree.ja.md) を参照）。
 構文と木は、
-仕様の [diagrams/timeline.md](../../../spec/docs/diagrams/timeline.ja.md) と [ast/timeline.md](../../../spec/docs/ast/timeline.ja.md) が定めます。
+仕様の [diagrams/timeline.md](../../../spec/docs/diagrams/timeline.ja.md) と
+[ast/timeline.md](../../../spec/docs/ast/timeline.ja.md) が定めます。
 要約の欄は [db-summaries.md](../db-summaries.ja.md#timeline) にあります。
 
 mermaid.js は、構文解析しながら Db を作ります。
-文法は、文が終わるたびに、
-その文のために Db のメソッドを呼びます（[`statement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L71-L85)）。
-Db は、
-メソッドに渡されたものを持ちます（[`setDirection`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L21-L23)、
+文法は、文が終わるたびに、その文のために Db のメソッドを呼びます。
+出典は
+[`statement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L71-L85)
+です。
+Db は、メソッドに渡されたものを持ちます。
+出典は
+[`setDirection`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L21-L23)、
 [`addSection`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L29-L32)、
 [`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L52-L63)、
 [`addEvent`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L65-L70)、
-[`setDiagramTitle`、`setAccTitle`、`setAccDescription`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L16-L30)）。
+[`setDiagramTitle`、`setAccTitle`、`setAccDescription`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L16-L30)
+です。
 要約も同じに作ります。
 文をソースの順に実行し、Db が持つ一覧が要約です。
 値は、空白も含めて、Db が持つとおりに保ちます。
-要約はタスクの一覧を 1 度だけ読むので（[db-summaries.md](../db-summaries.ja.md#timeline) を参照）、
+要約はタスクの一覧を 1
+度だけ読むので（[db-summaries.md](../db-summaries.ja.md#timeline) を参照）、
 木の period 1 つが、要約のタスク 1 つです。
 
 ## 木から要約を作る
@@ -35,14 +42,11 @@ title、section の名前、アクセシビリティのテキストでも同じ�
 これは説明ブロックの中と、`title` の後ろの空白文字でのことです。
 各属性の引用符は `'` として読みます。
 これは title と period の中でのことです。 [fixture: timeline/db-event-entity]
-[fixture: timeline/db-event-entity-named]
-[fixture: timeline/db-title-entity]
-[fixture: timeline/db-section-entity]
-[fixture: timeline/db-acc-title-entity]
+[fixture: timeline/db-event-entity-named] [fixture: timeline/db-title-entity]
+[fixture: timeline/db-section-entity] [fixture: timeline/db-acc-title-entity]
 [fixture: timeline/db-acc-descr-entity]
 [fixture: timeline/db-acc-descr-block-entity]
-[fixture: timeline/db-crlf-line-ends]
-[fixture: timeline/db-lone-cr-line-ends]
+[fixture: timeline/db-crlf-line-ends] [fixture: timeline/db-lone-cr-line-ends]
 [fixture: timeline/lex-title-separator-carriage-return]
 [fixture: timeline/lex-html-tag-in-title]
 [fixture: timeline/lex-html-tag-in-period]
@@ -56,7 +60,8 @@ title、section の名前、アクセシビリティのテキストでも同じ�
 - テキストの単位の中のディレクティブは、変換した形にも、テキストにもありません。
   `a%%{init: {}}%%b` は period `ab` で、
   `title a %%{init: {}}%% b` の title は `a`、空白 2 つ、`b` です。
-  説明ブロックの中のコメント行も同じです。 [fixture: timeline/db-period-directive-glued]
+  説明ブロックの中のコメント行も同じです。
+  [fixture: timeline/db-period-directive-glued]
   [fixture: timeline/lex-directive-in-event]
   [fixture: timeline/db-title-directive]
   [fixture: timeline/db-section-directive]
@@ -67,7 +72,8 @@ title、section の名前、アクセシビリティのテキストでも同じ�
   [fixture: timeline/db-acc-descr-block-percent-line]
 - 行の規則が無視する `;` も、テキストの中では変換した形にありません。
   period、event、title、アクセシビリティのテキストは、
-  それを除いたテキストを持ちます。 [fixture: timeline/tokens-ignored-semicolon-in-period]
+  それを除いたテキストを持ちます。
+  [fixture: timeline/tokens-ignored-semicolon-in-period]
   [fixture: timeline/lex-title-semicolon-in-style-line]
   [fixture: timeline/lex-acc-title-semicolon-in-style-line]
   [fixture: timeline/lex-acc-descr-semicolon-in-style-line]
@@ -77,8 +83,8 @@ title、section の名前、アクセシビリティのテキストでも同じ�
 - テキストの両端の空白は、木が持つとおりに残ります。
   period はコロン、`#`、改行の前の空白を持ち、 event、title、
   section の名前は両端の空白を持ちます。
-  空白だけの名前も同じで、
-  行を終えるディレクティブが続いても同じです。 [fixture: timeline/db-period-and-event]
+  空白だけの名前も同じで、行を終えるディレクティブが続いても同じです。
+  [fixture: timeline/db-period-and-event]
   [fixture: timeline/db-comment-hash-after-period]
   [fixture: timeline/db-period-colon-glued-to-period]
   [fixture: timeline/db-period-trailing-spaces]
@@ -94,8 +100,8 @@ title、section の名前、アクセシビリティのテキストでも同じ�
   [fixture: timeline/lex-directive-at-end-of-period-line]
   [fixture: timeline/lex-directive-at-end-of-title-line]
 - アクセシビリティのテキストは、範囲の変換した形から両端の空白を除いたものです。
-  mermaid.js が trim するからで、
-  空白の隣にディレクティブがあっても同じです。 [fixture: timeline/db-acc-title-trailing-spaces]
+  mermaid.js が trim するからで、空白の隣にディレクティブがあっても同じです。
+  [fixture: timeline/db-acc-title-trailing-spaces]
   [fixture: timeline/db-acc-title-many-spaces]
   [fixture: timeline/lex-directive-after-acc-title-text]
 
@@ -105,8 +111,8 @@ period はその前の section を、
 event の文はその前の period を参照します（**period と event** を参照）。
 テキストのない説明ブロック、つまり TimelineAccDescrBlockStatement は、
 何も変えません。
-その周りの文は、それがないものとして実行するので、
-その前の説明は残ります。 [fixture: timeline/gram-empty-description-block-keeps-description]
+その周りの文は、それがないものとして実行するので、その前の説明は残ります。
+[fixture: timeline/gram-empty-description-block-keeps-description]
 [fixture: timeline/db-acc-descr-block-then-empty-block]
 [fixture: timeline/db-acc-descr-line-then-empty-braces]
 [fixture: timeline/db-acc-descr-block-empty]
@@ -130,9 +136,8 @@ timeline の Db にはそれを受け取るメソッドがないので、
 **direction。**
 ヘッダーに direction がなければ `LR` です。
 あれば、書かれたとおりの direction を大文字にしたものです。
-`td` は `TD`、`Lr` は `LR` です。 [fixture: timeline/db-direction-lr]
-[fixture: timeline/db-direction-td]
-[fixture: timeline/db-direction-lower-case]
+`td` は `TD`、 `Lr` は `LR` です。 [fixture: timeline/db-direction-lr]
+[fixture: timeline/db-direction-td] [fixture: timeline/db-direction-lower-case]
 [fixture: timeline/db-direction-mixed-case]
 [fixture: timeline/header-direction-twice]
 
@@ -142,8 +147,7 @@ title は、最後の `title` の文の値のテキストです。
 最初の `title` の前に title はありません。
 `section` の文は、名前のテキストを、書かれたとおりに `sections` に加えます。
 繰り返されても加えます。 [fixture: timeline/db-title-statement]
-[fixture: timeline/db-title-twice]
-[fixture: timeline/db-section-statement]
+[fixture: timeline/db-title-twice] [fixture: timeline/db-section-statement]
 [fixture: timeline/db-section-twice-same-name]
 
 **period と event。**
@@ -159,8 +163,7 @@ period の文は、タスクを 1 つ加えます。
   [fixture: timeline/db-section-then-title]
 - `events` は、文の event のテキストをソースの順に並べたものです。
   event がなければ空です。 [fixture: timeline/db-period-and-event]
-  [fixture: timeline/db-period-only]
-  [fixture: timeline/db-event-two-on-a-line]
+  [fixture: timeline/db-period-only] [fixture: timeline/db-event-two-on-a-line]
   [fixture: timeline/db-event-own-line]
   [fixture: timeline/db-event-own-line-two-tasks]
   [fixture: timeline/db-event-own-line-after-event]
@@ -170,7 +173,8 @@ period の文は、タスクを 1 つ加えます。
   タスクは自分の `section` を保つので、 section の文の後ろに書いた event は、
   その前の section の中にあります。
   どの period よりも前にある event の文は、木にありません。
-  そういう入力は拒否されます。 [fixture: timeline/db-event-after-section-joins-earlier-task]
+  そういう入力は拒否されます。
+  [fixture: timeline/db-event-after-section-joins-earlier-task]
   [fixture: timeline/db-section-with-event-after-task]
   [fixture: timeline/db-event-own-line-after-title]
   [fixture: timeline/db-event-own-line-after-acc-title]
@@ -190,8 +194,8 @@ period の文は、タスクを 1 つ加えます。
 U+3000、U+2028、U+FEFF）除かれます。
 テキストのない説明ブロックは何も変えません（**歩き方**を参照）。
 テキストは後ろの行から始められます。
-`accTitle:` の次の行が `A` なら、
-タイトルは `A` です。 [fixture: timeline/db-acc-title-statement]
+`accTitle:` の次の行が `A` なら、タイトルは `A` です。
+[fixture: timeline/db-acc-title-statement]
 [fixture: timeline/db-acc-title-twice]
 [fixture: timeline/lex-acc-title-value-on-next-line]
 [fixture: timeline/db-acc-descr-statement]
@@ -218,11 +222,11 @@ U+3000、U+2028、U+FEFF）除かれます。
 Db は、title、`accTitle`、
 `accDescr` の 3 つのテキストを `sanitizeText` に通します。
 `timelineDbOf()` は、
-[db-from-tree.md](../db-from-tree.ja.md#文字の置き換え) の置き換え `textReplacementOf(embedded.config)` を、
-この 3 つにだけ使います。
+[db-from-tree.md](../db-from-tree.ja.md#文字の置き換え) の置き換え
+`textReplacementOf(embedded.config)` を、この 3 つにだけ使います。
 period、event、section の名前は、書かれたとおりです。
-`accDescr` は、行をつないだ後に置き換え、
-ブロックも行と同じに置き換えます。 [fixture: timeline/config-security-level-other-title-and-accessibility]
+`accDescr` は、行をつないだ後に置き換え、ブロックも行と同じに置き換えます。
+[fixture: timeline/config-security-level-other-title-and-accessibility]
 [fixture: timeline/config-security-level-other-accessibility-block]
 [fixture: timeline/config-security-level-other-html-labels-false]
 [fixture: timeline/config-security-level-other-flowchart-html-labels-false]

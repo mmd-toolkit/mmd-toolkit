@@ -36,12 +36,12 @@ export const ganttNoDuplicateSetting: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js replaces the `{{setting}}` set on line {{line}} with the one of this statement.",
+        "mermaid.js replaces the earlier `{{setting}}` with the one of this statement.",
     },
   },
   create(context) {
-    /** For each setting, the statement that set it before and the value it set. */
-    const previous = new Map<string, { node: Node; value: string }>()
+    /** For each setting, the value that the statement before it set. */
+    const previous = new Map<string, string>()
 
     /**
      * Reports `node`, a statement of the setting `setting` that sets `value`,
@@ -49,14 +49,14 @@ export const ganttNoDuplicateSetting: MermaidRuleDefinition<{
      */
     function check(node: Node, setting: string, value: string): void {
       const earlier = previous.get(setting)
-      if (earlier !== undefined && earlier.value !== value) {
+      if (earlier !== undefined && earlier !== value) {
         context.report({
           node,
           messageId: "duplicate",
-          data: { setting, line: String(earlier.node.loc.start.line) },
+          data: { setting },
         })
       }
-      previous.set(setting, { node, value })
+      previous.set(setting, value)
     }
 
     return {

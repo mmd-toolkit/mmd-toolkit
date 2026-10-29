@@ -61,8 +61,8 @@ radar-beta
 
 ## 背景
 
-[`drawCurves`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L135-L173) は、
-値の数が軸の数でない曲線を飛ばす。
+[`drawCurves`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L135-L173)
+は、値の数が軸の数でない曲線を飛ばす。
 
 <!-- begin auto-generated rule resources -->
 

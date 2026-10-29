@@ -77,7 +77,8 @@ pin した mermaid.js の更新を扱う。
 ## 2. 作業ツリー
 
 - この SKILL の手順が書くのは、`packages/parser` と、
-  fixture のテストが書く `packages/tests/fixtures/<図種>/<fixture 名>/` の `ast.json` と `parse-error.json` だけ。
+  fixture のテストが書く `packages/tests/fixtures/<図種>/<fixture 名>/` の
+  `ast.json` と `parse-error.json` だけ。
   fixture のほかのファイル、仕様、ほかのパッケージは書かない。
   それらを直す必要が出たら、そのパッケージの SKILL の手順で直す。
   spec、tests、prettier-plugin の SKILL である。
@@ -94,8 +95,8 @@ pin した mermaid.js の更新を扱う。
   その状態でステージされることがあり、途中で止まった実行は元に戻さない。
 - Write ツールとシェルのヒアドキュメントは、`\u00a0` のようなエスケープを、
   実際の文字に変えることがある。
-  `packages/parser` のソースとテストは ASCII だけで書かれている（それ以外の文字は、
-  すべてエスケープで書く）。
+  `packages/parser` のソースとテストは ASCII
+  だけで書かれている（それ以外の文字は、すべてエスケープで書く）。
   例外は、`src/code-points.ts` のコメントで、
   定数がどの文字かを示す読める文字（`// À`）。
   書いたら、リポジトリのルートで次の 2 つを実行して確かめる。
@@ -130,13 +131,14 @@ pin した mermaid.js の更新を扱う。
   主張の確かめに mermaid.js が要るときは、
   リポジトリの外（scratchpad）の probe で動かす。
   probe は `node --conditions=source` で走らせるスクリプトで、
-  `packages/tests` のソースから `runMermaidWithEmbeddedData` と `dbFromTree` を読み込む。
+  `packages/tests` のソースから `runMermaidWithEmbeddedData` と `dbFromTree`
+  を読み込む。
   前者は入力に対する mermaid.js の受理と Db を、
   後者は同じ入力のパーサーの木から作った Db を返す。
   probe で分かったことは、コーパスと文に落とし、probe は残さない。
   文が必要とする入力は fixture にする。
-  入力と文を tests パッケージに渡して足してもらうか（tests の SKILL）、 fixtures
-  CLI で自分で足して tests パッケージに知らせる。
+  入力と文を tests パッケージに渡して足してもらうか（tests の SKILL）、
+  fixtures CLI で自分で足して tests パッケージに知らせる。
 
   ```sh
   pnpm --filter @mmd-toolkit/tests run fixtures:add <diagram> <name> --note "<the sentence and the case>" < input.mmd
@@ -177,7 +179,8 @@ pin した mermaid.js の更新を扱う。
   文書を読むテストは、その文書だけを変えたときにも回す。
   `tests/readme-example.test.ts`（`README.md` と `README.ja.md` の例）、
   `tests/types.test.ts`（`packages/spec/docs/known-divergences/` の文書）、
-  `src/ast.ts` と `src/ast/*.ts` のコメントの例と union を読むテスト（`tests/ast-<図種>-examples.test.ts`、
+  `src/ast.ts` と `src/ast/*.ts` のコメントの例と union
+  を読むテスト（`tests/ast-<図種>-examples.test.ts`、
   `tests/union-docs.test.ts`）である。
   全体は、4.8 節のとおりに回す。
 
@@ -187,8 +190,8 @@ pin した mermaid.js の更新を扱う。
 
 - その図種の仕様が書かれている。
   `packages/spec/docs/diagrams/<図種>.md` の節に「To be written」がない。
-  節は、Detection、Lexical structure、文法の外の拒否を含む Grammar、 Known
-  divergences である。
+  節は、Detection、Lexical structure、文法の外の拒否を含む Grammar、
+  Known divergences である。
   `packages/spec/docs/ast/<図種>.md` がある（spec の SKILL）。
 - その図種の fixture、
   Db の要約（`packages/tests/docs/db-from-tree/<図種>.md`）、
@@ -206,8 +209,7 @@ pin した mermaid.js の更新を扱う。
    mermaid.js のソースから埋めず、入力と mermaid.js の結果を添えて、
    先に仕様を直す（spec の SKILL の「When a gap in the specification is
    found」）。
-   flowchart の例:
-   1 文字ずつ読む文脈での実体参照、
+   flowchart の例: 1 文字ずつ読む文脈での実体参照、
    subgraph の名前の中の `click` のトークンの種類、
    文の文脈の `,` と同じ単位の名前だった、click の文脈の `,`。
 3. 欠落が残っている間は、それに関わらない部分を実装する。
@@ -299,7 +301,8 @@ flowchart のファイルが手本になる。
    文法がテキストを別の読み方で読み直さないためである。
    矢印の単位は、矢印の記号と線を持ち、 flowchart ではさらに線の文字の数を持つ。
 6. 字句解析器が大文字小文字を区別しないとき（sequence ではすべての規則）は、
-   語を `src/scanning.ts` の `matchWordIgnoringCase` と `matchWholeWordIgnoringCase` で比べる。
+   語を `src/scanning.ts` の `matchWordIgnoringCase` と
+   `matchWholeWordIgnoringCase` で比べる。
    これらは Notation に従う。
    小文字にしてから比べることはしない。
 7. 図種の字句解析器が自分のコメントを読むとき（図のコメント。 sequence では、
@@ -378,7 +381,8 @@ flowchart のファイルが手本になる。
 4. 葉のノードの値は、その書かれたテキストである。
    値のソースのテキストから、ディレクティブ、コメント領域、
    行の規則が無視する `;`、
-   文としての空の説明のブロックを除いたもの（`ast.md` の Nodes。 `SourceLexer.textOfRange`）。
+   文としての空の説明のブロックを除いたもの（`ast.md` の Nodes。
+   `SourceLexer.textOfRange`）。
    何も変換しない。
    `StringLiteral` と `NumericLiteral` は `raw` も持つ。
    `Identifier` の名前は、そのトークンのテキストをつないだもので、
@@ -439,8 +443,9 @@ mermaid.js が入力に Db を与えなかった（`db` が null の）ときは
 書かれた埋め込みの設定で置き換えない。
 
 共通の fixture ループは、
-対応するすべての図種で `tests/helpers/divergence-form.ts` の expectDivergenceForm を呼び、
-宣言された形とトークンを切る形の参照の読みを、受理の判定と独立に確かめる。
+対応するすべての図種で `tests/helpers/divergence-form.ts` の
+expectDivergenceForm を呼び、宣言された形とトークンを切る形の参照の読みを、
+受理の判定と独立に確かめる。
 
 コーパスに基づく場合のテストは、入力と期待結果をローカルの fixture 群に写さず、
 fixture を図種と名前で引用して読み込む。
@@ -462,8 +467,7 @@ fixture を図種と名前で引用して読み込む。
    `db-from-tree.test.ts` が失敗したときは、入力と記録された読みを添え、
    仕様に知らせる。
 2. ノードの範囲の外のテキストが読み方を決める場所を探す。
-   flowchart の例:
-   subgraph の名前のテキストは区切りまで続き、
+   flowchart の例: subgraph の名前のテキストは区切りまで続き、
    名前の後に空の説明ブロックが続く所では、
    その間の空白はどのノードにも入らない。
    文の終わりにある、すべて空白の単位は、文の範囲の後にある。
@@ -529,8 +533,8 @@ parse() に設定の引数やオプションを足さない。
 4. `-u` を使うのは、既存の結果が変わる変更のときだけ。
    その変更の前に、fixture をリポジトリの外の新しいディレクトリに写す。
    変更の後に、
-   `tests/fixtures.test.ts` だけを `-u` 付きで走らせる `pnpm run test:update` で書き直し、
-   `packages/parser` で違いを分類する。
+   `tests/fixtures.test.ts` だけを `-u` 付きで走らせる `pnpm run test:update`
+   で書き直し、 `packages/parser` で違いを分類する。
 
    ```sh
    cp -R ../tests/fixtures/<図種> <ディレクトリ>/ast-before
@@ -712,8 +716,8 @@ pnpm run format:check
   参照入力と申告の字句の判断は、独自の規則でなく、すべてパーサーの単位から取る。
   `docs/testing.md` の「既知の差異」と、README の違いの一覧に足す。
 - 仕様が、
-  参照の読み方ですべての違いを説明できると主張するときは（sequence の `comment-takes-character`）、
-  その形を置ける各場所が、その主張の場合である。
+  参照の読み方ですべての違いを説明できると主張するときは（sequence の
+  `comment-takes-character`）、その形を置ける各場所が、その主張の場合である。
   それぞれの fixture を頼み（3 節）、読み方で説明できない場合は、
   入力と mermaid.js の結果を添えて仕様に報告する。
 

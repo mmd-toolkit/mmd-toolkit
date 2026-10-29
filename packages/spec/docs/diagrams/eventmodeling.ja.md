@@ -4,8 +4,8 @@
 
 eventmodeling の構文と[書かれた木](../ast/eventmodeling.ja.md)を定義する。
 [event-modeling.langium][grammar]、[parser のテスト][parser-tests]、
-[adapter のテスト][mermaid-tests]に従う。 [fixture: eventmodeling/gram-written-tree]
-[fixture: eventmodeling/header-only]
+[adapter のテスト][mermaid-tests]に従う。
+[fixture: eventmodeling/gram-written-tree] [fixture: eventmodeling/header-only]
 
 ## 検出
 
@@ -15,12 +15,9 @@ eventmodeling を選ぶ。
 その後ろの境目は見ない。
 検出だけでは受理は決まらず、大文字、読めない suffix、colon、
 重複する見出しは拒否する。 [fixture: eventmodeling/header-only]
-[fixture: eventmodeling/header-uppercase]
-[fixture: eventmodeling/header-letter]
-[fixture: eventmodeling/header-digit]
-[fixture: eventmodeling/header-word]
-[fixture: eventmodeling/header-dash]
-[fixture: eventmodeling/header-unicode]
+[fixture: eventmodeling/header-uppercase] [fixture: eventmodeling/header-letter]
+[fixture: eventmodeling/header-digit] [fixture: eventmodeling/header-word]
+[fixture: eventmodeling/header-dash] [fixture: eventmodeling/header-unicode]
 [fixture: eventmodeling/header-punctuation]
 [fixture: eventmodeling/header-double]
 
@@ -29,23 +26,23 @@ HTML 属性の引用符、本当の先頭 frontmatter、共通 directive、コ�
 先頭 trivia、文字参照、選ばれた semicolon を扱う。
 [前処理][preprocess]と[検出の走査][detect-type]は図種の文法より先。
 本当の frontmatter は共有 Frontmatter。
-先行する C4 検出には c4-keyword-anywhere を適用する。 [fixture: eventmodeling/frontmatter-title]
-[fixture: eventmodeling/line-cr]
-[fixture: eventmodeling/line-crlf]
-[fixture: eventmodeling/html-common]
+先行する C4 検出には c4-keyword-anywhere を適用する。
+[fixture: eventmodeling/frontmatter-title] [fixture: eventmodeling/line-cr]
+[fixture: eventmodeling/line-crlf] [fixture: eventmodeling/html-common]
 [fixture: eventmodeling/entity-common]
 [fixture: eventmodeling/directive-header-inside]
 [fixture: eventmodeling/semicolon-selected-common-parts]
 [fixture: eventmodeling/c4-component-identifier]
 
 検出点では、通過する裸の percent 行と二度目の directive 走査より前に、
-共通の [frontmatter の形](../common.ja.md#フロントマター)に合う retained
-block を高々一つ通る。
+共通の [frontmatter の形](../common.ja.md#フロントマター)に合う retained block
+を高々一つ通る。
 それは図の text として残る。
 二つ目の retained block は拒否する。
 本当の frontmatter は retained block と二度目の走査の directive より前に置ける。
 block の後の directive は通れるが、逆順で block の通過をやり直さない。
-先行する裸の percent 行もその block の通過を止める。 [fixture: eventmodeling/detect-retained-two]
+先行する裸の percent 行もその block の通過を止める。
+[fixture: eventmodeling/detect-retained-two]
 [fixture: eventmodeling/detect-two-blocks]
 [fixture: eventmodeling/detect-real-retained-secondscan]
 [fixture: eventmodeling/detect-yaml-secondscan]
@@ -53,12 +50,14 @@ block の後の directive は通れるが、逆順で block の通過をやり�
 [fixture: eventmodeling/prefix-yaml-between-bares]
 [fixture: eventmodeling/detect-block-after-bare-brace]
 
-本文行のない隣接 fence、closer の欠落、opening の四つの dash、 closing
-fence の suffix、改行が続かない closer は retained block の通過を止める。
+本文行のない隣接 fence、closer の欠落、opening の四つの dash、
+closing fence の suffix、
+改行が続かない closer は retained block の通過を止める。
 先頭の trim は opening の indent だけを除きうる。
 元は indented な opener と indent のない closer、closer だけの indent、
 trim 後に片側だけ indent の残る fence を区別する。
-closing の padding と LF は検出と native の読みに両方合いうる。 [fixture: eventmodeling/detect-adjacent-no-body]
+closing の padding と LF は検出と native の読みに両方合いうる。
+[fixture: eventmodeling/detect-adjacent-no-body]
 [fixture: eventmodeling/detect-missing-close]
 [fixture: eventmodeling/detect-four-opening-dashes]
 [fixture: eventmodeling/detect-closing-suffix]
@@ -68,13 +67,13 @@ closing の padding と LF は検出と native の読みに両方合いうる。
 [fixture: eventmodeling/detect-opening-indent-trim]
 [fixture: eventmodeling/detect-close-space-native]
 
-二度目の走査で初めて見つかる directive は図の text として残り、 native
-directive の境目を満たす必要がある。
+二度目の走査で初めて見つかる directive は図の text として残り、
+native directive の境目を満たす必要がある。
 二つの形は個別に読めるが、
 closer に見出しを直結すると native の読みが失敗しうる。
-retained な native
-YAML と directive は EventmodelingDiagram.textBeforeHeader に属し、
-共有 frontmatter や設定ではない。 [fixture: eventmodeling/detect-two-secondscan]
+retained な native YAML と directive は EventmodelingDiagram.textBeforeHeader
+に属し、共有 frontmatter や設定ではない。
+[fixture: eventmodeling/detect-two-secondscan]
 [fixture: eventmodeling/detect-secondscan-glued]
 [fixture: eventmodeling/detect-real-retained-secondscan]
 
@@ -83,11 +82,10 @@ YAML と directive は EventmodelingDiagram.textBeforeHeader に属し、
 検出点、到達した見出し、その後の native 空白を区別する。
 ASCII space/tab と Unicode 空白は、独立の行でも見出しの直前でも、
 この図種では裸の行の有無によらず受理する。
-bare-percent-line-before-header の差異にはならない。 [fixture: eventmodeling/bare-before-space]
-[fixture: eventmodeling/bare-before-tab]
-[fixture: eventmodeling/bare-before-ls]
-[fixture: eventmodeling/bare-before-ps]
-[fixture: eventmodeling/bare-line-ls]
+bare-percent-line-before-header の差異にはならない。
+[fixture: eventmodeling/bare-before-space]
+[fixture: eventmodeling/bare-before-tab] [fixture: eventmodeling/bare-before-ls]
+[fixture: eventmodeling/bare-before-ps] [fixture: eventmodeling/bare-line-ls]
 [fixture: eventmodeling/bare-line-ps]
 [fixture: eventmodeling/prefix-directive-between-bares]
 [fixture: eventmodeling/detect-bare-retained]
@@ -105,12 +103,12 @@ bare-percent-line-before-header の差異にはならない。 [fixture: eventmo
 上の通過範囲を除いて検出点から図の text を読む。
 各位置で表の最初に成立する規則を取り、次の位置で同じ順を繰り返す。
 一般の最長一致ではない。
-[module.ts][module]は [EventModelingTokenBuilder][token-builder] と[共通 token builder][common-token-builder]を使う。
+[module.ts][module]は [EventModelingTokenBuilder][token-builder]
+と[共通 token builder][common-token-builder]を使う。
 [文法][grammar]は common grammar を import しない。
 継承した STRING、INT、BOOLEAN、EOL などの単位はない。
 どの規則も読まない文字は拒否する。 [fixture: eventmodeling/header-only]
-[fixture: eventmodeling/gram-written-tree]
-[fixture: eventmodeling/error-start]
+[fixture: eventmodeling/gram-written-tree] [fixture: eventmodeling/error-start]
 [fixture: eventmodeling/error-recovered]
 [fixture: eventmodeling/error-after-prefix]
 
@@ -177,8 +175,7 @@ eventX のような長い語は名前になる。 [fixture: eventmodeling/lex-gl
 [fixture: eventmodeling/lex-keyword-name]
 [fixture: eventmodeling/lex-keyword-prefix-name]
 [fixture: eventmodeling/gram-gwt-keyword-identifier-prefix]
-[fixture: eventmodeling/type-uppercase]
-[fixture: eventmodeling/frame-uppercase]
+[fixture: eventmodeling/type-uppercase] [fixture: eventmodeling/frame-uppercase]
 
 ### 見出しの境目
 
@@ -196,16 +193,15 @@ tf と数字が結合すれば拒否する。 [fixture: eventmodeling/header-per
 [fixture: eventmodeling/header-global-directive-newline]
 [fixture: eventmodeling/directive-header-glued]
 [fixture: eventmodeling/directive-keyword-glued]
-[fixture: eventmodeling/line-ls-gap]
-[fixture: eventmodeling/line-ps-gap]
-[fixture: eventmodeling/space-nbsp-body]
-[fixture: eventmodeling/space-bom-body]
+[fixture: eventmodeling/line-ls-gap] [fixture: eventmodeling/line-ps-gap]
+[fixture: eventmodeling/space-nbsp-body] [fixture: eventmodeling/space-bom-body]
 [fixture: eventmodeling/header-nel]
 [fixture: eventmodeling/header-zero-width-space]
 
 名前の位置でこの独自の keyword matcher が失敗しても identifier は一致しうる。
-eventmodeling.A は修飾名になるが、 event.A は普通の予約 keyword
-event で始まるので拒否する。 [fixture: eventmodeling/lex-name-custom-header-dot]
+eventmodeling.A は修飾名になるが、
+event.A は普通の予約 keyword event で始まるので拒否する。
+[fixture: eventmodeling/lex-name-custom-header-dot]
 [fixture: eventmodeling/lex-name-ordinary-keyword-dot]
 
 ### 名前と参照
@@ -217,27 +213,24 @@ Unicode letter、dash、quote、文字参照でその単位を延ばせない。
 frame-name は一〜三桁の ASCII digit の文字列で、量ではない。
 1、01、001 は別名。
 四桁、符号、NaN、Infinity、
-空白で分かれた二つの数字の単位は frame-name にならない。 [fixture: eventmodeling/lex-id-forms]
-[fixture: eventmodeling/lex-id-unicode]
+空白で分かれた二つの数字の単位は frame-name にならない。
+[fixture: eventmodeling/lex-id-forms] [fixture: eventmodeling/lex-id-unicode]
 [fixture: eventmodeling/lex-id-unicode-tail]
 [fixture: eventmodeling/db-prototype-names]
 [fixture: eventmodeling/entity-id-rejected]
 [fixture: eventmodeling/db-source-leading-zero]
-[fixture: eventmodeling/number-one]
-[fixture: eventmodeling/number-three]
-[fixture: eventmodeling/number-four]
-[fixture: eventmodeling/number-plus]
+[fixture: eventmodeling/number-one] [fixture: eventmodeling/number-three]
+[fixture: eventmodeling/number-four] [fixture: eventmodeling/number-plus]
 [fixture: eventmodeling/number-negative-zero]
-[fixture: eventmodeling/number-nan]
-[fixture: eventmodeling/number-infinity]
+[fixture: eventmodeling/number-nan] [fixture: eventmodeling/number-infinity]
 [fixture: eventmodeling/gram-frame-id-split-whitespace]
 
 qualified-name は一個以上の identifier を dot の句読点で結ぶ。
 dot の両側には native 空白、コメント、hidden を置けるが、segment の欠落、
 先頭や末尾の dot は拒否する。
-data の宣言名、bracket の data 参照、 GWT
-item の参照は一個の identifier を必要とし、
-qualified-name の形ではない。 [fixture: eventmodeling/db-qualified-names]
+data の宣言名、bracket の data 参照、
+GWT item の参照は一個の identifier を必要とし、 qualified-name の形ではない。
+[fixture: eventmodeling/db-qualified-names]
 [fixture: eventmodeling/space-qualified-name]
 [fixture: eventmodeling/lex-qualified-hidden-components]
 [fixture: eventmodeling/lex-qualified-empty-segment]
@@ -255,8 +248,8 @@ closing backtick の順。
 部品は別々で、間に native の gap を置ける。
 その後の本文は必須。
 空の tag や未知の型は拒否する。
-tag により本文を JSON、URI、
-別の言語として検証しない。 [fixture: eventmodeling/data-all-types]
+tag により本文を JSON、URI、別の言語として検証しない。
+[fixture: eventmodeling/data-all-types]
 [fixture: eventmodeling/data-block-types]
 [fixture: eventmodeling/data-unknown-type]
 [fixture: eventmodeling/lex-block-type-empty]
@@ -264,22 +257,22 @@ tag により本文を JSON、URI、
 [fixture: eventmodeling/lex-hidden-type-tag]
 [fixture: eventmodeling/lex-hidden-data-tag-gaps]
 
-[inline-data の規則][data-terminals]は braces、double quotes、 single
-quotes の順に試す。
+[inline-data の規則][data-terminals]は braces、double quotes、
+single quotes の順に試す。
 同じ行の最後の対応する closer まで読み、
 途中の closer や後の文に見える text も含める。
 CR、LF、LS、PS は内側に置けない。
 backslash は普通の内容で、quote や brace を保護しない。
 空の braces と空の quoted string も受理する。
-文法が block を求める位置でも、同じ位置では inline data が block
-data に優先する。 [fixture: eventmodeling/lex-inline-greedy]
+文法が block を求める位置でも、
+同じ位置では inline data が block data に優先する。
+[fixture: eventmodeling/lex-inline-greedy]
 [fixture: eventmodeling/lex-inline-quote-greedy]
 [fixture: eventmodeling/lex-inline-two-objects-following-frame]
 [fixture: eventmodeling/lex-inline-quote-conversion]
 [fixture: eventmodeling/lex-inline-empty]
 [fixture: eventmodeling/lex-inline-multiline]
-[fixture: eventmodeling/line-inline-ls]
-[fixture: eventmodeling/line-inline-ps]
+[fixture: eventmodeling/line-inline-ls] [fixture: eventmodeling/line-inline-ps]
 [fixture: eventmodeling/lex-inline-brace-ls]
 [fixture: eventmodeling/lex-inline-open-brace]
 [fixture: eventmodeling/lex-inline-open-double]
@@ -309,7 +302,8 @@ opening 行の後に少なくとも一行の本文を置く形を先に試し、
 そのため、後の closer があれば直後の closing 行が本文になりうる。
 本文のある形で適格な closer に達したらそこで止まる。
 quote、nested brace、frame に見える行は closer を保護しない。
-境目を満たさない closing に見える行は内容になりうる。 [fixture: eventmodeling/lex-block-adjacent-closers]
+境目を満たさない closing に見える行は内容になりうる。
+[fixture: eventmodeling/lex-block-adjacent-closers]
 [fixture: eventmodeling/lex-block-adjacent-later-close]
 [fixture: eventmodeling/lex-block-unqualified-close-later]
 [fixture: eventmodeling/data-block-nested]
@@ -318,8 +312,8 @@ quote、nested brace、frame に見える行は closer を保護しない。
 block-data は closing の直後の LF を消費する。
 他の後続空白は境目に使うだけで消費しない。
 text の終わりに加わる論理上の LF もそれを満たす。
-これは字句上の境目であり、
-文を終える EOL の単位ではない。 [fixture: eventmodeling/data-block-close-eof]
+これは字句上の境目であり、文を終える EOL の単位ではない。
+[fixture: eventmodeling/data-block-close-eof]
 [fixture: eventmodeling/data-block-close-space]
 [fixture: eventmodeling/lex-block-close-ps-boundary]
 [fixture: eventmodeling/lex-block-closer-native-comment]
@@ -334,7 +328,9 @@ ACC_DESCR の分岐に名前が合わない。
 有効な fallback は keyword、区切り、前置の水平 padding を含む terminal 全体を、
 trim、空白の collapse、escape の decode をせず残す。
 木の本文は変換せず、
-後の Db 正規化は [tests の要約](../../../tests/docs/db-summaries.md#eventmodeling)が定義する。 [fixture: eventmodeling/common-inline]
+後の Db 正規化は
+[tests の要約](../../../tests/docs/db-summaries.md#eventmodeling)が定義する。
+[fixture: eventmodeling/common-inline]
 [fixture: eventmodeling/common-whitespace]
 [fixture: eventmodeling/common-repeat-empty]
 [fixture: eventmodeling/common-description-repeat]
@@ -348,23 +344,24 @@ LF と padding は、共通 directive、共通 comment region、
 閉じた共通 directive だけを除いても、その外の LF は残る。
 選ばれた semicolon を除いても LF は残り、空行も LF を残す。
 その後、次の行の字下げを取れるかは、前の単位が残る LF を消費したかで決まる。
-消費済みなら字下げが現在位置から始まり、 native
-whitespace より先に composite を成立させられる。
+消費済みなら字下げが現在位置から始まり、
+native whitespace より先に composite を成立させられる。
 未消費なら native whitespace が LF から字下げまで取り、
 keyword の位置では identifier が勝つ。
 block-data、hidden-yaml、hidden-directive は閉じの LF を消費する。
 その次の行でも字下げがなければ identifier が勝つ。
 共通の CRLF 変換後も同じ LF の場合になる。
-これらの closer の後の LS と PS は消費されず、 native
-whitespace がそこから共通の形の前の padding まで取る。
+これらの closer の後の LS と PS は消費されず、
+native whitespace がそこから共通の形の前の padding まで取る。
 同じ物理行では、行内の共通 directive や選ばれた semicolon をまたいでも、
 残る ASCII space/tab の連なりが composite を成立させられる。
 選ばれない semicolon は空白ではなく、その gap では拒否する。
-空の説明ブロックは文として残り、後ろの LF は消費しないが、同じ行の closing
-brace の直後の padding は次の共通の形が取れる。
+空の説明ブロックは文として残り、後ろの LF は消費しないが、
+同じ行の closing brace の直後の padding は次の共通の形が取れる。
 名前の位置でも padding 付きの title は composite としてその位置を奪いうるが、
 padding のない title は identifier になれる。
-必要な delimiter のない accTitle と accDescr は identifier。 [fixture: eventmodeling/common-line-keywords]
+必要な delimiter のない accTitle と accDescr は identifier。
+[fixture: eventmodeling/common-line-keywords]
 [fixture: eventmodeling/lex-common-no-padding-after-brace]
 [fixture: eventmodeling/common-inline]
 [fixture: eventmodeling/lex-common-after-slash-comment]
@@ -401,8 +398,8 @@ padding のない title は identifier になれる。
 [fixture: eventmodeling/lex-common-empty-description-inline-padding]
 [fixture: eventmodeling/lex-common-empty-description-leaves-lf]
 
-title-line は任意の ASCII space/tab の padding、title、そして一つの ASCII
-space/tab と CR/LF 以外の行本文、または空の suffix を読む。
+title-line は任意の ASCII space/tab の padding、title、
+そして一つの ASCII space/tab と CR/LF 以外の行本文、または空の suffix を読む。
 accessibility-title-line は同じ padding、accTitle、任意の ASCII space/tab、
 colon、行本文。
 description-line は同じ形で accDescr を使い、brace の選択肢に優先する。
@@ -424,15 +421,15 @@ bare title は許すが、bare prefix の後の読めない text は拒否する
 [fixture: eventmodeling/common-empty-gap]
 [fixture: eventmodeling/lex-common-title-two-spaces]
 
-description-block は padding 付きの accDescr、任意の Notation 空白、 opening
-brace、最初の closing brace までのすべての文字、その closer を読む。
+description-block は padding 付きの accDescr、任意の Notation 空白、
+opening brace、最初の closing brace までのすべての文字、その closer を読む。
 LF、LS、PS をまたげる。
 quote と backslash は closer を保護せず、閉じない形は拒否する。
 空 block も文として残す。
 書かれた内側を trim しない。
 空白だけも literal になる。
-共通の除去で本文が空になっても、
-書かれた文や data の殻を除かない。 [fixture: eventmodeling/common-block-first-close]
+共通の除去で本文が空になっても、書かれた文や data の殻を除かない。
+[fixture: eventmodeling/common-block-first-close]
 [fixture: eventmodeling/lex-common-block-after-close]
 [fixture: eventmodeling/common-block-quoted-close]
 [fixture: eventmodeling/common-block-open]
@@ -448,7 +445,8 @@ whitespace の一致より先に共通 directive とコメント領域を除く�
 空行も許す。
 native comment を composite の単位に挿入できるという意味ではない。
 metadata の値がすでに包む slash comment や YAML に見える形は、
-その text であって別の hidden ではない。 [fixture: eventmodeling/common-description-comment-gap]
+その text であって別の hidden ではない。
+[fixture: eventmodeling/common-description-comment-gap]
 [fixture: eventmodeling/common-description-directive-gap]
 [fixture: eventmodeling/common-description-empty-gap]
 [fixture: eventmodeling/lex-common-block-slash-text]
@@ -458,17 +456,14 @@ metadata の値がすでに包む slash comment や YAML に見える形は、
 
 native whitespace は LF、LS、PS、BOM、
 NBSP を含む共通 Notation 空白の一個以上で、node にしない。
-可視の EOL 単位はなく、見出し、frame、entity、data、note、 GWT の後に EOL
-production はない。
+可視の EOL 単位はなく、見出し、frame、entity、data、note、
+GWT の後に EOL production はない。
 字句規則が許す完全な単位は改行をまたいだり同じ行に並んだりできる。
 普通の semicolon は区切りでなく、包む text の単位の外では拒否する。
 共通の行の規則が選ぶものだけを無視する。 [fixture: eventmodeling/space-tabs]
-[fixture: eventmodeling/space-bom-body]
-[fixture: eventmodeling/space-nbsp-body]
-[fixture: eventmodeling/space-3000-body]
-[fixture: eventmodeling/space-lines]
-[fixture: eventmodeling/line-ls-gap]
-[fixture: eventmodeling/line-ps-gap]
+[fixture: eventmodeling/space-bom-body] [fixture: eventmodeling/space-nbsp-body]
+[fixture: eventmodeling/space-3000-body] [fixture: eventmodeling/space-lines]
+[fixture: eventmodeling/line-ls-gap] [fixture: eventmodeling/line-ps-gap]
 [fixture: eventmodeling/header-inline]
 [fixture: eventmodeling/gram-gwt-next-top-level]
 [fixture: eventmodeling/tail-frame-semicolon]
@@ -484,8 +479,8 @@ block-data と同じ終端の選択で、
 少なくとも一行の本文を置く形を隣接する空の形より先に試す。
 opening の四つの dash や indent のある closer は失敗する。
 YAML を解析せず設定も適用しない。
-後続 LF は消費し、
-他の境目の空白は消費しない。 [fixture: eventmodeling/hidden-yaml-adjacent-later]
+後続 LF は消費し、他の境目の空白は消費しない。
+[fixture: eventmodeling/hidden-yaml-adjacent-later]
 [fixture: eventmodeling/hidden-yaml-adjacent-no-later]
 [fixture: eventmodeling/hidden-yaml-adjacent-eof]
 [fixture: eventmodeling/hidden-yaml-adjacent-space]
@@ -504,7 +499,8 @@ hidden-directive は任意の ASCII space/tab、%%{、LF/LS/PS を含むすべ�
 境目を満たさない前の closer を含めて後の適格な closer を探せる。
 共通 directive の除去と区別する。
 %%{x}%% のように名前が単語の形はすでに消えている場合がある。
-native の動作は名前が単語でない形で確かめる。 [fixture: eventmodeling/lex-native-directive-object]
+native の動作は名前が単語でない形で確かめる。
+[fixture: eventmodeling/lex-native-directive-object]
 [fixture: eventmodeling/lex-native-directive-object-space]
 [fixture: eventmodeling/lex-native-directive-object-eof]
 [fixture: eventmodeling/hidden-native-directive-later]
@@ -518,11 +514,10 @@ hidden-directive が失敗したら percent-comment を試す。
 複数行の残りの text は拒否されうる。
 先の inline、block、common の値の単位が包む native に見える text は内容になる。
 hidden-yaml と hidden-directive は EventmodelingIgnoredText、
-comment は共有 Comment
-record にする。 [fixture: eventmodeling/lex-native-directive-one-line-fallback]
+comment は共有 Comment record にする。
+[fixture: eventmodeling/lex-native-directive-one-line-fallback]
 [fixture: eventmodeling/lex-native-directive-object-glued]
-[fixture: eventmodeling/comment-eof]
-[fixture: eventmodeling/comment-header]
+[fixture: eventmodeling/comment-eof] [fixture: eventmodeling/comment-header]
 [fixture: eventmodeling/hidden-data-yaml-text]
 [fixture: eventmodeling/lex-inline-double-embedded-slash]
 [fixture: eventmodeling/lex-native-yaml-in-inline]
@@ -558,8 +553,8 @@ qualified-name の dot、type tag の backtick と型の語、
 参照の opener・名前・closer、arrow と参照名、
 共通 keyword・colon・brace・値は作者の別の部品。
 間の共通の除去は、残った字句の境目が成立する時だけ許す。
-native
-hidden で atom を割れるようにはしない。 [fixture: eventmodeling/directive-header-inside]
+native hidden で atom を割れるようにはしない。
+[fixture: eventmodeling/directive-header-inside]
 [fixture: eventmodeling/directive-id-inside]
 [fixture: eventmodeling/directive-number-inside]
 [fixture: eventmodeling/directive-arrow-inside]
@@ -585,18 +580,17 @@ hidden で atom を割れるようにはしない。 [fixture: eventmodeling/dir
 [fixture: eventmodeling/lex-reference-native-split-open]
 
 data と共通の値の内側は text で、共通 directive と選ばれた semicolon を置ける。
-retained な IgnoredText や Comment は、結合した native fence や comment
-mark の綴りも持てる。
+retained な IgnoredText や Comment は、
+結合した native fence や comment mark の綴りも持てる。
 原文の directive を一度だけ残し、所有者のある text を拒否しない。
-共通の行の規則が選ぶ semicolon だけを無視し、
-行のすべての semicolon を消さない。 [fixture: eventmodeling/directive-block-middle]
+共通の行の規則が選ぶ semicolon だけを無視し、行のすべての semicolon を消さない。
+[fixture: eventmodeling/directive-block-middle]
 [fixture: eventmodeling/directive-string-start]
 [fixture: eventmodeling/directive-string-middle]
 [fixture: eventmodeling/directive-string-end]
 [fixture: eventmodeling/style-every-text]
 [fixture: eventmodeling/style-two-semicolons]
-[fixture: eventmodeling/style-nohash]
-[fixture: eventmodeling/style-colon-space]
+[fixture: eventmodeling/style-nohash] [fixture: eventmodeling/style-colon-space]
 [fixture: eventmodeling/style-other-line]
 [fixture: eventmodeling/lex-hidden-yaml-fence-directive]
 [fixture: eventmodeling/comment-mark-directive]
@@ -670,8 +664,8 @@ data 宣言と note は block data を必須とし、frame は inline data だ�
 各 GWT group は少なくとも一個の item を持つ。
 given と then は必須、when は任意で、この順。
 entity 宣言が修飾名でも GWT の参照は単一 identifier。
-後の完全な top-level 文は新しい body
-item を始める。 [fixture: eventmodeling/db-source-order]
+後の完全な top-level 文は新しい body item を始める。
+[fixture: eventmodeling/db-source-order]
 [fixture: eventmodeling/frame-data-order]
 [fixture: eventmodeling/gram-frame-sources-after-dataref]
 [fixture: eventmodeling/gram-frame-repeat-dataref]
@@ -679,10 +673,8 @@ item を始める。 [fixture: eventmodeling/db-source-order]
 [fixture: eventmodeling/data-block-inline-rejected]
 [fixture: eventmodeling/note-inline-rejected]
 [fixture: eventmodeling/data-inline-block-rejected]
-[fixture: eventmodeling/gwt-complete]
-[fixture: eventmodeling/gwt-without-when]
-[fixture: eventmodeling/gwt-empty-given]
-[fixture: eventmodeling/gwt-empty-when]
+[fixture: eventmodeling/gwt-complete] [fixture: eventmodeling/gwt-without-when]
+[fixture: eventmodeling/gwt-empty-given] [fixture: eventmodeling/gwt-empty-when]
 [fixture: eventmodeling/gwt-empty-then]
 [fixture: eventmodeling/gwt-missing-then]
 [fixture: eventmodeling/gram-gwt-order]
@@ -694,8 +686,8 @@ PS は item を隔てられる。
 そこでの空の説明 block は GWT item にならず拒否する。
 data block 内では対応する形は共通の除去の対象になる text で、
 入れ子の文ではない。
-LS、PS、
-空の説明に見える行は内容に残る。 [fixture: eventmodeling/gram-nested-gwt-global-directive-line]
+LS、PS、空の説明に見える行は内容に残る。
+[fixture: eventmodeling/gram-nested-gwt-global-directive-line]
 [fixture: eventmodeling/lex-native-directive-in-gwt]
 [fixture: eventmodeling/gram-nested-gwt-selected-semicolon]
 [fixture: eventmodeling/gram-nested-gwt-comment-line]
@@ -714,7 +706,8 @@ LS、PS、
 GWT item の型の語と必須の参照名は別の部品である。
 共通 directive だけの行、選ばれた semicolon、コメント行、空行、LS、
 PS はその間を分けられる。
-その位置の空の説明ブロックは名前にならず拒否する。 [fixture: eventmodeling/gram-gwt-item-directive-only-line]
+その位置の空の説明ブロックは名前にならず拒否する。
+[fixture: eventmodeling/gram-gwt-item-directive-only-line]
 [fixture: eventmodeling/gram-gwt-item-selected-semicolon]
 [fixture: eventmodeling/gram-gwt-item-comment-line]
 [fixture: eventmodeling/gram-gwt-item-blank-line]
@@ -755,15 +748,15 @@ source の型の組合せを拒否する追加の意味上の gate はない。
 
 frame の繰り返し、後の同名 data 宣言、未使用の entity、note、GWT を含め、
 すべての文と参照の出現を原文順に残す。
-上流の unassigned な文法の呼び出しがモデルから落とす GWT item の entity
-type の語も保持する。
+上流の unassigned な文法の呼び出しがモデルから落とす GWT item の entity type
+の語も保持する。
 参照を解決せず、source 参照を sort や重複除去せず、
-参照を選択した data で置き換えず、参照先があっても書いた inline
-data を捨てない。
+参照を選択した data で置き換えず、
+参照先があっても書いた inline data を捨てない。
 空 data や共通の空の形も node にする。
-木に場所のある意味の読み違いは受理したままにする。 [fixture: eventmodeling/db-frame-duplicates]
-[fixture: eventmodeling/db-data-first]
-[fixture: eventmodeling/db-data-unused]
+木に場所のある意味の読み違いは受理したままにする。
+[fixture: eventmodeling/db-frame-duplicates]
+[fixture: eventmodeling/db-data-first] [fixture: eventmodeling/db-data-unused]
 [fixture: eventmodeling/db-entities-notes-gwt]
 [fixture: eventmodeling/gram-gwt-unassigned-type]
 [fixture: eventmodeling/db-source-order]
@@ -779,7 +772,8 @@ eventmodeling 固有の受理の鍵はない。
 [renderer][renderer]が parse の外で読む。
 不正な埋め込み設定は共通の設定処理で失敗しえ、embedded-data-opaque で比較する。
 拒否された埋め込み block を除くときも、独立した有効な metadata や設定を残す。
-共通の sanitization の影響を受ける値と Db のすべての正規化は[tests の要約](../../../tests/docs/db-summaries.md#eventmodeling)が定義し、
+共通の sanitization の影響を受ける値と Db のすべての正規化は
+[tests の要約](../../../tests/docs/db-summaries.md#eventmodeling) が定義し、
 この構文や書かれた木は定義しない。 [fixture: eventmodeling/config-drawing-site]
 [fixture: eventmodeling/config-frontmatter-drawing]
 [fixture: eventmodeling/config-init-drawing]
@@ -794,12 +788,14 @@ eventmodeling 固有の受理の鍵はない。
 ## 既知の差異
 
 上の atom に、
-[directive-as-token-boundary](../known-divergences/directive-as-token-boundary.ja.md) と、
-[ignored-semicolon-as-token-boundary](../known-divergences/ignored-semicolon-as-token-boundary.ja.md) を適用する。
+[directive-as-token-boundary](../known-divergences/directive-as-token-boundary.ja.md)
+と、
+[ignored-semicolon-as-token-boundary](../known-divergences/ignored-semicolon-as-token-boundary.ja.md)
+を適用する。
 除いた trivia 越しに単一 atom の断片を結合しない。
 directive や semicolon だけを保持しても atom の綴りは保てない。
-完全な作者の部品の間と text の内側では、
-許された共通 trivia を保持する。 [fixture: eventmodeling/directive-arrow-inside]
+完全な作者の部品の間と text の内側では、許された共通 trivia を保持する。
+[fixture: eventmodeling/directive-arrow-inside]
 [fixture: eventmodeling/directive-reference-inside]
 [fixture: eventmodeling/directive-reference-close-inside]
 [fixture: eventmodeling/lex-semicolon-identifier-inside]
@@ -808,10 +804,12 @@ directive や semicolon だけを保持しても atom の綴りは保てない�
 [fixture: eventmodeling/directive-reference]
 [fixture: eventmodeling/directive-tag]
 
-[html-tag-in-frontmatter](../known-divergences/html-tag-in-frontmatter.ja.md)は HTML の quote の変換を本当の frontmatter の後の text に限る。
+[html-tag-in-frontmatter](../known-divergences/html-tag-in-frontmatter.ja.md)は
+HTML の quote の変換を本当の frontmatter の後の text に限る。
 opaque な frontmatter の中で始まる tag で後の値を書き換えない。
 Mermaid が受理する入力の拒否、Mermaid が拒否する入力の受理、
-accessibility 値だけの変化の三つを区別して残す。 [fixture: eventmodeling/div-html-frontmatter-accept]
+accessibility 値だけの変化の三つを区別して残す。
+[fixture: eventmodeling/div-html-frontmatter-accept]
 [fixture: eventmodeling/div-html-frontmatter-reject]
 [fixture: eventmodeling/div-html-frontmatter-value]
 [fixture: eventmodeling/html-body-double-control]
@@ -819,12 +817,14 @@ accessibility 値だけの変化の三つを区別して残す。 [fixture: even
 [fixture: eventmodeling/prefix-yaml-html]
 [fixture: eventmodeling/prefix-directive-html]
 
-[embedded-data-opaque](../known-divergences/embedded-data-opaque.ja.md)は frontmatter の本文と共通 directive の引数を評価せず残す。
+[embedded-data-opaque](../known-divergences/embedded-data-opaque.ja.md)は
+frontmatter の本文と共通 directive の引数を評価せず残す。
 native inline/block data を opaque な設定にする規則ではない。
-[c4-keyword-anywhere](../known-divergences/c4-keyword-anywhere.ja.md)は後の名前、
-参照、text 内の C4 の語でなく見出しから図種を選ぶ。
+[c4-keyword-anywhere](../known-divergences/c4-keyword-anywhere.ja.md)
+は後の名前、参照、text 内の C4 の語でなく見出しから図種を選ぶ。
 裸の先頭行の空白と空の data/共通文には node や trivia としての場所があり、
-bare-percent-line-before-header と tokenless-empty-forms は追加しない。 [fixture: eventmodeling/div-frontmatter-invalid]
+bare-percent-line-before-header と tokenless-empty-forms は追加しない。
+[fixture: eventmodeling/div-frontmatter-invalid]
 [fixture: eventmodeling/div-init-invalid-colour]
 [fixture: eventmodeling/div-init-primitive-wrap]
 [fixture: eventmodeling/c4-container-data]

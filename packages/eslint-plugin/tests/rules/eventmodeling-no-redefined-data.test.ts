@@ -39,7 +39,7 @@ C
         errors: [
           {
             message:
-              "mermaid.js shows the `Payload` data block declared on line 3; the content of this later block is not used.",
+              "mermaid.js shows the first `Payload` data block; the content of this later block is not used.",
             line: 6,
             column: 6,
             endLine: 6,
@@ -61,7 +61,7 @@ A B
         errors: [
           {
             message:
-              "mermaid.js shows the `Payload` data block declared on line 3; the content of this later block is not used.",
+              "mermaid.js shows the first `Payload` data block; the content of this later block is not used.",
             line: 6,
             column: 6,
             endLine: 6,

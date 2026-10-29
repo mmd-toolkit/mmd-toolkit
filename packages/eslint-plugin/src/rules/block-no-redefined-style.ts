@@ -53,11 +53,11 @@ export const blockNoRedefinedStyle: MermaidRuleDefinition<{
     schema: [],
     messages: {
       redefined:
-        "mermaid.js replaces the whole style list of `{{name}}`, losing a style set on line {{line}}.",
+        "mermaid.js replaces the whole style list of `{{name}}`, losing a style set earlier.",
     },
   },
   create(context) {
-    const styles = new Map<string, { values: Set<string>; line: number }>()
+    const styles = new Map<string, Set<string>>()
     return {
       BlockStyleStatement(node) {
         if (node.styles.length === 1 && node.styles[0] === null) return
@@ -67,17 +67,17 @@ export const blockNoRedefinedStyle: MermaidRuleDefinition<{
         const previous = styles.get(node.id.name)
         if (
           previous !== undefined &&
-          [...previous.values].some(
+          [...previous].some(
             (value) => value.trim() !== "" && !values.has(value),
           )
         ) {
           context.report({
             node,
             messageId: "redefined",
-            data: { name: node.id.name, line: String(previous.line) },
+            data: { name: node.id.name },
           })
         }
-        styles.set(node.id.name, { values, line: node.loc.start.line })
+        styles.set(node.id.name, values)
       },
     }
   },

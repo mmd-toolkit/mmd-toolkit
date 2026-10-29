@@ -117,18 +117,20 @@ gantt
 
 ## 背景
 
-mermaid.js は、`after` と `until` を、チャートを描くときに、
+mermaid.js は、
+[`getStartDate`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L304-L323)、
+[`getEndDate`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L388-L407)
+で、`after` と `until` を、チャートを描くときに、
 式 `/^after\s+(?<ids>[\d\w- ]+)/` と、`/^until\s+(?<ids>[\d\w- ]+)/` で読み、
-どの id もタスクの id でなければ、
-開始や終わりを今日の日付にする（[`getStartDate`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L304-L323) と、
-[`getEndDate`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L388-L407)）。
-`click` は、テキストを読む間に id を探すので、
-その後に書いたタスクはまだ見つからない（[`setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L673-L688)）。
+どの id もタスクの id でなければ、開始や終わりを今日の日付にする。
+`click` は、
+[`setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L673-L688)
+で、テキストを読む間に id を探すので、その後に書いたタスクはまだ見つからない。
 `after` がいくつかのタスクを名指し、そのうちの 1 つが後に書かれているとき、
 mermaid.js はそれを待たずにタスクを始めることがある。
 [#4424](https://github.com/mermaid-js/mermaid/issues/4424) （"gantt: Depedencies
-('after') not always taken into account"）は、ラベル "Type: Bug /
-Error" と "Status: Triage" を持って開いている。
+('after') not always taken into account"）は、
+ラベル "Type: Bug / Error" と "Status: Triage" を持って開いている。
 
 <!-- begin auto-generated rule resources -->
 

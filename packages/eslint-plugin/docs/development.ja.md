@@ -4,7 +4,8 @@
 
 プラグインの言語の作りと、そのテストの方法を書きます。
 プラグインは [`@mmd-toolkit/parser`](../../parser) で図を読み、
-テストは [`@mmd-toolkit/tests`](../../tests) と `tests/fixtures/` の fixture から入力を取ります。
+テストは [`@mmd-toolkit/tests`](../../tests) と `tests/fixtures/` の fixture
+から入力を取ります。
 
 ## テストの実行
 
@@ -13,7 +14,8 @@ pnpm --filter @mmd-toolkit/eslint-plugin run test
 ```
 
 リポジトリのルートでは、
-`pnpm vitest run --project @mmd-toolkit/eslint-plugin` が同じテストを実行します。
+`pnpm vitest run --project @mmd-toolkit/eslint-plugin`
+が同じテストを実行します。
 スナップショットを書き直すには、
 次を実行します（[スナップショット](#スナップショット)を参照）。
 
@@ -55,13 +57,12 @@ parser が変わったら、
   parser が受理するもので、ソースコードのトークンの方法を、
   木の範囲だけから求めた答えと比べる。
   各ノードの中、前、後のトークンとコメント、2 つのトークンの間に空白があるか。
-- `tests/inline-config.test.ts`:
-  ESLint を設定するコメント（`%% eslint-disable…`、
+- `tests/inline-config.test.ts`: ESLint
+  を設定するコメント（`%% eslint-disable…`、
   `%% eslint <規則>: <設定>`）のスナップショット。
   入力は `tests/fixtures/inline-config/`。
-- `tests/markdown.test.ts`:
-  `tests/fixtures/markdown/` の `mermaid` と `mmd` のコードブロックを、
-  `@eslint/markdown` のプロセッサーを通して検査する。
+- `tests/markdown.test.ts`: `tests/fixtures/markdown/` の `mermaid` と `mmd`
+  のコードブロックを、 `@eslint/markdown` のプロセッサーを通して検査する。
   報告は Markdown のファイルの位置になる。
 - `tests/diagram-rules.test.ts`: 図種の規則それぞれが登録するセレクターを調べ、
   すべてがその図種のノードの型であることを確かめる。
@@ -102,7 +103,8 @@ parser とコーパスのテストが、それを 1 つずつ確かめていま�
 覆われた場合の入力は増やしません。
 
 規則のテストは、
-eslint-snapshot-rule-tester を使います（[スナップショット](#スナップショット)を参照）。
+eslint-snapshot-rule-tester
+を使います（[スナップショット](#スナップショット)を参照）。
 言語のテストは、スナップショットが結果をいちばんよく示すところで使います。
 
 言語のテストの中の規則は、観察するだけです。
@@ -128,8 +130,9 @@ ESLint から渡されたものを報告し、プラグインの規則が何を�
   対応するコーパスの fixture は必要ありません。
   `valid/` か `invalid/` の下に置き、場合に合わせて名前を付けます。
   `flowchart/` のような下位のディレクトリに置いてもかまいません。
-- fixture のファイルに、
-  `pnpm run lint:chars` が調べる文字（一覧は [`packages/spec/docs/index.ja.md`](../../spec/docs/index.ja.md)）は入れません。
+- fixture のファイルに、 `pnpm run lint:chars` が調べる文字は入れません。
+  その一覧は、
+  [`packages/spec/docs/index.ja.md`](../../spec/docs/index.ja.md) にあります。
   そのような文字を持つ入力は、テストのソースにエスケープ（`\u2028`、`\u2029`、
   `\u00a0`、単独の CR は `\r`）で書き、 ESLint の `RuleTester` で検査します。
   `code` と各提案の `output` はテンプレートリテラルにし、
@@ -146,7 +149,8 @@ ESLint から渡されたものを報告し、プラグインの規則が何を�
 ## スナップショット
 
 規則のテストと、`tests/snapshot.test.ts`、`tests/inline-config.test.ts` は、
-[eslint-snapshot-rule-tester](https://github.com/RunDevelopment/eslint-snapshot-rule-tester) を使います。
+[eslint-snapshot-rule-tester](https://github.com/RunDevelopment/eslint-snapshot-rule-tester)
+を使います。
 スナップショットは、
 テストのファイルの隣の `__snapshots__/<テストのファイル>.eslintsnap` に、
 報告のあるテストケースごとに 1 つ書かれます。
@@ -202,8 +206,9 @@ vitest は `globals: true` でそれを用意します。
   `eslint-disable-next-line` で始まるものが ESLint を設定します。
   ディレクティブとフロントマターは設定しません。
 - ソースコードは、
-  [`@ota-meshi/ast-token-store`](https://github.com/ota-meshi/ast-token-store) の `TokenStore` の方法（`getFirstToken`、
-  `getTokenBefore`、`getTokens`、 `getCommentsInside`、 `commentsExistBetween`、
+  [`@ota-meshi/ast-token-store`](https://github.com/ota-meshi/ast-token-store)
+  の `TokenStore` の方法（`getFirstToken`、 `getTokenBefore`、`getTokens`、
+  `getCommentsInside`、 `commentsExistBetween`、
   `isSpaceBetween` など）を持ちます。
   ストアが定めるとおりに、`Root.tokens` と `Root.comments` から答えます。
   トークンには、種類 `Directive` のトークンとしてディレクティブが、
@@ -225,10 +230,11 @@ vitest は `globals: true` でそれを用意します。
 規則ごとに `src/rules/<名前>.ts` を置き、図種の規則の名前は、
 その図種で始めます（`flowchart-no-ignored-text`）。
 各ファイルは、ファイル名を camel case にした名前で、
-規則を 1 つ export します（`flowchart-no-ignored-text.ts` なら `flowchartNoIgnoredText`）。
+規則を 1 つ export します（`flowchart-no-ignored-text.ts` なら
+`flowchartNoIgnoredText`）。
 プラグインでの名前は、`.ts` を除いたファイル名です。
-id は、
-名前空間の後にその名前を続けたもの（`@mmd-toolkit/flowchart-no-ignored-text`）です。
+id は、名前空間の後にその名前を続けたものです。
+たとえば `@mmd-toolkit/flowchart-no-ignored-text` です。
 文書は `docs/rules/<名前>.md` と `docs/rules/<名前>.ja.md` です。
 規則を実装するための覚え書き（報告するものを木がどう示すかと、
 それを記録する fixture）は、利用者向けの文書と分けて、
@@ -275,22 +281,26 @@ pnpm --filter @mmd-toolkit/eslint-plugin run check:docs
 ```
 
 `update` は、
-規則のファイルから規則の一覧 `src/rules/index.ts` を書き（`tools/update-rules.ts`）、
+規則のファイルから規則の一覧 `src/rules/index.ts`
+を書き（`tools/update-rules.ts`）、
 続けて文書の生成する部分を書きます（`tools/update-docs.ts`）。
 
 - `docs/rules/index.md` と `index.ja.md` の、
-  `<!-- begin auto-generated rules list -->` から `<!-- end auto-generated rules list -->` までのすべて。
+  `<!-- begin auto-generated rules list -->` から
+  `<!-- end auto-generated rules list -->` までのすべて。
   共通の規則と図種ごとの規則の表で、説明と、
   `recommended` の設定が有効にする規則の ✅ と、
   提案を出す規則（`meta.hasSuggestions`）の 💡 と、骨組みの 🚧 を持ちます。
   英語の説明は `meta.docs.description`、
   日本語の説明は日本語の文書の最初の段落です。
 - 各規則の文書（英日）の、題（`# @mmd-toolkit/<名前>`）と、
-  最初の段落の後の `<!-- begin auto-generated rule notice -->` から `<!-- end auto-generated rule notice -->` まで。
+  最初の段落の後の `<!-- begin auto-generated rule notice -->` から
+  `<!-- end auto-generated rule notice -->` まで。
   `recommended` の設定がその規則を有効にするかどうかと、
   提案を出すかどうかを書きます。
 - 実装した規則の文書（英日）の、
-  末尾の `<!-- begin auto-generated rule resources -->` から `<!-- end auto-generated rule resources -->` まで。
+  末尾の `<!-- begin auto-generated rule resources -->` から
+  `<!-- end auto-generated rule resources -->` まで。
   リソースの節で、規則のソースとテストへのリンクを書きます。
   骨組みの文書にはありません。
 

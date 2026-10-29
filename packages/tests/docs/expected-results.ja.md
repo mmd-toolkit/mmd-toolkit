@@ -12,24 +12,42 @@ pin した mermaid.js がテキストをどう扱うかを得る方法と、
 
 1. mermaid.js の設定を既定に戻す（`mermaidAPI.globalReset()`）。
    これで、前のテキストが適用したディレクティブの一覧も空になる。
-   そのあと `mermaid.initialize(config)` （[`initialize`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L702-L740)）でサイト設定を作り直す。
+   そのあと `mermaid.initialize(config)`でサイト設定を作り直す。
+   出典は
+   [`initialize`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L702-L740)
+   です。
    前の入力の設定は持ち越さない。
    既定に戻さないと、前の実行を失敗させたディレクティブ（例えば、
    mermaid.js が読めない色と `"theme": "base"`）がその一覧に残り、
    以後の呼び出しがすべて同じように失敗する。
    `mermaid.parse()` がその一覧を空にするのは始まってからで、
    `initialize()` はその前に動くため。
-2. `mermaid.parse(text)` （[`parse`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L96-L117)）で受理・拒否を決める。
-   フロントマターと `%%{init}%%` ディレクティブの設定もここで効く（[`processAndSetConfigs`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L73-L87)）。
-3. `mermaidAPI.getDiagramFromText(text, { title })` （[`getDiagramFromText`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L742-L746)）でもう一度解析し、
+2. `mermaid.parse(text)`で受理・拒否を決める。
+   出典は
+   [`parse`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L96-L117)
+   です。
+   フロントマターと `%%{init}%%` ディレクティブの設定もここで効く。
+   出典は
+   [`processAndSetConfigs`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L73-L87)
+   です。
+3. `mermaidAPI.getDiagramFromText(text, { title })`でもう一度解析し、
    Db を得る。
-   フロントマターの `title` は `render()` と同じ渡し方をするので（[`renderDiagram`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L578-L579)、
-   [`Diagram.fromText`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L52-L54)）、
+   出典は
+   [`getDiagramFromText`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L742-L746)
+   です。
+   フロントマターの `title` は `render()` と同じ渡し方をするので、
    Db の title は描画される図と一致する（`parse()` だけでは設定されない）。
-   mermaid.js はフロントマターの処理（[`cleanupText`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L6-L17)、
-   [`extractFrontMatter`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L69)、
-   [`frontMatterRegex`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L7-L7)）を公開していないので、
+   出典は
+   [`renderDiagram`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L578-L579)、
+   [`Diagram.fromText`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L52-L54)
+   です。
+   mermaid.js はフロントマターの処理を公開していないので、
    title はその処理を写したコードで取り出す。
+   出典は
+   [`cleanupText`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L6-L17)、
+   [`extractFrontMatter`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L69)、
+   [`frontMatterRegex`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L7-L7)
+   です。
 4. 図種 ID に登録した正規化関数で Db
    を要約する（[db-summaries.ja.md](./db-summaries.ja.md) を参照）。
 
@@ -63,16 +81,14 @@ DOMPurify を無効にしたとき、
 （[`sanitizeMore`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L69-L83)
 を通して）、 `securityLevel` が mermaid.js の値（`strict`、`loose`、
 `antiscript`、 `sandbox`）のどれかである限り、
-また `htmlLabels` が無効ならどの値でも、
-テキストを変えません。 [fixture: flowchart/db-vertex-label-markup-as-written]
+また `htmlLabels` が無効ならどの値でも、テキストを変えません。
+[fixture: flowchart/db-vertex-label-markup-as-written]
 [fixture: flowchart/config-security-level-loose-line-breaks]
 それ以外の値で `htmlLabels` が有効なときは、 `<`、`>`、`=` を文字参照（`&lt;`、
-`&gt;`、
-`&equals;`）にします。
+`&gt;`、 `&equals;`）にします。
 [fixture: flowchart/config-security-level-other-label-characters]
 また改行タグのどの書き方も `<br/>` と書きます。
-`<br>`、`<br/>`、`<br />`、`</br>`、`<BR>`、
-作者が書く `#br#` がそれです。
+`<br>`、`<br/>`、`<br />`、`</br>`、`<BR>`、作者が書く `#br#` がそれです。
 [fixture: flowchart/config-security-level-other-line-breaks]
 要約はこれを前提にしており、
 それらの値の範囲では `securityLevel` に左右されません。
@@ -100,9 +116,11 @@ URL を書かれたとおり（trim 済み）に保存させます。
 これは `securityLevel: loose` のときに `formatUrl()` が返す値です。
 [fixture: flowchart/db-click-link-trimmed]
 [fixture: class/db-click-link-trimmed]
-そのため flowchart では（[`FlowDB.setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L553-L562)）、
-`javascript:alert(1)` はそのまま、
+そのため flowchart では、 `javascript:alert(1)` はそのまま、
 `https://example.com` の末尾に `/` は付きません。
+出典は
+[`FlowDB.setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L553-L562)
+です。
 class 図の Db も同じことをします。
 [fixture: class/db-click-link-javascript-url-as-written]
 [`ClassDB.setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L404-L425)
@@ -112,9 +130,11 @@ class 図の Db も同じことをします。
 書かれた target（なければ `_blank`）を保存させます。
 [fixture: class/config-security-level-sandbox-link-target]
 [fixture: class/config-security-level-sandbox-link-default-target]
-mermaid@12.0.0 では、
-agentflow の Db （[`agentflowDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1014-L1014)）も `formatUrl()` を呼ぶので、
+mermaid@12.0.0 では、 agentflow の Dbも `formatUrl()` を呼ぶので、
 その正規化関数を足すときに同じ差し替えが要ります。
+出典は
+[`agentflowDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1014-L1014)
+です。
 
 gantt の Db は、
 `@braintree/sanitize-url` に `formatUrl()` を通して届くのではありません。
@@ -149,8 +169,7 @@ Node では DOMPurify に `sanitize` も `addHook` もないので、
 
 - **影響を受ける欄**: `sanitizeText()` を通る値すべて。
   flowchart では頂点と辺のラベル、subgraph の題、ツールチップ、title、
-  `accTitle`、
-  `accDescr`（1 行のものもブロックのものも）。
+  `accTitle`、 `accDescr`（1 行のものもブロックのものも）。
   [fixture: flowchart/db-edge-label-markup-as-written]
   [fixture: flowchart/db-subgraph-title-markup-as-written]
   [fixture: flowchart/db-tooltip-markup-as-written]
@@ -170,13 +189,14 @@ Node では DOMPurify に `sanitize` も `addHook` もないので、
   mermaid.js と DOMPurify のソースから予想すると、
   ブラウザは `a &amp; <b>b</b>` を保存する。
   これはブラウザでは確かめていない。
-- **残る処理**:
-  `sanitizeText()` の残り（[`sanitizeMore`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L70-L83)）は動く。
+- **残る処理**: `sanitizeText()` の残りは動く。
+  出典は
+  [`sanitizeMore`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L70-L83)
+  です。
   `htmlLabels` が有効（その決まり方は前の節）で、 `securityLevel` が `strict`、
   `loose`、`antiscript`、 `sandbox` のどれでもないときは、 `<`、`>`、
   `=` を実体参照に、改行タグのどの書き方も `<br/>` に置き換える。
-  そのような `securityLevel` を使う fixture は、
-  置き換え後のテキストを記録する。
+  そのような `securityLevel` を使う fixture は、置き換え後のテキストを記録する。
   [fixture: flowchart/config-security-level-other-label-characters]
   [fixture: flowchart/config-security-level-other-line-breaks]
   置き換えが各図のどのテキストに届くかは、
@@ -242,14 +262,13 @@ mermaid@12.0.0 では、次の 2 つです。
   色でなければ、fill は `transparent` になり、行全体が名前になる。
   代役は、その値が `color` プロパティの値として正しいかを答える。
   正しいとするのは、まず、モジュールの一覧にある CSS 全体のキーワード、
-  `currentcolor`、
-  システム色（現行のものと廃止されたもの）。
+  `currentcolor`、システム色（現行のものと廃止されたもの）。
   [fixture: sequence/db-box-colour-css-wide-keyword]
   [fixture: sequence/db-box-colour-currentcolor]
   [fixture: sequence/db-box-colour-system-colour]
   [fixture: sequence/db-box-colour-deprecated-system-colour]
-  次に、置換の関数（`var()`、`env()`、
-  `attr()`）を含む値。 [fixture: sequence/db-box-colour-function-substitution]
+  次に、置換の関数（`var()`、`env()`、 `attr()`）を含む値。
+  [fixture: sequence/db-box-colour-function-substitution]
   そのほかは、`@csstools/css-color-parser` が 1 つの色として読む値で、
   例えばスラッシュでアルファを続ける空白区切りの形。
   [fixture: sequence/db-box-colour-function-space-separated-alpha]
@@ -346,8 +365,7 @@ xychart の字句解析器を変える 2 つ、
 HTML タグが始まらないようにした入力を mermaid.js に読ませた結果です。
 タグは `title` に限らず、フロントマターのどのキーでも始まりえます。
 フロントマターは mermaid.js が見つけるとおりに見つけます。
-空白を後ろに持つ閉じの `---` の行と、
-CRLF の改行も含みます。
+空白を後ろに持つ閉じの `---` の行と、 CRLF の改行も含みます。
 [fixture: flowchart/html-tag-starts-in-frontmatter-other-key]
 [fixture: flowchart/html-tag-starts-in-frontmatter-crlf]
 [fixture: flowchart/html-tag-starts-in-frontmatter-closing-line-blank]
@@ -362,8 +380,7 @@ Db でそれを上書きする本文の title は保ちます。
 `embedded` の値は、書かれたとおりの入力に mermaid.js が与えるものです。
 mermaid.js がその入力を拒否するときは、`(` にした入力に与えるものになり、
 設定の値の `<` は `(` として記録されます。
-`embedded` のフロントマターの title は、
-Db と同じ reader から得ます。
+`embedded` のフロントマターの title は、 Db と同じ reader から得ます。
 [fixture: flowchart/html-tag-starts-in-frontmatter-config-value]
 mermaid.js が書かれたとおりの入力を受理するときは、
 書かれたとおりの入力の値になり、`(` にした入力は読みません。
@@ -387,8 +404,8 @@ block（`%%` だけの行、`%%{ }%%`。字句解析器は id として読みま
 空白を残すと、mermaid.js では、
 ディレクティブを除いた行が空白だけの行になるからです。
 フロントマターは飛ばします。
-title と `embedded` の値は、
-それらの行に依りません。 [fixture: flowchart/header-after-bare-percent-line]
+title と `embedded` の値は、それらの行に依りません。
+[fixture: flowchart/header-after-bare-percent-line]
 [fixture: flowchart/header-after-empty-braces-line]
 [fixture: flowchart/header-after-non-word-brace-line]
 [fixture: flowchart/header-after-empty-braces-no-space]
@@ -461,14 +478,15 @@ Mermaid の設定導出で拒否された frontmatter や directive のブロッ
 導出が失敗するときはブロックをソース順に取り、
 追加すると拒否されるブロックを除きます。
 HTML 属性の引用符の変換で不正になる frontmatter の YAML も同じ扱いです。
-本文の hidden YAML と、
-ほかの図の構文は保ちます。
+本文の hidden YAML と、ほかの図の構文は保ちます。
 [fixture: usecase/div-gram-frontmatter-html-attribute-quotes]
 [fixture: pie/div-review-frontmatter-html-invalid-yaml]
 [fixture: pie/lex-yaml-three-adjacent-fences]
 
 正しい埋め込み設定が受理を変えるときは、
-仕様の [比較規則](../../spec/docs/known-divergences/embedded-data-opaque.ja.md#比較する-db)が名指しする鍵だけを除きます。
+仕様の
+[比較規則](../../spec/docs/known-divergences/embedded-data-opaque.ja.md#比較する-db)
+が名指しする鍵だけを除きます。
 `tools/src/specified-reading.ts` の明示的な表 `OPAQUE_ACCEPTANCE_KEYS` が、
 そのパスを持ちます。
 その鍵があれば、参照の frontmatter に、
@@ -477,8 +495,7 @@ Mermaid が導いたテキスト内設定からその鍵だけを除いた値と
 ソースの directive はその設定へ反映済みなので、除いた鍵を再適用しないよう、
 参照の本文から除きます。
 `wrap` など Db だけに効く設定を含め、ほかの設定は保ちます。
-外部のサイト設定も、
-通常の runner を通じて適用されます。
+外部のサイト設定も、通常の runner を通じて適用されます。
 [fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
 [fixture: sequence/div-invalid-frontmatter-preserves-wrap-directive]
 [fixture: gitgraph/div-frontmatter-html-labels-default-comparison]
@@ -495,8 +512,8 @@ Mermaid が変換した値です。
 埋め込みの値は作り出しません。
 参照入力に残る不正なデータブロックもこれに含みます。
 `expected.json` の normalizer の検査は変わりません。
-不透明な指定読みは、normalizer がある図種でも、
-比較 Db がない場合があります。 [fixture: flowchart/div-data-unknown-shape]
+不透明な指定読みは、normalizer がある図種でも、比較 Db がない場合があります。
+[fixture: flowchart/div-data-unknown-shape]
 [fixture: kanban/gram-metadata-bad-yaml]
 [fixture: usecase/div-gram-json-unquoted-key]
 
@@ -573,8 +590,11 @@ mermaid.js は検出器を、最初に登録された順に持っています。
 [fixture: common/detect-minimal-c4]
 
 - `comment-takes-character`、
-  sequence の字句解析器（[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L29-L30)） :
-  `}` 以外の 1 文字を `%%` の前から読んでコメントに含める規則を外す。
+  sequence の字句解析器 : `}` 以外の 1 文字を `%%`
+  の前から読んでコメントに含める規則を外す。
+  出典は
+  [`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L29-L30)
+  です。
   そうすると、コメントは `%%` から始まる。
   数の規則も、空白と改行の前だけでなく、`%%` の前でも数を終える。
   変えない mermaid.js のどんな入力も、変えたものの代わりにならない。
@@ -582,8 +602,11 @@ mermaid.js は検出器を、最初に登録された順に持っています。
   メッセージのように、2 文字目と 3 文字目が `%%` の id の連なりを、
   どの入力も与えられないからである。
 - `comment-takes-character`、
-  gantt の字句解析器（[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L29-L29)） :
-  `}` 以外の 1 文字を `%` の前から読んでコメントに含める規則を外す。
+  gantt の字句解析器 : `}` 以外の 1 文字を `%`
+  の前から読んでコメントに含める規則を外す。
+  出典は
+  [`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L29-L29)
+  です。
   そうすると、コメントは単位の始まる位置の `%` から始まり、ほかの `%` は、
   それを含む単位の文字になる。
   [fixture: gantt/div-comment-after-task-text-start]
@@ -593,16 +616,22 @@ mermaid.js は検出器を、最初に登録された順に持っています。
   [fixture: gantt/lex-brace-before-percent]
   [fixture: gantt/lex-colon-then-percent]
 - `comment-takes-character`、
-  journey の字句解析器（[`journey.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison#L15-L15)） :
-  `}` 以外の 1 文字を `%%` の前から読んでコメントに含める規則を外す。
+  journey の字句解析器 : `}` 以外の 1 文字を `%%`
+  の前から読んでコメントに含める規則を外す。
+  出典は
+  [`journey.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison#L15-L15)
+  です。
   そうすると、コメントは単位の始まる位置の `%` から始まり、ほかの `%%` は、
   それを含む単位の一部になる。
   [fixture: journey/div-comment-after-task-text-start]
   [fixture: journey/div-comment-after-colon-after-section]
   [fixture: journey/div-comment-after-task-colon]
 - `comment-takes-character`、
-  timeline の字句解析器（[`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L15-L15)） :
-  `}` 以外の 1 文字を `%%` の前から読んでコメントに含める規則を外す。
+  timeline の字句解析器 : `}` 以外の 1 文字を `%%`
+  の前から読んでコメントに含める規則を外す。
+  出典は
+  [`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L15-L15)
+  です。
   そうすると、コメントは単位の始まる位置の `%` から始まり、ほかの `%%` は、
   それを含む単位の一部になる。
   [fixture: timeline/db-comment-percent-after-period-glued]
@@ -613,17 +642,22 @@ mermaid.js は検出器を、最初に登録された順に持っています。
   [fixture: timeline/div-comment-after-semicolon-after-header]
   [fixture: timeline/div-comment-after-semicolon]
 - `comment-takes-character`、
-  xychart の字句解析器（[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L16-L16)） :
-  `}` 以外の 1 文字を `%%` の前から読んでコメントに含める規則を外す。
-  そうすると、
-  コメントは `%%` から始まる。
+  xychart の字句解析器 : `}` 以外の 1 文字を `%%`
+  の前から読んでコメントに含める規則を外す。
+  出典は
+  [`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L16-L16)
+  です。
+  そうすると、コメントは `%%` から始まる。
   [fixture: xychart/div-comment-glued-after-title-word]
   [fixture: xychart/div-comment-glued-after-range]
   [fixture: xychart/div-comment-takes-hyphen]
   [fixture: xychart/div-comment-takes-one-letter-word]
 - `comment-takes-character`、
-  quadrant の字句解析器（[`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L17-L17)） :
-  `}` 以外の 1 文字を `%%` の前から読んでコメントに含める規則を外す。
+  quadrant の字句解析器 : `}` 以外の 1 文字を `%%`
+  の前から読んでコメントに含める規則を外す。
+  出典は
+  [`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L17-L17)
+  です。
   そうすると、コメントは `%%` から始まる。
   点の後ろやブロックの閉じ波括弧の後ろでは、
   `%%` の前の空白やタブは空白として残り、どの文もそれを取らないので、
@@ -636,28 +670,33 @@ mermaid.js は検出器を、最初に登録された順に持っています。
   [fixture: quadrant/div-acc-descr-block-space-and-comment-after-brace]
   [fixture: quadrant/div-comment-glued-tab-after-point]
 - `comment-takes-line-break`、
-  class の字句解析器（[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)） :
-  `%%` と行の残りとその後の改行を読む規則を、
+  class の字句解析器 : `%%` と行の残りとその後の改行を読む規則を、
   行の中でその前に空白しかないコメントにだけ使う。
-  単位の後のコメントは行の終わりで終わり、
-  その後の改行は改行として読まれる。
+  出典は
+  [`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)
+  です。
+  単位の後のコメントは行の終わりで終わり、その後の改行は改行として読まれる。
   [fixture: class/div-comment-after-name-then-statement]
   [fixture: class/div-comment-after-note-string-then-statement]
   [fixture: class/div-comment-after-click-string-then-statement]
 - `comment-takes-line-break`、
-  gantt の字句解析器（[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L30-L30)） :
-  `%` と行の残りとその後の改行を読む規則は、行の終わりで終わる。
-  そうすると、
-  コメントの後の改行は改行として読まれる。
+  gantt の字句解析器 : `%` と行の残りとその後の改行を読む規則は、
+  行の終わりで終わる。
+  出典は
+  [`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L30-L30)
+  です。
+  そうすると、コメントの後の改行は改行として読まれる。
   [fixture: gantt/div-percent-comment-takes-line-feed-after-href]
   [fixture: gantt/div-percent-comment-takes-line-feeds-after-call]
   [fixture: gantt/lex-space-percent-comment-after-call-then-href-line]
 - `comment-takes-line-break`、
-  C4 の字句解析器（[`c4Diagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/parser/c4Diagram.jison#L98-L99)） :
-  `%%` と行の残りとその後の改行を読む二つの規則は、行の終わりで終わる。
+  C4 の字句解析器 : `%%` と行の残りとその後の改行を読む二つの規則は、
+  行の終わりで終わる。
+  出典は
+  [`c4Diagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/parser/c4Diagram.jison#L98-L99)
+  です。
   そうすると、図のコメントの後の行区切りは、ヘッダー、呼び出し、境界と、
-  その後に続くものとを分け、
-  コメントの後に空行があっても同じになる。
+  その後に続くものとを分け、コメントの後に空行があっても同じになる。
   [fixture: c4/header-context-comment-glued]
   [fixture: c4/header-context-comment-on-header-line]
   [fixture: c4/div-comment-between-joined-statements]
@@ -667,26 +706,32 @@ mermaid.js は検出器を、最初に登録された順に持っています。
   [fixture: c4/div-comment-between-blank-recovery]
   [fixture: c4/div-diagram-comment-u2028]
   [fixture: c4/div-diagram-comment-u2029]
-  コメントの後に空白だけの行がある場合も、
-  文は引き続き分かれる。 [fixture: c4/header-header-comment-spaces-recovery]
+  コメントの後に空白だけの行がある場合も、文は引き続き分かれる。
+  [fixture: c4/header-header-comment-spaces-recovery]
   [fixture: c4/lex-comment-between-spaces-recovery]
 - `percent-brace-after-unit`、
-  gantt の字句解析器（[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L18-L18)） :
-  `%%{` のたびに開始状態 `open_directive` に入る規則を外す。
+  gantt の字句解析器 : `%%{` のたびに開始状態 `open_directive`
+  に入る規則を外す。
+  出典は
+  [`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L18-L18)
+  です。
   そうすると、ディレクティブの始まらない `%%{` は、コメントの規則が読む。
-  ディレクティブそのものは、
-  字句解析器が読む前にテキストから取り除かれる。
+  ディレクティブそのものは、字句解析器が読む前にテキストから取り除かれる。
   [fixture: gantt/div-percent-brace-glued-after-header]
   [fixture: gantt/div-percent-brace-after-two-spaces]
   [fixture: gantt/div-percent-brace-after-glued-percent-comment]
   [fixture: gantt/lex-percent-brace-after-tab]
 - `title-digit-after-axis-statement`、
-  xychart の字句解析器（[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L36-L37)） : 字句解析器は `x-axis` と `y-axis` のたびに、
-  開始状態 `axis_data` に入り、その中でも入り、
-  改行でだけ 1 つずつ出る（[17 行目](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L17-L17)）。
+  xychart の字句解析器 : 字句解析器は `x-axis` と `y-axis` のたびに、
+  開始状態 `axis_data` に入り、その中でも入り、改行でだけ 1 つずつ出る。
   そのため、`;`、同じ行の次の文、
   軸の文に同じ行のプロットの文が続くときの次の行は、
   数字が数になるその状態で読まれ、数字を含む引用符のないタイトルは拒否される。
+  出典は
+  [`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L36-L37)
+  の
+  [17 行目](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L17-L17)
+  です。
   `;` と文を始める語（`title`、`accTitle:`、`accDescr:`、 `x-axis`、`y-axis`、
   `line`、`bar`）の規則が先に `axis_data` から出るので、
   軸の文脈はその文の終わりで終わる。
@@ -698,26 +743,30 @@ mermaid.js は検出器を、最初に登録された順に持っています。
   [fixture: xychart/div-title-digit-next-line-after-axis-and-plot]
   [fixture: xychart/div-title-digit-next-line-after-two-axes]
   [fixture: xychart/div-title-digit-after-axis-and-empty-block]
-- `c4-keyword-anywhere`、
-  C4 の検出器（[`c4Detector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Detector.ts#L10-L10)） : 検出器は、
+- `c4-keyword-anywhere`、 C4 の検出器 : 検出器は、
   5 つのキーワード `C4Context`、`C4Container`、`C4Component`、 `C4Dynamic`、
   `C4Deployment` を、空白の後のテキストの先頭だけに探す。
+  出典は
+  [`c4Detector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Detector.ts#L10-L10)
+  です。
   mermaid.js は、`C4Context` をそこに探し、ほかの 4 つはどこにでも探す。
   そうすると、ほかの図種のテキストが、ラベル、名前、
   メッセージとしてその 4 つを持っていても、仕様と同じに、
   先頭の図として読まれる。
-  キーワードで始まるテキストは、
-  これまでどおりに読まれる。 [fixture: common/detect-c4-anywhere]
-  [fixture: common/detect-minimal-c4]
+  キーワードで始まるテキストは、これまでどおりに読まれる。
+  [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   [fixture: flowchart/div-c4-keyword-in-label]
   [fixture: class/div-c4-keyword-as-class-name]
   [fixture: state/div-c4-keyword-as-state-id]
   [fixture: block/div-c4-container-in-label]
 - `name-start-reads-unit`、
-  class の字句解析器（[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)） : バッククォートの名前とジェネリクスの型の中で、
+  class の字句解析器 : バッククォートの名前とジェネリクスの型の中で、
   それを閉じる規則と中身を読む規則を先に試す。
-  そうすると、中身は何で始まっても、
-  閉じる記号まで読まれる。 [fixture: class/div-backquote-starts-with-cssclass]
+  出典は
+  [`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)
+  です。
+  そうすると、中身は何で始まっても、閉じる記号まで読まれる。
+  [fixture: class/div-backquote-starts-with-cssclass]
   [fixture: class/div-generic-starts-with-cssclass]
   [fixture: class/div-backquote-starts-with-callback]
   [fixture: class/div-generic-starts-with-callback]
@@ -860,5 +909,8 @@ gantt の Db は日付をその両方から計算するので、
 ## テキストの大きさ
 
 `mermaid.parse()` は `maxTextSize` を適用しません。
-適用するのは描画だけです（[`renderDiagram`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L502-L505)）。
+適用するのは描画だけです。
+出典は
+[`renderDiagram`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L502-L505)
+です。
 fixture も適用しません。 [fixture: flowchart/config-max-text-size-not-applied]

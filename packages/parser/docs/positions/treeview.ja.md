@@ -5,8 +5,8 @@
 範囲は[書かれた木](../../../spec/docs/ast/treeview.md)を、
 元の UTF-16 オフセットで表す。
 Root はソース全体を覆い、CR/CRLF、タブ、実体参照、引用符はソースの綴りを保つ。
-罫線の列と割り当てた字下げはソースの位置を変えない。 [fixture: treeview/gram-written-tree]
-[fixture: treeview/text-double-crlf]
+罫線の列と割り当てた字下げはソースの位置を変えない。
+[fixture: treeview/gram-written-tree] [fixture: treeview/text-double-crlf]
 [fixture: treeview/box-tab-quoted] [fixture: treeview/entity-double]
 [fixture: treeview/box-column-nonbmp-discriminating]
 
@@ -25,8 +25,8 @@ textBeforeName の装飾、名前のうち最も早いものから始まる。
 範囲は連続し、兄弟同士は重ならず、名前の開始と一致するとは限らない。
 最初の所有構文より前の通常の字下げと、無関係な後続 trivia は範囲外である。
 接頭辞はノードの字下げを与え、native comment が間にあってもその子に残る。
-名前を待つ間の装飾は textBeforeName が所有する。 [fixture: treeview/gram-written-tree]
-[fixture:
+名前を待つ間の装飾は textBeforeName が所有する。
+[fixture: treeview/gram-written-tree] [fixture:
 treeview/db-quoted-tail-space] [fixture: treeview/box-comment-indent-carry]
 [fixture: treeview/box-decoration-pending-name-gap]
 [fixture: treeview/gram-nesting-decoration-before-parent]
@@ -37,8 +37,8 @@ treeview/db-quoted-tail-space] [fixture: treeview/box-comment-indent-carry]
 完成した階層ノード間に残る装飾は、次のノードの textBefore が所有する。
 次が子、祖先の別の子、別の根でも同じである。
 最初のノードより前と最後のノードより後の独立した装飾は body に残る。
-共通コメント、directive、選ばれたセミコロン、
-空行は gap ノードを作らない。 [fixture: treeview/box-written-tree]
+共通コメント、directive、選ばれたセミコロン、空行は gap ノードを作らない。
+[fixture: treeview/box-written-tree]
 [fixture: treeview/gram-nesting-decoration-before-parent]
 [fixture: treeview/gram-nesting-decoration-before-ancestor-child]
 [fixture: treeview/spec-box-drawing-preprocessor-e9d19370]
@@ -57,8 +57,8 @@ treeview/db-quoted-tail-space] [fixture: treeview/box-comment-indent-carry]
 空の説明は `##` で終わる。
 装飾の後に注釈がある場合だけ注釈が所有する。
 なければ次の階層ノードの textBefore に、次がなければ body に残す。
-注釈の接頭辞はノードの indent を変えない。 [fixture: treeview/box-decoration-before-annotation]
-[fixture:
+注釈の接頭辞はノードの indent を変えない。
+[fixture: treeview/box-decoration-before-annotation] [fixture:
 treeview/ast-annotation-prefixes] [fixture:
 treeview/box-decoration-trailing-body] [fixture:
 treeview/annotation-class-space] [fixture: treeview/db-icon-none]
@@ -69,9 +69,8 @@ treeview/annotation-class-space] [fixture: treeview/db-icon-none]
 ブロックは最初の有効な閉じ波括弧で終わる。
 accDescr と開始波括弧の間の接頭辞と装飾は textBeforeOpen が所有する。
 空ブロックも両方の波括弧を持つ。
-最初の階層ノードより前の装飾は body に残り、
-共通文の前置き部分を終わらせない。 [fixture: treeview/box-common-prefix]
-[fixture: treeview/common-whitespace]
+最初の階層ノードより前の装飾は body に残り、共通文の前置き部分を終わらせない。
+[fixture: treeview/box-common-prefix] [fixture: treeview/common-whitespace]
 [fixture: treeview/ast-common-removal-only-values] [fixture:
 treeview/ast-common-whitespace-values] [fixture:
 treeview/common-title-quoted-next] [fixture: treeview/common-repeat-empty]
@@ -86,9 +85,8 @@ StringLiteral は両引用符と書かれた内部全体を覆う。
 TreeviewLiteral は残る値全体を覆い、title の区切り一つ、
 アクセシビリティのコロン、説明マーカー、開始波括弧の直後から始まる。
 null のフィールドに葉はなく、空白だけの値にはある。
-葉の範囲は内部の共通除去をまたぐが、値からは除き、
-ほかの綴りをすべて保持する。 [fixture: treeview/db-bare-tail-space]
-[fixture: treeview/space-line-nbsp]
+葉の範囲は内部の共通除去をまたぐが、値からは除き、ほかの綴りをすべて保持する。
+[fixture: treeview/db-bare-tail-space] [fixture: treeview/space-line-nbsp]
 [fixture: treeview/db-empty-names] [fixture:
 treeview/ast-common-whitespace-values] [fixture:
 treeview/ast-common-removal-only-values] [fixture:
@@ -101,8 +99,8 @@ accDescr ブロックの TreeviewLiteral は、開きの直後から有効な閉
 閉じ行の直前の装飾も、後続する原文の LF、CR、CRLF を保持し、
 閉じを導く接頭辞も literal に残る。
 loc の終わりは、その原文の境界に一致する。
-RawText 項目も、
-共有の分断を適用する前は同じ範囲を持つ。 [fixture: treeview/box-block-tail-decoration-light-vertical]
+RawText 項目も、共有の分断を適用する前は同じ範囲を持つ。
+[fixture: treeview/box-block-tail-decoration-light-vertical]
 [fixture: treeview/box-block-tail-decoration-heavy-vertical]
 [fixture: treeview/box-block-tail-decoration-light-dash]
 [fixture: treeview/box-block-tail-decoration-heavy-dash]

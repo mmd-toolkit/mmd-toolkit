@@ -24,9 +24,9 @@ export const mindmapNoDuplicateDecoration: MermaidRuleDefinition<{
     },
     schema: [],
     messages: {
-      icon: "This node already has an icon line; mermaid.js keeps only the last icon and drops the earlier ones.",
+      icon: "mermaid.js keeps only the last icon and drops the earlier ones for this node.",
       class:
-        "This node already has a class line; mermaid.js keeps only the last class line and drops the earlier ones. Write the classes on one line.",
+        "mermaid.js keeps only the last class line and drops the earlier ones for this node.",
     },
   },
   create(context) {

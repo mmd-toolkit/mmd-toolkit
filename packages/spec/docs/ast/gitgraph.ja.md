@@ -9,8 +9,7 @@
 任意のフィールドは欠けるとき null、リストは空のリストにします。
 繰り返した文や option も含め、すべてのリストはソース順です。
 以下の子の欄は訪問順を表します。 [fixture: gitgraph/gram-all-fields]
-[fixture: gitgraph/header-only]
-[fixture: gitgraph/gram-commit-repeated-options]
+[fixture: gitgraph/header-only] [fixture: gitgraph/gram-commit-repeated-options]
 [fixture: gitgraph/gram-cherry-pick-repeated-options]
 [fixture: gitgraph/lex-string-escapes]
 
@@ -32,8 +31,7 @@
 無関係な外側の空白は除きます。
 見出しのノード、推定した方向、コロンの有無、
 実効タイトルのフィールドは作りません。 [fixture: gitgraph/header-only]
-[fixture: gitgraph/header-tb]
-[fixture: gitgraph/header-colon]
+[fixture: gitgraph/header-tb] [fixture: gitgraph/header-colon]
 [fixture: gitgraph/header-spaced-colon]
 [fixture: gitgraph/lex-yaml-after-comment]
 [fixture: gitgraph/header-hidden-before-colon]
@@ -44,8 +42,8 @@ textBeforeHeader は検出点から残る図固有の隠れた形だけを持ち
 検出で通過した裸の `%%` 行は共有 Comment で、このノードではなく、
 図の範囲を延ばしません。
 一緒に通過した空白・改行は、残した形の間でも trivia として読み直しません。
-図固有の隠れた形の境界は、
-引き続き受理条件です。 [fixture: gitgraph/lex-yaml-after-comment]
+図固有の隠れた形の境界は、引き続き受理条件です。
+[fixture: gitgraph/lex-yaml-after-comment]
 [fixture: gitgraph/lex-hidden-directive-second-scan]
 [fixture: gitgraph/detect-two-second-scan-forms]
 [fixture: gitgraph/detect-bare-brace-eof-header]
@@ -59,11 +57,9 @@ LR・TB・BT が書かれていなければ direction は null です。
 分離したコロンがなければ textBeforeColon は空で、
 gitGraph に接着したコロンとの間には隙間がありません。
 最後の見出しの構成要素の後の隠れた形は body に入れます。
-同じ隙間に 2 個の形があれば、
-2 個のノードにします。 [fixture: gitgraph/header-only]
-[fixture: gitgraph/header-colon]
-[fixture: gitgraph/header-bt]
-[fixture: gitgraph/header-hidden-before-colon]
+同じ隙間に 2 個の形があれば、 2 個のノードにします。
+[fixture: gitgraph/header-only] [fixture: gitgraph/header-colon]
+[fixture: gitgraph/header-bt] [fixture: gitgraph/header-hidden-before-colon]
 [fixture: gitgraph/header-hidden-before-direction]
 [fixture: gitgraph/header-two-hidden-forms]
 [fixture: gitgraph/lex-hidden-directive-unknown-content]
@@ -74,9 +70,8 @@ GitgraphCheckoutStatement、GitgraphMergeStatement、GitgraphCherryPickStatement
 GitgraphTitleStatement、GitgraphAccTitleStatement、GitgraphAccDescrStatement、
 GitgraphAccDescrBlockStatement、GitgraphIgnoredText のいずれかです。
 空行やコメントだけの行は本文の項目を作りません。
-重複する id や共通の文の繰り返しも、
-別々のソースの出現として保ちます。 [fixture: gitgraph/gram-all-fields]
-[fixture: gitgraph/db-duplicate-id]
+重複する id や共通の文の繰り返しも、別々のソースの出現として保ちます。
+[fixture: gitgraph/gram-all-fields] [fixture: gitgraph/db-duplicate-id]
 [fixture: gitgraph/common-third-values]
 [fixture: gitgraph/comment-before-header]
 
@@ -109,9 +104,8 @@ EOL は除きます。
 範囲は branch から最後の名前・order・末尾の構成要素までで、EOL を除きます。
 order がなければ null です。
 名前はどちらの引用符でも書け、空や空白だけの引用名も受理します。
-実効の比較名で、
-書かれた形を置き換えません。 [fixture: gitgraph/gram-branch-order]
-[fixture: gitgraph/gram-branch-empty]
+実効の比較名で、書かれた形を置き換えません。
+[fixture: gitgraph/gram-branch-order] [fixture: gitgraph/gram-branch-empty]
 [fixture: gitgraph/gram-branch-whitespace]
 [fixture: gitgraph/gram-branch-single-quotes]
 [fixture: gitgraph/lex-hidden-directive-before-branch-name]
@@ -161,8 +155,8 @@ id や type の繰り返しは別々に保ちます。 [fixture: gitgraph/gram-m
 options は GitgraphIdOption、GitgraphParentOption、GitgraphTagOption です。
 子の欄: `options`、`textAfter`。
 範囲は cherry-pick から最後の option・隠れた末尾までで、EOL を除きます。
-文法上は option がなくても表せますが、
-意味上の受理には元の実効 id が必要です。 [fixture: gitgraph/gram-cherry-pick-repeated-options]
+文法上は option がなくても表せますが、意味上の受理には元の実効 id が必要です。
+[fixture: gitgraph/gram-cherry-pick-repeated-options]
 [fixture: gitgraph/lex-hidden-directive-cherry-pick-eof]
 [fixture: gitgraph/db-cherry-pick-missing]
 
@@ -185,7 +179,8 @@ textBeforeValue は完全な導入部の後の隠れた形を持ちます。
 StringLiteral は引用符つきのソースを raw、書かれた内部を value に保ち、
 エスケープを復号しません。
 closed は true です。
-空の値も StringLiteral ノードとして保ちます。 [fixture: gitgraph/gram-commit-empty-values]
+空の値も StringLiteral ノードとして保ちます。
+[fixture: gitgraph/gram-commit-empty-values]
 [fixture: gitgraph/lex-string-escapes]
 
 ### GitgraphMessageOption
@@ -209,8 +204,8 @@ textBeforeValue は完全な導入部の後の隠れた形を持ちます。
 明示した `msg:` なら keyword は msg、裸の文字列なら null です。
 導入部がなければ textBeforeValue は空で、
 引用符の前の隠れた形は textBefore に入れます。
-どちらの形も、
-繰り返した message も別々の option として保ちます。 [fixture: gitgraph/gram-commit-repeated-options]
+どちらの形も、繰り返した message も別々の option として保ちます。
+[fixture: gitgraph/gram-commit-repeated-options]
 [fixture: gitgraph/lex-option-before-message-hidden]
 [fixture: gitgraph/lex-hidden-between-id-message-global-control]
 
@@ -234,7 +229,8 @@ textBeforeValue は完全な導入部の後の隠れた形を持ちます。
 StringLiteral は引用符つきのソースを raw、書かれた内部を value に保ち、
 エスケープを復号しません。
 closed は true です。
-空の値も StringLiteral ノードとして保ちます。 [fixture: gitgraph/gram-commit-empty-values]
+空の値も StringLiteral ノードとして保ちます。
+[fixture: gitgraph/gram-commit-empty-values]
 [fixture: gitgraph/lex-string-escapes]
 
 ### GitgraphTypeOption
@@ -281,7 +277,8 @@ textBeforeValue は完全な導入部の後の隠れた形を持ちます。
 StringLiteral は引用符つきのソースを raw、書かれた内部を value に保ち、
 エスケープを復号しません。
 closed は true です。
-空の値も StringLiteral ノードとして保ちます。 [fixture: gitgraph/gram-cherry-pick-empty-parent]
+空の値も StringLiteral ノードとして保ちます。
+[fixture: gitgraph/gram-cherry-pick-empty-parent]
 [fixture: gitgraph/gram-cherry-pick-merge-parent]
 
 ### GitgraphOrderOption
@@ -305,8 +302,7 @@ textBeforeValue は完全な導入部の後の隠れた形を持ちます。
 NumericLiteral は書かれた数字をすべて raw に保ち、
 value は精度の損失や桁あふれを含めた共有の倍精度数です。
 実効の分岐の順序に置き換えません。 [fixture: gitgraph/number-zero]
-[fixture: gitgraph/number-precision]
-[fixture: gitgraph/number-overflow]
+[fixture: gitgraph/number-precision] [fixture: gitgraph/number-overflow]
 
 ### 文の隙間の所有
 
@@ -334,9 +330,9 @@ value は精度の損失や桁あふれを含めた共有の倍精度数です�
 
 value は、title とちょうど 1 個の ASCII の空白かタブの後から、
 行の値の終わりまでで、残りの空白はすべて保ちます。
-区切りがない場合や区切りの後に内容がなければ null です。 [fixture: gitgraph/lex-title-bare-hidden-tail]
-[fixture: gitgraph/lex-title-tab-hidden-tail]
-[fixture: gitgraph/title-tab]
+区切りがない場合や区切りの後に内容がなければ null です。
+[fixture: gitgraph/lex-title-bare-hidden-tail]
+[fixture: gitgraph/lex-title-tab-hidden-tail] [fixture: gitgraph/title-tab]
 [fixture: gitgraph/title-conversion]
 [fixture: gitgraph/common-title-only-whitespace]
 
@@ -345,9 +341,9 @@ value は、title とちょうど 1 個の ASCII の空白かタブの後から�
 空の形ならそれを完了する語・コロン・閉じ波括弧までです。
 textAfter があれば最後の形まで延ばし、EOL と無関係な外側の空白は除きます。
 読み飛ばされない EOL の後の隠れた形は、末尾ではなく本文の項目です。
-繰り返した共通の文や空の文も残します。 [fixture: gitgraph/lex-title-bare-hidden-tail]
-[fixture: gitgraph/lex-title-tab-hidden-tail]
-[fixture: gitgraph/title-tab]
+繰り返した共通の文や空の文も残します。
+[fixture: gitgraph/lex-title-bare-hidden-tail]
+[fixture: gitgraph/lex-title-tab-hidden-tail] [fixture: gitgraph/title-tab]
 [fixture: gitgraph/title-conversion]
 [fixture: gitgraph/common-title-only-whitespace]
 [fixture: gitgraph/common-third-values]
@@ -361,8 +357,8 @@ textAfter があれば最後の形まで延ばし、EOL と無関係な外側の
 | `textAfter` | list of GitgraphIgnoredText | EOL の前の隠れた末尾。 |
 
 value はコロンの直後から行の値の終わりまでで、両端の空白も含めます。
-内容がない場合だけ null で、
-空白だけでもリテラルです。 [fixture: gitgraph/lex-acctitle-empty-hidden-tail]
+内容がない場合だけ null で、空白だけでもリテラルです。
+[fixture: gitgraph/lex-acctitle-empty-hidden-tail]
 [fixture: gitgraph/common-acctitle-only-whitespace]
 [fixture: gitgraph/acctitle-unicode-trim]
 
@@ -371,7 +367,8 @@ value はコロンの直後から行の値の終わりまでで、両端の空�
 空の形ならそれを完了する語・コロン・閉じ波括弧までです。
 textAfter があれば最後の形まで延ばし、EOL と無関係な外側の空白は除きます。
 読み飛ばされない EOL の後の隠れた形は、末尾ではなく本文の項目です。
-繰り返した共通の文や空の文も残します。 [fixture: gitgraph/lex-acctitle-empty-hidden-tail]
+繰り返した共通の文や空の文も残します。
+[fixture: gitgraph/lex-acctitle-empty-hidden-tail]
 [fixture: gitgraph/common-acctitle-only-whitespace]
 [fixture: gitgraph/acctitle-unicode-trim]
 [fixture: gitgraph/common-third-values]
@@ -385,8 +382,8 @@ textAfter があれば最後の形まで延ばし、EOL と無関係な外側の
 | `textAfter` | list of GitgraphIgnoredText | EOL の前の隠れた末尾。 |
 
 value はコロンの直後から行の値の終わりまでで、両端の空白も含めます。
-内容がない場合だけ null で、
-空白だけでもリテラルです。 [fixture: gitgraph/lex-description-line-null]
+内容がない場合だけ null で、空白だけでもリテラルです。
+[fixture: gitgraph/lex-description-line-null]
 [fixture: gitgraph/common-accdescr-only-whitespace]
 [fixture: gitgraph/accdescr-unicode-trim]
 
@@ -395,7 +392,8 @@ value はコロンの直後から行の値の終わりまでで、両端の空�
 空の形ならそれを完了する語・コロン・閉じ波括弧までです。
 textAfter があれば最後の形まで延ばし、EOL と無関係な外側の空白は除きます。
 読み飛ばされない EOL の後の隠れた形は、末尾ではなく本文の項目です。
-繰り返した共通の文や空の文も残します。 [fixture: gitgraph/lex-description-line-null]
+繰り返した共通の文や空の文も残します。
+[fixture: gitgraph/lex-description-line-null]
 [fixture: gitgraph/common-accdescr-only-whitespace]
 [fixture: gitgraph/accdescr-unicode-trim]
 [fixture: gitgraph/common-third-values]
@@ -411,8 +409,8 @@ textAfter があれば最後の形まで延ばし、EOL と無関係な外側の
 value は波括弧の内部で、両端だけの共通の空白を除きます。
 空白と共通の trivia だけなら null です。
 内部の字下げ、物理的な改行、引用符、逆斜線は書かれたまま保ちます。
-最初の閉じ波括弧は必須なので、
-closed フィールドは不要です。 [fixture: gitgraph/lex-description-empty-hidden-tail]
+最初の閉じ波括弧は必須なので、 closed フィールドは不要です。
+[fixture: gitgraph/lex-description-empty-hidden-tail]
 [fixture: gitgraph/accdescr-block]
 [fixture: gitgraph/common-block-only-whitespace]
 [fixture: gitgraph/lex-description-block-only-directive]
@@ -423,7 +421,8 @@ closed フィールドは不要です。 [fixture: gitgraph/lex-description-empt
 空の形ならそれを完了する語・コロン・閉じ波括弧までです。
 textAfter があれば最後の形まで延ばし、EOL と無関係な外側の空白は除きます。
 読み飛ばされない EOL の後の隠れた形は、末尾ではなく本文の項目です。
-繰り返した共通の文や空の文も残します。 [fixture: gitgraph/lex-description-empty-hidden-tail]
+繰り返した共通の文や空の文も残します。
+[fixture: gitgraph/lex-description-empty-hidden-tail]
 [fixture: gitgraph/accdescr-block]
 [fixture: gitgraph/common-block-only-whitespace]
 [fixture: gitgraph/lex-description-block-only-directive]
@@ -443,14 +442,11 @@ textAfter があれば最後の形まで延ばし、EOL と無関係な外側の
 value から共通のディレクティブ、コメント領域、選択されたセミコロンを除き、
 文が所有する空白を含め、それ以外のソースのテキストをすべて保ちます。
 null に空のリテラルは作りません。
-引用符もリテラルの内容で、
-StringLiteral ではありません。 [fixture: gitgraph/common-title-quoted-escape]
-[fixture: gitgraph/common-title-open-quote]
-[fixture: gitgraph/directive-title]
-[fixture: gitgraph/comment-block]
-[fixture: gitgraph/title-conversion]
-[fixture: gitgraph/style-acctitle]
-[fixture: gitgraph/lex-description-line-null]
+引用符もリテラルの内容で、 StringLiteral ではありません。
+[fixture: gitgraph/common-title-quoted-escape]
+[fixture: gitgraph/common-title-open-quote] [fixture: gitgraph/directive-title]
+[fixture: gitgraph/comment-block] [fixture: gitgraph/title-conversion]
+[fixture: gitgraph/style-acctitle] [fixture: gitgraph/lex-description-line-null]
 
 ### GitgraphIgnoredText
 
@@ -464,8 +460,8 @@ StringLiteral ではありません。 [fixture: gitgraph/common-title-quoted-es
 直前の任意の ASCII の空白と、閉じの直後に消費した LF は除きます。
 内部の書かれた改行、LS・PS、空白は保ちます。
 追加する LF を範囲や値に含めません。
-空の本文も、
-囲みのテキストは空ではありません。 [fixture: gitgraph/lex-yaml-empty-body]
+空の本文も、囲みのテキストは空ではありません。
+[fixture: gitgraph/lex-yaml-empty-body]
 [fixture: gitgraph/lex-yaml-three-adjacent-fences]
 [fixture: gitgraph/lex-yaml-body-ls-ps]
 [fixture: gitgraph/lex-hidden-directive-commit-eof]
@@ -481,8 +477,8 @@ YAML のプロパティを持たず、
 先に始まった文字列・共通のブロックでは、隠れた形に見える部分も内容です。
 行の値は YAML に見える形を持ちますが、`%%` の前で終わるので、
 その隠れた形は textAfter に入る場合があります。
-一致せず図固有のコメントに戻る形は、
-共有 Comment です。 [fixture: gitgraph/lex-hidden-yaml-global-directive-body]
+一致せず図固有のコメントに戻る形は、共有 Comment です。
+[fixture: gitgraph/lex-hidden-yaml-global-directive-body]
 [fixture: gitgraph/lex-hidden-yaml-global-comment-body]
 [fixture: gitgraph/lex-hidden-directive-global-comment-body]
 [fixture: gitgraph/lex-yaml-common-init-effect]

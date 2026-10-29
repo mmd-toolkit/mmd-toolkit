@@ -21,7 +21,7 @@ new RuleTester(LANGUAGE_CONFIG).run(
         errors: [
           {
             message:
-              "mermaid.js replaces the direction set on line 3 for this flow with `BT`.",
+              "mermaid.js replaces the earlier direction for this flow with `BT`.",
             line: 4,
             column: 1,
             endLine: 4,
@@ -41,7 +41,7 @@ end\r
         errors: [
           {
             message:
-              "mermaid.js replaces the direction set on line 3 for this flow with `BT`.",
+              "mermaid.js replaces the earlier direction for this flow with `BT`.",
             line: 4,
             column: 1,
             endLine: 4,
@@ -61,7 +61,7 @@ end
         errors: [
           {
             message:
-              "mermaid.js replaces the direction set on line 3 for this flow with `BT`.",
+              "mermaid.js replaces the earlier direction for this flow with `BT`.",
             line: 4,
             column: 1,
             endLine: 4,

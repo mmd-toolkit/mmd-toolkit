@@ -11,7 +11,7 @@ Code:
     |                                 ^~~~ [1]
   4 |
 
-[1] mermaid.js uses the first value for axis `A` on line 3 in this curve, and drops this value.
+[1] mermaid.js uses the first value for axis `A` in this curve, and drops this value.
 ---
 
 
@@ -25,7 +25,7 @@ Code:
     |                                 ^~~~ [1]
   4 |
 
-[1] mermaid.js uses the first value for axis `A` on line 3 in this curve, and drops this value.
+[1] mermaid.js uses the first value for axis `A` in this curve, and drops this value.
 ---
 
 
@@ -39,7 +39,7 @@ Code:
     |                       ^~~ [1]
   4 |
 
-[1] mermaid.js uses the first value for axis `A` on line 3 in this curve, and drops this value.
+[1] mermaid.js uses the first value for axis `A` in this curve, and drops this value.
 ---
 
 
@@ -55,7 +55,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js uses the first value for axis `A` on line 3 in this curve, and drops this value.
+[1] mermaid.js uses the first value for axis `A` in this curve, and drops this value.
 ---
 
 
@@ -70,8 +70,8 @@ Code:
     |                            [1]  [2]
   4 |
 
-[1] mermaid.js uses the first value for axis `A` on line 3 in this curve, and drops this value.
-[2] mermaid.js uses the first value for axis `A` on line 3 in this curve, and drops this value.
+[1] mermaid.js uses the first value for axis `A` in this curve, and drops this value.
+[2] mermaid.js uses the first value for axis `A` in this curve, and drops this value.
 ---
 
 
@@ -85,7 +85,7 @@ Code:
   3 | axis A, B, C
   4 |
 
-[1] mermaid.js uses the first value for axis `A` on line 2 in this curve, and drops this value.
+[1] mermaid.js uses the first value for axis `A` in this curve, and drops this value.
 ---
 
 
@@ -101,7 +101,7 @@ Code:
     | ~~ [1]
   5 |
 
-[1] mermaid.js uses the first value for axis `A` on line 3 in this curve, and drops this value.
+[1] mermaid.js uses the first value for axis `A` in this curve, and drops this value.
 ---
 
 
@@ -115,7 +115,7 @@ Code:
     |                            ^~~ [1]
   4 |
 
-[1] mermaid.js uses the first value for axis `A` on line 3 in this curve, and drops this value.
+[1] mermaid.js uses the first value for axis `A` in this curve, and drops this value.
 ---
 
 
@@ -129,5 +129,5 @@ Code:
     |                            ^~~ [1]
   4 |
 
-[1] mermaid.js uses the first value for axis `A` on line 3 in this curve, and drops this value.
+[1] mermaid.js uses the first value for axis `A` in this curve, and drops this value.
 ---

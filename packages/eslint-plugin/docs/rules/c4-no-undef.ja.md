@@ -38,7 +38,8 @@ mermaid.js には 1 つで、この規則には 2 つのことがある。
 `Rel(a, b, "Uses")` の後の `UpdateRelStyle(b, a, "red")` は何も変えない。
 宣言や前の更新の名前付きの `$alias`、`$from`、`$to` は、
 後の更新が見つけるものを変える。
-`Person(a, "A")` と `UpdateElementStyle(a, $alias="b")` の後の `UpdateElementStyle(a, "red")` は何も変えない。
+`Person(a, "A")` と `UpdateElementStyle(a, $alias="b")` の後の
+`UpdateElementStyle(a, "red")` は何も変えない。
 端点の位置に `$from` と `$to` を書いた関係は、更新が名指せる端点を持たない。
 対象のない更新は、それぞれ報告する。
 
@@ -99,12 +100,13 @@ C4Context
 
 ## 背景
 
-[`updateElStyle` と `updateRelStyle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L494-L670) は、
-呼ばれるときにある対象を探し、
-[`getC4Shape`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L693-L700) は、
-要素が合わないときに境界を探す。
+[`updateElStyle` と `updateRelStyle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L494-L670)
+は、呼ばれるときにある対象を探し、
+[`getC4Shape`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L693-L700)
+は、要素が合わないときに境界を探す。
 端点の分からない関係では、
-[`drawRels`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Renderer.ts#L416-L422) がエラーを投げる。
+[`drawRels`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Renderer.ts#L416-L422)
+がエラーを投げる。
 
 <!-- begin auto-generated rule resources -->
 

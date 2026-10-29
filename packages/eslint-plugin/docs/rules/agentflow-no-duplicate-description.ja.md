@@ -37,9 +37,9 @@ mermaid.js は、図のほかの場所ではコメントであるそのような
 ブロックの中では保つ。
 
 何も持たないブロックと、説明を空にする閉じないブロックは数えない。
-[agentflow-no-empty-description-block](./agentflow-no-empty-description-block.ja.md) と、
-[agentflow-no-unclosed-description-block](./agentflow-no-unclosed-description-block.ja.md) が、
-それらを報告する。
+[agentflow-no-empty-description-block](./agentflow-no-empty-description-block.ja.md)、
+[agentflow-no-unclosed-description-block](./agentflow-no-unclosed-description-block.ja.md)
+がそれらを報告する。
 
 図がすでに持つ説明を設定する文は、どちらの形でも報告しない。
 `accDescr: d` の後のブロック `accDescr { d }` は何も失わない。
@@ -98,9 +98,10 @@ agentflow-beta TB
 
 ## 背景
 
-[`accDescr` 文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow.jison#L427-L428) は、
-前に設定した説明を置き換える共通の `setAccDescription` を呼ぶ。
-[ブロック](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow.jison#L61-L63) の字句解析にはコメントの規則がなく、
+[`accDescr` 文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow.jison#L427-L428)
+は、前に設定した説明を置き換える共通の `setAccDescription` を呼ぶ。
+[ブロック](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow.jison#L61-L63)
+の字句解析にはコメントの規則がなく、
 agentflow はコメントを保ったまま文字を読む。
 
 <!-- begin auto-generated rule resources -->

@@ -21,7 +21,7 @@ export const wardleyNoDuplicateAnnotations: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js keeps the annotation box at the position given on line {{line}}; this position has no effect.",
+        "mermaid.js keeps the annotation box at the first position and ignores this position.",
     },
   },
   create(context) {
@@ -33,17 +33,16 @@ export const wardleyNoDuplicateAnnotations: MermaidRuleDefinition<{
             wardleyNameText(node.text) !== "",
         )
         if (!hasText) return
-        let first: { x: number; y: number; line: number } | null = null
+        let first: { x: number; y: number } | null = null
         for (const node of diagram.body) {
           if (node.type !== "WardleyAnnotationsStatement") continue
           const position = wardleyPosition(node.coordinates)
           if (first === null) {
-            first = { ...position, line: node.loc.start.line }
+            first = position
           } else if (first.x !== position.x || first.y !== position.y) {
             context.report({
               node,
               messageId: "duplicate",
-              data: { line: String(first.line) },
             })
           }
         }

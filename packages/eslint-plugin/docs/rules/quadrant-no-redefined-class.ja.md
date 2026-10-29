@@ -31,7 +31,8 @@ mermaid.js は同じ名前の 2 つ目の `classDef` を受理し、
 点は、先に書いてあっても、最後の定義のクラスを取る。
 
 クラスが持っていたスタイルをすべて保つ定義は、スタイルを足しても報告しない。
-`classDef c color: #f00` の後の `classDef c color: #f00, radius: 9` は何も失わない。
+`classDef c color: #f00` の後の `classDef c color: #f00, radius: 9`
+は何も失わない。
 スタイルは、mermaid.js が持つとおりに比べる。
 スタイルの順は数えず、半径は数なので `radius: 05` は `radius: 5` であり、
 1 つの定義に 2 度書いたスタイルは最後の値を数える。

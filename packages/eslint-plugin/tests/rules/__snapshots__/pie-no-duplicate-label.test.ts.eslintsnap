@@ -11,7 +11,7 @@ Code:
     |   ^~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+[1] mermaid.js keeps the value of the first section with this label and ignores this value.
 ---
 
 
@@ -25,7 +25,7 @@ Code:
   4 | "A":1
     | ^~~~~ [1]
 
-[1] mermaid.js keeps the value of the first section with this label, on line 3, and ignores this value.
+[1] mermaid.js keeps the value of the first section with this label and ignores this value.
 ---
 
 
@@ -38,7 +38,7 @@ Code:
   3 | "style:#x":2
     | ^~~~~~~~~~~~ [1]
 
-[1] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+[1] mermaid.js keeps the value of the first section with this label and ignores this value.
 ---
 
 
@@ -54,7 +54,7 @@ Code:
   5 | B":2
     | ~~~~ [1]
 
-[1] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+[1] mermaid.js keeps the value of the first section with this label and ignores this value.
 ---
 
 
@@ -67,7 +67,7 @@ Code:
   3 | '':2
     | ^~~~ [1]
 
-[1] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+[1] mermaid.js keeps the value of the first section with this label and ignores this value.
 ---
 
 
@@ -80,7 +80,7 @@ Code:
   3 | "A":1
     | ^~~~~ [1]
 
-[1] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+[1] mermaid.js keeps the value of the first section with this label and ignores this value.
 ---
 
 
@@ -93,7 +93,7 @@ Code:
   3 | "A":-0
     | ^~~~~~ [1]
 
-[1] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+[1] mermaid.js keeps the value of the first section with this label and ignores this value.
 ---
 
 
@@ -107,7 +107,7 @@ Code:
     |   ^~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+[1] mermaid.js keeps the value of the first section with this label and ignores this value.
 ---
 
 
@@ -122,8 +122,8 @@ Code:
   4 | "A":2
     | ^~~~~ [2]
 
-[1] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
-[2] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+[1] mermaid.js keeps the value of the first section with this label and ignores this value.
+[2] mermaid.js keeps the value of the first section with this label and ignores this value.
 ---
 
 
@@ -137,7 +137,7 @@ Code:
     | ^~~~~ [1]
   4 | "A":1
 
-[1] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+[1] mermaid.js keeps the value of the first section with this label and ignores this value.
 ---
 
 
@@ -153,7 +153,7 @@ Code:
   6 | "A":2
     | ^~~~~ [1]
 
-[1] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+[1] mermaid.js keeps the value of the first section with this label and ignores this value.
 ---
 
 
@@ -167,5 +167,5 @@ Code:
     | ^~~~~ [1]
   4 | "\B":3
 
-[1] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+[1] mermaid.js keeps the value of the first section with this label and ignores this value.
 ---

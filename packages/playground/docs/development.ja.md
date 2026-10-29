@@ -4,7 +4,8 @@ English version: [development.md](./development.md)
 
 ブラウザーアプリケーションの開発者向け文書です。
 使い方は[README](../README.ja.md)を、
-ワークスペースの準備は [リポジトリの開発ガイド](../../../CONTRIBUTING.ja.md)を参照してください。
+ワークスペースの準備は
+[リポジトリの開発ガイド](../../../CONTRIBUTING.ja.md)を参照してください。
 このパッケージはprivateで、npmリリースとは独立しています。
 
 ## ローカルでの開発
@@ -31,8 +32,9 @@ Formattedの表示中なら再整形もします。
 
 ## ブラウザーでの実装
 
-Vue 3.6 RCのVaporコンポーネント、Monaco Editor、Shikiと、
-[shine-and-bright](https://github.com/ota-meshi/shine-and-bright)のテーマスイッチを使います。
+Vue 3.6 RCのVaporコンポーネント、Monaco Editor、Shikiを使い、
+テーマスイッチには、
+[shine-and-bright](https://github.com/ota-meshi/shine-and-bright)を使います。
 VueのRC版を含む依存バージョンはロックファイルに記録し、
 CIでは`--frozen-lockfile`でインストールします。
 すべてのVue SFCは`<script setup lang="ts" vapor>`を使い、
@@ -94,7 +96,8 @@ HMRのテストはパーサーとフォーマッターの隔離したコピー�
 
 ## GitHub Pages
 
-公開先の予定は [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)です。
+公開先の予定は
+[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)です。
 Viteのbaseは`/mmd-toolkit/playground/`で、エディターワーカー、 ShikiのWASM、
 遅延読み込みする整形資産もこのパスに従います。
 ビルドの出力先は`lib/`です。

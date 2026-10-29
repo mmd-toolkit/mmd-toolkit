@@ -58,7 +58,9 @@ Prettierによる整形結果を確認できます。
 - 2 回整形した結果は、1 回整形した結果と同じです。
   整形で図は変わりません。
   少数の例外は、
-  フォーマッターの [README](./packages/prettier-plugin-mmd/README.ja.md#保証と制限) に挙げています。
+  フォーマッターの
+  [README](./packages/prettier-plugin-mmd/README.ja.md#保証と制限)
+  に挙げています。
 
 パーサーは、いくつかの種類の入力で、意図して mermaid.js と違う読み方をします。
 たとえば、キーワードの中のディレクティブ（`%%{ ... }%%`）は、
@@ -88,7 +90,8 @@ mermaid.js は拒否しますが、ここでは受理し、整形します。
 
 ## 開発に参加する
 
-リポジトリのビルドとテストのしかたは [CONTRIBUTING.ja.md](./CONTRIBUTING.ja.md) にあります。
+リポジトリのビルドとテストのしかたは [CONTRIBUTING.ja.md](./CONTRIBUTING.ja.md)
+にあります。
 
 ## ライセンス
 

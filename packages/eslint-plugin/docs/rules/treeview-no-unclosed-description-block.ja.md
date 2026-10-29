@@ -65,8 +65,10 @@ treeView-beta
 
 ## 背景
 
-[ブロックの終端記号](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treeView/treeView.langium#L15-L15) は `}` のあるブロックにだけ合い、
-[名前の終端記号](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treeView/treeView.langium#L57-L57) は行の残りをノードの名前として取る。
+[ブロックの終端記号](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treeView/treeView.langium#L15-L15)
+は `}` のあるブロックにだけ合い、
+[名前の終端記号](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treeView/treeView.langium#L57-L57)
+は行の残りをノードの名前として取る。
 
 <!-- begin auto-generated rule resources -->
 

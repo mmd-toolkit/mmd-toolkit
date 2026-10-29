@@ -1,7 +1,6 @@
 # @mmd-toolkit/cynefin-no-redefined-domain
 
-英語版:
-[cynefin-no-redefined-domain.md](./cynefin-no-redefined-domain.md)
+英語版: [cynefin-no-redefined-domain.md](./cynefin-no-redefined-domain.md)
 
 前に持っていた項目を持たずに、もう一度書いた領域を禁止する。
 
@@ -71,8 +70,8 @@ cynefin-beta
 
 ## 背景
 
-[Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L34-L48) は、
-領域の項目をその名前の下に、前にそこに保った項目の上から保つ。
+[Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L34-L48)
+は、領域の項目をその名前の下に、前にそこに保った項目の上から保つ。
 
 <!-- begin auto-generated rule resources -->
 

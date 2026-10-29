@@ -66,9 +66,10 @@ set A
 
 ## 背景
 
-[`title` 文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/parser/venn.jison#L72-L72) は、
-[`setDiagramTitle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L28-L30) を呼び、
-それは前に設定されたタイトルを置き換える。
+[`title` 文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/parser/venn.jison#L72-L72)
+は、次の関数を呼ぶ。
+[`setDiagramTitle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L28-L30)
+は、前に設定されたタイトルを置き換える。
 
 <!-- begin auto-generated rule resources -->
 

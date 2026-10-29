@@ -11,7 +11,7 @@ Code:
     |   ^~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the label `First` of the class `A`, set on line 2, with this one.
+[1] mermaid.js replaces the label `First` of the class `A`, set earlier, with this one.
 ---
 
 
@@ -25,7 +25,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the label `First` of the class `A`, set on line 2, with this one.
+[1] mermaid.js replaces the label `First` of the class `A`, set earlier, with this one.
 ---
 
 
@@ -41,7 +41,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js replaces the label `First` of the class `A`, set on line 3, with this one.
+[1] mermaid.js replaces the label `First` of the class `A`, set earlier, with this one.
 ---
 
 
@@ -55,5 +55,5 @@ Code:
     | ^~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the label `First` of the class `A`, set on line 2, with this one.
+[1] mermaid.js replaces the label `First` of the class `A`, set earlier, with this one.
 ---

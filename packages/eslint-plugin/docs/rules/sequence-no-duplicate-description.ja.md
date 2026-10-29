@@ -34,11 +34,13 @@ mermaid.js はどの `accDescr` の文も受理し、説明を設定する文は
 
 説明を持たないブロックは、数えない。
 それは、
-[sequence-no-empty-description-block](./sequence-no-empty-description-block.ja.md) が報告する。
+[sequence-no-empty-description-block](./sequence-no-empty-description-block.ja.md)
+が報告する。
 閉じていないブロックも数えない。
 そのブロックはテキストの終わりまで続き、説明を空にする。
 それは、
-[sequence-no-unclosed-description-block](./sequence-no-unclosed-description-block.ja.md) が報告する。
+[sequence-no-unclosed-description-block](./sequence-no-unclosed-description-block.ja.md)
+が報告する。
 
 図がすでに持つ説明を設定する文は、どちらの形でも報告しない。
 `accDescr: d` の後のブロック `accDescr { d }` は、何も失わない。

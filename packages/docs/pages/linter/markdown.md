@@ -38,8 +38,9 @@ the Markdown file. The sequence diagram produces no reports.
 
 Parsing errors are also reported in the Markdown file. If a Mermaid block has no
 diagram header or contains unsupported syntax, the plugin reports a parsing
-error before running its rules. See [diagram support](../reference/support.md)
-for the supported syntax.
+error before running its rules. A block with no line between its fences is not
+reported. See [diagram support](../reference/support.md) for the supported
+syntax.
 
 Other code-block languages are outside `@mmd-toolkit/eslint-plugin`'s scope.
 Configure them with the appropriate ESLint rules or language plugins.

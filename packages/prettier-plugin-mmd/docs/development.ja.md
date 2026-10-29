@@ -72,8 +72,9 @@ Db は mermaid.js から読みません。
 入力の埋め込みデータ（フロントマター、ディレクティブ、
 データブロック）から mermaid.js が導く値を使います。
 コーパスは、fixture ごとにその値（`embeddedValuesOf`）と、
-入力の Db（`expected.json`。仕様が違う読み方をするものは `specified.json`）を記録しているので、
-コーパスのテストは、整形後のテキストの Db を、記録された Db と比べます。
+入力の Db（`expected.json`。仕様が違う読み方をするものは
+`specified.json`）を記録しているので、コーパスのテストは、
+整形後のテキストの Db を、記録された Db と比べます。
 ほかのテストには記録がないので、整形後のテキストの Db を、入力の Db と、
 既定の値で比べます。
 
@@ -164,8 +165,8 @@ fixture は整形そのものを示します。
 どの例にも属さないファイルや、入力のない出力やオプションのファイルがあると、
 テストが失敗します。
 入力の名前を変えたときに、古い出力が残らないようにするためです。
-`tests/fixtures/.gitattributes` と `.editorconfig` は、行末の空白も含めて、
-ファイルをバイトのとおりに保ちます。
+ルートの `.gitattributes` と `.editorconfig` は、行末の空白も含めて、
+`tests/fixtures/` のファイルをバイトのとおりに保ちます。
 
 U+2028 や U+2029 のような不可視文字を含むテキストは、
 ここでは fixture にしません。
@@ -189,18 +190,25 @@ pnpm --filter prettier-plugin-mmd run test:update
 
 規則の文書の例は fixture の写しで、`tests/format.test.ts` は、
 プラグインがそれぞれの出力を印字することと、
-Db と埋め込みデータを保つことの両方を確かめます（[テストが保つもの](#テストが保つもの)を参照）。
-英語版の規則の文書は、[docs/flowchart.md](./flowchart.md)、
-[docs/agentflow.md](./agentflow.md)、 [docs/sequence.md](./sequence.md)、
-[docs/class.md](./class.md)、 [docs/state.md](./state.md)、
-[docs/er.md](./er.md)、 [docs/gantt.md](./gantt.md)、
-[docs/journey.md](./journey.md)、[docs/requirement.md](./requirement.md)、
-[docs/mindmap.md](./mindmap.md)、[docs/timeline.md](./timeline.md)、
-[docs/sankey.md](./sankey.md)、[docs/xychart.md](./xychart.md)、
-[docs/quadrant.md](./quadrant.md)、[docs/block.md](./block.md)、
-[docs/kanban.md](./kanban.md)、[docs/c4.md](./c4.md)、
-[docs/venn.md](./venn.md)、[docs/ishikawa.md](./ishikawa.md)、
-[docs/usecase.md](./usecase.md) です。
+Db と埋め込みデータを保つことの両方を、
+確かめます（[テストが保つもの](#テストが保つもの) を参照）。
+英語版の規則の文書は、[docs/agentflow.md](./agentflow.md)、
+[docs/architecture.md](./architecture.md)、[docs/block.md](./block.md)、
+[docs/c4.md](./c4.md)、[docs/class.md](./class.md)、
+[docs/cynefin.md](./cynefin.md)、[docs/er.md](./er.md)、
+[docs/eventmodeling.md](./eventmodeling.md)、
+[docs/flowchart.md](./flowchart.md)、[docs/gantt.md](./gantt.md)、
+[docs/gitgraph.md](./gitgraph.md)、[docs/info.md](./info.md)、
+[docs/ishikawa.md](./ishikawa.md)、[docs/journey.md](./journey.md)、
+[docs/kanban.md](./kanban.md)、[docs/mindmap.md](./mindmap.md)、
+[docs/packet.md](./packet.md)、[docs/pie.md](./pie.md)、
+[docs/quadrant.md](./quadrant.md)、[docs/radar.md](./radar.md)、
+[docs/railroad.md](./railroad.md)、[docs/requirement.md](./requirement.md)、
+[docs/sankey.md](./sankey.md)、[docs/sequence.md](./sequence.md)、
+[docs/state.md](./state.md)、[docs/timeline.md](./timeline.md)、
+[docs/treemap.md](./treemap.md)、[docs/treeview.md](./treeview.md)、
+[docs/usecase.md](./usecase.md)、[docs/venn.md](./venn.md)、
+[docs/wardley.md](./wardley.md)、[docs/xychart.md](./xychart.md) です。
 それらでは、 `###` の見出しが規則で、その fixture のフォルダーは、
 図種のフォルダーの下の、見出しを小文字にし、空白を `-` にしたものです。
 「Arrow spacing」は `arrow-spacing` です。
@@ -230,8 +238,8 @@ kanban は共通のブロック印字を本体の深さ 0 で使い、
 インラインディレクティブの行と `;` を持つ行の字下げを渡し、
 それらの行のテキストは書かれたまま印字します。
 隙間の項目は、引き続きノードの列に揃えます。
-`keptGapEnd` は `Line.writtenBreakBefore` と `PrintedBlock.writtenEnd` を通じて、
-保護するコメントの隙間全体を、次の行の字下げの前まで保ちます。
+`keptGapEnd` は `Line.writtenBreakBefore` と `PrintedBlock.writtenEnd`
+を通じて、保護するコメントの隙間全体を、次の行の字下げの前まで保ちます。
 これらは任意の規則で、他図種は既存の経路を通ります。
 共通の `isDroppedSemicolon` は、既に kanban のセミコロンを残す判定です。
 
@@ -301,8 +309,8 @@ printer は Mermaid を import せず、出力を再解析しません。
 余白を含む usecase の Literal でも本文の列と閉じ括弧の配置を再利用します。
 
 `AtomLayout.keptBreaksBefore` は、
-metadata の atom と trivia の間の LF をすべて保ち、既存の atom
-printer がプロパティと閉じ波括弧を揃えます。
+metadata の atom と trivia の間の LF をすべて保ち、
+既存の atom printer がプロパティと閉じ波括弧を揃えます。
 他のレイアウトは指定せず、既存の空行の方針を保ちます。
 `semicolonSegmentEnd` と `keptSemicolonPrefixEnd` は、
 C4 の既存の区間境界を共有します。
@@ -320,11 +328,12 @@ embedded の原文を確認します。
 escape 表記の例では木の不変条件も確認します。
 `corpus.test.ts` は、印付きの指定の読みと解析失敗も含む全 pie 入力を読みます。
 fixture の出力全体で、保持する隠れた原文を確認します。
-`describeFrontmatterChange` は ignored
-YAML が frontmatter に変わらないかを確かめます。
+`describeFrontmatterChange` は ignored YAML が frontmatter
+に変わらないかを確かめます。
 dispatch と値 node の行にも pie を加えています。
 
-printer は共有の accessibility のコロン規則と `layoutDescriptionBlock` を呼びます。
+printer は共有の accessibility のコロン規則と `layoutDescriptionBlock`
+を呼びます。
 pie の行形式は次行の値を結合しません。
 `AtomLayout.writtenGapsBefore` は hidden node 外で消費する LF と、
 閉じ境界の空白を保ちます。

@@ -32,6 +32,7 @@ function paragraphTokens(entry) {
   const quoteDepth = entry.ancestors.filter(
     (n) => n.type === "blockquote",
   ).length
+  const hardBreakStarts = new Set(entry.hardBreaks.map(([from]) => from))
   const tokens = []
   let at = start
   while (at < end) {
@@ -58,16 +59,28 @@ function paragraphTokens(entry) {
       })
     } else {
       const value = String.fromCodePoint(text.codePointAt(at))
-      tokens.push({ value, from: at, to: at + value.length, raw: value })
+      const token = { value, from: at, to: at + value.length, raw: value }
+      // The `\` that marks a hard break belongs to the text before it.
+      if (value === "\\" && hardBreakStarts.has(at))
+        token.hardBreakMarker = true
+      tokens.push(token)
       at += value.length
     }
   }
   let protectedIndex = 0
+  const emphasisMarkers = new Map()
+  for (const span of entry.emphasis) {
+    for (let offset = span.start; offset < span.openingEnd; offset++)
+      emphasisMarkers.set(offset, "opening")
+    for (let offset = span.closingStart; offset < span.end; offset++)
+      emphasisMarkers.set(offset, "closing")
+  }
   for (const token of tokens) {
     while (entry.spans[protectedIndex]?.[1] <= token.from) protectedIndex++
     const span = entry.spans[protectedIndex]
     if (span && span[0] <= token.from && token.to <= span[1])
       token.protectedSpan = span
+    token.emphasisMarker = emphasisMarkers.get(token.from)
   }
   return { tokens, firstPrefix, continuation, start, end }
 }
@@ -164,22 +177,48 @@ function sentences(tokens, info) {
       const closingEnd = emphasisEnds.get(tokens[end].from)
       while (end < tokens.length && tokens[end].from < closingEnd) end++
     }
-    let firstCitation = true
-    let citationSpaceAt = null
+    if (tokens[end]?.hardBreakMarker) end++
+    let afterBody = end
+    while (whitespace(tokens[afterBody])) afterBody++
+    if (tokens[afterBody]?.hard || NO_LINE_START.has(tokens[afterBody]?.value))
+      continue
+    const bodyEnd = end
+    const references = []
     for (;;) {
       let at = end
       while (whitespace(tokens[at])) at++
       const citationEnd = citations.get(tokens[at]?.from)
       if (citationEnd === undefined) break
-      if (firstCitation && at === end) citationSpaceAt = at
-      firstCitation = false
+      const referenceStart = at
       while (at < tokens.length && tokens[at].from < citationEnd) at++
+      // Punctuation that may not start a line stays with its reference.
+      while (NO_LINE_START.has(tokens[at]?.value) && !tokens[at].protectedSpan)
+        at++
+      if (tokens[at]?.hardBreakMarker) at++
+      references.push({ start: referenceStart, end: at })
       end = at
     }
     let next = end
     while (whitespace(tokens[next])) next++
-    if (tokens[next]?.hard || NO_LINE_START.has(tokens[next]?.value)) continue
-    ranges.push({ start, end, next, citationSpaceAt })
+    if (tokens[next]?.hard) {
+      if (references.length === 0) continue
+      // A hard break after the references closes the sentence; the spaces
+      // that mark the break stay with the last reference.
+      references.at(-1).end = next
+      ranges.push({
+        start,
+        end: next,
+        next: next + 1,
+        separator: tokens[next].raw,
+        bodyEnd,
+        references,
+      })
+      start = next + 1
+      depth = 0
+      i = next
+      continue
+    }
+    ranges.push({ start, end, next, bodyEnd, references })
     start = next
     i = next - 1
   }
@@ -216,7 +255,13 @@ function continuesParagraph(tokens, start, info) {
   )
     return false
   const characters = []
-  for (let i = start; i < tokens.length && tokens[i].value !== "\n"; i++)
+  const newline = info.text.indexOf("\n", tokens[start].from)
+  const lineEnd = newline === -1 ? info.text.length : newline
+  for (
+    let i = start;
+    i < tokens.length && tokens[i].value !== "\n" && tokens[i].from < lineEnd;
+    i++
+  )
     characters.push(tokens[i].value)
   const source = characters.join("")
   const tree = paragraphTree(`prose\n${source}`, "")
@@ -235,6 +280,9 @@ function spaceBreak(tokens, i, info) {
   const left = tokens[i - 1]
   const right = tokens[next]
   if (!left || !right) return null
+  // A space between two wide characters is not a break: a break there is not
+  // beside a code span, a link, or a Latin word, and the join would drop it.
+  if (isWide(left.value) && isWide(right.value)) return null
   if (!allowed(left, right, tokens[i].from, info)) return null
   if (!continuesParagraph(tokens, next, info)) return null
   return { end: i, next }
@@ -320,6 +368,35 @@ function wrapSentence(tokens, firstPrefix, continuation, info) {
   return lines.join("")
 }
 
+/** Appends reference groups after laying out the body, retaining adjacent `][`. */
+function appendReferences(
+  body,
+  references,
+  tokens,
+  firstPrefix,
+  continuation,
+  info,
+) {
+  let output = body
+  for (let i = 0; i < references.length; i++) {
+    const start = references[i].start
+    let end = references[i].end
+    while (references[i + 1]?.start === end) end = references[++i].end
+    const group = tokens.slice(start, end)
+    const newline = output.lastIndexOf("\n")
+    const lastLine =
+      newline === -1 ? firstPrefix + output : output.slice(newline + 1)
+    const firstLineEnd = group.findIndex((token) => token.value === "\n")
+    const firstLine = firstLineEnd === -1 ? group : group.slice(0, firstLineEnd)
+    const fits = widthOf(`${lastLine} ${textOf(firstLine)}`) <= LIMIT
+    const prefix = fits ? `${lastLine} ` : continuation
+    const reference = wrapSentence(group, prefix, continuation, info)
+    if (reference === null) return null
+    output += (fits ? " " : `\n${continuation}`) + reference
+  }
+  return output
+}
+
 /** Inline structure and non-whitespace content, including protected values. */
 function signature(node) {
   const result = { ...node }
@@ -356,19 +433,23 @@ function paragraphNormalForm(entry) {
   const unfixable = []
   for (const [index, range] of ranges.entries()) {
     const tokens = joined.slice(range.start, range.end)
-    if (range.citationSpaceAt !== null && range.citationSpaceAt !== undefined) {
-      const at = range.citationSpaceAt - range.start
-      const offset = tokens[at].from
-      tokens.splice(at, 0, { value: " ", from: offset, to: offset, raw: "" })
-    }
     const firstPrefix =
       index === 0 ? original.firstPrefix : original.continuation
-    const wrapped = wrapSentence(
-      tokens,
+    let wrapped = wrapSentence(
+      joined.slice(range.start, range.bodyEnd ?? range.end),
       firstPrefix,
       original.continuation,
       entry,
     )
+    if (wrapped !== null && range.references?.length)
+      wrapped = appendReferences(
+        wrapped,
+        range.references,
+        joined,
+        firstPrefix,
+        original.continuation,
+        entry,
+      )
     if (wrapped === null) {
       const from = tokens[0].from
       const to = tokens.at(-1).to
@@ -421,9 +502,9 @@ export const jaLineBreaks = {
     schema: [],
     messages: {
       normalize:
-        "Use one sentence per line and wrap long sentences after 、 within 80 columns.",
+        "Use one sentence per line and wrap long sentences after 、 or at a space within 80 columns, with following references on the last line or continuation lines.",
       cannotFit:
-        "This sentence is {{width}} columns wide and cannot be broken after 、 within 80 columns: split it or add a 、.",
+        "This sentence is {{width}} columns wide and cannot be broken after 、 or at a space within 80 columns: split it or add a 、.",
     },
   },
   create(context) {

@@ -63,7 +63,7 @@ export const requirementNoDuplicateName: MermaidRuleDefinition<{
     schema: [],
     messages: {
       ignored:
-        "mermaid.js keeps the box `{{name}}` of line {{line}} as it is: this statement adds only its classes.",
+        "mermaid.js keeps the first {{kind}} named `{{name}}` as it is: this statement adds only its classes.",
     },
   },
   create(context) {
@@ -72,14 +72,17 @@ export const requirementNoDuplicateName: MermaidRuleDefinition<{
     const requirements = new Map<string, RequirementRequirementStatement>()
     const elements = new Map<string, RequirementElementStatement>()
 
-    /** Reports the name of `node` as a statement that changes nothing but the classes of `earlier`. */
-    function reportIgnored(node: BoxStatement, earlier: BoxStatement): void {
+    /** Reports the name of `node` as a statement that changes nothing but the earlier box's classes. */
+    function reportIgnored(node: BoxStatement): void {
       context.report({
         node: node.name,
         messageId: "ignored",
         data: {
           name: requirementNameText(node.name),
-          line: String(earlier.loc.start.line),
+          kind:
+            node.type === "RequirementRequirementStatement"
+              ? "requirement"
+              : "element",
         },
       })
     }
@@ -94,7 +97,7 @@ export const requirementNoDuplicateName: MermaidRuleDefinition<{
           earlier.requirementType !== node.requirementType ||
           losesField(node, earlier)
         ) {
-          reportIgnored(node, earlier)
+          reportIgnored(node)
         }
       },
       RequirementElementStatement(node) {
@@ -103,7 +106,7 @@ export const requirementNoDuplicateName: MermaidRuleDefinition<{
         if (earlier === undefined) {
           elements.set(name, node)
         } else if (losesField(node, earlier)) {
-          reportIgnored(node, earlier)
+          reportIgnored(node)
         }
       },
     }

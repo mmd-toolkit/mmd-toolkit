@@ -40,7 +40,7 @@ y"]
         errors: [
           {
             message:
-              "mermaid.js replaces the label of `A` written on line 2 with that of this vertex.",
+              "mermaid.js replaces the label of `A` written earlier with that of this vertex.",
             line: 3,
             column: 2,
             endLine: 4,
@@ -59,7 +59,7 @@ y"]
         errors: [
           {
             message:
-              "mermaid.js replaces the label of `A` written on line 2 with that of this vertex.",
+              "mermaid.js replaces the label of `A` written earlier with that of this vertex.",
             line: 3,
             column: 2,
             endLine: 4,

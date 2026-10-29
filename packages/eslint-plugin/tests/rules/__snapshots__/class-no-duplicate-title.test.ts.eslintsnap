@@ -12,7 +12,7 @@ Code:
   4 |   class A
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
 ---
 
 
@@ -29,8 +29,8 @@ Code:
   5 |   class A
   6 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
-[2] mermaid.js replaces the title set on line 3 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+[2] mermaid.js replaces the earlier title with the one of this `accTitle`.
 ---
 
 
@@ -48,7 +48,7 @@ Code:
     | ~~~~~~~ [1]
   6 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
 ---
 
 
@@ -66,7 +66,7 @@ Code:
     | ~~~~~~~ [1]
   6 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
 ---
 
 
@@ -81,7 +81,7 @@ Code:
   4 | class A
   5 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
 ---
 
 
@@ -99,5 +99,5 @@ Code:
     | ~~~~~~~ [1]
   6 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
 ---

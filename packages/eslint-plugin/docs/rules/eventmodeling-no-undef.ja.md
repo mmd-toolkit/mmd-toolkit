@@ -89,13 +89,13 @@ items
 
 ## 背景
 
-[`getState`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L106-L128) は、
-source が番号を与えるフレームを取ってそれぞれから関係を描き、
+[`getState`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L106-L128)
+は、 source が番号を与えるフレームを取ってそれぞれから関係を描き、
 source のないフレームにだけ、前のフレームからの関係を推して描く。
-[`decidePositionRelation`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L570-L593) は、
-reset frame の関係も、まだ置いていないフレームからの関係も描かない。
-[フレームのデータ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L339-L362) は、
-その名前の最初のデータブロックであり、
+[`decidePositionRelation`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L570-L593)
+は、 reset frame の関係も、まだ置いていないフレームからの関係も描かない。
+[フレームのデータ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L339-L362)
+は、その名前の最初のデータブロックであり、
 その名前のブロックがなければインラインのデータである。
 
 <!-- begin auto-generated rule resources -->

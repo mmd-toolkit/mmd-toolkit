@@ -6,7 +6,8 @@ mermaid.js の正となるソース：
 
 - [`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison)
 - [`xychartDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts)
-- [`xychart/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart) の中のテスト（`*.spec.ts`）
+- [`xychart/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart)
+  の中のテスト（`*.spec.ts`）
 
 この文書は図種 `xychart` を扱います。
 木のノードは [ast/xychart.ja.md](../ast/xychart.ja.md) で定めます。
@@ -15,13 +16,13 @@ mermaid.js の正となるソース：
 
 [detection.ja.md](../detection.ja.md) の項目 25 がこの文法を選びます。
 テキストが、空白の後、
-ちょうどこの大文字小文字の `xychart` で始まるときです（[`xychartDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDetector.ts#L9-L11)）。
+ちょうどこの大文字小文字の `xychart` で始まるときです（mermaid.js の
+[`xychartDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDetector.ts#L9-L11)）。
 `XYCHART` と `Xychart-Beta` はどの検出器にも合いません。
 ヘッダーの前の U+FEFF と U+00A0 は空白です。 [fixture: xychart/db-header-plain]
-[fixture: xychart/db-header-beta-only]
-[fixture: xychart/header-indented] [fixture: xychart/header-tab-indented]
-[fixture: xychart/header-nbsp-before] [fixture: xychart/header-bom-before]
-[fixture: xychart/header-after-blank-lines]
+[fixture: xychart/db-header-beta-only] [fixture: xychart/header-indented]
+[fixture: xychart/header-tab-indented] [fixture: xychart/header-nbsp-before]
+[fixture: xychart/header-bom-before] [fixture: xychart/header-after-blank-lines]
 [fixture: xychart/spec-xychart-jison-b46d27a1]
 [fixture: xychart/header-upper-case] [fixture: xychart/header-beta-capitalized]
 
@@ -32,7 +33,8 @@ mermaid.js の正となるソース：
 2 つのヘッダーは同じ図種です。
 `xychart-BETA` はヘッダーで、 `xychart-betax`、`xychartx`、`xychart-1`、
 `xychart-betaé` は拒否されます。
-ヘッダーだけのテキストでもかまいません。 [fixture: xychart/header-beta-upper-case-suffix]
+ヘッダーだけのテキストでもかまいません。
+[fixture: xychart/header-beta-upper-case-suffix]
 [fixture: xychart/header-word-suffix]
 [fixture: xychart/header-plain-word-suffix]
 [fixture: xychart/header-dash-suffix]
@@ -43,8 +45,8 @@ mermaid.js の正となるソース：
 
 ヘッダーの前のコメント行とディレクティブの行は何も変えません。
 `%%` だけの行と `%%{ }%%` の行もコメント行なので同じです。
-ヘッダーの前の `#` で始まる行は、
-どの検出器も読みません。 [fixture: xychart/header-after-comment-line]
+ヘッダーの前の `#` で始まる行は、どの検出器も読みません。
+[fixture: xychart/header-after-comment-line]
 [fixture: xychart/header-after-directive-line]
 [fixture: xychart/header-after-bare-percent-line]
 [fixture: xychart/header-after-empty-braces-line]
@@ -54,8 +56,8 @@ mermaid.js の正となるソース：
 ヘッダーの行では、ヘッダーの後に向き、文、`;`、コメントを置くか、
 何も置きません。
 それ以外のテキストは入力を拒否させます。
-`{`、`[`、`:`、`,`、数、`#`、引用符、
-キーワードでない語などです。 [fixture: xychart/header-statement-on-header-line]
+`{`、`[`、`:`、`,`、数、`#`、引用符、キーワードでない語などです。
+[fixture: xychart/header-statement-on-header-line]
 [fixture: xychart/header-line-on-header-line]
 [fixture: xychart/header-semicolon] [fixture: xychart/header-semicolon-only]
 [fixture: xychart/header-semicolon-spaced]
@@ -71,7 +73,8 @@ mermaid.js の正となるソース：
 [fixture: xychart/gram-header-quote-suffix]
 [fixture: xychart/spec-xychart-jison-45159c50]
 その文は、空のものも含めて説明ブロックでもかまいません。
-`xychart accDescr {}` と `xychart accDescr {x}` は受理されます。 [fixture: xychart/db-header-line-empty-description-block]
+`xychart accDescr {}` と `xychart accDescr {x}` は受理されます。
+[fixture: xychart/db-header-line-empty-description-block]
 [fixture: xychart/db-header-line-description-block]
 
 **向き**は、
@@ -127,7 +130,8 @@ mermaid.js の正となるソース：
 文字列、分類、値は閉じていなければならないので、
 テキストの終わりの `title "T` と `line [1, 2` は拒否されます。
 説明ブロックの文脈で終わってもよく、そのブロックはテキストの終わりまで続きます。
-`accTitle:` や `accDescr:` の直後で終わってもかまいません。 [fixture: xychart/gram-title-quoted-unclosed-at-end]
+`accTitle:` や `accDescr:` の直後で終わってもかまいません。
+[fixture: xychart/gram-title-quoted-unclosed-at-end]
 [fixture: xychart/gram-plot-values-unclosed]
 [fixture: xychart/gram-x-axis-band-unclosed]
 [fixture: xychart/gram-x-axis-band-unclosed-string]
@@ -144,8 +148,8 @@ mermaid.js の正となるソース：
 単位の一部にならずに単位の間にあり、その中の改行も同じです（下の改行を参照）。
 文の前後、テキストの語の間、角括弧、コンマ、矢印の周りです。
 U+2028 と U+2029 は改行ではありません。
-`line [1]`、U+2028、`bar [2]` は、
-1 つの行の 2 つの文です。 [fixture: xychart/db-statement-tab-indented]
+`line [1]`、U+2028、`bar [2]` は、 1 つの行の 2 つの文です。
+[fixture: xychart/db-statement-tab-indented]
 [fixture: xychart/db-lines-form-feed-before-statement]
 [fixture: xychart/db-lines-vertical-tab-before-statement]
 [fixture: xychart/db-title-bom-before-keyword]
@@ -202,7 +206,8 @@ U+2028 と U+2029 は改行ではありません。
 
 **改行。**
 ソースの改行は、
-図のテキストでは改行文字です（[ソースの読み方](../common.ja.md#ソースの読み方) を参照）。
+図のテキストでは改行文字です（[ソースの読み方](../common.ja.md#ソースの読み方)
+を参照）。
 そのため、CRLF と単独の CR は、改行文字と同じく行を終えます。
 単位が始まるところの改行文字は**改行**です。
 引用符なしのテキストと文を終え、角括弧の中や、
@@ -220,14 +225,15 @@ U+2028 と U+2029 は改行ではありません。
 `title A`、空白文字、ディレクティブ、改行、`B` はタイトル `AB` で、
 空白文字がなければ拒否されます。
 空白で終わる行の後のコメント行は、
-図のテキストの行ではないので（[コメント行](../common.ja.md#コメント行) を参照）、
-`title A`、空白文字、改行、行 `%% c`、`B` はタイトル `AB` で、
+図のテキストの行ではないので（[コメント行](../common.ja.md#コメント行)
+を参照）、 `title A`、空白文字、改行、行 `%% c`、`B` はタイトル `AB` で、
 空白文字がなければ拒否されます。
 `%%` だけの行はこの字句解析器のコメントで（[コメント](#コメント) を参照）、
 その改行文字は改行なので、`title A`、空白文字、行 `%%`、`B` は拒否されます。
 アクセシビリティの文のテキストは、空白の後でも、その改行文字で終わります。
 それ以外では、タイトル、分類、軸やプロットのタイトル、値は、
-そのキーワードの行にあります。 [fixture: xychart/db-whitespace-line-feed-title-words]
+そのキーワードの行にあります。
+[fixture: xychart/db-whitespace-line-feed-title-words]
 [fixture: xychart/db-whitespace-line-feed-title-after-keyword]
 [fixture: xychart/db-whitespace-tab-line-feed-title-words]
 [fixture: xychart/db-whitespace-two-line-feeds-title-words]
@@ -293,14 +299,14 @@ U+2028 と U+2029 は改行ではありません。
 
 **エンティティ。**
 エンティティは、字句解析器がテキストを読む前に、
-そのプレースホルダーとして読まれ（[エンティティ](../common.ja.md#エンティティ) を参照）、
-プレースホルダーは ASCII の外の文字でできています。
+そのプレースホルダーとして読まれ（[エンティティ](../common.ja.md#エンティティ)
+を参照）、プレースホルダーは ASCII の外の文字でできています。
 文字列とアクセシビリティのテキストの中では、それはテキストの文字で、
 テキストはエンティティを書かれたとおりに保ちます。
 `title "a#35;b"` はタイトル `a#35;b` を持ちます。
 その外ではどの規則も読まないので、 `title a#35;b`、分類 `a#35;b`、
-軸やプロットのタイトル `a#35;b` は拒否されます。 [fixture: xychart/lex-title-entity-in-quotes]
-[fixture: xychart/db-label-entity]
+軸やプロットのタイトル `a#35;b` は拒否されます。
+[fixture: xychart/lex-title-entity-in-quotes] [fixture: xychart/db-label-entity]
 [fixture: xychart/db-plot-title-entity] [fixture: xychart/db-x-axis-band-entity]
 [fixture: xychart/lex-acc-title-entity] [fixture: xychart/lex-acc-descr-entity]
 [fixture: xychart/lex-acc-descr-block-entity]
@@ -320,12 +326,16 @@ U+2028 と U+2029 は改行ではありません。
 
 **HTML 属性の引用符と `style` 行。**
 HTML タグの属性の引用符は、
-どの図種とも同じく `'` として読まれます（[HTML 属性の引用符](../common.ja.md#html-属性の引用符) を参照）。
+どの図種とも同じく `'`
+として読まれます（[HTML 属性の引用符](../common.ja.md#html-属性の引用符)
+を参照）。
 そのため、引用符を持つタグは、
 引用符の中とアクセシビリティのテキストではテキストで、
 引用符の外ではその `<` をどの規則も読みません。
-`style` 行と `classDef` 行の行の規則が無視する `;` （[ソースの読み方](../common.ja.md#ソースの読み方) を参照）は、
-引用符の中のテキストとアクセシビリティのテキストから外されます。 [fixture: xychart/db-title-html-tag-in-quotes]
+`style` 行と `classDef` 行の行の規則が無視する `;`
+（[ソースの読み方](../common.ja.md#ソースの読み方) を参照）は、
+引用符の中のテキストとアクセシビリティのテキストから外されます。
+[fixture: xychart/db-title-html-tag-in-quotes]
 [fixture: xychart/db-title-quoted-html]
 [fixture: xychart/db-grid-html-acc-title]
 [fixture: xychart/db-grid-html-acc-descr]
@@ -373,7 +383,9 @@ HTML タグの属性の引用符は、
 字句解析器は、ディレクティブのない図のテキストを、
 mermaid.js がディレクティブを除いた後にテキストを読むのと同じに読みます。
 そのうえで、
-単位に [ディレクティブはトークンの境界](../common.ja.md#ディレクティブはトークンの境界) の規則を当てます。
+単位に
+[ディレクティブはトークンの境界](../common.ja.md#ディレクティブはトークンの境界)
+の規則を当てます。
 テキストの単位か文字列の中のディレクティブは mermaid.js の読みを保ち、
 それ以外の単位の中のディレクティブは入力を拒否させます。
 **テキストの単位**は、`word`、`acc-title-text`、`acc-description-text`、
@@ -387,8 +399,8 @@ mermaid.js がディレクティブを除いた後にテキストを読むのと
   `title A%%{init: {}}%% B` はタイトル `AB` を、
   分類 `a%%{init: {}}%%b` は分類 `ab` を、
   `title "T%%{init: {}}%%U"` はタイトル `TU` を持ちます。
-  文字列の中のコメント行とディレクティブの行は、
-  その行とともに外されます。 [fixture: xychart/db-directive-between-title-words]
+  文字列の中のコメント行とディレクティブの行は、その行とともに外されます。
+  [fixture: xychart/db-directive-between-title-words]
   [fixture: xychart/db-x-axis-band-directive-in-word]
   [fixture: xychart/db-title-directive-in-quotes]
   [fixture: xychart/db-title-directive-after-bare]
@@ -425,13 +437,17 @@ mermaid.js がディレクティブを除いた後にテキストを読むのと
   `ti%%{init: {}}%%tle T`、`x-%%{init: {}}%%axis [a]`、
   `line [1%%{init: {}}%%2]`、`x-axis 1%%{init: {}}%%0 --> 20`、
   `x-axis 1 -%%{init: {}}%%-> 5` です。
-  これは既知の差異 [`directive-as-token-boundary`](../known-divergences/directive-as-token-boundary.ja.md) です。 [fixture: xychart/div-directive-in-keyword]
+  これは既知の差異
+  [`directive-as-token-boundary`](../known-divergences/directive-as-token-boundary.ja.md)
+  です。 [fixture: xychart/div-directive-in-keyword]
   [fixture: xychart/div-directive-in-axis-keyword]
   [fixture: xychart/db-plot-directive-in-number]
   [fixture: xychart/div-directive-in-range-number]
   [fixture: xychart/db-directive-in-arrow]
 - 閉じていないディレクティブはテキストの終わりまで続き、
-  その引数は次の行で始まってもかまいません（[ディレクティブの位置](../common.ja.md#ディレクティブの位置) を参照）。
+  その引数は次の行で始まってもかまいません。
+  [ディレクティブの位置](../common.ja.md#ディレクティブの位置)
+  を参照してください。
   テキストの終わり、文の後、ヘッダーの後の `%%{init` はほかに何も取りません。
   一方、`title T %%{init` に行 `line [1]` が続くと、語 `line` を引数として取り、
   その行の残りは拒否されます。 [fixture: xychart/db-directive-unclosed-at-end]
@@ -453,11 +469,11 @@ mermaid.js がディレクティブを除いた後にテキストを読むのと
      `x-axis` と `y-axis` は軸の文脈に、
      `line` と `bar` はプロットの文脈に入ります。
    - `vertical` と `horizontal` で、何が続いてもよいもの: `orientation` の単位。
-   - `accTitle` と `accDescr`、改行を含む空白、`:`:
-     `accTitle` か `accDescr` の単位と `:` の単位で、
+   - `accTitle` と `accDescr`、改行を含む空白、
+     `:`: `accTitle` か `accDescr` の単位と `:` の単位で、
      そのキーワードのアクセシビリティの文脈に入ります。
-   - `accDescr`、改行を含む空白、`{`:
-     `accDescr` の単位と `{` の単位で、説明ブロックの文脈に入ります。
+   - `accDescr`、改行を含む空白、`{`: `accDescr` の単位と `{` の単位で、
+     説明ブロックの文脈に入ります。
 4. `"`: 文字列の文脈に入ります（[文字列](#文字列) を参照）。
 5. `[` か `]`: その文字の単位。
 6. 1 つ以上の ASCII の文字、1 つ以上の数字、または `-`、`_`、`.`、`+`、`=`、
@@ -553,8 +569,8 @@ mermaid.js がディレクティブを除いた後にテキストを読むのと
 `,`、`:`、`/`、`(`、`)`、`'`、`<`、`>`、`[`、`]`、単独の `%`、逆引用符、
 ASCII の外の文字は、タイトル、分類、軸やプロットのタイトルを拒否させます。
 `#` で始まる行は語で、文ではありません。
-`__proto__` と `constructor` は、
-ほかと同じ語です。 [fixture: xychart/db-title-bare-characters]
+`__proto__` と `constructor` は、ほかと同じ語です。
+[fixture: xychart/db-title-bare-characters]
 [fixture: xychart/db-title-hash-bare-word]
 [fixture: xychart/db-title-bare-hash-comment]
 [fixture: xychart/db-title-bare-digit] [fixture: xychart/db-title-bare-number]
@@ -608,7 +624,8 @@ ASCII の外の文字は、タイトル、分類、軸やプロットのタイ�
 軸の文脈で読まれて入力を拒否させます。
 一方、`accTitle:` と `accDescr:` はその行の残りを取り、
 `x-axis A accDescr {x} line [1]` のように、
-その行で別の文が続く説明ブロックは受理されます。 [fixture: xychart/gram-x-axis-description-block-in-range]
+その行で別の文が続く説明ブロックは受理されます。
+[fixture: xychart/gram-x-axis-description-block-in-range]
 [fixture: xychart/gram-x-axis-description-block-then-band]
 [fixture: xychart/db-x-axis-title-then-acc-descr-line]
 [fixture: xychart/db-x-axis-title-then-acc-title-line]
@@ -634,7 +651,8 @@ ASCII の外の文字は、タイトル、分類、軸やプロットのタイ�
 `1-->-2` は範囲で、`1 - -> 2`、`1 -- > 2`、`1 -> 2` は拒否されます。
 キーワードの後には、空白文字なしで角括弧と引用符が続けられ、
 引用符の中のタイトルの後には角括弧と数が続けられます。
-`x-axis "A"[a]` はタイトル `A` と分類 `a` です。 [fixture: xychart/gram-x-axis-title-bare-digit]
+`x-axis "A"[a]` はタイトル `A` と分類 `a` です。
+[fixture: xychart/gram-x-axis-title-bare-digit]
 [fixture: xychart/gram-x-axis-title-bare-digit-before-band]
 [fixture: xychart/gram-x-axis-title-bare-hyphen-digit]
 [fixture: xychart/gram-x-axis-title-bare-underscore-digit]
@@ -680,7 +698,9 @@ ASCII の外の文字は、タイトル、分類、軸やプロットのタイ�
 `x-axis A; line [1]` の次の行の `title Q1`、
 `x-axis A` と空白文字の次の行の `title Q1` は受理されます。
 mermaid.js はそのようなタイトルの数字を軸の文脈で読んで拒否します。
-これは既知の差異 [`title-digit-after-axis-statement`](../known-divergences/title-digit-after-axis-statement.ja.md) です。 [fixture: xychart/div-title-digit-after-axis-semicolon]
+これは既知の差異
+[`title-digit-after-axis-statement`](../known-divergences/title-digit-after-axis-statement.ja.md)
+です。 [fixture: xychart/div-title-digit-after-axis-semicolon]
 [fixture: xychart/div-title-digit-after-axis-band-same-line]
 [fixture: xychart/div-title-digit-after-axis-band-semicolon]
 [fixture: xychart/div-title-digit-after-axis-line-separator]
@@ -698,8 +718,8 @@ mermaid.js はそのようなタイトルの数字を軸の文脈で読んで拒
 そのため、ここでは数字は語です。
 `[Q1]`、`[1, 2]`、`[-1, +2, .5]`、`[1.5, -2]` は分類で、分類の語は、
 間に空白があってもなくても 1 つの分類です。
-改行は `newline` の単位で、
-分類はそれを取りません。 [fixture: xychart/db-x-axis-band-digit]
+改行は `newline` の単位で、分類はそれを取りません。
+[fixture: xychart/db-x-axis-band-digit]
 [fixture: xychart/db-x-axis-band-numbers]
 [fixture: xychart/db-x-axis-band-negative]
 [fixture: xychart/db-x-axis-band-decimal-and-negative]
@@ -739,9 +759,8 @@ mermaid.js はそのようなタイトルの数字を軸の文脈で読んで拒
 軸の文脈と同じ数を置いたものです。
 値は数です。
 `.5`、`-1`、`+.5`、`007`、`-0`、20 桁と 400 桁の数は値で、 `1e3`、`Infinity`、
-`NaN`、`5.`、`1.5.2`、`1_0`、`abc`、
-`-4aa5` は拒否されます。 [fixture: xychart/db-plot-values-one]
-[fixture: xychart/db-line-values]
+`NaN`、`5.`、`1.5.2`、`1_0`、`abc`、 `-4aa5` は拒否されます。
+[fixture: xychart/db-plot-values-one] [fixture: xychart/db-line-values]
 [fixture: xychart/db-bar-values] [fixture: xychart/db-plot-values-no-spaces]
 [fixture: xychart/db-plot-values-spaces]
 [fixture: xychart/db-plot-values-decimal]
@@ -866,15 +885,16 @@ mermaid.js はそのようなタイトルの数字を軸の文脈で読んで拒
 markdown 文字列、つまり引用符の後に逆引用符が続くものは、
 この図種では独自の単位ではありません。
 `"`x`"` は、2 つの逆引用符をテキストに持つ文字列で、
-文字列の外の逆引用符はどの規則も読みません。 [fixture: xychart/db-title-md-string]
+文字列の外の逆引用符はどの規則も読みません。
+[fixture: xychart/db-title-md-string]
 
 ### アクセシビリティの値
 
 `accTitle` と `:` はアクセシビリティのタイトルの文脈に、
 `accDescr` と `:` はアクセシビリティの説明の文脈に入ります。
 どちらも、`:` の後の空白を改行も含めて読み、
-それから行の残りを `acc-title-text` か `acc-description-text` の単位として読んで、
-文脈を出ます。
+それから行の残りを `acc-title-text` か `acc-description-text`
+の単位として読んで、文脈を出ます。
 そのため、テキストはキーワードの後で空白以外の文字を持つ最初の行で始まり、
 その行が文であっても、行全体を取ります。
 `accTitle:` に行 `line [1]` が続くと、テキスト `line [1]` を持ち、
@@ -883,8 +903,8 @@ markdown 文字列、つまり引用符の後に逆引用符が続くものは�
 テキストの終わりまで空白しか続かないとき、単位は空です。
 `:` の前には改行も含めて空白を置け、
 その間にコメント行やディレクティブの行があってもかまいません。
-U+00A0、U+2028、U+2029、U+3000、
-U+FEFF も `:` の前後の空白です。 [fixture: xychart/db-acc-title-nbsp-before-colon]
+U+00A0、U+2028、U+2029、U+3000、 U+FEFF も `:` の前後の空白です。
+[fixture: xychart/db-acc-title-nbsp-before-colon]
 [fixture: xychart/db-acc-title-ideographic-before-colon]
 [fixture: xychart/db-acc-title-bom-before-colon]
 [fixture: xychart/db-acc-title-ls-before-colon]
@@ -900,9 +920,8 @@ U+FEFF も `:` の前後の空白です。 [fixture: xychart/db-acc-title-nbsp-b
 [fixture: xychart/db-acc-title-ls-after-colon]
 [fixture: xychart/db-acc-title-ps-after-colon]
 `accTitle`、コメント行、`: T` はタイトル `T` を持ちます。
-`:`、`;`、`#`、`%%` と、文の文脈の文字は、
-テキストの文字です。 [fixture: xychart/db-acc-title]
-[fixture: xychart/db-acc-descr]
+`:`、`;`、`#`、`%%` と、文の文脈の文字は、テキストの文字です。
+[fixture: xychart/db-acc-title] [fixture: xychart/db-acc-descr]
 [fixture: xychart/db-acc-title-no-space]
 [fixture: xychart/db-acc-title-space-before-colon]
 [fixture: xychart/db-acc-title-colon-on-next-line]
@@ -956,15 +975,16 @@ U+FEFF も `:` の前後の空白です。 [fixture: xychart/db-acc-title-nbsp-b
 
 `accDescr`、空白、`{` は説明ブロックの文脈に入ります。
 この文脈は、`{` の後の空白を読み、
-それから次の `}` までのすべての文字を `description-block-text` の単位として読みます。
+それから次の `}` までのすべての文字を `description-block-text`
+の単位として読みます。
 空白の後にすぐ `}` が来るとき、単位は空です。
 それから `}` を `}` の単位として読み、文脈を出ます。
 テキストは改行、`#`、`;`、`%%` を持てます。
 その中の CRLF と単独の CR は改行文字です。
 `{` の前には改行も含めて空白を置け、
 その間にコメント行やディレクティブの行があってもかまいません。
-U+00A0 など、
-表記のほかの空白文字もそこに置けます。 [fixture: xychart/db-acc-descr-nbsp-before-brace]
+U+00A0 など、表記のほかの空白文字もそこに置けます。
+[fixture: xychart/db-acc-descr-nbsp-before-brace]
 [fixture: xychart/db-acc-descr-ideographic-before-brace]
 [fixture: xychart/db-acc-descr-bom-before-brace]
 [fixture: xychart/db-acc-descr-ls-before-brace]
@@ -1020,9 +1040,8 @@ U+00A0 など、
 `title %% c` に行 `T` が続くものは拒否されます。
 分類や値の中、プロットのタイトルの語の間のコメントも、
 その行を終えるので拒否されます。
-文字列、アクセシビリティのテキスト、説明ブロックの中の `%%` は、
-その文字です。 [fixture: xychart/db-comment-line]
-[fixture: xychart/db-comment-indented]
+文字列、アクセシビリティのテキスト、説明ブロックの中の `%%` は、その文字です。
+[fixture: xychart/db-comment-line] [fixture: xychart/db-comment-indented]
 [fixture: xychart/db-comment-line-between] [fixture: xychart/db-comment-at-end]
 [fixture: xychart/db-comment-after-statement]
 [fixture: xychart/db-comment-after-bracket-line]
@@ -1061,7 +1080,9 @@ mermaid.js は、1 文字の単位にくっついたコメントを、その文�
 `title T%% c`、`x-axis T%% c`、`line [1]%% c`、`x-axis [a, b]%% c`、
 `bar [1 "a"]%% c`、`y-axis 0 --> 1%% c` は、mermaid.js では拒否され、
 `title A B%% c` はタイトル `A` を、`title a-%% c` はタイトル `a` を持ちます。
-これは既知の差異 [`comment-takes-character`](../known-divergences/comment-takes-character.ja.md) です。 [fixture: xychart/div-comment-glued-after-title-word]
+これは既知の差異
+[`comment-takes-character`](../known-divergences/comment-takes-character.ja.md)
+です。 [fixture: xychart/div-comment-glued-after-title-word]
 [fixture: xychart/div-comment-glued-after-axis-title]
 [fixture: xychart/div-comment-glued-after-bracket]
 [fixture: xychart/div-comment-glued-after-categories]
@@ -1077,8 +1098,9 @@ mermaid.js は、1 文字の単位にくっついたコメントを、その文�
 `word` のような単位の名前は、その名前の単位 1 つを表し、
 `"title"` や `","` のような二重引用符の中のテキストは、
 そのテキストの名前の単位を表します。
-文法は [`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L83-L175) の文法の言い直しで、
-既知の差異を除いて、同じ単位の並びを受理します。
+文法は
+[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L83-L175)
+の文法の言い直しで、既知の差異を除いて、同じ単位の並びを受理します。
 
 以下の各規則は、
 [ast/xychart.ja.md](../ast/xychart.ja.md) で定める木のノードを作ります。
@@ -1166,7 +1188,8 @@ words       = word+
 [fixture: xychart/gram-y-axis-keyword-alone-at-end]
 [fixture: xychart/gram-acc-title-keyword-alone]
 [fixture: xychart/gram-acc-descr-keyword-alone]
-mermaid.js の文書の例は受理されます。 [fixture: xychart/docs-intro-examples-9bc72e53]
+mermaid.js の文書の例は受理されます。
+[fixture: xychart/docs-intro-examples-9bc72e53]
 [fixture: xychart/docs-syntax-xy-chart-26b0cd5e]
 [fixture: xychart/docs-syntax-xy-chart-3685342d]
 [fixture: xychart/docs-syntax-xy-chart-4191b7b5]
@@ -1184,8 +1207,8 @@ title-statement = "title" ( words | string )
 
 タイトルは語か 1 つの文字列で、両方ではなく、空にもなりません。
 `title` だけ、テキストの終わりの `title` と空白文字、`title ""` は拒否されます。
-後のタイトルの文も、
-最初のものと同じ文です。 [fixture: xychart/spec-xychart-jison-a63fe3ac]
+後のタイトルの文も、最初のものと同じ文です。
+[fixture: xychart/spec-xychart-jison-a63fe3ac]
 [fixture: xychart/db-title-bare-words] [fixture: xychart/db-title-three-times]
 [fixture: xychart/db-title-twice] [fixture: xychart/db-title-bare-then-quoted]
 [fixture: xychart/db-title-frontmatter]
@@ -1216,9 +1239,8 @@ range            = number "-->" number
 `[]`、`[ ]`、`[, b]`、`["", b]`、`[a, ""]`、`]` の前のコンマは拒否され、
 2 つ目の分類の並び、3 つ目の数、1 つの数、角括弧の中の範囲、
 引用符の 2 つのタイトル、文字列と語の分類も拒否されます。
-同じテキストの 2 つの分類は 2 つの分類で、後の軸の文も、
-最初のものと同じ文です。 [fixture: xychart/db-x-axis-band]
-[fixture: xychart/db-x-axis-band-one]
+同じテキストの 2 つの分類は 2 つの分類で、後の軸の文も、最初のものと同じ文です。
+[fixture: xychart/db-x-axis-band] [fixture: xychart/db-x-axis-band-one]
 [fixture: xychart/db-x-axis-band-title]
 [fixture: xychart/db-x-axis-band-title-quoted]
 [fixture: xychart/db-x-axis-band-quoted]
@@ -1305,9 +1327,9 @@ line でも bar でも同じです。
 コンマのない 2 つの値、角括弧のない値、引用符なしのラベル、値の前のラベル、
 2 つのラベル、コンマなしでラベルの後に続く値は拒否されます。
 2 つのプロットは同じタイトルを持てます。 [fixture: xychart/db-line-title-bare]
-[fixture: xychart/db-line-title-quoted]
-[fixture: xychart/db-line-title-words] [fixture: xychart/db-bar-title-bare]
-[fixture: xychart/db-bar-title-quoted] [fixture: xychart/db-plot-bar-then-line]
+[fixture: xychart/db-line-title-quoted] [fixture: xychart/db-line-title-words]
+[fixture: xychart/db-bar-title-bare] [fixture: xychart/db-bar-title-quoted]
+[fixture: xychart/db-plot-bar-then-line]
 [fixture: xychart/db-plot-same-title-twice]
 [fixture: xychart/db-plot-title-keyword-like]
 [fixture: xychart/db-plot-title-trimmed]
@@ -1384,7 +1406,9 @@ mermaid.js は、閉じたものには、どこにあってもトークンを読
 タイトルの語の中、軸やプロットのキーワードの後、分類、値、範囲の中、
 ヘッダーと向きの間です。
 mermaid.js は、そのような入力を、ブロックがないものとして受理します。
-これは既知の差異 [`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md) です。
+これは既知の差異
+[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md)
+です。
 ヘッダーの前の空の説明ブロックは図のテキストの一部ではなく、
 どの検出器も読みません。 [fixture: xychart/db-acc-descr-empty-block-alone]
 [fixture: xychart/db-acc-descr-block-empty]
@@ -1410,8 +1434,8 @@ mermaid.js は、そのような入力を、ブロックがないものとして
 mermaid.js はそれに空のテキストのトークンを読むので、
 トークンのない形ではありません。
 `title T accDescr {` がテキストの終わりにあるときのように、
-mermaid.js と同じく、
-文が始まるところでだけ受理されます。 [fixture: xychart/db-acc-descr-unclosed-empty-block-after-line]
+mermaid.js と同じく、文が始まるところでだけ受理されます。
+[fixture: xychart/db-acc-descr-unclosed-empty-block-after-line]
 [fixture: xychart/db-acc-descr-unclosed-empty-block-spaces]
 [fixture: xychart/db-acc-descr-unclosed-empty-block-line-feeds]
 [fixture: xychart/db-acc-descr-unclosed-empty-block-after-title-same-line]
@@ -1434,7 +1458,9 @@ mermaid.js は、文字列がないものとして受理します。
 それだけの行、文の前後、タイトル、軸、プロットの語や文字列の前後、
 データが続く軸のタイトルやプロットのタイトルとしての 2 つの空の文字列、
 分類の前後、値の前、ラベルの前後、ヘッダーと向きの間です。
-これは既知の差異 [`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md) です。 [fixture: xychart/db-grid-empty-plot-title-quoted]
+これは既知の差異
+[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md)
+です。 [fixture: xychart/db-grid-empty-plot-title-quoted]
 [fixture: xychart/db-empty-string-as-x-axis-title-before-band]
 [fixture: xychart/db-empty-string-as-x-axis-title-before-range]
 [fixture: xychart/db-empty-string-as-y-axis-title]
@@ -1486,11 +1512,13 @@ mermaid.js の Db は、テキストを読む間、
   値やキーワードの中の無視される `;` は、ここでは入力を拒否させ、
   mermaid.js は前後をつなぎます。
   `line "style:#a" [1;2]` は mermaid.js では値 12 を持ち、
-  `li;ne` はキーワード `line` です。 [fixture: xychart/div-ignored-semicolon-in-value]
+  `li;ne` はキーワード `line` です。
+  [fixture: xychart/div-ignored-semicolon-in-value]
   [fixture: xychart/div-ignored-semicolon-in-keyword]
 - **[`comment-takes-character`](../known-divergences/comment-takes-character.ja.md)。**
   1 文字の単位にくっついた `%%` は、
-  mermaid.js ではその文字を取ります（[コメント](#コメント) を参照）。 [fixture: xychart/div-comment-glued-after-title-word]
+  mermaid.js ではその文字を取ります（[コメント](#コメント) を参照）。
+  [fixture: xychart/div-comment-glued-after-title-word]
   [fixture: xychart/div-comment-glued-after-axis-title]
   [fixture: xychart/div-comment-glued-after-bracket]
   [fixture: xychart/div-comment-glued-after-categories]
@@ -1500,11 +1528,13 @@ mermaid.js の Db は、テキストを読む間、
   [fixture: xychart/div-comment-takes-hyphen]
 - **[`title-digit-after-axis-statement`](../known-divergences/title-digit-after-axis-statement.ja.md)。**
   その行かそれより後の行で軸の文に続く、数字を持つ引用符なしのタイトルは、
-  mermaid.js では拒否されます（[軸の文脈](#軸の文脈) を参照）。 [fixture: xychart/div-title-digit-after-axis-semicolon]
+  mermaid.js では拒否されます（[軸の文脈](#軸の文脈) を参照）。
+  [fixture: xychart/div-title-digit-after-axis-semicolon]
   [fixture: xychart/div-title-digit-next-line-after-axis-and-plot]
 - **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md)。**
   文法が取らないところの空の文字列と空の説明ブロックは、ここでは拒否され、
-  mermaid.js はそれらがないものとして受理します。 [fixture: xychart/div-empty-string-line]
+  mermaid.js はそれらがないものとして受理します。
+  [fixture: xychart/div-empty-string-line]
   [fixture: xychart/div-empty-string-before-title-word]
   [fixture: xychart/div-empty-description-block-inside-title-text]
   [fixture: xychart/div-empty-description-block-in-categories]
@@ -1519,19 +1549,22 @@ mermaid.js の Db は、テキストを読む間、
   [fixture: xychart/div-c4-keyword-in-acc-title]
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.ja.md)。**
   フロントマターに `title: <a` があると、
-  `accTitle: b="c">d` は mermaid.js ではアクセシビリティのタイトル `b='c'>d` を持ちます。
-  ここではフロントマターでタグを探さないので、
-  引用符はそのままです。 [fixture: xychart/div-html-tag-starts-in-frontmatter-acc-title]
+  `accTitle: b="c">d` は mermaid.js ではアクセシビリティのタイトル `b='c'>d`
+  を持ちます。
+  ここではフロントマターでタグを探さないので、引用符はそのままです。
+  [fixture: xychart/div-html-tag-starts-in-frontmatter-acc-title]
 - **[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.ja.md)。
   ** 正しい YAML でないフロントマターは、この仕様では受理され、
   mermaid.js では拒否されます。 [fixture: xychart/div-frontmatter-invalid-yaml]
 
-既知の差異 [`bare-percent-line-before-header`](../known-divergences/bare-percent-line-before-header.ja.md)、
+既知の差異
+[`bare-percent-line-before-header`](../known-divergences/bare-percent-line-before-header.ja.md)、
 [`comment-takes-line-break`](../known-divergences/comment-takes-line-break.ja.md)、
-[`percent-brace-after-unit`](../known-divergences/percent-brace-after-unit.ja.md) は、
-この図種には当たりません。
+[`percent-brace-after-unit`](../known-divergences/percent-brace-after-unit.ja.md)
+は、この図種には当たりません。
 mermaid.js は、ヘッダーの前の `%%` だけの行をコメント行として読み、
 そのコメントの規則はコメントの後の改行文字を残し、
-ディレクティブを始めない `%%{` をコメントとして読みます。 [fixture: xychart/header-after-bare-percent-line]
+ディレクティブを始めない `%%{` をコメントとして読みます。
+[fixture: xychart/header-after-bare-percent-line]
 [fixture: xychart/db-comment-after-statement]
 [fixture: xychart/db-directive-unclosed-after-plot]

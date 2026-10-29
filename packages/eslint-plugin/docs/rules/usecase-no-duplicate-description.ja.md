@@ -27,7 +27,9 @@
 コメント行だけを持つブロックも空の説明を設定する。
 mermaid.js はコメントを取り除くので、`accDescr: d` の後のブロック `accDescr {`、
 `%% TODO`、`}` は `d` を取り除き、報告する。
-何も持たないブロックは [usecase-no-empty-description-block](./usecase-no-empty-description-block.ja.md) が報告する。
+何も持たないブロックは
+[usecase-no-empty-description-block](./usecase-no-empty-description-block.ja.md)
+が報告する。
 空の説明の後の文は何も失わず、報告しない。
 
 図がすでに持つ説明を設定する文は、どちらの形でも報告しない。
@@ -76,9 +78,13 @@ usecase-beta
 
 ## 背景
 
-[`accDescr` 文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.visitor.ts#L132-L140) は両端の空白を除いた説明を与え、
-[モデル](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L243-L245) は最後のものだけを保ち、
-共通の [`setAccDescription`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L22-L24) は各改行の後の空白を取り除く。
+[`accDescr` 文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.visitor.ts#L132-L140)
+は両端の空白を除いた説明を与え、
+[モデル](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L243-L245)
+は最後のものだけを保ち、
+共通の
+[`setAccDescription`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L22-L24)
+は各改行の後の空白を取り除く。
 
 <!-- begin auto-generated rule resources -->
 

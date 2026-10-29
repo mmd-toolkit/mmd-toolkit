@@ -19,7 +19,7 @@ new RuleTester(LANGUAGE_CONFIG).run("flowchart-no-undef", flowchartNoUndef, {
       errors: [
         {
           messageId: "undef",
-          data: { id: "C" },
+          data: { id: "C", effect: "adds a new vertex with these styles" },
           line: 3,
           column: 9,
           endLine: 3,

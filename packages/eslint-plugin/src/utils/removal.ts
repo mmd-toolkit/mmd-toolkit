@@ -50,8 +50,7 @@ export function removalRange(
 /**
  * The suggestions for a statement `node` that sets again what `previous` set,
  * where mermaid.js uses the value that remains last: remove the one or the
- * other. Which one the author means to keep is the author's choice. The
- * message of `removePrevious` takes the line of `previous` as `{{line}}`.
+ * other. Which one the author means to keep is the author's choice.
  */
 export function oneOfTwoRemovals(
   sourceCode: MermaidSourceCode,
@@ -75,7 +74,6 @@ export function oneOfTwoRemovals(
     },
     {
       messageId: "removePrevious",
-      data: { line: String(previous.loc.start.line) },
       fix: (fixer) => fixer.removeRange(previousRange),
     },
   ]

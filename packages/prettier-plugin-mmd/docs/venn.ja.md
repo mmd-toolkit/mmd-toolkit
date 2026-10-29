@@ -3,7 +3,8 @@
 英語版: [venn.md](./venn.md)
 
 `venn-beta` を整形する規則です。
-[Venn の構文](../../spec/docs/diagrams/venn.ja.md)と [木](../../spec/docs/ast/venn.ja.md)に従います。
+[Venn の構文](../../spec/docs/diagrams/venn.ja.md)と
+[木](../../spec/docs/ast/venn.ja.md)に従います。
 mermaid.js の読み方を保ち、 Db が同じ複数の形から選ぶ場合は理由を示します。
 
 以下の語を使います。
@@ -28,7 +29,8 @@ mermaid.js の読み方を保ち、 Db が同じ複数の形から選ぶ場合�
   正確な大小文字の `style` か `classDef`、コロン、
   空白を挟まない後のハッシュと後のセミコロンが、
   区間の最後のセミコロンを除去対象にできます。
-  [共通の規則](../../spec/docs/common.ja.md#style-と-classdef-の行)を参照してください。
+  [共通の規則](../../spec/docs/common.ja.md#style-行と-classdef-行)
+  を参照してください。
 - **保護する範囲**（**保持部分**）はプリンターが保つ接頭部です。
   最後のセミコロンまでと、端にかかる値、コメント、
   ディレクティブの全体を含みます。
@@ -40,7 +42,7 @@ mermaid.js の読み方を保ち、 Db が同じ複数の形から選ぶ場合�
 エスケープ表記の `\n` は LF、`\r` は CR、`\t` はタブ、
 `\u2028` と `\u2029` は Unicode 区切りを表します。
 図内のバックスラッシュではありません。
-[文書とフィクスチャ](./development.ja.md#文書とフィクスチャ)を参照してください。
+[文書と fixture](./development.ja.md#文書と-fixture)を参照してください。
 
 ## 規則
 
@@ -53,41 +55,43 @@ mermaid.js の読み方を保ち、 Db が同じ複数の形から選ぶ場合�
 [corpus fixture: venn/header-before-frontmatter-comment]
 [corpus fixture: venn/header-statement-tab]
 [fixture: venn/header/header-comment-fragment]
-[corpus fixture: venn/db-form-set]
-[fixture: venn/header/header-inline]
+[corpus fixture: venn/db-form-set] [fixture: venn/header/header-inline]
 [fixture: venn/header/header]
 [fixture: venn/header/header-leading-inline-directive]
-[corpus fixture: venn/header-only-lf]
-[corpus fixture: venn/header-only]
+[corpus fixture: venn/header-only-lf] [corpus fixture: venn/header-only]
 [fixture: venn/header/header-semicolon-prefix]
 [fixture: venn/header/header-title]
 [fixture: venn/header/header-trailing-comment]
 
-入力（エスケープ表記）:
+入力（escape 表記）:
 
 ```json
 "venn-beta set A"
 ```
 
-出力 ([header/header-inline-output.mmd](../tests/fixtures/venn/header/header-inline-output.mmd)):
+出力
+([header/header-inline-output.mmd](../tests/fixtures/venn/header/header-inline-output.mmd)):
 
 ```mmd
 venn-beta
 set A
 ```
 
-仕様の [`c4-keyword-anywhere`](../../spec/docs/known-divergences/c4-keyword-anywhere.ja.md) の乖離では、
-名前や値の C4 の語は Venn の振り分けを変えません。
-受理するこれらの入力は Venn の整形規則に従います。 [corpus fixture: venn/div-c4-bare-identifier]
+仕様の
+[`c4-keyword-anywhere`](../../spec/docs/known-divergences/c4-keyword-anywhere.ja.md)
+の乖離では、名前や値の C4 の語は Venn の振り分けを変えません。
+受理するこれらの入力は Venn の整形規則に従います。
+[corpus fixture: venn/div-c4-bare-identifier]
 [fixture: venn/header/div-c4-detector]
 
-入力（エスケープ表記）:
+入力（escape 表記）:
 
 ```json
 "venn-beta\nset \"C4Container\""
 ```
 
-出力 ([header/div-c4-detector-output.mmd](../tests/fixtures/venn/header/div-c4-detector-output.mmd)):
+出力
+([header/div-c4-detector-output.mmd](../tests/fixtures/venn/header/div-c4-detector-output.mmd)):
 
 ```mmd
 venn-beta
@@ -99,8 +103,8 @@ set "C4Container"
 空白の設定の1段は `tabWidth: 0` でも1文字以上にします。
 `useTabs` はタブのままです。
 整形で Db を変えてはならず、 1文字が字下げの読みを保つ最小の幅だからです。
-正の印が必要なのは暗黙の text だけで、
-通常の文は1列目のままです。 [fixture: venn/indentation/tab-width-0]
+正の印が必要なのは暗黙の text だけで、通常の文は1列目のままです。
+[fixture: venn/indentation/tab-width-0]
 [fixture: venn/indentation/tab-width-0-leading-directive]
 [fixture: venn/indentation/tab-width-0-kept]
 [fixture: venn/indentation/tab-width-0-kept-leading-directive]
@@ -111,8 +115,8 @@ set "C4Container"
 暗黙の text だけを設定の1段で字下げします（`tabWidth`、`useTabs`）。
 モードが有効な間は正の字下げが暗黙の構文を選び、入れ子は表しません。
 対象つき text を字下げすると読み方が変わることがあります。
-宣言がモードを有効にし、後の通常の行頭の文が解除し、
-次の宣言が再び有効にします。 [corpus fixture: venn/db-form-indent-id-label]
+宣言がモードを有効にし、後の通常の行頭の文が解除し、次の宣言が再び有効にします。
+[corpus fixture: venn/db-form-indent-id-label]
 [corpus fixture: venn/db-form-indent-number]
 [corpus fixture: venn/db-form-indent-string]
 [corpus fixture: venn/db-form-indent-string-label]
@@ -121,10 +125,8 @@ set "C4Container"
 [corpus fixture: venn/db-indent-after-indented-union]
 [corpus fixture: venn/db-indent-after-union]
 [fixture: venn/indentation/explicit-indent-unsafe]
-[corpus fixture: venn/db-indent-id-eof]
-[fixture: venn/indentation/indent-four]
-[fixture: venn/indentation/indent-tabs]
-[fixture: venn/indentation/indent-width]
+[corpus fixture: venn/db-indent-id-eof] [fixture: venn/indentation/indent-four]
+[fixture: venn/indentation/indent-tabs] [fixture: venn/indentation/indent-width]
 [fixture: venn/indentation/leading-directives-positive]
 [fixture: venn/indentation/leading-directives-zero]
 [fixture: venn/indentation/marker-kept-prefix]
@@ -136,13 +138,14 @@ set "C4Container"
 [fixture: venn/indentation/mode-reenabled]
 [fixture: venn/indentation/union-positive-widths]
 
-入力（エスケープ表記）:
+入力（escape 表記）:
 
 ```json
 "venn-beta\n    set A\n         text one\n text two"
 ```
 
-出力 ([indentation/indent-width-output.mmd](../tests/fixtures/venn/indentation/indent-width-output.mmd)):
+出力
+([indentation/indent-width-output.mmd](../tests/fixtures/venn/indentation/indent-width-output.mmd)):
 
 ```mmd
 venn-beta
@@ -158,8 +161,8 @@ set A
 分けると行頭の文が暗黙モードを解除するためです。
 同じ行の宣言の列は分けられます。
 保持する組の後にモードを更新する宣言があっても、この局所的な規則を使います。
-title の文に見える値は分けず、
-飲み込まれる断片は書かれた行の隣とともに保ちます。 [corpus fixture: venn/db-indent-after-same-line-explicit-text]
+title の文に見える値は分けず、飲み込まれる断片は書かれた行の隣とともに保ちます。
+[corpus fixture: venn/db-indent-after-same-line-explicit-text]
 [corpus fixture: venn/db-indent-after-same-line-style]
 [corpus fixture: venn/db-indent-after-same-line-title]
 [corpus fixture: venn/header-statement-on-line]
@@ -180,13 +183,14 @@ title の文に見える値は分けず、
 [fixture: venn/statements-one-per-line/statements-split]
 [fixture: venn/statements-one-per-line/title-not-two-statements]
 
-入力（エスケープ表記）:
+入力（escape 表記）:
 
 ```json
 "venn-beta set A   style A fill : red\n text item"
 ```
 
-出力 ([statements-one-per-line/header-declaration-group-output.mmd](../tests/fixtures/venn/statements-one-per-line/header-declaration-group-output.mmd)):
+出力
+([statements-one-per-line/header-declaration-group-output.mmd](../tests/fixtures/venn/statements-one-per-line/header-declaration-group-output.mmd)):
 
 ```mmd
 venn-beta
@@ -201,7 +205,8 @@ set A style A fill:red
 値の空行と保護する図コメントの隙間は保ちます。
 字下げのない `%%{ }%%` の前では、
 空行と空でない空白・タブだけの行でモードが異なります。
-ソース行を結ぶ共通コメント領域の境界も保ちます。 [fixture: venn/blank-lines/blank-before-empty-braces-explicit]
+ソース行を結ぶ共通コメント領域の境界も保ちます。
+[fixture: venn/blank-lines/blank-before-empty-braces-explicit]
 [fixture: venn/blank-lines/blank-before-indented-empty-braces]
 [fixture: venn/blank-lines/blank-in-value]
 [fixture: venn/blank-lines/blank-runs]
@@ -224,7 +229,8 @@ set A style A fill:red
 [fixture: venn/blank-lines/mode-trivia]
 [fixture: venn/blank-lines/whitespace-before-empty-braces]
 
-入力 ([blank-lines/blank-runs-input.mmd](../tests/fixtures/venn/blank-lines/blank-runs-input.mmd)):
+入力
+([blank-lines/blank-runs-input.mmd](../tests/fixtures/venn/blank-lines/blank-runs-input.mmd)):
 
 ```mmd
 
@@ -238,7 +244,8 @@ set B
 
 ```
 
-出力 ([blank-lines/blank-runs-output.mmd](../tests/fixtures/venn/blank-lines/blank-runs-output.mmd)):
+出力
+([blank-lines/blank-runs-output.mmd](../tests/fixtures/venn/blank-lines/blank-runs-output.mmd)):
 
 ```mmd
 venn-beta
@@ -255,11 +262,11 @@ set B
 離すと入力が拒否されることがあるためです。
 末尾空白と LF・末尾までの U+2028・U+2029 を含む内容は保ちます。
 値内のパーセント対は値のままです。
-保護する隙間ではコメントとモードの境界も保ちます。 [fixture: venn/comments/bare-percent-tail]
+保護する隙間ではコメントとモードの境界も保ちます。
+[fixture: venn/comments/bare-percent-tail]
 [fixture: venn/comments/comment-directives]
 [fixture: venn/comments/comment-mark-value]
-[fixture: venn/comments/comment-spaced]
-[fixture: venn/comments/comment-touch]
+[fixture: venn/comments/comment-spaced] [fixture: venn/comments/comment-touch]
 [fixture: venn/comments/comments-align]
 [fixture: venn/comments/complete-multiletter]
 [corpus fixture: venn/lex-bare-percent-between-set-and-text]
@@ -270,19 +277,19 @@ set B
 [corpus fixture: venn/lex-inline-comment-spaced]
 [corpus fixture: venn/lex-style-extra-id-eaten]
 [fixture: venn/comments/empty-braces-tail]
-[fixture: venn/comments/fragment-tail]
-[fixture: venn/comments/header-comment]
+[fixture: venn/comments/fragment-tail] [fixture: venn/comments/header-comment]
 [fixture: venn/comments/header-only-comment]
 [fixture: venn/comments/ignored-fragment]
 [fixture: venn/comments/ignored-line-preserves-mode]
 
-入力（エスケープ表記）:
+入力（escape 表記）:
 
 ```json
 "venn-beta\nset A Q%% note\n text item"
 ```
 
-出力 ([comments/ignored-fragment-output.mmd](../tests/fixtures/venn/comments/ignored-fragment-output.mmd)):
+出力
+([comments/ignored-fragment-output.mmd](../tests/fixtures/venn/comments/ignored-fragment-output.mmd)):
 
 ```mmd
 venn-beta
@@ -296,7 +303,8 @@ set A Q%% note
 名前のコンマは直前の名前に接し、後ろを空白1つにして一覧を読みやすくします。
 裸と引用符つきの名前、引用符内の余白、空の名前、
 順序と重複は Db が対象を並べ替える場合も保ちます。
-ディレクティブと無視されるセミコロンは通常の隙間の規則に優先します。 [corpus fixture: venn/db-case-distinct-ids]
+ディレクティブと無視されるセミコロンは通常の隙間の規則に優先します。
+[corpus fixture: venn/db-case-distinct-ids]
 [corpus fixture: venn/db-empty-identifiers]
 [corpus fixture: venn/db-union-repeated-member]
 [corpus fixture: venn/lex-name-list-comma-directive]
@@ -306,17 +314,17 @@ set A Q%% note
 [fixture: venn/name-lists/name-order-keep]
 [fixture: venn/name-lists/names-quotes-equivalent]
 [fixture: venn/name-lists/name-quoted-padding]
-[fixture: venn/name-lists/names-comma]
-[corpus fixture: venn/db-form-set]
+[fixture: venn/name-lists/names-comma] [corpus fixture: venn/db-form-set]
 [fixture: venn/name-lists/quoted-keyword]
 
-入力（エスケープ表記）:
+入力（escape 表記）:
 
 ```json
 "venn-beta\nset A\nset \"B\"\nunion A ,\"B\" , A\ntext A , \"B\" item\nstyle A ,\"B\" fill:red"
 ```
 
-出力 ([name-lists/names-comma-output.mmd](../tests/fixtures/venn/name-lists/names-comma-output.mmd)):
+出力
+([name-lists/names-comma-output.mmd](../tests/fixtures/venn/name-lists/names-comma-output.mmd)):
 
 ```mmd
 venn-beta
@@ -334,8 +342,8 @@ style A, "B" fill:red
 Db の空白除去は値を編集する理由にはしません。
 空の引用符つきラベルと裸の空白ラベルは Db のラベルを省き、
 引用符内の空白は空のラベルを保存します。
-内部の項目はラベル内に保ち、
-隙間の項目は接触関係を優先します。 [fixture: venn/labels/specified-c4-label-title]
+内部の項目はラベル内に保ち、隙間の項目は接触関係を優先します。
+[fixture: venn/labels/specified-c4-label-title]
 [fixture: venn/labels/all-suffixes]
 [corpus fixture: venn/db-form-text-string-label]
 [corpus fixture: venn/db-form-union-label]
@@ -358,13 +366,14 @@ Db の空白除去は値を編集する理由にはしません。
 [fixture: venn/labels/quoted-label-padding-trim-equal]
 [fixture: venn/labels/suffix-spacing]
 
-入力（エスケープ表記）:
+入力（escape 表記）:
 
 ```json
 "venn-beta\nset A [ L ] : 002.00\n text item [\" Label \"]"
 ```
 
-出力 ([labels/suffix-spacing-output.mmd](../tests/fixtures/venn/labels/suffix-spacing-output.mmd)):
+出力
+([labels/suffix-spacing-output.mmd](../tests/fixtures/venn/labels/suffix-spacing-output.mmd)):
 
 ```mmd
 venn-beta
@@ -378,13 +387,13 @@ set A[ L ]:002.00
 符号、小数、先頭のゼロ、符号つきゼロ、桁あふれの綴りを保ちます。
 数値の text id も綴りを保ちます。
 書き換えると Db が変わるためです。
-サイズの省略と書かれたゼロは別の形として保ちます。 [fixture: venn/sizes-and-numbers/absent-zero-signs]
+サイズの省略と書かれたゼロは別の形として保ちます。
+[fixture: venn/sizes-and-numbers/absent-zero-signs]
 [corpus fixture: venn/db-set-colon-size-inline-directive]
 [corpus fixture: venn/db-set-label-colon-size-inline-directive]
 [corpus fixture: venn/db-size-negative-overflow]
 [corpus fixture: venn/db-size-negative-zero]
-[corpus fixture: venn/db-size-overflow]
-[corpus fixture: venn/db-size-zero]
+[corpus fixture: venn/db-size-overflow] [corpus fixture: venn/db-size-zero]
 [fixture: venn/sizes-and-numbers/size-spaces]
 [fixture: venn/sizes-and-numbers/size-spelling-equal-control]
 [fixture: venn/sizes-and-numbers/size-spelling-equal]
@@ -392,13 +401,14 @@ set A[ L ]:002.00
 [fixture: venn/sizes-and-numbers/text-number-spelling-differs-control]
 [fixture: venn/sizes-and-numbers/text-number-spelling-differs]
 
-入力（エスケープ表記）:
+入力（escape 表記）:
 
 ```json
 "venn-beta\nset A : +02.50 set B: -.5 union A,B : 007\n text 007"
 ```
 
-出力 ([sizes-and-numbers/size-spaces-output.mmd](../tests/fixtures/venn/sizes-and-numbers/size-spaces-output.mmd)):
+出力
+([sizes-and-numbers/size-spaces-output.mmd](../tests/fixtures/venn/sizes-and-numbers/size-spaces-output.mmd)):
 
 ```mmd
 venn-beta
@@ -416,7 +426,8 @@ union A, B:007
 Db が単位を空白で結ぶ場合も隣接する単位と空白を保ちます。
 引用符つきの値、rgb・rgba 全体、キーの大小文字、重複と別々の文も保ちます。
 保持部分では句読点の空白を変えません。
-コロンとハッシュの隙間がセミコロンの選択を変えないためです。 [corpus fixture: venn/div-c4-bare-style-value]
+コロンとハッシュの隙間がセミコロンの選択を変えないためです。
+[corpus fixture: venn/div-c4-bare-style-value]
 [corpus fixture: venn/db-style-case-and-order]
 [corpus fixture: venn/db-style-colon-value-inline-directive]
 [corpus fixture: venn/db-style-property-colon-inline-directive]
@@ -441,13 +452,14 @@ Db が単位を空白で結ぶ場合も隣接する単位と空白を保ちま�
 [fixture: venn/style-properties/style-quote-differs]
 [fixture: venn/style-properties/style-string-empty]
 
-入力（エスケープ表記）:
+入力（escape 表記）:
 
 ```json
 "venn-beta\nstyle A , B fill : red , opacity : .50 , custom : \" dark blue \""
 ```
 
-出力 ([style-properties/style-property-spacing-output.mmd](../tests/fixtures/venn/style-properties/style-property-spacing-output.mmd)):
+出力
+([style-properties/style-property-spacing-output.mmd](../tests/fixtures/venn/style-properties/style-property-spacing-output.mmd)):
 
 ```mmd
 venn-beta
@@ -467,15 +479,17 @@ Venn の文を区切る文字ではないためです。
 端をまたぐ値は一度だけ出力し、
 セミコロンで止まる閉じないディレクティブは停止境界を保ちます。
 
-たとえば入力 `"venn-beta\nset A[style:#x;y]%% c\u2028tail;"` は `"venn-beta\nset A[style:#x;y]%% c\u2028tail;\n"` になり、
+たとえば入力 `"venn-beta\nset A[style:#x;y]%% c\u2028tail;"` は
+`"venn-beta\nset A[style:#x;y]%% c\u2028tail;\n"` になり、
 Db のラベル `"style:#xy"` を保ちます。
 ラベル内のセミコロンが最初の行規則の区間の最後だからです。
 U+2029 でも同じラベルです。
-区切りを ASCII 空白にした入力 `"venn-beta\nset A[style:#x;y]%% c tail;"` は末尾に改行を足して印字します。
+区切りを ASCII 空白にした入力 `"venn-beta\nset A[style:#x;y]%% c tail;"`
+は末尾に改行を足して印字します。
 この場合はコメント内のセミコロンが最後なので、ラベルのエンティティが残ります。
 正規化した Db のテキストは `"style:\ufb02\u00b0x\u00b6\u00dfy"` です。
-各入力の読み方を保ち、
-どちらもコメント全体を残します。 [test: venn: ls-comment-competing-semicolon]
+各入力の読み方を保ち、どちらもコメント全体を残します。
+[test: venn: ls-comment-competing-semicolon]
 [test: venn: ps-comment-competing-semicolon]
 [fixture: venn/comments/comment-competing-semicolon-space]
 [fixture: venn/line-rule-and-kept-lines/comment-only-semicolon]
@@ -513,13 +527,14 @@ U+2029 でも同じラベルです。
 [fixture: venn/line-rule-and-kept-lines/multiple-last-semicolons]
 [fixture: venn/line-rule-and-kept-lines/semicolon-removal-shifts]
 
-入力（エスケープ表記）:
+入力（escape 表記）:
 
 ```json
 "venn-beta\n set A[style:#x;y]   set B : 2   "
 ```
 
-出力 ([line-rule-and-kept-lines/line-rule-suffix-spacing-output.mmd](../tests/fixtures/venn/line-rule-and-kept-lines/line-rule-suffix-spacing-output.mmd)):
+出力
+([line-rule-and-kept-lines/line-rule-suffix-spacing-output.mmd](../tests/fixtures/venn/line-rule-and-kept-lines/line-rule-suffix-spacing-output.mmd)):
 
 ```mmd
 venn-beta
@@ -531,30 +546,29 @@ set A[style:#x;y] set B:2
 読みやすいように title の最初の区切りを ASCII 空白1つにします。
 その後の値の全ての文字は、前後の空白と文に見える単語も含めて保ちます。
 LF と title で受理する広い種類の区切りは正規化します。
-ただし項目、結合領域、
-保持部分の境界は保ちます。 [corpus fixture: venn/db-frontmatter-title-overridden]
+ただし項目、結合領域、保持部分の境界は保ちます。
+[corpus fixture: venn/db-frontmatter-title-overridden]
 [corpus fixture: venn/db-title-on-header]
 [corpus fixture: venn/db-title-only-whitespace]
 [corpus fixture: venn/db-title-padding]
 [corpus fixture: venn/db-title-value-next-line]
 [corpus fixture: venn/lex-gap-title-comment]
-[fixture: venn/title/repeated-title]
-[fixture: venn/title/title-directive]
-[fixture: venn/title/title-inline-percent]
-[fixture: venn/title/title-next-line]
+[fixture: venn/title/repeated-title] [fixture: venn/title/title-directive]
+[fixture: venn/title/title-inline-percent] [fixture: venn/title/title-next-line]
 [fixture: venn/title/title-statement-words]
 [fixture: venn/title/title-tab-separator]
 
 [fixture: venn/title/title-trim-unsafe]
 [fixture: venn/title/title-whitespace-only]
 
-入力（エスケープ表記）:
+入力（escape 表記）:
 
 ```json
 "venn-beta\ntitle\n  T"
 ```
 
-出力 ([title/title-next-line-output.mmd](../tests/fixtures/venn/title/title-next-line-output.mmd)):
+出力
+([title/title-next-line-output.mmd](../tests/fixtures/venn/title/title-next-line-output.mmd)):
 
 ```mmd
 venn-beta
@@ -581,7 +595,8 @@ title   T
 後の文を別の行へ移すときもディレクティブを前のテキストと同じ行に保ちます。
 ディレクティブ前の隙間は空白1つか接したままにします。
 後の文に接するディレクティブがある場合は、接触関係を保つため行を分けません。
-セミコロンを保持する行もヘッダーとの関係を保ちます。 [corpus fixture: venn/db-indent-after-directive]
+セミコロンを保持する行もヘッダーとの関係を保ちます。
+[corpus fixture: venn/db-indent-after-directive]
 [corpus fixture: venn/db-set-label-unclosed-directive-gap]
 [corpus fixture: venn/lex-after-set-directive-unclosed]
 [corpus fixture: venn/lex-comment-after-directive-keeps-id]
@@ -623,26 +638,28 @@ title   T
 [fixture: venn/directives/style-directive-touching-next]
 [fixture: venn/directives/declaration-directive-touching-next]
 
-入力（エスケープ表記）:
+入力（escape 表記）:
 
 ```json
 "venn-beta\nset A  %%{init: {}}%% [L] : 2"
 ```
 
-出力 ([directives/directives-inline-gaps-output.mmd](../tests/fixtures/venn/directives/directives-inline-gaps-output.mmd)):
+出力
+([directives/directives-inline-gaps-output.mmd](../tests/fixtures/venn/directives/directives-inline-gaps-output.mmd)):
 
 ```mmd
 venn-beta
 set A %%{init: {}}%% [L]:2
 ```
 
-入力（エスケープ表記）:
+入力（escape 表記）:
 
 ```json
 "venn-beta%%{init: {}}%% set A"
 ```
 
-出力 ([directives/directive-header-inline-output.mmd](../tests/fixtures/venn/directives/directive-header-inline-output.mmd)):
+出力
+([directives/directive-header-inline-output.mmd](../tests/fixtures/venn/directives/directive-header-inline-output.mmd)):
 
 ```mmd
 venn-beta%%{init: {}}%%
@@ -655,10 +672,10 @@ set A
 行末をそろえます。
 保持部分と安全な接尾部の後も同じです。
 名前、ラベル、色、style の文字列、title の値、
-コメントとディレクティブ内の空白は書かれたテキストとして保ちます。 [fixture: venn/trailing-whitespace/continuation-spaces]
+コメントとディレクティブ内の空白は書かれたテキストとして保ちます。
+[fixture: venn/trailing-whitespace/continuation-spaces]
 [corpus fixture: venn/db-after-set-label-size-space]
-[corpus fixture: venn/db-title-padding]
-[corpus fixture: venn/lex-tab-line-end]
+[corpus fixture: venn/db-title-padding] [corpus fixture: venn/lex-tab-line-end]
 [fixture: venn/trailing-whitespace/kept-prefix-exterior]
 [fixture: venn/trailing-whitespace/trailing-comment]
 
@@ -674,7 +691,8 @@ set A
 結合や字下げの変更で Db が変わることがあるためです。
 文と値は `printWidth` で折り返しません。
 通常の単位の境界には改行を足せないためです。
-前述の title の区切りだけが狭い例外です。 [fixture: venn/multiline-values/comment-in-value]
+前述の title の区切りだけが狭い例外です。
+[fixture: venn/multiline-values/comment-in-value]
 [corpus fixture: venn/lex-identifier-blank-line]
 [corpus fixture: venn/lex-identifier-comment-line]
 [corpus fixture: venn/lex-label-blank-line]
@@ -690,13 +708,14 @@ set A
 [fixture: venn/multiline-values/multiline-values]
 [fixture: venn/multiline-values/wrap-list-rejected]
 
-入力（エスケープ表記）:
+入力（escape 表記）:
 
 ```json
 "venn-beta\nset \"A\n B\"[L\n  M]\ntext A \"x\n y\"[N\n O]\nstyle A fill:\"red\n blue\",stroke:rgb(1,\n  2,3)"
 ```
 
-出力 ([multiline-values/multiline-values-output.mmd](../tests/fixtures/venn/multiline-values/multiline-values-output.mmd)):
+出力
+([multiline-values/multiline-values-output.mmd](../tests/fixtures/venn/multiline-values/multiline-values-output.mmd)):
 
 ```mmd
 venn-beta
@@ -717,8 +736,8 @@ style A fill:"red
 プロパティの順序を保ちます。
 重複と Db に効果のない項目も含みます。
 名前、キーと色の大小文字も保ちます。
-文のキーワードと異なり、
-セミコロンのテキストの印は大小文字を区別します。 [fixture: venn/keyword-case-and-order/all-written-repeats]
+文のキーワードと異なり、セミコロンのテキストの印は大小文字を区別します。
+[fixture: venn/keyword-case-and-order/all-written-repeats]
 [corpus fixture: venn/db-style-three-definitions-same-target]
 [corpus fixture: venn/db-text-three-definitions]
 [corpus fixture: venn/db-three-definitions]
@@ -730,13 +749,14 @@ style A fill:"red
 
 [fixture: venn/keyword-case-and-order/keyword-lower-equal]
 
-入力（エスケープ表記）:
+入力（escape 表記）:
 
 ```json
 "venn-beta\nSET A\n  TeXt item\nSTYLE A fill:RED\nTitle T"
 ```
 
-出力 ([keyword-case-and-order/keyword-case-kept-output.mmd](../tests/fixtures/venn/keyword-case-and-order/keyword-case-kept-output.mmd)):
+出力
+([keyword-case-and-order/keyword-case-kept-output.mmd](../tests/fixtures/venn/keyword-case-and-order/keyword-case-kept-output.mmd)):
 
 ```mmd
 venn-beta
@@ -760,31 +780,23 @@ ASCII 空白にできるのは title の最初の区切りだけです。
 
 [fixture: venn/line-terminators/ls-value-to-lf-differs-control]
 [fixture: venn/line-terminators/ps-value-to-lf-differs-control]
-[test: a venn diagram with other line endings]
-[test: venn: crlf-values]
-[test: venn: cr-values]
-[test: venn: ls-values]
-[test: venn: ps-values]
-[test: venn: ls-comment-kept]
-[test: venn: ps-comment-kept]
-[test: venn: ls-header-comment]
-[test: venn: ps-header-comment]
-[test: venn: ps-comment-eof]
-[test: venn: ls-kept-comment-last-character]
+[test: a venn diagram with other line endings] [test: venn: crlf-values]
+[test: venn: cr-values] [test: venn: ls-values] [test: venn: ps-values]
+[test: venn: ls-comment-kept] [test: venn: ps-comment-kept]
+[test: venn: ls-header-comment] [test: venn: ps-header-comment]
+[test: venn: ps-comment-eof] [test: venn: ls-kept-comment-last-character]
 [test: venn: ps-kept-comment-last-character]
 [test: venn: ls-kept-comment-whitespace-line]
 [test: venn: ps-kept-comment-whitespace-line]
 [corpus fixture: venn/lex-diagram-comment-cut-ls-tree-gap]
 [corpus fixture: venn/lex-diagram-comment-cut-ps-tree-gap]
-[test: venn: ls-kept-directive]
-[test: venn: ps-kept-directive]
-[test: venn: ls-kept-overlapping-value]
-[test: venn: ps-kept-overlapping-value]
+[test: venn: ls-kept-directive] [test: venn: ps-kept-directive]
+[test: venn: ls-kept-overlapping-value] [test: venn: ps-kept-overlapping-value]
 
 エスケープ表記の入出力:
-`"venn-beta\nset \"A\u2028 B\"[L\u2028 M]\nstyle A fill:rgb(1,\u2028 2,3)"`
-->
-`"venn-beta\nset \"A\u2028 B\"[L\u2028 M]\nstyle A fill:rgb(1,\u2028 2,3)\n"`。 [test: venn: ls-values]
+`"venn-beta\nset \"A\u2028 B\"[L\u2028 M]\nstyle A fill:rgb(1,\u2028 2,3)"` ->
+`"venn-beta\nset \"A\u2028 B\"[L\u2028 M]\nstyle A fill:rgb(1,\u2028 2,3)\n"`。
+[test: venn: ls-values]
 
 ### Whitespace characters
 
@@ -797,18 +809,15 @@ FF を本文の隙間として受理はしません。
 
 [corpus fixture: venn/db-form-set]
 
-[fixture: venn/whitespace-characters/tab-gaps]
-[test: venn: nbsp-leading-header]
-[test: venn: nbsp-value-kept]
-[test: venn: vt-value-kept]
-[test: venn: ff-title-separator]
-[test: venn: bom-title-separator]
-[test: venn: bom-leading-header]
-[test: venn: bom-frontmatter]
+[fixture: venn/whitespace-characters/tab-gaps] [test: venn: nbsp-leading-header]
+[test: venn: nbsp-value-kept] [test: venn: vt-value-kept]
+[test: venn: ff-title-separator] [test: venn: bom-title-separator]
+[test: venn: bom-leading-header] [test: venn: bom-frontmatter]
 [test: venn: unicode-role-whitespace]
 
 エスケープ表記の入出力:
-`"venn-beta\ntitle\u00a0 T" -> "venn-beta\ntitle  T\n"`。 [test: venn: nbsp-title-separator]
+`"venn-beta\ntitle\u00a0 T" -> "venn-beta\ntitle  T\n"`。
+[test: venn: nbsp-title-separator]
 
 ### Frontmatter YAML
 
@@ -816,7 +825,8 @@ frontmatter は読みやすい設定にするため、共通の保護つき YAML
 区切り、閉じる行の余白、ヘッダー前のコメントとディレクティブ、
 title の上書きの役割を保ちます。
 不正、字下げつき、HTML に影響するもの、区切りが変わる YAML は保ちます。
-効果のないアクセシビリティのメタデータも残します。 [corpus fixture: venn/frontmatter-invalid]
+効果のないアクセシビリティのメタデータも残します。
+[corpus fixture: venn/frontmatter-invalid]
 [fixture: venn/frontmatter-yaml/closing-delimiter-padding]
 [corpus fixture: venn/db-frontmatter-accessibility]
 [corpus fixture: venn/db-frontmatter-title]
@@ -832,13 +842,14 @@ title の上書きの役割を保ちます。
 [fixture: venn/frontmatter-yaml/frontmatter-yaml-control]
 [fixture: venn/frontmatter-yaml/frontmatter-yaml]
 
-入力（エスケープ表記）:
+入力（escape 表記）:
 
 ```json
 "---\ntitle:   T\nconfig: {venn: {padding:  20}}\n---\nvenn-beta\nset A"
 ```
 
-出力 ([frontmatter-yaml/frontmatter-yaml-output.mmd](../tests/fixtures/venn/frontmatter-yaml/frontmatter-yaml-output.mmd)):
+出力
+([frontmatter-yaml/frontmatter-yaml-output.mmd](../tests/fixtures/venn/frontmatter-yaml/frontmatter-yaml-output.mmd)):
 
 ```mmd
 ---
@@ -855,15 +866,14 @@ set A
 ヘッダーだけの本文も同じです。
 保護するコメントの隙間と末尾までの閉じないディレクティブは終端を保ち、
 値の末尾空白も残します。
-Markdown は同じ Venn の規則の外側にフェンスとコンテナーの字下げを付けます。 [fixture: venn/final-newline/bounded-argument-eof]
+Markdown は同じ Venn の規則の外側にフェンスとコンテナーの字下げを付けます。
+[fixture: venn/final-newline/bounded-argument-eof]
 [fixture: venn/final-newline/comment-gap-eof]
-[corpus fixture: venn/db-style-string-eof]
-[corpus fixture: venn/db-title-eof]
+[corpus fixture: venn/db-style-string-eof] [corpus fixture: venn/db-title-eof]
 [corpus fixture: venn/header-only]
 [corpus fixture: venn/lex-after-set-directive-unclosed]
 [corpus fixture: venn/lex-after-set-comment]
-[fixture: venn/final-newline/final-comment]
-[corpus fixture: venn/db-form-set]
+[fixture: venn/final-newline/final-comment] [corpus fixture: venn/db-form-set]
 [fixture: venn/final-newline/final-newline]
 [fixture: venn/final-newline/final-open-directive]
 [corpus fixture: venn/lex-after-title-spaces]
@@ -871,13 +881,14 @@ Markdown は同じ Venn の規則の外側にフェンスとコンテナーの�
 [fixture: venn/final-newline/ignored-fragment-comment]
 [fixture: venn/final-newline/multiple-terminal-lf]
 
-入力（エスケープ表記）:
+入力（escape 表記）:
 
 ```json
 "venn-beta\nset A"
 ```
 
-出力 ([final-newline/final-newline-output.mmd](../tests/fixtures/venn/final-newline/final-newline-output.mmd)):
+出力
+([final-newline/final-newline-output.mmd](../tests/fixtures/venn/final-newline/final-newline-output.mmd)):
 
 ```mmd
 venn-beta
@@ -893,8 +904,8 @@ set A
 仕様の単位境界の乖離は失敗のままです。
 
 たとえば `venn-beta\nset A;` は構文エラーを報告し、単独のソースは整形しません。
-拒否する Markdown フェンスはホストの通常のコードブロック処理で内容を保ちます。 [corpus fixture: venn/lex-after-set-semicolon]
+拒否する Markdown フェンスはホストの通常のコードブロック処理で内容を保ちます。
+[corpus fixture: venn/lex-after-set-semicolon]
 [corpus fixture: venn/header-semicolon-spaced]
-[corpus fixture: venn/gram-bare-word]
-[corpus fixture: venn/gram-unclosed-id]
+[corpus fixture: venn/gram-bare-word] [corpus fixture: venn/gram-unclosed-id]
 [corpus fixture: venn/gram-set-label-crlf-gap]

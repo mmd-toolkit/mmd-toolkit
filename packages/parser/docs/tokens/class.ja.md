@@ -11,10 +11,11 @@
 ## トークン
 
 トークンは、
-[diagrams/class.ja.md](../../../spec/docs/diagrams/class.ja.md#字句構造) の単位から作ります。
+[diagrams/class.ja.md](../../../spec/docs/diagrams/class.ja.md#字句構造)
+の単位から作ります。
 すべて空白でない単位は、
-どれも [文法](../../../spec/docs/diagrams/class.ja.md#文法) の 1 つの**項目**に属し、
-この表がその項目に与える種類を持ちます。
+どれも [文法](../../../spec/docs/diagrams/class.ja.md#文法) の 1
+つの**項目**に属し、この表がその項目に与える種類を持ちます。
 
 | 種類         | 項目とその単位                                                                                                                                                                                                                   |
 | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -24,17 +25,13 @@
 | `RawText`    | [単位の中のディレクティブ](../../../spec/docs/diagrams/class.ja.md#単位の中のディレクティブ) のテキストの単位。スタイルと、クラスの名前か名前空間の名前を作る名前の部分と `.` の単位は、それぞれそのすべての単位で 1 つの項目    |
 | `Punctuator` | `label` の単位の `:` と、`accTitle` と `accDescr` の後の `:`。`{`、`}`、`[`、`]`、`:::`、`<<`、`>>`、`~`、`(`、`)`、`,`。各関係の端と線。`visibility` と `classifier` の単位                                                     |
 
-[fixture: class/gram-name-alone]
-[fixture: class/gram-name-dots]
+[fixture: class/gram-name-alone] [fixture: class/gram-name-dots]
 [fixture: class/db-namespace-name-parts]
-[fixture: class/tokens-style-words-joined]
-[fixture: class/gram-class-def-names]
+[fixture: class/tokens-style-words-joined] [fixture: class/gram-class-def-names]
 [fixture: class/db-css-class-undefined-class]
-[fixture: class/db-callback-undefined-class]
-[fixture: class/gram-link-target]
+[fixture: class/db-callback-undefined-class] [fixture: class/gram-link-target]
 [fixture: class/gram-click-call-empty-parentheses]
-[fixture: class/db-note-for-undefined-class]
-[fixture: class/db-click-href]
+[fixture: class/db-note-for-undefined-class] [fixture: class/db-click-href]
 [fixture: class/db-acc-title-entity]
 [fixture: class/lex-acc-descr-space-before-colon]
 [fixture: class/gram-acc-descr-block-with-text]
@@ -42,33 +39,34 @@
 [fixture: class/db-css-class-digit]
 [fixture: class/db-annotation-after-relation]
 [fixture: class/db-backquoted-name-unclosed]
-[fixture: class/db-relation-label-spaces]
-[fixture: class/tokens-method-fields]
+[fixture: class/db-relation-label-spaces] [fixture: class/tokens-method-fields]
 [fixture: class/db-member-annotation-spaces]
 [fixture: class/lex-member-method-line-separator-after]
-[fixture: class/db-generic-spaces]
-[fixture: class/db-class-label-type]
+[fixture: class/db-generic-spaces] [fixture: class/db-class-label-type]
 [fixture: class/lex-relation-without-whitespace]
 [fixture: class/lex-aggregation-end]
 [fixture: class/lex-member-attribute-dollar-classifier]
 
 コメント領域かディレクティブが切る `String` のトークンは、
-`StringFragment` のトークンになります。 [fixture: class/tokens-comment-region-in-click-string]
+`StringFragment` のトークンになります。
+[fixture: class/tokens-comment-region-in-click-string]
 [fixture: class/lex-backquote-unclosed-directive-inside]
 [トークンの中のコメント領域](../tokens.ja.md#トークンの中のコメント領域) と、
-[ディレクティブが切るトークン](../tokens.ja.md#ディレクティブが切るトークン) を参照。
+[ディレクティブが切るトークン](../tokens.ja.md#ディレクティブが切るトークン)
+を参照。
 
 **トークン**は、同じ項目で同じ種類の単位が、間に何も挟まずに続く最長の並びから、
 両端の空白を除いたものです。
 スタイルと名前の部分からなる名前のほかの `RawText` の項目では、
 並びの単位の間に空白を挟んでもかまいません。
-ただし、
-mermaid.js がその空白を値の一部として読むところは除きます（[トークン](../tokens.ja.md#トークン) を参照）。
+ただし、 mermaid.js がその空白を値の一部として読むところは除きます。
+[トークン](../tokens.ja.md#トークン) を参照。
 `generic-text` の単位、メンバーの行の `annotation-name` の単位、
 `member-name` と `return-type` の単位、
 閉じていないバッククォートの名前のトークンは、
 [メンバーの行](../../../spec/docs/diagrams/class.ja.md#メンバーの行) と、
-[文字列、バッククォートの名前、ジェネリクスの型](../../../spec/docs/diagrams/class.ja.md#文字列バッククォートの名前ジェネリクスの型) が定める単位の全体です。 [fixture: class/db-generic-spaces]
+[文字列、バッククォートの名前、ジェネリクスの型](../../../spec/docs/diagrams/class.ja.md#文字列バッククォートの名前ジェネリクスの型)
+が定める単位の全体です。 [fixture: class/db-generic-spaces]
 [fixture: class/db-member-annotation-spaces]
 [fixture: class/db-member-name-space]
 [fixture: class/db-method-return-type-space-before-classifier]
@@ -76,34 +74,36 @@ mermaid.js がその空白を値の一部として読むところは除きます
 `callback-name` の単位のトークンは、その後の `(` の前の空白を含み、
 `callback-arguments` の単位のトークンは、両端の空白と改行を含みます。
 `click A call fn ()` は、その後の空白を含むトークン `fn` を持ち、
-`click A call f( x, y )` の引数は、
-空白を含む `x, y` です。 [fixture: class/tokens-callback-name-trailing-space]
+`click A call f( x, y )` の引数は、空白を含む `x, y` です。
+[fixture: class/tokens-callback-name-trailing-space]
 [fixture: class/tokens-callback-arguments-spaces-at-ends]
 [fixture: class/tokens-callback-arguments-line-feeds-at-ends]
 そのような並びの中のディレクティブ、コメント領域、無視される `;` は、
-並びが `RawText` か `String` のトークンなら、
-並びを断片に切ります（[ディレクティブが切るトークン](../tokens.ja.md#ディレクティブが切るトークン) を参照）。
+並びが `RawText` か `String` のトークンなら、並びを断片に切ります。
+[ディレクティブが切るトークン](../tokens.ja.md#ディレクティブが切るトークン)
+を参照。
 ほかの種類の並びの中では、2 つの単位の間でも、
-ディレクティブや無視される `;` は入力を拒否させます。 [fixture: class/lex-directive-in-dotted-name]
+ディレクティブや無視される `;` は入力を拒否させます。
+[fixture: class/lex-directive-in-dotted-name]
 [fixture: class/tokens-comment-region-in-backquoted-name]
 [fixture: class/tokens-style-ignored-semicolon-after-space]
 [fixture: class/div-directive-in-keyword] [fixture: class/div-directive-in-line]
 [fixture: class/div-directive-in-triple-colon]
 [fixture: class/div-ignored-semicolon-in-relation-line]
-[単位の中のディレクティブ](../../../spec/docs/diagrams/class.ja.md#単位の中のディレクティブ) を参照。
+[単位の中のディレクティブ](../../../spec/docs/diagrams/class.ja.md#単位の中のディレクティブ)
+を参照。
 
 - 名前の部分からなるクラスの名前や名前空間の名前は、
   間に空白のない並びごとに 1 つの `RawText` のトークンです。
   `Foo-Bar` と `a.b.C` はそれぞれ 1 つのトークンで、
-  `class Foo Bar` は 2 つのトークン `Foo` と `Bar` と、 ClassIdentifier
-  `FooBar` を持ちます。
+  `class Foo Bar` は 2 つのトークン `Foo` と `Bar` と、
+  ClassIdentifier `FooBar` を持ちます。
   ディレクティブや無視される `;` は、どのテキストとも同じく、
   このトークンを切ります。
-  `class A%%{init: {}}%%.B` は、トークン `A` と `.B` と、 ClassIdentifier
-  `A.B` を持ちます。 [fixture: class/spec-class-diagram-34c1dbfe]
-  [fixture: class/gram-name-dots]
-  [fixture: class/gram-name-spaces]
-  [fixture: class/gram-name-dash-spaces]
+  `class A%%{init: {}}%%.B` は、トークン `A` と `.B` と、
+  ClassIdentifier `A.B` を持ちます。
+  [fixture: class/spec-class-diagram-34c1dbfe] [fixture: class/gram-name-dots]
+  [fixture: class/gram-name-spaces] [fixture: class/gram-name-dash-spaces]
   [fixture: class/lex-directive-in-dotted-name]
   [fixture: class/tokens-ignored-semicolon-in-relation-name]
 - ラベルは、その `:` から始まる 1 つの単位で、2 つのトークンです。
@@ -117,7 +117,8 @@ mermaid.js がその空白を値の一部として読むところは除きます
   その空白はどのトークンにも入りません。
   ラベルの中の空白は、ラベルのトークンの一部です。
   `style A fill :#f00` はトークン `fill` と `:#f00` を持ち、
-  `style A a b` はトークン `a` と `b` を持ちます。 [fixture: class/tokens-style-space-before-colon]
+  `style A a b` はトークン `a` と `b` を持ちます。
+  [fixture: class/tokens-style-space-before-colon]
   [fixture: class/tokens-style-tab-before-label]
   [fixture: class/tokens-style-words-joined]
   [fixture: class/tokens-style-hash-after-space]
@@ -128,34 +129,38 @@ mermaid.js がその空白を値の一部として読むところは除きます
   ラベルの中の `,` はスタイルの一部です。
   `style A fill : #f00 , stroke-width: 2px` は 1 つのスタイルで、
   トークン `fill` と `: #f00 , stroke-width: 2px` を持ちます。
-  `,` がラベル `: #f00 , stroke-width` の中にあるからです。 [fixture: class/tokens-style-comma-unit]
-  [fixture: class/db-style-spaces]
+  `,` がラベル `: #f00 , stroke-width` の中にあるからです。
+  [fixture: class/tokens-style-comma-unit] [fixture: class/db-style-spaces]
 - `call` のあるクリックの文では、`(` と `)` は文に属します。
-  `call` のトークンと `(` と `)` のトークンは、
-  その範囲の中にあります。 [fixture: class/gram-click-call-empty-parentheses]
+  `call` のトークンと `(` と `)` のトークンは、その範囲の中にあります。
+  [fixture: class/gram-click-call-empty-parentheses]
 - ジェネリクスの型の 2 つの `~` は、間に何もなくても、
   ClassName の `Punctuator` のトークンです。 [fixture: class/db-generic-blank]
 - 関係の端と線の単位は、間に空白がなくても、
   それぞれ 1 つの `Punctuator` のトークンです。
-  `<|--` は 2 つのトークン `<|` と `--` です。 [fixture: class/lex-relation-without-whitespace]
+  `<|--` は 2 つのトークン `<|` と `--` です。
+  [fixture: class/lex-relation-without-whitespace]
 - キーワード `note for` は、語ごとに 1 つの、2 つの `Keyword` のトークンです。
   語の間の空白に接したディレクティブは、2 つのトークンの間にあります。
-  `note%%{init: {}}%% for A "t"` は、
-  mermaid.js と同じく A の note です。 [fixture: class/lex-directive-between-note-and-for]
+  `note%%{init: {}}%% for A "t"` は、 mermaid.js と同じく A の note です。
+  [fixture: class/lex-directive-between-note-and-for]
 - 閉じていないバッククォートの名前は、終わりの空白と改行を含めて、
   mermaid.js が名前に読む最後の文字までの、
-  1 つの `String` のトークンです（[StringLiteral](../../../spec/docs/ast.ja.md#stringliteral) を参照）。
+  1 つの `String`
+  のトークンです（[StringLiteral](../../../spec/docs/ast.ja.md#stringliteral)
+  を参照）。
   その文字の後のディレクティブは、その外にあります。
   その中のディレクティブは、閉じた文字列と同じく、
   それを `StringFragment` のトークンに切ります。
   名前の空白でない最後の文字の後で、その文字の前にあるディレクティブも同じで、
-  ディレクティブの後の最後のものは、
-  空白と行終端だけです。 [fixture: class/tokens-backquote-unclosed-trailing-whitespace]
+  ディレクティブの後の最後のものは、空白と行終端だけです。
+  [fixture: class/tokens-backquote-unclosed-trailing-whitespace]
   [fixture: class/lex-backquote-unclosed-directive-inside] [fixture:
   class/lex-backquote-unclosed-directive-after-line-break] [fixture:
   class/lex-backquote-unclosed-directive-at-end]
 - 行の規則が無視する `;` は `IgnoredSemicolon` のトークンで、
-  中にある `RawText` か `String` のトークンを切ります（[トークン](../tokens.ja.md#トークン) を参照）。
+  中にある `RawText` か `String`
+  のトークンを切ります（[トークン](../tokens.ja.md#トークン) を参照）。
   `style A fill:#f00;` と `classDef c fill:#f00;` では、
   スタイルは `fill:#f00` で、その後の `;` は、
   前に空白があっても `IgnoredSemicolon` のトークンです。
@@ -163,9 +168,8 @@ mermaid.js がその空白を値の一部として読むところは除きます
   テキストの後の `;` も同じです。
   メンバーの行 `+x style:#a; b` では、
   `;` が名前を `RawText` のトークン `x style:#a` と、
-  `;` の後の空白を含む ` b` に切り、
-  名前は `x style:#a b` です。 [fixture: class/tokens-style-ignored-semicolon]
-  [fixture:
+  `;` の後の空白を含む ` b` に切り、名前は `x style:#a b` です。
+  [fixture: class/tokens-style-ignored-semicolon] [fixture:
   class/tokens-style-space-ignored-semicolon] [fixture:
   class/tokens-class-def-ignored-semicolon] [fixture:
   class/tokens-acc-title-ignored-semicolon] [fixture:

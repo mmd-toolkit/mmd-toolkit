@@ -13,7 +13,7 @@ Code:
   5 |   Design :2024-01-06, 3d
   6 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -29,7 +29,7 @@ Code:
   5 |   Design :2024-01-06, 3d
   6 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -47,8 +47,8 @@ Code:
   6 |   a : 2024-01-01, 1d
   7 |
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
-[2] mermaid.js replaces the accessible title set on line 3 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+[2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -67,7 +67,7 @@ Code:
     | ~ [1]
   7 |
 
-[1] mermaid.js replaces the accessible title set on line 3 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -86,7 +86,7 @@ Code:
     | ~ [1]
   7 |
 
-[1] mermaid.js replaces the accessible title set on line 3 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -103,7 +103,7 @@ Code:
     | ~ [1]
   6 |
 
-[1] mermaid.js replaces the accessible title set on line 3 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -118,7 +118,7 @@ Code:
     | ^~~~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the accessible title set on line 3 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -131,7 +131,7 @@ Code:
   3 | accTitle: b
     | ^~~~~~~~~~~ [1]
 
-[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
 ---
 
 
@@ -144,7 +144,7 @@ Code:
   3 | title b
     | ^~~~~~~ [1]
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---
 
 
@@ -160,5 +160,5 @@ Code:
   5 |   a : 2024-01-01, 1d
   6 |
 
-[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[1] mermaid.js replaces the earlier title with the one of this `title`.
 ---

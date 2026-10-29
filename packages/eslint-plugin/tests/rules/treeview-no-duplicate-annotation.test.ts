@@ -36,7 +36,7 @@ root/ :::first icon(pack:file) :::last icon() ##  detail\u0020\u0020
         errors: [
           {
             message:
-              "mermaid.js replaces the class given on line 7 for this node with this class.",
+              "mermaid.js replaces the class given earlier for this node with this class.",
             line: 7,
             column: 32,
             endLine: 7,
@@ -44,7 +44,7 @@ root/ :::first icon(pack:file) :::last icon() ##  detail\u0020\u0020
           },
           {
             message:
-              "mermaid.js keeps only this icon setting, replacing the one given on line 7 for this node.",
+              "mermaid.js replaces the earlier icon setting for this node with this icon setting.",
             line: 7,
             column: 40,
             endLine: 7,
@@ -62,7 +62,7 @@ root/ :::first icon(pack:file) :::last icon() ##  detail\u0020\u0020
         errors: [
           {
             message:
-              "mermaid.js replaces the description given on line 2 for this node with this description.",
+              "mermaid.js replaces the description given earlier for this node with this description.",
             line: 3,
             column: 1,
             endLine: 3,
@@ -80,7 +80,7 @@ file ## A\u2028B\u2029C
         errors: [
           {
             message:
-              "mermaid.js replaces the description given on line 2 for this node with this description.",
+              "mermaid.js replaces the description given earlier for this node with this description.",
             line: 3,
             column: 2,
             endLine: 3,
@@ -99,7 +99,7 @@ file ## First
         errors: [
           {
             message:
-              "mermaid.js replaces the description given on line 2 for this node with this description.",
+              "mermaid.js replaces the description given earlier for this node with this description.",
             line: 3,
             column: 2,
             endLine: 3,
@@ -114,7 +114,7 @@ file ## First
         errors: [
           {
             message:
-              "mermaid.js replaces the class given on line 2 for this node with this class.",
+              "mermaid.js replaces the class given earlier for this node with this class.",
             line: 3,
             column: 2,
             endLine: 3,

@@ -11,7 +11,7 @@ Code:
     |                   ^~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `fill` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
 ---
 
 
@@ -26,7 +26,7 @@ Code:
     |         ^~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `fill` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
 ---
 
 
@@ -43,7 +43,7 @@ Code:
     |           ^~~~~~~~~ [1]
   7 |
 
-[1] mermaid.js replaces the `fill` value given on line 5 for this target with this value.
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
 ---
 
 
@@ -58,7 +58,7 @@ Code:
     |         ^~~~~~~~~ [1]
   5 |
 
-[1] mermaid.js replaces the `fill` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
 ---
 
 
@@ -76,7 +76,7 @@ Code:
     |         ^~~~~~~~~ [1]
   8 |
 
-[1] mermaid.js replaces the `fill` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
 ---
 
 
@@ -94,7 +94,7 @@ Code:
     | ~~~ [1]
   6 |
 
-[1] mermaid.js replaces the `fill` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
 ---
 
 
@@ -108,7 +108,7 @@ Code:
     |                  ^~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `fill` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
 ---
 
 
@@ -122,7 +122,7 @@ Code:
     |                                ^~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `fill` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
 ---
 
 
@@ -136,7 +136,7 @@ Code:
     |                  ^~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `fill` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
 ---
 
 
@@ -151,8 +151,8 @@ Code:
     |                  [1]     [2]
   4 |
 
-[1] mermaid.js replaces the `fill` value given on line 3 for this target with this value.
-[2] mermaid.js replaces the `fill` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
+[2] mermaid.js replaces the `fill` value given earlier for this target with this value.
 ---
 
 
@@ -166,7 +166,7 @@ Code:
     |                         ^~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `color` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `color` value given earlier for this target with this value.
 ---
 
 
@@ -180,7 +180,7 @@ Code:
     |                        ^~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `stroke-width` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `stroke-width` value given earlier for this target with this value.
 ---
 
 
@@ -194,7 +194,7 @@ Code:
     |                          ^~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `fill-opacity` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `fill-opacity` value given earlier for this target with this value.
 ---
 
 
@@ -208,7 +208,7 @@ Code:
     |                     ^~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `fill` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
 ---
 
 
@@ -222,7 +222,7 @@ Code:
     |                      ^~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `fill` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
 ---
 
 
@@ -236,7 +236,7 @@ Code:
     |                         ^~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `fill` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
 ---
 
 
@@ -250,7 +250,7 @@ Code:
     |                              ^~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `fill` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
 ---
 
 
@@ -264,7 +264,7 @@ Code:
     |                           ^~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `fill` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
 ---
 
 
@@ -278,7 +278,7 @@ Code:
     |                   ^~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `fill` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
 ---
 
 
@@ -292,7 +292,7 @@ Code:
     |                   ^~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `fill` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
 ---
 
 
@@ -306,7 +306,7 @@ Code:
     |                    ^~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `stroke` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `stroke` value given earlier for this target with this value.
 ---
 
 
@@ -321,8 +321,8 @@ Code:
     |                  [1]       [2]
   4 |
 
-[1] mermaid.js replaces the `fill` value given on line 3 for this target with this value.
-[2] mermaid.js replaces the `fill` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
+[2] mermaid.js replaces the `fill` value given earlier for this target with this value.
 ---
 
 
@@ -338,7 +338,7 @@ Code:
     |                     ^~~~~~~~~~ [1]
   6 |
 
-[1] mermaid.js replaces the `color` value given on line 5 for this target with this value.
+[1] mermaid.js replaces the `color` value given earlier for this target with this value.
 ---
 
 
@@ -352,7 +352,7 @@ Code:
     |                           ^~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `stroke-width` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `stroke-width` value given earlier for this target with this value.
 ---
 
 
@@ -366,5 +366,5 @@ Code:
     |                                  ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the `fill` value given on line 3 for this target with this value.
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
 ---

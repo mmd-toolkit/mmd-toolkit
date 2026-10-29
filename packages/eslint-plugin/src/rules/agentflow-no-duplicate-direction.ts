@@ -20,7 +20,7 @@ export const agentflowNoDuplicateDirection: MermaidRuleDefinition<{
     schema: [],
     messages: {
       duplicate:
-        "mermaid.js replaces the direction set on line {{line}} for this flow with `{{direction}}`.",
+        "mermaid.js replaces the earlier direction for this flow with `{{direction}}`.",
     },
   },
   create(context) {
@@ -38,7 +38,6 @@ export const agentflowNoDuplicateDirection: MermaidRuleDefinition<{
             node: statement,
             messageId: "duplicate",
             data: {
-              line: String(previous.loc.start.line),
               direction: statement.direction,
             },
           })

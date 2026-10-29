@@ -30,7 +30,7 @@ accTitle:\u00a0a\u00a0
         errors: [
           {
             message:
-              "mermaid.js replaces the title set on line 2 with the one of this `accTitle`.",
+              "mermaid.js replaces the earlier title with the one of this `accTitle`.",
             line: 3,
             column: 1,
             endLine: 3,

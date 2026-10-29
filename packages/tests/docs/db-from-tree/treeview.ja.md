@@ -2,24 +2,26 @@
 
 英語版: [treeview.md](./treeview.md)
 
-`treeviewDbOf` は受理済みの [入れ子の木](../../../spec/docs/ast/treeview.ja.md)を読み、
-[公開する要約](../db-summaries.ja.md#treeview)に従い、
-受理を判定しない。 [fixture: treeview/gram-written-tree]
-[fixture: treeview/box-written-tree]
+`treeviewDbOf` は受理済みの
+[入れ子の木](../../../spec/docs/ast/treeview.ja.md)を読み、
+[公開する要約](../db-summaries.ja.md#treeview)に従い、受理を判定しない。
+[fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
 
 ## 木から要約を構築する
 
 1. 範囲を共有の変換形で読む。
    共通の除去、物理改行の変換、ソース全体の HTML 属性の引用符、
    文字参照の仮の形を使う。
-   原文の位置で [罫線の直接規則](../../../spec/docs/diagrams/treeview.ja.md#罫線の読み)を適用する。
+   原文の位置で
+   [罫線の直接規則](../../../spec/docs/diagrams/treeview.ja.md#罫線の読み)
+   を適用する。
    値の中の装飾は内容と後続の LF を表さない。
    値の中の branch prefix は字下げを表し、その行の内容のタブを空白 4 つにし、
    行末の共通の空白を除く。
    引用名とブロックの境目はこれらの行を保護しない。
    葉の外の prefix と装飾の node は公開する項目を作らない。
-   書き換えたソース、人工のソース token、native
-   YAML の node は作らない。 [fixture: treeview/directive-bare-middle]
+   書き換えたソース、人工のソース token、 native YAML の node は作らない。
+   [fixture: treeview/directive-bare-middle]
    [fixture: treeview/comment-line-in-quotes] [fixture: treeview/entity-double]
    [fixture: treeview/html-bare] [fixture: treeview/text-double-crlf]
    [fixture: treeview/box-quoted-decoration]
@@ -41,9 +43,8 @@
    最後の説明に共有の `descriptionOf` を適用し、
    公開する両方の値に `textReplacementOf(embedded.config)` を適用する。
    既定値は空文字列。
-   埋め込みの title を含め、
-   図の title は公開しない。 [fixture: treeview/common-whitespace]
-   [fixture: treeview/common-repeat]
+   埋め込みの title を含め、図の title は公開しない。
+   [fixture: treeview/common-whitespace] [fixture: treeview/common-repeat]
    [fixture: treeview/common-repeat-empty]
    [fixture: treeview/common-block-whitespace-raw]
    [fixture: treeview/db-all-fields] [fixture: treeview/frontmatter-title]
@@ -53,8 +54,8 @@
    indent を読んだり親を再計算したりしない。
    parser が入れ子を作り、checkTree が独立に確かめる。
    重複名、空名、すべての根、空の children リストを保つ。
-   node の textBefore とほかの所有する装飾は Db の node を作らない。 [fixture: treeview/db-indent-pop]
-   [fixture: treeview/db-file-parent]
+   node の textBefore とほかの所有する装飾は Db の node を作らない。
+   [fixture: treeview/db-indent-pop] [fixture: treeview/db-file-parent]
    [fixture: treeview/db-first-indented] [fixture: treeview/db-duplicate-names]
    [fixture: treeview/db-empty-names] [fixture: treeview/db-tabs-one-unit]
    [fixture: treeview/db-quoted-tail-tab] [fixture: treeview/box-round-below]
@@ -88,8 +89,8 @@
 6. accTitle・accDescr・nodes だけを公開する。
    title、人工の root、生成 id、字下げ、counter、解決した icon の SVG、座標、
    色、描画設定を除く。
-   treeView の設定の鍵は受理条件にも公開する値にもならない。 [fixture: treeview/db-all-fields]
-   [fixture: treeview/config-drawing-site]
+   treeView の設定の鍵は受理条件にも公開する値にもならない。
+   [fixture: treeview/db-all-fields] [fixture: treeview/config-drawing-site]
    [fixture: treeview/config-frontmatter-drawing]
    [fixture: treeview/config-init-drawing]
 
@@ -105,8 +106,11 @@ treeview と検出する common のすべての fixture を調べる。
 記録の不足と不一致を入力とともに報告する。
 エラー記録を Db の比較から除くのは、
 印が付いた読みを `fixtureAccepts` が拒否する場合だけ。
-比較用の Db がない opaque の例は [共有の比較規則](../../../spec/docs/known-divergences/embedded-data-opaque.ja.md#比較する-db)で明示する。
-treeview 専用の指定の読みは作らない。 [fixture: treeview/config-security-level-other]
+比較用の Db がない opaque の例は
+[共有の比較規則](../../../spec/docs/known-divergences/embedded-data-opaque.ja.md#比較する-db)
+で明示する。
+treeview 専用の指定の読みは作らない。
+[fixture: treeview/config-security-level-other]
 [fixture: treeview/div-html-frontmatter-value]
 [fixture: treeview/config-fontfamily-keeps-title]
 [fixture: treeview/div-invalid-keeps-config]

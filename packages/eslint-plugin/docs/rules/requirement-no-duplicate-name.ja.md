@@ -120,10 +120,11 @@ requirementDiagram
 
 ## 背景
 
-mermaid.js は、その名前のものがないときだけ requirement や element を加え、
-その後、
-そのために読んだフィールドを忘れる（[`addRequirement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L126-L141) と、
-[`addElement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L172-L185)）。
+mermaid.js は、
+[`addRequirement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L126-L141)、
+[`addElement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L172-L185)
+で、その名前のものがないときだけ requirement や element を加え、その後、
+そのために読んだフィールドを忘れる。
 
 <!-- begin auto-generated rule resources -->
 

@@ -83,10 +83,11 @@ agentflow-beta TB
 
 ## 背景
 
-[`addSubGraph`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1175-L1284) は、
-flow をその id の前の flow に合わせ、
+[`addSubGraph`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1175-L1284)
+は、 flow をその id の前の flow に合わせ、
 空でない後のタイトルでタイトルを置き換える。
-[flow の文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow.jison#L406-L415) は `end` の後でそれを呼ぶ。
+[flow の文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow.jison#L406-L415)
+は `end` の後でそれを呼ぶ。
 
 <!-- begin auto-generated rule resources -->
 

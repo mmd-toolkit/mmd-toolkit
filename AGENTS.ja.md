@@ -19,8 +19,9 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
 正しさの基準は pin した mermaid.js 本体。
 
 1. 受理・拒否が mermaid.js と一致する。
-   例外は、仕様が Known
-   divergences （`packages/spec/docs/known-divergences.md`）に定義する入力で、
+   例外は、
+   仕様が Known divergences
+   （`packages/spec/docs/known-divergences.md`）に定義する入力で、
    それぞれが識別子を持ち、関わる fixture にその識別子の印が付く。
 
    入力を差にするのは、次の 2 つの問いに、この順で答えた後だけである。
@@ -64,8 +65,8 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
         その挙動を不具合として扱っている（予約語の `click`）。
 
    不具合に見える挙動について差を提案する前に、
-   mermaid.js の文書がその構文について何と書いているかを読み、 issue と pull
-   request を探し、見つけたものを事実として引く。
+   mermaid.js の文書がその構文について何と書いているかを読み、
+   issue と pull request を探し、見つけたものを事実として引く。
 
 2. 受理した入力の Db が mermaid.js と一致する。
    ただし、Known divergences が読み方の違いを定義する入力を除く。
@@ -112,8 +113,9 @@ flowchart、sequence、class、state が済んでいる。
   ESLint の言語プラグインである。
   規則が報告するのは、書き手の誤りのうち、mermaid.js が黙って受理し、
   意図と違うものとして読むものである。
-  どの規則を持つかは SKILL `rule-ideas` で決め、規則の文書は SKILL
-  `eslint-plugin` に、規則の実装は SKILL `eslint-plugin-rules` に従う。
+  どの規則を持つかは SKILL `rule-ideas` で決め、
+  規則の文書は SKILL `eslint-plugin` に、
+  規則の実装は SKILL `eslint-plugin-rules` に従う。
 
 ## 共有するインターフェース
 

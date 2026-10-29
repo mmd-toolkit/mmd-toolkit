@@ -27,14 +27,14 @@ mermaid.js はエラーなしに後の値を使い、前の値は失われる。
 更新は、`"A"@{ type: hollow }` が `A` を更新するように、
 引用符の有無を問わず id で要素を名指す。
 mermaid.js が 1 つの id に変える 2 つの名前は、この規則には 2 つの要素である。
-`"Place order"@{ business: true }` と `Place_order@{ business: false }` は 1 つのユースケースを更新するが、
-後の値は報告しない。
+`"Place order"@{ business: true }` と `Place_order@{ business: false }` は 1
+つのユースケースを更新するが、後の値は報告しない。
 `systemBoundary` の見出しのメタデータも書いた順に加わる。
 境界の 2 つ目の見出しが別の `type` を持つと報告し、
 置き換える更新の後の見出しも報告する。
 見出しの後の更新は報告しない。
-[mermaid.js の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L223-L223) が書くとおり、
-それは見出しが与えた型を変える。
+[mermaid.js の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L223-L223)
+が書くとおり、それは見出しが与えた型を変える。
 要素がまだ持たないキーと、すでに持つ値は報告しない。
 値は、引用符の有無を問わず書いたとおりに比べ、
 `type: hollow` と `type: "hollow"` は同じである。
@@ -44,7 +44,8 @@ mermaid.js は、`#35;` のような文字参照と HTML の属性の引用符�
 値を読む前にほかの文字に変えるので、それだけが違う 2 つの値は、
 mermaid.js には 1 つで、この規則には 2 つのことがある。
 
-`actor A@{ type: hollow }` のようなアクターやユースケースの宣言のメタデータは比べない。
+`actor A@{ type: hollow }`
+のようなアクターやユースケースの宣言のメタデータは比べない。
 mermaid.js は更新をどこに書いてもその上に当て、
 それは文書がインラインのメタデータを変えるために書く方法であり、
 違う値を持つ 2 つの宣言は受理されない。
@@ -80,8 +81,8 @@ usecase-beta
 
 ## 背景
 
-[`applyMetadataAssignments`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L620-L688) は更新を順に当て、
-それぞれの値は前の値を置き換える。
+[`applyMetadataAssignments`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L620-L688)
+は更新を順に当て、それぞれの値は前の値を置き換える。
 
 <!-- begin auto-generated rule resources -->
 

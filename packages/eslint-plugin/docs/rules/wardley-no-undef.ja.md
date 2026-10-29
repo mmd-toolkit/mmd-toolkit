@@ -65,10 +65,12 @@ wardley-beta
 
 ## 背景
 
-[`resolveNodeId`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L175-L185) は、
-リンクのノードを id で、次にラベルで探し、
+[`resolveNodeId`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L175-L185)
+は、リンクのノードを id で、次にラベルで探し、
 どのノードも名指さない名前はそのまま残し、描画はそれを除く。
-どのノードの id でもない名前の [`evolve`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L189-L197) は矢印を足さない。
+どのノードの id でもない名前の
+[`evolve`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L189-L197)
+は矢印を足さない。
 
 <!-- begin auto-generated rule resources -->
 

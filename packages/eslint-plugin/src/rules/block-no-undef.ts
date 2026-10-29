@@ -11,7 +11,7 @@ import { appendItems } from "../utils/collections.ts"
  */
 export const blockNoUndef: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "undefined"
+  MessageIds: "undef"
 }> = {
   meta: {
     type: "problem",
@@ -22,7 +22,7 @@ export const blockNoUndef: MermaidRuleDefinition<{
     },
     schema: [],
     messages: {
-      undefined:
+      undef:
         "mermaid.js gives this class to an unplaced block `{{name}}`: no statement of the diagram declares this id.",
     },
   },
@@ -43,7 +43,7 @@ export const blockNoUndef: MermaidRuleDefinition<{
           if (hasLeadingWhitespace(id) || defined.has(id.value)) continue
           context.report({
             node: id,
-            messageId: "undefined",
+            messageId: "undef",
             data: { name: id.value },
           })
         }

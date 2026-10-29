@@ -11,17 +11,22 @@ journey 図の木から Db の要約を作る手順です。
 要約の欄は [db-summaries.ja.md](../db-summaries.ja.md#journey) にあります。
 
 mermaid.js は、構文解析の間に Db を作ります。
-文法は、
-文が終わるたびに Db のメソッドを呼びます（[`statement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison#L60-L67)）。
-Db は、
-メソッドに渡されたものを保ちます（[`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)、
+文法は、文が終わるたびに Db のメソッドを呼びます。
+出典は
+[`statement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison#L60-L67)
+です。
+Db は、メソッドに渡されたものを保ちます。
+出典は
+[`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)、
 [`addSection`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L26-L29)、
-[`setDiagramTitle`、`setAccTitle`、`setAccDescription`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L16-L30)）。
+[`setDiagramTitle`、`setAccTitle`、`setAccDescription`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L16-L30)
+です。
 要約も同じように作ります。
 文を出現順に実行し、Db が持つ列がそのまま要約です。
 値は、空白を含めて Db が持つとおりに保ちます。
-要約はタスクの列を一度だけ読む（[db-summaries.ja.md](../db-summaries.ja.md#journey) を参照）ので、
-木の各タスクは、要約のタスクを 1 つずつ作ります。
+要約はタスクの列を一度だけ読むので、木の各タスクは、
+要約のタスクを 1 つずつ作ります。
+[db-summaries.ja.md](../db-summaries.ja.md#journey) を参照。
 
 ## 木から要約を作る
 
@@ -75,8 +80,7 @@ Db は、
   [fixture: journey/tokens-comment-line-in-acc-block]
 - 行規則が無視する `;` も、テキストの中では変換した形にありません。
   そのため、説明、スコア、人、タイトル、section の名前、
-  アクセシビリティのテキストは、
-  それを除いたテキストを持ちます。
+  アクセシビリティのテキストは、それを除いたテキストを持ちます。
   [fixture: journey/tokens-ignored-semicolon-in-task-text]
   [fixture: journey/tokens-ignored-semicolon-in-score]
   [fixture: journey/tokens-ignored-semicolon-in-person]
@@ -113,8 +117,8 @@ Db は、
 タスクは、それより前の section を参照します（**タスク**を参照）。
 空の description ブロック、
 つまりテキストのない JourneyAccDescrBlockStatement は、何も変えません。
-そのまわりの文は、
-それがないものとして実行されます。 [fixture: journey/gram-acc-descr-block-empty]
+そのまわりの文は、それがないものとして実行されます。
+[fixture: journey/gram-acc-descr-block-empty]
 [fixture: journey/gram-acc-descr-block-whitespace-only]
 [fixture: journey/gram-empty-description-block-after-block]
 [fixture: journey/gram-empty-description-block-before-task-same-line]
@@ -122,9 +126,8 @@ Db は、
 
 **既定値。**
 文がなければ、Db のタイトル（フロントマターのタイトルがあればそれ）、
-`accTitle`、`accDescr` は空のテキストで、
-section もタスクもありません。 [fixture: journey/header-only]
-[fixture: journey/db-title-frontmatter]
+`accTitle`、`accDescr` は空のテキストで、 section もタスクもありません。
+[fixture: journey/header-only] [fixture: journey/db-title-frontmatter]
 
 **タイトルと section。**
 タイトルはフロントマターのもので、`title` の文があれば、
@@ -173,8 +176,7 @@ section もタスクもありません。 [fixture: journey/header-only]
   [fixture: journey/gram-task-data-whitespace-only]
 - `people` は、文の `people` の要素ごとに名前を 1 つ持ちます。
   人のテキストか、null の要素なら空のテキストです。
-  2 つ目のコロンのない文は、
-  人を持ちません。 [fixture: journey/db-task-people]
+  2 つ目のコロンのない文は、人を持ちません。 [fixture: journey/db-task-people]
   [fixture: journey/db-task-people-empty-item]
   [fixture: journey/db-task-people-blank]
   [fixture: journey/gram-task-second-colon-at-end]
@@ -195,9 +197,8 @@ section もタスクもありません。 [fixture: journey/header-only]
 改行の前の空白は残ります。
 テキストのない description ブロックは何も変えません。
 テキストは後の行から始まってもかまいません。
-`accTitle:` の次の行が `A` なら、
-タイトルは `A` です。 [fixture: journey/db-acc-title]
-[fixture: journey/lex-acc-title-twice]
+`accTitle:` の次の行が `A` なら、タイトルは `A` です。
+[fixture: journey/db-acc-title] [fixture: journey/lex-acc-title-twice]
 [fixture: journey/gram-acc-title-line-feed-then-text]
 [fixture: journey/gram-acc-title-blank-lines-then-text]
 [fixture: journey/db-acc-descr] [fixture: journey/gram-acc-descr-twice]

@@ -1,7 +1,6 @@
 # @mmd-toolkit/quadrant-no-redefined-quadrant
 
-英語版:
-[quadrant-no-redefined-quadrant.md](./quadrant-no-redefined-quadrant.md)
+英語版: [quadrant-no-redefined-quadrant.md](./quadrant-no-redefined-quadrant.md)
 
 象限のテキストを置き換える象限の文を禁止する。
 

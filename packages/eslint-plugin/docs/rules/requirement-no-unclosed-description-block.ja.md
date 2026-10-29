@@ -24,7 +24,8 @@
 対象の図種は `requirement` である。
 
 最初の `}` までの文字は、`{` も含めて、
-ブロックのテキストである（仕様の [アクセシビリティの値](../../../spec/docs/diagrams/requirement.ja.md#アクセシビリティの値)）。
+ブロックのテキストである（仕様の
+[アクセシビリティの値](../../../spec/docs/diagrams/requirement.ja.md#アクセシビリティの値)）。
 `accDescr { x` の後の行 `requirement r {`、`id: 1`、`}` では、説明は `x`、
 `requirement r {`、`id: 1` になり、requirement `r` はできない。
 element の本体でも同じである。

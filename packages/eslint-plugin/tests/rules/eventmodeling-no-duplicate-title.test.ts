@@ -20,7 +20,7 @@ tf 01 evt Bought accTitle: First report`,
         errors: [
           {
             message:
-              "mermaid.js replaces the accessible title set on line 1 with the one of this `accTitle`.",
+              "mermaid.js replaces the earlier accessible title with the one of this `accTitle`.",
             line: 2,
             column: 18,
             endLine: 2,
@@ -35,7 +35,7 @@ tf 01 evt Bought accTitle: First report`,
         errors: [
           {
             message:
-              "mermaid.js replaces the accessible title set on line 1 with the one of this `accTitle`.",
+              "mermaid.js replaces the earlier accessible title with the one of this `accTitle`.",
             line: 2,
             column: 18,
             endLine: 2,
@@ -51,7 +51,7 @@ tf 01 evt Bought accTitle: A B C`,
         errors: [
           {
             message:
-              "mermaid.js replaces the accessible title set on line 1 with the one of this `accTitle`.",
+              "mermaid.js replaces the earlier accessible title with the one of this `accTitle`.",
             line: 2,
             column: 18,
             endLine: 2,

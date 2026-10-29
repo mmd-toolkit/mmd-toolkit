@@ -32,7 +32,8 @@ quadrant chart は、始まりと終わりにテキストを持つ 2 つの**軸
 ヘッダーは欄ではありません。
 ヘッダーは 1 つで、 2 つ目のヘッダーは入力を拒否させます。
 改行、`;`、空行、空の文はどの文にも属さず、ノードを作りません。
-ヘッダーがあって文のないテキストは受理されます。 [fixture: quadrant/spec-quadrant-jison-fe2d2340]
+ヘッダーがあって文のないテキストは受理されます。
+[fixture: quadrant/spec-quadrant-jison-fe2d2340]
 [fixture: quadrant/header-twice]
 
 **QuadrantStatement** は、QuadrantTitleStatement、QuadrantAccTitleStatement、
@@ -53,8 +54,8 @@ QuadrantClassDefStatement のどれかです。
 U+00A0 や U+3000 など表記の空白文字も除きます。
 mermaid.js がタイトルをそう読むからです。
 `title   T   ` は値 `T` を、`title`、U+00A0、`T` は値 `T` を持ち、
-`title` だけと、
-`title` と U+3000 だけは値 null を持ちます。 [fixture: quadrant/db-title-nbsp-before-text]
+`title` だけと、 `title` と U+3000 だけは値 null を持ちます。
+[fixture: quadrant/db-title-nbsp-before-text]
 [fixture: quadrant/db-title-ideographic-only]
 [fixture: quadrant/db-ends-title-nbsp-end]
 [fixture: quadrant/db-ends-title-nbsp-end-of-text]
@@ -80,8 +81,8 @@ mermaid.js がタイトルをそう読むからです。
 テキストはテキストを持つ最初の行で始まります。
 `accTitle:` に行 `title T` が続くと、値 `title T` を持ちます。
 値は、mermaid.js が読むとおり、
-U+00A0 など表記の空白文字も含めて両端の空白を除いたテキストで、
-空になりません。 [fixture: quadrant/db-ends-acc-title-nbsp-end]
+U+00A0 など表記の空白文字も含めて両端の空白を除いたテキストで、空になりません。
+[fixture: quadrant/db-ends-acc-title-nbsp-end]
 [fixture: quadrant/db-ends-acc-title-nbsp-end-of-text]
 [fixture: quadrant/db-ends-acc-title-ideographic-end]
 [fixture: quadrant/db-ends-acc-title-ideographic-end-of-text]
@@ -95,8 +96,8 @@ U+00A0 など表記の空白文字も含めて両端の空白を除いたテキ�
 [fixture: quadrant/db-acc-title-ls-after-colon]
 [fixture: quadrant/db-acc-title-ps-after-colon]
 テキストの終わりまで空白しかない `accTitle:` は、U+00A0 だけでも拒否されます。
-`accTitle:`、U+3000、改行、
-`title T` は値 `title T` を持ちます。 [fixture: quadrant/gram-acc-title-nbsp-only]
+`accTitle:`、U+3000、改行、 `title T` は値 `title T` を持ちます。
+[fixture: quadrant/gram-acc-title-nbsp-only]
 [fixture: quadrant/db-acc-title-ideographic-then-next-line]
 [fixture: quadrant/db-acc-title-next-line-keyword]
 [fixture: quadrant/gram-unclosed-acc-title-at-end]
@@ -111,8 +112,8 @@ U+00A0 など表記の空白文字も含めて両端の空白を除いたテキ�
 
 子の欄: `value`。
 QuadrantAccTitleStatement と同じく、テキストはテキストを持つ最初の行で始まり、
-両端に表記の空白を持たず、
-空になりません。 [fixture: quadrant/db-ends-acc-descr-nbsp-end]
+両端に表記の空白を持たず、空になりません。
+[fixture: quadrant/db-ends-acc-descr-nbsp-end]
 [fixture: quadrant/db-ends-acc-descr-nbsp-end-of-text]
 [fixture: quadrant/db-ends-acc-descr-ideographic-end]
 [fixture: quadrant/db-ends-acc-descr-ideographic-end-of-text]
@@ -137,12 +138,12 @@ QuadrantAccTitleStatement と同じく、テキストはテキストを持つ最
 ブロックは必ず閉じます。
 テキストがその中で終わることはできません。
 4 行の `accDescr {`、`D`、`E`、`}` は値 `D`、改行文字、`E` を持ちます。
-`accDescr {x`、U+00A0、
-`}` は値 `x` を持ちます。 [fixture: quadrant/db-acc-descr-block-nbsp-before-brace-close]
+`accDescr {x`、U+00A0、 `}` は値 `x` を持ちます。
+[fixture: quadrant/db-acc-descr-block-nbsp-before-brace-close]
 `accDescr {}`、2 行の `accDescr {` と `}`、
 U+3000 だけのブロックは値 null を持ち、何も変えません。
-`accDescr: D` に `accDescr {`、U+3000、`}` が続くと、
-説明 `D` を保ちます。 [fixture: quadrant/db-acc-descr-ideographic-block-keeps-line]
+`accDescr: D` に `accDescr {`、U+3000、`}` が続くと、説明 `D` を保ちます。
+[fixture: quadrant/db-acc-descr-ideographic-block-keeps-line]
 空の説明ブロックは、文が始まるところと文の最後の単位の後でだけ文で、
 文の中では入力を拒否させます。 [fixture: quadrant/db-acc-descr-block-lines]
 [fixture: quadrant/db-acc-descr-block-empty-braces]
@@ -150,11 +151,13 @@ U+3000 だけのブロックは値 null を持ち、何も変えません。
 [fixture: quadrant/gram-acc-descr-block-unclosed]
 [fixture: quadrant/db-empty-block-after-point]
 [fixture: quadrant/div-empty-block-between-point-and-styles]
-[空の説明ブロック](../diagrams/quadrant.ja.md#空の説明ブロック) を参照してください。
+[空の説明ブロック](../diagrams/quadrant.ja.md#空の説明ブロック)
+を参照してください。
 
 ### QuadrantAxisStatement
 
-1 つのテキストか、2 つのテキストとその間の矢印を持つ `x-axis` か `y-axis`:
+1 つのテキストか、
+2 つのテキストとその間の矢印を持つ `x-axis` か `y-axis`:
 `x-axis Low Reach --> High Reach`、`y-axis Low`、`y-axis Low -->`。
 
 | 欄      | 型                    | 意味                                            |
@@ -173,8 +176,8 @@ x 軸の左と右のテキスト、y 軸の下と上のテキストです。
 `x-axis L -->` は `arrow` が真で `end` が null で、
 mermaid.js はこれを `x-axis L` と違うように読みます。
 矢印の長さは欄ではなく、
-`y-axis B ---> T` と `y-axis B --> T` は同じ欄を持ちます。 [fixture: quadrant/db-x-axis-upper-case]
-[fixture: quadrant/db-y-axis-both]
+`y-axis B ---> T` と `y-axis B --> T` は同じ欄を持ちます。
+[fixture: quadrant/db-x-axis-upper-case] [fixture: quadrant/db-y-axis-both]
 [fixture: quadrant/db-x-axis-left-with-arrow]
 [fixture: quadrant/db-y-axis-bottom-only]
 [fixture: quadrant/db-y-axis-long-arrow]
@@ -191,8 +194,8 @@ mermaid.js はこれを `x-axis L` と違うように読みます。
 子の欄: `text`。
 番号はキーワードの数字です。
 `Quadrant-1 A` は象限 1 を、
-`quadrant-10 A` は象限 1 とテキスト `0 A` を持ちます。 [fixture: quadrant/db-quadrant-upper-case]
-[fixture: quadrant/db-quadrant-ten]
+`quadrant-10 A` は象限 1 とテキスト `0 A` を持ちます。
+[fixture: quadrant/db-quadrant-upper-case] [fixture: quadrant/db-quadrant-ten]
 
 ### QuadrantPointStatement
 
@@ -216,17 +219,17 @@ mermaid.js は読んだテキストを保つからです。
 スタイルは、`]` か `,` から次の `,` かスタイルの終わりまでの書かれたテキストで、
 両端の空白を除いたものです。
 `radius: 10, color: #f00` はスタイル `radius: 10` と `color: #f00` を、
-`radius:  10  ,  color:  #f00` はスタイル `radius:  10` と `color:  #f00` を持ちます。
+`radius:  10  ,  color:  #f00` はスタイル `radius:  10` と `color:  #f00`
+を持ちます。
 mermaid.js がスタイルを名前と値にどう読むか、どのスタイルを受け取るかは、
-tests パッケージの要約と [文法の外の拒否](../diagrams/quadrant.ja.md#文法の外の拒否) にあります。 [fixture: quadrant/db-point-plain]
+tests パッケージの要約と
+[文法の外の拒否](../diagrams/quadrant.ja.md#文法の外の拒否) にあります。
+[fixture: quadrant/db-point-plain]
 [fixture: quadrant/db-point-coordinate-any-char-x]
 [fixture: quadrant/db-point-coordinate-space-in-x]
-[fixture: quadrant/db-point-long-fraction]
-[fixture: quadrant/db-class-plain]
-[fixture: quadrant/db-class-upper-case]
-[fixture: quadrant/db-class-undefined]
-[fixture: quadrant/db-style-two]
-[fixture: quadrant/db-style-space-around]
+[fixture: quadrant/db-point-long-fraction] [fixture: quadrant/db-class-plain]
+[fixture: quadrant/db-class-upper-case] [fixture: quadrant/db-class-undefined]
+[fixture: quadrant/db-style-two] [fixture: quadrant/db-style-space-around]
 [fixture: quadrant/db-style-radius-colon-after]
 
 ### QuadrantClassDefStatement
@@ -266,7 +269,8 @@ markdown 文字列は引用符と逆引用符を除きます。
 ``"`A`": [0.3, 0.6]`` の名前は種類 `markdown` と値 `A` を持ちます。
 文字列の後の語は、その前の空白とともに中身に続きます。
 `quadrant-1 "a" b` は種類 `string` と値 `a b` を、
-``quadrant-1 "`a`" b`` は種類 `markdown` と値 `a b` を持ちます。 [fixture: quadrant/db-quadrant-spaces-trimmed]
+``quadrant-1 "`a`" b`` は種類 `markdown` と値 `a b` を持ちます。
+[fixture: quadrant/db-quadrant-spaces-trimmed]
 [fixture: quadrant/db-quadrant-tab-inside]
 [fixture: quadrant/db-x-axis-spaces-only-string]
 [fixture: quadrant/db-name-markdown]
@@ -306,6 +310,7 @@ U+00A0 など表記の空白文字も端の空白です。
 `classDef a`、U+00A0、`b color: #f00` は、名前が `a`、U+00A0、
 `b` のクラスを定めます。
 名前は ASCII の空白を持たず、そのダッシュ、コロン、コンマは名前の一部です。
-`classDef c-1 color: #f00` は `c-1` を定めます。 [fixture: quadrant/db-grid-nbsp-classdef-name]
+`classDef c-1 color: #f00` は `c-1` を定めます。
+[fixture: quadrant/db-grid-nbsp-classdef-name]
 [fixture: quadrant/db-classdef-dash-name]
 [fixture: quadrant/db-classdef-name-colon-between-letters]

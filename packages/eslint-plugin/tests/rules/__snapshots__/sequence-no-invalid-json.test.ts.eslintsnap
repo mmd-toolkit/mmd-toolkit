@@ -11,7 +11,7 @@ Code:
     |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] The text of this `links` statement is not JSON, so mermaid.js sets nothing from it.
+[1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
 ---
 
 
@@ -25,7 +25,7 @@ Code:
     |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] The text of this `properties` statement is not JSON, so mermaid.js sets nothing from it.
+[1] mermaid.js sets nothing from this `properties` statement because its text is not JSON.
 ---
 
 
@@ -39,7 +39,7 @@ Code:
     | ^~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] The text of this `links` statement is JSON but not an object, so mermaid.js does not read names from it: a string and an array give their positions, and any other value gives nothing.
+[1] mermaid.js does not read names from this `links` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
 ---
 
 
@@ -53,7 +53,7 @@ Code:
     | ^~~~~~~~ [1]
   4 |
 
-[1] The text of this `links` statement is not JSON, so mermaid.js sets nothing from it.
+[1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
 ---
 
 
@@ -67,7 +67,7 @@ Code:
     | ^~~~~~~~~~~~~~ [1]
   4 |
 
-[1] The text of this `links` statement is JSON but not an object, so mermaid.js does not read names from it: a string and an array give their positions, and any other value gives nothing.
+[1] mermaid.js does not read names from this `links` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
 ---
 
 
@@ -81,7 +81,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] The text of this `links` statement is not JSON, so mermaid.js sets nothing from it.
+[1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
 ---
 
 
@@ -95,7 +95,7 @@ Code:
     | ^~~~~~~~~~~~~ [1]
   4 |
 
-[1] The text of this `links` statement is JSON but not an object, so mermaid.js does not read names from it: a string and an array give their positions, and any other value gives nothing.
+[1] mermaid.js does not read names from this `links` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
 ---
 
 
@@ -109,7 +109,7 @@ Code:
     | ^~~~~~~~~~ [1]
   4 |
 
-[1] The text of this `links` statement is JSON but not an object, so mermaid.js does not read names from it: a string and an array give their positions, and any other value gives nothing.
+[1] mermaid.js does not read names from this `links` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
 ---
 
 
@@ -123,7 +123,7 @@ Code:
     | ^~~~~~~~~~~~~ [1]
   4 |
 
-[1] The text of this `links` statement is JSON but not an object, so mermaid.js does not read names from it: a string and an array give their positions, and any other value gives nothing.
+[1] mermaid.js does not read names from this `links` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
 ---
 
 
@@ -137,7 +137,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] The text of this `links` statement is not JSON, so mermaid.js sets nothing from it.
+[1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
 ---
 
 
@@ -151,7 +151,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] The text of this `links` statement is not JSON, so mermaid.js sets nothing from it.
+[1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
 ---
 
 
@@ -165,7 +165,7 @@ Code:
     | ^~~~~~~~~~~~~ [1]
   4 |
 
-[1] The text of this `links` statement is JSON but not an object, so mermaid.js does not read names from it: a string and an array give their positions, and any other value gives nothing.
+[1] mermaid.js does not read names from this `links` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
 ---
 
 
@@ -179,7 +179,7 @@ Code:
     | ^~~~~~~~~~~~~~ [1]
   4 |
 
-[1] The text of this `links` statement is not JSON, so mermaid.js sets nothing from it.
+[1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
 ---
 
 
@@ -193,7 +193,7 @@ Code:
     | ^~~~~~~~~~~~~ [1]
   4 |
 
-[1] The text of this `properties` statement is not JSON, so mermaid.js sets nothing from it.
+[1] mermaid.js sets nothing from this `properties` statement because its text is not JSON.
 ---
 
 
@@ -207,7 +207,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] The text of this `properties` statement is JSON but not an object, so mermaid.js does not read names from it: a string and an array give their positions, and any other value gives nothing.
+[1] mermaid.js does not read names from this `properties` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
 ---
 
 
@@ -221,7 +221,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] The text of this `properties` statement is not JSON, so mermaid.js sets nothing from it.
+[1] mermaid.js sets nothing from this `properties` statement because its text is not JSON.
 ---
 
 
@@ -235,7 +235,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] The text of this `properties` statement is JSON but not an object, so mermaid.js does not read names from it: a string and an array give their positions, and any other value gives nothing.
+[1] mermaid.js does not read names from this `properties` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
 ---
 
 
@@ -249,7 +249,7 @@ Code:
     | ^~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] The text of this `properties` statement is JSON but not an object, so mermaid.js does not read names from it: a string and an array give their positions, and any other value gives nothing.
+[1] mermaid.js does not read names from this `properties` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
 ---
 
 
@@ -263,7 +263,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] The text of this `properties` statement is not JSON, so mermaid.js sets nothing from it.
+[1] mermaid.js sets nothing from this `properties` statement because its text is not JSON.
 ---
 
 
@@ -277,7 +277,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] The text of this `properties` statement is JSON but not an object, so mermaid.js does not read names from it: a string and an array give their positions, and any other value gives nothing.
+[1] mermaid.js does not read names from this `properties` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
 ---
 
 
@@ -291,7 +291,7 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] The text of this `properties` statement is not JSON, so mermaid.js sets nothing from it.
+[1] mermaid.js sets nothing from this `properties` statement because its text is not JSON.
 ---
 
 
@@ -305,5 +305,5 @@ Code:
     |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] The text of this `links` statement is not JSON, so mermaid.js sets nothing from it.
+[1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
 ---
