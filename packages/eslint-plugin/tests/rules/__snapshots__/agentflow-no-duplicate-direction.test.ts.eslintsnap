@@ -15,6 +15,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier direction for this flow with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 |   flow F
+          3 |     direction LR
+          4 |     A
+          5 |   end
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 |   flow F
+          3 |     A
+          4 |     direction BT
+          5 |   end
+          6 |
 ---
 
 
@@ -35,6 +52,29 @@ Code:
  10 |
 
 [1] mermaid.js replaces the earlier direction for this flow with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F
+          3 |   direction LR
+          4 |   A
+          5 | end
+          6 | flow F
+          7 |   B
+          8 | end
+          9 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F
+          3 |   A
+          4 | end
+          5 | flow F
+          6 |   direction BT
+          7 |   B
+          8 | end
+          9 |
 ---
 
 
@@ -54,6 +94,27 @@ Code:
   9 |
 
 [1] mermaid.js replaces the earlier direction for this flow with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F
+          3 | direction LR
+          4 | %% comment
+          5 |
+          6 | %%{init: {}}%%
+          7 | end
+          8 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F
+          3 | %% comment
+          4 |
+          5 | %%{init: {}}%%
+          6 | direction BT
+          7 | end
+          8 |
 ---
 
 
@@ -71,6 +132,49 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier direction for this flow with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F
+          3 | direction LR
+          4 | A
+          5 | end
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F
+          3 | A
+          4 | direction BT
+          5 | end
+          6 |
+---
+
+
+Test: agentflow-no-duplicate-direction >> invalid >>> invalid/agentflow/direction-equal-predecessor
+Filename: tests/fixtures/rules/agentflow-no-duplicate-direction/invalid/agentflow/direction-equal-predecessor-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | flow F
+  3 | direction LR
+  4 | direction LR
+  5 | direction BT
+    | ^~~~~~~~~~~~ [1]
+  6 | end
+  7 |
+
+[1] mermaid.js replaces the earlier direction for this flow with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F
+          3 | direction LR
+          4 | direction LR
+          5 | end
+          6 |
 ---
 
 
@@ -88,6 +192,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier direction for this flow with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F@{view: expanded}
+          3 | direction LR
+          4 | A
+          5 | end
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F@{view: expanded}
+          3 | direction BT
+          4 | A
+          5 | end
+          6 |
 ---
 
 
@@ -104,6 +225,14 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier direction for this flow with `BT`.
+    Suggestions:
+      - Remove the earlier direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F
+          3 | A[Set direction BT]
+          4 | end
+          5 |
 ---
 
 
@@ -123,6 +252,61 @@ Code:
   9 |
 
 [1] mermaid.js replaces the earlier direction for this flow with `LR`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F
+          3 | flow F
+          4 | direction BT
+          5 | A
+          6 | end
+          7 | end
+          8 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F
+          3 | direction LR
+          4 | flow F
+          5 | A
+          6 | end
+          7 | end
+          8 |
+---
+
+
+Test: agentflow-no-duplicate-direction >> invalid >>> invalid/agentflow/direction-reveals-later-report
+Filename: tests/fixtures/rules/agentflow-no-duplicate-direction/invalid/agentflow/direction-reveals-later-report-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | flow F
+  3 | direction LR
+  4 | direction TD
+    | ^~~~~~~~~~~~ [1]
+  5 | direction TB
+  6 | end
+  7 |
+
+[1] mermaid.js replaces the earlier direction for this flow with `TD`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F
+          3 | direction LR
+          4 | direction TB
+          5 | end
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F
+          3 | direction TD
+          4 | direction TB
+          5 | end
+          6 |
 ---
 
 
@@ -140,6 +324,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier direction for this flow with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F
+          3 |   direction TD
+          4 |   A
+          5 | end
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F
+          3 |   direction BT
+          4 |   A
+          5 | end
+          6 |
 ---
 
 
@@ -158,7 +359,41 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier direction for this flow with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F
+          3 | direction LR
+          4 | direction LR
+          5 | end
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F
+          3 | direction BT
+          4 | direction LR
+          5 | end
+          6 |
 [2] mermaid.js replaces the earlier direction for this flow with `LR`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F
+          3 | direction LR
+          4 | direction BT
+          5 | end
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F
+          3 | direction LR
+          4 | direction LR
+          5 | end
+          6 |
 ---
 
 
@@ -176,6 +411,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier direction for this flow with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow
+          3 | direction LR
+          4 | A
+          5 | end
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow
+          3 | direction BT
+          4 | A
+          5 | end
+          6 |
 ---
 
 
@@ -196,6 +448,29 @@ Code:
  10 |
 
 [1] mermaid.js replaces the earlier direction for this flow with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow subGraph1
+          3 | direction LR
+          4 | A
+          5 | end
+          6 | flow
+          7 | B
+          8 | end
+          9 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow subGraph1
+          3 | A
+          4 | end
+          5 | flow
+          6 | direction BT
+          7 | B
+          8 | end
+          9 |
 ---
 
 
@@ -214,6 +489,25 @@ Code:
   8 |
 
 [1] mermaid.js replaces the earlier direction for this flow with `LR`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow subGraph0
+          3 | flow
+          4 | direction BT
+          5 | end
+          6 | end
+          7 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow subGraph0
+          3 | direction LR
+          4 | flow
+          5 | end
+          6 | end
+          7 |
 ---
 
 
@@ -234,6 +528,29 @@ Code:
  10 |
 
 [1] mermaid.js replaces the earlier direction for this flow with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow subGraph2
+          3 | direction LR
+          4 | end
+          5 | flow subGraph2
+          6 | end
+          7 | flow
+          8 | end
+          9 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow subGraph2
+          3 | end
+          4 | flow subGraph2
+          5 | end
+          6 | flow
+          7 | direction BT
+          8 | end
+          9 |
 ---
 
 
@@ -254,4 +571,27 @@ Code:
  10 |
 
 [1] mermaid.js replaces the earlier direction for this flow with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow
+          3 | direction LR
+          4 | A
+          5 | end
+          6 | flow subGraph0
+          7 | B
+          8 | end
+          9 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow
+          3 | A
+          4 | end
+          5 | flow subGraph0
+          6 | direction BT
+          7 | B
+          8 | end
+          9 |
 ---

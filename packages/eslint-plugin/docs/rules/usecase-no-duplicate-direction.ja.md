@@ -8,28 +8,26 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
+
 <!-- end auto-generated rule notice -->
 
 ユースケース図は方向を 1 つ持つ。
-後の `direction` 文は、前のものをエラーなしに置き換え、前の方向は失われる。
+mermaid.js は後の `direction` 文をエラーなしに受理し、前の方向を置き換える。
 
 ## 規則の詳細
 
-この規則は、
-前の `direction` 文が与えた方向と違う方向を与える `direction` 文を報告する。
-対象の図種は `usecase` である。
+この規則は、ユースケース図（`usecase-beta`）に当てる。
+前の文が与えた方向を変える `direction` 文を報告する。
+現在の方向の繰り返しは報告しない。
+最初の `direction` は、既定の `LR` を変えても報告しない。
 
-`direction LR` と `direction BT` の後では、図は下から上へ描かれる。
-どの文も方向を与えないときに図が持つ方向 `LR` は、書かれておらず、比べない。
-
-図がすでに持つ方向を与える文は報告しない。
-`TD` と `TB` は上から下への同じ方向で、
-mermaid.js は `TD` を `TB` として読むので、
+`TD` と `TB` は上から下への同じ方向なので、
 `direction TD` の後の `direction TB` は報告しない。
-`direction LR` と `direction BT` の後の 3 つ目の `direction LR` は、
+`direction LR` と `direction BT` の後の `direction LR` は、
 `BT` を置き換えるので報告する。
-
-`direction` 文は 1 つにする。
 
 この規則に**反する**コードの例:
 
@@ -53,13 +51,6 @@ usecase-beta
 ## オプション
 
 この規則にはオプションがない。
-
-## 背景
-
-[`setDirection`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L237-L239)
-は `TD` を `TB` として各方向を記録し、
-[モデル](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L350-L350)
-は最後のものを取る。
 
 <!-- begin auto-generated rule resources -->
 

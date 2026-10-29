@@ -30,6 +30,27 @@ b"
           },
         ],
       },
+
+      {
+        name: "invalid/gitgraph/crlf",
+        filename:
+          "tests/fixtures/rules/gitgraph-no-redefined-commit/invalid/gitgraph/crlf-input.mmd",
+        code: `gitGraph\r
+commit id:"A"\r
+%% c\r
+commit id:"A"\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the commit with this id, written earlier, with this commit.",
+            line: 4,
+            column: 1,
+            endLine: 4,
+            endColumn: 14,
+          },
+        ],
+      },
     ],
   },
 )

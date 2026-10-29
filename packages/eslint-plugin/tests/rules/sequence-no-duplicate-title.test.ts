@@ -30,7 +30,111 @@ accTitle:\u2028foo
             column: 1,
             endLine: 3,
             endColumn: 14,
-            suggestions: [],
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `sequenceDiagram
+accTitle: t
+`,
+              },
+              {
+                desc: "Remove the earlier `accTitle` statement.",
+                output: `sequenceDiagram
+accTitle:\u2028foo
+`,
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        name: "invalid/sequence/db-acc-title-line-empty-takes-next-line-cr",
+        filename:
+          "tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/db-acc-title-line-empty-takes-next-line-cr-input.mmd",
+        code: `sequenceDiagram\raccTitle: t\raccTitle:\rfoo\r`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier accessible title with the one of this `accTitle`.",
+            line: 3,
+            column: 1,
+            endLine: 4,
+            endColumn: 4,
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `sequenceDiagram\raccTitle: t\r`,
+              },
+              {
+                desc: "Remove the earlier `accTitle` statement.",
+                output: `sequenceDiagram\raccTitle:\rfoo\r`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/sequence/db-acc-title-line-empty-takes-next-line-crlf",
+        filename:
+          "tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/db-acc-title-line-empty-takes-next-line-crlf-input.mmd",
+        code: `sequenceDiagram\r
+accTitle: t\r
+accTitle:\r
+foo\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier accessible title with the one of this `accTitle`.",
+            line: 3,
+            column: 1,
+            endLine: 4,
+            endColumn: 4,
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `sequenceDiagram\r
+accTitle: t\r
+`,
+              },
+              {
+                desc: "Remove the earlier `accTitle` statement.",
+                output: `sequenceDiagram\r
+accTitle:\r
+foo\r
+`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/sequence/title-equal-predecessor-crlf",
+        filename:
+          "tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/title-equal-predecessor-crlf-input.mmd",
+        code: `sequenceDiagram\r
+accTitle: A\r
+accTitle: A\r
+accTitle: B\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier accessible title with the one of this `accTitle`.",
+            line: 4,
+            column: 1,
+            endLine: 4,
+            endColumn: 12,
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `sequenceDiagram\r
+accTitle: A\r
+accTitle: A\r
+`,
+              },
+            ],
           },
         ],
       },

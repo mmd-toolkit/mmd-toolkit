@@ -9,6 +9,10 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
+
 <!-- end auto-generated rule notice -->
 
 マップは、最初の `annotations` の位置に注釈の枠を 1 つ持つ。
@@ -17,22 +21,16 @@ mermaid.js はエラーなしに後の `annotations` を除くので、
 
 ## 規則の詳細
 
-この規則は、枠が示す文字を持つ注釈がマップにあるとき、最初と違う位置を与える、
-最初より後の `annotations` を報告する。
-対象の図種は `wardley` である。
+この規則は、Wardley マップ（`wardley-beta`）に当てる。
+枠に示す文字を持つ注釈がマップにあるとき、
+最初と違う位置を与える後の `annotations` を報告する。
+後の文はそれぞれ最初の文と比べる。
+最初と同じ位置を与える `annotations` と、
+注釈の文字のないマップの `annotations` は報告しない。
 
-`annotations [0.1, 0.2]` と `annotations [0.3, 0.4]` の後では、
-枠は最初の位置にある。
-後のそれぞれの `annotations` は、その前のものではなく最初のものと比べる。
-
-最初の位置を与える `annotations` は報告せず、枠を描かない、
-注釈の文字のないマップのものも報告しない。
-位置は百分率として比べ、`0.1` と `10` は 1 つの位置である。
+位置は百分率として比べるので、`0.1` と `10` は同じ位置である。
 mermaid.js はマップの端を越える枠を内側に動かすので、
-端の近くの 2 つの位置は 1 つの枠を与えることがあり、
-この規則はそれを 2 つの位置として報告する。
-
-`annotations` は枠の位置に 1 つ書く。
+端の近くの 2 つの位置は同じ枠を与えても、違うものとして報告することがある。
 
 この規則に**反する**コードの例:
 
@@ -56,11 +54,6 @@ wardley-beta
 ## オプション
 
 この規則にはオプションがない。
-
-## 背景
-
-[パーサー](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L199-L204)
-は、最初の `annotations` だけから枠の位置を取る。
 
 <!-- begin auto-generated rule resources -->
 

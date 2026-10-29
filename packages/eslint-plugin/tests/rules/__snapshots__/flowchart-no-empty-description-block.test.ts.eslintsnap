@@ -13,7 +13,7 @@ Code:
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
     Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+      - Remove the empty block.
         Output:
           1 | flowchart LR
           2 |   A
@@ -33,7 +33,7 @@ Code:
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
     Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+      - Remove the empty block.
         Output:
           1 | flowchart LR
           2 |   A
@@ -55,7 +55,7 @@ Code:
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
     Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+      - Remove the empty block.
         Output:
           1 | flowchart LR
           2 |   A
@@ -76,7 +76,7 @@ Code:
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
     Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+      - Remove the empty block.
         Output:
           1 | flowchart LR
           2 | A
@@ -111,7 +111,7 @@ Code:
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
     Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+      - Remove the empty block.
         Output:
           1 | flowchart LR
           2 | A
@@ -132,7 +132,7 @@ Code:
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
     Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+      - Remove the empty block.
         Output:
           1 | flowchart LR
           2 | A
@@ -155,7 +155,7 @@ Code:
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
     Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+      - Remove the empty block.
         Output:
           1 | flowchart LR
           2 | A
@@ -178,7 +178,7 @@ Code:
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
     Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+      - Remove the empty block.
         Output:
           1 | flowchart LR
           2 | A
@@ -199,7 +199,7 @@ Code:
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
     Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+      - Remove the empty block.
         Output:
           1 | flowchart LR
           2 | A
@@ -237,7 +237,7 @@ Code:
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
     Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+      - Remove the empty block.
         Output:
           1 | flowchart LR
           2 | subgraph S
@@ -264,7 +264,7 @@ Code:
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
     Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+      - Remove the empty block.
         Output:
           1 | flowchart TD
           2 | subgraph S
@@ -335,7 +335,7 @@ Code:
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
     Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+      - Remove the empty block.
         Output:
           1 | flowchart LR
           2 | A
@@ -355,7 +355,7 @@ Code:
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
     Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+      - Remove the empty block.
         Output:
           1 | flowchart LR
           2 | A
@@ -373,12 +373,6 @@ Code:
   3 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
-    Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
-        Output:
-          1 | flowchart LR
-          2 | ;A
-          3 |
 ---
 
 
@@ -392,12 +386,6 @@ Code:
   3 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
-    Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
-        Output:
-          1 | flowchart LR
-          2 | A-->B
-          3 |
 ---
 
 
@@ -474,7 +462,7 @@ Code:
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
     Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+      - Remove the empty block.
         Output:
           1 | flowchart LR
           2 |   subgraph S
@@ -605,20 +593,6 @@ Code:
 ---
 
 
-Test: flowchart-no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-block-cr
-Filename: tests/fixtures/rules/flowchart-no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-cr-input.mmd
-
-Code:
-  1 | flowchart LR  A  accDescr {}
-
-[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
-    Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
-        Output:
-          1 | flowchart LR  A
----
-
-
 Test: flowchart-no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-block-first-in-subgraph-body
 Filename: tests/fixtures/rules/flowchart-no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-first-in-subgraph-body-input.mmd
 
@@ -633,7 +607,7 @@ Code:
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
     Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+      - Remove the empty block.
         Output:
           1 | flowchart LR
           2 | subgraph S
@@ -659,7 +633,7 @@ Code:
 [1] mermaid.js reads whitespace after the name `S` as part of the subgraph name, so the subgraph gets a generated id. This empty block sets no description.
 [2] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
     Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+      - Remove the empty block.
         Output:
           1 | flowchart LR
           2 | subgraph S accDescr {}
@@ -702,28 +676,6 @@ Code:
 ---
 
 
-Test: flowchart-no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-block-with-crlf-lines
-Filename: tests/fixtures/rules/flowchart-no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-with-crlf-lines-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   A
-  3 |   accDescr {
-    |   ^~~~~~~~~~\ [1]
-  4 |   }
-    | ~~~ [1]
-  5 |
-
-[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
-    Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
-        Output:
-          1 | flowchart LR
-          2 |   A
-          3 |
----
-
-
 Test: flowchart-no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-block-with-only-a-directive
 Filename: tests/fixtures/rules/flowchart-no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-with-only-a-directive-input.mmd
 
@@ -750,7 +702,7 @@ Code:
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
     Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+      - Remove the empty block.
         Output:
           1 | flowchart LR
           2 |   A
@@ -787,7 +739,7 @@ Code:
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
     Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+      - Remove the empty block.
         Output:
           1 | flowchart-elk LR
           2 |   A
@@ -807,7 +759,7 @@ Code:
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
     Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+      - Remove the empty block.
         Output:
           1 | graph LR
           2 |   A
@@ -827,7 +779,7 @@ Code:
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
     Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+      - Remove the empty block.
         Output:
           1 | swimlane-beta LR
           2 |   A
@@ -849,16 +801,6 @@ Code:
   7 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
-    Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
-        Output:
-          1 | flowchart LR
-          2 | subgraph P
-          3 | subgraph C
-          4 | ;B
-          5 | end
-          6 | end
-          7 |
 ---
 
 
@@ -874,14 +816,6 @@ Code:
   5 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
-    Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
-        Output:
-          1 | flowchart LR
-          2 | subgraph S
-          3 | ;B
-          4 | end
-          5 |
 ---
 
 

@@ -12,6 +12,12 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | gitGraph
+          2 |   commit
+          3 |
 ---
 
 
@@ -26,6 +32,12 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | gitGraph
+          2 | accDescr: First
+          3 |
 ---
 
 
@@ -38,6 +50,25 @@ Code:
     |   ^~~~~~~~~~~ [1]
   3 |   commit
   4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | gitGraph
+          2 |   commit
+          3 |
+---
+
+
+Test: gitgraph-no-empty-description-block >> invalid >>> invalid/gitgraph/empty-block-after-header
+Filename: tests/fixtures/rules/gitgraph-no-empty-description-block/invalid/gitgraph/empty-block-after-header-input.mmd
+
+Code:
+  1 | gitGraph accDescr {}
+    |          ^~~~~~~~~~~ [1]
+  2 | commit
+  3 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
 ---
@@ -55,6 +86,13 @@ Code:
   5 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | gitGraph
+          2 | %% before
+          3 | commit
+          4 |
 ---
 
 
@@ -97,6 +135,12 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | gitGraph
+          2 |   commit
+          3 |
 ---
 
 
@@ -113,4 +157,10 @@ Code:
   5 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | gitGraph
+          2 | commit
+          3 |
 ---

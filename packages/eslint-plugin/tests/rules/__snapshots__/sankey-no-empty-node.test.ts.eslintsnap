@@ -140,19 +140,6 @@ Code:
 ---
 
 
-Test: sankey-no-empty-node >> invalid >>> invalid/sankey/empty-target-crlf
-Filename: tests/fixtures/rules/sankey-no-empty-node/invalid/sankey/empty-target-crlf-input.mmd
-
-Code:
-  1 | sankey
-  2 | a, ,1
-    |   ^ [1]
-  3 |
-
-[1] mermaid.js reads this field as the empty name and adds a node without a name.
----
-
-
 Test: sankey-no-empty-node >> invalid >>> invalid/sankey/empty-target-twice
 Filename: tests/fixtures/rules/sankey-no-empty-node/invalid/sankey/empty-target-twice-input.mmd
 

@@ -11,6 +11,12 @@ Code:
     |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
+Output:
+  1 | sequenceDiagram
+  2 |   participant A
+  3 |   links A: {"Dashboard": "https://x.example"}
+  4 |
+
 [1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
 ---
 
@@ -23,6 +29,12 @@ Code:
   2 |   participant A
   3 |   properties A: {"class": "internal",}
     |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output:
+  1 | sequenceDiagram
+  2 |   participant A
+  3 |   properties A: {"class": "internal"}
   4 |
 
 [1] mermaid.js sets nothing from this `properties` statement because its text is not JSON.
@@ -39,6 +51,8 @@ Code:
     | ^~~~~~~~~~~~~~~ [1]
   4 |
 
+Output: unchanged
+
 [1] mermaid.js does not read names from this `links` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
 ---
 
@@ -52,6 +66,8 @@ Code:
   3 | links A:
     | ^~~~~~~~ [1]
   4 |
+
+Output: unchanged
 
 [1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
 ---
@@ -67,6 +83,8 @@ Code:
     | ^~~~~~~~~~~~~~ [1]
   4 |
 
+Output: unchanged
+
 [1] mermaid.js does not read names from this `links` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
 ---
 
@@ -80,6 +98,8 @@ Code:
   3 | links A: not json
     | ^~~~~~~~~~~~~~~~~ [1]
   4 |
+
+Output: unchanged
 
 [1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
 ---
@@ -95,6 +115,8 @@ Code:
     | ^~~~~~~~~~~~~ [1]
   4 |
 
+Output: unchanged
+
 [1] mermaid.js does not read names from this `links` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
 ---
 
@@ -108,6 +130,8 @@ Code:
   3 | links A: 5
     | ^~~~~~~~~~ [1]
   4 |
+
+Output: unchanged
 
 [1] mermaid.js does not read names from this `links` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
 ---
@@ -123,6 +147,8 @@ Code:
     | ^~~~~~~~~~~~~ [1]
   4 |
 
+Output: unchanged
+
 [1] mermaid.js does not read names from this `links` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
 ---
 
@@ -137,6 +163,8 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
+Output: unchanged
+
 [1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
 ---
 
@@ -149,6 +177,12 @@ Code:
   2 | participant A
   3 | links A: {"Dashboard": "https://x.example",}
     | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | links A: {"Dashboard": "https://x.example"}
   4 |
 
 [1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
@@ -165,6 +199,8 @@ Code:
     | ^~~~~~~~~~~~~ [1]
   4 |
 
+Output: unchanged
+
 [1] mermaid.js does not read names from this `links` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
 ---
 
@@ -178,6 +214,8 @@ Code:
   3 | links A: wrap:
     | ^~~~~~~~~~~~~~ [1]
   4 |
+
+Output: unchanged
 
 [1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
 ---
@@ -193,6 +231,8 @@ Code:
     | ^~~~~~~~~~~~~ [1]
   4 |
 
+Output: unchanged
+
 [1] mermaid.js sets nothing from this `properties` statement because its text is not JSON.
 ---
 
@@ -206,6 +246,8 @@ Code:
   3 | properties A: false
     | ^~~~~~~~~~~~~~~~~~~ [1]
   4 |
+
+Output: unchanged
 
 [1] mermaid.js does not read names from this `properties` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
 ---
@@ -221,6 +263,8 @@ Code:
     | ^~~~~~~~~~~~~~~~~~ [1]
   4 |
 
+Output: unchanged
+
 [1] mermaid.js sets nothing from this `properties` statement because its text is not JSON.
 ---
 
@@ -234,6 +278,8 @@ Code:
   3 | properties A: null
     | ^~~~~~~~~~~~~~~~~~ [1]
   4 |
+
+Output: unchanged
 
 [1] mermaid.js does not read names from this `properties` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
 ---
@@ -249,6 +295,8 @@ Code:
     | ^~~~~~~~~~~~~~~ [1]
   4 |
 
+Output: unchanged
+
 [1] mermaid.js does not read names from this `properties` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
 ---
 
@@ -261,6 +309,12 @@ Code:
   2 | participant A
   3 | properties A: {"class": "internal",}
     | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | properties A: {"class": "internal"}
   4 |
 
 [1] mermaid.js sets nothing from this `properties` statement because its text is not JSON.
@@ -277,6 +331,8 @@ Code:
     | ^~~~~~~~~~~~~~~~~~ [1]
   4 |
 
+Output: unchanged
+
 [1] mermaid.js does not read names from this `properties` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
 ---
 
@@ -290,6 +346,8 @@ Code:
   3 | properties A: nowrap:
     | ^~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
+
+Output: unchanged
 
 [1] mermaid.js sets nothing from this `properties` statement because its text is not JSON.
 ---
@@ -305,5 +363,62 @@ Code:
     |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
+Output:
+  1 | sequenceDiagram
+  2 |   participant A
+  3 |   links A: {"Docs": "https://x.example/"} # note
+  4 |
+
 [1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/trailing-comma-after-hash-url
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/trailing-comma-after-hash-url-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | links A: {"Docs": "https://x.example/#top",}
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/trailing-comma-quoted-comma
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/trailing-comma-quoted-comma-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | properties A: {"class": "a,}",}
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 |
+
+Output:
+  1 | sequenceDiagram
+  2 | properties A: {"class": "a,}"}
+  3 |
+
+[1] mermaid.js sets nothing from this `properties` statement because its text is not JSON.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/trailing-commas-nested
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/trailing-commas-nested-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | properties A: {"a": [1, 2,], "b": 1,}
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 |
+
+Output:
+  1 | sequenceDiagram
+  2 | properties A: {"a": [1, 2], "b": 1}
+  3 |
+
+[1] mermaid.js sets nothing from this `properties` statement because its text is not JSON.
 ---

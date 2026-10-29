@@ -18,7 +18,19 @@ new RuleTester(LANGUAGE_CONFIG).run(
         code: `cynefin-beta
 accDescr {   \t }`,
         errors: [
-          { messageId: "empty", line: 2, column: 1, endLine: 2, endColumn: 17 },
+          {
+            messageId: "empty",
+            line: 2,
+            column: 1,
+            endLine: 2,
+            endColumn: 17,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `cynefin-beta`,
+              },
+            ],
+          },
         ],
       },
       {
@@ -31,7 +43,20 @@ accDescr {
 }
 complex "Investigate"`,
         errors: [
-          { messageId: "empty", line: 2, column: 1, endLine: 5, endColumn: 2 },
+          {
+            messageId: "empty",
+            line: 2,
+            column: 1,
+            endLine: 5,
+            endColumn: 2,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `cynefin-beta
+complex "Investigate"`,
+              },
+            ],
+          },
         ],
       },
       {
@@ -43,7 +68,20 @@ accDescr {\r
 }\r
 complex "Investigate"`,
         errors: [
-          { messageId: "empty", line: 2, column: 1, endLine: 4, endColumn: 2 },
+          {
+            messageId: "empty",
+            line: 2,
+            column: 1,
+            endLine: 4,
+            endColumn: 2,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `cynefin-beta\r
+complex "Investigate"`,
+              },
+            ],
+          },
         ],
       },
       {
@@ -53,7 +91,20 @@ complex "Investigate"`,
 accDescr\u2028{\u2029}
 complex "Investigate"`,
         errors: [
-          { messageId: "empty", line: 2, column: 1, endLine: 2, endColumn: 13 },
+          {
+            messageId: "empty",
+            line: 2,
+            column: 1,
+            endLine: 2,
+            endColumn: 13,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `cynefin-beta
+complex "Investigate"`,
+              },
+            ],
+          },
         ],
       },
       {
@@ -62,7 +113,19 @@ complex "Investigate"`,
         code: `cynefin-beta:
 accDescr {\u00a0}`,
         errors: [
-          { messageId: "empty", line: 2, column: 1, endLine: 2, endColumn: 13 },
+          {
+            messageId: "empty",
+            line: 2,
+            column: 1,
+            endLine: 2,
+            endColumn: 13,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `cynefin-beta:`,
+              },
+            ],
+          },
         ],
       },
       {
@@ -70,7 +133,38 @@ accDescr {\u00a0}`,
         filename: "empty-block-lone-cr.mmd",
         code: `cynefin-beta\raccDescr {\r \r}\r`,
         errors: [
-          { messageId: "empty", line: 2, column: 1, endLine: 4, endColumn: 2 },
+          {
+            messageId: "empty",
+            line: 2,
+            column: 1,
+            endLine: 4,
+            endColumn: 2,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `cynefin-beta\r`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/cynefin/removal-crlf-with-tab",
+        filename: "input.mmd",
+        code: `cynefin-beta\r
+accDescr {\t}\r
+`,
+        errors: [
+          {
+            messageId: "empty",
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `cynefin-beta\r
+`,
+              },
+            ],
+          },
         ],
       },
     ],

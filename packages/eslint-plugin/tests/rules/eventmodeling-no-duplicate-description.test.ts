@@ -33,6 +33,35 @@ tf 01 evt Bought accDescr { A\u2028B\u2029C }`,
 B }`,
       },
     ],
-    invalid: [],
+    invalid: [
+      {
+        name: "invalid/eventmodeling/description-equal-predecessor-crlf",
+        filename:
+          "tests/fixtures/rules/eventmodeling-no-duplicate-description/invalid/eventmodeling/description-equal-predecessor-crlf-input.mmd",
+        code: `eventmodeling accDescr: A\r
+tf 01 evt Bought accDescr: A\r
+tf 02 evt Sent accDescr: B\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier description with the one of this `accDescr`.",
+            line: 3,
+            column: 16,
+            endLine: 3,
+            endColumn: 27,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `eventmodeling accDescr: A\r
+tf 01 evt Bought accDescr: A\r
+tf 02 evt Sent\r
+`,
+              },
+            ],
+          },
+        ],
+      },
+    ],
   },
 )

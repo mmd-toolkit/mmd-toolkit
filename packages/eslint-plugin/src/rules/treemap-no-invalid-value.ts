@@ -1,5 +1,39 @@
+import { canEditRange } from "../utils/edit-range.ts"
+import type { RuleFixer, SuggestedEdit } from "@eslint/core"
+import type { MermaidSourceCode } from "../source-code.ts"
+import type { NumericLiteral } from "@mmd-toolkit/parser"
+import {
+  numberWithoutDigitSeparators,
+  numberWithDecimalPoint,
+} from "../utils/number-spellings.ts"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
+
+/** Digit separators spell one number; a decimal comma leaves the author's intent uncertain. */
+function numberEdits(
+  sourceCode: MermaidSourceCode,
+  node: NumericLiteral,
+): {
+  fix?: RuleFixer
+  suggest?: SuggestedEdit<"writeNumber">[]
+} {
+  if (!canEditRange(sourceCode, node.range)) return {}
+  const separated = numberWithoutDigitSeparators(node.raw)
+  if (separated !== undefined)
+    return { fix: (fixer) => fixer.replaceText(node, separated) }
+  const decimal = numberWithDecimalPoint(node.raw)
+  return decimal === undefined
+    ? {}
+    : {
+        suggest: [
+          {
+            messageId: "writeNumber",
+            data: { number: decimal },
+            fix: (fixer) => fixer.replaceText(node, decimal),
+          },
+        ],
+      }
+}
 
 /** Commas with no following digits group nothing, on either side of the point. */
 function withoutTrailingCommas(text: string): string {
@@ -37,7 +71,7 @@ function isInvalidValue(raw: string): boolean {
 /** Report unread numeric text and commas outside the decided thousands forms. */
 export const treemapNoInvalidValue: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "invalid"
+  MessageIds: "invalid" | "writeNumber"
 }> = {
   meta: {
     type: "problem",
@@ -47,8 +81,11 @@ export const treemapNoInvalidValue: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("treemap-no-invalid-value"),
     },
+    hasSuggestions: true,
+    fixable: "code",
     schema: [],
     messages: {
+      writeNumber: "Write the number as `{{number}}`.",
       invalid:
         "mermaid.js reads this value as `{{value}}` after removing its commas.",
     },
@@ -61,6 +98,7 @@ export const treemapNoInvalidValue: MermaidRuleDefinition<{
             node: node.value,
             messageId: "invalid",
             data: { value: String(node.value.value) },
+            ...numberEdits(context.sourceCode, node.value),
           })
         }
       },

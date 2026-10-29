@@ -13,6 +13,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 |   accTitle: first
+          3 |   A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 |   accTitle: second
+          3 |   A
+          4 |
 ---
 
 
@@ -28,6 +41,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle: First
+          3 | accTitle: Second
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle:
+          3 | accTitle: Second
+          4 |
 ---
 
 
@@ -43,20 +69,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
----
-
-
-Test: usecase-no-duplicate-title >> invalid >>> invalid/usecase/title-crlf
-Filename: tests/fixtures/rules/usecase-no-duplicate-title/invalid/usecase/title-crlf-input.mmd
-
-Code:
-  1 | usecase-beta
-  2 | accTitle: First
-  3 | accTitle: Second
-    | ^~~~~~~~~~~~~~~~ [1]
-  4 |
-
-[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle: First
+          3 | %% comment
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | %% comment
+          3 | accTitle: Second
+          4 |
 ---
 
 
@@ -73,6 +98,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle: First
+          3 | %%{init: {}}%%
+          4 |
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | %%{init: {}}%%
+          3 |
+          4 | accTitle: Second
+          5 |
 ---
 
 
@@ -88,6 +128,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle: First
+          3 | A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle:
+          3 | A
+          4 |
 ---
 
 
@@ -101,6 +154,15 @@ Code:
     | ^~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle: First
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle:
 ---
 
 
@@ -117,6 +179,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle: First
+          3 | %% comment
+          4 | A
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle:
+          3 | %% comment
+          4 | A
+          5 |
 ---
 
 
@@ -131,6 +208,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle: #35;
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle: Other
+          3 |
 ---
 
 
@@ -147,7 +235,27 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle: <b title="x">First</b>
+          3 | accTitle: Second
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle: <b title='x'>First</b>
+          3 | accTitle: Second
+          4 |
 [2] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle: <b title="x">First</b>
+          3 | accTitle: <b title='x'>First</b>
+          4 |
 ---
 
 
@@ -163,6 +271,41 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle: First
+          3 | accTitle:  First  
+          4 |
+---
+
+
+Test: usecase-no-duplicate-title >> invalid >>> invalid/usecase/title-removal-empty-predecessor
+Filename: tests/fixtures/rules/usecase-no-duplicate-title/invalid/usecase/title-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | usecase-beta
+  2 | accTitle:
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle:
+          3 | accTitle: A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle:
+          3 | accTitle: B
+          4 |
 ---
 
 
@@ -179,7 +322,33 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle: First
+          3 | accTitle: First
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle: Second
+          3 | accTitle: First
+          4 |
 [2] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle: First
+          3 | accTitle: Second
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle: First
+          3 | accTitle: First
+          4 |
 ---
 
 
@@ -195,6 +364,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 |   accTitle: First
+          3 |   A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 |   accTitle: Second
+          3 |   A
+          4 |
 ---
 
 
@@ -210,4 +392,17 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle: First
+          3 | A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | usecase-beta
+          2 | accTitle:   
+          3 | A
+          4 |
 ---

@@ -17,22 +17,15 @@ drops the rest without an error.
 
 ## Rule Details
 
-This rule reports text that mermaid.js drops on a direction line. It applies to
-`requirement`.
+This rule applies to requirement diagrams (`requirementDiagram`). It reports
+text on a direction line before `direction` or after its value, including words
+joined to `direction` and empty description blocks after the value. Text after
+the value that starts with `%%`, `%`, or `#` is not reported: the author means
+it as a comment, and mermaid.js drops it as meant.
 
-`r - satisfies -> e direction LR` sets the direction `LR` and makes no
-relationship. `direction LR x` sets the direction `LR`, and the `x` is dropped,
-and `foo direction LR bar` drops both words. A word glued to `direction`, as in
-`mydirection RL`, is dropped too. An empty description block after the
-direction, as in `direction LR accDescr {}`, is dropped with the rest of the
-line.
-
-Text after the direction that starts with a comment mark of a requirement
-diagram, `%%`, `%`, or `#`, as in `direction LR %% c` and `direction LR # c`, is
-not reported. The author means it as a comment, and mermaid.js drops it, as the
-author intended. A direction line that is commented out with `#` or `%`, as
-`# direction LR`, still sets the direction, and the rule reports the mark before
-it; a comment line, as `%% direction LR`, sets nothing.
+A direction line prefixed with `#` or `%`, as in `# direction LR`, still sets
+the direction, and the prefix is reported. A comment line starting with `%%`, as
+in `%% direction LR`, sets no direction and is not reported.
 
 Examples of **incorrect** code for this rule:
 

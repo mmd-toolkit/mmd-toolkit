@@ -9,31 +9,23 @@ Disallow an `accDescr` block that holds no description.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-mermaid.js accepts a closed `accDescr { }` block with nothing in it without an
-error. The block sets the empty description: written first, it changes nothing,
-and after a description, it removes that description.
+mermaid.js accepts a closed, empty `accDescr {}` block without an error. Written
+first, it changes nothing; after a description, it removes that description.
 
 ## Rule Details
 
-This rule reports a closed `accDescr` block that holds nothing or only
-whitespace. It applies to `usecase`. A directive in the block is no text: a
-block that holds only directives is reported too, and mermaid.js still applies
-their settings.
+This rule applies to use case diagrams (`usecase-beta`). It reports a closed
+`accDescr` block holding nothing or only whitespace. A block holding only
+directives is also reported, although mermaid.js still applies their settings.
 
-After `accDescr: x`, the block `accDescr { }` leaves the empty description, and
-`x` is lost. With no description before it, the description stays empty, and the
-block changes nothing.
-
-A block that holds only comment lines is not reported. A block left to be filled
-in later is written with a comment in it, as `accDescr {`, `%% TODO`, and `}`;
-written first, it changes nothing. After a description, such a block removes it
-too, and
-[usecase-no-duplicate-description](./usecase-no-duplicate-description.md)
-reports it.
-
-Write the description, or remove the block.
+A block holding only comment lines is not reported by this rule. After a
+description, that block still clears it and is reported by
+[usecase-no-duplicate-description](./usecase-no-duplicate-description.md).
 
 Examples of **incorrect** code for this rule:
 
@@ -63,15 +55,6 @@ This rule has no options.
 
 - [usecase-no-duplicate-description](./usecase-no-duplicate-description.md)
 - [usecase-no-unclosed-description-block](./usecase-no-unclosed-description-block.md)
-
-## Background
-
-The
-[`accDescr` statement](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.visitor.ts#L132-L140)
-gives a block its text between the braces, which is empty for an empty block,
-and the
-[model](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L243-L245)
-keeps it as the description.
 
 <!-- begin auto-generated rule resources -->
 

@@ -9,6 +9,10 @@ group に属さない辺の端の `{group}` 修飾子を禁止する。
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
+
 <!-- end auto-generated rule notice -->
 
 辺の端の id の後の `{group}` は、
@@ -20,21 +24,16 @@ group に属さない service や junction では、mermaid.js はエラーな�
 
 ## 規則の詳細
 
-この規則は、
+この規則は、アーキテクチャ図（`architecture-beta`）に当てる。
 `in` なしに宣言した service や junction の辺の端にある `{group}` を報告する。
-対象の図種は `architecture` である。
-そのような 2 つの端に `{group}` を持つ辺は 2 度報告する。
-
-`api` がどの group にも属さない `api{group}:R --> L:db` では、
-辺は `api` の右へ、group の余白に 4 を足した距離だけ離れて始まる。
+そのような端が 2 つある辺は 2 度報告する。
 
 group の中に宣言した service や junction の `{group}` は、
-宣言が辺の後にあっても報告しない。
+宣言が辺の後でも報告しない。
 もう一方の端が group に属することは数えない。
-辺のラベルの中の `{group}` は文字であり、報告しない。
-
-辺を service につなぐには `{group}` を取り除き、
-または `in` で service をその group の中に宣言する。
+辺のラベルの中の `{group}` は文字なので報告しない。
+同じ group の 2 つの service や junction の間の辺の `{group}` も、
+mermaid.js がエラーを出すので報告しない。
 
 この規則に**反する**コードの例:
 
@@ -61,15 +60,9 @@ architecture-beta
 
 この規則にはオプションがない。
 
-## 背景
+## 参考
 
-[文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L111-L126)
-は、 group の中の service にだけ `{group}` を認める。
-[Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L225-L236)
-は、 1 つの group の 2 つの service の間の辺の `{group}` を受理しないが、
-group に属さない端のものは受理し、
-[描画](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/svgDraw.ts#L54-L71)
-は `{group}` を持つすべての端を group の余白と 4 だけ動かす。
+- [architecture の構文: group の辺](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L111-L126)
 
 <!-- begin auto-generated rule resources -->
 

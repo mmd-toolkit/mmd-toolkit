@@ -14,53 +14,28 @@ Disallow an `accDescr` statement that sets the description again.
 
 <!-- end auto-generated rule notice -->
 
-A diagram has one description. mermaid.js accepts every `accDescr` statement,
-and each one that sets the description silently replaces the description set
-before it. A second description is usually left over from rewriting the text or
-from pasting a part twice, and the formatted text does not show which one
-counts.
+A diagram has one description. When another `accDescr` statement sets it,
+mermaid.js replaces the earlier description without an error, so the earlier one
+is lost.
 
 ## Rule Details
 
-This rule reports every statement that sets the description after the first one,
-when it sets a description other than the one before it. It applies to
-`flowchart-v2`, `flowchart-elk`, and `swimlane`.
+This rule applies to flowcharts (`flowchart`, `graph`, `flowchart-elk`, and
+`swimlane-beta`). It reports an `accDescr` statement that changes a description
+set by an earlier statement. The line and block forms are compared together,
+including statements inside a subgraph, which set the description of the whole
+diagram.
 
-`accDescr:` sets the description. Without text, it sets the description too: it
-takes the next line that holds text as the description, past empty lines,
-comment lines, and directives, and when no such line follows, it makes the
-description empty. A closed block that holds a description sets it as well. The
-line form and the block form may be mixed: whichever comes first, the
-description written last is used. A statement inside a subgraph sets the
-description of the whole diagram and is counted too; mermaid.js also adds the
-value of such a statement to the members of the subgraph as an id, so that a
-vertex or a subgraph with that id belongs to the subgraph.
+With no text after `accDescr:`, the next line with text supplies the
+description, past empty lines, comment lines, and directives; with no such line,
+the description becomes empty. Empty blocks and unclosed blocks are not counted
+by this rule.
 
-A block that holds no description and a block that is not closed, which makes
-the description empty, are not counted;
-[flowchart-no-empty-description-block](./flowchart-no-empty-description-block.md)
-and
-[flowchart-no-unclosed-description-block](./flowchart-no-unclosed-description-block.md)
-report them.
-
-A statement that sets the description that the diagram already has is not
-reported, in either form: after `accDescr: d`, the block `accDescr { d }` loses
-nothing. Descriptions are compared as mermaid.js keeps them, without the
-whitespace at their ends and without the whitespace after each line break, so
-the indentation of the lines of a block and the empty lines in it do not count.
-Every line break (LF, CRLF, or CR) is read as a line feed, so a block written
-with CRLF sets the same description as one written with LF. After `accDescr: a`
-and `accDescr: b`, a third `accDescr: a` is reported, because it replaces `b`.
-
-For each report, the rule suggests removing one of two statements: the reported
-one, or the one before it that sets the description. mermaid.js uses the last
-description that remains. Removing a statement inside a subgraph also removes
-that member, unless another statement of the subgraph makes the same id a
-member. A `;` after the statement stays where it separates statements; a `;`
-that mermaid.js ignores by the rule of
-[`style` and `classDef` lines](../../../spec/docs/common.md#style-and-classdef-lines)
-in the specification, as in `accDescr: style:#b;` and `accDescr { style:#b };`,
-is removed with the statement.
+Repeating the current description is not reported, while going back to an
+earlier one is: after `accDescr: a` and `accDescr: b`, a third `accDescr: a` is
+reported. Comparisons ignore whitespace at the ends and after each line break,
+including indentation and empty lines in blocks, and treat LF, CRLF, and CR as
+LF.
 
 Examples of **incorrect** code for this rule:
 

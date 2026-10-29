@@ -15,6 +15,7 @@ export const radarNoUnclosedDescriptionBlock: MermaidRuleDefinition<{
       recommended: false,
       url: ruleDocsUrl("radar-no-unclosed-description-block"),
     },
+
     schema: [],
     messages: {
       closedByOtherBrace:

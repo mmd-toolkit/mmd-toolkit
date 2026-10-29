@@ -9,42 +9,29 @@ Disallow a comment after other text on its line.
 
 The `recommended` configuration does not enable this rule.
 
+🔧 This rule is automatically fixable by the
+[`--fix` CLI option](https://eslint.org/docs/latest/use/command-line-interface#--fix).
+
 <!-- end auto-generated rule notice -->
 
-The documentation of mermaid.js says that comments go on a line of their own.
-Written after a statement, a comment is a comment for the parser of mmd-toolkit,
-but mermaid.js reads the line break after it as part of the comment, so the next
-line continues the statement, or the text is rejected.
+A comment after a statement can make the next line continue that statement.
+mermaid.js includes the following line break in the comment, which can change
+the diagram without an error or make the text invalid.
 
 ## Rule Details
 
-This rule reports a comment that follows other text on its line, when more text
-follows it. It applies to `classDiagram`.
+This rule applies to class diagrams (`classDiagram` and `classDiagram-v2`). It
+reports a comment after other text on the same line when more text follows it. A
+comment on the last line of the text is not reported, because mermaid.js reads
+it as intended.
 
-After `Animal <|-- Duck %% ducks` and a line `Animal : +int age`, mermaid.js has
-one relation, from `Animal` to a class `DuckAnimal`, with the label `+int age`,
-and no member of `Animal`. When the next line cannot continue the statement, as
-`class Fish` cannot, mermaid.js rejects the text; so it does with a comment on
-the header line, as in `classDiagram %% c`. The rule reports these comments too,
-because the parser of mmd-toolkit accepts the text and its formatter formats it,
-while mermaid.js cannot draw it. This is the known divergence
-[`comment-takes-line-break`](../../../spec/docs/known-divergences/comment-takes-line-break.md)
-of the specification.
+Comments are also reported when the next line cannot continue the statement or
+the comment follows the header. mmd-toolkit accepts and formats these texts, but
+mermaid.js gives an error for them; this is the known divergence
+[`comment-takes-line-break`](../../../spec/docs/known-divergences/comment-takes-line-break.md).
 
-A comment on the last line of the text is not reported: mermaid.js reads it as
-the author meant.
-
-In one case mermaid.js keeps the next line apart: when a line of only whitespace
-stands between the comment and the next line, and mermaid.js does not remove it.
-mermaid.js removes each comment line that holds text after its `%%`, together
-with the lines of only whitespace right before it
-([`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)).
-So a line of only whitespace keeps the next line apart, except when such a
-comment line comes after it with only lines of only whitespace between them. A
-line of only `%%` is not removed, and does not undo it. The rule reports the
-comment in this case too: whether the next line is read apart then hangs on
-whitespace that cannot be seen. Such a line is not shown as a code block below,
-because whitespace at the end of a line does not survive there.
+Comments followed by whitespace-only lines are reported even when those lines
+keep the statements apart, because that depends on invisible whitespace.
 
 Examples of **incorrect** code for this rule:
 

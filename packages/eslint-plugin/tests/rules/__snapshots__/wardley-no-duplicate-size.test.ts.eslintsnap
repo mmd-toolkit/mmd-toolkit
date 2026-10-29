@@ -12,6 +12,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier map size with this size.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 |   size [1100, 600]
+          3 |
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 |   size [800, 1000]
+          3 |
 ---
 
 
@@ -26,6 +37,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier map size with this size.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 |   size [1100, 600]
+          3 |
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 |   size [800, 1000]
+          3 |
 ---
 
 
@@ -39,6 +61,37 @@ Code:
     | ^~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier map size with this size.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | size [1100,600]
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | size [800,1000]
+---
+
+
+Test: wardley-no-duplicate-size >> invalid >>> invalid/wardley/size-equal-predecessor
+Filename: tests/fixtures/rules/wardley-no-duplicate-size/invalid/wardley/size-equal-predecessor-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | size [1100,600]
+  3 | size [1100,600]
+  4 | size [800,1000]
+    | ^~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier map size with this size.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | size [1100,600]
+          3 | size [1100,600]
+          4 |
 ---
 
 
@@ -52,6 +105,15 @@ Code:
     | ^~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier map size with this size.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | size [800,600]
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | size [800,700]
 ---
 
 
@@ -67,5 +129,27 @@ Code:
     | ^~~~~~~~~~~~~~ [2]
 
 [1] mermaid.js replaces the earlier map size with this size.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | size [800,600]
+          3 | size [800,600]
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | size [900,600]
+          3 | size [800,600]
 [2] mermaid.js replaces the earlier map size with this size.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | size [800,600]
+          3 | size [900,600]
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | size [800,600]
+          3 | size [800,600]
 ---

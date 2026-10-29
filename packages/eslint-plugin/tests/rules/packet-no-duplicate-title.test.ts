@@ -35,6 +35,16 @@ accTitle: C\u2029accTitle: D
             column: 1,
             endLine: 3,
             endColumn: 13,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `packet\rtitle First\raccTitle: First\raccTitle: Second\r`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the title.",
+                output: `packet\rtitle Second\raccTitle: First\raccTitle: Second\r`,
+              },
+            ],
           },
           {
             messageId: "duplicate",
@@ -46,6 +56,82 @@ accTitle: C\u2029accTitle: D
             column: 1,
             endLine: 5,
             endColumn: 17,
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `packet\rtitle First\rtitle Second\raccTitle: First\r`,
+              },
+              {
+                desc: "Remove the earlier `accTitle` statement.",
+                output: `packet\rtitle First\rtitle Second\raccTitle: Second\r`,
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        name: "invalid/packet/title-crlf",
+        filename:
+          "tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/title-crlf-input.mmd",
+        code: `packet\r
+title First\r
+%% comment\r
+title Second\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier title with the one of this `title`.",
+            line: 4,
+            column: 1,
+            endLine: 4,
+            endColumn: 13,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `packet\r
+title First\r
+%% comment\r
+`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the title.",
+                output: `packet\r
+%% comment\r
+title Second\r
+`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/packet/title-equal-predecessor-crlf",
+        filename:
+          "tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/title-equal-predecessor-crlf-input.mmd",
+        code: `packet\r
+accTitle: A\r
+accTitle: A\r
+accTitle: B\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier accessible title with the one of this `accTitle`.",
+            line: 4,
+            column: 1,
+            endLine: 4,
+            endColumn: 12,
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `packet\r
+accTitle: A\r
+accTitle: A\r
+`,
+              },
+            ],
           },
         ],
       },

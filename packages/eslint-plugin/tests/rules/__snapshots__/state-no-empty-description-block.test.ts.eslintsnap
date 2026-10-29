@@ -12,6 +12,12 @@ Code:
   4 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | stateDiagram-v2
+          2 |   A --> B
+          3 |
 ---
 
 
@@ -28,6 +34,12 @@ Code:
   5 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | stateDiagram-v2
+          2 |   A --> B
+          3 |
 ---
 
 
@@ -42,6 +54,12 @@ Code:
   4 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accDescr: x
+          3 |
 ---
 
 
@@ -112,6 +130,12 @@ Code:
   4 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | stateDiagram-v2
+          2 |   A
+          3 |
 ---
 
 

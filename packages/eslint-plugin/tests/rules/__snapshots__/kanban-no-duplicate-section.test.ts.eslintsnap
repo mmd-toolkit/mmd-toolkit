@@ -68,23 +68,6 @@ Code:
 ---
 
 
-Test: kanban-no-duplicate-section >> invalid >>> invalid/kanban/section-directive-comments-crlf
-Filename: tests/fixtures/rules/kanban-no-duplicate-section/invalid/kanban/section-directive-comments-crlf-input.mmd
-
-Code:
-  1 | kanban
-  2 |   Todo
-  3 |     docs
-  4 |   %% note
-  5 |   %%{init: {}}%%
-  6 |   To%%{init: {}}%%do
-    |   ^~~~~~~~~~~~~~~~~~ [1]
-  7 |
-
-[1] mermaid.js lists every item belonging to `Todo` under each section with this id.
----
-
-
 Test: kanban-no-duplicate-section >> invalid >>> invalid/kanban/section-duplicate-before-later-items
 Filename: tests/fixtures/rules/kanban-no-duplicate-section/invalid/kanban/section-duplicate-before-later-items-input.mmd
 

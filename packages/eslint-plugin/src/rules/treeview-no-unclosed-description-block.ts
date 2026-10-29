@@ -13,6 +13,7 @@ export const treeviewNoUnclosedDescriptionBlock: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("treeview-no-unclosed-description-block"),
     },
+
     schema: [],
     messages: {
       unclosed:
@@ -32,7 +33,10 @@ export const treeviewNoUnclosedDescriptionBlock: MermaidRuleDefinition<{
         let at = "accDescr".length
         while (name.name[at] === " " || name.name[at] === "\t") at++
         if (name.name[at] === "{") {
-          context.report({ node: name, messageId: "unclosed" })
+          context.report({
+            node: name,
+            messageId: "unclosed",
+          })
         }
       },
     }

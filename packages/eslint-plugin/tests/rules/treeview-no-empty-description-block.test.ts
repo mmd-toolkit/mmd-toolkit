@@ -27,6 +27,14 @@ new RuleTester(LANGUAGE_CONFIG).run(
             column: 3,
             endLine: 3,
             endColumn: 5,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `treeView-beta
+  root/
+`,
+              },
+            ],
           },
         ],
       },
@@ -45,6 +53,13 @@ node`,
             column: 1,
             endLine: 3,
             endColumn: 5,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `treeView-beta
+node`,
+              },
+            ],
           },
         ],
       },
@@ -63,6 +78,14 @@ root/
             column: 1,
             endLine: 2,
             endColumn: 14,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `treeView-beta
+root/
+`,
+              },
+            ],
           },
         ],
       },
@@ -78,6 +101,31 @@ root/
             column: 1,
             endLine: 3,
             endColumn: 2,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `treeView-beta\rroot/\r`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/treeview/removal-crlf-with-tab",
+        filename: "input.mmd",
+        code: `treeView-beta\r
+accDescr {\t}\r
+`,
+        errors: [
+          {
+            messageId: "empty",
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `treeView-beta\r
+`,
+              },
+            ],
           },
         ],
       },

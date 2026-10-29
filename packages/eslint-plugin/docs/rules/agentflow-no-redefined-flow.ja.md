@@ -10,42 +10,25 @@
 
 <!-- end auto-generated rule notice -->
 
-同じ id の flow は、mermaid.js では 1 つの flow である。
+同じ flow の id の宣言は、mermaid.js では 1 つの flow である。
 そのメンバーは合わされ、後のタイトルはエラーなしに前のものを置き換える。
 
 ## 規則の詳細
 
-この規則は、flow の宣言のタイトルのうち、
-同じ id の宣言が前に flow に与えたタイトルと違うものを報告する。
-対象の図種は `agentflow` である。
+この規則は、agentflow 図（`agentflow-beta`）に当てる。
+同じ id の前の宣言が設定した、flow の現在のタイトルと違うタイトルを報告する。
+タイトルがない宣言、空白だけのタイトルの宣言、
+現在と同じタイトルの宣言は報告せず、メンバーを足すために flow を再宣言できる。
 
-本体と `end` を持つ `flow F[First]` の後の宣言 `flow F[Second]` は、
-flow にタイトル `Second` を与え、`First` は失われる。
-タイトルなしの宣言と空白だけのタイトルの宣言は flow のタイトルを保ち、
-メンバーを足すために flow をもう一度書くことは報告しない。
-flow がすでに持つタイトルの宣言も報告しない。
-`First` と `Second` の後の 3 つ目の `flow F[First]` は、
-`Second` を置き換えるので報告する。
-名前のない flow は書いたタイトルを持たず、タイトルを置き換えない。
-その id は `subGraph` に、それより前に完了した flow 宣言の数を続けたもので、
-同じ id の再宣言も数える。
-名前のない 2 つの flow の id は異なる。
-名前のない flow と、その生成 id を名前に持つ flow は合わされ、
-前の空でないタイトルを保つ。
+名前のない flow は書いたタイトルを持たず、前のタイトルを置き換えない。
+名前のない 2 つの flow は別の flow である。
 
-mermaid.js は flow の `end` に達したときにタイトルを設定するので、
-ほかの flow の中に書いた flow が先に設定される。
-宣言はその順で比べる。
+`F@{ label: Review }` のようなデータブロックが設定するタイトルは、
+宣言の間にあっても比べない。
 
-flow の id は、両端の空白と mermaid.js が消す部分を除いたその名前である。
-`F@{ label: Review }` のようにデータブロックが設定するタイトルは、
-2 つの宣言の間にあっても比べない。
-タイトルは、mermaid.js が取り除く両端の空白を除き、ほかは書いたとおりに比べる。
-mermaid.js は、`#35;` のような文字参照と HTML の属性の引用符を、
-タイトルを読む前にほかの文字に変えるので、それだけが違う 2 つのタイトルは、
-mermaid.js には 1 つで、この規則には 2 つのことがある。
-
-flow ごとに自分の id を与え、そのタイトルは 1 度だけ書く。
+タイトルは両端の空白を除き、そのほかは書いたとおりに比べるので、
+文字参照や HTML の属性の引用符の違いは、
+mermaid.js が同じタイトルとして読んでも報告することがある。
 
 この規則に**反する**コードの例:
 
@@ -80,14 +63,6 @@ agentflow-beta TB
 ## 関連する規則
 
 - [agentflow-no-duplicate-direction](./agentflow-no-duplicate-direction.ja.md)
-
-## 背景
-
-[`addSubGraph`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1175-L1284)
-は、 flow をその id の前の flow に合わせ、
-空でない後のタイトルでタイトルを置き換える。
-[flow の文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow.jison#L406-L415)
-は `end` の後でそれを呼ぶ。
 
 <!-- begin auto-generated rule resources -->
 

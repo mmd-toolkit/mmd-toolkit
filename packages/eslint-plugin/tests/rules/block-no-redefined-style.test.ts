@@ -31,6 +31,22 @@ new RuleTester(LANGUAGE_CONFIG).run(
             column: 3,
             endLine: 4,
             endColumn: 31,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `block
+  A
+  style A border:1px\u00a0solid red
+`,
+              },
+              {
+                desc: "Remove the earlier statement.",
+                output: `block
+  A
+  style A border:1px solid red
+`,
+              },
+            ],
           },
         ],
       },

@@ -1,3 +1,17 @@
+import { canEditRange } from "../utils/edit-range.ts"
+import { canCompactRange } from "../utils/compact-range.ts"
+import type { MermaidSourceCode } from "../source-code.ts"
+import {
+  numberWithoutDigitSeparators,
+  numberWithDecimalPoint,
+} from "../utils/number-spellings.ts"
+import type {
+  RuleFixer,
+  RuleTextEdit,
+  RuleTextEditor,
+  SuggestedEdit,
+} from "@eslint/core"
+import type { SankeyLiteral, StringLiteral } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 
@@ -8,6 +22,50 @@ import { ruleDocsUrl } from "../rule-docs-url.ts"
  */
 const NUMBER_AT_START =
   /^[+-]?(?:Infinity|(?:\d+\.?\d*|\.\d+)(?:[Ee][+-]?\d+)?)/u
+
+/** Offer only the recorded number spellings, preserving CSV quotes. */
+function numberEdits(
+  sourceCode: MermaidSourceCode,
+  node: SankeyLiteral | StringLiteral,
+): { fix?: RuleFixer; suggest?: SuggestedEdit<"writeNumber">[] } {
+  if (
+    !canEditRange(sourceCode, node.range) ||
+    !canCompactRange(sourceCode, node.range)
+  )
+    return {}
+  const text = node.value.trim()
+  let value: string | undefined
+  let automatic = true
+  if (["infinity", "+infinity", "-infinity"].includes(text.toLowerCase())) {
+    value = text.toLowerCase().replace("infinity", "Infinity")
+  } else if (text.includes("_")) {
+    value = numberWithoutDigitSeparators(text)
+  } else if (
+    text.toLowerCase().startsWith("0x") &&
+    text.length > 2 &&
+    [...text.slice(2).toLowerCase()].every(
+      (character) =>
+        (character >= "0" && character <= "9") ||
+        (character >= "a" && character <= "f"),
+    )
+  ) {
+    value = String(Number(text))
+  } else {
+    value = numberWithDecimalPoint(text)
+    automatic = false
+  }
+  if (value === undefined) return {}
+  const written = node.type === "StringLiteral" ? `"${value}"` : value
+
+  /** Write the selected spelling with the original CSV quoting. */
+  function fix(fixer: RuleTextEditor): RuleTextEdit {
+    return fixer.replaceText(node, written)
+  }
+
+  return automatic
+    ? { fix }
+    : { suggest: [{ messageId: "writeNumber", data: { number: value }, fix }] }
+}
 
 /**
  * The rule `sankey-no-invalid-value`, described in
@@ -22,7 +80,7 @@ const NUMBER_AT_START =
  */
 export const sankeyNoInvalidValue: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "notNumber" | "dropped"
+  MessageIds: "notNumber" | "dropped" | "writeNumber"
 }> = {
   meta: {
     type: "problem",
@@ -32,8 +90,11 @@ export const sankeyNoInvalidValue: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("sankey-no-invalid-value"),
     },
+    hasSuggestions: true,
+    fixable: "code",
     schema: [],
     messages: {
+      writeNumber: "Write the number as `{{number}}`.",
       notNumber:
         "mermaid.js reads this value as NaN, because it does not start with a number: the link has no size.",
       dropped:
@@ -49,6 +110,7 @@ export const sankeyNoInvalidValue: MermaidRuleDefinition<{
           context.report({
             node: node.value,
             messageId: "notNumber",
+            ...numberEdits(context.sourceCode, node.value),
           })
           return
         }
@@ -57,6 +119,7 @@ export const sankeyNoInvalidValue: MermaidRuleDefinition<{
           context.report({
             node: node.value,
             messageId: "dropped",
+            ...numberEdits(context.sourceCode, node.value),
           })
         }
       },

@@ -14,6 +14,7 @@ export const agentflowNoIgnoredText: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("agentflow-no-ignored-text"),
     },
+
     schema: [],
     messages: {
       ignored:
@@ -23,17 +24,12 @@ export const agentflowNoIgnoredText: MermaidRuleDefinition<{
   create(context) {
     return {
       AgentflowDirectionStatement(node) {
-        if (
-          node.textBefore !== null &&
-          isIgnoredDirectionText(node.textBefore.value, "before")
-        ) {
-          context.report({ node: node.textBefore, messageId: "ignored" })
-        }
-        if (
-          node.textAfter !== null &&
-          isIgnoredDirectionText(node.textAfter.value, "after")
-        ) {
-          context.report({ node: node.textAfter, messageId: "ignored" })
+        for (const [text, side] of [
+          [node.textBefore, "before"],
+          [node.textAfter, "after"],
+        ] as const) {
+          if (text !== null && isIgnoredDirectionText(text.value, side))
+            context.report({ node: text, messageId: "ignored" })
         }
       },
     }

@@ -8,43 +8,37 @@ mermaid.js が捨てるテキストを禁止する。
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+🔧
+[`--fix` オプション](https://eslint.org/docs/latest/use/command-line-interface#--fix)
+で自動修正できる。
+
 <!-- end auto-generated rule notice -->
 
 `direction` の文は、それだけで 1 行に書く。
-その行にほかのテキストもあると、 mermaid.js は行全体を方向の文として読み、
+ほかのテキストも同じ行にあると、mermaid.js は行全体を方向の文として読み、
 残りをエラーなしに捨てる。
-state 図には、同じようにテキストを捨てる所がほかにもいくつかある。
+状態図には、ほかにもテキストを捨てる場所がある。
 
 ## 規則の詳細
 
-この規則は、mermaid.js が捨てるテキストを報告する。
-対象の図種は `stateDiagram` である。
+この規則は、状態図（`stateDiagram`、`stateDiagram-v2`）に当てる。
+同じ行の `direction` より前か、その方向の値より後にあるテキストを、
+`B : x direction LR` のように状態の説明の中に書いた `direction`
+も含めて報告する。
+方向の後の `%%` で始まるテキストは、コメントのつもりで書かれ、
+mermaid.js が意図どおりに捨てるので報告しない。
 
-`A --> B direction LR` は方向を `LR` にし、遷移も状態も作らない。
-`direction TBX` は方向を `TB` にし、`X` は捨てられる。
-方向の文のつもりでない行も、方向の文になる。
-`B : x direction LR` では、状態 `B` も説明もできない。
-
-`direction LR %% c` のように、方向の後の `%%` で始まるテキストは報告しない。
-書き手はそれをコメントのつもりで書いており、
-mermaid.js も書き手の意図どおりにそれを捨てる。
-
-規則は、mermaid.js が捨てるほかのテキストも報告する。
+次のものも報告する。
 
 - 別名の定義の 2 つ目の `:` からのテキスト。
-  `state "d" as A : x : y` は、A に、両端に空白のある 2 つ目の説明 `x` を与え、
-  `: y` は捨てられる。
+  `state "d" as A : x : y` の `: y` などが当たる。
 - 本体の `{` の前の `%%`。
-  `state "d" as %% c {` では、別名は id を持たず、その本体の状態は、
-  どの合成状態にも入らない。
-- 1 行に書いたノートの `:` の直後の 1 文字。
-  `note left of A:hi` は、ノートのテキストを `i` にする。
-  [mermaid.js の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/stateDiagram.md#L263)
-  は、`note left of State2 : This is the note to the left.` のように、
-  `:` の後に空白を置いてそうしたノートを書く。
-  `note left of A : hi` のようにそう書けば、何も捨てられない。
-- mermaid.js が飛ばす空の文字列（`state x ""` の `""` など）と、
-  後の行の本体の `{` の前にある空の説明のブロックと 2 つ目の `state`。
+  `state "d" as %% c {` では、別名は id を持たない。
+- 1 行のノートの `:` の直後の文字。
+  `note left of A:hi` の `h` などが当たる。
+  ノートのテキスト全体を保つには、`:` の後に空白を書く。
+- `state x ""` の `""` のように mermaid.js が飛ばす空の文字列と、
+  後の行の本体の `{` の前にある空の説明のブロックや 2 つ目の `state`。
 
 この規則に**反する**コードの例:
 
@@ -85,6 +79,10 @@ stateDiagram-v2
 
 - [flowchart-no-ignored-text](./flowchart-no-ignored-text.ja.md)
 - [class-no-ignored-text](./class-no-ignored-text.ja.md)
+
+## 参考
+
+- [状態図のノート](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/stateDiagram.md#L263)
 
 <!-- begin auto-generated rule resources -->
 

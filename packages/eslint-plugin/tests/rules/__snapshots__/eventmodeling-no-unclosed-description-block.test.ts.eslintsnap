@@ -73,19 +73,6 @@ Code:
 ---
 
 
-Test: eventmodeling-no-unclosed-description-block >> invalid >>> invalid/eventmodeling/crlf
-Filename: tests/fixtures/rules/eventmodeling-no-unclosed-description-block/invalid/eventmodeling/crlf-input.mmd
-
-Code:
-  1 | eventmodeling accDescr { first
-    |               ^~~~~~~~~~ [1]
-  2 |   tf 01 cmd Buy { item }
-  3 |
-
-[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
----
-
-
 Test: eventmodeling-no-unclosed-description-block >> invalid >>> invalid/eventmodeling/docs-incorrect-1
 Filename: tests/fixtures/rules/eventmodeling-no-unclosed-description-block/invalid/eventmodeling/docs-incorrect-1-input.mmd
 

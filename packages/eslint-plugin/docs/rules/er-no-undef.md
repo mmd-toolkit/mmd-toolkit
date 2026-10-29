@@ -16,20 +16,16 @@ name gives no error.
 
 ## Rule Details
 
-This rule reports a name in a `style` or `class` statement that is the name of
-no entity and the id of no subgraph of the diagram. It applies to `er`.
+This rule applies to entity relationship diagrams (`erDiagram`). It reports each
+name in `style` or `class` that is neither an entity name nor a subgraph id
+anywhere in the diagram. Entities named in relationships or in any subgraph
+count as defined.
 
-The entities of a diagram are those that an entity statement or a relationship
-names, anywhere in the diagram and in any subgraph. After `A`,
-`style Z fill:red` and `class Z c` change nothing. Each name of a list is
-checked: `style Z,A fill:red` styles `A`, and `Z` is reported. An alias is no
-name: after `p[Person]`, `style Person fill:red` changes nothing and is
-reported. An entity written in quotes, as `"A"`, is named by `style A`.
-
-A statement written before the entity or the subgraph that it names changes
-nothing in mermaid.js either: `style A fill:red` before `A` gives `A` no style.
-Such a statement names an entity of the diagram, which is written correctly, and
-the rule does not report it.
+An alias does not count as a name: `style Person fill:red` after `p[Person]` is
+reported. Quotes around an entity name do not change it, so `style A` can name
+`"A"`. A statement before the entity or subgraph that it names is not reported,
+although mermaid.js does nothing with it there: it names an entity or subgraph
+of the diagram correctly.
 
 Examples of **incorrect** code for this rule:
 

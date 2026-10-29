@@ -27,6 +27,24 @@ rf 01 ui Cart\u2028tf 02 cmd Buy ->> 99`,
           },
         ],
       },
+
+      {
+        name: "invalid/eventmodeling/source-crlf",
+        filename:
+          "tests/fixtures/rules/eventmodeling-no-undef/invalid/eventmodeling/source-crlf-input.mmd",
+        code: `eventmodeling\r
+rf 01 ui Cart\r
+tf 02 cmd Buy ->> 99`,
+        errors: [
+          {
+            message: "mermaid.js finds no frame named `99` for this reference.",
+            line: 3,
+            column: 19,
+            endLine: 3,
+            endColumn: 21,
+          },
+        ],
+      },
     ],
   },
 )

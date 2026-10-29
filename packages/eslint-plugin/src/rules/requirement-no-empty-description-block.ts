@@ -1,3 +1,4 @@
+import { emptyBlockRemovalSuggestions } from "../utils/description-block-suggestions.ts"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { blockHoldsComment } from "../utils/description-block.ts"
@@ -13,7 +14,7 @@ import { blockHoldsComment } from "../utils/description-block.ts"
  */
 export const requirementNoEmptyDescriptionBlock: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "empty" | "emptyInBody"
+  MessageIds: "empty" | "emptyInBody" | "removeBlock"
 }> = {
   meta: {
     type: "problem",
@@ -22,12 +23,14 @@ export const requirementNoEmptyDescriptionBlock: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("requirement-no-empty-description-block"),
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
       empty:
         "mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.",
       emptyInBody:
         "mermaid.js reads no description block in the body of a requirement or an element, and drops this empty `accDescr` block.",
+      removeBlock: "Remove the empty block.",
     },
   },
   create(context) {
@@ -36,7 +39,11 @@ export const requirementNoEmptyDescriptionBlock: MermaidRuleDefinition<{
       RequirementAccDescrBlockStatement(node) {
         if (node.value !== null) return
         if (blockHoldsComment(sourceCode, node)) return
-        context.report({ node, messageId: "empty" })
+        context.report({
+          node,
+          messageId: "empty",
+          suggest: emptyBlockRemovalSuggestions(context.sourceCode, node),
+        })
       },
       RequirementIgnoredText(node, parent) {
         // The text of a direction line is reported by `requirement-no-ignored-text`.
@@ -47,7 +54,11 @@ export const requirementNoEmptyDescriptionBlock: MermaidRuleDefinition<{
           return
         }
         if (blockHoldsComment(sourceCode, node)) return
-        context.report({ node, messageId: "emptyInBody" })
+        context.report({
+          node,
+          messageId: "emptyInBody",
+          suggest: emptyBlockRemovalSuggestions(context.sourceCode, node),
+        })
       },
     }
   },

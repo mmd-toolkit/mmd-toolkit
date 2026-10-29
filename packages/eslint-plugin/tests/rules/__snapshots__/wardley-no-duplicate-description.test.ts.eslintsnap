@@ -13,6 +13,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 |   accDescr: First
+          3 |   component API [0.6, 0.7]
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | wardley-beta
+          2 |   accDescr: Second
+          3 |   component API [0.6, 0.7]
+          4 |
 ---
 
 
@@ -26,6 +39,15 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | accDescr: Current map
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | wardley-beta
+          2 | accDescr { Future map }
 ---
 
 
@@ -43,6 +65,17 @@ Code:
     | ~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | accDescr: First
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | wardley-beta
+          2 | accDescr {
+          3 | %% TODO
+          4 | }
 ---
 
 
@@ -57,6 +90,17 @@ Code:
     | ^~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | accDescr: First
+          3 | %%{init:{}}%%
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | wardley-beta
+          2 | %%{init:{}}%%
+          3 | accDescr: Last
 ---
 
 
@@ -70,6 +114,15 @@ Code:
     | ^~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | accDescr: First
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | wardley-beta
+          2 | accDescr:
 ---
 
 
@@ -83,6 +136,37 @@ Code:
     | ^~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | accDescr: A
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | wardley-beta
+          2 | accDescr: #65;
+---
+
+
+Test: wardley-no-duplicate-description >> invalid >>> invalid/wardley/description-equal-predecessor
+Filename: tests/fixtures/rules/wardley-no-duplicate-description/invalid/wardley/description-equal-predecessor-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | accDescr: A
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
 ---
 
 
@@ -96,6 +180,43 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | accDescr: <b x="a">T</b>
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | wardley-beta
+          2 | accDescr: <b x='a'>T</b>
+---
+
+
+Test: wardley-no-duplicate-description >> invalid >>> invalid/wardley/description-removal-empty-predecessor
+Filename: tests/fixtures/rules/wardley-no-duplicate-description/invalid/wardley/description-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | accDescr {}
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | accDescr {}
+          3 | accDescr: A
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | wardley-beta
+          2 | accDescr {}
+          3 | accDescr: B
+          4 |
 ---
 
 
@@ -111,7 +232,29 @@ Code:
     | ^~~~~~~~~~~~~~ [2]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | accDescr { A }
+          3 | accDescr { A }
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | wardley-beta
+          2 | accDescr: B
+          3 | accDescr { A }
 [2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | accDescr { A }
+          3 | accDescr: B
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | wardley-beta
+          2 | accDescr { A }
+          3 | accDescr { A }
 ---
 
 
@@ -127,4 +270,17 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 |   accDescr: First
+          3 |   component API [0.6, 0.7]
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | wardley-beta
+          2 |   accDescr: Second
+          3 |   component API [0.6, 0.7]
+          4 |
 ---

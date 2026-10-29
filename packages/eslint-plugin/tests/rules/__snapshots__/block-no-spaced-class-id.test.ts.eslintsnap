@@ -12,7 +12,102 @@ Code:
     |           ^~ [1]
   5 |
 
+Output:
+  1 | block
+  2 |   A B
+  3 |   classDef c fill:#f00
+  4 |   class A,B c
+  5 |
+
 [1] mermaid.js includes the whitespace after the comma in this id and gives the class to an unplaced block.
+---
+
+
+Test: block-no-spaced-class-id >> invalid >>> invalid/block/compact-blank-interior
+Filename: tests/fixtures/rules/block-no-spaced-class-id/invalid/block/compact-blank-interior-input.mmd
+
+Code:
+  1 | block-beta
+  2 | A B
+  3 | class A,
+    |         ^\ [1]
+  4 |
+    | ~\ [1]
+  5 |   B c
+    | ~~~ [1]
+  6 |
+
+Output:
+  1 | block-beta
+  2 | A B
+  3 | class A,B c
+  4 |
+
+[1] mermaid.js includes the whitespace after the comma in this id and gives the class to an unplaced block.
+---
+
+
+Test: block-no-spaced-class-id >> invalid >>> invalid/block/compact-comment-lines
+Filename: tests/fixtures/rules/block-no-spaced-class-id/invalid/block/compact-comment-lines-input.mmd
+
+Code:
+  1 | block-beta
+  2 | A B
+  3 | class A,
+    |         ^\ [1]
+  4 | %% c
+    | ~~~~\ [1]
+  5 |   B c
+    | ~~~ [1]
+  6 |
+
+Output: unchanged
+
+[1] mermaid.js includes the whitespace after the comma in this id and gives the class to an unplaced block.
+---
+
+
+Test: block-no-spaced-class-id >> invalid >>> invalid/block/compact-line-ending
+Filename: tests/fixtures/rules/block-no-spaced-class-id/invalid/block/compact-line-ending-input.mmd
+
+Code:
+  1 | block-beta
+  2 | A B
+  3 | class A,
+    |         ^\ [1]
+  4 |   B c
+    | ~~~ [1]
+  5 |
+
+Output:
+  1 | block-beta
+  2 | A B
+  3 | class A,B c
+  4 |
+
+[1] mermaid.js includes the whitespace after the comma in this id and gives the class to an unplaced block.
+---
+
+
+Test: block-no-spaced-class-id >> invalid >>> invalid/block/compact-text-interior
+Filename: tests/fixtures/rules/block-no-spaced-class-id/invalid/block/compact-text-interior-input.mmd
+
+Code:
+  1 | block-beta
+  2 | A B C
+  3 | class A,
+    |         ^\ [1]
+  4 | C,
+    | ~ [1]
+    |   ^\ [2]
+  5 |   B c
+    | ~~~ [2]
+  6 |
+
+Output: unchanged
+
+[1] mermaid.js includes the whitespace after the comma in this id and gives the class to an unplaced block.
+[2] mermaid.js includes the whitespace after the comma in this id and gives the class to an unplaced block.
 ---
 
 
@@ -29,6 +124,13 @@ Code:
     | ~~~ [1]
   6 |
 
+Output:
+  1 | block
+  2 |   A B
+  3 |   classDef c fill:#f00
+  4 |   class A,B c
+  5 |
+
 [1] mermaid.js includes the whitespace after the comma in this id and gives the class to an unplaced block.
 ---
 
@@ -42,6 +144,13 @@ Code:
   3 |   classDef c fill:#f00
   4 |   class A, B c
     |           ^~ [1]
+  5 |
+
+Output:
+  1 | block
+  2 |   A B
+  3 |   classDef c fill:#f00
+  4 |   class A,B c
   5 |
 
 [1] mermaid.js includes the whitespace after the comma in this id and gives the class to an unplaced block.
@@ -59,6 +168,13 @@ Code:
     |                         ^~ [1]
   5 |
 
+Output:
+  1 | block
+  2 |   A B
+  3 |   classDef c fill:#f00
+  4 |   class A,%%{init: {}}%%B c
+  5 |
+
 [1] mermaid.js includes the whitespace after the comma in this id and gives the class to an unplaced block.
 ---
 
@@ -72,6 +188,13 @@ Code:
   3 |   classDef c fill:#f00
   4 |   class A , B c
     |           ^~~~~ [1]
+  5 |
+
+Output:
+  1 | block
+  2 |   A B
+  3 |   classDef c fill:#f00
+  4 |   class A,B c
   5 |
 
 [1] mermaid.js ends the ids at the whitespace before the comma and takes the rest of the line as the name of the class, which no `classDef` defines.
@@ -89,6 +212,13 @@ Code:
     |           ^~~~ [1]
   5 |
 
+Output:
+  1 | block
+  2 |   A B
+  3 |   classDef c fill:#f00
+  4 |   class A,B c
+  5 |
+
 [1] mermaid.js ends the ids at the whitespace before the comma and takes the rest of the line as the name of the class, which no `classDef` defines.
 ---
 
@@ -102,6 +232,13 @@ Code:
   3 |   classDef c fill:#f00
   4 |   class A, root c
     |           ^~~~~ [1]
+  5 |
+
+Output:
+  1 | block
+  2 |   A
+  3 |   classDef c fill:#f00
+  4 |   class A,root c
   5 |
 
 [1] mermaid.js includes the whitespace after the comma in this id and gives the class to an unplaced block.
@@ -119,6 +256,13 @@ Code:
     |           ^~ [1]
   5 |
 
+Output:
+  1 | block
+  2 |   A B
+  3 |   classDef c fill:#f00
+  4 |   class A,B c
+  5 |
+
 [1] mermaid.js includes the whitespace after the comma in this id and gives the class to an unplaced block.
 ---
 
@@ -133,6 +277,13 @@ Code:
   4 |   class A, B, C c
     |           ^~ ^~
     |          [1] [2]
+  5 |
+
+Output:
+  1 | block
+  2 |   A B C
+  3 |   classDef c fill:#f00
+  4 |   class A,B,C c
   5 |
 
 [1] mermaid.js includes the whitespace after the comma in this id and gives the class to an unplaced block.

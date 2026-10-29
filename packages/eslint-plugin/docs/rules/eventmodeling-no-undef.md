@@ -17,26 +17,21 @@ from that source and no data of that reference.
 
 ## Rule Details
 
-This rule reports a source of a `tf` or `timeframe` statement that names no
-frame, and a `[[ ]]` reference of a frame that names no `data` block. It applies
-to `eventmodeling`.
+This rule applies to Event Modeling diagrams (`eventmodeling`). It reports a
+source of a `tf` or `timeframe` statement that names no frame, and a `[[ ]]`
+reference of a frame that names no `data` block. A frame or data block declared
+after the reference counts. A `[[ ]]` reference that names no `data` block is
+reported even when the frame has inline data, which mermaid.js then shows
+instead. Names are compared as written, with their case, so `1`, `01`, and `001`
+name three frames.
 
-After `tf 01 ui Cart`, the frame `tf 02 cmd Buy ->> 99` has no relation: a frame
-with sources draws relations only from them, and not from the frame before it.
-With `data Payload`, the frame `tf 01 evt Bought [[Paylod]]` shows no data; with
-inline data, as in `tf 01 evt Bought [[Paylod]] {fallback }`, it shows the
-inline data in place of the block.
+A source naming a later frame is not reported, though mermaid.js draws no
+relation from it.
 
-A frame or a data block declared after the reference counts. Names are compared
-as written, with their case: `1`, `01`, and `001` name three frames. A source
-that names a frame declared later counts too, though mermaid.js draws no
-relation from it, since it draws the relations of a frame when it places the
-frame. The sources of a reset frame (`rf` or `resetframe`) are not checked:
-mermaid.js draws no relation of a reset frame, whatever its sources name. The
-frames that `note` and `gwt` name are not checked either, since mermaid.js draws
-neither statement.
-
-Correct the name, or declare the frame or the data block.
+Sources of reset frames (`rf` or `resetframe`) are not checked, because
+mermaid.js draws no relation for them, whatever their sources name; their
+`[[ ]]` references are checked. Frames named by `note` and `gwt` are not checked
+either, because mermaid.js draws neither statement.
 
 Examples of **incorrect** code for this rule:
 
@@ -81,17 +76,6 @@ This rule has no options.
 ## Related Rules
 
 - [eventmodeling-no-redefined-data](./eventmodeling-no-redefined-data.md)
-
-## Background
-
-[`getState`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L106-L128)
-takes the frames whose numbers the sources give and draws a relation from each
-of them, and infers one from the frame before only for a frame without sources;
-[`decidePositionRelation`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L570-L593)
-draws no relation of a reset frame, and none from a frame not placed yet. The
-[data of a frame](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L339-L362)
-is the first data block of the name, or its inline data when no block has the
-name.
 
 <!-- begin auto-generated rule resources -->
 

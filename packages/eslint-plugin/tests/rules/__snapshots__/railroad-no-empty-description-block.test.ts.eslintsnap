@@ -12,6 +12,12 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | railroad-ebnf-beta
+          2 |   word = "a";
+          3 |
 ---
 
 
@@ -26,6 +32,12 @@ Code:
   4 | word="a";
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | railroad-abnf-beta
+          2 | accDescr: First
+          3 | word="a";
 ---
 
 
@@ -43,6 +55,11 @@ Code:
   5 | word="a";
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | railroad-abnf-beta
+          2 | word="a";
 ---
 
 
@@ -70,6 +87,12 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | railroad-ebnf-beta
+          2 |   word = "a";
+          3 |
 ---
 
 
@@ -100,6 +123,11 @@ Code:
   5 | word="a";
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | railroad-ebnf-beta
+          2 | word="a";
 ---
 
 
@@ -113,6 +141,11 @@ Code:
   3 | word="a";
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | railroad-ebnf-beta
+          2 | word="a";
 ---
 
 
@@ -167,21 +200,11 @@ Code:
   3 | word=terminal("a");
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
----
-
-
-Test: railroad-no-empty-description-block >> invalid >>> invalid/railroad/peg-empty-crlf
-Filename: tests/fixtures/rules/railroad-no-empty-description-block/invalid/railroad/peg-empty-crlf-input.mmd
-
-Code:
-  1 | railroad-peg-beta
-  2 | accDescr {
-    | ^~~~~~~~~~\ [1]
-  3 | }
-    | ~ [1]
-  4 | word<-"a";
-
-[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | railroad-beta
+          2 | word=terminal("a");
 ---
 
 
@@ -208,6 +231,11 @@ Code:
   3 | word<-"a";
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | railroad-peg-beta
+          2 | word<-"a";
 ---
 
 
@@ -223,7 +251,19 @@ Code:
   4 | word<-"a";
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | railroad-peg-beta
+          2 | accDescr {}
+          3 | word<-"a";
 [2] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | railroad-peg-beta
+          2 | accDescr {}
+          3 | word<-"a";
 ---
 
 
@@ -239,4 +279,11 @@ Code:
   5 | word<-"a";
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | railroad-peg-beta
+          2 | accDescr: A
+          3 | accDescr: B
+          4 | word<-"a";
 ---

@@ -14,6 +14,14 @@ Code:
   6 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | requirementDiagram
+          2 |   requirement r {
+          3 |     id: 1
+          4 |   }
+          5 |
 ---
 
 
@@ -30,6 +38,14 @@ Code:
   6 |
 
 [1] mermaid.js reads no description block in the body of a requirement or an element, and drops this empty `accDescr` block.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | requirementDiagram
+          2 |   requirement r {
+          3 |     id: 1
+          4 |   }
+          5 |
 ---
 
 
@@ -44,6 +60,12 @@ Code:
   4 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr { y }
+          3 |
 ---
 
 
@@ -58,6 +80,12 @@ Code:
   4 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: x
+          3 |
 ---
 
 
@@ -88,6 +116,13 @@ Code:
   5 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 | }
+          4 |
 ---
 
 
@@ -177,6 +212,14 @@ Code:
   6 |
 
 [1] mermaid.js reads no description block in the body of a requirement or an element, and drops this empty `accDescr` block.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 | id: 1
+          4 | }
+          5 |
 ---
 
 
@@ -193,6 +236,14 @@ Code:
   6 |
 
 [1] mermaid.js reads no description block in the body of a requirement or an element, and drops this empty `accDescr` block.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | requirementDiagram
+          2 | element e {
+          3 | type: t
+          4 | }
+          5 |
 ---
 
 
@@ -211,6 +262,14 @@ Code:
   7 |
 
 [1] mermaid.js reads no description block in the body of a requirement or an element, and drops this empty `accDescr` block.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 | id: 1
+          4 | }
+          5 |
 ---
 
 
@@ -261,4 +320,14 @@ Code:
   8 |
 
 [1] mermaid.js reads no description block in the body of a requirement or an element, and drops this empty `accDescr` block.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   id: 1
+          4 | }
+          5 | requirement r {
+          6 | }
+          7 |
 ---

@@ -13,6 +13,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier direction with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | usecase-beta
+          2 |   direction LR
+          3 |   A
+          4 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | usecase-beta
+          2 |   direction BT
+          3 |   A
+          4 |
 ---
 
 
@@ -30,21 +43,52 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier direction with `TD`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | usecase-beta
+          2 | direction LR
+          3 | direction TB
+          4 | direction RL
+          5 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | usecase-beta
+          2 | direction TD
+          3 | direction TB
+          4 | direction RL
+          5 |
 [2] mermaid.js replaces the earlier direction with `RL`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | usecase-beta
+          2 | direction LR
+          3 | direction TD
+          4 | direction TB
+          5 |
 ---
 
 
-Test: usecase-no-duplicate-direction >> invalid >>> invalid/usecase/direction-crlf
-Filename: tests/fixtures/rules/usecase-no-duplicate-direction/invalid/usecase/direction-crlf-input.mmd
+Test: usecase-no-duplicate-direction >> invalid >>> invalid/usecase/direction-equal-predecessor
+Filename: tests/fixtures/rules/usecase-no-duplicate-direction/invalid/usecase/direction-equal-predecessor-input.mmd
 
 Code:
   1 | usecase-beta
   2 | direction LR
-  3 | direction RL
+  3 | direction LR
+  4 | direction BT
     | ^~~~~~~~~~~~ [1]
-  4 |
+  5 |
 
-[1] mermaid.js replaces the earlier direction with `RL`.
+[1] mermaid.js replaces the earlier direction with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | usecase-beta
+          2 | direction LR
+          3 | direction LR
+          4 |
 ---
 
 
@@ -62,6 +106,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier direction with `RL`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | usecase-beta
+          2 | direction LR
+          3 | %% comment
+          4 |
+          5 | %%{init: {}}%%
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | usecase-beta
+          2 | %% comment
+          3 |
+          4 | %%{init: {}}%%
+          5 | direction RL
+          6 |
 ---
 
 
@@ -78,5 +139,31 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier direction with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | usecase-beta
+          2 | direction LR
+          3 | direction LR
+          4 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | usecase-beta
+          2 | direction BT
+          3 | direction LR
+          4 |
 [2] mermaid.js replaces the earlier direction with `LR`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | usecase-beta
+          2 | direction LR
+          3 | direction BT
+          4 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | usecase-beta
+          2 | direction LR
+          3 | direction LR
+          4 |
 ---

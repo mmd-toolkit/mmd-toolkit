@@ -42,14 +42,14 @@ new RuleTester(LANGUAGE_CONFIG).run(
             endColumn: 14,
             suggestions: [
               {
-                desc: "Remove this `accTitle` statement: mermaid.js uses the last title that remains.",
+                desc: "Remove this `accTitle` statement.",
                 output: `flowchart LR
   A
   accTitle: a\u2028b
 `,
               },
               {
-                desc: "Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.",
+                desc: "Remove the earlier `accTitle` statement.",
                 output: `flowchart LR
   A
   accTitle: c
@@ -77,17 +77,151 @@ new RuleTester(LANGUAGE_CONFIG).run(
             endColumn: 21,
             suggestions: [
               {
-                desc: "Remove this `accTitle` statement: mermaid.js uses the last title that remains.",
-                output: `flowchart LR
-  accTitle: a
-  A
-`,
-              },
-              {
-                desc: "Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.",
+                desc: "Remove the earlier `accTitle` statement.",
                 output: `flowchart LR
   accTitle: style:#b;\u2028
   A
+`,
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        name: "invalid/flowchart/db-duplicate-title-crlf",
+        filename:
+          "tests/fixtures/rules/flowchart-no-duplicate-title/invalid/flowchart/db-duplicate-title-crlf-input.mmd",
+        code: `flowchart LR\r
+  A\r
+  accTitle: a\r
+  accTitle: b\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier title with the one of this `accTitle`.",
+            line: 4,
+            column: 3,
+            endLine: 4,
+            endColumn: 14,
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `flowchart LR\r
+  A\r
+  accTitle: a\r
+`,
+              },
+              {
+                desc: "Remove the earlier `accTitle` statement.",
+                output: `flowchart LR\r
+  A\r
+  accTitle: b\r
+`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/flowchart/db-duplicate-title-duplicate-cr",
+        filename:
+          "tests/fixtures/rules/flowchart-no-duplicate-title/invalid/flowchart/db-duplicate-title-duplicate-cr-input.mmd",
+        code: `flowchart LR\r  accTitle: a\r  accTitle: b\r`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier title with the one of this `accTitle`.",
+            line: 3,
+            column: 3,
+            endLine: 3,
+            endColumn: 14,
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `flowchart LR\r  accTitle: a\r`,
+              },
+              {
+                desc: "Remove the earlier `accTitle` statement.",
+                output: `flowchart LR\r  accTitle: b\r`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/flowchart/db-duplicate-title-ignored-semicolon-cr",
+        filename:
+          "tests/fixtures/rules/flowchart-no-duplicate-title/invalid/flowchart/db-duplicate-title-ignored-semicolon-cr-input.mmd",
+        code: `flowchart LR\r  accTitle: a\r  accTitle: style:#b;\r`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier title with the one of this `accTitle`.",
+            line: 3,
+            column: 3,
+            endLine: 3,
+            endColumn: 21,
+            suggestions: [
+              {
+                desc: "Remove the earlier `accTitle` statement.",
+                output: `flowchart LR\r  accTitle: style:#b;\r`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/flowchart/db-duplicate-title-ignored-semicolon-crlf",
+        filename:
+          "tests/fixtures/rules/flowchart-no-duplicate-title/invalid/flowchart/db-duplicate-title-ignored-semicolon-crlf-input.mmd",
+        code: `flowchart LR\r
+  accTitle: a\r
+  accTitle: style:#b;\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier title with the one of this `accTitle`.",
+            line: 3,
+            column: 3,
+            endLine: 3,
+            endColumn: 21,
+            suggestions: [
+              {
+                desc: "Remove the earlier `accTitle` statement.",
+                output: `flowchart LR\r
+  accTitle: style:#b;\r
+`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/flowchart/title-equal-predecessor-crlf",
+        filename:
+          "tests/fixtures/rules/flowchart-no-duplicate-title/invalid/flowchart/title-equal-predecessor-crlf-input.mmd",
+        code: `flowchart LR\r
+accTitle: A\r
+accTitle: A\r
+accTitle: B\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier title with the one of this `accTitle`.",
+            line: 4,
+            column: 1,
+            endLine: 4,
+            endColumn: 12,
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `flowchart LR\r
+accTitle: A\r
+accTitle: A\r
 `,
               },
             ],

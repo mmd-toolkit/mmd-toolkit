@@ -8,46 +8,32 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+🔧
+[`--fix` オプション](https://eslint.org/docs/latest/use/command-line-interface#--fix)
+で自動修正できる。
+
 <!-- end auto-generated rule notice -->
 
-タスクの開始や終わりの場所にあるタグは、タグとして読まれない。
-mermaid.js はその語を日付として読むが、それは日付でなく、
-タスクは開始や終わりを失う。
-これが起きるのは、`DONE` のように違う大文字小文字で書いたタグ、
-`done crit` のように間のコンマなしに書いたタグ、
-`a : 2024-01-01, done` のように、ほかの項目の後に書いたタグである。
 タグ `active`、`done`、`crit`、`milestone`、`vert` がタスクに印を付けるのは、
-データの先頭で、それぞれ小文字で、後にコンマを付けて書いたときだけである。
+データの先頭に小文字で書き、コンマを付けたときだけである。
+タスクの開始や終了の場所に、違う大文字小文字（`DONE`）や、
+タグの間のコンマなし（`done crit`）や、
+ほかの項目の後（`a : 2024-01-01, done`）で書いたタグの語は、日付として読まれ、
+タスクは開始や終了を失う。
 
 ## 規則の詳細
 
-この規則は、タスクのデータの項目のうち、タスクの開始か終わりであり、
-最初の語が大文字小文字を問わずタグであるものを報告する。
-対象の図種は `gantt` である。
+この規則は、ガントチャート（`gantt`）に当てる。
+タスクのデータの開始か終了の項目で、最初の語が大文字小文字を問わず `active`、
+`done`、`crit`、`milestone`、`vert` のものを報告する。
+データの先頭に、それぞれ小文字でコンマを付けて書いたタグは、
+前後に空白があっても報告しない。
 
-タスクのデータは、タグの後に 1 つから 3 つの項目を持つ。
-終わり、開始と終わり、id と開始と終わり、のどれかである。
-`b : DONE, 1d` の開始は `DONE` であり、
-`b : done crit, 1d` の開始は `done crit` である。
-mermaid.js はその開始を読めず、チャートを描かない。
-`a : 2024-01-01, done` の終わりは `done` で、タスクは始まったところで終わり、
-長さを持たない。
-項目が 1 つの `b : Done` では、その項目が終わりで、同じである。
-
-id は調べない。
-`Design :Done, 2024-01-06, 3d` は id が `Done` のタスクであり、
-`Design :done crit, 2024-01-06, 3d` は id が `done crit` のタスクである。
-どちらも書いたとおりの開始と終わりを持ち、 mermaid.js は最初の項目を、
-どんな語でもよい id として読むので、規則は報告しない。
-
-4 つ以上の項目のデータは調べない。
-mermaid.js はその項目をどれも読まず、チャートを描けない。
-`A :a1, crit, 2024-01-01, 1d` がそうである。
-
-先頭に、コンマを付けて書いたタグは、タグとして読まれ、報告しない。
-`a :  done , crit ,1d` のように、まわりに空白があっても同じである。
-タグの文字で始まるだけの語はタグでない。
-終わり `criteria` は報告しない。
+タグの後の項目が 1 つなら終了、2 つなら開始と終了、
+3 つなら id と開始と終了である。
+id は調べないので、3 つの項目の最初の `Done` や `done crit` は報告しない。
+4 つ以上の項目のデータは、mermaid.js がそれでチャートを描けないので調べない。
+`criteria` のようにタグで始まるだけの語は報告しない。
 
 この規則に**反する**コードの例:
 
@@ -101,16 +87,9 @@ gantt
 
 この規則にはオプションがない。
 
-## 背景
+## 参考
 
-mermaid.js は、
-[`getTaskTags`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L846-L860)
-で、端の空白を除いた最初の項目が小文字のそれらの語のどれかである間、
-データの先頭からタグを取る。
-その文書は、
-[syntax/gantt.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gantt.md#L69)
-で、タグ `active`、`done`、`crit`、`milestone` を小文字で挙げ、
-タグを最初に書くと言う。
+- [ガントチャートの構文: タグ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gantt.md#L69)
 
 <!-- begin auto-generated rule resources -->
 

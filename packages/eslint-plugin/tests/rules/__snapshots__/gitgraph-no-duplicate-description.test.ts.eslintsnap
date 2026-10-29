@@ -13,6 +13,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gitGraph
+          2 |   accDescr: First
+          3 |   commit
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gitGraph
+          2 |   accDescr: Second
+          3 |   commit
+          4 |
 ---
 
 
@@ -29,7 +42,83 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gitGraph
+          2 | accDescr:First
+          3 | accDescr:First
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gitGraph
+          2 | accDescr:  Second
+          3 | accDescr:First
+          4 |
 [2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gitGraph
+          2 | accDescr:First
+          3 | accDescr:  Second
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gitGraph
+          2 | accDescr:First
+          3 | accDescr:First
+          4 |
+---
+
+
+Test: gitgraph-no-duplicate-description >> invalid >>> invalid/gitgraph/description-equal-predecessor
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-description/invalid/gitgraph/description-equal-predecessor-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | accDescr: A
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gitGraph
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
+---
+
+
+Test: gitgraph-no-duplicate-description >> invalid >>> invalid/gitgraph/description-removal-empty-predecessor
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-description/invalid/gitgraph/description-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | accDescr {}
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gitGraph
+          2 | accDescr {}
+          3 | accDescr: A
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gitGraph
+          2 | accDescr {}
+          3 | accDescr: B
+          4 |
 ---
 
 
@@ -44,6 +133,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gitGraph
+          2 | accDescr { First }
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gitGraph
+          2 | accDescr { Second }
+          3 |
 ---
 
 
@@ -58,6 +158,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gitGraph
+          2 | accDescr: First
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gitGraph
+          2 | accDescr: Second
+          3 |
 ---
 
 
@@ -73,6 +184,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gitGraph
+          2 |   accDescr:First
+          3 |   commit
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gitGraph
+          2 |   accDescr { Second }
+          3 |   commit
+          4 |
 ---
 
 
@@ -91,6 +215,19 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gitGraph
+          2 | accDescr: First
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gitGraph
+          2 | accDescr {
+          3 | %% TODO
+          4 | }
+          5 |
 ---
 
 
@@ -111,23 +248,23 @@ Code:
   8 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
----
-
-
-Test: gitgraph-no-duplicate-description >> invalid >>> invalid/gitgraph/descriptions-crlf
-Filename: tests/fixtures/rules/gitgraph-no-duplicate-description/invalid/gitgraph/descriptions-crlf-input.mmd
-
-Code:
-  1 | gitGraph
-  2 | accDescr {First
-  3 | line}
-  4 | accDescr {Second
-    | ^~~~~~~~~~~~~~~~\ [1]
-  5 | line}
-    | ~~~~~ [1]
-  6 |
-
-[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gitGraph
+          2 | accDescr: First
+          3 | accDescr: Second
+          4 | commit
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gitGraph
+          2 | accDescr {
+          3 | %% TODO
+          4 | }
+          5 | accDescr: Second
+          6 | commit
+          7 |
 ---
 
 
@@ -143,6 +280,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gitGraph
+          2 |   accDescr: First
+          3 |   commit
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gitGraph
+          2 |   accDescr { Second }
+          3 |   commit
+          4 |
 ---
 
 
@@ -158,6 +308,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gitGraph
+          2 | accDescr: First
+          3 | commit
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gitGraph
+          2 | accDescr:
+          3 | commit
+          4 |
 ---
 
 
@@ -173,6 +336,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gitGraph
+          2 | accDescr: #35;
+          3 | commit
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gitGraph
+          2 | accDescr: #
+          3 | commit
+          4 |
 ---
 
 
@@ -188,6 +364,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gitGraph
+          2 | accDescr: <b x="a">Text</b>
+          3 | commit
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gitGraph
+          2 | accDescr: <b x='a'>Text</b>
+          3 | commit
+          4 |
 ---
 
 
@@ -204,7 +393,33 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gitGraph
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gitGraph
+          2 | accDescr { B }
+          3 | accDescr: A
+          4 |
 [2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gitGraph
+          2 | accDescr: A
+          3 | accDescr { B }
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gitGraph
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
 ---
 
 
@@ -220,4 +435,17 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gitGraph
+          2 |   accDescr: First
+          3 |   commit
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gitGraph
+          2 |   accDescr: Second
+          3 |   commit
+          4 |
 ---

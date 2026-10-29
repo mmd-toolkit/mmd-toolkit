@@ -13,6 +13,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 |   accDescr: First
+          3 |   "Revenue": 10
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treemap
+          2 |   accDescr: Second
+          3 |   "Revenue": 10
+          4 |
 ---
 
 
@@ -28,6 +41,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | accDescr { Sales }
+          3 | "Revenue":10
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treemap
+          2 | "Revenue":10
+          3 | accDescr { Costs }
+          4 |
 ---
 
 
@@ -58,6 +84,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | accDescr: First
+          3 |
+          4 | "A":10
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treemap
+          2 | accDescr:
+          3 |
+          4 | "A":10
+          5 |
 ---
 
 
@@ -74,6 +115,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | accDescr: First
+          3 | %% later
+          4 | "A":10
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treemap
+          2 | accDescr:
+          3 | %% later
+          4 | "A":10
+          5 |
 ---
 
 
@@ -89,6 +145,13 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treemap
+          2 | accDescr: Sec%%{init: {}}%%ond
+          3 | "A":10
+          4 |
 ---
 
 
@@ -109,6 +172,23 @@ Code:
   8 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | accDescr: First
+          3 | accDescr: Second
+          4 | "A":10
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treemap
+          2 | accDescr {
+          3 | %% TODO
+          4 | }
+          5 | accDescr: Second
+          6 | "A":10
+          7 |
 ---
 
 
@@ -125,6 +205,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | accDescr: First
+          3 | %%{init: {}}%%
+          4 | "A":10
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treemap
+          2 | accDescr:
+          3 | %%{init: {}}%%
+          4 | "A":10
+          5 |
 ---
 
 
@@ -140,6 +235,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | accDescr: First
+          3 | "A":10
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treemap
+          2 | accDescr:
+          3 | "A":10
+          4 |
 ---
 
 
@@ -156,6 +264,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | accDescr: First
+          3 | accDescr: Second
+          4 | "A":1
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treemap
+          2 | accDescr:   
+          3 | accDescr: Second
+          4 | "A":1
+          5 |
 ---
 
 
@@ -171,6 +294,41 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | accDescr: #35;
+          3 | "A":1
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treemap
+          2 | accDescr: #
+          3 | "A":1
+          4 |
+---
+
+
+Test: treemap-no-duplicate-description >> invalid >>> invalid/treemap/description-equal-predecessor
+Filename: tests/fixtures/rules/treemap-no-duplicate-description/invalid/treemap/description-equal-predecessor-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr: A
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
 ---
 
 
@@ -186,6 +344,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | accDescr: <b x="a">Text</b>
+          3 | "A":1
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treemap
+          2 | accDescr: <b x='a'>Text</b>
+          3 | "A":1
+          4 |
 ---
 
 
@@ -201,6 +372,47 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | accDescr: First
+          3 | "A":10
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treemap
+          2 | accDescr { Second }
+          3 | "A":10
+          4 |
+---
+
+
+Test: treemap-no-duplicate-description >> invalid >>> invalid/treemap/description-removal-empty-predecessor
+Filename: tests/fixtures/rules/treemap-no-duplicate-description/invalid/treemap/description-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr {}
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | accDescr {}
+          3 | accDescr: A
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treemap
+          2 | accDescr {}
+          3 | accDescr: B
+          4 |
 ---
 
 
@@ -218,7 +430,37 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | accDescr: First
+          3 | accDescr: First
+          4 | "A":10
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treemap
+          2 | accDescr { Second }
+          3 | accDescr: First
+          4 | "A":10
+          5 |
 [2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | accDescr: First
+          3 | accDescr { Second }
+          4 | "A":10
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treemap
+          2 | accDescr: First
+          3 | accDescr: First
+          4 | "A":10
+          5 |
 ---
 
 
@@ -235,6 +477,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | accDescr: First
+          3 | accDescr: Second
+          4 | "A":10
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treemap
+          2 | accDescr { Second }
+          3 | accDescr: Second
+          4 | "A":10
+          5 |
 ---
 
 
@@ -250,6 +507,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | accDescr: First
+          3 | "A":10
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treemap
+          2 | accDescr: Second
+          3 | "A":10
+          4 |
 ---
 
 
@@ -265,6 +535,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 |   accDescr: First
+          3 |   "Revenue": 10
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treemap
+          2 |   accDescr: Second
+          3 |   "Revenue": 10
+          4 |
 ---
 
 
@@ -288,5 +571,59 @@ Code:
  12 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | accDescr: First
+          3 | "Root"
+          4 |   "Branch"
+          5 | accDescr {}
+          6 | classDef aa fill:red;
+          7 |     "Leaf":1
+          8 | accDescr: Third
+          9 |   "Sibling":2
+         10 | accDescr { Fourth }
+         11 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treemap
+          2 | "Root"
+          3 | accDescr { Second }
+          4 |   "Branch"
+          5 | accDescr {}
+          6 | classDef aa fill:red;
+          7 |     "Leaf":1
+          8 | accDescr: Third
+          9 |   "Sibling":2
+         10 | accDescr { Fourth }
+         11 |
 [2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | accDescr: First
+          3 | "Root"
+          4 | accDescr { Second }
+          5 |   "Branch"
+          6 | accDescr {}
+          7 | classDef aa fill:red;
+          8 |     "Leaf":1
+          9 | accDescr: Third
+         10 |   "Sibling":2
+         11 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treemap
+          2 | accDescr: First
+          3 | "Root"
+          4 | accDescr { Second }
+          5 |   "Branch"
+          6 | accDescr {}
+          7 | classDef aa fill:red;
+          8 |     "Leaf":1
+          9 |   "Sibling":2
+         10 | accDescr { Fourth }
+         11 |
 ---

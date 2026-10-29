@@ -13,12 +13,12 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accTitle: first
           3 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accTitle: second
@@ -39,13 +39,13 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   A
           3 |   accTitle: x
           4 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   A
@@ -69,7 +69,7 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   subgraph S
@@ -77,7 +77,7 @@ Code:
           4 |     accTitle: inner
           5 |   end
           6 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   subgraph S
@@ -103,14 +103,14 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   A
           3 |   accTitle: a
           4 |   accTitle: a
           5 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   A
@@ -119,14 +119,14 @@ Code:
           5 |
 [2] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   A
           3 |   accTitle: a
           4 |   accTitle: b
           5 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   A
@@ -151,7 +151,7 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 | accTitle: a
@@ -159,7 +159,7 @@ Code:
           4 | accDescr: d
           5 | A
           6 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 | accTitle: b
@@ -182,12 +182,12 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 | A
           3 | accTitle: x
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 | A
@@ -210,7 +210,7 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 | subgraph S
@@ -218,7 +218,7 @@ Code:
           4 | accTitle: inner
           5 | end
           6 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 | subgraph S
@@ -241,12 +241,12 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 | accTitle: first
           3 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 | accTitle: second
@@ -268,48 +268,20 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   A
           3 |   accTitle: a
           4 | %% c
           5 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   A
           3 | %% c
           4 |   accTitle: b
           5 |
----
-
-
-Test: flowchart-no-duplicate-title >> invalid >>> invalid/flowchart/db-duplicate-title-crlf
-Filename: tests/fixtures/rules/flowchart-no-duplicate-title/invalid/flowchart/db-duplicate-title-crlf-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   A
-  3 |   accTitle: a
-  4 |   accTitle: b
-    |   ^~~~~~~~~~~ [1]
-  5 |
-
-[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
-    Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
-        Output:
-          1 | flowchart LR
-          2 |   A
-          3 |   accTitle: a
-          4 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
-        Output:
-          1 | flowchart LR
-          2 |   A
-          3 |   accTitle: b
-          4 |
 ---
 
 
@@ -327,37 +299,20 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   A
           3 |   accTitle: a
           4 | %%{init: {}}%%
           5 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   A
           3 | %%{init: {}}%%
           4 |   accTitle: b
           5 |
----
-
-
-Test: flowchart-no-duplicate-title >> invalid >>> invalid/flowchart/db-duplicate-title-duplicate-cr
-Filename: tests/fixtures/rules/flowchart-no-duplicate-title/invalid/flowchart/db-duplicate-title-duplicate-cr-input.mmd
-
-Code:
-  1 | flowchart LR  accTitle: a  accTitle: b
-
-[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
-    Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
-        Output:
-          1 | flowchart LR  accTitle: a
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
-        Output:
-          1 | flowchart LR  accTitle: b
 ---
 
 
@@ -374,13 +329,13 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accTitle: a
           3 |   accDescr {}
           4 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accDescr {}
@@ -403,14 +358,14 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   A
           3 |   accTitle: a
           4 |
           5 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   A
@@ -433,13 +388,13 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   A
           3 |   accTitle: a
           4 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   A
@@ -462,12 +417,12 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accTitle: a
           3 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accTitle:
@@ -492,12 +447,12 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accTitle: a
           3 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accTitle:
@@ -523,12 +478,7 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
-        Output:
-          1 | flowchart LR
-          2 |   accTitle: a
-          3 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accTitle:
@@ -554,12 +504,12 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accTitle: a
           3 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accTitle:
@@ -581,12 +531,12 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart-elk LR
           2 |   accTitle: first
           3 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart-elk LR
           2 |   accTitle: second
@@ -606,12 +556,12 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | graph LR
           2 |   accTitle: first
           3 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | graph LR
           2 |   accTitle: second
@@ -631,57 +581,15 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | swimlane-beta LR
           2 |   accTitle: first
           3 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | swimlane-beta LR
           2 |   accTitle: second
-          3 |
----
-
-
-Test: flowchart-no-duplicate-title >> invalid >>> invalid/flowchart/db-duplicate-title-ignored-semicolon-cr
-Filename: tests/fixtures/rules/flowchart-no-duplicate-title/invalid/flowchart/db-duplicate-title-ignored-semicolon-cr-input.mmd
-
-Code:
-  1 | flowchart LR  accTitle: a  accTitle: style:#b;
-
-[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
-    Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
-        Output:
-          1 | flowchart LR  accTitle: a
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
-        Output:
-          1 | flowchart LR  accTitle: style:#b;
----
-
-
-Test: flowchart-no-duplicate-title >> invalid >>> invalid/flowchart/db-duplicate-title-ignored-semicolon-crlf
-Filename: tests/fixtures/rules/flowchart-no-duplicate-title/invalid/flowchart/db-duplicate-title-ignored-semicolon-crlf-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   accTitle: a
-  3 |   accTitle: style:#b;
-    |   ^~~~~~~~~~~~~~~~~~ [1]
-  4 |
-
-[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
-    Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
-        Output:
-          1 | flowchart LR
-          2 |   accTitle: a
-          3 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
-        Output:
-          1 | flowchart LR
-          2 |   accTitle: style:#b;
           3 |
 ---
 
@@ -698,12 +606,7 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
-        Output:
-          1 | flowchart LR
-          2 |   accTitle: a
-          3 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accTitle: style:#b;;
@@ -723,15 +626,10 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accTitle: style:#a;
-          3 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
-        Output:
-          1 | flowchart LR
-          2 |   accTitle: b
           3 |
 ---
 
@@ -748,12 +646,7 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
-        Output:
-          1 | flowchart LR
-          2 |   accTitle: a
-          3 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accTitle: style:#b; ;
@@ -774,13 +667,7 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
-        Output:
-          1 | flowchart LR
-          2 |   accTitle: a
-          3 | %% c
-          4 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accTitle: style:#b;
@@ -802,13 +689,7 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
-        Output:
-          1 | flowchart LR
-          2 |   accTitle: a
-          3 | %%{init: {}}%%
-          4 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accTitle: style:#b;
@@ -831,14 +712,7 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
-        Output:
-          1 | flowchart LR
-          2 |   accTitle: a
-          3 |
-          4 |   A
-          5 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accTitle: style:#b;
@@ -863,7 +737,7 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accTitle: outer
@@ -871,7 +745,7 @@ Code:
           4 |     A
           5 |   end
           6 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   subgraph S
@@ -898,7 +772,7 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   subgraph P
@@ -907,7 +781,7 @@ Code:
           5 |     end
           6 |   end
           7 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   subgraph P
@@ -930,11 +804,7 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
-        Output:
-          1 | flowchart LR
-          2 |   accTitle: a
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accTitle: style:#b;
@@ -955,14 +825,14 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   A
           3 |   accTitle: a
           4 |   ;
           5 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   A
@@ -986,13 +856,13 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accTitle: a
           3 |   accTitle: c
           4 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accTitle: b
@@ -1000,17 +870,11 @@ Code:
           4 |
 [2] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accTitle: a
           3 |   accTitle: b
-          4 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
-        Output:
-          1 | flowchart LR
-          2 |   accTitle: a
-          3 |   accTitle: c
           4 |
 ---
 
@@ -1028,13 +892,13 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accTitle: a
           3 |   accDescr: d
           4 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   accDescr: d
@@ -1059,7 +923,7 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   subgraph S
@@ -1068,7 +932,7 @@ Code:
           5 |   subgraph T
           6 |   end
           7 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   subgraph S
@@ -1094,14 +958,7 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
-        Output:
-          1 | flowchart LR
-          2 |   subgraph S
-          3 |     accTitle: a
-          4 |   end
-          5 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   subgraph S
@@ -1126,7 +983,7 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   A
@@ -1134,7 +991,7 @@ Code:
           4 |     accTitle: A
           5 |   end
           6 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 |   A
@@ -1158,13 +1015,13 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 | accTitle: t
           3 | %% c
           4 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 | accTitle:
@@ -1186,13 +1043,13 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 | accTitle: t
           3 | %%{init: {}}%%
           4 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 | accTitle:
@@ -1215,18 +1072,104 @@ Code:
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
     Suggestions:
-      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove this `accTitle` statement.
         Output:
           1 | flowchart LR
           2 | accTitle: t
           3 |
           4 |
           5 |
-      - Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.
+      - Remove the earlier `accTitle` statement.
         Output:
           1 | flowchart LR
           2 | accTitle:
           3 |
           4 |
           5 |
+---
+
+
+Test: flowchart-no-duplicate-title >> invalid >>> invalid/flowchart/title-equal-predecessor
+Filename: tests/fixtures/rules/flowchart-no-duplicate-title/invalid/flowchart/title-equal-predecessor-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | accTitle: A
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | flowchart LR
+          2 | accTitle: A
+          3 | accTitle: A
+          4 |
+---
+
+
+Test: flowchart-no-duplicate-title >> invalid >>> invalid/flowchart/title-holds-directive
+Filename: tests/fixtures/rules/flowchart-no-duplicate-title/invalid/flowchart/title-holds-directive-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | accTitle: A %%{init: {}}%%
+  3 | accTitle: B %%{init: {}}%%
+    | ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+---
+
+
+Test: flowchart-no-duplicate-title >> invalid >>> invalid/flowchart/title-removal-last-line
+Filename: tests/fixtures/rules/flowchart-no-duplicate-title/invalid/flowchart/title-removal-last-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | accTitle: First
+  3 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | flowchart LR
+          2 | accTitle: First
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | flowchart LR
+          2 | accTitle: Second
+---
+
+
+Test: flowchart-no-duplicate-title >> invalid >>> invalid/flowchart/title-removal-multiline-node
+Filename: tests/fixtures/rules/flowchart-no-duplicate-title/invalid/flowchart/title-removal-multiline-node-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~\ [1]
+  4 | Second
+    | ~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | flowchart LR
+          2 | accTitle: First
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | flowchart LR
+          2 | accTitle:
+          3 | Second
+          4 |
 ---

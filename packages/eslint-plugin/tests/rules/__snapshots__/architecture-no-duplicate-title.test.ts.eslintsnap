@@ -13,21 +13,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
----
-
-
-Test: architecture-no-duplicate-title >> invalid >>> invalid/architecture/acctitle-crlf
-Filename: tests/fixtures/rules/architecture-no-duplicate-title/invalid/architecture/acctitle-crlf-input.mmd
-
-Code:
-  1 | architecture-beta
-  2 | accTitle: First
-  3 | accTitle: Second
-    | ^~~~~~~~~~~~~~~~ [1]
-  4 | service api
-  5 |
-
-[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 |   accTitle: First
+          3 |   service api(server)[API]
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 |   accTitle: Second
+          3 |   service api(server)[API]
+          4 |
 ---
 
 
@@ -46,6 +44,25 @@ Code:
   8 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 | accTitle: First
+          3 | %% comment
+          4 |
+          5 | %%{init: {}}%%
+          6 | service api
+          7 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 | %% comment
+          3 |
+          4 | %%{init: {}}%%
+          5 | accTitle: Second
+          6 | service api
+          7 |
 ---
 
 
@@ -61,6 +78,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 | accTitle: First
+          3 | service api
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 | accTitle:
+          3 | service api
+          4 |
 ---
 
 
@@ -77,6 +107,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 | accTitle: First
+          3 | accTitle: First
+          4 | service api
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 | accTitle:
+          3 | accTitle: First
+          4 | service api
+          5 |
 ---
 
 
@@ -92,6 +137,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 | accTitle: #35;
+          3 | service api
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 | accTitle: #
+          3 | service api
+          4 |
 ---
 
 
@@ -115,6 +173,35 @@ Code:
  13 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | ---
+          2 | title: Front
+          3 | ---
+          4 | architecture-beta
+          5 | accTitle: First
+          6 | ---
+          7 | accTitle: Hidden
+          8 | ---
+          9 | %% note
+         10 | %%{init: {}}%%
+         11 | title Ignored
+         12 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | ---
+          2 | title: Front
+          3 | ---
+          4 | architecture-beta
+          5 | ---
+          6 | accTitle: Hidden
+          7 | ---
+          8 | %% note
+          9 | %%{init: {}}%%
+         10 | title Ignored
+         11 | accTitle: Second
+         12 |
 ---
 
 
@@ -129,6 +216,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 | accTitle: <b x="a">Text</b>
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 | accTitle: <b x='a'>Text</b>
+          3 |
 ---
 
 
@@ -144,6 +242,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 | accTitle: First
+          3 | service api(server)[API]
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 | accTitle: Second
+          3 | service api(server)[API]
+          4 |
 ---
 
 
@@ -161,7 +272,37 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 | accTitle: First
+          3 | accTitle: First
+          4 | service api
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 | accTitle: Second
+          3 | accTitle: First
+          4 | service api
+          5 |
 [2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 | accTitle: First
+          3 | accTitle: Second
+          4 | service api
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 | accTitle: First
+          3 | accTitle: First
+          4 | service api
+          5 |
 ---
 
 
@@ -177,4 +318,67 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 |   accTitle: First
+          3 |   service api(server)[API]
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 |   accTitle: Second
+          3 |   service api(server)[API]
+          4 |
+---
+
+
+Test: architecture-no-duplicate-title >> invalid >>> invalid/architecture/title-equal-predecessor
+Filename: tests/fixtures/rules/architecture-no-duplicate-title/invalid/architecture/title-equal-predecessor-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | accTitle: A
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 | accTitle: A
+          3 | accTitle: A
+          4 |
+---
+
+
+Test: architecture-no-duplicate-title >> invalid >>> invalid/architecture/title-removal-empty-predecessor
+Filename: tests/fixtures/rules/architecture-no-duplicate-title/invalid/architecture/title-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | accTitle:
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 | accTitle:
+          3 | accTitle: A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | architecture-beta
+          2 | accTitle:
+          3 | accTitle: B
+          4 |
 ---

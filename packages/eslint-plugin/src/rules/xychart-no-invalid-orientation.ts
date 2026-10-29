@@ -1,5 +1,18 @@
+import { canEditRange } from "../utils/edit-range.ts"
+import type { RuleFixer } from "@eslint/core"
+import type { MermaidSourceCode } from "../source-code.ts"
+import type { Token } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
+
+/** The differently cased orientation has exactly one lower-case spelling. */
+function orientationFix(
+  sourceCode: MermaidSourceCode,
+  token: Token,
+): RuleFixer | null {
+  if (!canEditRange(sourceCode, token.range)) return null
+  return (fixer) => fixer.replaceText(token, "horizontal")
+}
 
 /**
  * The rule `xychart-no-invalid-orientation`, described in
@@ -20,6 +33,7 @@ export const xychartNoInvalidOrientation: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("xychart-no-invalid-orientation"),
     },
+    fixable: "code",
     schema: [],
     messages: {
       invalid:
@@ -40,6 +54,7 @@ export const xychartNoInvalidOrientation: MermaidRuleDefinition<{
           loc: orientation.loc,
           messageId: "invalid",
           data: { word },
+          fix: orientationFix(sourceCode, orientation),
         })
       },
     }

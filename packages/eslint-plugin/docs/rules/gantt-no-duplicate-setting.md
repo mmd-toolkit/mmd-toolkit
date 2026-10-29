@@ -9,38 +9,32 @@ Disallow a setting statement that sets its setting again.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
 `dateFormat`, `axisFormat`, `tickInterval`, `todayMarker`, `weekday`, and
-`weekend` each set one value for the whole chart. mermaid.js accepts every such
-statement, and each one silently replaces the value set before it, also for the
-tasks written before it. A second statement is usually left over from pasting a
-part twice, or written in the belief that it changes the setting for the tasks
-after it.
+`weekend` each set one value for the whole chart. mermaid.js accepts a later
+setting without an error and applies it even to tasks written before it, so an
+earlier setting is lost.
 
 ## Rule Details
 
-This rule reports every statement of these six settings after the first one of
-the same setting, when it sets a value other than the one before it. It applies
-to `gantt`.
+This rule applies to Gantt charts (`gantt`). It reports a `dateFormat`,
+`axisFormat`, `tickInterval`, `todayMarker`, `weekday`, or `weekend` statement
+that replaces the current value of that setting with a different one. Repeating
+the current value is not reported.
 
-After `dateFormat DD-MM-YYYY`, `Design :01-02-2024, 3d`,
-`dateFormat YYYY-MM-DD`, and `Build :2024-02-05, 5d`, mermaid.js reads the dates
-of both tasks with `YYYY-MM-DD`: `01-02-2024` is no date of that form, and
-mermaid.js passes it to the `Date` of JavaScript, which reads it as 2 January
-2024 in Node.js, not as 1 February. The other settings are replaced in the same
-way: after `axisFormat %m-%d` and `axisFormat %d`, the axis shows the days only.
-A statement that sets the value that the setting already has is not reported:
-the value stays, and nothing is lost. Values are compared as mermaid.js keeps
-them: the text after the keyword and the space after it, whitespace included,
-and for `weekday` and `weekend` in lower case, so `weekday Monday` after
-`weekday monday` sets the same value. After `dateFormat YYYY-MM-DD` and
-`dateFormat DD-MM-YYYY`, a third `dateFormat YYYY-MM-DD` is reported, because it
-replaces `DD-MM-YYYY`.
+Values are compared as the text after the keyword and its following space,
+including whitespace. `weekday` and `weekend` are compared in lower case, so
+`weekday Monday` after `weekday monday` is not reported. Returning to an earlier
+value after another value is reported: `dateFormat YYYY-MM-DD` after
+`dateFormat DD-MM-YYYY` replaces it even if `YYYY-MM-DD` was used before.
 
-`excludes` and `includes` are not reported: mermaid.js adds the items of every
-such statement together. Neither is a second `inclusiveEndDates`, which changes
-nothing.
+`excludes` and `includes` are not reported because mermaid.js combines their
+items. A repeated `inclusiveEndDates` changes nothing and is not reported
+either.
 
 Examples of **incorrect** code for this rule:
 

@@ -8,42 +8,33 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+🔧
+[`--fix` オプション](https://eslint.org/docs/latest/use/command-line-interface#--fix)
+で自動修正できる。
+
 <!-- end auto-generated rule notice -->
 
 `links` と `properties` は、
-`links A: {"Dashboard": "https://x.example"}` のように、
-JSON のオブジェクトから、参加者にリンクやプロパティを与える。
-テキストが JSON でないと、 mermaid.js は文を受理し、エラーなしに何もしない。
-最後の項目の後にカンマを付けただけでも、そうなる。
+JSON オブジェクトから参加者にリンクやプロパティを与える。
+テキストが JSON でないと、mermaid.js はエラーなしに文を受理するが、何もしない。
+末尾のカンマだけでも、リンクやプロパティが失われる。
 
 ## 規則の詳細
 
-この規則は、
-テキストが JSON のオブジェクトでない `links` か `properties` の文を報告する。
-対象の図種は `sequence` である。
+この規則は、シーケンス図（`sequenceDiagram`）に当てる。
+テキストが JSON オブジェクトでない `links` や `properties` の文を、
+空のものも報告する。
+ほかの JSON の値も報告する。
+文字列と配列は位置をキーにした項目を与え、数、`true`、`false`、
+`null` は何も与えない。
 
-JSON でないテキストは何も変えない。
-`links A: {"Dashboard": "https://x.example",}` は参加者にリンクを与えず、
-`properties A: {"class": "internal",}` はプロパティを与えない。
-オブジェクトでない JSON も報告する。
-mermaid.js は、それを書き手の意図どおりには読まないからである。
-文字列は、その各文字を位置をキーにして与え、
-`links A: "ab"` はリンク `0` と `1` を与える。
-配列は各要素を位置をキーにして与え、数、`true`、`false`、`null` は何も与えない。
-
-`#` は文のテキストを終わらせ、mermaid.js はその前のテキストを読む。
-`#` とその後を含めて JSON のオブジェクトであるテキストは、報告しない。
-フラグメントのある URL を持つ `links A: {"Docs": "https://x.example/#top"}` は、
-正しい JSON のオブジェクトである。
-mermaid.js が参加者にリンクを与えないのは、テキストを `#` で切るからにすぎず、
-これは mermaid.js
-の不具合に見える（[#5419](https://github.com/mermaid-js/mermaid/issues/5419) は
-open で、 `#` が sequence 図のテキストを空にすると報告している）。
-`links A: {"Docs": "https://x.example/"} # note` のように、
-`#` の前が JSON のオブジェクトであるテキストはリンクを与え、これも報告しない。
-
-`links A:` や `properties A:` のようにテキストのない文も報告する。
-その文は参加者に何も与えない。
+mermaid.js は `#` でテキストを終える。
+URL のフラグメントを持つものなど、
+`#` とその後を含めてはじめて JSON オブジェクトになるテキストは報告しない。
+正しい JSON であり、
+`#` で切るのは mermaid.js の不具合に見えるからである（参考を見る）。
+`#` の前が正しい JSON オブジェクトの場合も、
+mermaid.js がそれを読むので報告しない。
 
 この規則に**反する**コードの例:
 
@@ -78,6 +69,10 @@ sequenceDiagram
 
 - [sequence-no-link-without-separator](./sequence-no-link-without-separator.ja.md)
 - [no-invalid-init-directive](./no-invalid-init-directive.ja.md)
+
+## 参考
+
+- [Issue #5419: `sequenceDiagram` のテキストの `#`](https://github.com/mermaid-js/mermaid/issues/5419)
 
 <!-- begin auto-generated rule resources -->
 

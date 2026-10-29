@@ -19,28 +19,16 @@
 
 ## 規則の詳細
 
-この規則は、`style`、`class`、`:::` の文の名前と、関係の端のうち、
-図のどの requirement の名前でも element の名前でもないものを報告する。
-対象の図種は `requirement` である。
+この規則は、要求図（`requirementDiagram`）に当てる。
+`style`、`class`、`:::` と関係の両端の各名前のうち、
+図のどの requirement も element も持たないものを報告する。
+名前は大文字小文字を区別するが、名前を囲む引用符は名前を変えない。
 
-`requirement r` の後、`style rr fill:red` と `rr:::c` は何も変えず、
-`r - satisfies -> ee` は、端 `ee` が箱でない関係を加える。
-関係の始まりの側と、`r <- copies - ee` も同じである。
-一覧の名前はそれぞれ調べる。
-`class missing,r,e a` は `r` と `e` にクラス `a` を与え、`missing` を報告する。
-`style` は箱でない最初の名前で止まる。
-`style r,missing,s fill:red` は `r` にスタイルを与え、`s` には与えず、
-`missing` を報告する。
-
-図の名前は、その requirement と element の名前である。
-引用符で囲んだ名前は、囲まない名前と同じ名前である。
-`requirement "r"` の後の `style r` はそれにスタイルを与える。
-名前は大文字小文字で区別する。
-`requirement r` の後の `style R` は報告する。
-名指す requirement や element より前に書いた `style` や `class` の文は、
-mermaid.js では何も変えない。
-そうした文は図の箱を名指しており、正しく書かれているので、規則は報告しない。
-関係は、結ぶ箱より前に書いてもよい。
+一覧の名前はそれぞれ調べるが、
+`style` は最初の未知の名前でスタイルの適用を止める。
+名指す requirement や element より前の `style` や `class` の文は、
+mermaid.js がそこで何もしなくても、図の箱を正しく名指しているので報告しない。
+結ぶ箱より前に書いた関係は、mermaid.js がそれらを結ぶので報告しない。
 
 この規則に**反する**コードの例:
 
@@ -88,17 +76,6 @@ requirementDiagram
 
 - [er-no-undef](./er-no-undef.ja.md)
 - [requirement-no-duplicate-name](./requirement-no-duplicate-name.ja.md)
-
-## 背景
-
-mermaid.js は、
-[`setCssStyle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L226-L240)、
-[`setClass`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L242-L255)
-で、`style`、`class`、`:::` の名前をテキストを読む間に探し、
-`style` は見つからない最初の名前で戻る。
-関係の端は、図を描くときに、
-[`getData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L292-L325)
-で探す。
 
 <!-- begin auto-generated rule resources -->
 

@@ -12,6 +12,19 @@ Code:
   4 |
 
 [1] mermaid.js draws the shape that the opener `[` writes and ignores the closer `)`; the closer of `[` is `]`.
+    Suggestions:
+      - Close with `]`.
+        Output:
+          1 | mindmap
+          2 |   Plans
+          3 |     Write[draft]
+          4 |
+      - Open with `(`.
+        Output:
+          1 | mindmap
+          2 |   Plans
+          3 |     Write(draft)
+          4 |
 ---
 
 
@@ -26,6 +39,19 @@ Code:
   4 |
 
 [1] mermaid.js draws a cloud, because the closer `))` is not the `)` that closes `(`.
+    Suggestions:
+      - Close with `)`.
+        Output:
+          1 | mindmap
+          2 |   Plans
+          3 |     Review(notes)
+          4 |
+      - Open with `((`.
+        Output:
+          1 | mindmap
+          2 |   Plans
+          3 |     Review((notes))
+          4 |
 ---
 
 
@@ -39,6 +65,17 @@ Code:
   3 |
 
 [1] mermaid.js draws the shape that the opener `))` writes and ignores the closer `]`; the closer of `))` is `((`.
+    Suggestions:
+      - Close with `((`.
+        Output:
+          1 | mindmap
+          2 |   r))text((
+          3 |
+      - Open with `[`.
+        Output:
+          1 | mindmap
+          2 |   r[text]
+          3 |
 ---
 
 
@@ -52,6 +89,17 @@ Code:
   3 |
 
 [1] mermaid.js draws the shape that the opener `)` writes and ignores the closer `]`; the closer of `)` is `(`.
+    Suggestions:
+      - Close with `(`.
+        Output:
+          1 | mindmap
+          2 |   r)text(
+          3 |
+      - Open with `[`.
+        Output:
+          1 | mindmap
+          2 |   r[text]
+          3 |
 ---
 
 
@@ -65,6 +113,17 @@ Code:
   3 |
 
 [1] mermaid.js draws the shape that the opener `{{` writes and ignores the closer `]`; the closer of `{{` is `}}`.
+    Suggestions:
+      - Close with `}}`.
+        Output:
+          1 | mindmap
+          2 |   r{{text}}
+          3 |
+      - Open with `[`.
+        Output:
+          1 | mindmap
+          2 |   r[text]
+          3 |
 ---
 
 
@@ -78,6 +137,17 @@ Code:
   3 |
 
 [1] mermaid.js draws the shape that the opener `[` writes and ignores the closer `)`; the closer of `[` is `]`.
+    Suggestions:
+      - Close with `]`.
+        Output:
+          1 | mindmap
+          2 |   r[text]
+          3 |
+      - Open with `(`.
+        Output:
+          1 | mindmap
+          2 |   r(text)
+          3 |
 ---
 
 
@@ -91,6 +161,17 @@ Code:
   3 |
 
 [1] mermaid.js draws a cloud, because the closer `}}` is not the `)` that closes `(`.
+    Suggestions:
+      - Close with `)`.
+        Output:
+          1 | mindmap
+          2 |   r(text)
+          3 |
+      - Open with `{{`.
+        Output:
+          1 | mindmap
+          2 |   r{{text}}
+          3 |
 ---
 
 
@@ -104,6 +185,17 @@ Code:
   3 |
 
 [1] mermaid.js draws a cloud, because the closer `((` is not the `)` that closes `(`.
+    Suggestions:
+      - Close with `)`.
+        Output:
+          1 | mindmap
+          2 |   r(text)
+          3 |
+      - Open with `))`.
+        Output:
+          1 | mindmap
+          2 |   r))text((
+          3 |
 ---
 
 
@@ -117,6 +209,12 @@ Code:
   3 |
 
 [1] mermaid.js draws a cloud, because the closer `-)` is not the `)` that closes `(`.
+    Suggestions:
+      - Close with `)`.
+        Output:
+          1 | mindmap
+          2 |   r("text")
+          3 |
 ---
 
 
@@ -131,6 +229,19 @@ Code:
   4 |
 
 [1] mermaid.js draws the shape that the opener `((` writes and ignores the closer `)`; the closer of `((` is `))`.
+    Suggestions:
+      - Close with `))`.
+        Output:
+          1 | mindmap
+          2 | root
+          3 |   a((x))
+          4 |
+      - Open with `(`.
+        Output:
+          1 | mindmap
+          2 | root
+          3 |   a(x)
+          4 |
 ---
 
 
@@ -145,6 +256,19 @@ Code:
   4 |
 
 [1] mermaid.js draws a cloud, because the closer `))` is not the `)` that closes `(`.
+    Suggestions:
+      - Close with `)`.
+        Output:
+          1 | mindmap
+          2 | root
+          3 |   a(x)
+          4 |
+      - Open with `((`.
+        Output:
+          1 | mindmap
+          2 | root
+          3 |   a((x))
+          4 |
 ---
 
 
@@ -159,6 +283,19 @@ Code:
   4 |
 
 [1] mermaid.js draws a cloud, because the closer `]` is not the `)` that closes `(`.
+    Suggestions:
+      - Close with `)`.
+        Output:
+          1 | mindmap
+          2 | root
+          3 |   a(x)
+          4 |
+      - Open with `[`.
+        Output:
+          1 | mindmap
+          2 | root
+          3 |   a[x]
+          4 |
 ---
 
 
@@ -173,6 +310,19 @@ Code:
   4 |
 
 [1] mermaid.js draws the shape that the opener `))` writes and ignores the closer `(`; the closer of `))` is `((`.
+    Suggestions:
+      - Close with `((`.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     a))x((
+          4 |
+      - Open with `)`.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     a)x(
+          4 |
 ---
 
 
@@ -187,6 +337,19 @@ Code:
   4 |
 
 [1] mermaid.js draws the shape that the opener `)` writes and ignores the closer `)`; the closer of `)` is `(`.
+    Suggestions:
+      - Close with `(`.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     a)x(
+          4 |
+      - Open with `(`.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     a(x)
+          4 |
 ---
 
 
@@ -202,6 +365,21 @@ Code:
   5 |
 
 [1] mermaid.js draws the shape that the opener `[` writes and ignores the closer `)`; the closer of `[` is `]`.
+    Suggestions:
+      - Close with `]`.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     a[x
+          4 |     y]
+          5 |
+      - Open with `(`.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     a(x
+          4 |     y)
+          5 |
 ---
 
 
@@ -216,6 +394,19 @@ Code:
   4 |
 
 [1] mermaid.js draws the shape that the opener `[` writes and ignores the closer `)`; the closer of `[` is `]`.
+    Suggestions:
+      - Close with `]`.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     a["x"]
+          4 |
+      - Open with `(`.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     a("x")
+          4 |
 ---
 
 
@@ -230,4 +421,17 @@ Code:
   4 |
 
 [1] mermaid.js draws the shape that the opener `((` writes and ignores the closer `)`; the closer of `((` is `))`.
+    Suggestions:
+      - Close with `))`.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     ((x))
+          4 |
+      - Open with `(`.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     (x)
+          4 |
 ---

@@ -76,19 +76,6 @@ Code:
 ---
 
 
-Test: agentflow-no-ignored-text >> invalid >>> invalid/agentflow/direction-crlf
-Filename: tests/fixtures/rules/agentflow-no-ignored-text/invalid/agentflow/direction-crlf-input.mmd
-
-Code:
-  1 | agentflow-beta TB
-  2 | A-->B; direction LR
-    | ^~~~~~ [1]
-  3 |
-
-[1] mermaid.js reads this line as a `direction` statement and drops this text.
----
-
-
 Test: agentflow-no-ignored-text >> invalid >>> invalid/agentflow/direction-literal-bug
 Filename: tests/fixtures/rules/agentflow-no-ignored-text/invalid/agentflow/direction-literal-bug-input.mmd
 

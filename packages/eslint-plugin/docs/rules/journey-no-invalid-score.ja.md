@@ -8,48 +8,31 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
+
 <!-- end auto-generated rule notice -->
 
-`Make tea: 5 Me` のようにコロンを落とすか、
-`Lunch at 12:30: 4: Me` のようにタスクの名前にコロンを書くと、
-ほかのテキストが score に入る。
-mermaid.js はそれをエラーなしに受理し、数でない score は顔の場所を与えず、
-目盛りの外の数は顔を外に置く。
-タスクの score は、最初のコロンと 2 つ目のコロンの間のテキストで、
-1 から 5 の数であり、それがジャーニーの目盛りの上にタスクの顔を置く。
+タスクの score は、ジャーニーの 1 から 5 の目盛りに顔を置く。
+`Make tea: 5 Me` のようにコロンがないと、
+ほかのテキストがエラーなしに score に入ることがあり、
+数でなければ顔の位置がなく、目盛りの外の数なら顔を外に置く。
 
 ## 規則の詳細
 
-この規則は、mermaid.js が読んだタスクの score が数でないとき、
-または 1 より小さいか 5 より大きい数のときに、それを報告する。
-対象の図種は `journey` である。
+この規則は、ユーザージャーニー図（`journey`）に当てる。
+1 から 5 の数（両端を含む）として mermaid.js が読まない、
+タスクの score を報告する。
+score は、最初のコロンの後から、2 つ目のコロンがあればその前までのテキストを、
+端の空白を除いて JavaScript の `Number` で読んだものである。
+タスクの名前の中のコロンは名前を終えるので、
+`Lunch at 12:30: 4: Me` の score は `30` になり、報告する。
 
-mermaid.js は score を、端の空白を除いて、JavaScript の `Number` で読む。
-`Make tea: 5 Me` では人の前のコロンが落ちており、 score は数でない `5 Me` で、
-人はいない。
-`Make tea: 5, Me` も同じで、
-`A: 5 B: 3` のように同じ行に 2 つ目のタスクを書くと、 score は `5 B` になる。
-タスクの名前の中のコロンは、名前を終える。
-`Lunch at 12:30: 4: Me` は、
-フォーマッターが `Lunch at 12: 30: 4: Me` と印字するとおり、
-タスク `Lunch at 12` で、score は 30、人は `4` であり、
-`Meet at 9:00: 3` の score は 0 である。
-`A: : x` のように空か空白だけの score は数 0 で、規則はそのタスクを報告する。
-ほかの形の数も数として読む。
-`3.5` と `0x3` は目盛りの中にあり、報告しない。
-`1e2`、`-2`、`Infinity` は外にある。
-`a: 5 %% c` のように score の中に書いたコメントは、score の一部である。
-
-それぞれの報告が出力について示すこと:
-
-- `5 Me` のように数でない score は失われる。
-  顔は場所を持たず、score の中に書いた人もともに失われる。
-- `7`、`0`、`-2`、`1e2`、`Infinity` のように目盛りの外の数は、
-  score の働きである、顔を目盛りの上に置くことをしない。
-  [mermaid.js の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/userJourney.md#L22-L24)
-  は、score を 1 から 5 の数（両端を含む）と定めており、
-  mermaid.js は顔を目盛りの外に描く。
-- 空の score は、書いていない score 0 を加え、これも目盛りの外である。
+空か空白だけの score は 0 なので報告する。
+ほかの数の形も値で調べ、`3.5` と `0x3` は報告せず、`1e2`、`-2`、
+`Infinity` は報告する。
+score の中に書いたコメントはその一部なので、`a: 5 %% c` は報告する。
 
 この規則に**反する**コードの例:
 
@@ -87,23 +70,11 @@ journey
 
 この規則にはオプションがない。
 
-## 背景
+## 参考
 
-mermaid.js は、
-[`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)
-で、score を `Number` で数にし、ジャーニーを描くときに、
-[`drawTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/svgDraw.js#L216-L220)
-で、その数で顔を置く。
-その文書は、
-[syntax/userJourney.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/userJourney.md#L24)
-で、score は 1 から 5 までの数だと言う。
-[#6262](https://github.com/mermaid-js/mermaid/issues/6262) （"Faces in Journey
-Diagram Out of Bound"）は、
-ラベル "Type: Bug / Error" と "Status: Approved" を持って開いており、
-7 より大きい score で顔がジャーニーの線の上に描かれると報告する。
-[#4248](https://github.com/mermaid-js/mermaid/issues/4248) （"Add scale
-customization to User Journey"）は、enhancement として開いており、
-書き手が選ぶ目盛りを提案する。
+- [ユーザージャーニー図の構文: score](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/userJourney.md#L24)
+- [Issue #6262: ジャーニー図で顔が範囲の外に出る](https://github.com/mermaid-js/mermaid/issues/6262)
+- [Issue #4248: ユーザージャーニーの目盛りの設定](https://github.com/mermaid-js/mermaid/issues/4248)
 
 <!-- begin auto-generated rule resources -->
 

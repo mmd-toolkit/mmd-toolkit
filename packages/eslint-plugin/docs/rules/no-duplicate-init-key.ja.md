@@ -8,34 +8,31 @@ init のディレクティブの JSON の 1 つのオブジェクトで 2 度書
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
+
 <!-- end auto-generated rule notice -->
 
-mermaid.js は、init のディレクティブの JSON を、
-1 つのオブジェクトが 2 度持つキーの最後の値でエラーなしに読み、
+init のディレクティブの JSON の 1 つのオブジェクトがキーを 2 度持つと、
+mermaid.js はエラーなしに最後の値を使う。
 前の値は失われる。
 
 ## 規則の詳細
 
-この規則は、init のディレクティブの JSON のオブジェクトが、
-別の値でもう一度持つキーを報告する。
-対象はすべての図種である。
+この規則は、すべての図種に当てる。
+init のディレクティブの同じ JSON オブジェクトの中で、別の値で繰り返したキーを、
+どの深さでも報告する。
+キーは、mermaid.js と同じく各 `'` を `"` に変えて、JSON が読むとおりに比べる。
 
-`%%{init: {"theme": "dark", "theme": "forest"}}%%` の後では、
-テーマは `forest` である。
-`{"flowchart": {"inheritDir": true, "inheritDir": false}}` の `flowchart`
-のオブジェクトのように、どの深さのオブジェクトも調べる。
-キーは、mermaid.js と同じくすべての `'` を `"` として、
-JSON が読むとおりに比べる。
-同じ値でもう一度書いたキーは報告せず、
-2 つの init のディレクティブのキーも報告しない。
-文書は、テキストの init のディレクティブを各キーの最後の値で合わせることを、
-書き方として示す。
+同じ値の繰り返しは報告しない。
+別々の init のディレクティブでのキーの繰り返しも報告しない。
+各キーの最後の値で設定を合わせることは、文書にある書き方だからである。
+正しくない JSON は、
+代わりに [no-invalid-init-directive](./no-invalid-init-directive.ja.md)
+が報告する。
 
-mermaid.js が読む JSON だけを調べる。
-JSON が正しくないところは、
-[no-invalid-init-directive](./no-invalid-init-directive.ja.md) が報告する。
-
-2 つのメンバーの 1 つを残す。
+例は flowchart である。
 
 この規則に**反する**コードの例:
 
@@ -63,12 +60,9 @@ flowchart LR
 
 - [no-invalid-init-directive](./no-invalid-init-directive.ja.md)
 
-## 背景
+## 参考
 
-[`detectDirective`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L159-L198)
-は各 JSON の引数を `JSON.parse` で読み、それはキーの最後の値を保つ。
-[文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/config/directives.md#L88-L96)
-は、テキストの init のディレクティブを、各キーに与えた最後の値で合わせる。
+- [ディレクティブ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/config/directives.md#L88-L96)
 
 <!-- begin auto-generated rule resources -->
 

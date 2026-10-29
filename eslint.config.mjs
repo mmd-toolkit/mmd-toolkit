@@ -32,7 +32,12 @@ export default [
       "**/coverage/",
       "**/test-results/",
       "**/playwright-report/",
+      // The corpus and the inputs of the plugins' own tests: option files that
+      // the tests read as Prettier options, and Markdown inputs of the markdown
+      // tests. Their content is what a test needs, not source or documentation.
       "packages/tests/fixtures/",
+      "packages/prettier-plugin-mmd/tests/fixtures/",
+      "packages/eslint-plugin/tests/fixtures/",
       ".claude/worktrees/",
       ".work/",
       // Working files that are deleted before the release.

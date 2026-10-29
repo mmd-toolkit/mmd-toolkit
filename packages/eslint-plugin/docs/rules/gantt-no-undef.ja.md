@@ -19,55 +19,30 @@ id を書き間違えると、タスクは今日に動く。
 
 ## 規則の詳細
 
-この規則は、`click` の文の中、`after` の後、`until` の後にある id のうち、
-チャートのどのタスクの id でもないものを報告する。
-対象の図種は `gantt` である。
+この規則は、ガントチャート（`gantt`）に当てる。
+`click`、`after`、`until` の各 id のうち、
+チャートのどのタスクも持たないものを報告する。
 
-`Design :des1, 2024-01-06, 3d` の後、
-`click des2 href "…"` はどのタスクもリンクにせず、
-`Build :after des2, 5d` は今日の日付に始まり、
-`Review :2024-01-01, until des2` は今日の日付に終わる。
-一覧の id はそれぞれ調べる。
-`click des1,des3 href "…"` は `des1` をリンクにし、`des3` を報告する。
-`after des1 des2` は、`des2` が書かれていないかのように、
-タスクを `des1` の後に始め、`des2` を報告する。
+明示したタスクの id と、
+mermaid.js が付ける `task1` のような id を定義済みと数え、
+大文字小文字を区別して比べる。
+タグの後の項目が 3 つなら最初が id で、
+1 つか 2 つなら mermaid.js がテキストの順に `task1`、
+`task2` のような id を付ける。
+データの項目が 4 つ以上のタスクは id を持たない。
 
-チャートの id は、そのタスクの id である。
-タスクのデータは、タグの後に 1 つから 3 つの項目を持つ。
-3 つのときは、`Design :des1, 2024-01-06, 3d` の `des1` のように、
-最初の項目が id である。
-1 つか 2 つのときは、mermaid.js がテキストの順に、 `task1`、
-`task2` のような id をタスクに与える。
-データが 4 つ以上の項目を持つタスクは、id を持たない。
-`a : 2024-01-01, 1d` の後の `click task1 href "…"` は、そのタスクをリンクにし、
-報告しない。
+`after` は開始の項目（2 つの最初か 3 つの 2 つ目）、
+`until` は終了の項目（1 つから 3 つの最後）で調べる。
+どちらも小文字で、その後に空白が必要である。
+id は ASCII の英字、数字、`_`、`-`、空白からなり、空白で分ける。
+`after a.1` は `a` を名指し、`a.1` という id のタスクがあっても報告する。
+`after a設計` も同じで、id の間のタブは一覧を終える。
 
-`after` はデータの開始、つまり 2 つの項目の最初か、3 つの項目の 2 つ目で読み、
-`until` は終わり、つまり 1 つから 3 つの項目の最後で読む。
-どちらも小文字で、後に空白が続くときである。
-mermaid.js は、ASCII の英字、数字、`_`、`-`、
-空白でない最初の文字の前までを id として読み、空白で分ける。
-そのため `after a.1` はタスク `a` を名指し、その id のタスクがなければ、
-`a.1` という id のタスクがあっても、規則は `a` を報告する。
-`after a設計` も同じである。
-2 つの id の間がタブなら、mermaid.js は最初のものだけを読む。
-`after 設計` のように、空白の後にそうした文字がなければ、
-mermaid.js は項目を日付として読み、読めずにチャートを描かない。
-規則はこれを報告しない。
-ほかの項目は参照でなく、規則は読まない。
-`After a2` と `Until b1` は日付として読み、4 つ以上の項目のデータでは、
-mermaid.js はどの項目も読まず、チャートを描けない。
-id の中の指令は id の一部でない。
-`after a%%{init: {}}%%1` はタスク `a1` を名指す。
-id は、大文字小文字も含めて書いたとおりに比べる。
-`a : Des1, 2024-01-01, 1d` の後の `after des1` は、どのタスクも名指さず、
-報告する。
-
-名指すタスクより後に書いたタスクも、チャートのタスクである。
-タスク `t1` の前の `after t1` は、タスクを `t1` の後に始める。
-名指すタスクより前に書いた `click` の文は、mermaid.js ではそれをリンクにしない。
-そうした文はチャートの id を名指しており、正しく書かれているので、
-規則は報告しない。
+`after 設計` のように空白の後にそうした文字がない項目は報告しない。
+mermaid.js はその項目を日付として読み、読めずにチャートを描かない。
+`After a2`、`Until b1`、項目が 4 つ以上のデータも調べない。
+後で定義するタスクは `click` でも定義済みと数えるが、
+mermaid.js はタスクより前の `click` では何もしない。
 
 この規則に**反する**コードの例:
 
@@ -115,22 +90,9 @@ gantt
 - [flowchart-no-undef](./flowchart-no-undef.ja.md)
 - [gantt-no-duplicate-id](./gantt-no-duplicate-id.ja.md)
 
-## 背景
+## 参考
 
-mermaid.js は、
-[`getStartDate`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L304-L323)、
-[`getEndDate`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L388-L407)
-で、`after` と `until` を、チャートを描くときに、
-式 `/^after\s+(?<ids>[\d\w- ]+)/` と、`/^until\s+(?<ids>[\d\w- ]+)/` で読み、
-どの id もタスクの id でなければ、開始や終わりを今日の日付にする。
-`click` は、
-[`setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L673-L688)
-で、テキストを読む間に id を探すので、その後に書いたタスクはまだ見つからない。
-`after` がいくつかのタスクを名指し、そのうちの 1 つが後に書かれているとき、
-mermaid.js はそれを待たずにタスクを始めることがある。
-[#4424](https://github.com/mermaid-js/mermaid/issues/4424) （"gantt: Depedencies
-('after') not always taken into account"）は、
-ラベル "Type: Bug / Error" と "Status: Triage" を持って開いている。
+- [Issue #4424: gantt の `after` が考慮されないことがある](https://github.com/mermaid-js/mermaid/issues/4424)
 
 <!-- begin auto-generated rule resources -->
 

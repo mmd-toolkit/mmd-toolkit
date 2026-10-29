@@ -9,33 +9,25 @@ Disallow an `accTitle` that replaces the title set before it.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-A use case diagram has one accessible title, which `accTitle` sets. A later
-`accTitle` replaces the title set before it without an error, and the earlier
-title is lost.
+A use case diagram has one accessible title, set by `accTitle`. mermaid.js
+accepts a later `accTitle` without an error and replaces the earlier title.
 
 ## Rule Details
 
-This rule reports an `accTitle` statement that changes the title that an earlier
-`accTitle` set, when that title is not empty. It applies to `usecase`.
-
-After `accTitle: first` and `accTitle: second`, the title is `second`.
-`accTitle:` with no text, or with only whitespace, sets the empty title: after
-`accTitle: first`, it is reported, because `first` is lost. It does not take the
-next line as its title. An `accTitle` after an empty title loses nothing and is
+This rule applies to use case diagrams (`usecase-beta`). It reports an
+`accTitle` that changes a nonempty accessible title set by the preceding
+`accTitle`. Repeating the current title or setting one after an empty title is
 not reported.
 
-A statement that sets the title that the diagram already has is not reported.
-Titles are compared without the whitespace at their ends, which mermaid.js
-removes, so `accTitle:  first` sets the same title as `accTitle: first`. After
-`accTitle: a` and `accTitle: b`, a third `accTitle: a` is reported, because it
-replaces `b`. Titles are otherwise compared as written: mermaid.js turns
-character references, as `#35;`, and the quotes of HTML attributes into other
-characters before it reads a title, so two titles that differ only in those may
-be one title for mermaid.js and two for this rule.
-
-Keep one `accTitle` statement.
+An empty or whitespace-only `accTitle:` clears the title without taking the next
+line and is reported after a nonempty title. Comparisons ignore whitespace at
+the ends. Other text is compared as written, so character references and HTML
+attribute quotes can differ for this rule although mermaid.js reads them alike.
 
 Examples of **incorrect** code for this rule:
 
@@ -63,14 +55,6 @@ This rule has no options.
 ## Related Rules
 
 - [usecase-no-duplicate-description](./usecase-no-duplicate-description.md)
-
-## Background
-
-The
-[`accTitle` statement](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.visitor.ts#L127-L131)
-gives the title without the whitespace at its ends, and the
-[model](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L240-L242)
-keeps only the last one.
 
 <!-- begin auto-generated rule resources -->
 

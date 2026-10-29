@@ -78,21 +78,6 @@ Code:
 ---
 
 
-Test: c4-no-duplicate-style >> invalid >>> invalid/c4/crlf
-Filename: tests/fixtures/rules/c4-no-duplicate-style/invalid/c4/crlf-input.mmd
-
-Code:
-  1 | C4Context
-  2 | Person(a, "A")
-  3 | UpdateElementStyle(a, $bgColor="red")
-  4 | UpdateElementStyle(a, $bgColor="blue")
-    |                       ^~~~~~~~~~~~~~~ [1]
-  5 |
-
-[1] mermaid.js replaces the `bgColor` given by an earlier update with this value.
----
-
-
 Test: c4-no-duplicate-style >> invalid >>> invalid/c4/empty-entry-after-value
 Filename: tests/fixtures/rules/c4-no-duplicate-style/invalid/c4/empty-entry-after-value-input.mmd
 

@@ -1,92 +1,7 @@
-import type { SuggestedEdit } from "@eslint/core"
-import type { Token } from "@mmd-toolkit/parser"
-import { parse } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
-import type { MermaidSourceCode } from "../source-code.ts"
-import {
-  braceLineOf,
-  closedByBraceOfOtherStatement,
-} from "../utils/description-block.ts"
-
-/** The ids of the messages of the suggestions. */
-type SuggestionId = "closeAtLineEnd" | "closeAtTextEnd"
-
-/** Whether the parser accepts `text`, as mermaid.js does. */
-function isAccepted(text: string): boolean {
-  try {
-    parse(text)
-    return true
-  } catch {
-    return false
-  }
-}
-
-/** The line terminator at the end of `text`, or the empty string. */
-function finalLineTerminator(text: string): string {
-  if (text.endsWith("\r\n")) return "\r\n"
-  if (text.endsWith("\n")) return "\n"
-  if (text.endsWith("\r")) return "\r"
-  return ""
-}
-
-/**
- * The suggestions for a block whose `{` is `brace` and whose text is `body`,
- * the tokens after the `{`. Where the `}` belongs is the author's choice, so
- * they are suggestions, not a fix: the end of the line of the `{`, when the
- * block has text on that line, and the end of the text, when the block is not
- * closed and has text after that line. A block without text would become an
- * empty block, so it gets no suggestion. Nor does a block with a directive that
- * is not closed: from that directive on, the directive decides what mermaid.js
- * reads, wherever the block is closed. A suggestion is offered only when the
- * parser accepts its result, which it does not where a later line is no
- * statement.
- */
-function closingSuggestions(
-  sourceCode: MermaidSourceCode,
-  brace: Token,
-  body: readonly Token[],
-  blockEnd: number,
-  closed: boolean,
-): SuggestedEdit<SuggestionId>[] {
-  if (
-    sourceCode.ast.directives.some(
-      (directive) =>
-        !directive.closed &&
-        brace.range[1] <= directive.range[0] &&
-        directive.range[0] < blockEnd,
-    )
-  ) {
-    return []
-  }
-  const { text } = sourceCode
-  const suggestions: SuggestedEdit<SuggestionId>[] = []
-  const braceLine = braceLineOf(sourceCode, brace, body)
-  if (braceLine.hasText) {
-    // After the text on the line, before the whitespace at its end.
-    const { end } = braceLine
-    const closing = " }"
-    if (isAccepted(text.slice(0, end) + closing + text.slice(end))) {
-      suggestions.push({
-        messageId: "closeAtLineEnd",
-        fix: (fixer) => fixer.insertTextAfterRange([end, end], closing),
-      })
-    }
-  }
-  // A block that a later `}` closes ends there, at the end of its text.
-  if (closed || !braceLine.textBeyond) return suggestions
-  // A line with only `}` after the last line of the text.
-  const terminator = finalLineTerminator(text)
-  const closing = terminator === "" ? "\n}" : `}${terminator}`
-  if (isAccepted(text + closing)) {
-    suggestions.push({
-      messageId: "closeAtTextEnd",
-      fix: (fixer) =>
-        fixer.insertTextAfterRange([text.length, text.length], closing),
-    })
-  }
-  return suggestions
-}
+import { closedByBraceOfOtherStatement } from "../utils/description-block.ts"
+import { blockClosingSuggestions } from "../utils/description-block-suggestions.ts"
 
 /**
  * The rule `flowchart-no-unclosed-description-block`, described in
@@ -96,7 +11,7 @@ function closingSuggestions(
  */
 export const flowchartNoUnclosedDescriptionBlock: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "unclosed" | "closedByOtherBrace" | SuggestionId
+  MessageIds: "unclosed" | "closedByOtherBrace" | "closeAtTextEnd"
 }> = {
   meta: {
     type: "problem",
@@ -112,10 +27,8 @@ export const flowchartNoUnclosedDescriptionBlock: MermaidRuleDefinition<{
         "mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.",
       closedByOtherBrace:
         "mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.",
-      closeAtLineEnd:
-        "Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.",
-      closeAtTextEnd:
-        "Close the block at the end of the text: mermaid.js then reads all the text after the `{` as the description.",
+
+      closeAtTextEnd: "Close the block at the end of the text.",
     },
   },
   create(context) {
@@ -132,13 +45,7 @@ export const flowchartNoUnclosedDescriptionBlock: MermaidRuleDefinition<{
           context.report({
             loc,
             messageId: "unclosed",
-            suggest: closingSuggestions(
-              sourceCode,
-              brace,
-              rest,
-              sourceCode.text.length,
-              false,
-            ),
+            suggest: blockClosingSuggestions(sourceCode, brace, rest),
           })
           return
         }
@@ -154,13 +61,6 @@ export const flowchartNoUnclosedDescriptionBlock: MermaidRuleDefinition<{
         context.report({
           loc,
           messageId: "closedByOtherBrace",
-          suggest: closingSuggestions(
-            sourceCode,
-            brace,
-            rest.slice(0, -1),
-            node.range[1],
-            true,
-          ),
         })
       },
     }

@@ -2,6 +2,7 @@ import type { RequirementAccTitleStatement } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { titleText } from "../utils/acc-text.ts"
+import { oneOfTwoRemovals } from "../utils/removal.ts"
 
 /**
  * The rule `requirement-no-duplicate-title`, described in
@@ -17,7 +18,7 @@ import { titleText } from "../utils/acc-text.ts"
  */
 export const requirementNoDuplicateTitle: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "duplicate"
+  MessageIds: "duplicate" | "removeThis" | "removePrevious"
 }> = {
   meta: {
     type: "problem",
@@ -27,22 +28,35 @@ export const requirementNoDuplicateTitle: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("requirement-no-duplicate-title"),
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
       duplicate:
         "mermaid.js replaces the earlier title with the one of this `accTitle`.",
+      removeThis: "Remove this `accTitle` statement.",
+      removePrevious: "Remove the earlier `accTitle` statement.",
     },
   },
   create(context) {
     let previous: RequirementAccTitleStatement | null = null
+    let beforePrevious: RequirementAccTitleStatement | null = null
+
     return {
       RequirementAccTitleStatement(node) {
         if (previous !== null && titleText(previous) !== titleText(node)) {
           context.report({
             node,
             messageId: "duplicate",
+            suggest: oneOfTwoRemovals(
+              context.sourceCode,
+              node,
+              previous,
+              beforePrevious === null ||
+                titleText(beforePrevious) === titleText(node),
+            ),
           })
         }
+        beforePrevious = previous
         previous = node
       },
     }

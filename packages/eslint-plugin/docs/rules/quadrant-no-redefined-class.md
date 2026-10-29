@@ -9,6 +9,9 @@ Disallow a `classDef` statement that replaces the styles of its class.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
 `classDef` defines a class that points take with `:::`. mermaid.js accepts a
@@ -18,26 +21,19 @@ also those that the later one does not name.
 
 ## Rule Details
 
-This rule reports a `classDef` statement after the first one of the same name,
-when it drops a style that the class had or gives it another value. It applies
-to `quadrantChart`.
+This rule applies to quadrant charts (`quadrantChart`). It reports a `classDef`
+that drops a style of the same class or changes its value. A definition that
+keeps all existing styles is not reported, even when it adds styles. Class names
+are case-sensitive, while the keyword is read in any case.
 
-After `classDef c color: #f00`, the statement `classDef c radius: 9` gives the
-class `c` the radius 9 and no colour. The names of classes are compared with
-their case, so `classDef C` defines another class than `classDef c`. The keyword
-is read in any case. Where a point stands does not count: a point takes the
-class of the last definition, also when the point is written first.
-
-A definition that keeps every style that the class had is not reported, also
-when it adds styles: after `classDef c color: #f00`, the statement
-`classDef c color: #f00, radius: 9` loses nothing. Styles are compared as
-mermaid.js keeps them: the order of the styles does not count, a radius is a
-number, so `radius: 05` is `radius: 5`, and of a style written twice in one
-definition the last value counts; a colour and a stroke width are compared as
-written, so `#F00` after `#f00` is reported. With `classDef d` between them,
-`classDef c` is compared with the earlier `classDef c`. After `classDef c` with
-`color: #f00` and with `color: #00f`, a third one with `color: #f00` is
-reported, because it replaces `#00f`.
+Style order does not count, radii are compared as numbers, and the last value of
+a repeated style in one definition is used. Colours and stroke widths are
+compared as written, so changing `#f00` to `#F00` is reported. Definitions of
+other classes between two definitions do not affect the comparison, and a
+definition after the points that take the class is reported too, because they
+take the last definition wherever they are written. After definitions of `c`
+with `color: #f00` and `color: #00f`, a third with `color: #f00` is reported
+because it replaces `#00f`.
 
 Examples of **incorrect** code for this rule:
 

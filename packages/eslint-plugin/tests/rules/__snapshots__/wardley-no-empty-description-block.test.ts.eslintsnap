@@ -12,6 +12,12 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | wardley-beta
+          2 |   component API [0.6, 0.7]
+          3 |
 ---
 
 
@@ -26,6 +32,12 @@ Code:
   4 | accDescr: Last
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | wardley-beta
+          2 | accDescr: First
+          3 | accDescr: Last
 ---
 
 
@@ -61,6 +73,25 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | wardley-beta
+          2 |   component API [0.6, 0.7]
+          3 |
+---
+
+
+Test: wardley-no-empty-description-block >> invalid >>> invalid/wardley/empty-block-after-header
+Filename: tests/fixtures/rules/wardley-no-empty-description-block/invalid/wardley/empty-block-after-header-input.mmd
+
+Code:
+  1 | wardley-beta accDescr {}
+    |              ^~~~~~~~~~~ [1]
+  2 | component API [0.6,0.7]
+  3 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
 ---
 
 
@@ -77,20 +108,10 @@ Code:
     | ~~ [1]
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
----
-
-
-Test: wardley-no-empty-description-block >> invalid >>> invalid/wardley/empty-block-crlf
-Filename: tests/fixtures/rules/wardley-no-empty-description-block/invalid/wardley/empty-block-crlf-input.mmd
-
-Code:
-  1 | wardley-beta
-  2 | accDescr { 
-    | ^~~~~~~~~~~\ [1]
-  3 |  }
-    | ~~ [1]
-
-[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | wardley-beta
 ---
 
 
@@ -119,6 +140,10 @@ Code:
     | ^~~~~~~~~~~ [1]
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | wardley-beta
 ---
 
 
@@ -132,4 +157,9 @@ Code:
   3 | %% TODO
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | wardley-beta
+          2 | %% TODO
 ---

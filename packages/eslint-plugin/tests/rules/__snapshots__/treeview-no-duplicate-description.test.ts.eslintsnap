@@ -13,6 +13,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr: First
+          3 |   root/
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr { Second }
+          3 |   root/
+          4 |
 ---
 
 
@@ -31,6 +44,25 @@ Code:
   8 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 | accTitle: First
+          3 | accDescr: Description
+          4 | title Hidden
+          5 | accTitle: Second
+          6 | root/
+          7 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 | accTitle: First
+          3 | title Hidden
+          4 | accTitle: Second
+          5 | accDescr { Changed }
+          6 | root/
+          7 |
 ---
 
 
@@ -51,7 +83,39 @@ Code:
   9 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 | accTitle: First
+          3 | accTitle: #35;
+          4 | accTitle: Third
+          5 | accDescr: Before
+          6 | accDescr: After
+          7 | root/
+          8 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 | accTitle: First
+          3 | accTitle: #35;
+          4 | accTitle: Third
+          5 | accDescr { #35; }
+          6 | accDescr: After
+          7 | root/
+          8 |
 [2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 | accTitle: First
+          3 | accTitle: #35;
+          4 | accTitle: Third
+          5 | accDescr: Before
+          6 | accDescr { #35; }
+          7 | root/
+          8 |
 ---
 
 
@@ -68,6 +132,21 @@ Code:
   6 | └── node
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 | ├── title T
+          3 | ├── accTitle: A
+          4 | ├── accDescr: D
+          5 | └── node
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 | ├── title T
+          3 | ├── accTitle: A
+          4 | ├── accDescr {B}
+          5 | └── node
 ---
 
 
@@ -86,6 +165,25 @@ Code:
   8 | root
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 | title first
+          3 | accTitle: first
+          4 | accDescr: first
+          5 | title second
+          6 | accTitle: second
+          7 | root
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 | title first
+          3 | accTitle: first
+          4 | title second
+          5 | accTitle: second
+          6 | accDescr { third }
+          7 | root
 ---
 
 
@@ -101,6 +199,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr { Second }
+          3 |   root/
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr: First
+          3 |   root/
+          4 |
 ---
 
 
@@ -117,6 +228,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 | accDescr { Second }
+          3 | root/
+          4 | └── file
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 | accDescr: First
+          3 | root/
+          4 | └── file
+          5 |
 ---
 
 
@@ -136,6 +262,23 @@ Code:
   8 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 | accDescr {First
+          3 | │   └── Second}
+          4 | root/
+          5 | └── file
+          6 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 | accDescr {First
+          3 | Second}
+          4 | root/
+          5 | └── file
+          6 |
 ---
 
 
@@ -152,6 +295,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 | accDescr: First
+          3 | root/
+          4 | └── file
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 | accDescr { Second }
+          3 | root/
+          4 | └── file
+          5 |
 ---
 
 
@@ -172,6 +330,24 @@ Code:
   9 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 | accDescr {First
+          3 | │
+          4 | Second}
+          5 | root/
+          6 | └── file
+          7 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 | accDescr {First
+          3 | Second}
+          4 | root/
+          5 | └── file
+          6 |
 ---
 
 
@@ -193,6 +369,24 @@ Code:
   9 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 | accDescr {First
+          3 | Second}
+          4 | root/
+          5 | └── file
+          6 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 | accDescr {First
+          3 | │
+          4 | Second}
+          5 | root/
+          6 | └── file
+          7 |
 ---
 
 
@@ -212,6 +406,21 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr: First
+          3 |   root/
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr {
+          3 | %% TODO
+          4 |   }
+          5 |   root/
+          6 |
 ---
 
 
@@ -232,21 +441,23 @@ Code:
   8 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
----
-
-
-Test: treeview-no-duplicate-description >> invalid >>> invalid/treeview/desc-crlf
-Filename: tests/fixtures/rules/treeview-no-duplicate-description/invalid/treeview/desc-crlf-input.mmd
-
-Code:
-  1 | treeView-beta
-  2 | accDescr: First
-  3 | accDescr { Second }
-    | ^~~~~~~~~~~~~~~~~~~ [1]
-  4 | root/
-  5 |
-
-[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 | accDescr: First
+          3 | accDescr: Third
+          4 | root/
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 | accDescr {
+          3 | %% TODO
+          4 | }
+          5 | accDescr: Third
+          6 | root/
+          7 |
 ---
 
 
@@ -263,6 +474,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 | accDescr: First
+          3 | %%{init: {}}%%
+          4 | root/
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 | %%{init: {}}%%
+          3 | accDescr { Second }
+          4 | root/
+          5 |
 ---
 
 
@@ -278,6 +504,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr: First
+          3 |   root/
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr:
+          3 |   root/
+          4 |
 ---
 
 
@@ -293,6 +532,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr: #35;
+          3 |   root/
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr { # }
+          3 |   root/
+          4 |
 ---
 
 
@@ -308,6 +560,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 | accDescr { # }
+          3 | root/
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 | accDescr: #35;
+          3 | root/
+          4 |
 ---
 
 
@@ -323,6 +588,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr: <b title="x">Hi</b>
+          3 |   root/
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr: <b title='x'>Hi</b>
+          3 |   root/
+          4 |
 ---
 
 
@@ -338,6 +616,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr: First
+          3 |   root/
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr { Second }
+          3 |   root/
+          4 |
 ---
 
 
@@ -355,7 +646,126 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr: First
+          3 |   accDescr: First
+          4 |   root/
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr { Second }
+          3 |   accDescr: First
+          4 |   root/
+          5 |
 [2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr: First
+          3 |   accDescr { Second }
+          4 |   root/
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr: First
+          3 |   accDescr: First
+          4 |   root/
+          5 |
+---
+
+
+Test: treeview-no-duplicate-description >> invalid >>> invalid/treeview/description-equal-predecessor
+Filename: tests/fixtures/rules/treeview-no-duplicate-description/invalid/treeview/description-equal-predecessor-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | accDescr: A
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
+---
+
+
+Test: treeview-no-duplicate-description >> invalid >>> invalid/treeview/description-removal-empty-predecessor
+Filename: tests/fixtures/rules/treeview-no-duplicate-description/invalid/treeview/description-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | accDescr {}
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 | root/
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 | accDescr {}
+          3 | accDescr: A
+          4 | root/
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 | accDescr {}
+          3 | accDescr: B
+          4 | root/
+          5 |
+---
+
+
+Test: treeview-no-duplicate-description >> invalid >>> invalid/treeview/description-removal-shared-line
+Filename: tests/fixtures/rules/treeview-no-duplicate-description/invalid/treeview/description-removal-shared-line-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | accDescr {style:#x} accDescr;{D}
+    |                     ^~~~~~~~~~~~ [1]
+  3 | root/
+  4 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+---
+
+
+Test: treeview-no-duplicate-description >> invalid >>> invalid/treeview/description-removal-with-trailing-comment
+Filename: tests/fixtures/rules/treeview-no-duplicate-description/invalid/treeview/description-removal-with-trailing-comment-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | accDescr { A }
+  3 | accDescr { B } %% comment
+    | ^~~~~~~~~~~~~~ [1]
+  4 | root/
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 | accDescr { B } %% comment
+          3 | root/
+          4 |
 ---
 
 
@@ -371,4 +781,17 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr: First
+          3 |   root/
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr { Second }
+          3 |   root/
+          4 |
 ---

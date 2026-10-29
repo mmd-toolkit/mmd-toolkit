@@ -20,6 +20,7 @@ export const classNoUnclosedBackquote: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("class-no-unclosed-backquote"),
     },
+
     schema: [],
     messages: {
       unclosed:

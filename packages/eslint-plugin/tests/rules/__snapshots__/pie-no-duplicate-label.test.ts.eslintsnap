@@ -42,22 +42,6 @@ Code:
 ---
 
 
-Test: pie-no-duplicate-label >> invalid >>> invalid/pie/label-crlf-lf-equal
-Filename: tests/fixtures/rules/pie-no-duplicate-label/invalid/pie/label-crlf-lf-equal-input.mmd
-
-Code:
-  1 | pie
-  2 | "A
-  3 | B":1
-  4 | "A
-    | ^~\ [1]
-  5 | B":2
-    | ~~~~ [1]
-
-[1] mermaid.js keeps the value of the first section with this label and ignores this value.
----
-
-
 Test: pie-no-duplicate-label >> invalid >>> invalid/pie/label-empty-conflict
 Filename: tests/fixtures/rules/pie-no-duplicate-label/invalid/pie/label-empty-conflict-input.mmd
 

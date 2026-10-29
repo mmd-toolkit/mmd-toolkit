@@ -10,46 +10,28 @@ Disallow a directive without its closing `}%%` that takes the lines after it.
 
 <!-- end auto-generated rule notice -->
 
-A directive runs from `%%{` to its `}%%`. A directive whose argument starts with
-a character that is not a word character, as the `{` of
-`%%{init: {"theme": "dark"}}%%`, runs to the first `}%%` after it. Without its
-own `}%%`, it runs to a `}%%` written later, to the end of the text, or to the
-first U+2028 or U+2029, and mermaid.js reads the lines up to there into the
-directive without an error: the statements on them disappear from the diagram.
+A directive runs from `%%{` to its closing `}%%`. When the closer is missing,
+mermaid.js can read later lines into the directive without an error, and their
+statements disappear from the diagram.
 
 ## Rule Details
 
-This rule reports a directive that holds text of a later line than its `%%{`,
-other than its name and the JSON object or array with which its argument starts.
-It applies to every diagram type.
+This rule applies to every diagram type. It reports a directive containing text
+on a later line than its `%%{`, other than its name and the JSON object or array
+that starts its argument. Such a directive is reported both when it has no `}%%`
+and when a `}%%` written later, as that of a later directive, closes it.
 
-After `A --> B`, the lines `%%{init: {"theme": "dark"}}`, without the final
-`%%`, and `C --> D` give a flowchart with the link from `A` to `B` only:
-`C --> D` is in the directive. A `}%%` written later closes the directive: with
-`%%{wrap}%%` after `C --> D`, the first directive runs to the `}%%` of the
-second, and both `C --> D` and the `wrap` directive disappear. The rule reports
-the directive in both cases, without a `}%%` and closed by a later `}%%`.
+Multiline JSON objects and arrays are not reported; when the object is not
+closed, the rest of the directive is part of it and is not reported. A directive
+at the end of the text that takes no statement is not reported, even without
+`}%%`. `%%{wrap` at the end of a line takes the first word of the next line as
+its argument, and that word disappears; the rule reports it.
 
-A directive whose argument starts with a word character takes that word as its
-argument, and the whitespace before the word crosses line breaks: `%%{wrap` at
-the end of a line takes the first word of the next line, and that word
-disappears. The rule reports it.
+When the text without what a directive takes is no valid diagram, as when the
+directive takes the header, mermaid.js gives an error and the rule does not
+report it.
 
-The JSON object or array of an argument may run over several lines. It ends at
-the bracket that closes its first bracket, and the lines that it covers are not
-reported; an object that never closes covers the rest of the directive. So a
-directive at the end of the text takes no statement, also without its `}%%`, and
-is not reported: `%%{init: {"theme": "dark"}` without `}%%` as the last line
-still sets the theme. A U+2028 or U+2029 ends a directive that has no `}%%`, and
-the text after it is read as written.
-
-Where what is left is no valid diagram, mermaid.js rejects the text, and the
-rule does not see it: a directive left without its `}%%` before the header takes
-the header. When the text that the directive takes breaks the JSON argument of
-an init directive, [no-invalid-init-directive](./no-invalid-init-directive.md)
-reports it too.
-
-Close the directive with `}%%`.
+The examples are flowcharts.
 
 Examples of **incorrect** code for this rule:
 
@@ -78,15 +60,6 @@ This rule has no options.
 ## Related Rules
 
 - [no-invalid-init-directive](./no-invalid-init-directive.md)
-
-## Background
-
-The
-[pattern of a directive](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L9-L10)
-takes a word argument, or a free-text argument up to the first `}%%`, a U+2028,
-a U+2029, or the end of the text, and
-[`removeDirectives`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L200-L202)
-removes what it matches before the diagram is read.
 
 <!-- begin auto-generated rule resources -->
 

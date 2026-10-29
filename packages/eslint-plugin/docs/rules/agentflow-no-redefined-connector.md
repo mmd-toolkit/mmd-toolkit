@@ -12,55 +12,34 @@ for its id before.
 
 <!-- end auto-generated rule notice -->
 
-`connector C["Title"]` declares a connector and its title. Declared again with
-another title, the connector takes the later title without an error, and the
-earlier one is lost. Declared with the id of a vertex, the connector replaces
+A connector declared again with another title takes the later title without an
+error, losing the earlier one. Declared with the id of a vertex, it replaces
 that vertex.
 
 ## Rule Details
 
-This rule reports a connector declaration that changes the title of a connector
-declared before it, or the label, the drawn shape, or the kind of a vertex
-written before it with a shape. It applies to `agentflow`.
+This rule applies to agentflow diagrams (`agentflow-beta`). It reports a
+connector declaration that changes an earlier connector title or replaces a
+vertex written with a shape. Even with the same label, a vertex becomes a
+connector and is reported. A connector declared with the id of a vertex that is
+only referred to, as `C` in `A --> C`, is not reported: nobody wrote a label or
+shape for that vertex. A declaration without a title replaces a vertex written
+with a shape too and is reported. A vertex written with a shape after a
+connector of its id is reported by
+[agentflow-no-redefined-vertex](./agentflow-no-redefined-vertex.md), not by this
+rule.
 
-After `connector C[First]`, the declaration `connector C[Second]` gives the
-connector the title `Second`, and `First` is lost. A declaration without a
-title, or with a title of only whitespace, keeps the title that the connector
-has and is not reported, and neither is a declaration with the title that the
-connector already has. After `connector C[First]` and `connector C[Second]`, a
-third `connector C[First]` is reported, because it replaces `Second`. A
-connector declared first without a title has its id as its title, which nobody
-wrote: a later title for it is not reported.
+A repeated connector declaration with no title, a whitespace-only title, or the
+current title is not reported. A connector first declared without a title has
+its id as its title, and a later title for it is not reported.
 
-A connector and a vertex with one id are one element in mermaid.js. The first
-declaration of a connector replaces a vertex of the id: after
-`C[Ordinary] --> B`, the declaration `connector C[API]` gives the element `C`
-the title `API`, the shape of a connector, a rounded rectangle, and the kind of
-a connector, and is reported. Since a vertex written with a shape is never a
-connector, the first declaration of a connector replaces every such vertex of
-its id: `C[API] --> B` and then `connector C[API]` is reported too, because the
-task becomes a connector. Without a title, the connector takes its id as its
-label, so `connector C` is reported there too. A vertex that is only referred
-to, as `C` in `A --> C`, has no label or shape that anybody wrote, and a
-connector of its id is not reported. Shapes and kinds are compared as
-[agentflow-no-redefined-vertex](./agentflow-no-redefined-vertex.md) compares
-them, which reports a vertex that replaces the title of a connector.
+A vertex with the reserved id `connectors` does not count as an earlier label or
+shape. Titles and labels set by data blocks, such as `C@{ label: API }`, are not
+compared, even between declarations.
 
-A connector with an empty trimmed name creates nothing and is not compared. An
-ordinary vertex occurrence ignored because its id is an existing link id or
-`connectors` writes no replacement history, even before or after a real
-connector declaration of that id.
-
-The id of a connector is its name, without the whitespace at its ends and
-without the parts that mermaid.js erases from it. A title or a label set by a
-data block, as in `C@{ label: API }`, is not compared, also where it stands
-between two declarations. Titles are compared without the whitespace at their
-ends, which mermaid.js removes, and otherwise as written: mermaid.js turns
-character references, as `#35;`, and the quotes of HTML attributes into other
-characters before it reads a title, so two titles that differ only in those may
-be one title for mermaid.js and two for this rule.
-
-Give each connector its own id, and write its title once.
+Titles are compared without whitespace at their ends and otherwise as written,
+so differences in character references or HTML attribute quotes can be reported
+even when mermaid.js reads them as the same title.
 
 Examples of **incorrect** code for this rule:
 
@@ -101,12 +80,6 @@ This rule has no options.
 ## Related Rules
 
 - [agentflow-no-redefined-vertex](./agentflow-no-redefined-vertex.md)
-
-## Background
-
-[`addConnector`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1380-L1411)
-stores the first declaration of an id as a new element in place of any vertex of
-that id, and later sets only a title that is not empty.
 
 <!-- begin auto-generated rule resources -->
 

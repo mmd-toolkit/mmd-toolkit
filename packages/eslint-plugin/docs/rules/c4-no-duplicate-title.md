@@ -16,22 +16,18 @@ accepts both statements without an error, and the earlier title is lost.
 
 ## Rule Details
 
-This rule reports a `title` when the preceding title setter is another `title`
-with a different stored value. It applies to `c4`.
+This rule applies to C4 diagrams (`C4Context`, `C4Container`, `C4Component`,
+`C4Dynamic`, and `C4Deployment`). It reports a `title` with a different value
+from the latest preceding title-setting statement when that statement is also a
+`title`. Titles inside boundaries also set the title of the whole diagram.
+Repeating the same value is not reported. After `title First` and
+`title Second`, a third `title First` is reported too.
 
-Comparison uses the latest setter, not the first: `First`, `Second`, and `First`
-give two reports. A title inside a boundary still sets the title of the whole
-diagram. Repeating the same value is not reported. A title keeps quotes and the
-whitespace after its first separator: `title "Banking"` differs from
-`title Banking`, and an extra value space is significant.
-
-`accTitle:` is excluded from reports and ends the comparison with the preceding
-`title`. In mermaid 12.0.0 it incorrectly writes the visible title instead of
-the accessible title. The tree distinguishes that form, so this rule does not
-turn the accessibility defect into an author mistake, including in mixed
-`title`/`accTitle:` sequences.
-
-Keep one title for the diagram.
+Quotes and whitespace after the first separator are significant, so
+`title "Banking"` differs from `title Banking`. `accTitle:` is not reported and
+ends comparison with the preceding `title`. mermaid 12.0.0 incorrectly uses this
+form as a visible title. The rule does not report that accessibility defect as
+an author mistake.
 
 Examples of **incorrect** code for this rule:
 
@@ -73,12 +69,10 @@ This rule has no options.
 
 - [c4-no-duplicate-description](./c4-no-duplicate-description.md)
 
-## Background
+## Further Reading
 
-[Issue #8040](https://github.com/mermaid-js/mermaid/issues/8040) records the
-`accTitle:` defect. [PR #8041](https://github.com/mermaid-js/mermaid/pull/8041)
-(open) changes that setter. The ordinary `title`/`title` reports do not depend
-on that defect.
+- [Issue #8040: C4: accTitle sets the visible title instead of the accessible title](https://github.com/mermaid-js/mermaid/issues/8040)
+- [Pull request #8041: fix(c4): send accTitle to the accessible title](https://github.com/mermaid-js/mermaid/pull/8041)
 
 <!-- begin auto-generated rule resources -->
 

@@ -50,6 +50,16 @@ A --> B
 flowchart LR
 A --> B`,
       },
+
+      {
+        name: "valid/flowchart/flowchart-unclosed-crlf",
+        filename:
+          "tests/fixtures/rules/no-duplicate-init-key/valid/flowchart/flowchart-unclosed-crlf-input.mmd",
+        code: `flowchart LR\r
+A --> B\r
+%%{init: {"theme":"dark"}\r
+A --> B`,
+      },
     ],
     invalid: [],
   },

@@ -9,28 +9,20 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+🔧
+[`--fix` オプション](https://eslint.org/docs/latest/use/command-line-interface#--fix)
+で自動修正できる。
+
 <!-- end auto-generated rule notice -->
 
-`link` の文は、参加者にリンクを与える。
-そのテキストは、`link A: Dashboard @ https://x.example` のように、ラベル、`@`、
-URL である。
-`@` を書き忘れても、mermaid.js は文を受理し、
-書いたものと違うラベルと URL のリンクを設定する。
+`link` の文は、ラベル、`@`、URL で参加者にリンクを与える。
+`@` がなくても mermaid.js はエラーなしに文を受理するが、
+書いたものと違うラベルと URL を設定する。
 
 ## 規則の詳細
 
-この規則は、テキストに `@` のない `link` の文を報告する。
-対象の図種は `sequence` である。
-
-`@` がないと、ラベルはテキストから最後の 2 文字を除いたもの、
-URL はテキスト全体になり、どちらも両端の空白を除く。
-`link A: Dashboard https://x.example` は、
-ラベル `Dashboard https://x.examp` と、
-URL `Dashboard https://x.example` を与え、
-`link A: no at` はラベル `no` を与える。
-
-テキストのない `link` の文も報告する。
-`link A:` は、ラベルも URL も空のリンクを参加者に与える。
+この規則は、シーケンス図（`sequenceDiagram`）に当てる。
+テキストに `@` のない `link` の文を、テキストのないものも報告する。
 
 この規則に**反する**コードの例:
 

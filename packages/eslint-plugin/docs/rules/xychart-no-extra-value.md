@@ -17,22 +17,17 @@ draw two bars.
 
 ## Rule Details
 
-This rule reports each value of a `line` or a `bar` beyond the number of the
-categories of the x axis. It applies to `xychart`.
+This rule applies to XY charts (`xychart` and `xychart-beta`). It reports each
+value in a `line` or `bar` beyond the number of x-axis categories.
 
-The categories are those of the last `x-axis` statement with data in the chart,
-and the plots after that statement are checked against them; an `x-axis`
-statement with a title only keeps the categories, and a range instead of
-categories gives none, so that no plot is checked. A plot before that statement
-is not checked: mermaid.js gives each plot the x axis at its own place, so that
-after `bar [1, 2, 3]`, the statement `x-axis [a, b]` drops no value of it, and
-[#7798](https://github.com/mermaid-js/mermaid/pull/7798) (open, for the approved
-issue that an `x-axis` written after the data breaks the chart) gives the plots
-the last x axis, which would change what such a plot drops. After
-`x-axis [a, b, c, d]`, `bar [1]`, and `x-axis [a, b]`, the plot `bar [1, 2, 3]`
-drops its third value, and it is reported. Fewer values than categories are not
-reported: the categories without a value have no point or bar, and nothing
-written is lost.
+The categories are those of the last `x-axis` statement that gives categories or
+a range; one with a title only keeps them, and after a range no plot is checked.
+Only the plots after that statement are checked. A plot before it is not:
+mermaid.js now gives each plot the x axis set before it, so that `x-axis [a, b]`
+after `bar [1, 2, 3]` drops no value, and an open pull request (see Further
+Reading) would give it the last x axis instead.
+
+Fewer values than categories are not reported because nothing written is lost.
 
 Examples of **incorrect** code for this rule:
 
@@ -66,6 +61,10 @@ This rule has no options.
 ## Related Rules
 
 - [xychart-no-redefined-axis](./xychart-no-redefined-axis.md)
+
+## Further Reading
+
+- [#7798](https://github.com/mermaid-js/mermaid/pull/7798)
 
 <!-- begin auto-generated rule resources -->
 

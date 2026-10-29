@@ -10,36 +10,29 @@ C4 のスタイル更新で、色と offset のキーの大文字小文字の誤
 
 <!-- end auto-generated rule notice -->
 
-`$BgColor="red"` は受理されるが、別の属性 `BgColor` を保存する。
-`bgColor` は設定されず、要素はその背景色を得ない。
-大文字小文字の違いは構文エラーにならない。
+mermaid.js は `$BgColor="red"` をエラーなしに受理するが、
+`BgColor` を `bgColor` とは別の属性として扱う。
+要素は意図した背景色を得ない。
 
 ## 規則の詳細
 
-この規則は、適用される `UpdateElementStyle` で `bgColor`、`fontColor`、
-`borderColor` と大文字小文字だけが異なる名前付きキーを報告する。
-適用される `UpdateRelStyle` では、`textColor`、`lineColor`、`offsetX`、
-`offsetY` と大文字小文字だけが異なるキーを報告する。
-対象の図種は `c4` である。
+この規則は、C4 図（`C4Context`、`C4Container`、`C4Component`、`C4Dynamic`、
+`C4Deployment`）に当てる。
+`UpdateElementStyle` の `bgColor`、`fontColor`、`borderColor`、
+または `UpdateRelStyle` の `textColor`、`lineColor`、`offsetX`、
+`offsetY` と大文字小文字だけが違う名前付きキーを報告する。
+両端の空白を除いた各キーを、呼出しが読む省略可能な引数の位置で、
+更新対象があるときだけ調べる。
+対象には要素、境界、初めからある境界 `global` が含まれる。
 
-両端の空白を除いたキーを、消費される省略可能な引数だけで調べる。
-誤記したキーごとに 1 件報告する。
-要素のスタイル更新は、要素、境界、初めからある `global` 境界に適用できる。
-対象は、書いたとおりの alias で探す。
-mermaid.js は、`#35;` のような文字参照と HTML の属性の引用符を、
-alias を読む前にほかの文字に変えるので、それだけが違う alias では、
-mermaid.js とこの規則が別の対象を見つけることがある。
-
+`alias`、`from`、`to` などの名前付き属性は後の文の照合を変えることがあるので、
 ほかの見慣れないキーは報告しない。
-mermaid.js は名前付きの属性をどれも保存し、文書にない `alias`、`from`、
-`to` などのキーは、後の文が照合するものを変える。
-必須位置、余分な引数、現時点の対象がない更新は、この規則では調べない。
-`UpdateLayoutConfig` も、名前や大文字小文字によらず、
-位置でカウンターを選ぶので除く。
+必須位置と余分な引数は調べない。
 
-キーの大文字小文字を正確に書く。
-色スロットの、正しく書いた名前付き offset は報告しない。
-mermaid.js は文字列として保存し、描画はその文字列を offset として読む。
+`UpdateLayoutConfig` は、位置が設定項目を選ぶので調べない。
+色の位置の、正しい大文字小文字の名前付き offset は、
+mermaid.js がその値を offset として使えるので報告しない。
+この規則は属性名を調べ、色の値が正しい CSS かどうかは調べない。
 
 この規則に**反する**コードの例:
 
@@ -73,17 +66,6 @@ C4Context
 
 - [c4-no-undef](./c4-no-undef.ja.md)
 - [c4-no-useless-argument](./c4-no-useless-argument.ja.md)
-
-## 背景
-
-要素の adapter は
-[`bgColor`、`borderColor`、`fontColor`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4ShapeAdapter.ts#L140-L156)
-を正確な名前で読む。
-関係の描画も、
-正確な名前の
-[色と offset のフィールド](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/svgDraw.ts#L26-L36)
-を読む。
-対象は無視される属性名であり、色の値が正しい CSS かどうかではない。
 
 <!-- begin auto-generated rule resources -->
 

@@ -8,39 +8,29 @@ Disallow a tag in the data of a task that mermaid.js does not read as a tag.
 
 ✅ The `recommended` configuration enables this rule.
 
+🔧 This rule is automatically fixable by the
+[`--fix` CLI option](https://eslint.org/docs/latest/use/command-line-interface#--fix).
+
 <!-- end auto-generated rule notice -->
 
-A tag in the place of the start or the end of a task is not read as a tag:
-mermaid.js reads the word as a date, which it is not, and the task loses its
-start or its end. This happens to a tag written in another case, as `DONE`, to
-tags written without the comma between them, as `done crit`, and to a tag
-written after another item, as in `a : 2024-01-01, done`. The tags `active`,
-`done`, `crit`, `milestone`, and `vert` mark a task only at the front of its
-data, each in lower case and followed by a comma.
+The tags `active`, `done`, `crit`, `milestone`, and `vert` mark a task only at
+the front of its data, in lower case and followed by commas. A tag word written
+as the start or the end of a task, in another case (`DONE`), without the comma
+between tags (`done crit`), or after another item (`a : 2024-01-01, done`), is
+read as a date, and the task loses its start or end.
 
 ## Rule Details
 
-This rule reports an item of the data of a task that is the start or the end of
-the task and whose first word is a tag in any case. It applies to `gantt`.
+This rule applies to Gantt charts (`gantt`). It reports a start or end item of
+task data whose first word is `active`, `done`, `crit`, `milestone`, or `vert`,
+in any case. Tags at the front of the data, each in lower case and followed by a
+comma, are not reported, also with whitespace around them.
 
-After its tags, the data of a task holds one to three items: the end; the start
-and the end; or the id, the start, and the end. In `b : DONE, 1d`, the start is
-`DONE`, and so in `b : done crit, 1d` it is `done crit`; mermaid.js cannot read
-the start, and it does not draw the chart. In `a : 2024-01-01, done`, the end is
-`done`, and the task ends where it starts, with no length; so it is with
-`b : Done`, whose one item is the end.
-
-The id is not checked: `Design :Done, 2024-01-06, 3d` is a task with the id
-`Done`, and `Design :done crit, 2024-01-06, 3d` one with the id `done crit`.
-Both have the start and the end that are written, and mermaid.js reads the first
-item as an id, which may be any word; the rule does not report it.
-
-Data of four items or more is not checked: mermaid.js reads none of its items
-and cannot draw the chart, as for `A :a1, crit, 2024-01-01, 1d`.
-
-Tags at the front, with their commas, are read as tags and are not reported,
-also with whitespace around them, as in `a :  done , crit ,1d`. A word that only
-starts with the letters of a tag is no tag: the end `criteria` is not reported.
+After the tags, one item is the end, two are the start and end, and three are
+the id, start, and end. The id is not checked, so `Done` and `done crit` as the
+first of three items are not reported. Data with four or more items is not
+checked because mermaid.js cannot draw the chart from it. A word that merely
+starts with a tag, such as `criteria`, is not reported.
 
 Examples of **incorrect** code for this rule:
 
@@ -94,15 +84,9 @@ gantt
 
 This rule has no options.
 
-## Background
+## Further Reading
 
-mermaid.js takes the tags from the front of the data while the first item,
-without the whitespace at its ends, is one of the words in lower case
-([`getTaskTags`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L846-L860)).
-Its documentation
-([syntax/gantt.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gantt.md#L69))
-lists the tags `active`, `done`, `crit`, and `milestone` in lower case, and says
-that they come first.
+- [Gantt diagram syntax: tags](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gantt.md#L69)
 
 <!-- begin auto-generated rule resources -->
 

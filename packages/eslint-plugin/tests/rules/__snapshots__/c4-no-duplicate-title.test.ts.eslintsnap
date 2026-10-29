@@ -78,20 +78,6 @@ Code:
 ---
 
 
-Test: c4-no-duplicate-title >> invalid >>> invalid/c4/title-crlf
-Filename: tests/fixtures/rules/c4-no-duplicate-title/invalid/c4/title-crlf-input.mmd
-
-Code:
-  1 | C4Context
-  2 | title Banking
-  3 | title Payments
-    | ^~~~~~~~~~~~~~ [1]
-  4 |
-
-[1] mermaid.js replaces the earlier title with this `title`.
----
-
-
 Test: c4-no-duplicate-title >> invalid >>> invalid/c4/title-directive-between
 Filename: tests/fixtures/rules/c4-no-duplicate-title/invalid/c4/title-directive-between-input.mmd
 

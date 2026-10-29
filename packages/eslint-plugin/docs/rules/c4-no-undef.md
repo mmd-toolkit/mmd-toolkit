@@ -10,41 +10,33 @@ Disallow a style update whose target does not exist when the update is read.
 
 <!-- end auto-generated rule notice -->
 
-`UpdateElementStyle` and `UpdateRelStyle` change the style of an element, a
-boundary, or a relationship that exists when mermaid.js reads the update. When
-no such target exists, as when its alias is misspelled or the update is written
-before its target, mermaid.js accepts the update without an error and changes
-nothing.
+`UpdateElementStyle` and `UpdateRelStyle` change a target that exists when
+mermaid.js reads the update. If an alias is misspelled or the update comes
+before its target, mermaid.js accepts it without an error and changes nothing.
 
 ## Rule Details
 
-This rule reports the target of an `UpdateElementStyle` that no element or
-boundary has when the update is read, and an `UpdateRelStyle` whose ordered pair
-of endpoints no relationship has when it is read. It applies to `c4`.
+This rule applies to C4 diagrams (`C4Context`, `C4Container`, `C4Component`,
+`C4Dynamic`, and `C4Deployment`). It reports each `UpdateElementStyle` whose
+alias matches no current element or boundary, and each `UpdateRelStyle` whose
+ordered endpoints match no current relationship. Declarations make targets
+available from that point on; the initial boundary `global` exists from the
+start.
 
-An element, a boundary, and a relationship exist from their declaration on, and
-the initial boundary `global` exists from the start. After
-`Person(customer, "Customer")`, `UpdateElementStyle(custmer, "red")` changes
-nothing. An update written before its target is reported too: mermaid.js applies
-nothing to the declaration that follows, and the documentation of mermaid.js
-writes the updates at the end of the diagram. Aliases are compared with their
-case and without the whitespace at their ends. They are compared as written:
-mermaid.js turns character references, as `#35;`, and the quotes of HTML
-attributes into other characters before it reads an alias, so two aliases that
-differ only in those may be one alias for mermaid.js and two for this rule.
+An update before its target is reported because it does not affect the later
+declaration. Aliases are case-sensitive and compared as written after trimming
+whitespace at the ends; mermaid.js converts character references and HTML
+attribute quotes, so it may match aliases that this rule treats as different.
 
-A relationship keeps its endpoints in the order written, also for `BiRel`: after
-`Rel(a, b, "Uses")`, `UpdateRelStyle(b, a, "red")` changes nothing. A named
-`$alias`, `$from`, or `$to` in a declaration or an earlier update changes what
-later updates find: after `Person(a, "A")` and
-`UpdateElementStyle(a, $alias="b")`, the update `UpdateElementStyle(a, "red")`
-changes nothing. A relationship written with `$from` and `$to` in the places of
-its endpoints has no endpoints that an update can name. Each update of a missing
-target is reported.
+Relationship endpoints are ordered, including for `BiRel`, so reversing them is
+reported. After `$alias`, `$from`, or `$to` in a declaration or an earlier
+update renames a target, an update that uses the old name is reported. An
+`UpdateRelStyle` for a relationship written with `$from` and `$to` in its
+endpoint positions is always reported, because that relationship has no
+endpoints that an update can name.
 
-A relationship whose endpoint no element or boundary declares is not reported:
-mermaid.js accepts it, but drawing the diagram stops with an error that names
-the relationship.
+Relationships whose endpoints are undeclared are not reported: mermaid.js stops
+with an error when drawing them.
 
 Examples of **incorrect** code for this rule:
 
@@ -97,16 +89,6 @@ This rule has no options.
 
 - [c4-no-invalid-attribute-key](./c4-no-invalid-attribute-key.md)
 - [c4-no-redefined-element](./c4-no-redefined-element.md)
-
-## Background
-
-[`updateElStyle` and `updateRelStyle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L494-L670)
-look up the target that exists when they are called, and
-[`getC4Shape`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L693-L700)
-looks for a boundary when no element matches. For a relationship whose endpoint
-is unknown,
-[`drawRels`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Renderer.ts#L416-L422)
-throws an error.
 
 <!-- begin auto-generated rule resources -->
 

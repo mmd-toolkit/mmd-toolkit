@@ -14,6 +14,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 |   title First
+          3 |   axis A, B, C
+          4 |   curve sales{1, 2, 3}
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | radar-beta
+          2 |   title Second
+          3 |   axis A, B, C
+          4 |   curve sales{1, 2, 3}
+          5 |
 ---
 
 
@@ -33,6 +48,27 @@ Code:
   9 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle: First
+          3 | %% TODO
+          4 |
+          5 | %%{init: {}}%%
+          6 | axis A, B, C
+          7 | curve sales{1,2,3}
+          8 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle:
+          3 | %% TODO
+          4 |
+          5 | %%{init: {}}%%
+          6 | axis A, B, C
+          7 | curve sales{1,2,3}
+          8 |
 ---
 
 
@@ -49,6 +85,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle: First
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle:
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
 ---
 
 
@@ -65,7 +116,33 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle: First
+          3 | accTitle: First
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle: Second
+          3 | accTitle: First
+          4 |
 [2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle: First
+          3 | accTitle: Second
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle: First
+          3 | accTitle: First
+          4 |
 ---
 
 
@@ -82,6 +159,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle: First
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle: Second
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
 ---
 
 
@@ -98,6 +190,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 |   title First
+          3 |   axis A, B, C
+          4 |   curve sales{1, 2, 3}
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | radar-beta
+          2 |   title Second
+          3 |   axis A, B, C
+          4 |   curve sales{1, 2, 3}
+          5 |
 ---
 
 
@@ -114,6 +221,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | title First
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | radar-beta
+          2 | title
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
 ---
 
 
@@ -129,6 +251,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | title First
+          3 | title Second
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | radar-beta
+          2 | title
+          3 | title Second
+          4 |
 ---
 
 
@@ -145,6 +280,43 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | title #35;
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | radar-beta
+          2 | title #
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
+---
+
+
+Test: radar-no-duplicate-title >> invalid >>> invalid/radar/title-equal-predecessor
+Filename: tests/fixtures/rules/radar-no-duplicate-title/invalid/radar/title-equal-predecessor-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | accTitle: A
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle: A
+          3 | accTitle: A
+          4 |
 ---
 
 
@@ -164,6 +336,27 @@ Code:
   9 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | ---
+          2 | title: Front
+          3 | ---
+          4 | radar-beta
+          5 | title First
+          6 | axis A, B, C
+          7 | curve sales{1,2,3}
+          8 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | ---
+          2 | title: Front
+          3 | ---
+          4 | radar-beta
+          5 | title
+          6 | axis A, B, C
+          7 | curve sales{1,2,3}
+          8 |
 ---
 
 
@@ -183,6 +376,27 @@ Code:
   9 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | ---
+          2 | title: First
+          3 | ---
+          4 | radar-beta
+          5 | title First
+          6 | axis A, B, C
+          7 | curve sales{1,2,3}
+          8 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | ---
+          2 | title: First
+          3 | ---
+          4 | radar-beta
+          5 | title
+          6 | axis A, B, C
+          7 | curve sales{1,2,3}
+          8 |
 ---
 
 
@@ -197,6 +411,45 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | title <b x="a">Text</b>
+          3 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | radar-beta
+          2 | title <b x='a'>Text</b>
+          3 |
+---
+
+
+Test: radar-no-duplicate-title >> invalid >>> invalid/radar/title-removal-empty-predecessor
+Filename: tests/fixtures/rules/radar-no-duplicate-title/invalid/radar/title-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | accTitle:
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle:
+          3 | accTitle: A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle:
+          3 | accTitle: B
+          4 |
 ---
 
 
@@ -214,6 +467,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | title First
+          3 |
+          4 | axis A, B, C
+          5 | curve sales{1,2,3}
+          6 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | radar-beta
+          2 | title %%{}%%
+          3 |
+          4 | axis A, B, C
+          5 | curve sales{1,2,3}
+          6 |
 ---
 
 
@@ -232,7 +502,41 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | title First
+          3 | title First
+          4 | axis A, B, C
+          5 | curve sales{1,2,3}
+          6 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | radar-beta
+          2 | title Second
+          3 | title First
+          4 | axis A, B, C
+          5 | curve sales{1,2,3}
+          6 |
 [2] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | title First
+          3 | title Second
+          4 | axis A, B, C
+          5 | curve sales{1,2,3}
+          6 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | radar-beta
+          2 | title First
+          3 | title First
+          4 | axis A, B, C
+          5 | curve sales{1,2,3}
+          6 |
 ---
 
 
@@ -249,6 +553,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | title First
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | radar-beta
+          2 | title Second
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
 ---
 
 
@@ -266,5 +585,35 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | title First
+          3 | accTitle: First
+          4 | accTitle:   
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | radar-beta
+          2 | accTitle: First
+          3 | title   
+          4 | accTitle:   
+          5 |
 [2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | title First
+          3 | accTitle: First
+          4 | title   
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | title First
+          3 | title   
+          4 | accTitle:   
+          5 |
 ---

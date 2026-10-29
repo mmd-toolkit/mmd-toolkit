@@ -21,6 +21,7 @@ new RuleTester(LANGUAGE_CONFIG).run(
         code: `sequenceDiagram
 )\u2028)
 `,
+        output: null,
         errors: [
           {
             message: "mermaid.js reads `)` as no statement and drops it.",
@@ -28,7 +29,6 @@ new RuleTester(LANGUAGE_CONFIG).run(
             column: 1,
             endLine: 2,
             endColumn: 2,
-            suggestions: [],
           },
           {
             message: "mermaid.js reads `)` as no statement and drops it.",
@@ -36,7 +36,63 @@ new RuleTester(LANGUAGE_CONFIG).run(
             column: 3,
             endLine: 2,
             endColumn: 4,
-            suggestions: [],
+          },
+        ],
+      },
+
+      {
+        name: "invalid/sequence/lex-invalid-line-cr",
+        filename:
+          "tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/lex-invalid-line-cr-input.mmd",
+        code: `sequenceDiagram\r)\rA->>B: x\r`,
+        output: null,
+        errors: [
+          {
+            message: "mermaid.js reads `)` as no statement and drops it.",
+            line: 2,
+            column: 1,
+            endLine: 2,
+            endColumn: 2,
+          },
+        ],
+      },
+      {
+        name: "invalid/sequence/lex-invalid-line-crlf",
+        filename:
+          "tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/lex-invalid-line-crlf-input.mmd",
+        code: `sequenceDiagram\r
+)\r
+A->>B: x\r
+`,
+        output: null,
+        errors: [
+          {
+            message: "mermaid.js reads `)` as no statement and drops it.",
+            line: 2,
+            column: 1,
+            endLine: 2,
+            endColumn: 2,
+          },
+        ],
+      },
+
+      {
+        name: "autofix-crlf",
+        filename: "autofix-crlf.mmd",
+        code: `sequenceDiagram\r
+A->>B: call(x\r
+)\r
+`,
+        output: `sequenceDiagram\r
+A->>B: call(x)\r
+`,
+        errors: [
+          {
+            message: "mermaid.js reads `)` as no statement and drops it.",
+            line: 3,
+            column: 1,
+            endLine: 3,
+            endColumn: 2,
           },
         ],
       },

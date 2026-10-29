@@ -10,32 +10,24 @@ Disallow a `class` statement for an id that no block has.
 
 <!-- end auto-generated rule notice -->
 
-`class A c` gives the class `c` to the block `A`. When no block of the diagram
-has the id, as when it is misspelled, mermaid.js gives no error: it makes a new
-block of that id, which is not placed, and the class goes to no block of the
-diagram.
+`class A c` gives class `c` to block `A`. When no block has the id, as when it
+is misspelled, mermaid.js gives no error. It creates an unplaced block with that
+id, leaving the intended block without the class.
 
 ## Rule Details
 
-This rule reports an id of a `class` statement that no statement of the diagram
-declares. It applies to `block`.
+This rule applies to block diagrams (`block-beta` and `block`). It reports each
+id in a `class` statement that no statement in the diagram declares, including
+repeated references to the same unknown id. Ids are case-sensitive.
 
-A block is declared by a block written on its own, by the head of a composite
-block, and by an edge, anywhere in the diagram, inside or outside a composite
-block; `root`, the id of the diagram, is declared from the start. An id that is
-declared only after the `class` statement is not reported either, although
-mermaid.js does not place that block: the class statement makes the block first,
-and the later declaration then places nothing. That is decided as for
-`class A foo` before the vertex `A` in a flowchart, which looks like a defect of
-mermaid.js, and no rule reports it. Ids are compared with their case, so
-`class a c` does not reach the block `A`. A block that a chain or a composite
-head with a link loses is not declared: after `A --> B --> C`, `class A c` is
-reported. Each id of a list is checked, and each statement for the same id is
-reported.
+Standalone blocks, composite heads, and edges declare blocks anywhere in the
+diagram, and `root` is declared from the start. A declaration after the `class`
+statement prevents a report, although mermaid.js then leaves the block unplaced.
+Blocks lost by an edge chain or a composite head with a link do not count as
+declared.
 
-The name of the class is not checked: a class that no `classDef` defines stays
-on the block as a CSS class, which the styles of the page can use. An id that
-starts with whitespace is reported by
+Class names are not checked: a class without a `classDef` can be used by the
+page's CSS. Ids starting with whitespace are reported by
 [block-no-spaced-class-id](./block-no-spaced-class-id.md).
 
 Examples of **incorrect** code for this rule:

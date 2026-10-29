@@ -33,6 +33,7 @@ export const classNoDuplicateDescription: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("class-no-duplicate-description"),
     },
+
     schema: [],
     messages: {
       duplicate:
@@ -50,6 +51,7 @@ export const classNoDuplicateDescription: MermaidRuleDefinition<{
           messageId: "duplicate",
         })
       }
+
       previous = node
     }
 

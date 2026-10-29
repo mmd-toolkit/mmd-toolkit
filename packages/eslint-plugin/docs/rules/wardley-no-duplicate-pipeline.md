@@ -19,19 +19,14 @@ is still drawn as a node.
 
 ## Rule Details
 
-This rule reports a pipeline whose children differ from the ones of the pipeline
-of the same parent before it. It applies to `wardley`.
+This rule applies to Wardley maps (`wardley-beta`). It reports a pipeline with
+different children from the preceding pipeline for the same parent. A pipeline
+with the same children, even in a different order, is not reported. A child
+given a different position in the later pipeline is reported instead by
+[wardley-no-redefined-node](./wardley-no-redefined-node.md).
 
-After a pipeline of `Database` with `SQL` and one with `Cloud`, the box of the
-pipeline holds only `Cloud`.
-
-A pipeline with the same children, also in another order, is not reported; a
-child given another position there is reported by
-[wardley-no-redefined-node](./wardley-no-redefined-node.md). A parent declared
-after the pipeline counts. Names are compared as
-[wardley-no-undef](./wardley-no-undef.md) compares them.
-
-Write the children of a parent in one pipeline.
+Pipelines written before their parent is declared are compared too. Names are
+compared as [wardley-no-undef](./wardley-no-undef.md) compares them.
 
 Examples of **incorrect** code for this rule:
 
@@ -67,11 +62,6 @@ This rule has no options.
 
 - [wardley-no-redefined-node](./wardley-no-redefined-node.md)
 - [wardley-no-undef](./wardley-no-undef.md)
-
-## Background
-
-[`startPipeline`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L112-L120)
-starts the children of a parent anew.
 
 <!-- begin auto-generated rule resources -->
 

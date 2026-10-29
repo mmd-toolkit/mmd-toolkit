@@ -12,6 +12,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 |   accDescr: first
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 |   accDescr: second
+          3 |
 ---
 
 
@@ -32,6 +43,20 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 |   accDescr: short
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 |   accDescr {
+          3 |     A longer
+          4 |     description
+          5 |   }
+          6 |
 ---
 
 
@@ -52,7 +77,31 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | accDescr: Second
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr {
+          3 | %% TODO
+          4 | }
+          5 | accDescr: Second
+          6 |
 [2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | accDescr {
+          4 | %% TODO
+          5 | }
+          6 |
 ---
 
 
@@ -71,6 +120,19 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr {
+          3 | %% TODO
+          4 | }
+          5 |
 ---
 
 
@@ -86,6 +148,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | accDescr {%%{init: {}}%%}
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr {%%{init: {}}%%}
+          3 | accDescr: Second
+          4 |
 ---
 
 
@@ -101,6 +176,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | accDescr {}
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr {}
+          3 | accDescr: Second
+          4 |
 ---
 
 
@@ -115,6 +203,17 @@ Code:
     | ^~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | A
+          3 | accDescr: First
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | A
+          3 | accDescr:
 ---
 
 
@@ -134,6 +233,23 @@ Code:
   9 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr {
+          3 |   a
+          4 |
+          5 |   b
+          6 | }
+          7 | b
+          8 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: a
+          3 | b
+          4 |
 ---
 
 
@@ -148,6 +264,39 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: #35;
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: #
+          3 |
+---
+
+
+Test: agentflow-no-duplicate-description >> invalid >>> invalid/agentflow/description-equal-predecessor
+Filename: tests/fixtures/rules/agentflow-no-duplicate-description/invalid/agentflow/description-equal-predecessor-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr: A
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
 ---
 
 
@@ -164,6 +313,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: first
+          3 | global
+          4 | end
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | global
+          3 | accDescr: second
+          4 | end
+          5 |
 ---
 
 
@@ -178,6 +342,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: <b x="a">t</b>
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: <b x='a'>t</b>
+          3 |
 ---
 
 
@@ -195,6 +370,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | flow F
+          4 | A
+          5 | end
+          6 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F
+          3 | accDescr: Second
+          4 | A
+          5 | end
+          6 |
 ---
 
 
@@ -213,6 +405,19 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr:
+          3 |
+          4 | Second
+          5 |
 ---
 
 
@@ -230,6 +435,20 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | Second
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr:
+          3 | %% note
+          4 | Second
+          5 |
 ---
 
 
@@ -248,6 +467,14 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr:
+          3 | %%{init: {}}%%
+          4 | Second
+          5 |
 ---
 
 
@@ -278,7 +505,33 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | accDescr: First
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr { Second }
+          3 | accDescr: First
+          4 |
 [2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | accDescr { Second }
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | accDescr: First
+          4 |
 ---
 
 
@@ -296,7 +549,37 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | accDescr {%%{init: {}}%%}
+          4 | accDescr: First
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr {%%{init: {}}%%}
+          3 | accDescr { Second }
+          4 | accDescr: First
+          5 |
 [2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | accDescr {%%{init: {}}%%}
+          4 | accDescr { Second }
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | accDescr {%%{init: {}}%%}
+          4 | accDescr: First
+          5 |
 ---
 
 
@@ -312,4 +595,17 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | A
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: Second
+          3 | A
+          4 |
 ---

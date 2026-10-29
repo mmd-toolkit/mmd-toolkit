@@ -22,7 +22,40 @@ participant A
 links A: {"a": "b\u2028c"}
 `,
       },
+
+      {
+        name: "valid/sequence/db-links-crlf",
+        filename:
+          "tests/fixtures/rules/sequence-no-invalid-json/valid/sequence/db-links-crlf-input.mmd",
+        code: `sequenceDiagram\r
+participant A\r
+links A: {"a": "b"}\r
+`,
+      },
     ],
-    invalid: [],
+    invalid: [
+      {
+        name: "autofix-crlf",
+        filename: "autofix-crlf.mmd",
+        code: `sequenceDiagram\r
+participant A\r
+properties A: {"a": [1, 2,], "b": 1,}\r
+`,
+        output: `sequenceDiagram\r
+participant A\r
+properties A: {"a": [1, 2], "b": 1}\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js sets nothing from this `properties` statement because its text is not JSON.",
+            line: 3,
+            column: 1,
+            endLine: 3,
+            endColumn: 38,
+          },
+        ],
+      },
+    ],
   },
 )

@@ -4,6 +4,12 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
+import { titleText } from "../utils/acc-text.ts"
+
+/** A visible chart title is compared without whitespace at its ends. */
+function chartTitleText(node: XychartTitleStatement): string {
+  return node.value.value.trim()
+}
 
 /**
  * The rule `xychart-no-duplicate-title`, described in
@@ -25,6 +31,7 @@ export const xychartNoDuplicateTitle: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("xychart-no-duplicate-title"),
     },
+
     schema: [],
     messages: {
       duplicateTitle:
@@ -35,30 +42,34 @@ export const xychartNoDuplicateTitle: MermaidRuleDefinition<{
   },
   create(context) {
     let previousTitle: XychartTitleStatement | null = null
+
     let previousAccTitle: XychartAccTitleStatement | null = null
+
     return {
       XychartTitleStatement(node) {
         if (
           previousTitle !== null &&
-          previousTitle.value.value.trim() !== node.value.value.trim()
+          chartTitleText(previousTitle) !== chartTitleText(node)
         ) {
           context.report({
             node,
             messageId: "duplicateTitle",
           })
         }
+
         previousTitle = node
       },
       XychartAccTitleStatement(node) {
         if (
           previousAccTitle !== null &&
-          (previousAccTitle.value?.value ?? "") !== (node.value?.value ?? "")
+          titleText(previousAccTitle) !== titleText(node)
         ) {
           context.report({
             node,
             messageId: "duplicateAccTitle",
           })
         }
+
         previousAccTitle = node
       },
     }

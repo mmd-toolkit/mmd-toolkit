@@ -56,6 +56,7 @@ A
             column: 1,
             endLine: 2,
             endColumn: 11,
+            suggestions: [],
           },
         ],
       },
@@ -75,6 +76,30 @@ B\r
             column: 1,
             endLine: 2,
             endColumn: 11,
+            suggestions: [],
+          },
+        ],
+      },
+      {
+        name: "invalid/agentflow/closing-crlf-with-tab",
+        filename: "input.mmd",
+        code: `agentflow-beta TB\r
+accDescr { First\tline\r
+A --> B\r
+`,
+        errors: [
+          {
+            messageId: "unclosed",
+            suggestions: [
+              {
+                desc: "Close the block at the end of the text.",
+                output: `agentflow-beta TB\r
+accDescr { First\tline\r
+A --> B\r
+}\r
+`,
+              },
+            ],
           },
         ],
       },

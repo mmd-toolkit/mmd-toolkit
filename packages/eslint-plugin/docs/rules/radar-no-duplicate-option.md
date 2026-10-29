@@ -9,6 +9,9 @@ Disallow an option that replaces the value of the same option before it.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
 `showLegend`, `ticks`, `min`, `max`, and `graticule` each hold one value. When a
@@ -17,19 +20,14 @@ error, and the earlier one is lost.
 
 ## Rule Details
 
-This rule reports an option that gives another value than the same option before
-it in the diagram, in the same statement or in another one. It applies to
-`radar`.
+This rule applies to radar charts (`radar-beta`). It reports an option that
+gives another value than the same option before it, in the same statement or in
+another one. An option that repeats the value that the diagram already has is
+not reported.
 
-After `ticks 2, ticks 3, ticks 2`, the diagram draws 2 rings, and the second and
-the third are reported: each replaces the value before it.
-
-An option that gives the value that the diagram already has is not reported.
-Numbers are compared as numbers: `ticks 3` and `ticks 03.00` are one value.
-mermaid.js draws at most 32 rings, so a count of `ticks` above 32 is compared as
-32: after `ticks 33`, `ticks 34` is not reported, and `ticks 3` is.
-
-Give each option one value.
+Numbers are compared as numbers, so `ticks 03.00` repeats `ticks 3`. mermaid.js
+draws at most 32 rings, so after `ticks 33`, `ticks 34` is not reported, while
+`ticks 3` is.
 
 Examples of **incorrect** code for this rule:
 
@@ -54,11 +52,6 @@ radar-beta
 ## Options
 
 This rule has no options.
-
-## Background
-
-[`setOptions`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L93-L117)
-keeps the last value of each option and draws at most 32 rings.
 
 <!-- begin auto-generated rule resources -->
 

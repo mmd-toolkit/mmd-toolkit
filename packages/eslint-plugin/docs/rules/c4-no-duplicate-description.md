@@ -17,23 +17,20 @@ and the earlier description is lost.
 
 ## Rule Details
 
-This rule reports a description setter whose stored value differs from the
-latest preceding nonempty description setter. It applies to `c4`.
+This rule applies to C4 diagrams (`C4Context`, `C4Container`, `C4Component`,
+`C4Dynamic`, and `C4Deployment`). It reports a description that differs from the
+latest preceding nonempty description, comparing all three forms together,
+including inside boundaries. Repeating the same description is not reported.
+After `accDescr: a` and `accDescr: b`, a third `accDescr: a` is reported,
+because it replaces `b`.
 
-All three forms are compared together, also inside boundaries. A third statement
-is compared with the second, not the first. Repeating the same stored
-description is not reported. CR and CRLF become LF, and whitespace following a
-line feed is removed when the description is stored; differences only in that
-indentation are not reported. `accDescription` keeps extra spaces after its
-first separator, while the colon and block forms trim exterior whitespace.
+CR and CRLF are compared as LF, and whitespace after a line feed is ignored.
+`accDescription` keeps extra spaces after its first separator, while colon and
+block forms trim whitespace at the ends.
 
-An empty description block changes nothing and is neither reported nor used as a
-preceding setter. A colon form whose value is on a later line does set that
-value, including after blank, comment, or directive lines. Formatting may join
-that value onto its colon line; the replacement of the earlier description still
-happens.
-
-Keep one description, using a block for multiple lines.
+An empty description block changes nothing and is neither reported nor used for
+later comparisons. A colon form whose value is on a later line still sets that
+value, including after blank, comment, or directive lines.
 
 Examples of **incorrect** code for this rule:
 

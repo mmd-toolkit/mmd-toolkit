@@ -9,31 +9,29 @@ Disallow an `accDescr` block that holds no description.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-A description block is written to give the diagram its description. When the
-block holds nothing, or only whitespace, mermaid.js accepts it and does nothing
-with it, so the block has no effect.
+An `accDescr` block is written to give the diagram a description. When it holds
+nothing or only whitespace, mermaid.js accepts it without an error and leaves
+the description unchanged.
 
 ## Rule Details
 
-This rule reports an `accDescr` block that holds nothing or only whitespace. It
-applies to `er`. A directive in the block is no text: a block that holds only
-directives is reported too, and mermaid.js still applies their settings.
+This rule applies to entity relationship diagrams (`erDiagram`). It reports an
+`accDescr` block that holds nothing or only whitespace. A block with only
+directives is reported too, although mermaid.js applies their settings.
 
-The description stays what it was before the block: after `accDescr { a }`, the
-block `accDescr {}` leaves the description `a`.
+A block with only comments is not reported: the comments show that the block is
+meant to do nothing. A block with a comment line and directives is not reported
+either.
 
-A block that holds only comments is not reported. The author who turns the lines
-of a description into comments means the block to do nothing, and mermaid.js
-reads it so. A block that holds a comment line is not reported also when it
-holds directives besides; mermaid.js applies their settings. A block left to be
-filled in later is written with a comment in it, as `accDescr {`, `%% TODO`, and
-`}`, and it is not reported.
-
-An empty block may also follow a statement on its line, as in
-`A ||--o{ B : x accDescr {}`, or the header, as in `erDiagram accDescr {}`. It
-sets no description there either, and the rule reports it in the same way.
+An empty block after another statement on its line or after the header is
+reported too. Inside the text of `accTitle:`, `accDescr {}` is part of that text
+and is not reported. After a direction,
+[er-no-ignored-text](./er-no-ignored-text.md) reports it.
 
 Examples of **incorrect** code for this rule:
 

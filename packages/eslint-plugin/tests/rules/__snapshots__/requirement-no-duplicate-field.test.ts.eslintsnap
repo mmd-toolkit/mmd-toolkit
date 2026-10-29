@@ -14,6 +14,21 @@ Code:
   6 |
 
 [1] mermaid.js keeps the first `id` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 |   requirement r {
+          3 |     id: 1
+          4 |   }
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 |   requirement r {
+          3 |     id: 2
+          4 |   }
+          5 |
 ---
 
 
@@ -30,6 +45,21 @@ Code:
   6 |
 
 [1] mermaid.js keeps the first `docref` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | element e {
+          3 |   docRef: a
+          4 | }
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 | element e {
+          3 |   docRef: b
+          4 | }
+          5 |
 ---
 
 
@@ -47,6 +77,23 @@ Code:
   7 |
 
 [1] mermaid.js keeps the first `id` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 |   requirement r {
+          3 |     id: 1
+          4 |     id: 1
+          5 |   }
+          6 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 |   requirement r {
+          3 |     id: 2
+          4 |     id: 1
+          5 |   }
+          6 |
 ---
 
 
@@ -66,7 +113,36 @@ Code:
   8 |
 
 [1] mermaid.js keeps the first `id` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   id: 1
+          4 |   text: t
+          5 |   id: 3
+          6 | }
+          7 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   text: t
+          4 |   ID: 2
+          5 |   id: 3
+          6 | }
+          7 |
 [2] mermaid.js keeps the first `id` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   id: 1
+          4 |   text: t
+          5 |   ID: 2
+          6 | }
+          7 |
 ---
 
 
@@ -83,6 +159,21 @@ Code:
   6 |
 
 [1] mermaid.js keeps the first `id` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   id: 1
+          4 | }
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   ID: 2
+          4 | }
+          5 |
 ---
 
 
@@ -101,7 +192,33 @@ Code:
   7 |
 
 [1] mermaid.js keeps the first `id` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   id: 1
+          4 |   id: 3
+          5 | }
+          6 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   id: 2
+          4 |   id: 3
+          5 | }
+          6 |
 [2] mermaid.js keeps the first `id` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   id: 1
+          4 |   id: 2
+          5 | }
+          6 |
 ---
 
 
@@ -118,6 +235,21 @@ Code:
   6 |
 
 [1] mermaid.js keeps the first `id` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   id: 1
+          4 | }
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   id: 2
+          4 | }
+          5 |
 ---
 
 
@@ -134,6 +266,21 @@ Code:
   6 |
 
 [1] mermaid.js keeps the first `risk` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   risk: low
+          4 | }
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   risk: high
+          4 | }
+          5 |
 ---
 
 
@@ -150,6 +297,21 @@ Code:
   6 |
 
 [1] mermaid.js keeps the first `text` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   text: a
+          4 | }
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   text: b
+          4 | }
+          5 |
 ---
 
 
@@ -167,6 +329,23 @@ Code:
   7 |
 
 [1] mermaid.js keeps the first `id` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   id: 1
+          4 |   accDescr {}
+          5 | }
+          6 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   accDescr {}
+          4 |   id: 2
+          5 | }
+          6 |
 ---
 
 
@@ -183,6 +362,21 @@ Code:
   6 |
 
 [1] mermaid.js keeps the first `type` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | element e {
+          3 |   type: a
+          4 | }
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 | element e {
+          3 |   type: b
+          4 | }
+          5 |
 ---
 
 
@@ -199,4 +393,64 @@ Code:
   6 |
 
 [1] mermaid.js keeps the first `verifymethod` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   verifyMethod: test
+          4 | }
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   verifyMethod: analysis
+          4 | }
+          5 |
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/first-field-removal-reveals-report
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/first-field-removal-reveals-report-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement R {
+  3 | id: 1
+  4 | id: 2
+    | ^~~~~ [1]
+  5 | id: 3
+    | ^~~~~ [2]
+  6 | }
+  7 |
+
+[1] mermaid.js keeps the first `id` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement R {
+          3 | id: 1
+          4 | id: 3
+          5 | }
+          6 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement R {
+          3 | id: 2
+          4 | id: 3
+          5 | }
+          6 |
+[2] mermaid.js keeps the first `id` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement R {
+          3 | id: 1
+          4 | id: 2
+          5 | }
+          6 |
 ---

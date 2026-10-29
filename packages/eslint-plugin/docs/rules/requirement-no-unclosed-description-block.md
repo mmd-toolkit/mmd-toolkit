@@ -15,22 +15,16 @@ A description block ends at the first `}` after its `{`. When the `}` of the
 block is missing and a later statement holds a `}`, as the body of a requirement
 or an element does, mermaid.js closes the description block there and reads the
 lines up to it as the description, without an error. When no `}` follows,
-mermaid.js rejects the text.
+mermaid.js gives an error.
 
 ## Rule Details
 
-This rule reports a description block whose text holds a `{` on a later line
-than the `{` of the block. It applies to `requirement`.
-
-Every character up to the first `}`, a `{` too, is the text of the block
-([Accessibility values](../../../spec/docs/diagrams/requirement.md#accessibility-values)
-in the specification). After `accDescr { x`, the lines `requirement r {`,
-`id: 1`, and `}` give the description `x`, `requirement r {`, and `id: 1`, and
-no requirement `r`; so it is with the body of an element. A description that
-holds a `{` and ends with its own `}` on a later line, as `accDescr {`, then
-`uses { here`, and `}`, is reported too: the rule does not tell that `}` from
-the `}` of a body, and such a description is rare. A `}` on the line of the `{`,
-as in `accDescr { a {b }`, closes the block as written, and is not reported.
+This rule applies to requirement diagrams (`requirementDiagram`). It reports a
+description block with a `{` in its text on a later line than the opening `{`.
+It also reports a description that intentionally contains that `{` and has its
+own closing `}`: the rule cannot tell its `}` from the `}` of a body. A block
+whose closing `}` is on the opening line is not reported, even if that line
+contains another `{`.
 
 Examples of **incorrect** code for this rule:
 

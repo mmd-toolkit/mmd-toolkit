@@ -9,38 +9,25 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
+
 <!-- end auto-generated rule notice -->
 
-flow の中の `direction` 文は flow の方向を設定する。
-同じ flow の後の `direction` 文は、エラーなしにそれを置き換え、
-前の方向は失われる。
+`direction` 文は、その flow の方向を設定する。
+同じ flow の後の文は、エラーなしにそれを置き換え、前の方向は失われる。
 
 ## 規則の詳細
 
-この規則は、flow の `direction` 文のうち、
-前の `direction` 文が flow に与えた方向と違う方向を与えるものを報告する。
-対象の図種は `agentflow` である。
+この規則は、agentflow 図（`agentflow-beta`）に当てる。
+同じ flow に前の文が設定した方向を変える `direction` 文を報告する。
+文は、それが直接その本体にある flow について数える。
 
-`flow F` の後の `direction LR`、`A`、`direction BT`、`end` では、
-flow は方向 `BT` を取り、`LR` は失われる。
-同じ id の flow は 1 つの flow であり、 `F` の後の宣言の `direction` 文も、
-前の宣言が与えた方向を置き換える。
-名前のない flow は、`subGraph` に、
-それより前に完了した flow 宣言の数を続けた id を得る。
-同じ id の再宣言も数える。
-名前のない 2 つの flow の id は異なる。
-名前のない flow と、その生成 id を名前に持つ flow は合わされ、その方向も比べる。
-`direction` 文は、それが直接その本体にある flow について数え、
-その外側の flow については数えない。
+同じ id の宣言は 1 つの flow なので、その方向も比べる。
+名前のない 2 つの flow は別の flow で、その方向は比べない。
 
-flow がすでに持つ方向を与える文は報告しない。
-[flowchart の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L100-L100)
-が言うとおり、 `TD` と `TB` は同じ上から下への方向であり、
-`direction TD` の後の `direction TB` は報告しない。
-mermaid.js は flow の `end` に達したときに方向を設定するので、
-ほかの flow の中に書いた flow が先に設定され、その文はその順で比べる。
-
-flow ごとに `direction` 文は 1 つにする。
+現在の方向の繰り返しは報告せず、`TD` と `TB` はどちらも上から下を表す。
 
 この規則に**反する**コードの例:
 
@@ -74,11 +61,9 @@ agentflow-beta TB
 - [agentflow-no-redefined-flow](./agentflow-no-redefined-flow.ja.md)
 - [agentflow-no-ignored-text](./agentflow-no-ignored-text.ja.md)
 
-## 背景
+## 参考
 
-[`addSubGraph`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1175-L1284)
-は、 flow の本体の最後の `direction` 文を取り、
-同じ id の前の flow に後のものの方向を与える。
+- [flowchart の方向](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L100-L100)
 
 <!-- begin auto-generated rule resources -->
 

@@ -54,21 +54,6 @@ Code:
 ---
 
 
-Test: xychart-no-duplicate-description >> invalid >>> invalid/xychart/acc-descr-twice-crlf
-Filename: tests/fixtures/rules/xychart-no-duplicate-description/invalid/xychart/acc-descr-twice-crlf-input.mmd
-
-Code:
-  1 | xychart
-  2 |   accDescr: a
-  3 |   accDescr: b
-    |   ^~~~~~~~~~~ [1]
-  4 |   line [1]
-  5 |
-
-[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
----
-
-
 Test: xychart-no-duplicate-description >> invalid >>> invalid/xychart/acc-descr-twice
 Filename: tests/fixtures/rules/xychart-no-duplicate-description/invalid/xychart/acc-descr-twice-input.mmd
 

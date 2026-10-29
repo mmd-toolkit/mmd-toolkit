@@ -8,26 +8,33 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+🔧
+[`--fix` オプション](https://eslint.org/docs/latest/use/command-line-interface#--fix)
+で自動修正できる。
+
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
+
 <!-- end auto-generated rule notice -->
 
-venn の図の描画は、mermaid.js の文書が挙げる 5 つのスタイルのプロパティ `fill`、
-`color`、`stroke`、`stroke-width`、`fill-opacity` を読む。
-mermaid.js は、`Fill`、`colour`、
-`opacity` のようなほかのプロパティもエラーなしに保ち、描画はそれを使わない。
+mermaid.js の描画は `fill`、`color`、`stroke`、`stroke-width`、
+`fill-opacity` の 5 つのスタイルのプロパティを使う。
+`Fill`、`colour`、`opacity` のようなほかの名前もエラーなしに受理するが、
+描画には使わない。
 
 ## 規則の詳細
 
-この規則は、`style` 文のプロパティのうち、 5 つのどれでもないものの名前を、
-それぞれ報告する。
-対象の図種は `venn` である。
-名前は大文字小文字を区別して比べ、`Fill` は報告する。
+この規則は、ベン図（`venn-beta`）に当てる。
+`style` 文の各プロパティ名のうち、その 5 つのどれでもないものを報告する。
+名前は大文字小文字を区別し、`Fill` は報告する。
 2 度書いたプロパティは 2 度報告する。
 
-この規則は、どのプロパティを対象が使うかを調べない。
-描画は文字のノードには `color` だけを読むが、 mermaid.js の文書は、
-文字のノードがどのプロパティを取るかを述べていない。
-
-5 つのプロパティのどれかを、小文字で書く。
+この規則は名前だけを調べ、対象は調べない。
+描画は、和には `fill` と `color` だけを、文字のノードには `color` だけを使う。
+文字のノードへの `style A1 fill:red` のように、
+それらに 5 つのうちのほかのプロパティを書いても報告しない。
+mermaid.js の文書が、5 つを集合、和、文字のノードに共通に挙げるからである。
 
 この規則に**反する**コードの例:
 
@@ -55,17 +62,9 @@ style A fill:red, fill-opacity:0.5
 
 - [venn-no-duplicate-style](./venn-no-duplicate-style.ja.md)
 
-## 背景
+## 参考
 
-[`addStyleData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L63-L70)
-は、すべてのプロパティを書いたとおりの名前で保つ。
-描画は、
-[集合](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L121-L168)、
-[和](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L171-L230)、
-[文字のノード](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L354-L371)
-について 5 つのプロパティを読む。
-[mermaid.js の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md#L125-L145)
-はそれらを挙げる。
+- [venn 図の構文: スタイル](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md#L125-L145)
 
 <!-- begin auto-generated rule resources -->
 

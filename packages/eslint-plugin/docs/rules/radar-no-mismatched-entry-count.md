@@ -19,21 +19,15 @@ only its entry in the legend is left.
 
 ## Rule Details
 
-This rule reports a curve whose values have no axis names and whose count
-differs from the count of the axes of the diagram. It applies to `radar`.
+This rule applies to radar charts (`radar-beta`). It reports a curve whose
+values have no axis names and whose count differs from the diagram's axis count,
+including a curve in a diagram with no axes. Every axis counts, including one
+declared after the curve and a repeated axis name. Each curve in a statement
+containing several curves is checked separately.
 
-After `axis A, B, C`, both `curve sales{1, 2}` and `curve sales{1, 2, 3, 4}` are
-left out of the drawing; no part of them is drawn. A curve of values in a
-diagram with no axes is reported too.
-
-Every axis of the diagram counts, also one declared after the curve and one of a
-name declared before. Each curve of a `curve` statement with several curves is
-checked on its own. A curve with axis names, as `curve sales{A: 1, B: 2, C: 3}`,
-is not reported: an entry that names no axis is reported by
-[radar-no-undef](./radar-no-undef.md), and a missing one is rejected by
-mermaid.js.
-
-Give the curve one value for each axis.
+A curve with axis names is not reported: an entry naming no axis is reported by
+[radar-no-undef](./radar-no-undef.md), and mermaid.js gives an error for a curve
+missing an entry for an axis.
 
 Examples of **incorrect** code for this rule:
 
@@ -60,11 +54,6 @@ This rule has no options.
 ## Related Rules
 
 - [radar-no-undef](./radar-no-undef.md)
-
-## Background
-
-[`drawCurves`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L135-L173)
-skips a curve whose count of values is not the count of the axes.
 
 <!-- begin auto-generated rule resources -->
 

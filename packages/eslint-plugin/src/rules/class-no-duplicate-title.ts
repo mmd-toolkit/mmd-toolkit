@@ -26,6 +26,7 @@ export const classNoDuplicateTitle: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("class-no-duplicate-title"),
     },
+
     schema: [],
     messages: {
       duplicate:
@@ -34,6 +35,7 @@ export const classNoDuplicateTitle: MermaidRuleDefinition<{
   },
   create(context) {
     let previous: ClassAccTitleStatement | null = null
+
     return {
       ClassAccTitleStatement(node) {
         if (previous !== null && titleText(previous) !== titleText(node)) {
@@ -42,6 +44,7 @@ export const classNoDuplicateTitle: MermaidRuleDefinition<{
             messageId: "duplicate",
           })
         }
+
         previous = node
       },
     }

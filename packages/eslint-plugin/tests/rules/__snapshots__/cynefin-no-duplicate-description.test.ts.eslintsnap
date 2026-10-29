@@ -14,6 +14,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 |   accDescr: First
+          3 |   complex
+          4 |     "Investigate"
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | cynefin-beta
+          2 |   accDescr: Second
+          3 |   complex
+          4 |     "Investigate"
+          5 |
 ---
 
 
@@ -28,6 +43,17 @@ Code:
     | ^~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Investigate"
+          3 | accDescr { First }
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Investigate"
+          3 | accDescr: Second
 ---
 
 
@@ -41,6 +67,15 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr { First }
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr { Second }
 ---
 
 
@@ -54,6 +89,15 @@ Code:
     | ^~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr { First }
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr: Second
 ---
 
 
@@ -71,6 +115,17 @@ Code:
     | ~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr: A
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr {
+          3 | %% TODO
+          4 | }
 ---
 
 
@@ -85,6 +140,12 @@ Code:
   4 | complex "Investigate"
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr: %%{init: {}}%%
+          3 | complex "Investigate"
 ---
 
 
@@ -99,6 +160,39 @@ Code:
   4 | accDescr { A }
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr: A
+          3 | accDescr { A }
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr:
+          3 | accDescr { A }
+---
+
+
+Test: cynefin-no-duplicate-description >> invalid >>> invalid/cynefin/description-equal-predecessor
+Filename: tests/fixtures/rules/cynefin-no-duplicate-description/invalid/cynefin/description-equal-predecessor-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | accDescr: A
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
 ---
 
 
@@ -112,6 +206,15 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr: <b x="a">A</b>
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr: <b x='a'>A</b>
 ---
 
 
@@ -125,6 +228,15 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr: First
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr { Second }
 ---
 
 
@@ -139,6 +251,17 @@ Code:
   4 | complex "Investigate"
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr: First
+          3 | complex "Investigate"
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr: Second
+          3 | complex "Investigate"
 ---
 
 
@@ -154,6 +277,19 @@ Code:
   5 | complex "Investigate"
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr: A
+          3 |
+          4 | complex "Investigate"
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr:
+          3 |
+          4 | complex "Investigate"
 ---
 
 
@@ -169,6 +305,47 @@ Code:
   5 | complex "Investigate"
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr: A
+          3 | %% comment
+          4 | complex "Investigate"
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr:
+          3 | %% comment
+          4 | complex "Investigate"
+---
+
+
+Test: cynefin-no-duplicate-description >> invalid >>> invalid/cynefin/description-removal-empty-predecessor
+Filename: tests/fixtures/rules/cynefin-no-duplicate-description/invalid/cynefin/description-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | accDescr {}
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr {}
+          3 | accDescr: A
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr {}
+          3 | accDescr: B
+          4 |
 ---
 
 
@@ -184,7 +361,29 @@ Code:
     | ^~~~~~~~~~~ [2]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr: A
+          3 | accDescr: A
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr { B }
+          3 | accDescr: A
 [2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr: A
+          3 | accDescr { B }
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr: A
+          3 | accDescr: A
 ---
 
 
@@ -201,6 +400,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 |   accDescr: First
+          3 |   complex
+          4 |     "Investigate"
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | cynefin-beta
+          2 |   accDescr: Second
+          3 |   complex
+          4 |     "Investigate"
+          5 |
 ---
 
 
@@ -214,4 +428,13 @@ Code:
     | ^~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr: A
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr { #65; }
 ---

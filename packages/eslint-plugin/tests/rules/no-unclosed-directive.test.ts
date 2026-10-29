@@ -141,6 +141,45 @@ A --> B`,
           },
         ],
       },
+
+      {
+        name: "invalid/flowchart/flowchart-unclosed-crlf",
+        filename:
+          "tests/fixtures/rules/no-unclosed-directive/invalid/flowchart/flowchart-unclosed-crlf-input.mmd",
+        code: `flowchart LR\r
+A --> B\r
+%%{init: {"theme":"dark"}\r
+A --> B`,
+        errors: [
+          {
+            message:
+              "mermaid.js takes text from later lines into this directive, so that text disappears from the diagram.",
+            line: 3,
+            column: 1,
+            endLine: 4,
+            endColumn: 8,
+          },
+        ],
+      },
+      {
+        name: "invalid/sequence/legacy-sequence-tokens-sequence-hash-comment-style-text-open-directive-ac56ea97",
+        filename:
+          "tests/fixtures/rules/no-unclosed-directive/invalid/sequence/legacy-sequence-tokens-sequence-hash-comment-style-text-open-directive-ac56ea97-input.mmd",
+        code: `sequenceDiagram
+A->>B: x #style:#x; %%{init: {}\r
+C->>D: y
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js takes text from later lines into this directive, so that text disappears from the diagram.",
+            line: 2,
+            column: 21,
+            endLine: 3,
+            endColumn: 9,
+          },
+        ],
+      },
     ],
   },
 )

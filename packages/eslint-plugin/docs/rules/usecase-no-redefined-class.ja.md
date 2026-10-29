@@ -8,39 +8,29 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
+
 <!-- end auto-generated rule notice -->
 
 `classDef` はクラスのスタイルを定義する。
-同じクラスの後の `classDef` は、スタイルを足す flowchart と違い、
-定義全体をエラーなしに置き換える。
-`classDef hot fill:red` と `classDef hot stroke:blue` の後では、
-クラスは塗りを持たない。
+同じクラスの後の `classDef` は、定義全体をエラーなしに置き換える。
+別の定義で線を足すと、前の塗りが失われることがある。
 
 ## 規則の詳細
 
-この規則は、`classDef` のクラスのうち、
-前の定義が持つスタイルを後の定義が落とすか別の値にするものを報告する。
-対象の図種は `usecase` である。
-`classDef hot,cold fill:red` のように複数のクラスを持つ `classDef` は、
-クラスごとに調べる。
+この規則は、ユースケース図（`usecase-beta`）に当てる。
+直前の定義のスタイルを落とすか変える `classDef` の各クラスを報告する。
+すべてのスタイルを保つなら、追加や並べ替えをしても報告しない。
 
-前の定義のスタイルをすべて保つ定義は、スタイルを足しても、
-別の順に書いても報告しない。
-スタイルは mermaid.js が描くとおりに比べる。
-1 つの定義に 2 度書いたプロパティは最後の値が数える。
-プロパティの名前は大文字小文字を区別し、書いたとおりに比べる。
-mermaid.js はラベルのスタイルと図形のスタイルを書いた名前で分けるからであり、
-`color:red` の後の `COLOR:red` は図形に行き、ラベルはもう赤くない。
-値は CSS が読むとおりに、両端の空白を除き、
-引用符で囲んだ文字列の外の空白の連なりを 1 つの空白とし、
-そのほかは書いたとおりに比べる。
-`font-family:"A  B"` と `font-family:"A B"` は 2 つのフォントを名指す。
-`fill:red` と `fill:blue` の後の `fill:red` の 3 つ目の定義は、
-`blue` を変えるので報告する。
+同じ定義でプロパティが繰り返されるときは、最後の値を比べる。
+`color` はラベル、`COLOR` は図形のスタイルになるため、
+プロパティ名は大文字小文字を区別する。
+値は両端の空白を除き、引用符の外の空白の連なりは 1 つの空白として比べるが、
+`font-family:"A  B"` と `font-family:"A B"` は異なる。
 
 `style` 文は要素にスタイルを足し、比べない。
-
-クラスごとに、すべてのスタイルを持つ `classDef` を 1 つ書く。
 
 この規則に**反する**コードの例:
 
@@ -64,17 +54,6 @@ usecase-beta
 ## オプション
 
 この規則にはオプションがない。
-
-## 背景
-
-[`applyClassDefinitions`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L846-L852)
-は各クラスの最後の定義を丸ごと保ち、
-[`getCompiledStyles`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L118-L134)
-はその中のプロパティの最後の値を取る。
-[`styles2String`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L53-L104)
-は、書いた名前が `color`、
-`font-size` などの文字のプロパティであるスタイルをラベルに、
-ほかのスタイルを図形に与える。
 
 <!-- begin auto-generated rule resources -->
 

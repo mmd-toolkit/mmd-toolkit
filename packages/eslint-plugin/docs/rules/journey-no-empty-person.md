@@ -9,6 +9,9 @@ Disallow a person of a task that has no name.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
 The people of a task are written after its second colon, separated by commas. An
@@ -18,15 +21,10 @@ without an error.
 
 ## Rule Details
 
-This rule reports each person of a task that is empty or whitespace only. It
-applies to `journey`.
-
-`Make tea: 5: Me,` has the people `Me` and an empty name, and so has
-`A: 3: a,,b` between `a` and `b`. A second colon with nothing after it, as in
-`Make tea: 5:`, gives the task one person with an empty name; without the second
-colon, as in `Make tea: 5`, the task has no people, and the rule does not report
-it. A person of whitespace only, as in `A: 3: ` followed by a space, is empty
-too.
+This rule applies to user journey diagrams (`journey`). It reports each empty or
+whitespace-only name in the comma-separated list of people after a task's second
+colon. A second colon with nothing after it gives one empty name and is
+reported. A task without a second colon has no people and is not reported.
 
 Examples of **incorrect** code for this rule:
 
@@ -67,14 +65,6 @@ This rule has no options.
 ## Related Rules
 
 - [journey-no-ignored-text](./journey-no-ignored-text.md)
-
-## Background
-
-mermaid.js trims each person and gathers the people of every task, an empty name
-among them, into the actors of the journey, which the legend shows
-([`updateActors`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L49-L58)
-and
-[`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)).
 
 <!-- begin auto-generated rule resources -->
 

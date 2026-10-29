@@ -1,5 +1,18 @@
+import type {
+  MindmapClassStatement,
+  MindmapIconStatement,
+} from "@mmd-toolkit/parser"
+import { oneOfTwoRemovals } from "../utils/removal.ts"
+
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
+
+/** Each kind keeps its setter and the value that removing that setter would reveal. */
+interface DecorationHistory {
+  node: MindmapClassStatement | MindmapIconStatement
+  value: string
+  before: string | undefined
+}
 
 /**
  * The rule `mindmap-no-duplicate-decoration`, described in
@@ -12,7 +25,7 @@ import { ruleDocsUrl } from "../rule-docs-url.ts"
  */
 export const mindmapNoDuplicateDecoration: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "icon" | "class"
+  MessageIds: "icon" | "class" | "removeThis" | "removePrevious"
 }> = {
   meta: {
     type: "problem",
@@ -22,8 +35,11 @@ export const mindmapNoDuplicateDecoration: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("mindmap-no-duplicate-decoration"),
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
+      removeThis: "Remove this statement.",
+      removePrevious: "Remove the earlier statement.",
       icon: "mermaid.js keeps only the last icon and drops the earlier ones for this node.",
       class:
         "mermaid.js keeps only the last class line and drops the earlier ones for this node.",
@@ -33,21 +49,48 @@ export const mindmapNoDuplicateDecoration: MermaidRuleDefinition<{
     return {
       MindmapNode(node) {
         // The value of the decoration of each kind before the one at hand.
-        let icon: string | null = null
-        let cssClass: string | null = null
+        const histories = new Map<"icon" | "class", DecorationHistory>()
         for (const decoration of node.decorations) {
           if (decoration.type === "MindmapIconStatement") {
+            const icon = histories.get("icon")
             const value = decoration.icon.value
-            if (icon !== null && icon !== value) {
-              context.report({ node: decoration, messageId: "icon" })
+            if (icon !== undefined && icon.value !== value) {
+              context.report({
+                node: decoration,
+                messageId: "icon",
+                suggest: oneOfTwoRemovals(
+                  context.sourceCode,
+                  decoration,
+                  icon.node,
+                  icon.before === undefined || icon.before === value,
+                ),
+              })
             }
-            icon = value
+            histories.set("icon", {
+              node: decoration,
+              value,
+              before: icon?.value,
+            })
           } else {
+            const cssClass = histories.get("class")
             const value = decoration.cssClass.value
-            if (cssClass !== null && cssClass !== value) {
-              context.report({ node: decoration, messageId: "class" })
+            if (cssClass !== undefined && cssClass.value !== value) {
+              context.report({
+                node: decoration,
+                messageId: "class",
+                suggest: oneOfTwoRemovals(
+                  context.sourceCode,
+                  decoration,
+                  cssClass.node,
+                  cssClass.before === undefined || cssClass.before === value,
+                ),
+              })
             }
-            cssClass = value
+            histories.set("class", {
+              node: decoration,
+              value,
+              before: cssClass?.value,
+            })
           }
         }
       },

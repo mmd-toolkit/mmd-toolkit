@@ -13,6 +13,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 |   accTitle: First
+          3 |   word = "a";
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 |   accTitle: Second
+          3 |   word = "a";
+          4 |
 ---
 
 
@@ -27,6 +40,12 @@ Code:
   4 | word="a";
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-abnf-beta
+          2 | accTitle: %%{init: {}}%%
+          3 | word="a";
 ---
 
 
@@ -41,6 +60,17 @@ Code:
   4 | word="a";
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-abnf-beta
+          2 | accTitle: First
+          3 | word="a";
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-abnf-beta
+          2 | accTitle: Second
+          3 | word="a";
 ---
 
 
@@ -55,6 +85,17 @@ Code:
   4 | word="a";
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-abnf-beta
+          2 | accTitle: First
+          3 | word="a";
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-abnf-beta
+          2 | accTitle:
+          3 | word="a";
 ---
 
 
@@ -70,6 +111,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 |   accTitle: First
+          3 |   word = "a";
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 |   accTitle: Second
+          3 |   word = "a";
+          4 |
 ---
 
 
@@ -85,6 +139,19 @@ Code:
   5 | word="a";
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 | accTitle: First
+          3 | %% comment
+          4 | word="a";
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 | accTitle:
+          3 | %% comment
+          4 | word="a";
 ---
 
 
@@ -99,6 +166,17 @@ Code:
   4 | word="a";
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 | accTitle: First
+          3 | word="a";
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 | accTitle: Second
+          3 | word="a";
 ---
 
 
@@ -114,6 +192,19 @@ Code:
   5 | word="a";
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 | accTitle: A
+          3 | accTitle: A
+          4 | word="a";
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 | accTitle:
+          3 | accTitle: A
+          4 | word="a";
 ---
 
 
@@ -128,22 +219,17 @@ Code:
   4 | word=terminal("a");
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
----
-
-
-Test: railroad-no-duplicate-title >> invalid >>> invalid/railroad/ir-title-crlf
-Filename: tests/fixtures/rules/railroad-no-duplicate-title/invalid/railroad/ir-title-crlf-input.mmd
-
-Code:
-  1 | railroad-beta
-  2 | accTitle: First
-  3 |
-  4 | accTitle: Second
-    | ^~~~~~~~~~~~~~~~ [1]
-  5 | word=terminal("a");
-  6 |
-
-[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-beta
+          2 | accTitle: First
+          3 | word=terminal("a");
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-beta
+          2 | accTitle: Second
+          3 | word=terminal("a");
 ---
 
 
@@ -159,6 +245,19 @@ Code:
   5 | word=terminal("a");
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-beta
+          2 | accTitle: First
+          3 |
+          4 | word=terminal("a");
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-beta
+          2 | accTitle:
+          3 |
+          4 | word=terminal("a");
 ---
 
 
@@ -173,6 +272,17 @@ Code:
   4 | word=terminal("a");
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-beta
+          2 | accTitle: A
+          3 | word=terminal("a");
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-beta
+          2 | accTitle: #65;
+          3 | word=terminal("a");
 ---
 
 
@@ -187,6 +297,17 @@ Code:
   4 | word=terminal("a");
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-beta
+          2 | accTitle: <b x="a">Text</b>
+          3 | word=terminal("a");
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-beta
+          2 | accTitle: <b x='a'>Text</b>
+          3 | word=terminal("a");
 ---
 
 
@@ -201,6 +322,17 @@ Code:
   4 | word<-"a";
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-peg-beta
+          2 | accTitle: First
+          3 | word<-"a";
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-peg-beta
+          2 | accTitle: Second
+          3 | word<-"a";
 ---
 
 
@@ -217,7 +349,33 @@ Code:
   5 | word<-"a";
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-peg-beta
+          2 | accTitle: A
+          3 | accTitle: A
+          4 | word<-"a";
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-peg-beta
+          2 | accTitle: B
+          3 | accTitle: A
+          4 | word<-"a";
 [2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-peg-beta
+          2 | accTitle: A
+          3 | accTitle: B
+          4 | word<-"a";
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-peg-beta
+          2 | accTitle: A
+          3 | accTitle: A
+          4 | word<-"a";
 ---
 
 
@@ -234,5 +392,75 @@ Code:
   5 | word<-"a";
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-peg-beta
+          2 | accTitle: First
+          3 | accTitle: Third
+          4 | word<-"a";
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-peg-beta
+          2 | accTitle: Second
+          3 | accTitle: Third
+          4 | word<-"a";
 [2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-peg-beta
+          2 | accTitle: First
+          3 | accTitle: Second
+          4 | word<-"a";
+---
+
+
+Test: railroad-no-duplicate-title >> invalid >>> invalid/railroad/title-equal-predecessor
+Filename: tests/fixtures/rules/railroad-no-duplicate-title/invalid/railroad/title-equal-predecessor-input.mmd
+
+Code:
+  1 | railroad-beta
+  2 | accTitle: A
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-beta
+          2 | accTitle: A
+          3 | accTitle: A
+          4 |
+---
+
+
+Test: railroad-no-duplicate-title >> invalid >>> invalid/railroad/title-removal-empty-predecessor
+Filename: tests/fixtures/rules/railroad-no-duplicate-title/invalid/railroad/title-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | railroad-beta
+  2 | accTitle:
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-beta
+          2 | accTitle:
+          3 | accTitle: A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-beta
+          2 | accTitle:
+          3 | accTitle: B
+          4 |
 ---

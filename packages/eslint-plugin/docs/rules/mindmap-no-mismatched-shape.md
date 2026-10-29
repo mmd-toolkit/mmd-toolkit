@@ -9,6 +9,9 @@ Disallow a shape whose closer does not match its opener.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
 A shape is written with an opener and its closer, as in `[text]` and `((text))`.
@@ -18,17 +21,14 @@ mistyped, and the shape drawn may not be the one meant.
 
 ## Rule Details
 
-This rule reports the closer of a shape when it is not the closer of its opener:
-`]` for `[`, `)` for `(`, `))` for `((`, `((` for `))`, `(` for `)`, and `}}`
-for `{{`. It applies to `mindmap`.
+This rule applies to mind maps (`mindmap`). It reports a shape's closer when it
+does not match its opener: `]` for `[`, `)` for `(`, `))` for `((`, `((` for
+`))`, `(` for `)`, and `}}` for `{{`. Quoted or multiline labels and shapes
+without preceding node text are checked in the same way.
 
-`Write[draft)` is a rectangle, `a((x)` a circle, `a))x(` a bang, `a)x)` a cloud,
-and `a{{x]` a hexagon. With the opener `(`, any closer other than `)` gives a
-cloud: `Review(notes))` and `a(x]` are clouds, not rounded rectangles. A label
-that is a string or that goes over lines, and a shape without a node text, as
-`((x)`, are reported in the same way. The openers `(-` and `-)` are not checked:
-mermaid.js draws the default shape for them whatever the closer, and its
-documentation names no shape for them.
+The openers `(-` and `-)` are not checked because mermaid.js draws the default
+shape for them regardless of the closer, and its documentation names no shape
+for them.
 
 Examples of **incorrect** code for this rule:
 
@@ -66,14 +66,9 @@ mindmap
 
 This rule has no options.
 
-## Background
+## Further Reading
 
-mermaid.js takes the type of a shape from its opener, and the closer only for
-`(`
-([`getType`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L127-L145)).
-Its documentation
-([syntax/mindmap.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/mindmap.md#L56-L109))
-lists each shape with its opener and its closer.
+- [syntax/mindmap.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/mindmap.md#L56-L109)
 
 <!-- begin auto-generated rule resources -->
 

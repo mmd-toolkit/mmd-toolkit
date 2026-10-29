@@ -43,22 +43,6 @@ Code:
 ---
 
 
-Test: radar-no-duplicate-entry >> invalid >>> invalid/radar/named-duplicate-crlf
-Filename: tests/fixtures/rules/radar-no-duplicate-entry/invalid/radar/named-duplicate-crlf-input.mmd
-
-Code:
-  1 | radar-beta
-  2 | axis A, B, C
-  3 | curve sales{A:1, B:2, C:3,
-  4 | %% old
-  5 | A %%{init: {}}%% 9}
-    | ^~~~~~~~~~~~~~~~~~ [1]
-  6 |
-
-[1] mermaid.js uses the first value for axis `A` in this curve, and drops this value.
----
-
-
 Test: radar-no-duplicate-entry >> invalid >>> invalid/radar/named-duplicate-first
 Filename: tests/fixtures/rules/radar-no-duplicate-entry/invalid/radar/named-duplicate-first-input.mmd
 

@@ -9,27 +9,24 @@ Disallow a `direction` statement that replaces the direction set before it.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-A use case diagram has one direction. A later `direction` statement replaces the
-one before it without an error, and the earlier direction is lost.
+A use case diagram has one direction. mermaid.js accepts a later `direction`
+statement without an error and replaces the earlier direction.
 
 ## Rule Details
 
-This rule reports a `direction` statement that gives a direction other than the
-one that the `direction` statement before it gave. It applies to `usecase`.
+This rule applies to use case diagrams (`usecase-beta`). It reports a
+`direction` statement that changes the direction given by the preceding one.
+Repeating the current direction is not reported. The first `direction` is not
+reported, even when it changes the default `LR`.
 
-After `direction LR` and `direction BT`, the diagram is drawn from bottom to
-top. The direction that the diagram has when no statement gives one, `LR`, is
-not written and is not compared.
-
-A statement that gives the direction that the diagram already has is not
-reported. `TD` and `TB` are the same direction, top to bottom: mermaid.js reads
-`TD` as `TB`, so after `direction TD`, `direction TB` is not reported. After
-`direction LR` and `direction BT`, a third `direction LR` is reported, because
-it replaces `BT`.
-
-Write one `direction` statement.
+`TD` and `TB` both mean top to bottom, so `direction TB` after `direction TD` is
+not reported. After `direction LR` and `direction BT`, another `direction LR` is
+reported because it replaces `BT`.
 
 Examples of **incorrect** code for this rule:
 
@@ -53,13 +50,6 @@ usecase-beta
 ## Options
 
 This rule has no options.
-
-## Background
-
-[`setDirection`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L237-L239)
-records each direction, with `TD` as `TB`, and the
-[model](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L350-L350)
-takes the last one.
 
 <!-- begin auto-generated rule resources -->
 

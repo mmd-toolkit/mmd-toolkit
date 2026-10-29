@@ -5,6 +5,7 @@ import type {
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { accDescrText } from "../utils/acc-text.ts"
+import { oneOfTwoRemovals } from "../utils/removal.ts"
 
 /** A line or a closed, nonempty block that sets the description. */
 type DescriptionStatement =
@@ -13,7 +14,7 @@ type DescriptionStatement =
 /** Compare accessible descriptions in source order, retaining comment text. */
 export const agentflowNoDuplicateDescription: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "duplicate"
+  MessageIds: "duplicate" | "removeThis" | "removePrevious"
 }> = {
   meta: {
     type: "problem",
@@ -23,14 +24,18 @@ export const agentflowNoDuplicateDescription: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("agentflow-no-duplicate-description"),
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
       duplicate:
         "mermaid.js replaces the earlier description with the one of this `accDescr`.",
+      removeThis: "Remove this statement.",
+      removePrevious: "Remove the earlier statement that sets the description.",
     },
   },
   create(context) {
     let previous: DescriptionStatement | null = null
+    let beforePrevious: DescriptionStatement | null = null
 
     /** Count only statements that set a description. */
     function check(node: DescriptionStatement): void {
@@ -38,8 +43,16 @@ export const agentflowNoDuplicateDescription: MermaidRuleDefinition<{
         context.report({
           node,
           messageId: "duplicate",
+          suggest: oneOfTwoRemovals(
+            context.sourceCode,
+            node,
+            previous,
+            beforePrevious === null ||
+              accDescrText(beforePrevious) === accDescrText(node),
+          ),
         })
       }
+      beforePrevious = previous
       previous = node
     }
 

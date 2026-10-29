@@ -1,5 +1,26 @@
+import { canEditRange } from "../utils/edit-range.ts"
+import { canCompactRange } from "../utils/compact-range.ts"
+import type { MermaidSourceCode } from "../source-code.ts"
+import type { RuleFixer } from "@eslint/core"
+import type { QuadrantLiteral } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
+
+/** A comma coordinate is 0 followed by a comma and digits, so a point always puts it in range. */
+function coordinateFix(
+  sourceCode: MermaidSourceCode,
+  node: QuadrantLiteral,
+): RuleFixer | null {
+  if (
+    !canEditRange(sourceCode, node.range) ||
+    !canCompactRange(sourceCode, node.range)
+  )
+    return null
+  const text = node.value
+  if (!text.includes(",")) return null
+  const value = text.replace(",", ".")
+  return (fixer) => fixer.replaceText(node, value)
+}
 
 /**
  * The rule `quadrant-no-invalid-coordinate`, described in
@@ -22,6 +43,7 @@ export const quadrantNoInvalidCoordinate: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("quadrant-no-invalid-coordinate"),
     },
+    fixable: "code",
     schema: [],
     messages: {
       invalid:
@@ -37,6 +59,7 @@ export const quadrantNoInvalidCoordinate: MermaidRuleDefinition<{
             context.report({
               node: coordinate,
               messageId: "invalid",
+              fix: coordinateFix(context.sourceCode, coordinate),
               data: { coordinate: coordinate.value },
             })
           }

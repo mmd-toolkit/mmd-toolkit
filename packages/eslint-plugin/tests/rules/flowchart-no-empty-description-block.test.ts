@@ -102,6 +102,57 @@ end
           },
         ],
       },
+
+      {
+        name: "invalid/flowchart/gram-empty-description-block-block-cr",
+        filename:
+          "tests/fixtures/rules/flowchart-no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-cr-input.mmd",
+        code: `flowchart LR\r  A\r  accDescr {}\r`,
+        errors: [
+          {
+            message:
+              "mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.",
+            line: 3,
+            column: 3,
+            endLine: 3,
+            endColumn: 14,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `flowchart LR\r  A\r`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/flowchart/gram-empty-description-block-block-with-crlf-lines",
+        filename:
+          "tests/fixtures/rules/flowchart-no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-with-crlf-lines-input.mmd",
+        code: `flowchart LR\r
+  A\r
+  accDescr {\r
+  }\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.",
+            line: 3,
+            column: 3,
+            endLine: 4,
+            endColumn: 4,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `flowchart LR\r
+  A\r
+`,
+              },
+            ],
+          },
+        ],
+      },
     ],
   },
 )

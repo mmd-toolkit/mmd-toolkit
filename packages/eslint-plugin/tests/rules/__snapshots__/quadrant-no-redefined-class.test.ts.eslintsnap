@@ -13,6 +13,41 @@ Code:
   5 |
 
 [1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   A:::c: [0.3, 0.6]
+          3 |   classDef c color: #f00
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | quadrantChart
+          2 |   A:::c: [0.3, 0.6]
+          3 |   classDef c radius: 9
+          4 |
+---
+
+
+Test: quadrant-no-redefined-class >> invalid >>> invalid/quadrant/class-equal-predecessor
+Filename: tests/fixtures/rules/quadrant-no-redefined-class/invalid/quadrant/class-equal-predecessor-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 | classDef c color: #f00
+  3 | classDef c color: #f00
+  4 | classDef c color: #00f
+    | ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 | classDef c color: #f00
+          3 | classDef c color: #f00
+          4 |
 ---
 
 
@@ -28,6 +63,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   Point A:::c: [0.3, 0.6]
+          3 |   classDef c color: #f00
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | quadrantChart
+          2 |   Point A:::c: [0.3, 0.6]
+          3 |   classDef c color: #00f, radius: 9
+          4 |
 ---
 
 
@@ -43,6 +91,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   A:::c: [0.3, 0.6]
+          3 |   classDef c color: #f00
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | quadrantChart
+          2 |   A:::c: [0.3, 0.6]
+          3 |   classDef c color: #00f
+          4 |
 ---
 
 
@@ -60,7 +121,37 @@ Code:
   6 |
 
 [1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   classDef c color: #f00
+          3 |   classDef c color: #f00
+          4 |   A: [0.3, 0.6]
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | quadrantChart
+          2 |   classDef c color: #00f
+          3 |   classDef c color: #f00
+          4 |   A: [0.3, 0.6]
+          5 |
 [2] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   classDef c color: #f00
+          3 |   classDef c color: #00f
+          4 |   A: [0.3, 0.6]
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | quadrantChart
+          2 |   classDef c color: #f00
+          3 |   classDef c color: #f00
+          4 |   A: [0.3, 0.6]
+          5 |
 ---
 
 
@@ -76,6 +167,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   classDef c color: #f00
+          3 |   A: [0.3, 0.6]
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | quadrantChart
+          2 |   classDef c color: #F00
+          3 |   A: [0.3, 0.6]
+          4 |
 ---
 
 
@@ -91,6 +195,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   classDef c color: #f00
+          3 |   A:::c: [0.3, 0.6]
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | quadrantChart
+          2 |   classDef c color: #00f
+          3 |   A:::c: [0.3, 0.6]
+          4 |
 ---
 
 
@@ -107,6 +224,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   classDef c color: #f00
+          3 |   classDef d color: #00f
+          4 |   A: [0.3, 0.6]
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | quadrantChart
+          2 |   classDef d color: #00f
+          3 |   classDef c color: #00f
+          4 |   A: [0.3, 0.6]
+          5 |
 ---
 
 
@@ -122,6 +254,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   classDef c stroke-width: 1px
+          3 |   A:::c: [0.3, 0.6]
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | quadrantChart
+          2 |   classDef c stroke-width: 01px
+          3 |   A:::c: [0.3, 0.6]
+          4 |
 ---
 
 
@@ -137,6 +282,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   classDef c color: #f00
+          3 |   A: [0.3, 0.6]
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | quadrantChart
+          2 |   classDef c radius: 9
+          3 |   A: [0.3, 0.6]
+          4 |
 ---
 
 
@@ -152,4 +310,17 @@ Code:
   5 |
 
 [1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   classDef c color: #f00
+          3 |   A: [0.3, 0.6]
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | quadrantChart
+          2 |   CLASSDEF c color: #00f
+          3 |   A: [0.3, 0.6]
+          4 |
 ---

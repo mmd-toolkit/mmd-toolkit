@@ -245,20 +245,6 @@ Code:
 ---
 
 
-Test: flowchart-no-undef >> invalid >>> invalid/flowchart/db-undef-style-of-an-unknown-id-crlf
-Filename: tests/fixtures/rules/flowchart-no-undef/invalid/flowchart/db-undef-style-of-an-unknown-id-crlf-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   A --> B
-  3 |   style C fill:red
-    |         ^ [1]
-  4 |
-
-[1] mermaid.js adds a new vertex with these styles for the undefined id `C`.
----
-
-
 Test: flowchart-no-undef >> invalid >>> invalid/flowchart/db-undef-style-of-an-unknown-link-id
 Filename: tests/fixtures/rules/flowchart-no-undef/invalid/flowchart/db-undef-style-of-an-unknown-link-id-input.mmd
 

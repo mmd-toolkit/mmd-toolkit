@@ -19,23 +19,15 @@ over from deleting a name and keeping the space.
 
 ## Rule Details
 
-This rule reports a source or a target that is empty once the whitespace at its
-ends is removed. It applies to `sankey`.
+This rule applies to Sankey diagrams (`sankey` and `sankey-beta`). It reports
+each source or target that is empty after surrounding whitespace is removed,
+including quoted fields containing only spaces or line breaks. Each occurrence
+is reported, even when several fields name the same empty node.
 
-`a, ,1` links `a` to a node with the empty name, and so does `  ,b,1` from one.
-A field in quotes is read in the same way: `" "` and a field of line feeds only
-in quotes are the empty id too. Each such field is reported: `  ,  ,1` gives two
-reports, and two records that link to the empty id give one each, although
-mermaid.js makes the node once. The field is read as mermaid.js reads it,
-without its directives, the comment lines inside a string, and a `;` that the
-rule of
-[`style` and `classDef` lines](../../../spec/docs/common.md#style-and-classdef-lines)
-in the specification ignores, so `a, %%{init: {}}%% ,1`, a string of a comment
-line only, as `"`, `%% c`, and `"`, and the target ` ;` on the line
-`style:#x, ;,1` are the empty id, and they are reported. A name with whitespace
-at its ends, as `"  a  "`, is the id `a` and is not reported. A field with
-nothing in it, as `a,,1`, is rejected by mermaid.js, and no rule is needed. A
-value of spaces only is reported by
+A nonempty name with surrounding whitespace, such as `"  a  "`, is not reported.
+
+A field with nothing in it, as in `a,,1`, is not reported, because mermaid.js
+gives an error for it. Whitespace-only link values are reported by
 [sankey-no-invalid-value](./sankey-no-invalid-value.md).
 
 Examples of **incorrect** code for this rule:

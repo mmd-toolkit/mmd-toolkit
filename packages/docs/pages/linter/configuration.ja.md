@@ -78,10 +78,11 @@ Mermaid言語に、プラグイン独自の`languageOptions`はありません�
   例: `@mmd-toolkit/flowchart-no-undef`。
 
 [ルール一覧](../../../eslint-plugin/docs/rules/index.ja.md)では、
-推奨設定で有効になるルールに✅、
+推奨設定で有効になるルールに✅、自動修正があるルールに🔧、
 エディターの修正候補があるルールに💡を付けています。
+自動修正は、`eslint --fix`が適用します。
 修正候補は、エディターで変更案を選んで適用します。
-`eslint --fix`での自動修正ではありません。
+`eslint --fix`では適用されません。
 
 ## 他言語の設定と組み合わせる
 

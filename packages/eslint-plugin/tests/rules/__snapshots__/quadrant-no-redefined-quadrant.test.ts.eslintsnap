@@ -14,6 +14,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the text of `quadrant-2`, set earlier, with the one of this statement.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   quadrant-1 We should expand
+          3 |   quadrant-2 Need to promote
+          4 |   A: [0.3, 0.6]
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | quadrantChart
+          2 |   quadrant-1 We should expand
+          3 |   quadrant-2 Re-evaluate
+          4 |   A: [0.3, 0.6]
+          5 |
 ---
 
 
@@ -31,7 +46,37 @@ Code:
   6 |
 
 [1] mermaid.js replaces the text of `quadrant-1`, set earlier, with the one of this statement.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   quadrant-1 A
+          3 |   quadrant-1 A
+          4 |   A: [0.3, 0.6]
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | quadrantChart
+          2 |   quadrant-1 B
+          3 |   quadrant-1 A
+          4 |   A: [0.3, 0.6]
+          5 |
 [2] mermaid.js replaces the text of `quadrant-1`, set earlier, with the one of this statement.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   quadrant-1 A
+          3 |   quadrant-1 B
+          4 |   A: [0.3, 0.6]
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | quadrantChart
+          2 |   quadrant-1 A
+          3 |   quadrant-1 A
+          4 |   A: [0.3, 0.6]
+          5 |
 ---
 
 
@@ -47,6 +92,41 @@ Code:
   5 |
 
 [1] mermaid.js replaces the text of `quadrant-1`, set earlier, with the one of this statement.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   quadrant-1 A
+          3 |   A: [0.3, 0.6]
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | quadrantChart
+          2 |   quadrant-1 "  "
+          3 |   A: [0.3, 0.6]
+          4 |
+---
+
+
+Test: quadrant-no-redefined-quadrant >> invalid >>> invalid/quadrant/quadrant-equal-predecessor
+Filename: tests/fixtures/rules/quadrant-no-redefined-quadrant/invalid/quadrant/quadrant-equal-predecessor-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 | quadrant-1 A
+  3 | quadrant-1 A
+  4 | quadrant-1 B
+    | ^~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the text of `quadrant-1`, set earlier, with the one of this statement.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 | quadrant-1 A
+          3 | quadrant-1 A
+          4 |
 ---
 
 
@@ -62,6 +142,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the text of `quadrant-1`, set earlier, with the one of this statement.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   quadrant-1 A  b
+          3 |   A: [0.3, 0.6]
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | quadrantChart
+          2 |   quadrant-1 A b
+          3 |   A: [0.3, 0.6]
+          4 |
 ---
 
 
@@ -78,6 +171,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the text of `quadrant-1`, set earlier, with the one of this statement.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   quadrant-1 A
+          3 |   quadrant-2 B
+          4 |   A: [0.3, 0.6]
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | quadrantChart
+          2 |   quadrant-2 B
+          3 |   quadrant-1 C
+          4 |   A: [0.3, 0.6]
+          5 |
 ---
 
 
@@ -107,6 +215,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the text of `quadrant-1`, set earlier, with the one of this statement.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   quadrant-1 A
+          3 |   A: [0.3, 0.6]
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | quadrantChart
+          2 |   quadrant-10 B
+          3 |   A: [0.3, 0.6]
+          4 |
 ---
 
 
@@ -125,7 +246,41 @@ Code:
   7 |
 
 [1] mermaid.js replaces the text of `quadrant-3`, set earlier, with the one of this statement.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   quadrant-3 A
+          3 |   quadrant-4 B
+          4 |   quadrant-4 D
+          5 |   P: [0.3, 0.6]
+          6 |
+      - Remove the earlier statement.
+        Output:
+          1 | quadrantChart
+          2 |   quadrant-4 B
+          3 |   quadrant-3 C
+          4 |   quadrant-4 D
+          5 |   P: [0.3, 0.6]
+          6 |
 [2] mermaid.js replaces the text of `quadrant-4`, set earlier, with the one of this statement.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   quadrant-3 A
+          3 |   quadrant-4 B
+          4 |   quadrant-3 C
+          5 |   P: [0.3, 0.6]
+          6 |
+      - Remove the earlier statement.
+        Output:
+          1 | quadrantChart
+          2 |   quadrant-3 A
+          3 |   quadrant-3 C
+          4 |   quadrant-4 D
+          5 |   P: [0.3, 0.6]
+          6 |
 ---
 
 
@@ -141,6 +296,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the text of `quadrant-1`, set earlier, with the one of this statement.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   quadrant-1 A
+          3 |   A: [0.3, 0.6]
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | quadrantChart
+          2 |   quadrant-1 B
+          3 |   A: [0.3, 0.6]
+          4 |
 ---
 
 
@@ -156,4 +324,17 @@ Code:
   5 |
 
 [1] mermaid.js replaces the text of `quadrant-1`, set earlier, with the one of this statement.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   Quadrant-1 A
+          3 |   A: [0.3, 0.6]
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | quadrantChart
+          2 |   QUADRANT-1 B
+          3 |   A: [0.3, 0.6]
+          4 |
 ---

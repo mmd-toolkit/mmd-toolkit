@@ -12,6 +12,12 @@ Code:
   4 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | erDiagram
+          2 |   A
+          3 |
 ---
 
 
@@ -26,20 +32,12 @@ Code:
   4 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
----
-
-
-Test: er-no-empty-description-block >> invalid >>> invalid/er/crlf
-Filename: tests/fixtures/rules/er-no-empty-description-block/invalid/er/crlf-input.mmd
-
-Code:
-  1 | erDiagram
-  2 | A
-  3 | accDescr {}
-    | ^~~~~~~~~~~ [1]
-  4 |
-
-[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | erDiagram
+          2 |   A
+          3 |
 ---
 
 
@@ -53,6 +51,11 @@ Code:
     | ^~~~~~~~~~~ [1]
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | erDiagram
+          2 | accDescr { a }
 ---
 
 
@@ -68,6 +71,11 @@ Code:
     | ~~~ [1]
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | erDiagram
+          2 | accDescr { a }
 ---
 
 
@@ -84,6 +92,14 @@ Code:
   6 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | erDiagram
+          2 | subgraph S
+          3 | A
+          4 | end
+          5 |
 ---
 
 
@@ -110,6 +126,11 @@ Code:
   3 | A
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | erDiagram
+          2 | A
 ---
 
 
@@ -123,6 +144,11 @@ Code:
   3 | A
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | erDiagram
+          2 | A
 ---
 
 

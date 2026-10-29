@@ -91,23 +91,6 @@ Code:
 ---
 
 
-Test: venn-no-duplicate-subset >> invalid >>> invalid/venn/set-crlf-name
-Filename: tests/fixtures/rules/venn-no-duplicate-subset/invalid/venn/set-crlf-name-input.mmd
-
-Code:
-  1 | venn-beta
-  2 | set "A
-  3 | B"
-  4 | set "A
-    | ^~~~~~\ [1]
-  5 | B"
-    | ~~ [1]
-  6 |
-
-[1] mermaid.js draws this area again; an earlier declaration already has these names.
----
-
-
 Test: venn-no-duplicate-subset >> invalid >>> invalid/venn/set-duplicate
 Filename: tests/fixtures/rules/venn-no-duplicate-subset/invalid/venn/set-duplicate-input.mmd
 

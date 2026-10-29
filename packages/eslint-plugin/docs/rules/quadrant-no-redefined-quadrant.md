@@ -9,34 +9,30 @@ Disallow a quadrant statement that replaces the text of its quadrant.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-`quadrant-1` to `quadrant-4` set the text of the four quadrants. mermaid.js
-accepts a second statement of the same quadrant and silently replaces the text
-that the first one set. A second statement is usually left over from rewriting
-the text, or a number that was not changed after pasting a line.
+`quadrant-1` to `quadrant-4` set the texts of the four quadrants. mermaid.js
+accepts another statement for the same quadrant without an error and uses its
+text, so the earlier text is lost.
 
 ## Rule Details
 
-This rule reports a `quadrant-1`, `quadrant-2`, `quadrant-3`, or `quadrant-4`
-statement after the first one of the same number, when it replaces a text that
-an earlier statement of that quadrant set with another value. It applies to
-`quadrantChart`.
+This rule applies to quadrant charts (`quadrantChart`). It reports a
+`quadrant-1`, `quadrant-2`, `quadrant-3`, or `quadrant-4` statement that
+replaces the current nonempty text of that quadrant with a different value.
+Repeating the current text, or setting a text where the current one is empty, is
+not reported, and statements of other quadrants are checked separately.
 
-After `quadrant-1 We should expand`, the statement `quadrant-1 Need to promote`
-gives the first quadrant the text `Need to promote`, and the text
-`We should expand` is lost. A text in quotes that holds only spaces sets the
-empty text, and after `quadrant-1 A`, `quadrant-1 "  "` is reported. The keyword
-is read in any case, and `quadrant-10 B` is a statement of the first quadrant
-with the text `0 B`, so after `quadrant-1 A` it is reported. Statements of other
-quadrants between them do not count.
-
-A statement that loses nothing is not reported: a text that was empty is not
-lost. Texts are compared as mermaid.js keeps them, without the whitespace at
-their ends and without the quotes and backquotes of a string, so
-`quadrant-1 " A "` and ``quadrant-1 "`A`"`` after `quadrant-1 A` set the same
-text; the whitespace between the words counts. After `quadrant-1 A` and
-`quadrant-1 B`, a third `quadrant-1 A` is reported, because it replaces `B`.
+Texts are compared without surrounding whitespace, quotes, or the backquotes of
+a markdown string, while whitespace between words counts. A quoted text of only
+spaces sets an empty text, so `quadrant-1 "  "` after `quadrant-1 A` is
+reported. The keywords are read in any case, and `quadrant-10 B` sets the first
+quadrant's text to `0 B`, so after `quadrant-1 A` it is reported. After
+`quadrant-1 A` and `quadrant-1 B`, a third `quadrant-1 A` is reported because it
+replaces `B`.
 
 Examples of **incorrect** code for this rule:
 

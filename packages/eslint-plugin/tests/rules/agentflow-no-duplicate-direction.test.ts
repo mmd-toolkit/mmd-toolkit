@@ -26,6 +26,16 @@ new RuleTester(LANGUAGE_CONFIG).run(
             column: 1,
             endLine: 4,
             endColumn: 13,
+            suggestions: [
+              {
+                desc: "Remove this direction statement.",
+                output: `agentflow-beta TB\rflow F\rdirection LR\rend\r`,
+              },
+              {
+                desc: "Remove the earlier direction statement.",
+                output: `agentflow-beta TB\rflow F\rdirection BT\rend\r`,
+              },
+            ],
           },
         ],
       },
@@ -46,6 +56,24 @@ end\r
             column: 1,
             endLine: 4,
             endColumn: 13,
+            suggestions: [
+              {
+                desc: "Remove this direction statement.",
+                output: `agentflow-beta TB\r
+flow F\r
+direction LR\r
+end\r
+`,
+              },
+              {
+                desc: "Remove the earlier direction statement.",
+                output: `agentflow-beta TB\r
+flow F\r
+direction BT\r
+end\r
+`,
+              },
+            ],
           },
         ],
       },
@@ -66,6 +94,24 @@ end
             column: 1,
             endLine: 4,
             endColumn: 13,
+            suggestions: [
+              {
+                desc: "Remove this direction statement.",
+                output: `agentflow-beta TB
+flow F
+direction\u00a0LR
+end
+`,
+              },
+              {
+                desc: "Remove the earlier direction statement.",
+                output: `agentflow-beta TB
+flow F
+direction\u00a0BT
+end
+`,
+              },
+            ],
           },
         ],
       },

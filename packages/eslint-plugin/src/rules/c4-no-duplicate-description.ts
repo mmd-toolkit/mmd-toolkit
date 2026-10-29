@@ -24,6 +24,7 @@ export const c4NoDuplicateDescription: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("c4-no-duplicate-description"),
     },
+
     schema: [],
     messages: {
       duplicate:

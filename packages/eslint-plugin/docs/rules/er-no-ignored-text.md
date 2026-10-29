@@ -16,23 +16,17 @@ drops the rest without an error.
 
 ## Rule Details
 
-This rule reports text that mermaid.js drops. It applies to `er`.
-
-`A ||--o{ B : x direction LR` sets the direction `LR` and makes no entity and no
-relationship. `direction LR x` sets the direction `LR`, and the `x` is dropped.
-A line becomes a direction statement also when it is not meant as one: in
-`A ||--o{ B : direction TB`, whose role holds the word `direction`, there is no
-relationship.
-
-Text after the direction that starts with `%%`, as in `direction LR %% c`, is
-not reported. The author means it as a comment, and mermaid.js drops it, as the
-author intended.
+This rule applies to entity relationship diagrams (`erDiagram`). It reports text
+on a `direction` line before `direction` or after its value. Text after the
+value that starts with `%%` is not reported: the author means it as a comment,
+and mermaid.js drops it as meant. A relationship whose role contains
+`direction`, as in `A ||--o{ B : direction TB`, is reported too: mermaid.js
+reads it as a direction line and draws no relationship.
 
 The rule also reports empty backquotes, two backquotes with nothing between
-them, in the attribute block of an entity: between two attributes, before the
-first, after the last, or alone in the block. mermaid.js skips them. A run of
-them with only whitespace, comment lines, or directives between them is one
-report.
+them, anywhere in the attribute block of an entity: mermaid.js skips them. A run
+of empty backquotes separated only by whitespace, comment lines, or directives
+gives one report.
 
 Examples of **incorrect** code for this rule:
 

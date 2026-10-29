@@ -9,6 +9,12 @@ Disallow a value of a leaf that mermaid.js reads as another number.
 
 ✅ The `recommended` configuration enables this rule.
 
+🔧 This rule is automatically fixable by the
+[`--fix` CLI option](https://eslint.org/docs/latest/use/command-line-interface#--fix).
+
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
 mermaid.js removes the commas of the value of a leaf and reads a number from its
@@ -18,24 +24,17 @@ one written.
 
 ## Rule Details
 
-This rule reports the value of a leaf that holds `_` or more than one `.` after
-its commas are removed, or holds no digit. It also reports a value with a comma
-where no way of writing thousands puts one: after the `.` with a digit after it,
-or with other than three digits after the last comma that a digit follows. It
-applies to `treemap`.
+This rule applies to treemaps (`treemap` and `treemap-beta`). It reports a leaf
+value that, after removing commas, contains `_`, more than one `.`, or no digit.
+It also reports a value with a comma after the `.` that has a digit after it, as
+in `1.5,5`, and a value whose last such comma before the `.` is followed by
+other than three digits, as in `1,00`.
 
-`1_000` is read as 1, `1.2.3` as 1.2, and `.` as no number, which gives the leaf
-no area and no value text. Commas are removed wherever they stand, so a decimal
-comma is lost: `0,5` is read as 5, `3,14` as 314, and `1.234,5` as 1.2345.
-
-A value that mermaid.js reads whole is not reported: `1000`, `.5`, `5.`, and 0.
-Commas between groups of thousands are not reported, as in `1,000`, `1,234.5`,
-and `1,00,000`, and neither is a comma that no digit follows, which separates
-nothing, as in `5,` and `1.5,`. A decimal comma before three digits, as `0,125`,
-is read as 125, and the rule does not report it, since it is written as
-thousands are.
-
-Write the number with digits, one `.`, and commas between groups of thousands.
+Whole numbers and decimals such as `1000`, `.5`, `5.`, and 0 are not reported.
+Thousands separators such as `1,000`, `1,234.5`, and `1,00,000` are not
+reported, nor are commas with no digit following, such as `5,` and `1.5,`. A
+decimal comma before three digits, as in `0,125`, is read as 125 but is not
+reported, because it has the form of a thousands separator.
 
 Examples of **incorrect** code for this rule:
 
@@ -56,13 +55,6 @@ treemap
 ## Options
 
 This rule has no options.
-
-## Background
-
-The
-[value converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treemap/valueConverter.ts#L13-L15)
-removes the commas of a number and reads the rest with the `parseFloat` of
-JavaScript, which stops at the first character that does not continue a number.
 
 <!-- begin auto-generated rule resources -->
 

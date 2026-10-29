@@ -46,6 +46,17 @@ accDescr {A\rB}
 accDescr {A
 B}`,
       },
+
+      {
+        name: "valid/pie/description-crlf-lf-equality",
+        filename:
+          "tests/fixtures/rules/pie-no-duplicate-description/valid/pie/description-crlf-lf-equality-input.mmd",
+        code: `pie
+accDescr {A\r
+B}
+accDescr {A
+B}`,
+      },
     ],
     invalid: [
       {
@@ -63,6 +74,52 @@ accDescr {a  \u2028 b}
             column: 1,
             endLine: 3,
             endColumn: 18,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `pie
+accDescr: a  \u2028 b
+"A":1
+`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the description.",
+                output: `pie
+accDescr {a  \u2028 b}
+"A":1
+`,
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        name: "invalid/pie/description-equal-predecessor-crlf",
+        filename:
+          "tests/fixtures/rules/pie-no-duplicate-description/invalid/pie/description-equal-predecessor-crlf-input.mmd",
+        code: `pie\r
+accDescr: A\r
+accDescr: A\r
+accDescr: B\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier description with the one of this `accDescr`.",
+            line: 4,
+            column: 1,
+            endLine: 4,
+            endColumn: 12,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `pie\r
+accDescr: A\r
+accDescr: A\r
+`,
+              },
+            ],
           },
         ],
       },

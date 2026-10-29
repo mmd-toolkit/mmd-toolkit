@@ -9,24 +9,26 @@ Disallow a shape whose closing does not match its opening.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-The shape of a block is given by its opening and its closing together, as
-`A["x"]` for a square and `A(("x"))` for a circle. mermaid.js accepts an opening
-with another closing, as in `A["x")`, without an error, and keeps the label, but
-the block gets no shape and is drawn as a plain rectangle.
+A block's opening and closing together specify its shape, as in `A["x"]` and
+`A(("x"))`. mermaid.js accepts a mismatched pair, such as `A["x")`, without an
+error. It keeps the label but draws a plain rectangle instead of the intended
+shape.
 
 ## Rule Details
 
-This rule reports a shape whose opening is one that mermaid.js knows and whose
-opening and closing together give no shape. It applies to `block`, to blocks
-written on their own and to the blocks of an edge.
+This rule applies to block diagrams (`block-beta` and `block`). It reports a
+shape whose opening is known to mermaid.js but whose opening and closing do not
+form a recognized pair, in standalone blocks and in edges.
 
-A missing parenthesis, as in `A(("x")`, and one bracket too many, as in
-`A["x"]]`, are reported. The pairs that the documentation of mermaid.js gives
-with different sides, `A>"x"]` and the two trapezoids `A[/"x"\]` and `A[\"x"/]`,
-are not reported. The head of a composite block is not checked, since it is
-drawn as a composite block whatever its pair.
+Missing or extra brackets, as in `A(("x")` and `A["x"]]`, are reported. The
+asymmetric pairs `A>"x"]`, `A[/"x"\]`, and `A[\"x"/]` are not reported because
+they specify shapes. Composite heads are not checked because they are drawn as
+composite blocks regardless of the pair.
 
 Examples of **incorrect** code for this rule:
 

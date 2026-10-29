@@ -9,36 +9,26 @@ Disallow a `direction` statement that replaces the direction of its flow.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-A `direction` statement in a flow sets the direction of the flow. A later one in
-the same flow replaces it without an error, and the earlier direction is lost.
+A `direction` statement sets the direction of its flow. A later one in the same
+flow replaces it without an error, and the earlier direction is lost.
 
 ## Rule Details
 
-This rule reports a `direction` statement of a flow that gives the flow a
-direction other than the one that a `direction` statement gave it before. It
-applies to `agentflow`.
+This rule applies to agentflow diagrams (`agentflow-beta`). It reports a
+`direction` statement that changes the direction set by an earlier statement for
+the same flow. Statements count for the flow whose body they stand in directly.
 
-In `flow F`, then `direction LR`, `A`, `direction BT`, and `end`, the flow takes
-the direction `BT`, and `LR` is lost. Flows of one id are one flow: a
-`direction` statement in a later declaration of `F` replaces the direction that
-an earlier declaration gave it too. An unnamed flow receives `subGraph` followed
-by the number of earlier completed flow declarations, including repeated ids.
-Two unnamed flows have different ids; an unnamed flow and a named flow with that
-generated id merge, and their directions are compared too. A `direction`
-statement counts for the flow whose body it stands in directly, not for a flow
-around that one.
+Declarations with the same id are one flow, so their directions are compared
+too. Two unnamed flows are different flows, and their directions are not
+compared.
 
-A statement that gives the direction that the flow already has is not reported.
-`TD` and `TB` are the same direction, top to bottom, as the
-[documentation of the flowchart](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L100-L100)
-of mermaid.js says: after `direction TD`, `direction TB` is not reported.
-mermaid.js sets the direction when it reaches the `end` of a flow, so a flow
-written inside another one is set first, and its statements are compared in that
-order.
-
-Write one `direction` statement for each flow.
+Repeating the current direction is not reported, and `TD` and `TB` both mean top
+to bottom.
 
 Examples of **incorrect** code for this rule:
 
@@ -72,11 +62,9 @@ This rule has no options.
 - [agentflow-no-redefined-flow](./agentflow-no-redefined-flow.md)
 - [agentflow-no-ignored-text](./agentflow-no-ignored-text.md)
 
-## Background
+## Further Reading
 
-[`addSubGraph`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1175-L1284)
-takes the last `direction` statement of a flow body, and gives the earlier flow
-of the same id the direction of a later one.
+- [Flowchart directions](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L100-L100)
 
 <!-- begin auto-generated rule resources -->
 

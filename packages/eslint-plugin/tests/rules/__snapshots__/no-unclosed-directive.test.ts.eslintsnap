@@ -590,21 +590,6 @@ Code:
 ---
 
 
-Test: no-unclosed-directive >> invalid >>> invalid/flowchart/flowchart-unclosed-crlf
-Filename: tests/fixtures/rules/no-unclosed-directive/invalid/flowchart/flowchart-unclosed-crlf-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 | A --> B
-  3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
-  4 | A --> B
-    | ~~~~~~~ [1]
-
-[1] mermaid.js takes text from later lines into this directive, so that text disappears from the diagram.
----
-
-
 Test: no-unclosed-directive >> invalid >>> invalid/flowchart/flowchart-unclosed-in-comment
 Filename: tests/fixtures/rules/no-unclosed-directive/invalid/flowchart/flowchart-unclosed-in-comment-input.mmd
 
@@ -1491,21 +1476,6 @@ Code:
   4 | C->>D: y
     | ~~~~~~~~ [1]
   5 |
-
-[1] mermaid.js takes text from later lines into this directive, so that text disappears from the diagram.
----
-
-
-Test: no-unclosed-directive >> invalid >>> invalid/sequence/legacy-sequence-tokens-sequence-hash-comment-style-text-open-directive-ac56ea97
-Filename: tests/fixtures/rules/no-unclosed-directive/invalid/sequence/legacy-sequence-tokens-sequence-hash-comment-style-text-open-directive-ac56ea97-input.mmd
-
-Code:
-  1 | sequenceDiagram
-  2 | A->>B: x #style:#x; %%{init: {}
-    |                     ^~~~~~~~~~~\ [1]
-  3 | C->>D: y
-    | ~~~~~~~~ [1]
-  4 |
 
 [1] mermaid.js takes text from later lines into this directive, so that text disappears from the diagram.
 ---

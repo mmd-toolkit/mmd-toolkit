@@ -11,6 +11,12 @@ Code:
   3 |
 
 [1] mermaid.js uses the text of this empty `accDescr` block as the description, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | eventmodeling
+          2 |   tf 01 evt Bought
+          3 |
 ---
 
 
@@ -23,6 +29,11 @@ Code:
   2 | tf 01 evt Bought
 
 [1] mermaid.js uses the text of this empty `accDescr` block as the description, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | eventmodeling %% TODO
+          2 | tf 01 evt Bought
 ---
 
 
@@ -45,6 +56,10 @@ Code:
     |               ^~~~~~~~~~~ [1]
 
 [1] mermaid.js uses the text of this empty `accDescr` block as the description, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | eventmodeling tf 01 evt Bought
 ---
 
 
@@ -58,6 +73,36 @@ Code:
   3 |
 
 [1] mermaid.js uses the text of this empty `accDescr` block as the description, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | eventmodeling
+          2 |   tf 01 evt Bought
+          3 |
+---
+
+
+Test: eventmodeling-no-empty-description-block >> invalid >>> invalid/eventmodeling/empty-block-after-description-hidden-yaml
+Filename: tests/fixtures/rules/eventmodeling-no-empty-description-block/invalid/eventmodeling/empty-block-after-description-hidden-yaml-input.mmd
+
+Code:
+  1 | eventmodeling accDescr: First
+  2 | ---
+  3 | hidden
+  4 | ---
+  5 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js uses the text of this empty `accDescr` block as the description, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | eventmodeling accDescr: First
+          2 | ---
+          3 | hidden
+          4 | ---
+          5 |
 ---
 
 
@@ -73,6 +118,10 @@ Code:
     | ~~ [1]
 
 [1] mermaid.js uses the text of this empty `accDescr` block as the description, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | eventmodeling tf 01 evt Bought
 ---
 
 
@@ -91,4 +140,95 @@ Code:
     |   ^~~~~~~~~~~ [1]
 
 [1] mermaid.js uses the text of this empty `accDescr` block as the description, replacing any earlier description.
+---
+
+
+Test: eventmodeling-no-empty-description-block >> invalid >>> invalid/eventmodeling/inline-block-after-frame
+Filename: tests/fixtures/rules/eventmodeling-no-empty-description-block/invalid/eventmodeling/inline-block-after-frame-input.mmd
+
+Code:
+  1 | eventmodeling
+  2 | tf 01 evt Bought accDescr {}
+    |                  ^~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js uses the text of this empty `accDescr` block as the description, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | eventmodeling
+          2 | tf 01 evt Bought
+          3 |
+---
+
+
+Test: eventmodeling-no-empty-description-block >> invalid >>> invalid/eventmodeling/inline-block-before-comment
+Filename: tests/fixtures/rules/eventmodeling-no-empty-description-block/invalid/eventmodeling/inline-block-before-comment-input.mmd
+
+Code:
+  1 | eventmodeling accDescr {} %% note
+    |               ^~~~~~~~~~~ [1]
+  2 |
+
+[1] mermaid.js uses the text of this empty `accDescr` block as the description, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | eventmodeling %% note
+          2 |
+---
+
+
+Test: eventmodeling-no-empty-description-block >> invalid >>> invalid/eventmodeling/inline-block-before-frame
+Filename: tests/fixtures/rules/eventmodeling-no-empty-description-block/invalid/eventmodeling/inline-block-before-frame-input.mmd
+
+Code:
+  1 | eventmodeling accDescr {} tf 01 evt Bought
+    |               ^~~~~~~~~~~ [1]
+  2 |
+
+[1] mermaid.js uses the text of this empty `accDescr` block as the description, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | eventmodeling tf 01 evt Bought
+          2 |
+---
+
+
+Test: eventmodeling-no-empty-description-block >> invalid >>> invalid/eventmodeling/inline-block-before-title
+Filename: tests/fixtures/rules/eventmodeling-no-empty-description-block/invalid/eventmodeling/inline-block-before-title-input.mmd
+
+Code:
+  1 | eventmodeling accDescr {} accTitle: Orders
+    |               ^~~~~~~~~~~ [1]
+  2 |
+
+[1] mermaid.js uses the text of this empty `accDescr` block as the description, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | eventmodeling accTitle: Orders
+          2 |
+---
+
+
+Test: eventmodeling-no-empty-description-block >> invalid >>> invalid/eventmodeling/inline-multiline-block
+Filename: tests/fixtures/rules/eventmodeling-no-empty-description-block/invalid/eventmodeling/inline-multiline-block-input.mmd
+
+Code:
+  1 | eventmodeling accDescr {
+    |               ^~~~~~~~~~\ [1]
+  2 |
+    | ~\ [1]
+  3 | } tf 01 evt Bought
+    | ~ [1]
+  4 |
+
+[1] mermaid.js uses the text of this empty `accDescr` block as the description, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | eventmodeling tf 01 evt Bought
+          2 |
 ---

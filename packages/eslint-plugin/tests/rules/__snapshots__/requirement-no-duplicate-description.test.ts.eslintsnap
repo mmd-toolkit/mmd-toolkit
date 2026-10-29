@@ -15,6 +15,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 |   accDescr: first
+          3 |   requirement r {
+          4 |     id: 1
+          5 |   }
+          6 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 |   accDescr { second }
+          3 |   requirement r {
+          4 |     id: 1
+          5 |   }
+          6 |
 ---
 
 
@@ -34,7 +51,45 @@ Code:
   8 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 |   accDescr: a
+          3 |   accDescr: a
+          4 |   requirement r {
+          5 |     id: 1
+          6 |   }
+          7 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 |   accDescr: b
+          3 |   accDescr: a
+          4 |   requirement r {
+          5 |     id: 1
+          6 |   }
+          7 |
 [2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 |   accDescr: a
+          3 |   accDescr: b
+          4 |   requirement r {
+          5 |     id: 1
+          6 |   }
+          7 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 |   accDescr: a
+          3 |   accDescr: a
+          4 |   requirement r {
+          5 |     id: 1
+          6 |   }
+          7 |
 ---
 
 
@@ -52,6 +107,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: a
+          3 | accDescr {
+          4 | %% c
+          5 | }
+          6 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr {
+          3 | %% c
+          4 | }
+          5 | accDescr: b
+          6 |
 ---
 
 
@@ -69,6 +141,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: a
+          3 | requirement r {
+          4 |   id: 1
+          5 | }
+          6 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr { b }
+          3 | requirement r {
+          4 |   id: 1
+          5 | }
+          6 |
 ---
 
 
@@ -83,6 +172,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: a
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 | AccDescr: b
+          3 |
 ---
 
 
@@ -100,7 +200,30 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: a
+          3 | accDescr {}
+          4 | accDescr: c
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr {}
+          3 | accDescr { b }
+          4 | accDescr: c
+          5 |
 [2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: a
+          3 | accDescr {}
+          4 | accDescr { b }
+          5 |
 ---
 
 
@@ -117,6 +240,18 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: a
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr:
+          3 | b
+          4 |
 ---
 
 
@@ -133,7 +268,27 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: a
+          3 | accDescr { c }
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: b
+          3 | accDescr { c }
+          4 |
 [2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: a
+          3 | accDescr: b
+          4 |
 ---
 
 
@@ -160,6 +315,29 @@ Code:
  13 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 |   accDescr {
+          3 |     d
+          4 |     e
+          5 |   }
+          6 |   requirement r {
+          7 |     id: 1
+          8 |   }
+          9 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 |   accDescr {
+          3 |     d  
+          4 |     e
+          5 |   }
+          6 |   requirement r {
+          7 |     id: 1
+          8 |   }
+          9 |
 ---
 
 
@@ -177,6 +355,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: a
+          3 | requirement r {
+          4 |   id: 1
+          5 | }
+          6 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: b
+          3 | requirement r {
+          4 |   id: 1
+          5 | }
+          6 |
 ---
 
 
@@ -191,6 +386,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr { b }
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: a
+          3 |
 ---
 
 
@@ -207,4 +413,41 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accTitle:   t1  
+          3 | accTitle: t2
+          4 | accDescr:  d1  
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 | accTitle:   t1  
+          3 | accTitle: t2
+          4 | accDescr: d2
+          5 |
+---
+
+
+Test: requirement-no-duplicate-description >> invalid >>> invalid/requirement/description-equal-predecessor
+Filename: tests/fixtures/rules/requirement-no-duplicate-description/invalid/requirement/description-equal-predecessor-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr: A
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
 ---

@@ -112,7 +112,7 @@ describe("Mermaid code blocks in Markdown", () => {
     })
     expect(report?.suggestions).toHaveLength(2)
     expect(report?.suggestions?.[1]?.desc).toBe(
-      "Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.",
+      "Remove the earlier `accTitle` statement.",
     )
     expect(
       report?.suggestions?.map(

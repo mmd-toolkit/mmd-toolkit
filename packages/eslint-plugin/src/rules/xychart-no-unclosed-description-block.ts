@@ -1,3 +1,4 @@
+import { blockClosingSuggestions } from "../utils/description-block-suggestions.ts"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 
@@ -9,7 +10,7 @@ import { ruleDocsUrl } from "../rule-docs-url.ts"
  */
 export const xychartNoUnclosedDescriptionBlock: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "unclosed"
+  MessageIds: "unclosed" | "closeAtTextEnd"
 }> = {
   meta: {
     type: "problem",
@@ -18,10 +19,13 @@ export const xychartNoUnclosedDescriptionBlock: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("xychart-no-unclosed-description-block"),
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
       unclosed:
         "mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.",
+
+      closeAtTextEnd: "Close the block at the end of the text.",
     },
   },
   create(context) {
@@ -30,10 +34,12 @@ export const xychartNoUnclosedDescriptionBlock: MermaidRuleDefinition<{
       XychartAccDescrBlockStatement(node) {
         if (node.closed) return
         // The block opens with `accDescr {`, its first two tokens.
-        const [, brace] = sourceCode.getTokens(node)
+        const [, brace, ...rest] = sourceCode.getTokens(node)
         context.report({
           loc: { start: node.loc.start, end: brace.loc.end },
           messageId: "unclosed",
+
+          suggest: blockClosingSuggestions(sourceCode, brace, rest),
         })
       },
     }

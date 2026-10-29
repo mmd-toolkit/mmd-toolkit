@@ -8,30 +8,27 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
+
 <!-- end auto-generated rule notice -->
 
-点と `classDef` のスタイルは、`radius`、`color`、`stroke-color`、
-`stroke-width` をコンマで区切った並びである。
-mermaid.js は、並びが 2 度与えるスタイルを受理し、
-後の値が前の値を黙って置き換える。
-`radius: 5, radius: 9` は半径 9 を与える。
-2 つ目の値は、たいてい、並びを編集した残りである。
+点と `classDef` のスタイルは、コンマで区切った並びで書く。
+同じスタイルを 2 度与えると、mermaid.js はエラーなしに後の値を使い、
+前の値は失われる。
 
 ## 規則の詳細
 
-この規則は、点か `classDef` のスタイルのうち、
-並びの中で同じ名前の最初のものより後のものを、前と違う値を与えるときに報告する。
-対象の図種は `quadrantChart` である。
+この規則は、象限チャート（`quadrantChart`）に当てる。
+点か `classDef` のスタイルの一覧で、
+同じ一覧が前に与えた同じスタイルの値を別の値に置き換える `radius`、`color`、
+`stroke-color`、`stroke-width` を報告する。
+その値の繰り返しは報告しない。
+点とそのクラスのスタイルは、点のスタイルが優先するので比べない。
 
-`color: #f00, radius: 5` の後の、同じ並びの `color: #00f` は、
-色 `#00f` を与える。
-点のスタイルとそのクラスのスタイルは比べない。
-mermaid.js の文書が書くとおり、点のスタイルが勝つ。
-
-並びがすでに与えた値を与えるスタイルは報告しない。
-値は、mermaid.js が持つとおりに比べる。
-半径は数なので、`radius: 5` の後の `radius: 05` は同じであり、
-コロンの前後の空白は数えない。
+半径は数として比べ、コロンの前後の空白は数えないので、
+`radius: 05` は `radius: 5` の繰り返しである。
 色と線の幅は書いたとおりに比べるので、
 `stroke-color: #f00` の後の `stroke-color: f00` は報告する。
 `radius: 5` と `radius: 9` の後の 3 つ目の `radius: 5` は、

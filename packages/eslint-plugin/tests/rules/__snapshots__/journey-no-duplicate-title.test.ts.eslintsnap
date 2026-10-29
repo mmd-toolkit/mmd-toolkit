@@ -14,6 +14,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | journey
+          2 |   title first
+          3 |   section Work
+          4 |     Make tea: 5: Me
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | journey
+          2 |   title second
+          3 |   section Work
+          4 |     Make tea: 5: Me
+          5 |
 ---
 
 
@@ -30,6 +45,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | journey
+          2 |   accTitle: first
+          3 |   section Work
+          4 |     Make tea: 5: Me
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | journey
+          2 |   accTitle: second
+          3 |   section Work
+          4 |     Make tea: 5: Me
+          5 |
 ---
 
 
@@ -48,7 +78,41 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | journey
+          2 |   accTitle: a
+          3 |   accTitle: a
+          4 |   section S
+          5 |     t: 5: Me
+          6 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | journey
+          2 |   accTitle: b
+          3 |   accTitle: a
+          4 |   section S
+          5 |     t: 5: Me
+          6 |
 [2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | journey
+          2 |   accTitle: a
+          3 |   accTitle: b
+          4 |   section S
+          5 |     t: 5: Me
+          6 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | journey
+          2 |   accTitle: a
+          3 |   accTitle: a
+          4 |   section S
+          5 |     t: 5: Me
+          6 |
 ---
 
 
@@ -67,6 +131,19 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | journey
+          2 |   accTitle: a
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | journey
+          2 |   accTitle:
+          3 |   %% c
+          4 |   T
+          5 |
 ---
 
 
@@ -85,6 +162,14 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | journey
+          2 |   accTitle:
+          3 |   %%{init: {}}%%
+          4 |   T
+          5 |
 ---
 
 
@@ -101,20 +186,18 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
----
-
-
-Test: journey-no-duplicate-title >> invalid >>> invalid/journey/acc-title-twice-crlf
-Filename: tests/fixtures/rules/journey-no-duplicate-title/invalid/journey/acc-title-twice-crlf-input.mmd
-
-Code:
-  1 | journey
-  2 |   accTitle: a
-  3 |   accTitle: b
-    |   ^~~~~~~~~~~ [1]
-  4 |
-
-[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | journey
+          2 |   accTitle: a
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | journey
+          2 |   accTitle:
+          3 |   T
+          4 |
 ---
 
 
@@ -129,6 +212,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | journey
+          2 |   accTitle: a
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | journey
+          2 |   accTitle: b
+          3 |
 ---
 
 
@@ -143,6 +237,39 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | journey
+          2 |   title A
+          3 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | journey
+          2 |   title B
+          3 |
+---
+
+
+Test: journey-no-duplicate-title >> invalid >>> invalid/journey/title-equal-predecessor
+Filename: tests/fixtures/rules/journey-no-duplicate-title/invalid/journey/title-equal-predecessor-input.mmd
+
+Code:
+  1 | journey
+  2 | accTitle: A
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | journey
+          2 | accTitle: A
+          3 | accTitle: A
+          4 |
 ---
 
 
@@ -159,6 +286,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | journey
+          2 |   title T
+          3 |   section S
+          4 |     t: 5: Me
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | journey
+          2 |   title  T
+          3 |   section S
+          4 |     t: 5: Me
+          5 |
 ---
 
 
@@ -175,7 +317,27 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | journey
+          2 |   title a
+          3 |   title c
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | journey
+          2 |   title b
+          3 |   title c
+          4 |
 [2] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | journey
+          2 |   title a
+          3 |   title b
+          4 |
 ---
 
 
@@ -191,6 +353,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | journey
+          2 |   title My day
+          3 |   section Work
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | journey
+          2 |   section Work
+          3 |     Title page: 5: Me
+          4 |
 ---
 
 
@@ -206,4 +381,17 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | journey
+          2 |   title My day
+          3 |   section Work
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | journey
+          2 |   section Work
+          3 |     TITLE page: 5: Me
+          4 |
 ---

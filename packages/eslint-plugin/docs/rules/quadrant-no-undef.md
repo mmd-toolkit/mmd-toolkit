@@ -17,17 +17,14 @@ styles of its own and those of the theme.
 
 ## Rule Details
 
-This rule reports the class name of a point that is the name of no `classDef` of
-the chart. It applies to `quadrantChart`.
+This rule applies to quadrant charts (`quadrantChart`). It reports each point
+whose class name after `:::` has no matching `classDef` anywhere in the chart,
+before or after the point. Names are case-sensitive, so `C1` does not name `c1`.
+A point with its own styles is reported too, since its undefined class adds
+nothing.
 
-The classes of a chart are those that its `classDef` statements define, before
-or after the point. After `classDef c1 color: #f00`, the point `A:::c2` keeps
-the colour of the theme. Names are compared with their case: `A:::C1` does not
-take the class `c1`. A point with styles of its own is reported in the same way,
-since its class adds nothing, and every point that names such a class is
-reported. The class name of a point is a word of letters, digits, and `_`, while
-the name of a class of `classDef` may hold other characters: `A:::c` does not
-take the class `c-1`.
+A point's class name consists of letters, digits, and `_`, while `classDef`
+names may contain other characters: `A:::c` does not name the class `c-1`.
 
 Examples of **incorrect** code for this rule:
 

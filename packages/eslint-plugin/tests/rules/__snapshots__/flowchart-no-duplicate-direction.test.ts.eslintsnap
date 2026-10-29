@@ -15,23 +15,83 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 |   subgraph S
+          3 |     direction LR
+          4 |     A --> B
+          5 |   end
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart TB
+          2 |   subgraph S
+          3 |     A --> B
+          4 |     direction BT
+          5 |   end
+          6 |
 ---
 
 
-Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/crlf
-Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/crlf-input.mmd
+Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/direction-equal-predecessor
+Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/direction-equal-predecessor-input.mmd
 
 Code:
-  1 | flowchart TB
+  1 | flowchart LR
   2 | subgraph S
-  3 |   direction LR
-  4 |   A
-  5 |   direction BT
-    |   ^~~~~~~~~~~~ [1]
+  3 | direction LR
+  4 | direction LR
+  5 | direction BT
+    | ^~~~~~~~~~~~ [1]
   6 | end
   7 |
 
 [1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart LR
+          2 | subgraph S
+          3 | direction LR
+          4 | direction LR
+          5 | end
+          6 |
+---
+
+
+Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/direction-reveals-later-report
+Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/direction-reveals-later-report-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S
+  3 | direction LR
+  4 | direction TD
+    | ^~~~~~~~~~~~ [1]
+  5 | direction TB
+  6 | end
+  7 |
+
+[1] mermaid.js replaces the earlier direction for this subgraph with `TD`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart LR
+          2 | subgraph S
+          3 | direction LR
+          4 | direction TB
+          5 | end
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart LR
+          2 | subgraph S
+          3 | direction TD
+          4 | direction TB
+          5 | end
+          6 |
 ---
 
 
@@ -66,6 +126,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart-elk TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   A
+          5 | end
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart-elk TB
+          2 | subgraph S
+          3 |   A
+          4 |   direction BT
+          5 | end
+          6 |
 ---
 
 
@@ -83,6 +160,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | graph TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   A
+          5 | end
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | graph TB
+          2 | subgraph S
+          3 |   A
+          4 |   direction BT
+          5 | end
+          6 |
 ---
 
 
@@ -99,6 +193,14 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   A[Set direction BT]
+          4 | end
+          5 |
 ---
 
 
@@ -119,6 +221,29 @@ Code:
  10 |
 
 [1] mermaid.js replaces the earlier direction for this subgraph with `RL`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   subgraph T
+          5 |     direction BT
+          6 |     A
+          7 |   end
+          8 | end
+          9 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   subgraph T
+          4 |     direction BT
+          5 |     A
+          6 |   end
+          7 |   direction RL
+          8 | end
+          9 |
 ---
 
 
@@ -140,6 +265,31 @@ Code:
  11 |
 
 [1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   A
+          5 | end
+          6 | subgraph S
+          7 |   direction BT
+          8 |   B
+          9 | end
+         10 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction BT
+          4 |   A
+          5 | end
+          6 | subgraph S
+          7 |   direction BT
+          8 |   B
+          9 | end
+         10 |
 ---
 
 
@@ -159,6 +309,17 @@ Code:
   9 |
 
 [1] mermaid.js keeps the direction of the first subgraph `S` and ignores this `direction BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   A
+          4 | end
+          5 | subgraph S
+          6 |   B
+          7 | end
+          8 |
 ---
 
 
@@ -180,7 +341,31 @@ Code:
  10 |
 
 [1] mermaid.js keeps the direction of the first subgraph `S` and ignores this `direction LR`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   A
+          4 | end
+          5 | subgraph S
+          6 |   direction BT
+          7 |   B
+          8 | end
+          9 |
 [2] mermaid.js keeps the direction of the first subgraph `S` and ignores this `direction BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   A
+          4 | end
+          5 | subgraph S
+          6 |   direction LR
+          7 |   B
+          8 | end
+          9 |
 ---
 
 
@@ -203,7 +388,45 @@ Code:
  11 |
 
 [1] mermaid.js keeps the direction of the first subgraph `S` and ignores this `direction BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   A
+          5 | end
+          6 | subgraph S
+          7 |   direction LR
+          8 |   B
+          9 | end
+         10 |
 [2] mermaid.js replaces the earlier direction for this subgraph with `LR`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   A
+          5 | end
+          6 | subgraph S
+          7 |   direction BT
+          8 |   B
+          9 | end
+         10 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   A
+          5 | end
+          6 | subgraph S
+          7 |   direction LR
+          8 |   B
+          9 | end
+         10 |
 ---
 
 
@@ -225,6 +448,19 @@ Code:
  11 |
 
 [1] mermaid.js keeps the direction of the first subgraph `S` and ignores this `direction BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   A
+          5 | end
+          6 | subgraph S
+          7 |   direction LR
+          8 |   B
+          9 | end
+         10 |
 ---
 
 
@@ -244,6 +480,17 @@ Code:
   9 |
 
 [1] mermaid.js keeps the direction of the first subgraph `S` and ignores this `direction LR`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   subgraph S
+          4 |     direction BT
+          5 |     A
+          6 |   end
+          7 | end
+          8 |
 ---
 
 
@@ -264,6 +511,18 @@ Code:
  10 |
 
 [1] mermaid.js keeps the direction of the first subgraph `S` and ignores this `direction BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   A
+          5 | end
+          6 | subgraph S
+          7 |   B
+          8 | end
+          9 |
 ---
 
 
@@ -281,6 +540,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | swimlane-beta TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   A
+          5 | end
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | swimlane-beta TB
+          2 | subgraph S
+          3 |   A
+          4 |   direction BT
+          5 | end
+          6 |
 ---
 
 
@@ -298,6 +574,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction TD
+          4 |   A
+          5 | end
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction BT
+          4 |   A
+          5 | end
+          6 |
 ---
 
 
@@ -317,7 +610,45 @@ Code:
   8 |
 
 [1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   direction LR
+          5 |   A
+          6 | end
+          7 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction BT
+          4 |   direction LR
+          5 |   A
+          6 | end
+          7 |
 [2] mermaid.js replaces the earlier direction for this subgraph with `LR`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   direction BT
+          5 |   A
+          6 | end
+          7 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   direction LR
+          5 |   A
+          6 | end
+          7 |
 ---
 
 
@@ -338,6 +669,29 @@ Code:
  10 |
 
 [1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   
+          5 |   %% comment
+          6 |   %%{init: {}}%%
+          7 |   A
+          8 | end
+          9 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   
+          4 |   %% comment
+          5 |   %%{init: {}}%%
+          6 |   direction BT
+          7 |   A
+          8 | end
+          9 |
 ---
 
 
@@ -355,6 +709,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   A
+          5 | end
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   A
+          4 |   direction BT
+          5 | end
+          6 |
 ---
 
 
@@ -371,4 +742,12 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   A-->B; direction BT
+          4 | end
+          5 |
 ---

@@ -8,26 +8,24 @@ Disallow an edge statement with more than one link.
 
 ✅ The `recommended` configuration enables this rule.
 
+🔧 This rule is automatically fixable by the
+[`--fix` CLI option](https://eslint.org/docs/latest/use/command-line-interface#--fix).
+
 <!-- end auto-generated rule notice -->
 
-In a block diagram, an edge statement links two blocks, as in `A --> B`.
-mermaid.js also accepts a chain of links, as in `A --> B --> C`, without an
-error, but it keeps only the last link, and that link has no start: the chain
-draws no edge from `A` to `B` and no edge from `B` to `C`, and it places neither
-`A` nor `B`.
+An edge statement links two blocks, as in `A --> B`. mermaid.js accepts
+`A --> B --> C` without an error, but keeps only the last link with no start.
+Neither intended edge is drawn, and neither `A` nor `B` is placed.
 
 ## Rule Details
 
-This rule reports an edge statement with two or more links, once for each
-statement. It applies to `block`.
+This rule applies to block diagrams (`block-beta` and `block`). It reports an
+edge statement with two or more links, once per statement. A link on the next
+line continues the statement, so `A --> B` followed by `--> C` is also reported.
 
-A chain loses its earlier links also when the blocks were placed before it:
-after `A B C`, the chain `A --> B --> C` draws one edge into `C` with no start.
-A link written on the next line continues the statement, so `A --> B` followed
-by a line `--> C` is a chain too. Two edge statements, on two lines or on one
-line, as in `A --> B B --> C`, draw both edges.
-
-A chain in the head of a composite block is reported by
+Declaring the blocks beforehand does not prevent a report: the chain still loses
+its earlier links. Two separate edge statements, even on one line as
+`A --> B B --> C`, are not reported. A chain in a composite head is reported by
 [block-no-edge-in-composite-head](./block-no-edge-in-composite-head.md).
 
 Examples of **incorrect** code for this rule:

@@ -27,6 +27,18 @@ A["x"]
 A["\u00a0x\u00a0"]
 `,
       },
+
+      {
+        name: "valid/agentflow/vertex-crlf-equivalent",
+        filename:
+          "tests/fixtures/rules/agentflow-no-redefined-vertex/valid/agentflow/vertex-crlf-equivalent-input.mmd",
+        code: `agentflow-beta TB
+A["First
+Second"]
+A["First\r
+Second"]
+`,
+      },
     ],
     invalid: [
       {

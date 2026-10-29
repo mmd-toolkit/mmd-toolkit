@@ -9,6 +9,9 @@ Disallow a `size` that replaces the size set before it.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
 A map has one size. A later `size` replaces the size set before it without an
@@ -16,17 +19,11 @@ error, and the earlier size is lost.
 
 ## Rule Details
 
-This rule reports a `size` that gives another width or height than the `size`
-before it. It applies to `wardley`.
+This rule applies to Wardley maps (`wardley-beta`). It reports a `size` giving a
+different width or height from the preceding `size`. Repeating the current size
+is not reported. Numbers are compared as numbers.
 
-After `size [1100, 600]` and `size [800, 1000]`, the map is 800 wide and 1000
-high.
-
-A `size` that gives the size that the map already has is not reported. Numbers
-are compared as numbers. A size in the configuration of the frontmatter or of a
-directive is not read.
-
-Write one `size`.
+The rule does not read sizes in frontmatter or directive configuration.
 
 Examples of **incorrect** code for this rule:
 
@@ -48,12 +45,6 @@ wardley-beta
 ## Options
 
 This rule has no options.
-
-## Background
-
-The parser keeps the last `size`, and the
-[map](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L70-L73)
-takes its width and its height.
 
 <!-- begin auto-generated rule resources -->
 

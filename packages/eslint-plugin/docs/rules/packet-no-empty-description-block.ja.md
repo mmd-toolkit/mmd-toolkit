@@ -9,33 +9,27 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
+
 <!-- end auto-generated rule notice -->
 
-mermaid.js は、何もない `accDescr { }` のブロックをエラーなしに受理する。
-そのブロックは説明を空にし、最初に書くと何も変えず、
-説明の後に書くとその説明を取り除く。
+mermaid.js は、空の `accDescr {}` のブロックをエラーなしに受理する。
+最初に書くと何も変えず、説明の後に書くとその説明を取り除く。
 
 ## 規則の詳細
 
-この規則は、
-括弧の間に何も持たないか空白だけを持つ `accDescr` のブロックを報告する。
-対象の図種は `packet` である。
-ブロックの中の指示子は文字ではない。
-指示子だけを持つブロックも報告し、mermaid.js はその設定を当てる。
+この規則は、パケット図（`packet`、`packet-beta`）に当てる。
+括弧の間に何もないか、空白だけがある `accDescr` のブロックを報告する。
+ディレクティブだけを持つブロックも報告するが、mermaid.js はその設定を当てる。
 
-`accDescr: x` の後のブロック `accDescr { }` は説明を空にし、`x` は失われる。
-前に説明がなければ説明は空のままで、ブロックは何も変えない。
-
-括弧の間にコメント行を持つブロックは報告しない。
-後で埋めるブロックは、 `accDescr {`、`%% TODO`、
-`}` のようにコメントを入れて書き、最初に書くと何も変えない。
-説明の後では、そのようなブロックもそれを取り除き、
+後で埋めるブロックのように、括弧の間にコメント行を持つブロックは、
+この規則では報告しない。
+説明の後では、そのブロックも説明を空にし、
 [packet-no-duplicate-description](./packet-no-duplicate-description.ja.md)
 が報告する。
-`accDescr {} %% later` のように `{` の前や `}`
-の後にあるコメントはブロックの中になく、そのブロックは報告する。
-
-説明を書くか、ブロックを取り除く。
+`accDescr {} %% later` のような括弧の外のコメントは、報告を防がない。
 
 この規則に**反する**コードの例:
 
@@ -64,14 +58,6 @@ packet
 ## 関連する規則
 
 - [packet-no-duplicate-description](./packet-no-duplicate-description.ja.md)
-
-## 背景
-
-[値の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L61-L68)
-は、空のブロックに空の説明を与える。
-パーサーは最後の説明を保ち、
-[`populateCommonDb`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14)
-は空でない説明だけを設定するので、最後に書いた空のブロックは説明を空にする。
 
 <!-- begin auto-generated rule resources -->
 

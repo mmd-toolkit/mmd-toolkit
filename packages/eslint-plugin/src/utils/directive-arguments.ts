@@ -1,4 +1,4 @@
-import type { Directive } from "@mmd-toolkit/parser"
+import type { Directive, Range } from "@mmd-toolkit/parser"
 
 /** The ASCII word characters used by directive names and word arguments. */
 function isWordCharacter(character: string | undefined): boolean {
@@ -27,6 +27,20 @@ function argumentStart(value: string): number {
   return at
 }
 
+/** The authored argument range, without the directive name or surrounding padding. */
+export function directiveArgumentRange(directive: Directive): Range {
+  const offset = directive.range[0] + 3
+  return [
+    offset + argumentStart(directive.value),
+    offset + directive.value.trimEnd().length,
+  ]
+}
+
+/** The authored argument after its name, optional colon and padding. */
+export function directiveArgumentText(directive: Directive): string {
+  return directive.value.slice(argumentStart(directive.value)).trim()
+}
+
 /** Balance argument brackets without validating JSON, ignoring quoted text and escapes. */
 function bracketedArgumentEnd(value: string, start: number): number {
   let depth = 0
@@ -49,8 +63,7 @@ function bracketedArgumentEnd(value: string, start: number): number {
 }
 
 /** Text on a later physical line counts only outside the name and opening JSON value. */
-export function directiveTakesLaterLines(directive: Directive): boolean {
-  const { value } = directive
+export function directiveValueTakesLaterLines(value: string): boolean {
   const start = argumentStart(value)
   const argumentEnd =
     value[start] === "{" || value[start] === "["
@@ -65,6 +78,11 @@ export function directiveTakesLaterLines(directive: Directive): boolean {
     }
   }
   return false
+}
+
+/** Apply the same lost-line decision to the source directive. */
+export function directiveTakesLaterLines(directive: Directive): boolean {
+  return directiveValueTakesLaterLines(directive.value)
 }
 
 /** A word argument and an absent argument supply no JSON settings. */
@@ -82,7 +100,7 @@ function readsInitSettings(name: string): boolean {
 }
 
 /** Validate with the JSON reader before inspecting members or reporting invalid text. */
-function parsesAsJson(text: string): boolean {
+export function parsesAsJson(text: string): boolean {
   try {
     JSON.parse(text)
     return true
@@ -109,25 +127,39 @@ export function invalidInitReason(
   return "invalid"
 }
 
-/** Later conflicting keys in JSON spelling; comparisons use decoded keys and values. */
-export function duplicateInitKeys(directive: Directive): readonly string[] {
+/** A JSON member's value and removable source range, before duplicate keys are reduced. */
+export interface InitJsonMember {
+  readonly key: string
+  readonly value: string
+  readonly removalRange: Range
+  readonly previous: InitJsonMember | undefined
+}
+
+/** A later conflicting member, and the earlier member it changes. */
+export interface DuplicateInitMember {
+  readonly current: InitJsonMember
+  readonly previous: InitJsonMember
+}
+
+/** Later conflicting keys in JSON spelling; keep every member for comparison and edits. */
+export function duplicateInitMembers(
+  directive: Directive,
+): readonly DuplicateInitMember[] {
   if (!readsInitSettings(directive.name)) return []
   const argument = freeTextArgument(directive)
   if (argument === null) return []
   const text = argument.replaceAll("'", '"')
   if (!parsesAsJson(text)) return []
-
-  // Validation happens before this traversal. Read every member before reducing
-  // an object's final value, so JSON.parse cannot discard a repeated key.
+  const offset = directiveArgumentRange(directive)[0]
   let at = 0
-  const duplicates: string[] = []
+  const duplicates: DuplicateInitMember[] = []
 
-  /** Advance over JSON padding, whose validity was checked at the entry. */
+  /** Advance over validated JSON padding. */
   function skipWhitespace(): void {
     while (isWhitespace(text[at])) at++
   }
 
-  /** Keep the literal for diagnostics and decode the string for comparisons. */
+  /** Decode the key while preserving its spelling for the report. */
   function readString(): { literal: string; value: string } {
     const start = at++
     while (text[at] !== '"') at += text[at] === "\\" ? 2 : 1
@@ -136,30 +168,41 @@ export function duplicateInitKeys(directive: Directive): readonly string[] {
     return { literal, value: JSON.parse(literal) as string }
   }
 
-  /** Sorted members represent the final object value without losing earlier observations. */
+  /** Keep each member's separator range and only then reduce the final object value. */
   function readObject(): string {
     at++
-    const members = new Map<string, string>()
+    const members = new Map<string, InitJsonMember>()
+    let comma: number | undefined
     skipWhitespace()
     while (text[at] !== "}") {
+      const start = at
       const key = readString()
       skipWhitespace()
-      at++ // The validated colon.
-      const value = readValue()
-      const previous = members.get(key.value)
-      if (previous !== undefined && previous !== value) {
-        duplicates.push(key.literal)
-      }
-      members.set(key.value, value)
-      skipWhitespace()
-      if (text[at] !== ",") break
       at++
+      const value = readValue()
+      const end = at
+      skipWhitespace()
+      const previous = members.get(key.value)
+      const current: InitJsonMember = {
+        key: key.literal,
+        value,
+        previous,
+        removalRange:
+          comma === undefined
+            ? [offset + start, offset + (text[at] === "," ? at + 1 : end)]
+            : [offset + comma, offset + end],
+      }
+      if (previous !== undefined && previous.value !== value)
+        duplicates.push({ current, previous })
+      members.set(key.value, current)
+      if (text[at] !== ",") break
+      comma = at++
       skipWhitespace()
     }
     at++
     return `{${[...members]
       .sort(([left], [right]) => (left < right ? -1 : left > right ? 1 : 0))
-      .map(([key, value]) => `${JSON.stringify(key)}:${value}`)
+      .map(([key, member]) => `${JSON.stringify(key)}:${member.value}`)
       .join(",")}}`
   }
 
@@ -179,7 +222,7 @@ export function duplicateInitKeys(directive: Directive): readonly string[] {
     return `[${values.join(",")}]`
   }
 
-  /** Read by JSON syntax; numeric spellings compare by their parsed number. */
+  /** Numeric spellings compare by the same double, including infinities. */
   function readValue(): string {
     skipWhitespace()
     if (text[at] === "{") return readObject()

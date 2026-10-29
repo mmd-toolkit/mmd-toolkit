@@ -16,24 +16,18 @@ and no arrow.
 
 ## Rule Details
 
-This rule reports an end of a link that names no node, and an `evolve` that
-names no node. It applies to `wardley`.
+This rule applies to Wardley maps (`wardley-beta`). It reports a link end or an
+`evolve` that names no node. A node declared after the link or `evolve` counts.
+A link can name a node by id or by a pipeline child's label.
 
-After `component Database`, the link `API -> Databse` draws no line and no
-label, and `evolve Databse 0.9` draws no arrow.
+The child `SQL` of pipeline `Database` can be named `Database_SQL` or `SQL`, but
+an `evolve` can use only its id, `Database_SQL`.
 
-A node declared after the link or the `evolve` counts. A link names a node by
-its id or by the label of a child of a pipeline: the child `SQL` of the pipeline
-`Database` has the id `Database_SQL`, and a link may name it `Database_SQL` or
-`SQL`. An `evolve` names a node by its id only, so `evolve SQL 0.9` names no
-node there. Names are compared with their case and their spaces, and every line
-break (LF, CRLF, or CR) in a name is read as a line feed. Names are otherwise
-compared as written: mermaid.js decodes escapes, as `\q`, and turns the quotes
-of HTML attributes into other characters before it reads a name, so two names
-that differ only in those may be one name for mermaid.js and two for this rule.
-A pipeline whose parent is no node is rejected by mermaid.js.
-
-Correct the name, or declare the node.
+Names are compared with their case and spaces, and otherwise as written.
+mermaid.js converts HTML attribute quotes before reading a name, so names
+differing only in these may be the same for mermaid.js and different for this
+rule. A pipeline whose parent is no node is not reported, because mermaid.js
+gives an error for it.
 
 Examples of **incorrect** code for this rule:
 
@@ -58,14 +52,6 @@ wardley-beta
 ## Options
 
 This rule has no options.
-
-## Background
-
-[`resolveNodeId`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L175-L185)
-finds the node of a link by its id and then by its label, and keeps a name that
-names no node, which the drawing leaves out; an
-[`evolve`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L189-L197)
-of a name that is the id of no node adds no arrow.
 
 <!-- begin auto-generated rule resources -->
 

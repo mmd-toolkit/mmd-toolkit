@@ -8,6 +8,10 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
+
 <!-- end auto-generated rule notice -->
 
 リンクは、`+'calls'>` のような矢印の中のラベルか、`;` の後のラベルの、
@@ -17,24 +21,18 @@
 
 ## 規則の詳細
 
-この規則は、矢印が別のラベルを持つリンクの `;` の後のラベルを報告する。
-対象の図種は `wardley` である。
-
-`API +'calls'> Database; storage` はラベル `calls` だけを描く。
-矢印の中の空のラベルもそれを置き換え、
-`API +''> Database; storage` はラベルを描かない。
-
-矢印の中のラベルと同じ `;` の後のラベル、空白だけの `;` の後のラベル、
-1 つのラベルを持つリンクは報告しない。
+この規則は、Wardley マップ（`wardley-beta`）に当てる。
+矢印の中のラベルが違うとき、それが `+''>` のような空のラベルでも、
+リンクの `;` の後のラベルを報告する。
+`;` の後の、矢印の中と同じラベルや空白だけのラベルと、
+ラベルが 1 つだけのリンクは報告しない。
 端がどのノードも名指さないか、
-pipeline の子をその親につなぐので何も描かないリンクは報告しない。
-ラベルの中のすべての改行（LF、CRLF、CR）は LF として読む。
-ラベルはそのほかは書いたとおりに比べる。
-mermaid.js は、`#35;` のような文字参照と HTML の属性の引用符を、
-ラベルを読む前にほかの文字に変えるので、それだけが違う 2 つのラベルは、
-mermaid.js には 1 つで、この規則には 2 つのことがある。
+pipeline の子からその親へ向かうために何も描かないリンクは報告しない。
 
-リンクごとにラベルを 1 つ書く。
+ラベルは書いたとおりに比べる。
+mermaid.js は、
+ラベルを読む前に `#35;` のような文字参照と HTML の属性の引用符を変換するので、
+それらだけが違うラベルは、mermaid.js には同じでも、この規則には違うことがある。
 
 この規則に**反する**コードの例:
 
@@ -63,12 +61,6 @@ wardley-beta
 ## 関連する規則
 
 - [wardley-no-undef](./wardley-no-undef.ja.md)
-
-## 背景
-
-[パーサー](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L178-L186)
-は、矢印の中のラベルを取り、
-`;` の後のラベルは矢印がラベルを持たないときだけ取る。
 
 <!-- begin auto-generated rule resources -->
 

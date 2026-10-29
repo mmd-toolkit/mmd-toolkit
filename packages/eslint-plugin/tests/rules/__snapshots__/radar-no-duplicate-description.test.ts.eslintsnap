@@ -14,6 +14,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 |   accDescr: First
+          3 |   axis A, B, C
+          4 |   curve sales{1, 2, 3}
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | radar-beta
+          2 |   accDescr: Second
+          3 |   axis A, B, C
+          4 |   curve sales{1, 2, 3}
+          5 |
 ---
 
 
@@ -35,6 +50,25 @@ Code:
   9 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | accDescr: First
+          3 | accDescr: Third
+          4 | axis A, B, C
+          5 | curve sales{1,2,3}
+          6 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | radar-beta
+          2 | accDescr {
+          3 | %% TODO
+          4 | }
+          5 | accDescr: Third
+          6 | axis A, B, C
+          7 | curve sales{1,2,3}
+          8 |
 ---
 
 
@@ -51,6 +85,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | accDescr: First
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | radar-beta
+          2 | accDescr:
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
 ---
 
 
@@ -66,6 +115,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | accDescr: First
+          3 | accDescr: Second
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | radar-beta
+          2 | accDescr:   
+          3 | accDescr: Second
+          4 |
 ---
 
 
@@ -80,6 +142,39 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | accDescr: #35;
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | radar-beta
+          2 | accDescr: #
+          3 |
+---
+
+
+Test: radar-no-duplicate-description >> invalid >>> invalid/radar/description-equal-predecessor
+Filename: tests/fixtures/rules/radar-no-duplicate-description/invalid/radar/description-equal-predecessor-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | accDescr: A
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
 ---
 
 
@@ -94,6 +189,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | accDescr: <b x="a">Text</b>
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | radar-beta
+          2 | accDescr: <b x='a'>Text</b>
+          3 |
 ---
 
 
@@ -112,7 +218,69 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | accDescr: First
+          3 | accDescr: First
+          4 | axis A, B, C
+          5 | curve sales{1,2,3}
+          6 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | radar-beta
+          2 | accDescr { Second }
+          3 | accDescr: First
+          4 | axis A, B, C
+          5 | curve sales{1,2,3}
+          6 |
 [2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | accDescr: First
+          3 | accDescr { Second }
+          4 | axis A, B, C
+          5 | curve sales{1,2,3}
+          6 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | radar-beta
+          2 | accDescr: First
+          3 | accDescr: First
+          4 | axis A, B, C
+          5 | curve sales{1,2,3}
+          6 |
+---
+
+
+Test: radar-no-duplicate-description >> invalid >>> invalid/radar/description-removal-empty-predecessor
+Filename: tests/fixtures/rules/radar-no-duplicate-description/invalid/radar/description-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | accDescr {}
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | accDescr {}
+          3 | accDescr: A
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | radar-beta
+          2 | accDescr {}
+          3 | accDescr: B
+          4 |
 ---
 
 
@@ -129,6 +297,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | accDescr: First
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | radar-beta
+          2 | accDescr: Second
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
 ---
 
 
@@ -145,4 +328,19 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 |   accDescr: First
+          3 |   axis A, B, C
+          4 |   curve sales{1, 2, 3}
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | radar-beta
+          2 |   accDescr: Second
+          3 |   axis A, B, C
+          4 |   curve sales{1, 2, 3}
+          5 |
 ---

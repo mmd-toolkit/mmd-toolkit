@@ -12,6 +12,12 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | architecture-beta
+          2 |   service api(server)[API]
+          3 |
 ---
 
 
@@ -28,6 +34,14 @@ Code:
   6 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | architecture-beta
+          2 | accDescr: First
+          3 | accDescr: First
+          4 | service api
+          5 |
 ---
 
 
@@ -42,6 +56,12 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | architecture-beta
+          2 |   service api(server)[API]
+          3 |
 ---
 
 
@@ -57,6 +77,13 @@ Code:
   5 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | architecture-beta
+          2 | accDescr: First
+          3 | service api
+          4 |
 ---
 
 
@@ -69,6 +96,25 @@ Code:
     | ^~~~~~~~~~~ [1]
   3 | service api(server)[API]
   4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | architecture-beta
+          2 | service api(server)[API]
+          3 |
+---
+
+
+Test: architecture-no-empty-description-block >> invalid >>> invalid/architecture/empty-block-after-header
+Filename: tests/fixtures/rules/architecture-no-empty-description-block/invalid/architecture/empty-block-after-header-input.mmd
+
+Code:
+  1 | architecture-beta accDescr {}
+    |                   ^~~~~~~~~~~ [1]
+  2 | service api
+  3 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
 ---
@@ -100,22 +146,13 @@ Code:
   5 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
----
-
-
-Test: architecture-no-empty-description-block >> invalid >>> invalid/architecture/empty-crlf
-Filename: tests/fixtures/rules/architecture-no-empty-description-block/invalid/architecture/empty-crlf-input.mmd
-
-Code:
-  1 | architecture-beta
-  2 | accDescr {
-    | ^~~~~~~~~~\ [1]
-  3 | }
-    | ~ [1]
-  4 | service api
-  5 |
-
-[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | architecture-beta
+          2 | %% note
+          3 | service api
+          4 |
 ---
 
 
@@ -149,4 +186,11 @@ Code:
   7 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | architecture-beta
+          2 |
+          3 | service api
+          4 |
 ---

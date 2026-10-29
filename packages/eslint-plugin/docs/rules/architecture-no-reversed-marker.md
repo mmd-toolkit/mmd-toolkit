@@ -9,6 +9,9 @@ Disallow an arrowhead of an edge written pointing the other way.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
 An edge gets an arrowhead into its left end with `<` before the line, and into
@@ -18,19 +21,12 @@ pointing the other way than written.
 
 ## Rule Details
 
-This rule reports an edge with `>` before its line or `<` after it. It applies
-to `architecture`, to edges with and without a label. An edge with both is
-reported once.
+This rule applies to architecture diagrams (`architecture-beta`). It reports an
+edge with `>` before its line or `<` after it, with or without a label. An edge
+with both is reported once.
 
-`api:R >--< L:db` is drawn as `api:R <--> L:db`, with an arrowhead into each
-end. `api:R >-- L:db` is drawn as `api:R <-- L:db`, with an arrowhead into
-`api`, and `api:R --< L:db` as `api:R --> L:db`, with an arrowhead into `db`.
-
-`<` before the line and `>` after it are not reported, and neither is `<` or `>`
-in the label of an edge, as in `api:R -[> -- <]- L:db`, which is text.
-
-Write `<` before the line for an arrowhead into the left end, and `>` after it
-for an arrowhead into the right end.
+`<` before the line and `>` after it are not reported. Neither is `<` or `>` in
+an edge label, where it is text.
 
 Examples of **incorrect** code for this rule:
 
@@ -56,13 +52,9 @@ architecture-beta
 
 This rule has no options.
 
-## Background
+## Further Reading
 
-The
-[grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/architecture/architecture.langium#L31-L57)
-reads `<` and `>` alike as an arrowhead at the end where they stand, and the
-[documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L99-L109)
-writes `<` on the left and `>` on the right.
+- [Architecture diagram syntax: edges](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L99-L109)
 
 <!-- begin auto-generated rule resources -->
 

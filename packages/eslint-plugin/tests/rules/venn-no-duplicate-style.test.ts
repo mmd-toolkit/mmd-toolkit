@@ -24,6 +24,18 @@ style A color:"red\rblue",color:"red
 blue"
 `,
       },
+
+      {
+        name: "valid/venn/style-crlf-values",
+        filename:
+          "tests/fixtures/rules/venn-no-duplicate-style/valid/venn/style-crlf-values-input.mmd",
+        code: `venn-beta
+set A
+style A color:"red\r
+blue",color:"red
+blue"
+`,
+      },
     ],
     invalid: [],
   },

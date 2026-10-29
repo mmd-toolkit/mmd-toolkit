@@ -1,3 +1,5 @@
+import type { BlockStyleStatement } from "@mmd-toolkit/parser"
+import { oneOfTwoRemovals } from "../utils/removal.ts"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 
@@ -33,6 +35,14 @@ function declarationOf(style: string): string {
   return text.replaceAll(WHITESPACE_RUN, " ")
 }
 
+/** Empty entries set no CSS style; every other earlier declaration must remain. */
+function losesStyles(
+  previous: ReadonlySet<string>,
+  next: ReadonlySet<string>,
+): boolean {
+  return [...previous].some((value) => value.trim() !== "" && !next.has(value))
+}
+
 /**
  * Compare the style lists for an id across composites, by the declarations in
  * them. A sole empty part changes nothing; other lists replace the previous
@@ -40,7 +50,7 @@ function declarationOf(style: string): string {
  */
 export const blockNoRedefinedStyle: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "redefined"
+  MessageIds: "redefined" | "removeThis" | "removePrevious"
 }> = {
   meta: {
     type: "problem",
@@ -50,14 +60,24 @@ export const blockNoRedefinedStyle: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("block-no-redefined-style"),
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
+      removeThis: "Remove this statement.",
+      removePrevious: "Remove the earlier statement.",
       redefined:
         "mermaid.js replaces the whole style list of `{{name}}`, losing a style set earlier.",
     },
   },
   create(context) {
-    const styles = new Map<string, Set<string>>()
+    const styles = new Map<
+      string,
+      {
+        node: BlockStyleStatement
+        values: Set<string>
+        before: Set<string> | undefined
+      }
+    >()
     return {
       BlockStyleStatement(node) {
         if (node.styles.length === 1 && node.styles[0] === null) return
@@ -65,19 +85,21 @@ export const blockNoRedefinedStyle: MermaidRuleDefinition<{
           node.styles.map((style) => declarationOf(style?.value ?? "")),
         )
         const previous = styles.get(node.id.name)
-        if (
-          previous !== undefined &&
-          [...previous].some(
-            (value) => value.trim() !== "" && !values.has(value),
-          )
-        ) {
+        if (previous !== undefined && losesStyles(previous.values, values)) {
           context.report({
             node,
             messageId: "redefined",
             data: { name: node.id.name },
+            suggest: oneOfTwoRemovals(
+              context.sourceCode,
+              node,
+              previous.node,
+              previous.before === undefined ||
+                !losesStyles(previous.before, values),
+            ),
           })
         }
-        styles.set(node.id.name, values)
+        styles.set(node.id.name, { node, values, before: previous?.values })
       },
     }
   },

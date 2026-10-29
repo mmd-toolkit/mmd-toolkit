@@ -11,35 +11,29 @@ Disallow a statement that sets the description of the chart again.
 
 <!-- end auto-generated rule notice -->
 
-An XY chart has one description. mermaid.js accepts every `accDescr` statement,
-and each one that sets the description silently replaces the description set
-before it. A second description is usually left over from rewriting the text or
-from pasting a part twice.
+A diagram has one description. When another `accDescr` statement sets it,
+mermaid.js uses the later description without an error, and the earlier one is
+lost.
 
 ## Rule Details
 
-This rule reports every statement that sets the description after the first one,
-when it sets a description other than the one before it. It applies to
-`xychart`.
+This rule applies to XY charts (`xychart` and `xychart-beta`). It reports an
+`accDescr:` statement or a description block that replaces the current
+description with a different one. A statement that repeats the current
+description is not reported, even when the two forms are mixed.
 
-`accDescr:` and a description block with text both set the description, and they
-may be mixed: after `accDescr: a` and `accDescr { b }`, the description is `b`.
-`accDescr:` with no text on its line takes the next line that holds text, as
-`accTitle:` does. A block that holds no description is not counted: after
-`accDescr: a`, the block `accDescr {}` leaves the description `a`, and
-[xychart-no-empty-description-block](./xychart-no-empty-description-block.md)
-reports it. Nor is a block that is not closed, which
+Descriptions are compared without the whitespace at their ends or after each
+line break, so indentation and empty lines in a block do not count. LF, CRLF,
+and CR line breaks are compared as LF. After `accDescr: a` and `accDescr: b`, a
+third `accDescr: a` is reported because it replaces `b`.
+
+An `accDescr:` with no text on its line also sets the description and is
+counted: it takes the next line that holds text, past empty lines, comment
+lines, and directives, and with no such line before the end of the text, it sets
+the empty description. A block with no description is not counted. An unclosed
+block is not counted either;
 [xychart-no-unclosed-description-block](./xychart-no-unclosed-description-block.md)
-reports.
-
-A statement that sets the description that the chart already has is not
-reported, in either form: after `accDescr: d`, the block `accDescr { d }` loses
-nothing. Descriptions are compared as mermaid.js keeps them, without the
-whitespace at their ends and without the whitespace after each line break, so
-the indentation of the lines of a block and the empty lines in it do not count.
-Every line break (LF, CRLF, or CR) is read as a line feed, so a block written
-with CRLF sets the same description as one written with LF. After `accDescr: a`
-and `accDescr: b`, a third `accDescr: a` is reported, because it replaces `b`.
+reports it.
 
 Examples of **incorrect** code for this rule:
 

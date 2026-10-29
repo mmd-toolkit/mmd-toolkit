@@ -11,24 +11,21 @@ Disallow a class name alone on its line, which changes nothing.
 
 <!-- end auto-generated rule notice -->
 
-mermaid.js accepts a class name written alone as a statement and does nothing
-with it: it declares no class. What the author wrote there has no effect.
+mermaid.js accepts a class name written alone as a statement without an error,
+but declares no class. What the author wrote has no effect.
 
 ## Rule Details
 
-This rule reports a class name written alone as a statement, without `class`, a
-relation, or a member. It applies to `classDiagram`.
+This rule applies to class diagrams (`classDiagram` and `classDiagram-v2`). It
+reports a class name written alone as a statement, without `class`, a relation,
+or a member. A name can contain several words, whose intervening whitespace
+mermaid.js removes.
 
-A class name is one or more words, and mermaid.js leaves out the whitespace
-between them. Such a statement comes about in these ways:
-
-- `direction lr`, with the direction value in lower case, is the class name
-  `directionlr`, and the direction stays `TB`.
-- `title Animals` is the class name `titleAnimals`. A class diagram has no
-  `title` statement; the title shown with the diagram is set in the frontmatter
-  only, so the title stays empty.
-- `Foo` alone declares no class `Foo`. A class is declared with `class Foo`, by
-  a relation, or by a member statement such as `Foo : +int x`.
+This includes `direction lr`, which is read as the name `directionlr` and leaves
+the direction at `TB`, and `title Animals`, which is read as `titleAnimals`. A
+displayed title must be set in frontmatter; there is no `title` statement. A
+class is declared with `class Foo`, a relation, or a member statement such as
+`Foo : +int x`.
 
 Examples of **incorrect** code for this rule:
 

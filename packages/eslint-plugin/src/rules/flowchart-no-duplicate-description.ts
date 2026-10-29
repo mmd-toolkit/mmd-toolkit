@@ -40,15 +40,14 @@ export const flowchartNoDuplicateDescription: MermaidRuleDefinition<{
     messages: {
       duplicate:
         "mermaid.js replaces the earlier description with the one of this `accDescr`.",
-      removeThis:
-        "Remove this statement: mermaid.js uses the last description that remains.",
-      removePrevious:
-        "Remove the earlier statement that sets the description: mermaid.js uses the last description that remains.",
+      removeThis: "Remove this statement.",
+      removePrevious: "Remove the earlier statement that sets the description.",
     },
   },
   create(context) {
     const { sourceCode } = context
     let previous: DescriptionStatement | null = null
+    let beforePrevious: DescriptionStatement | null = null
 
     /** Reports `node` when a statement before it set the description. */
     function check(node: DescriptionStatement): void {
@@ -56,9 +55,16 @@ export const flowchartNoDuplicateDescription: MermaidRuleDefinition<{
         context.report({
           node,
           messageId: "duplicate",
-          suggest: oneOfTwoRemovals(sourceCode, node, previous),
+          suggest: oneOfTwoRemovals(
+            sourceCode,
+            node,
+            previous,
+            beforePrevious === null ||
+              accDescrText(beforePrevious) === accDescrText(node),
+          ),
         })
       }
+      beforePrevious = previous
       previous = node
     }
 

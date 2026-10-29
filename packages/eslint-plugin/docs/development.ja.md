@@ -33,18 +33,22 @@ parser が変わったら、
 
 ## テスト
 
-| ファイル                      | 確かめること                                |
-| ----------------------------- | ------------------------------------------- |
-| `tests/language.test.ts`      | 言語（ESLint を通す）                       |
-| `tests/snapshot.test.ts`      | ESLint がノード・トークン・コメントを見る所 |
-| `tests/token-store.test.ts`   | ソースコードのトークンの方法                |
-| `tests/inline-config.test.ts` | ESLint を設定するコメント                   |
-| `tests/markdown.test.ts`      | Markdown のコードブロック                   |
-| `tests/diagram-rules.test.ts` | 規則のセレクター                            |
-| `tests/subgraph-ids.test.ts`  | 木から求める subgraph の id                 |
-| `tests/text-nodes.test.ts`    | 規則が読むテキストのノードの型              |
-| `tests/rule-cases.test.ts`    | 規則の文書の例                              |
-| `tests/rules/<規則>.test.ts`  | 実装した規則ごと                            |
+| ファイル                           | 確かめること                                |
+| ---------------------------------- | ------------------------------------------- |
+| `tests/language.test.ts`           | 言語（ESLint を通す）                       |
+| `tests/snapshot.test.ts`           | ESLint がノード・トークン・コメントを見る所 |
+| `tests/token-store.test.ts`        | ソースコードのトークンの方法                |
+| `tests/inline-config.test.ts`      | ESLint を設定するコメント                   |
+| `tests/markdown.test.ts`           | Markdown のコードブロック                   |
+| `tests/diagram-rules.test.ts`      | 規則のセレクター                            |
+| `tests/subgraph-ids.test.ts`       | 木から求める subgraph の id                 |
+| `tests/compact-range.test.ts`      | 行末をまたいで詰める範囲                    |
+| `tests/removal.test.ts`            | 行全体を消す範囲                            |
+| `tests/suggestion-history.test.ts` | 先の設定を消す提案                          |
+| `tests/rule-cases.test.ts`         | 規則の文書の例                              |
+| `tests/rule-docs.test.ts`          | 規則の文書の検査                            |
+| `tests/rules-index.test.ts`        | 規則の一覧                                  |
+| `tests/rules/<規則>.test.ts`       | 実装した規則ごと                            |
 
 - `tests/language.test.ts`: `tests/language-inputs.ts`（下を参照）の入力、
   つまり `@mmd-toolkit/tests` の適合コーパスの fixture を ESLint に掛ける。
@@ -70,14 +74,31 @@ parser が変わったら、
   つまり木から求めた各 subgraph の Db の id を、
   id についての主張を持つコーパスの fixture（テストが名前で挙げる）で、
   mermaid.js が返した Db と比べる。
-- `tests/text-nodes.test.ts`: `src/utils/text-nodes.ts` の `TEXT_NODE_TYPES`、
-  つまり `%%` だけの行を持ちうるテキストのノードの型。
-  parser の flowchart の葉のノードの型は、どれも、一覧にあるか、矢印か、
-  テキストを持たないかのどれかで、仕様は、前の 2 つにテキストを与え、
-  最後のものには与えない。
+- `tests/compact-range.test.ts`: `src/utils/compact-range.ts` の
+  `canCompactRange`。
+  編集が 2 つの場所の間の行をつなげてよいかを答える。
+  間の行が空白だけならよく、
+  コメントやテキストが飲まれたり動いたりするならよくない。
+- `tests/removal.test.ts`: `src/utils/removal.ts` の `removalRange`、
+  つまり要素を消す行全体。
+  どの規則が消すかによらず、1 行目の行末、1 行のテキスト、最終行の前の行末、
+  空の `accTitle:` の後で読む値の行を確かめる。
+- `tests/suggestion-history.test.ts`: 一覧にある規則について、
+  その規則の invalid な入力（英語の文書の incorrect の例と、
+  fixture のディレクトリの `invalid/` の入力）ごとに、
+  提案 `removePrevious` を確かめる。
+  消す範囲は報告の始まりを含まず、parser は結果を読め、
+  規則は結果でその場所をもう報告しない。
 - `tests/rule-cases.test.ts`: すべての規則の文書の例を、
   `tests/rule-cases.ts` が読むとおりに確かめる。
   どの文書にも incorrect と correct の例があり、parser がどの例も受理する。
+- `tests/rule-docs.test.ts`: `pnpm run check:docs` の元になる
+  `tools/rule-docs.ts` の検査。
+  一覧の図種の順が文書サイトのサイドバーの順であること、
+  名前が図種の名前で始まる規則がその図種の組にあること、
+  英日の例の `mmd` コードブロックがどれも規則を有効にする指示で始まること。
+- `tests/rules-index.test.ts`: `src/rules/index.ts` が `tools/update-rules.ts`
+  の書いたとおりであり、プラグインがそれらの規則を ESLint に渡すこと。
 - `tests/rules/<規則>.test.ts`: 実装した規則ごとに、
   `tests/rule-test.ts` の `testRule(name, rule)` で検査する。
   eslint-snapshot-rule-tester へ、英語の文書の例と、
@@ -85,7 +106,7 @@ parser が変わったら、
   incorrect の例と `invalid/` の入力には報告があり、
   correct の例と `valid/` の入力には報告がないことを確かめる。
   スナップショットは、報告と、各提案が作るテキストを記録する。
-  `pnpm run lint:chars` が調べる文字（U+2028、U+2029、単独の CR、
+  CR を持つ入力と、`pnpm run lint:chars` が調べる文字（U+2028、U+2029、
   U+00A0 など）を持つ入力は、ESLint の `RuleTester` で検査する。
   入力と提案の期待する出力は、テストのソースに、
   エスケープを使うテンプレートリテラルで書く。
@@ -130,13 +151,21 @@ ESLint から渡されたものを報告し、プラグインの規則が何を�
   対応するコーパスの fixture は必要ありません。
   `valid/` か `invalid/` の下に置き、場合に合わせて名前を付けます。
   `flowchart/` のような下位のディレクトリに置いてもかまいません。
-- fixture のファイルに、 `pnpm run lint:chars` が調べる文字は入れません。
+- fixture のファイルに、CR（単独のものも CRLF の中のものも）と、
+  `pnpm run lint:chars` が調べる文字は入れません。
   その一覧は、
   [`packages/spec/docs/index.ja.md`](../../spec/docs/index.ja.md) にあります。
-  そのような文字を持つ入力は、テストのソースにエスケープ（`\u2028`、`\u2029`、
-  `\u00a0`、単独の CR は `\r`）で書き、 ESLint の `RuleTester` で検査します。
+  そのような入力は、ESLint の `RuleTester` で検査します。
   `code` と各提案の `output` はテンプレートリテラルにし、
   入力の行終端子を保ちます。
+  それらの文字はエスケープします。
+  CR は `\r` と書き、CRLF は `\r` の後に実際の改行を置きます。
+  U+2028、U+2029、U+00A0 は `\u2028`、`\u2029`、`\u00a0` と書きます。
+  CR 以外の改行は、実際の改行で書きます。
+  タブと行末の空白は、`\t` と `\u0020` で書いてもかまいません。
+  そう書くと、ケースが対象にする空白がコードの中で見えます。
+  行末の空白は、そのような文字ではありません。
+  fixture のファイルに置き、`.editorconfig` が保ちます。
 - 共通のディレクティブの規則は、コーパスの入力の名前を、
   元からの `INVALID` と `VALID` の表に残し、そのテストは、
   表を `testRule` にコーパスのケースとして渡すので、
@@ -290,6 +319,7 @@ pnpm --filter @mmd-toolkit/eslint-plugin run check:docs
   `<!-- end auto-generated rules list -->` までのすべて。
   共通の規則と図種ごとの規則の表で、説明と、
   `recommended` の設定が有効にする規則の ✅ と、
+  自動修正を持つ規則（`meta.fixable`）の 🔧 と、
   提案を出す規則（`meta.hasSuggestions`）の 💡 と、骨組みの 🚧 を持ちます。
   英語の説明は `meta.docs.description`、
   日本語の説明は日本語の文書の最初の段落です。
@@ -297,7 +327,7 @@ pnpm --filter @mmd-toolkit/eslint-plugin run check:docs
   最初の段落の後の `<!-- begin auto-generated rule notice -->` から
   `<!-- end auto-generated rule notice -->` まで。
   `recommended` の設定がその規則を有効にするかどうかと、
-  提案を出すかどうかを書きます。
+  自動修正を持つかどうかと、提案を出すかどうかを書きます。
 - 実装した規則の文書（英日）の、
   末尾の `<!-- begin auto-generated rule resources -->` から
   `<!-- end auto-generated rule resources -->` まで。
@@ -404,7 +434,7 @@ fixture 自体には、このコメントを足しません。
 - 規則のスナップショットテストは、`testRule(name, rule)` の 1 回の呼び出しです。
   英語の文書の例と規則の fixture の入力で、報告と提案を確かめます。
   規則のテストは、mermaid.js を動かしません。
-  `pnpm run lint:chars` が調べる文字（U+2028、U+2029、単独の CR、
+  CR を持つ入力と、`pnpm run lint:chars` が調べる文字（U+2028、U+2029、
   U+00A0 など）を持つ入力は、ESLint の `RuleTester` を使います。
   `code` に、エスケープを使うテンプレートリテラルで入力を書き、
   `errors` に期待する報告を書きます。

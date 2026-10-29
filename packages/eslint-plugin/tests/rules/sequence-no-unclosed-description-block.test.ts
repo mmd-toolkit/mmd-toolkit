@@ -37,6 +37,50 @@ accDescr { x\u2028y
           },
         ],
       },
+      {
+        name: "invalid/sequence/closing-crlf-with-tab",
+        filename: "input.mmd",
+        code: `sequenceDiagram\r
+accDescr { First\tline\r
+A ->> B: Ready\r
+`,
+        errors: [
+          {
+            messageId: "unclosed",
+            suggestions: [
+              {
+                desc: "Close the block at the end of the text.",
+                output: `sequenceDiagram\r
+accDescr { First\tline\r
+A ->> B: Ready\r
+}\r
+`,
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        name: "invalid/sequence/db-acc-descr-block-unclosed-crlf",
+        filename:
+          "tests/fixtures/rules/sequence-no-unclosed-description-block/invalid/sequence/db-acc-descr-block-unclosed-crlf-input.mmd",
+        code: `sequenceDiagram\r
+accDescr: d\r
+accDescr { x\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.",
+            line: 3,
+            column: 1,
+            endLine: 3,
+            endColumn: 11,
+            suggestions: [],
+          },
+        ],
+      },
     ],
   },
 )

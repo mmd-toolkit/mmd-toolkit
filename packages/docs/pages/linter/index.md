@@ -75,6 +75,8 @@ Syntax checking uses the same parser as the other tools. See
 [diagram support](../reference/support.md) for the supported syntax. Each rule's
 documentation explains which diagrams and mistakes it checks.
 
+Some rules have fixes, which `eslint --fix` applies.
+
 Some rules offer [editor suggestions][suggestions]. Review the proposed changes
 and choose which one to apply in your editor. Suggestions are not applied by
 `eslint --fix`.

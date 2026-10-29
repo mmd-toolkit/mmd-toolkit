@@ -12,6 +12,12 @@ Code:
   4 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | sequenceDiagram
+          2 |   A ->> B: x
+          3 |
 ---
 
 
@@ -26,6 +32,12 @@ Code:
   4 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | sequenceDiagram
+          2 |   A ->> B: x
+          3 |
 ---
 
 
@@ -42,6 +54,12 @@ Code:
   5 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | sequenceDiagram
+          2 |   A ->> B: x
+          3 |
 ---
 
 
@@ -56,6 +74,12 @@ Code:
   4 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | sequenceDiagram
+          2 | A->>B: x
+          3 |
 ---
 
 
@@ -70,6 +94,12 @@ Code:
   4 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | sequenceDiagram
+          2 | accDescr: x
+          3 |
 ---
 
 
@@ -86,6 +116,12 @@ Code:
   5 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | sequenceDiagram
+          2 | A->>B: x
+          3 |
 ---
 
 
@@ -100,6 +136,12 @@ Code:
   4 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | sequenceDiagram
+          2 | A->>B: x
+          3 |
 ---
 
 
@@ -114,6 +156,12 @@ Code:
   4 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | sequenceDiagram
+          2 | accDescr: x
+          3 |
 ---
 
 
@@ -172,6 +220,14 @@ Code:
   6 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | sequenceDiagram
+          2 |   box G
+          3 |     participant B
+          4 |   end
+          5 |
 ---
 
 
@@ -190,6 +246,14 @@ Code:
   7 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | sequenceDiagram
+          2 |   box G
+          3 |     participant B
+          4 |   end
+          5 |
 ---
 
 
@@ -242,20 +306,6 @@ Code:
   1 | sequenceDiagram
   2 | autonumber accDescr {}
     |            ^~~~~~~~~~~ [1]
-
-[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
----
-
-
-Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/gram-empty-description-block-after-autonumber-crlf
-Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/gram-empty-description-block-after-autonumber-crlf-input.mmd
-
-Code:
-  1 | sequenceDiagram
-  2 | autonumber accDescr {}
-    |            ^~~~~~~~~~~ [1]
-  3 | A->>B: x
-  4 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
 ---

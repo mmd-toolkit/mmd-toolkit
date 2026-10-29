@@ -21,6 +21,20 @@ data Payload {
 first
 }`,
       },
+
+      {
+        name: "valid/eventmodeling/data-mixed-crlf-lf-equal",
+        filename:
+          "tests/fixtures/rules/eventmodeling-no-redefined-data/valid/eventmodeling/data-mixed-crlf-lf-equal-input.mmd",
+        code: `eventmodeling
+tf 01 evt Bought [[Payload]]
+data Payload {\r
+first\r
+}
+data Payload {
+first
+}`,
+      },
     ],
     invalid: [
       {
@@ -57,6 +71,30 @@ A\tB
 }
 data Payload {
 A B
+}`,
+        errors: [
+          {
+            message:
+              "mermaid.js shows the first `Payload` data block; the content of this later block is not used.",
+            line: 6,
+            column: 6,
+            endLine: 6,
+            endColumn: 13,
+          },
+        ],
+      },
+
+      {
+        name: "invalid/eventmodeling/data-redefined-crlf",
+        filename:
+          "tests/fixtures/rules/eventmodeling-no-redefined-data/invalid/eventmodeling/data-redefined-crlf-input.mmd",
+        code: `eventmodeling\r
+tf 01 evt Bought [[Payload]]\r
+data Payload {\r
+first\r
+}\r
+data Payload {\r
+second\r
 }`,
         errors: [
           {

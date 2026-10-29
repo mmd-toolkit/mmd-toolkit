@@ -20,7 +20,21 @@ accDescr { \t }
 "A":10
 `,
         errors: [
-          { messageId: "empty", line: 2, column: 1, endLine: 2, endColumn: 15 },
+          {
+            messageId: "empty",
+            line: 2,
+            column: 1,
+            endLine: 2,
+            endColumn: 15,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `treemap
+"A":10
+`,
+              },
+            ],
+          },
         ],
       },
       {
@@ -31,7 +45,21 @@ accDescr {\u2028 \u2029}
 "A":1
 `,
         errors: [
-          { messageId: "empty", line: 2, column: 1, endLine: 2, endColumn: 15 },
+          {
+            messageId: "empty",
+            line: 2,
+            column: 1,
+            endLine: 2,
+            endColumn: 15,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `treemap
+"A":1
+`,
+              },
+            ],
+          },
         ],
       },
       {
@@ -42,7 +70,40 @@ accDescr {\r  }
 "A":1
 `,
         errors: [
-          { messageId: "empty", line: 2, column: 1, endLine: 3, endColumn: 4 },
+          {
+            messageId: "empty",
+            line: 2,
+            column: 1,
+            endLine: 3,
+            endColumn: 4,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `treemap
+"A":1
+`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/treemap/removal-crlf-with-tab",
+        filename: "input.mmd",
+        code: `treemap\r
+accDescr {\t}\r
+`,
+        errors: [
+          {
+            messageId: "empty",
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `treemap\r
+`,
+              },
+            ],
+          },
         ],
       },
     ],

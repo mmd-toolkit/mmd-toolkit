@@ -9,26 +9,25 @@ Disallow a direction of a block arrow that is not one of the direction words.
 
 ✅ The `recommended` configuration enables this rule.
 
+🔧 This rule is automatically fixable by the
+[`--fix` CLI option](https://eslint.org/docs/latest/use/command-line-interface#--fix).
+
 <!-- end auto-generated rule notice -->
 
 A block arrow points in the directions written after it, as in
-`A<["Next"]>(right)`. The directions are `right`, `left`, `up`, and `down`, and
-`x` and `y` for both directions of an axis. mermaid.js keeps a direction with
-the whitespace written inside the parentheses or before a comma, as in
-`( left )`, and the drawing does not read it, without an error: the arrow does
-not point that way.
+`A<["Next"]>(right)`. mermaid.js accepts whitespace inside the parentheses or
+before a comma, as in `( left )`, without an error. That whitespace remains part
+of the direction, so the arrow does not point that way.
 
 ## Rule Details
 
-This rule reports a direction of a block arrow that is not exactly one of
-`right`, `left`, `up`, `down`, `x`, and `y`. It applies to `block`, to block
-arrows written on their own and in edges.
+This rule applies to block diagrams (`block-beta` and `block`). It reports a
+direction that is not exactly `right`, `left`, `up`, `down`, `x`, or `y`, in
+standalone block arrows and in edges.
 
-Whitespace after a comma is not kept: `(x, down)`, as the documentation of
-mermaid.js writes it, has the directions `x` and `down`, and it is not reported.
-Whitespace before a comma is kept, so `(left ,right)` points right only, and its
-first direction is reported. Write the directions without whitespace inside the
-parentheses, as `(left, right)`.
+Whitespace after a comma is ignored, so `(x, down)` is not reported. Whitespace
+before a comma is kept, so the first direction in `(left ,right)` is reported
+and the arrow points right only.
 
 Examples of **incorrect** code for this rule:
 

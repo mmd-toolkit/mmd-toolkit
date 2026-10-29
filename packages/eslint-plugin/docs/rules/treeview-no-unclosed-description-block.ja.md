@@ -17,22 +17,12 @@
 
 ## 規則の詳細
 
-この規則は、`accDescr`、空白かタブか何もなし、
-`{` の順で始まる名前のノードを報告する。
-対象の図種は `treeView` である。
-
-`accDescr { Project files` の後では、
-ツリーは `accDescr { Project files` という名前のファイルを持ち、説明は空である。
-行の終わりに `{` があるブロックは `accDescr {` という名前のファイルを作り、
-その文字の行もファイルになる。
+この規則は、ツリービュー（`treeView-beta`）に当てる。
+`accDescr`、空白かタブか何もなし、`{` の順で始まる名前のノードを報告する。
 `"accDescr { Project files"` のような引用符の中の名前は、
-名前として書いたものであり、報告しない。
-
-`a}b` という名前のファイルのように後の行にある `}` はブロックを閉じ、
-そこまでの行は説明になってツリーから消える。
-この規則はそのようなブロックを報告しない。
-
-説明が終わるところでブロックを閉じる。
+名前として書いたものなので報告しない。
+後の行の `}` は、`a}b` のようなファイル名の中でもブロックを閉じ、
+そこまでの行を説明にするので、そのようなブロックは報告しない。
 
 この規則に**反する**コードの例:
 
@@ -62,13 +52,6 @@ treeView-beta
 
 - [treeview-no-empty-description-block](./treeview-no-empty-description-block.ja.md)
 - [treeview-no-duplicate-description](./treeview-no-duplicate-description.ja.md)
-
-## 背景
-
-[ブロックの終端記号](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treeView/treeView.langium#L15-L15)
-は `}` のあるブロックにだけ合い、
-[名前の終端記号](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treeView/treeView.langium#L57-L57)
-は行の残りをノードの名前として取る。
 
 <!-- begin auto-generated rule resources -->
 

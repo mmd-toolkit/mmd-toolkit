@@ -41,6 +41,27 @@ accDescr { first\u2029 curve sales{1, 2, 3}
           },
         ],
       },
+
+      {
+        name: "invalid/radar/crlf",
+        filename:
+          "tests/fixtures/rules/radar-no-unclosed-description-block/invalid/radar/crlf-input.mmd",
+        code: `radar-beta\r
+accDescr { first\r
+axis A, B, C\r
+curve sales{1, 2, 3}\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.",
+            line: 2,
+            column: 1,
+            endLine: 2,
+            endColumn: 11,
+          },
+        ],
+      },
     ],
   },
 )

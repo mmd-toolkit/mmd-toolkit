@@ -36,6 +36,18 @@ accDescr {A
 B}
 `,
       },
+
+      {
+        name: "valid/packet/description-crlf-equivalent",
+        filename:
+          "tests/fixtures/rules/packet-no-duplicate-description/valid/packet/description-crlf-equivalent-input.mmd",
+        code: `packet\r
+accDescr { A\r
+B }\r
+accDescr { A
+B }
+`,
+      },
     ],
     invalid: [
       {
@@ -52,6 +64,20 @@ accDescr: A\u2028B
             column: 1,
             endLine: 3,
             endColumn: 14,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `packet
+accDescr: A\u2028 B
+`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the description.",
+                output: `packet
+accDescr: A\u2028B
+`,
+              },
+            ],
           },
         ],
       },
@@ -69,6 +95,20 @@ accDescr: A\u2029B
             column: 1,
             endLine: 3,
             endColumn: 14,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `packet
+accDescr: A\u2029 B
+`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the description.",
+                output: `packet
+accDescr: A\u2029B
+`,
+              },
+            ],
           },
         ],
       },
@@ -86,6 +126,50 @@ accDescr { A \u2028 B }
             column: 1,
             endLine: 3,
             endColumn: 19,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `packet
+accDescr: A \u2028 B
+`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the description.",
+                output: `packet
+accDescr { A \u2028 B }
+`,
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        name: "invalid/packet/description-equal-predecessor-crlf",
+        filename:
+          "tests/fixtures/rules/packet-no-duplicate-description/invalid/packet/description-equal-predecessor-crlf-input.mmd",
+        code: `packet\r
+accDescr: A\r
+accDescr: A\r
+accDescr: B\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier description with the one of this `accDescr`.",
+            line: 4,
+            column: 1,
+            endLine: 4,
+            endColumn: 12,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `packet\r
+accDescr: A\r
+accDescr: A\r
+`,
+              },
+            ],
           },
         ],
       },

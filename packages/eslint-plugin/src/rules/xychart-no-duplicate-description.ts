@@ -29,6 +29,7 @@ export const xychartNoDuplicateDescription: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("xychart-no-duplicate-description"),
     },
+
     schema: [],
     messages: {
       duplicate:
@@ -46,6 +47,7 @@ export const xychartNoDuplicateDescription: MermaidRuleDefinition<{
           messageId: "duplicate",
         })
       }
+
       previous = node
     }
 

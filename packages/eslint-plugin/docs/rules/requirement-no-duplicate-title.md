@@ -9,29 +9,27 @@ Disallow an `accTitle` statement that sets the title again.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-A requirement diagram has one accessible title. mermaid.js accepts every
-`accTitle` statement, and each one silently replaces the title set before it. A
-second title is usually left over from rewriting the text or from pasting a part
-twice.
+A diagram has one accessible title. When another `accTitle` statement sets it,
+mermaid.js uses the later title without an error, and the earlier one is lost.
 
 ## Rule Details
 
-This rule reports every `accTitle` statement after the first one, when it sets a
-title other than the one before it. It applies to `requirement`.
+This rule applies to requirement diagrams (`requirementDiagram`). It reports an
+`accTitle` statement that replaces the current title with a different one. A
+statement that repeats the current title is not reported. Titles are compared
+without the whitespace at their ends.
 
-After `accTitle: a` and `accTitle: b`, the title is `b`. `accTitle:` with no
-text on its line takes the next line that holds text as the title, past empty
-lines, comment lines, and directives: after `accTitle: a`, the lines `accTitle:`
-and `T` give the title `T`, and the second statement is reported. The title of
-the frontmatter is another value, and it is not counted.
+An `accTitle:` with no text on its line also sets the title and is counted: it
+takes the next line that holds text, past empty lines, comment lines, and
+directives. The frontmatter title is a separate value and is not counted.
 
-A statement that sets the title that the diagram already has is not reported:
-after `accTitle: a`, a second `accTitle: a` loses nothing. Titles are compared
-as mermaid.js keeps them, without the whitespace at their ends, so
-`accTitle:  a` sets the same title. After `accTitle: a` and `accTitle: b`, a
-third `accTitle: a` is reported, because it replaces `b`.
+After `accTitle: a` and `accTitle: b`, a third `accTitle: a` is reported because
+it replaces `b`.
 
 Examples of **incorrect** code for this rule:
 

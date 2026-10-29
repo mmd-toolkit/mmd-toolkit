@@ -41,8 +41,7 @@ this document describes how to apply them.
   by reading), or unchecked. When a claim turns out to be wrong, withdraw it in
   those words.
 - The specification can change. Read the current file again before relying on
-  it. A wrong decision was once made from an old version (the token kind of
-  `click` in a subgraph name).
+  it.
 - When the working tree is shared with other work:
   - Do not touch a file that someone else is editing. When two people touch the
     same file, the changes of one are lost, and waiting until the edits stop
@@ -107,7 +106,7 @@ this document describes how to apply them.
 Read them before every decision. The rest of this section shows how they are
 applied, by example.
 
-### Examples of decisions (made on 2026-10-01, run with mermaid 12.0.0)
+### Examples of decisions (run with mermaid 12.0.0)
 
 Kept (an author's mistake that mermaid accepts silently):
 
@@ -189,7 +188,7 @@ Dropped:
 | In a block diagram, a `style` or `classDef` list that gives a property twice (`fill:#f00,fill:#00f`), and a `classDef` written twice                                                                           | mermaid.js keeps every style as written; which one the drawing uses is decided by CSS, which this toolkit does not draw                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | In a block diagram, `columns 1.5`, a width or a space of zero, and a width of more digits than a number holds                                                                                                  | `1.5` is the count 1 and a block `.5`, which the formatter prints on a line of its own; zero is kept as written; a number too large to hold is not ordinary writing                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | In a block diagram, a correct CSS declaration in an HTML label that loses its `;`                                                                                                                              | A defect of mermaid.js, as for the same label in a flowchart above                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| In a block diagram, `class A c` before the block `A` is declared (`A` is not placed, and the class goes to a block outside the diagram)                                                                        | Looks like a mermaid bug, as `class A foo` before the vertex `A` in a flowchart above: the id is written correctly, and only where the statement stands changes the result. Decided the same way as the flowchart, so that one diagram type is not judged apart (2026-10-21); block-no-undef does not report an id declared later                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| In a block diagram, `class A c` before the block `A` is declared (`A` is not placed, and the class goes to a block outside the diagram)                                                                        | Looks like a mermaid bug, as `class A foo` before the vertex `A` in a flowchart above: the id is written correctly, and only where the statement stands changes the result. Judged as the flowchart is, so that one diagram type is not judged apart; block-no-undef does not report an id declared later                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | In a kanban diagram, an icon (`::icon(x)` or `icon:` in the metadata), and an icon written twice                                                                                                               | Nothing is drawn: the drawing of a kanban item uses no icon (read in `kanbanItem.ts`), so neither an icon nor its replacement changes the output; the documentation of kanban names no icon                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | In a kanban diagram, `assigned`, `priority`, or `icon` in the metadata of a column, and a class (`:::c`) on a column or an item                                                                                | The Db keeps them and the board does not show them (run): a column with an owner is sensible writing, and the classes are a gap of mermaid.js with open fixes ([#8119](https://github.com/mermaid-js/mermaid/issues/8119), [#8139](https://github.com/mermaid-js/mermaid/pull/8139), [#8281](https://github.com/mermaid-js/mermaid/pull/8281))                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | In a kanban diagram, two items of one id, `title` or `accTitle:` as a node, and a shape with another closer (`a[A)`)                                                                                           | Two items of one id are both drawn, as the example of the documentation writes them; `title` is a node by the grammar ([#8120](https://github.com/mermaid-js/mermaid/issues/8120) asks for accessibility); every kanban item is drawn in one shape, so a closer changes nothing                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
@@ -315,7 +314,7 @@ Dropped:
 | In an Event Modeling diagram, the last character of inline data lost, and quoted inline data drawn empty                                                                                                       | A defect of mermaid.js: the author writes correct data                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | In an Event Modeling diagram, a data block of a name that no frame references, a data block repeated with the same content, inline data beside a data block that has the name, and a source written twice      | Nothing that the author means is lost: an unreferenced block is drawn by no frame, the same content shows the same, a repeated source adds no relation, and inline data beside a block of the name, which the frame shows in its place, is left over when the data moved into the block; meaning both to be shown comes from not knowing the syntax (run)                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | In an Event Modeling diagram, a YAML block after a comment or in the body, and an empty or a punctuation-only directive                                                                                        | As in a pie chart above                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| In a tree view, spaces at the end of a line that make the next node a child (after a quoted name, a class, or an icon)                                                                                         | The formatter makes it visible: the printer moves the spaces into the indentation of the next node, so the node is printed one level deeper, as the child that mermaid.js reads (decided on 2026-10-27, with the formatting choice of the tree view)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| In a tree view, spaces at the end of a line that make the next node a child (after a quoted name, a class, or an icon)                                                                                         | The formatter makes it visible: the printer moves the spaces into the indentation of the next node, so the node is printed one level deeper, as the child that mermaid.js reads (the formatting choice of the tree view)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | In a tree view, an annotation after `##` on its line (`## note :::highlight` gives the description `note :::highlight` and no class)                                                                           | A defect of mermaid.js: the documentation says that annotations may be combined in any order (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | In a tree view, box-drawing characters inside a name or a value, which choose the box-drawing form or are removed                                                                                              | A defect of mermaid.js: the author writes the characters as text, and the drawing changes them (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | In a tree view, indentation that mixes spaces and tabs, that is uneven, or that returns to a depth not used before, and the columns of box-drawing characters                                                  | Nothing is lost: every node is kept, at the depth that the grammar gives it; even indentation is style (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
@@ -478,9 +477,8 @@ for (const input of inputs) {
   conventions SKILL says. The inputs are chosen from these cases; none is
   generated.
 - Before the table of the cases of a rule is shown, check it against the kinds
-  of case that reviews of earlier tables found missing. Add a row for each kind
-  that a sentence of the document touches, and run it through mermaid.js before
-  the sentence states it:
+  of case below. Add a row for each kind that a sentence of the document
+  touches, and run it through mermaid.js before the sentence states it:
   - a statement that takes its value from a later line, with an empty line, a
     comment line, or a directive between them (a second `accTitle:` that takes
     the line after `%% c` or after `%%{init: {}}%%`);
@@ -511,12 +509,11 @@ for (const input of inputs) {
     outside ASCII), and line ends written as CRLF;
   - data that mermaid.js does not read at all (four items of gantt data), where
     no rule reports.
-- `runMermaid` gives a Db summary only for diagram types that have a normalizer
-  (flowchart, for now); for other diagram types `db` is null. `parse()` also
-  fails for diagram types it does not support yet, with
-  `Diagram type "<id>" is not supported yet`. Whether the result changes in
-  another diagram type is judged by comparing acceptance and rejection, and by
-  the reading of section 5.
+- `runMermaid` gives a Db summary for every diagram type that mermaid.js detects
+  (a normalizer is registered for each, in
+  `packages/tests/src/normalizers/index.ts`), and `parse()` reads every diagram
+  type. Whether the result changes is judged by comparing the Db summaries,
+  besides acceptance and rejection.
 - How the tree shows what a rule reports is checked by applying the condition to
   the result of `parse()`. Write the condition with the fields of nodes, the
   kinds and values of tokens, `Root.comments`, and `Root.directives`. Do not
@@ -662,7 +659,7 @@ When writing a rule document shows a new candidate, a needed change of scope or
 name, or that the tree cannot show something, decide it again with the same
 criteria and show the result in the same form.
 
-Decisions about options (made on 2026-10-07):
+Decisions about options:
 
 | Rule                                                                      | Options | Considered for later                                                                                                        |
 | ------------------------------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------- |
@@ -720,11 +717,11 @@ Each rule is judged on its own, against its document, case by case:
 The decision is recorded in the table below, with the reason for a rule that is
 not enabled, and the notes after the table give what was checked for each
 criterion. The rule file sets `recommended` from this table. The common rules
-are not enabled for now: their documents describe flowchart, sequence, class,
-and state only, and the decision is made again when they cover every diagram
+are enabled: each meets the four criteria in every diagram type (run in every
+diagram type, as their notes say), and their documents describe every diagram
 type.
 
-Decisions (made on 2026-10-15, with mermaid 12.0.0):
+Decisions (with mermaid 12.0.0):
 
 | Rule                                        | Enabled | Reason when not enabled                                                      |
 | ------------------------------------------- | ------- | ---------------------------------------------------------------------------- |
@@ -921,9 +918,9 @@ The notes give, for each rule or each group of rules that share their cases,
 what was checked for criteria 1 to 4, in that order. The readings of criterion 1
 are those that the documents state, which were run through mermaid.js when the
 documents were written; "run" marks a reading run again for this decision. The
-searches ran over the issues and the pull requests of mermaid-js/mermaid on
-2026-10-15; the words are quoted, and an item not named found nothing that
-changes the reading.
+searches run over the issues and the pull requests of mermaid-js/mermaid; the
+words are quoted, and a search with no item named finds nothing that changes the
+reading.
 
 The title and description rules, `<diagram>-no-duplicate-title` and
 `<diagram>-no-duplicate-description` of flowchart, sequence, class, state, er,
@@ -1018,7 +1015,7 @@ asked for an error, and [#7441](https://github.com/mermaid-js/mermaid/pull/7441)
 id. An id that mermaid.js gives a link written without one, as `L_A_B_0`, is an
 id of the diagram (run: `class L_A_B_0 hot` gives the link the class); using it
 is not reported, since it reaches what it names, and that such an id changes
-when the links change is no fact of the output (decided on 2026-10-22).
+when the links change is no fact of the output.
 
 class-no-undef: (1) the statement changes nothing, or the note has no line; (2)
 none; (3) "cssClass not applied", "classDiagram style nonexistent", "cssClass",
@@ -1053,9 +1050,8 @@ flowchart-no-redefined-vertex: (1) a later shape or label replaces the earlier
 one; labels that differ only in their line breaks are not reported, and labels
 are otherwise compared as written, so two that differ only in the quotes of an
 HTML attribute, which mermaid.js keeps the same, are reported, as the document
-says (changed on 2026-10-22 from a comparison that converted the quotes, to
-follow the decision that rules compare written values); (2) none; (3) "node
-label overwritten", "redefine node label", "node label":
+says, because the rules compare written values; (2) none; (3) "node label
+overwritten", "redefine node label", "node label":
 [#3789](https://github.com/mermaid-js/mermaid/issues/3789) (open, Type:
 Enhancement) proposes another statement for labels; (4) use another id, or write
 the label once.
@@ -1068,8 +1064,8 @@ subgraphs from the last to the first, and the layout keeps one node for an id),
 so a different direction in a later one is lost and reported, although the Db
 keeps both; `TD` and `TB` are one direction, as the documentation says; (2)
 none; (3) the searches of the direction rules above; (4) write one `direction`
-statement for each subgraph. Decided on 2026-10-22 with
-agentflow-no-duplicate-direction, which reports the same fact.
+statement for each subgraph. agentflow-no-duplicate-direction reports the same
+fact.
 
 class-no-redefined-class: (1) the earlier label is lost; (2) none; (3) "class
 label redefine"; (4) use another name, or write the label once.
@@ -1083,15 +1079,13 @@ name and the JSON object or array of the argument may run over several lines,
 and a directive at the end of the text or ended by U+2028 or U+2029 takes
 nothing and is not reported, since it gives the Db and the settings of the
 closed directive (run); a directive closed by the `}%%` of a later directive is
-reported too, which the earlier condition, a directive not closed, missed
-(decided on 2026-10-27); (3) "directive not closed", "unclosed directive",
-"directive": the items concern settings, and the documentation of mermaid.js
-replaces directives with the frontmatter
-([#7989](https://github.com/mermaid-js/mermaid/pull/7989), merged), which keeps
-the reading; (4) close the directive with `}%%`. The rule is common: the shared
-preprocessing removes the directive before the lexer of any diagram type reads
-the text, and a diagram type that rejects what is left gives no report (run in
-the 44 headers of the detection table).
+reported too; (3) "directive not closed", "unclosed directive", "directive": the
+items concern settings, and the documentation of mermaid.js replaces directives
+with the frontmatter ([#7989](https://github.com/mermaid-js/mermaid/pull/7989),
+merged), which keeps the reading; (4) close the directive with `}%%`. The rule
+is common: the shared preprocessing removes the directive before the lexer of
+any diagram type reads the text, and a diagram type that rejects what is left
+gives no report (run in the 44 headers of the detection table).
 
 no-invalid-init-directive: (1) the settings of every init directive are dropped,
 or, for a name in another case, the settings of that directive (run in every
@@ -1101,21 +1095,21 @@ diagram type); (2) none: JSON that is valid as written and that turning `'` into
 quotes), a word argument or none comes from not knowing the syntax, and a
 directive after `%%}%%` on its line drops only its own settings when text
 follows the line and those of every init directive on the last line, which the
-document states (decided on 2026-10-27); (3) "init trailing comma", "init
-directive ignored", "directive case sensitive", "init json", "json5", "trailing
-comma init"; (4) correct the JSON, or write the name in lower case. The name
-follows the words of the rules of ESLint itself: a form written incorrectly, so
-that it does not work as meant, is invalid there, as in no-invalid-regexp and
-valid-typeof (a misspelled type name that silently matches nothing); both
-reported forms, JSON that is not valid and a name in another case, are such
-forms, and the fix is to write them correctly.
+document states; (3) "init trailing comma", "init directive ignored", "directive
+case sensitive", "init json", "json5", "trailing comma init"; (4) correct the
+JSON, or write the name in lower case. The name follows the words of the rules
+of ESLint itself: a form written incorrectly, so that it does not work as meant,
+is invalid there, as in no-invalid-regexp and valid-typeof (a misspelled type
+name that silently matches nothing); both reported forms, JSON that is not valid
+and a name in another case, are such forms, and the fix is to write them
+correctly.
 
 no-duplicate-init-key: (1) the earlier value of a key that one object of the
 JSON holds twice is lost (run in every diagram type); (2) none: a key written
 again with an equal value, and the keys of two init directives, which the
 documentation combines with the last value of each key, are not reported, and
-only JSON that mermaid.js reads is checked (decided on 2026-10-27); (3) "init
-duplicate key", "init json": nothing; (4) keep one of the two members.
+only JSON that mermaid.js reads is checked; (3) "init duplicate key", "init
+json": nothing; (4) keep one of the two members.
 
 class-no-inline-comment: see the paragraph after these notes.
 
@@ -1285,9 +1279,8 @@ ranges of the axes.
   quadrant.
 - quadrant-no-redefined-class: (1) the class has the styles of its last
   definition only, with no merge (run); a style that the later definition drops
-  or changes is lost, and one that it adds loses nothing (changed on 2026-10-23,
-  as for usecase-no-redefined-class: the rule had reported an added style); (2)
-  none; (4) write the styles in one definition.
+  or changes is lost, and one that it adds loses nothing, as for
+  usecase-no-redefined-class; (2) none; (4) write the styles in one definition.
 - quadrant-no-undef: (1) the class name stays on the point and no class of that
   name is defined (run); the layout finds no class for it, and the drawn point
   has no CSS class of that name (read); (2) none; (4) define the class, or
@@ -1432,10 +1425,10 @@ but what the rows above name.
   of declarations are not reported; (3) "UpdateElementStyle", "UpdateRelStyle":
   [#8087](https://github.com/mermaid-js/mermaid/pull/8087) (open) checks the
   colours, which does not change which value is kept; (4) give each field once,
-  with a named attribute for one field. Decided on 2026-10-21, after the venn
-  rules: an earlier decision had left a style update written twice out on the
-  ground that nothing is lost, which holds only for an update that gives other
-  fields (`$bgColor="red"`, then `$bgColor="blue"`, keeps only `blue`; run).
+  with a named attribute for one field. A style update written twice loses the
+  earlier value of each field that both give (`$bgColor="red"`, then
+  `$bgColor="blue"`, keeps only `blue`; run); only updates that give other
+  fields lose nothing.
 
 The venn rules have these notes; the searches were "venn" in titles,
 "venn-beta", and "venn" with the words style, stroke-width, text, title,
@@ -1506,11 +1499,11 @@ report nothing that changes nothing.
   rectangle (read in `getTypeFromVertex` and `normaliseNodeShapes`), and kinds
   as agentflow derives them (task, input, decision, action, tool, connector),
   which its default theme `redux-color` draws in their own colours (read in
-  `deriveVertexKind` and `styles.ts`; decided on 2026-10-22, since kinds are
-  part of the default drawing of agentflow); (2) none: the id that a connector
-  without a title shows, a reference, data blocks, and the same label, drawn
-  shape, and kind are not reported; (4) give each element its own id. The two
-  rules share one record of each id and part by the statement reported.
+  `deriveVertexKind` and `styles.ts`; kinds count, since they are part of the
+  default drawing of agentflow); (2) none: the id that a connector without a
+  title shows, a reference, data blocks, and the same label, drawn shape, and
+  kind are not reported; (4) give each element its own id. The two rules share
+  one record of each id and part by the statement reported.
 - agentflow-no-redefined-flow: (1) flows of one id are merged, and a later title
   that is not empty replaces the earlier one, in the order in which the flows
   end (run); (2) none: a flow written again without a title to add members is
@@ -1524,7 +1517,7 @@ report nothing that changes nothing.
 - agentflow-no-undef: the notes of flowchart-no-undef; the names of flows and
   connectors are ids, and an id that mermaid.js gives itself (`subGraph0`,
   `L_A_B_0`) is an id of the diagram and is not reported, since it reaches what
-  it names (run; decided on 2026-10-22).
+  it names (run).
 
 The usecase rules have these notes; the searches were "usecase" and "use case"
 in titles, and "usecase" with the words duplicate, classDef, metadata,
@@ -1541,11 +1534,10 @@ guillemets of include and extend.
   `setAccDescription`); a comment line in a block is removed, so a block of only
   a comment line sets the empty description (run), which is reported by
   usecase-no-duplicate-description after a description and not reported alone,
-  as a block left to be filled in later (decided on 2026-10-23); a block that no
-  `}` closes is rejected, and one that the `}` of later metadata or of a JSON
-  object closes takes the lines up to it (run), which the unclosed block rule
-  reports with the condition of the flowchart rule and is not enabled for the
-  same reason.
+  as a block left to be filled in later; a block that no `}` closes is rejected,
+  and one that the `}` of later metadata or of a JSON object closes takes the
+  lines up to it (run), which the unclosed block rule reports with the condition
+  of the flowchart rule and is not enabled for the same reason.
 - usecase-no-duplicate-direction: (1) the last `direction` statement sets the
   direction, and `TD` is recorded as `TB` (read in `usecaseModelBuilder`; run);
   (2) none; (4) write one `direction` statement.
@@ -1553,14 +1545,14 @@ guillemets of include and extend.
   an earlier update gave the actor, the use case, the boundary, or the
   relationship (run); the metadata of a boundary heading takes part in source
   order, and an update after a heading is not reported, since the documentation
-  writes it to change the type of the heading (decided on 2026-10-23); an update
-  wins over the metadata of an actor or a use case declaration wherever it
-  stands, the way that the documentation writes to change it, so that metadata
-  is not compared (run); (2) none: `animate` is not compared, since
-  `animate: false` after `animation: slow` is drawn animated, a defect of
-  mermaid.js; names that mermaid.js turns into one id (`"Place order"` and
-  `Place_order`) are compared as written, which the document states (run); (4)
-  give each key of an element one value.
+  writes it to change the type of the heading; an update wins over the metadata
+  of an actor or a use case declaration wherever it stands, the way that the
+  documentation writes to change it, so that metadata is not compared (run); (2)
+  none: `animate` is not compared, since `animate: false` after
+  `animation: slow` is drawn animated, a defect of mermaid.js; names that
+  mermaid.js turns into one id (`"Place order"` and `Place_order`) are compared
+  as written, which the document states (run); (4) give each key of an element
+  one value.
 - usecase-no-redefined-class: (1) a later `classDef` replaces the whole
   definition of the class (read in `applyClassDefinitions`), and the drawing
   takes the last value of each property in it (read in `getCompiledStyles`;
@@ -1569,9 +1561,9 @@ guillemets of include and extend.
   CSS decides instead (see section 2); property names are compared as written,
   since the drawing gives a style to the label or to the shape by its written
   name (read in `styles2String`), and values as CSS reads them, keeping the text
-  of a quoted string (run; both decided on 2026-10-23); (2) none: a definition
-  that adds styles or writes them in another order is not reported; (4) write
-  one `classDef` for each class.
+  of a quoted string (run); (2) none: a definition that adds styles or writes
+  them in another order is not reported; (4) write one `classDef` for each
+  class.
 
 The pie rules have these notes; the searches were "pie duplicate label", "pie
 same label", "pie" with title in titles, "pie accDescr", and "populateCommonDb",
@@ -1582,7 +1574,7 @@ intended. [#7855](https://github.com/mermaid-js/mermaid/pull/7855) (open) moves
 the parser of pie to Chevrotain with values byte for byte equal to the current
 parser; it does not fix the behavior that the rules rely on, so criterion 3 does
 not hold the rules back, and a change that it brings is met when the pinned
-mermaid.js is updated (decided on 2026-10-23).
+mermaid.js is updated.
 
 - pie-no-duplicate-label: (1) a later section of a label is not added, and the
   slice keeps the value of the first section (read in `addSection`; run); (2)
@@ -1622,8 +1614,8 @@ merges of more parents), the layout, and clicks.
   added it to close [#4838](https://github.com/mermaid-js/mermaid/issues/4838),
   where a repeated id broke the drawing), which the default `logLevel`, `fatal`,
   does not show, so the input is accepted silently, as for flowchart-no-undef,
-  whose warning [#7441](https://github.com/mermaid-js/mermaid/pull/7441) added
-  (decided on 2026-10-23); the railroad example of the
+  whose warning [#7441](https://github.com/mermaid-js/mermaid/pull/7441) added;
+  the railroad example of the
   [documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md#L481-L500)
   writes `commit id:"Boston"` twice, and the second replaces the first, the
   behavior that #4838 reported, so it is no way of writing that the
@@ -1656,8 +1648,7 @@ of arrows.
   since architecture reads its titles and descriptions in the same way (read in
   `architectureParser.ts`; run); `title` is not drawn (read in
   `architectureRenderer.ts`), so the title rule compares `accTitle` only, as the
-  title rules of the diagram types without a drawn title do (decided on
-  2026-10-25).
+  title rules of the diagram types without a drawn title do.
 - architecture-no-reversed-marker: (1) the grammar reads `<` and `>` alike as an
   arrowhead at the end where they stand (read in `architecture.langium`), so
   `>--<` is drawn as `<-->`, and the arrowhead points the other way than written
@@ -1670,8 +1661,8 @@ of arrows.
   rejects `{group}` between two services of one group but not on an end in no
   group (read in `architectureDb.ts`); (2) none: the documentation allows
   `{group}` only for a service in a group, and an end declared in a group,
-  before or after the edge, is not reported (decided on 2026-10-25); (4) remove
-  `{group}`, or declare the service in its group.
+  before or after the edge, is not reported; (4) remove `{group}`, or declare
+  the service in its group.
 
 The radar rules have these notes; the searches were "radar curve", "radar
 entry", "radar duplicate", "radar ticks", "radar min max", "radar title", "radar
@@ -1689,22 +1680,23 @@ and labels of the rings.
   counts, and a later entry of the value of the first is not reported; (4)
   correct the name, or give each axis one value. The name radar-no-undef follows
   the `<diagram>-no-undef` rules of the other diagram types for a name that
-  nothing declares (decided on 2026-10-25).
+  nothing declares.
 - radar-no-mismatched-entry-count: (1) a curve of values whose count is not the
   count of the axes is not drawn at all, and only its entry in the legend is
   left (read in `drawCurves`; run); (2) none: every axis counts, and a curve
   with axis names is left to the other rules; (4) give one value for each axis.
 - radar-no-duplicate-option: (1) the last value of each option is used (read in
-  `setOptions`; run); (2) none: a value given again is not reported, and a
-  `ticks` above 32 is compared as 32, since mermaid.js draws at most 32 rings;
-  (4) give each option one value.
+  [`setOptions`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L93-L117);
+  run); (2) none: a value given again is not reported, and a `ticks` above 32 is
+  compared as 32, since mermaid.js draws at most 32 rings; (4) give each option
+  one value.
 - radar-no-reversed-range: (1) with the minimum above the maximum, every point
   is drawn on the outer ring (read in `relativeRadius`; run); (2) none: an equal
   minimum, a range that cuts off values, and a diagram with no curve drawn are
   not reported, and without `max` the rule does not compute the maximum that
   mermaid.js takes from the values, which the document states; (4) write a `min`
   below the `max`. The name follows architecture-no-reversed-marker for a value
-  written the other way round (decided on 2026-10-25).
+  written the other way round.
 - radar-no-duplicate-title, radar-no-duplicate-description,
   radar-no-empty-description-block, radar-no-unclosed-description-block: the
   notes of the pie rules above, since radar reads its titles and descriptions in
@@ -1726,13 +1718,13 @@ whitespace", and found nothing that changes the readings.
   is removed too (`0,5` is 5, `1.234,5` is 1.2345; run), so a comma after the
   `.` with a digit after it, or with other than three digits after the last
   comma that a digit follows, is reported as well, since no way of writing
-  thousands, Western or Indian (`1,00,000`), puts one there (decided on
-  2026-10-26); (2) none: `.5`, `5.`, commas between groups of thousands, and a
-  comma that no digit follows, also after the `.` (`1.5,`, read as 1.5; run),
-  are not reported, and `0,125`, written as thousands are, is read as 125 and
-  not reported, which the document states; (4) write the number with digits, one
-  `.`, and commas between groups of thousands. The name follows
-  sankey-no-invalid-value, which reports the same reading of `parseFloat`.
+  thousands, Western or Indian (`1,00,000`), puts one there; (2) none: `.5`,
+  `5.`, commas between groups of thousands, and a comma that no digit follows,
+  also after the `.` (`1.5,`, read as 1.5; run), are not reported, and `0,125`,
+  written as thousands are, is read as 125 and not reported, which the document
+  states; (4) write the number with digits, one `.`, and commas between groups
+  of thousands. The name follows sankey-no-invalid-value, which reports the same
+  reading of `parseFloat`.
 - treemap-no-duplicate-title, treemap-no-duplicate-description,
   treemap-no-empty-description-block: the notes of the pie rules above, since
   treemap reads its titles and descriptions in the same way and draws the title
@@ -1763,9 +1755,9 @@ drafting session).
   not reported, and an item written twice counts twice; items are compared as
   written, escapes too, as for the labels of pie, and a change past the third
   item of `confusion`, which the drawing shows only as a count, is reported,
-  both of which the document states (decided on 2026-10-26); (4) write each
-  domain once. The name follows the `<diagram>-no-redefined-*` rules, where a
-  later definition replaces an earlier one.
+  both of which the document states; (4) write each domain once. The name
+  follows the `<diagram>-no-redefined-*` rules, where a later definition
+  replaces an earlier one.
 - cynefin-no-duplicate-title, cynefin-no-duplicate-description,
   cynefin-no-empty-description-block: the notes of the pie rules above, since
   Cynefin reads its titles and descriptions in the same way and draws the title
@@ -1784,7 +1776,7 @@ concerns the configuration.
   a pipeline by its label, as the documentation shows, and a node declared after
   counts; names are compared as written, and names that mermaid.js makes one by
   decoding escapes or turning the quotes of HTML attributes are a limit that the
-  document states (decided on 2026-10-26); (4) correct the name.
+  document states; (4) correct the name.
 - wardley-no-redefined-node: (1) a node declared again replaces the position,
   the strategy, and the inertia of the earlier one, in the order anchors,
   components, children of pipelines (read in the parser and in `addNode`; run);
@@ -1810,7 +1802,7 @@ concerns the configuration.
   a label of only spaces, and a link that draws nothing are not reported; a
   writer may also add the label after `;` without knowing that the arrow already
   has one, but the label is lost either way, so the rule needs no guess of the
-  intent (decided on 2026-10-26); (4) write one label.
+  intent; (4) write one label.
 - wardley-no-duplicate-title, wardley-no-duplicate-description,
   wardley-no-empty-description-block: the notes of the pie rules above, since
   wardley reads its titles and descriptions in the same way and draws the title
@@ -1840,16 +1832,16 @@ validator, which the public parse does not run.
   frame or a block declared after counts, names are compared as written, and the
   sources of a reset frame and the frames that `note` and `gwt` name are not
   checked, since mermaid.js draws none of them; a reference beside inline data
-  is reported too, since the reference has no effect and names nothing (decided
-  on 2026-10-27); (4) correct the name.
+  is reported too, since the reference has no effect and names nothing; (4)
+  correct the name.
 - eventmodeling-no-redefined-data: (1) a frame shows the first data block of the
   name, and a later block of the name is never shown (read in
   `calculateTextProps`; run); (2) none: a name that no frame references and the
   same content are not reported, and the data type is not compared; contents are
   compared as written, also a later empty block and a difference of spaces,
   since mermaid.js shows the spaces and the lines as written, and character
-  references are a limit that the document states (decided on 2026-10-27); (4)
-  give each content its own name.
+  references are a limit that the document states; (4) give each content its own
+  name.
 - eventmodeling-no-duplicate-title, eventmodeling-no-duplicate-description: (1)
   the parser keeps the last `accTitle` and the last `accDescr`, and
   `populateCommonDb` sets them, since mermaid.js keeps the whole statement with
@@ -1857,8 +1849,8 @@ validator, which the public parse does not run.
   `populateCommonDb`; run); (2) none: an empty earlier text loses nothing, and
   texts are compared by their words, with the shared helper, so the line form
   and the block form of one text are one description, though mermaid.js keeps
-  the keyword in the value (decided on 2026-10-27); `title` is not compared,
-  since mermaid.js does not draw it (run); (4) keep one statement.
+  the keyword in the value; `title` is not compared, since mermaid.js does not
+  draw it (run); (4) keep one statement.
 - eventmodeling-no-empty-description-block: (1) the block sets the text of the
   statement, as `accDescr {}`, as the description, and removes an earlier one
   (run); (2) none: a block with a comment in it is not reported, as in the other
@@ -1887,15 +1879,15 @@ box-drawing form.
   configuration, so `icon()` and `icon(none)` are one, and `file` is
   `mermaid-treeview:file`; hiding the icon is a value, so an icon after `icon()`
   is reported; the rule reads no configuration, and a name resolved by
-  `defaultIconPack` is a limit that the document states (decided on 2026-10-27);
-  (4) keep one annotation of each kind. The name follows the documentation,
-  which calls them annotations.
+  `defaultIconPack` is a limit that the document states; (4) keep one annotation
+  of each kind. The name follows the documentation, which calls them
+  annotations.
 - treeview-no-duplicate-title, treeview-no-duplicate-description,
   treeview-no-empty-description-block: the notes of the pie rules above, since
   the tree view reads its titles and descriptions in the same way (run); `title`
   is not drawn and not compared; the box-drawing characters at the start of a
   line of a block, and a tab on a line that starts with them, are limits that
-  the documents state (decided on 2026-10-27).
+  the documents state.
 - treeview-no-unclosed-description-block: (1) a block without its `}` is read as
   a node whose name is the text of the block, and the description stays empty
   (read in the terminals; run); (2) none: the condition is a bare name that
@@ -1912,17 +1904,29 @@ comment at the end of a line should be supported, and
 [#6401](https://github.com/mermaid-js/mermaid/issues/6401) treats the behavior
 as intended (criterion 3).
 
-Changed from the decision of 2026-10-02:
-flowchart-no-unclosed-description-block, from yes to no, for the reports that
-its document names where mermaid.js reads the text as written; that decision
-recorded no check case by case.
+flowchart-no-unclosed-description-block is not enabled by `recommended`: its
+document names reports where mermaid.js reads the text as written.
 
 ## 8. Suggestions
 
 Once a rule is kept, decide whether it offers suggestions (edits that are
-applied only when the user picks one in the editor), and what they are. A
-candidate edit becomes a suggestion only when it meets all five criteria below;
-where no candidate meets them, the rule offers none.
+applied only when the user picks one in the editor) or a fix, and what they are.
+A candidate edit becomes a suggestion only when it meets all five criteria
+below; where no candidate meets them, the rule offers none.
+
+Offering no suggestion is better than offering one that has to be guarded. A
+candidate is offered only when the conditions under which it is right can be
+written in one or two sentences of the specification. When it would hold only
+with a parse of its result, a check for each known divergence, or an exception
+for a diagram type, it is not offered, and no condition is added to keep it. A
+rule without suggestions is enough: its message says what happens. The same
+holds for the cases within one rule: a rule need not offer an edit at every
+place that it reports. It offers the edit in the cases where the sentences of
+the specification say that the edit is right, and none in the others, where the
+edit is hard to write or its condition cannot be put in sentences, rather than
+an edit kept by an added guard. Removing a statement only when it has its lines
+to itself, and joining a range only when no comment stands in it, are such
+cases.
 
 1. **The candidates are few, and the reported text decides them (one to
    three).** What an edit writes is decided by the positions of the tree and its
@@ -1932,181 +1936,485 @@ where no candidate meets them, the rule offers none.
 2. **Every candidate is something the author may have meant.** The result is one
    of the forms that an author who made the mistake meant to write. An edit that
    only silences the rule, whatever the author meant, is no candidate.
-3. **The parser accepts the result, the rule no longer reports that place, and
-   the edit writes no new mistake.** Closing an unclosed block while it is empty
-   is no candidate: the edit writes an empty block, which
+3. **The conditions are written from the sentences of the specification, the
+   rule no longer reports that place, and the edit writes no new mistake.** No
+   edit parses its result when the rule runs. Parsing takes about 0.04 ms a line
+   (1,600 lines take about 70 ms), so parsing the result of each suggestion
+   would cost the number of reports times the size of the diagram: a diagram of
+   1,000 lines with 100 reports would take about 9 seconds on every lint, which
+   an editor cannot afford. An edit that gives back as statements the lines that
+   a block, a directive, a backquote, or a name took (closing a block at the end
+   of the line of its `{`, closing a treeview name, closing a directive, closing
+   a backquoted name), and an edit that splits a line at a `;`, are not offered:
+   whether those lines come back as statements, and how mermaid.js reads them,
+   is known only by parsing the whole result and by checking it for the known
+   divergences, which repeat steps of the lexer of mermaid.js that the
+   specification does not state. Closing an unclosed block while it is empty is
+   no candidate: the edit writes an empty block, which
    no-empty-description-block reports. Another rule may report the result only
    for a mistake that the text of the author already held and the edit makes
    visible: closing an unclosed block after an earlier description shows that
    the text sets the description twice, which no-duplicate-description reports.
    The tests of a rule list the rules whose reports its suggestions may make
    visible in this way, each with the mistake it shows, and fail on a report of
-   any other rule on a result. The rule document says it in a sentence.
-4. **The message of the suggestion can say how mermaid.js reads the result.**
-   That reading is checked by running an example through mermaid.js (run).
+   any other rule on a result. The record of this section says it, and the
+   fixtures show it; the rule document does not.
+4. **How mermaid.js reads the result is known.** The record of this section and
+   the fixtures hold that reading, checked by running an example through
+   mermaid.js (run). The message of a suggestion says only the edit, as
+   ``Remove this `accTitle` statement.``,
+   ``Remove the earlier `accTitle` statement.``, `Remove the empty block.`, and
+   `Close the block at the end of the text.`: the people who use the rule pick a
+   suggestion by its edit, and they see the result. A clause on the reading is
+   not added to the message: it says what the result shows anyway, and it would
+   be false for the second of three statements that set the same value.
 5. **The result does not hang on invisible whitespace.** An edit that changes
    the reading only through whitespace at the end of a line (a space after `%%`)
    is no candidate: an editor that removes such whitespace on saving undoes it.
 
-No rule fixes automatically: the meaning may change, or what the author meant is
-not known, and every rule decided so far is in one of these cases. A fix is made
-only when the result is beyond doubt what the author meant and mermaid.js then
-reads it as meant.
+An edit is a fix (`meta.fixable`; applied by `eslint --fix` and by an editor on
+saving) instead of a suggestion only when both of these hold. First, the result
+is beyond doubt what the author meant and mermaid.js then reads it as meant: the
+text allows this one edit, and it removes nothing and adds nothing that the
+author may have meant otherwise. Second, what decides the edit lies in the text
+that it changes and in its own statement: `--fix` applies in one pass the fixes
+of every rule found on the same text, all those whose ranges do not overlap, and
+then lints again, up to ten passes (`lib/linter/source-code-fixer.js` and
+`MAX_AUTOFIX_PASSES` of ESLint), so a fix whose condition reads other lines
+could be made wrong by the fix of another rule in the same pass. A condition
+that only withholds a fix may read other lines when no fix can create the form
+that it looks for: the fix then comes in a later pass. A report that offers a
+fix offers no suggestion of the same edit; where the conditions of a fix do not
+hold for a report, that report offers the edit as a suggestion. Which edits are
+fixes is listed at the end of this section.
 
-A rule document describes the suggestions in Rule Details, before the examples:
-for each suggestion, what it changes and how mermaid.js reads the text after it,
-and in one sentence where the rule offers none and why. The notice says that the
-rule has suggestions; it is generated.
+A rule document says nothing about the suggestions in its body (the skill
+`eslint-plugin`, section 3): the generated notice says that the rule has
+suggestions or a fix, and the message of each says its edit. What each edit
+changes, the conditions under which it is offered, how mermaid.js reads the
+result, what it may make visible, why a rule offers none, and the permalinks to
+the source of mermaid.js that explain it are recorded in this section; the
+implementation follows this record, and the tests of the rule check it. The
+readings were checked with mermaid 12.0.0 on the invalid fixtures of each rule
+(run).
 
-Decisions (made on 2026-10-02, with mermaid 12.0.0):
+### The kinds of edits
 
-| Rule                                    | Suggestions                                                    |
-| --------------------------------------- | -------------------------------------------------------------- |
-| flowchart-no-unclosed-description-block | Close at the end of this line; close at the end of the text    |
-| flowchart-no-empty-description-block    | Remove the empty block                                         |
-| flowchart-no-duplicate-description      | Remove this description; remove the description before it      |
-| flowchart-no-duplicate-title            | Remove this title; remove the title before it                  |
-| flowchart-no-ignored-text               | Split at the `;` so that the direction is on a line of its own |
-| flowchart-no-redefined-vertex           | None: criterion 1 (the likely fix is a new id)                 |
-| flowchart-no-undef                      | None: criterion 1 (which id was meant is not known)            |
-| flowchart-no-duplicate-direction        | None for now (2026-10-22; see the end of this section)         |
-| sequence-* (all 8 rules)                | None for now (2026-10-08; see the end of this section)         |
-| class-* (all 8 rules)                   | None for now (2026-10-08; see the end of this section)         |
-| state-* (all 6 rules)                   | None for now (2026-10-08; see the end of this section)         |
-| er-* (all 7 rules)                      | None for now (2026-10-14; see the end of this section)         |
-| gantt-* (all 8 rules)                   | None for now (2026-10-14; see the end of this section)         |
-| journey-* (all 6 rules)                 | None for now (2026-10-14; see the end of this section)         |
-| requirement-* (all 8 rules)             | None for now (2026-10-15; see the end of this section)         |
-| mindmap-* (both rules)                  | None for now (2026-10-15; see the end of this section)         |
-| timeline-* (all 3 rules)                | None for now (2026-10-15; see the end of this section)         |
-| sankey-no-invalid-value                 | None for now (2026-10-15; see the end of this section)         |
-| sankey-no-empty-node                    | None for now (2026-10-15; see the end of this section)         |
-| xychart-* (all 7 rules)                 | None for now (2026-10-15; see the end of this section)         |
-| quadrant-* (all 9 rules)                | None for now (2026-10-16; see the end of this section)         |
-| block-* (all 11 rules)                  | None for now (2026-10-21; see the end of this section)         |
-| kanban-* (all 3 rules)                  | None for now (2026-10-21; see the end of this section)         |
-| c4-* (all 7 rules)                      | None for now (2026-10-21; see the end of this section)         |
-| venn-* (all 6 rules)                    | None for now (2026-10-21; see the end of this section)         |
-| agentflow-* (all 10 rules)              | None for now (2026-10-22; see the end of this section)         |
-| usecase-* (all 7 rules)                 | None for now (2026-10-23; see the end of this section)         |
-| pie-* (all 4 rules)                     | None for now (2026-10-23; see the end of this section)         |
-| gitgraph-* (all 5 rules)                | None for now (2026-10-23; see the end of this section)         |
-| packet-* (all 3 rules)                  | None for now (2026-10-25; see the end of this section)         |
-| architecture-* (all 5 rules)            | None for now (2026-10-25; see the end of this section)         |
-| radar-* (all 9 rules)                   | None for now (2026-10-25; see the end of this section)         |
-| treemap-* (all 4 rules)                 | None for now (2026-10-26; see the end of this section)         |
-| railroad-* (all 3 rules)                | None for now (2026-10-26; see the end of this section)         |
-| cynefin-* (all 4 rules)                 | None for now (2026-10-26; see the end of this section)         |
-| wardley-* (all 11 rules)                | None for now (2026-10-26; see the end of this section)         |
-| eventmodeling-* (all 6 rules)           | None for now (2026-10-27; see the end of this section)         |
-| treeview-* (all 5 rules)                | None for now (2026-10-27; see the end of this section)         |
-| no-unclosed-directive                   | None for now (2026-10-27; see the end of this section)         |
-| no-invalid-init-directive               | None for now (2026-10-27; see the end of this section)         |
-| no-duplicate-init-key                   | None for now (2026-10-27; see the end of this section)         |
+No edit takes a directive with it. An edit is not offered when a directive lies
+within the range that it removes or replaces, because the settings of the
+directive would go with it: in sankey, `a,b,1%%{init: {"theme":"dark"}}%%_000`
+rewritten as `a,b,1000` is accepted (run), and the directive, and with it the
+theme, is gone. A directive next to the range stays where it is (the whitespace
+after a directive that block-no-spaced-class-id removes), and an edit inside a
+directive (no-invalid-init-directive, no-duplicate-init-key) changes only its
+argument. Fixtures: the sankey value above (none), and a value of the same rule
+without a directive (offered).
 
-- Close at the end of this line: ` }` at the end of the line of the `{`, only
-  when text that is not whitespace follows the `{` on that line. Close at the
-  end of the text: a line `}` after the last line, only when the block has text
-  on a line after the line of the `{` (with text only on that line, both edits
-  give the same result). A directive is not text: there is no closing at the end
-  of the line when only directives follow the `{` on its line (the block would
-  be empty). A block that holds a directive that is not closed gets neither:
-  from that directive on, the directive decides what mermaid.js reads, wherever
-  the block is closed, so no message can say how the lines after it are read,
-  and some results are rejected (run: after `accDescr { d }`, the lines
-  `more %%{init: {}` and `A --> B` give the vertex `more` and no edge; with
-  `%%{wrap`, they give `more` and `B`; closing right before `%%{wrap` with a
-  line after it is rejected; closing at the end of the text a block with `d`,
-  then `more %%{wrap` and `A --> B`, gives the description `d` and
-  `more --> B`). `accDescr { Short`, then `A --> B`: closed at the end of the
-  line, the description is `Short` and the edge from A to B is read; a block
-  left open at the end of the text, with the lines `Long` and `text`, closed at
-  the end of the text, has those two lines as its description (run). May make
-  visible: no-duplicate-description, when a description is set before the block
-  (`accDescr: d`, then `accDescr { x` closed, gives `x`; run) or by a statement
-  after it (`accDescr { x`, then `accDescr { y }`, closed at the end of the
-  line, gives `y`; run); so the message of the closing at the end of the line
-  says that mermaid.js reads the rest of the line as the text of the block, not
-  as the description. A `}` is alone on its line when only whitespace and
-  directives stand before it there, whatever follows it (`};`, `} C`; run).
-  Closing at the end of the line is offered only when the parser reads the
-  result: a later line that is no statement, as `second line, more`, is rejected
-  once the block is closed above it (run). A block that a later `}` closes is
-  reported too: after `accDescr { first`, the lines `B --> C`, `A{y}`, and `D`
-  give the description `first`, `B --> C`, `A{y` and only the vertex `D`,
-  because the `}` of `A{y}` closes the block (run); the condition is that the
-  text of the block holds a `{` on a later line than the `{` of the block and
-  the closing `}` does not stand alone on its line (`accDescr {`, `uses { here`,
-  `}` closes with the author's `}`; run), so that the `}` that closes the block
-  is the one of a shape or data block on that line, also one that spans lines
-  (`B{`, then `y}`; run); a `}` on the line of the `{` (`accDescr { a { b }`
-  gives `a { b`) and a `}` alone on its line (`accDescr { x {`, then `}`, gives
-  `x {`) close the block as written and are not reported (run). Such a block
-  gets only the closing at the end of the line of the `{` (`accDescr { first }`,
-  then the same lines, reads the edge from B to C and the vertices A and D;
-  run).
-- Remove: the statement, with its line when nothing else is on the line, or with
-  the whitespace up to the next statement on the same line. A `;` after it that
-  separates statements is never removed: inside a subgraph, a `;` that stands
-  alone is an empty statement, which mermaid.js makes a member `;` of the
-  subgraph, so removing it changes the members (run: 40 of 148 removals of a
-  duplicate description inside a subgraph or a nested one changed the Db with
-  the `;` removed, 0 with it kept; a line of only `;` or `;;B` left behind reads
-  as before). A `;` that mermaid.js ignores at the end of the text, as in
-  `accTitle: style:#b;`, is removed with the statement: kept alone, it would
-  become a member `;` (run: the members `a`, `;` instead of `a`). Removing an
-  empty block leaves the Db as it is (run); a block that holds a directive is
-  not removed, because the directive's settings would go with it (run: a
-  subgraph loses the direction that `inheritDir` gave it). For the duplicates,
-  mermaid.js uses the last description or title that remains (run); a
-  description inside a subgraph is also a member of the subgraph in the Db, so
-  removing it changes the members as well (run). An empty block is removed only
-  when it is the first token on its line: after something on its line, removing
-  the whitespace before it changes the reading of some statements and keeping it
-  changes others (`autonumber ` in a sequence; a subgraph name that ends in a
-  space), which the tree does not tell (run: of 49,671 blocks first on their
-  line, inserted into the accepted fixtures of the four diagram types, 19 read
-  differently after removal, all in forms obscure on purpose: a keyword whose
-  value continues on the next line, a subgraph name that ends in `end`, and a
-  statement whose reading depends on its column).
-- Split at the `;`: offered only when every ignored text on the line is
-  separated from the direction by a `;` (the text before it ends with `;`, the
-  text after it starts with `;`); the whitespace after each such `;` becomes a
-  line break, of the kind that the text uses there (the one that ends the line,
-  or, on a last line without one, the one that ends the line before it), and the
-  indentation of the line, and the `;` stays, as if the author had broken the
-  line after it (removing the `;` can change how mermaid.js reads the line:
-  `A[style:#x;];` and `A[style:#x;]` give `A` different labels; run), except
-  where the parse of the result does not read the kept `;` as a separator but as
-  part of a text, as after `accTitle: What to buy`, whose text runs to the end
-  of the line, or after the direction value, where the rest of the line is
-  dropped, or where a kept `;` would stand alone as a statement, as after a
-  description block (`accDescr { x }; direction TB` in a subgraph, split with
-  the `;`, gives the members `x` and `;`; run): there all the `;`s on the line
-  are removed with the whitespace (the title is then `What to buy`, not
-  `What to buy;`; run); and only when the parser reads the result with the split
-  text as statements, the direction as a direction statement, and nothing
-  reported on the line (inside a label, `A[x; direction LR; y]`, split, gives a
-  label of three lines and no direction; run), because the text before or after
-  the `;` may be no statement on its own (`direction TB; -->B`, split, is
-  rejected; run). `A --> B; direction TB` in a subgraph, split, gives the edge
-  and the direction (run). Without the `;`, whether the text was meant as
-  statements is not known, and inside a label (`A[Set direction LR]-->B`) a line
-  break changes the label (run). May make visible: any other rule, because the
-  text becomes statements, and what they hold is what the author wrote
-  (`accTitle: a`, then `accTitle: t; direction LR` in a subgraph, split, gives
-  the title `t`, which no-duplicate-title reports; run).
+- Remove a statement: the statement with its lines and their line terminators,
+  only when it has its lines to itself: no character other than whitespace, and
+  no comment, stands before it on its first line or after it on its last line,
+  so that no other statement, `;`, or comment shares them. A statement over
+  several lines, as `accTitle:` of flowchart with its text on the next line,
+  goes with all of them. A statement that shares a line with another statement,
+  a `;`, or a comment gets no removal: `A --> B; accTitle: x` and
+  `accTitle: style:#b;` keep their lines. For the duplicates, mermaid.js uses
+  the last description or title that remains (run); a description inside a
+  subgraph is also a member of the subgraph in the Db, so removing it changes
+  the members as well (run). Fixtures: a statement alone on its line (offered);
+  one with another statement after it on its line, one after a `;`, and one with
+  a comment after it on its line (none); an `accTitle:` whose text is on the
+  next line (offered, both lines go).
+- Remove the statement before it: offered only when the rule then no longer
+  reports this statement (after `accTitle: A`, `accTitle: A`, and `accTitle: B`,
+  removing the second `A` leaves `B` replacing the first, against criterion 3;
+  run). For a part, the same holds with the part before it.
+- Remove a line statement of eventmodeling: an `accTitle:` or `accDescr:` line
+  is written after another statement on its line in the usual form
+  (`eventmodeling accTitle: First`, `tf 01 evt Bought accTitle: Second`); such a
+  line statement claims the ASCII space or tab before it, and its text runs to
+  the end of the line or to the first `%%`
+  (`packages/spec/docs/diagrams/eventmodeling.md`, the common forms), so the
+  statement before it ends before that space. There, the statement is removed
+  with the spaces and tabs before it, up to the end of its line and without the
+  line terminator, when nothing follows it on its line; with a `%%` after it, it
+  gets none. All 51 such statements in the invalid fixtures of the two rules,
+  removed so, leave a text that the parser and mermaid.js accept and that
+  mermaid.js reads as before apart from the title and the description (run).
+  Fixtures: after the header (offered), after a frame (offered), and with a
+  comment after it (none).
+- Remove a part of a statement (gitgraph-no-duplicate-option,
+  radar-no-duplicate-option, quadrant-no-duplicate-style,
+  venn-no-duplicate-style, usecase-no-duplicate-metadata,
+  treeview-no-duplicate-annotation, no-duplicate-init-key, and
+  journey-no-empty-person): the part goes with one separator next to it, so that
+  no separator is left alone and the list keeps its form. Where the parts are
+  separated by `,` (radar options, quadrant and venn styles, usecase metadata,
+  the members of a JSON object, journey people), the `,` before the part goes,
+  or, for the first part, the `,` after it, each with the whitespace next to it
+  on the side of the part. Where the parts are separated by whitespace (gitgraph
+  options, treeview annotations on the line of the node), the whitespace before
+  the part goes. A part that is the only one of its statement is not removed as
+  a part: the statement goes instead, under the condition for statements (a
+  radar option, a venn property, a usecase update), and a usecase heading of a
+  `systemBoundary` loses its metadata block instead, which the grammar allows
+  (`packages/spec/docs/ast/usecase.md`, the metadata of a boundary may be
+  absent). A treeview annotation on a line of its own goes with its line, under
+  the condition for statements. The results are the forms that the grammar of
+  each list allows, so no other check is needed; gitgraph has the conditions
+  given with its rules below. Fixtures: the first, a middle, and the last part
+  of a list (each offered, with its separator); a part that is the only one of
+  its statement (the statement goes, or none when the statement shares its
+  line); a treeview annotation on the line of the node and on a line of its own.
+- Remove or join across line terminators: an edit that removes, or joins into
+  one line, a range that holds a line terminator (the whitespace around a
+  separator or inside brackets that spans lines, a part of a statement that
+  spans lines, the line break before a line that is joined) is offered only when
+  no comment stands in the range and every line of the range other than its
+  first and its last is empty or holds only whitespace. Otherwise joining the
+  edge lines can make a comment take the text after it, or move a line between
+  them into the value. Fixtures: in block-no-invalid-direction,
+  `A<["x"]>(right`, `%% c`, and `down)` (none; run: accepted by the parser and
+  by mermaid.js), and `A<["x"]>(right ,`, an empty line, and ` down)` (offered).
+- Remove an empty block: under the condition for statements. Removing an empty
+  block leaves the Db as it is in flowchart (run); a block that holds a
+  directive is not removed, by the rule on directives above (run: removed, a
+  subgraph would lose the direction that `inheritDir` gave it). Where the block
+  empties the description (architecture, cynefin, gitgraph, packet, pie, radar,
+  railroad, treemap, treeview, usecase, and wardley) or sets its own text
+  (eventmodeling), mermaid.js then uses the last description that remains (run),
+  and no-duplicate-description may report a later statement. In eventmodeling, a
+  block stands after another statement on its line, as the line statements do
+  (at the start of a line it is rejected, except after a `---` block, where it
+  has its line to itself and the condition for statements applies; run), and may
+  have another statement after it
+  (`eventmodeling accDescr {} tf 01 evt Bought`). There, the block is removed
+  with the spaces and tabs before it on its line, and what follows it stays. All
+  19 such blocks in the invalid fixtures of the rule, the corpus of
+  eventmodeling, and inputs written for the question (after the header, after a
+  frame, with a frame, an `accTitle:`, or a comment after it, at the end of the
+  text, and a block that spans lines), removed so, leave a text that the parser
+  and mermaid.js accept and that mermaid.js reads as before apart from the
+  description (run). Fixtures: an empty block alone on its line (offered), and
+  one after a statement on its line, outside eventmodeling (none).
+- Close a block at the end of the text: a line `}` after the last line, where a
+  block without its `}` is accepted (agentflow, flowchart, sequence, state, and
+  xychart), only when the block has text on a line after the line of the `{`.
+  The closing gives back no line. A block that holds a directive that is not
+  closed gets none: from that directive on, the directive decides what
+  mermaid.js reads (run: closing at the end of the text a block with `d`, then
+  `more %%{wrap` and `A --> B`, gives the description `d` and `more --> B`). A
+  block left open at the end of the text, with the lines `Long` and `text`,
+  closed at the end of the text, has those two lines as its description (run).
+  May make visible: no-duplicate-description, when a description is set before
+  the block (`accDescr: d`, then `accDescr { x` closed, gives `x`; run). A block
+  that a later `}` closes is reported too, and gets none: after
+  `accDescr { first`, the lines `B --> C`, `A{y}`, and `D` give the description
+  `first`, `B --> C`, `A{y` and only the vertex `D`, because the `}` of `A{y}`
+  closes the block (run); the condition is that the text of the block holds a
+  `{` on a later line than the `{` of the block and the closing `}` does not
+  stand alone on its line, so that the `}` that closes the block is the one of a
+  shape or data block on that line, also one that spans lines (`B{`, then `y}`;
+  run). A `}` is alone on its line when only whitespace and directives stand
+  before it there, whatever follows it (`};`, `} C`; run): `accDescr {`,
+  `uses { here`, and `}` close with the author's `}`; a `}` on the line of the
+  `{` (`accDescr { a { b }` gives `a { b`) and a `}` alone on its line
+  (`accDescr { x {`, then `}`, gives `x {`) close the block as written and are
+  not reported (run).
 
-`sequence-*`, `class-*`, and `state-*` (2026-10-08), and `er-*`, `gantt-*`, and
-`journey-*` (2026-10-14), and `requirement-*`, `mindmap-*`, `timeline-*`,
-`sankey-*`, and `xychart-*` (2026-10-15), and `quadrant-*` (2026-10-16), and
-`block-*`, `kanban-*`, `c4-*`, and `venn-*` (2026-10-21), and `agentflow-*` and
-flowchart-no-duplicate-direction (2026-10-22), and `usecase-*`, `pie-*`, and
-`gitgraph-*` (2026-10-23), and `packet-*`, `architecture-*`, and `radar-*`
-(2026-10-25), and `treemap-*`, `railroad-*`, `cynefin-*`, and `wardley-*`
-(2026-10-26), and `eventmodeling-*`, `treeview-*`, no-unclosed-directive,
-no-invalid-init-directive, and no-duplicate-init-key (2026-10-27): the rules are
-implemented without suggestions for now. No suggestion had been decided for them
-or described in their documents, and the one planned for the empty block of a
-sequence diagram rested on generated inputs. Whether they get suggestions is
-decided later, in the form of the flowchart rules, with a fixture for each case.
+### The rules
+
+Each rule below offers the edits named with it, under the conditions of its kind
+above; a rule named with none offers nothing.
+
+- The `<diagram>-no-duplicate-description` and `<diagram>-no-duplicate-title`
+  rules of agentflow, architecture, cynefin, er, eventmodeling, flowchart,
+  gantt, gitgraph, journey, packet, pie, quadrant, radar, railroad, requirement,
+  sequence, state, timeline, treemap, treeview, usecase, venn (title only), and
+  wardley: remove this statement; remove the statement before it. May make
+  visible: the same rule at a later statement that a statement without text hid
+  (`title First`, `title`, and `title Third`; run).
+- The `<diagram>-no-empty-description-block` rules of agentflow, architecture,
+  cynefin, er, eventmodeling, flowchart, gantt, gitgraph, journey, packet, pie,
+  quadrant, radar, railroad, requirement, sequence, state, timeline, treemap,
+  treeview, usecase, and wardley: remove the empty block.
+- The `<diagram>-no-unclosed-description-block` rules of agentflow, flowchart,
+  sequence, state, and xychart: close at the end of the text. Those of er,
+  eventmodeling, radar, requirement, treeview, and usecase: none (criterion 3:
+  the only closing would give back lines; in treeview, where the block becomes a
+  node, closing the name would give back lines too).
+- class: none for class-no-duplicate-description, class-no-duplicate-title,
+  class-no-bare-class-name, class-no-ignored-text, and
+  class-no-unclosed-backquote. In class, a comment after other text on its line
+  takes the line break in mermaid.js (the known divergence
+  `comment-takes-line-break`), so after such a line, any edit changes the line
+  that mermaid.js joins to it (`A %%`, then `B`, is accepted; with `class `
+  written before `B`, it is rejected; run), and keeping an edit right would need
+  a check of that divergence; the split at a `;` and the closing of a backquoted
+  name give back lines (criterion 3). class-no-inline-comment moves the comment
+  to a line of its own (all 23 invalid fixtures are then read as with the
+  comment line removed; run); it needs no such check, because a comment after
+  other text on the line before is reported by the same rule and moved in the
+  same pass. class-no-redefined-class gets none: the likely fix is a new id for
+  one of the two classes (criterion 1, as for flowchart-no-redefined-vertex).
+  class-no-undef gets none: the text does not show which class was meant.
+- c4: none for c4-no-duplicate-description, c4-no-duplicate-title, and
+  c4-no-invalid-attribute-key, for the reason of class (comment-takes-line-break
+  holds in c4 as well). c4-no-duplicate-style gets none: an argument in a place
+  cannot be removed without moving the others, and an empty one gives the empty
+  value. c4-no-redefined-element gets none: a declaration also gives other
+  values. c4-no-useless-argument and c4-no-undef get none.
+- xychart: none for xychart-no-duplicate-description,
+  xychart-no-duplicate-title, and xychart-no-empty-description-block. Removing a
+  line takes away one line terminator after an axis statement, which changes the
+  state of the lexer of mermaid.js, so that it may reject a title that it
+  accepted (the known divergence `title-digit-after-axis-statement`: after
+  `x-axis A; line [1]`, `title B`, and `title Q1`, removing `title B` is
+  rejected, and after `x-axis A; line [1]; line [2]`, `accDescr: a`,
+  `accDescr: b`, and `title Q1`, removing the line `accDescr: a` or
+  `accDescr: b` is rejected, also with `bar [2]`; run); which results are
+  rejected is decided by steps of that lexer that the specification does not
+  state. xychart-no-invalid-orientation writes the orientation in lower case
+  (run). xychart-no-extra-value gets none: the categories meant for the extra
+  values are not in the text. xychart-no-redefined-axis gets none: a statement
+  may set only some parts of the axis, so removing either changes parts that the
+  other does not set.
+- flowchart: flowchart-no-ignored-text gets none (criterion 3: the split gives
+  back lines). flowchart-no-redefined-vertex gets none: the likely fix is a new
+  id (criterion 1). flowchart-no-undef gets none: which id was meant is not
+  known (criterion 1).
+- flowchart, agentflow, and usecase: the three
+  `<diagram>-no-duplicate-direction` rules remove this statement or the one
+  whose direction it differs from (in flowchart, in a later subgraph of an id,
+  the last one of the first subgraph); a direction statement with other text on
+  its line is not removed, since the text would go with it. A later subgraph of
+  an id loses its direction also when the first has none (run). Removing one may
+  make visible a later statement that gave the same direction (`direction LR`,
+  `direction TD`, `direction TB`; run). agentflow-no-ignored-text gets none
+  (criterion 3). agentflow-no-redefined-vertex,
+  agentflow-no-redefined-connector, and agentflow-no-redefined-flow get none:
+  the likely fix is a new id for one of the two elements or flows (criterion 1).
+  usecase-no-duplicate-metadata removes this property or the one before it, as
+  venn-no-duplicate-style does (run). Fixture: `actor A`, then
+  `A@{ type: hollow }`, `A@{ type: hollow }`, and `A@{ type: awesome }`
+  (removing the third offered; removing the second none, since the first
+  `hollow` would still be replaced; run: accepted by the parser and by
+  mermaid.js; an actor takes `normal`, `hollow`, or `awesome`,
+  `packages/spec/docs/diagrams/usecase.md`). usecase-no-redefined-class removes
+  this `classDef` or the one before it, not a statement that defines other
+  classes too (run). agentflow-no-undef gets none.
+- sequence: sequence-no-ignored-text joins a line of only `)`s, with nothing
+  between them, to the end of the text after a `:` that ends the line right
+  before it, when that text holds at least as many `(`s that no `)` after them
+  closes (`A ->> B: call(x`, then `)`, gives the message `call(x)`; run). It
+  does not remove the character: the text does not show that the author meant
+  nothing there. sequence-no-invalid-json removes each `,` outside a string that
+  only whitespace separates from a `}` or `]` after it, when the text before a
+  `#` then is a JSON object (run). sequence-no-link-without-separator inserts
+  `@` and a space before the last word, when the text holds two or more words
+  and the last one holds `://` (run). sequence-no-create-destroy gets none: the
+  text does not show at which message the participant was meant to be destroyed,
+  and `create A` without `participant` is rejected (run).
+- state: state-no-ignored-text inserts a space after the `:` of a note written
+  on one line, as the documentation of mermaid.js writes it
+  (`note left of A:hi`; run); its other texts get none (the split at a `;` gives
+  back lines). state-no-undef gets none, for the reason of class-no-undef.
+- er: er-no-ignored-text gets none (criterion 3). er-no-redefined-entity gets
+  none: the likely fix is a new name for one of the two entities (criterion 1).
+  er-no-undef gets none, for the reason of class-no-undef.
+- gantt: gantt-no-duplicate-setting removes this statement or the one of the
+  same setting before it (mermaid.js uses the last value for the whole chart;
+  run). gantt-no-invalid-tag writes the words of a start of two items in lower
+  case, separated by `,` (`b : done crit, 1d` gets the tags and lasts one day;
+  run); not for the start of three items, where the tag would have to move
+  before the id, nor for an end. gantt-no-unknown-exclude writes the word of
+  which the item, of three letters or more, is the start (`weekend`, `sat`;
+  run); `weekdays` gets none. gantt-no-duplicate-id gets none: the id meant for
+  one of the tasks is not in the text, and removing an id changes which task the
+  references name. gantt-no-undef gets none.
+- journey: journey-no-empty-person removes the empty person with a comma next to
+  it, or, when every person is empty, the colon before the people with them, not
+  when the task has text after a third colon (that text would become the people;
+  run). journey-no-invalid-score writes `: ` after a score from 1 to 5 followed
+  by whitespace or a `,` and more text, when the task has no people and the rest
+  does not start with `%%` or a keyword that starts a statement
+  (`A: 5 accDescr {}` would get the person `accDescr {}`; run).
+  journey-no-ignored-text writes `,` for each colon from the third on, outside
+  directives, when no part is empty (run).
+- requirement: requirement-no-duplicate-field removes this field or the first
+  one of the same kind, whose value mermaid.js keeps, the second only when the
+  rule then no longer reports this field (`id: 1`, `id: 2`, `id: 3`; run);
+  removing the first may make visible a later field with its value.
+  requirement-no-ignored-text gets none (criterion 3).
+  requirement-no-duplicate-name gets none: the text does not show whether one
+  requirement or two were meant, and removing either statement loses what it
+  holds, its classes included. requirement-no-undef gets none.
+- mindmap: mindmap-no-duplicate-decoration removes this line or the line of the
+  same kind before it on the node (run). mindmap-no-mismatched-shape writes the
+  closer of the opener, or the opener of the closer, which is not offered for
+  `-)` (each pair is drawn as its shape; run).
+- sankey: sankey-no-invalid-value writes the number for `Infinity` in another
+  case, digits divided by `_`, a hexadecimal integer with `0x`, and a decimal
+  `,` that does not stand before three digits (`"1,234"` may separate thousands;
+  run). sankey-no-empty-node gets none.
+- treemap: treemap-no-invalid-value writes the number for digits divided by `_`
+  and a decimal `,` that does not stand before three digits, as
+  sankey-no-invalid-value does (run).
+- quadrant: quadrant-no-duplicate-style removes this style or the one of the
+  same name before it in the list, with a `,` next to it;
+  quadrant-no-redefined-class and quadrant-no-redefined-quadrant remove this
+  statement or the one before it (run). quadrant-no-invalid-coordinate writes
+  `.` for a decimal `,` (run). A coordinate with a `,` is always `0`, the `,`,
+  and digits (`packages/spec/docs/diagrams/quadrant.md`, the coordinate: `1,5`
+  is rejected), so the result is always a number from 0 to 1 and the edit needs
+  no condition. Fixture: `A: [0,3, 0,6]` (offered for both coordinates).
+  quadrant-no-redefined-axis gets none, for the reason of
+  xychart-no-redefined-axis. quadrant-no-undef gets none.
+- block: block-no-duplicate-columns and block-no-redefined-style remove this
+  statement or the one before it (run). block-no-edge-chain splits the chain
+  into edges of one link, each on a line of its own that starts with the id of
+  the block before the link (run). block-no-edge-in-composite-head moves a
+  single link after the `end`, as `G --> B` (run); a head with more links gets
+  none, since the moved links would be a chain. block-no-invalid-direction
+  writes a direction without its whitespace (run); a reported direction is
+  already in lower case, because a direction in upper case is rejected
+  (`packages/spec/docs/diagrams/block.md`, block arrows). Fixture: `( left )`
+  (offered, `(left)`). block-no-mismatched-edge writes the opening arrow with
+  the line of the arrow after the label, or that arrow with the line of the
+  opening one, and moves an arrowhead at the start of the opening arrow to the
+  arrow after the label (run). block-no-mismatched-shape writes the closing of
+  the opening (run). The openings `[/` and `[\` have two closings each: `/]` and
+  `\]` close `[/` as a lean right shape and as a trapezoid, and `\]` and `/]`
+  close `[\` as a lean left shape and as an inverted trapezoid. For these two
+  openings, it offers both closings, each with a message that names the closing
+  it writes (``Close with `/]`.``, ``Close with `\]`.``): both are shapes the
+  author may have meant, and the text decides neither. Fixtures: the reported
+  forms `block/db-closer-slash-open-with-bracket` and
+  `block/db-closer-backslash-open-with-bracket`, and the results
+  `block/db-shape-lean-right`, `block/db-shape-trapezoid`,
+  `block/db-shape-lean-left`, and `block/db-shape-inv-trapezoid`.
+  block-no-spaced-class-id removes the whitespace around the commas of the ids,
+  also after a directive there (run). block-no-useless-width removes the width,
+  or moves it to the first declaration of the block on its own when no other
+  edge writes a width for the block (otherwise the other edge would be reported;
+  run). block-no-duplicate-block and block-no-undef get none.
+- kanban: kanban-no-duplicate-section gets none: one column or two with
+  different ids is not decided by the text.
+- venn: venn-no-duplicate-style removes this property or the one before it of
+  the same target, with a `,` next to it, or with its statement when it is the
+  only property (run). venn-no-invalid-style-key writes the name in lower case
+  when that is one of the five; venn-no-duplicate-style may then report it
+  (run). venn-no-ignored-text gets none: written with a space before the
+  comment, the character is read and rejected (`set A: %% c`; run), and removing
+  it loses what the author wrote. venn-no-duplicate-subset and venn-no-undef get
+  none.
+- architecture: architecture-no-reversed-marker writes the markers as mermaid.js
+  draws them, `>` before the line as `<` and `<` after it as `>` (run).
+  architecture-no-ungrouped-modifier removes `{group}` (run); declaring the
+  service in a group would need the name of the group.
+- cynefin, gitgraph, radar, treeview, wardley: cynefin-no-redefined-domain,
+  gitgraph-no-duplicate-option, radar-no-duplicate-option,
+  treeview-no-duplicate-annotation, and wardley-no-duplicate-annotations,
+  -evolution, -evolve, and -size remove this statement, option, or annotation or
+  the one before it whose value it replaces (the first one where mermaid.js
+  keeps the first: wardley-no-duplicate-annotations). The specification names
+  the results that are rejected, and those edits are not offered. In gitgraph,
+  the effective `id:` and `parent:` of a `merge` or a `cherry-pick` decide
+  rejections (the table of rejections in
+  `packages/spec/docs/diagrams/gitgraph.md`: a merge id that names a commit, an
+  unknown cherry-pick source, a parent that is no immediate parent), so the
+  removal of an `id:` or a `parent:` option of those two statements is not
+  offered, while that of a `type:` option and every option of `commit` is
+  (`cherry-pick id: "missing" id: "B"` without `id: "B"` is rejected; run). In
+  wardley, only the coordinates of the first `annotations` are checked
+  (`packages/spec/docs/diagrams/wardley.md`: a value at most 1 is multiplied by
+  100, and a result below 0 or above 100 is rejected), so removing the first
+  `annotations` is offered only when the coordinates of the next one pass that
+  check (an annotations position outside the map left first is rejected; run).
+  Fixtures: an `id:` and a `type:` repeated in a `merge`, and an `id:` repeated
+  in a `cherry-pick` (the `type:` offered, the `id:` none); a later
+  `annotations` inside the map and one outside it (offered and none). Removing a
+  radar option may make visible a reversed range that it hid (`min 10, max 5`,
+  then `min 0`; run). radar-no-reversed-range exchanges the values of the last
+  `min` and `max` (run). wardley-no-ignored-link-label removes the label after
+  `;` or the label in the arrow (`+>` is accepted; run).
+  radar-no-mismatched-entry-count, radar-no-undef, gitgraph-no-redefined-commit,
+  wardley-no-duplicate-pipeline (a pipeline also declares its children),
+  wardley-no-redefined-node (a declaration also gives other values), and
+  wardley-no-undef get none.
+- pie, radar, and eventmodeling: pie-no-duplicate-label,
+  radar-no-duplicate-entry, and eventmodeling-no-redefined-data get none: the
+  likely fix is a new label, the name of another axis, or a new name (criterion
+  1). eventmodeling-no-undef gets none.
+- The common rules: no-unclosed-directive gets none (criterion 3: closing the
+  directive gives back the lines that it took). no-invalid-init-directive
+  removes trailing commas when the JSON then is valid, and writes in lower case
+  a name that ends with `init` or `initialize` only in another case when its
+  JSON is valid (with JSON that is not valid, the lower case would drop the
+  settings of every init directive; run). no-duplicate-init-key removes this
+  member or the one of the same key before it (run).
+
+The rules whose report is an element, a label, or a name written again for
+another value, where the likely fix is a new id or name, get none by criterion
+1; removing one of the two would only silence the rule when two were meant. The
+rules whose report is a setting, a style, or an option of one element written
+again get the two removals.
+
+### Fixes
+
+- These edits are fixes. Each writes what the text already spells in the form
+  that mermaid.js reads (the same word in the case that it reads, the same
+  number, the separator or the space that the author left out, the same
+  statements on lines of their own), and each is decided by its own statement:
+  - block-no-invalid-direction (the direction without its whitespace),
+    block-no-spaced-class-id (the whitespace around the commas removed), and
+    block-no-edge-chain (the chain split into edges of one link);
+  - class-no-inline-comment (the comment on a line of its own);
+  - gantt-no-invalid-tag, gantt-no-unknown-exclude (only one word of `excludes`
+    starts with the item), quadrant-no-invalid-coordinate, and
+    xychart-no-invalid-orientation;
+  - no-invalid-init-directive (both edits), sequence-no-invalid-json,
+    sequence-no-ignored-text, sequence-no-link-without-separator, and
+    state-no-ignored-text (the space after the `:` of a note);
+  - sankey-no-invalid-value and treemap-no-invalid-value for `Infinity` in
+    another case (sankey), digits divided by `_`, and a hexadecimal integer with
+    `0x` (sankey);
+  - venn-no-invalid-style-key when no other property of the same target, in any
+    statement, sets the same attribute (a name in any case). This condition only
+    withholds: no fix writes a new name of an attribute, so another fix cannot
+    make it wrong.
+- These edits are suggestions, for the reason given with each:
+  - removing this statement, option, or part, or the one before it (every rule
+    with the two removals): the text does not show which of the two values the
+    author meant to keep, and where only this one may go, keeping the earlier
+    value is a guess as well;
+  - removing an empty block (the `<diagram>-no-empty-description-block` rules)
+    and journey-no-empty-person: an empty block or an empty person may be a
+    place left to be filled, and the text does not show that the author meant
+    nothing there;
+  - closing a block at the end of the text: the text does not show where the
+    block was meant to end, and the lines after it, kept as its text, may have
+    been meant as statements;
+  - block-no-mismatched-shape, block-no-mismatched-edge, and
+    mindmap-no-mismatched-shape: the text does not show which of the two
+    brackets or arrows is the mistake;
+  - block-no-useless-width: removing the width loses what the author wrote, and
+    where to move it is a choice;
+  - wardley-no-ignored-link-label: the text does not show which of the two
+    labels was meant;
+  - block-no-edge-in-composite-head: an edge places the blocks that it declares
+    where it stands, so moving it after the `end` may move them;
+  - architecture-no-reversed-marker: it keeps the drawing and changes the text,
+    while the author may have meant the direction that the text shows;
+  - architecture-no-ungrouped-modifier: removing `{group}` loses the grouping
+    that the author meant, which needs the name of a group;
+  - radar-no-reversed-range: one of the two numbers may be the mistake instead
+    of their order;
+  - journey-no-ignored-text: a colon from the third on may belong to the name of
+    a person (`Meet at 10:30`);
+  - journey-no-invalid-score: the text after the score may belong to the task
+    (`Write: 2 drafts` would get the person `drafts`);
+  - sankey-no-invalid-value and treemap-no-invalid-value for a decimal `,`:
+    `1,5` may be 1.5 or 15;
+  - venn-no-invalid-style-key where another property sets the same attribute:
+    the edit changes which value mermaid.js uses, which the text does not show
+    that the author meant.

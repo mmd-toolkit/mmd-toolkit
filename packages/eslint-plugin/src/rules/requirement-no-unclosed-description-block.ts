@@ -22,6 +22,7 @@ export const requirementNoUnclosedDescriptionBlock: MermaidRuleDefinition<{
       recommended: false,
       url: ruleDocsUrl("requirement-no-unclosed-description-block"),
     },
+
     schema: [],
     messages: {
       closedByOtherBrace:

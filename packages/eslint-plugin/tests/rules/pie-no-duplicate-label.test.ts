@@ -38,6 +38,27 @@ B":2`,
           },
         ],
       },
+
+      {
+        name: "invalid/pie/label-crlf-lf-equal",
+        filename:
+          "tests/fixtures/rules/pie-no-duplicate-label/invalid/pie/label-crlf-lf-equal-input.mmd",
+        code: `pie
+"A\r
+B":1
+"A
+B":2`,
+        errors: [
+          {
+            message:
+              "mermaid.js keeps the value of the first section with this label and ignores this value.",
+            line: 4,
+            column: 1,
+            endLine: 5,
+            endColumn: 5,
+          },
+        ],
+      },
     ],
   },
 )

@@ -1,3 +1,4 @@
+import { blockClosingSuggestions } from "../utils/description-block-suggestions.ts"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { holdsBraceAfterBraceLine } from "../utils/description-block.ts"
@@ -13,7 +14,7 @@ import { holdsBraceAfterBraceLine } from "../utils/description-block.ts"
  */
 export const stateNoUnclosedDescriptionBlock: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "unclosed" | "closedByOtherBrace"
+  MessageIds: "unclosed" | "closedByOtherBrace" | "closeAtTextEnd"
 }> = {
   meta: {
     type: "problem",
@@ -22,12 +23,15 @@ export const stateNoUnclosedDescriptionBlock: MermaidRuleDefinition<{
       recommended: false,
       url: ruleDocsUrl("state-no-unclosed-description-block"),
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
       unclosed:
         "mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.",
       closedByOtherBrace:
         "mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.",
+
+      closeAtTextEnd: "Close the block at the end of the text.",
     },
   },
   create(context) {
@@ -40,11 +44,18 @@ export const stateNoUnclosedDescriptionBlock: MermaidRuleDefinition<{
         if (keyword === undefined || brace === undefined) return
         const loc = { start: keyword.loc.start, end: brace.loc.end }
         if (!node.closed) {
-          context.report({ loc, messageId: "unclosed" })
+          context.report({
+            loc,
+            messageId: "unclosed",
+            suggest: blockClosingSuggestions(sourceCode, brace, rest),
+          })
           return
         }
         if (holdsBraceAfterBraceLine(sourceCode, brace, rest)) {
-          context.report({ loc, messageId: "closedByOtherBrace" })
+          context.report({
+            loc,
+            messageId: "closedByOtherBrace",
+          })
         }
       },
     }

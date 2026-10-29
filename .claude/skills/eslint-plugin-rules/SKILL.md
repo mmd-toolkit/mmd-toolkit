@@ -110,7 +110,12 @@ after writing it.
   `RuleTester` case, put that output in the suggestion's `output` field. A
   message states what is true after the suggestion is applied, for every place
   where it is offered. Check that reading independently of the rule as in
-  section 2; a rule test does not run mermaid.js.
+  section 2; a rule test does not run mermaid.js. When the condition of a
+  candidate cannot be written in the sentences that the record of rule-ideas
+  (section 8) gives, the candidate goes back to rule-ideas, and offering no
+  suggestion is an ordinary conclusion: do not add a condition or a check to
+  keep it, and do not parse the result of an edit or decide it per known
+  divergence.
 - Use the helpers of `src/utils/` before writing another. When a helper rests on
   an assumption that a new rule breaks, read the tree to decide it (not the
   text), and check the other rules that use the helper again.
@@ -148,12 +153,18 @@ after writing it.
   fixture. Put them under `valid/` or `invalid/`, optionally in a subdirectory,
   and do not duplicate a document example or another input of the same rule. The
   common directive rule keeps its existing named corpus input tables.
-- A fixture file holds no character that `pnpm run lint:chars` checks for. Use
-  ESLint's `RuleTester` for U+2028, U+2029, a lone carriage return, U+00A0, and
-  the like. Write `code` and each suggestion's expected `output` as template
-  literals, with `\u2028`, `\u2029`, `\u00a0`, or `\r`. State the expected
-  reports in `errors`, and the full output text of each suggestion. These cases
-  do not read the corpus.
+- A fixture file holds no carriage return, alone or in a CRLF, and no character
+  that `pnpm run lint:chars` checks for. Use ESLint's `RuleTester` for such
+  inputs: write `code` and each suggestion's expected `output` as template
+  literals. Escape those characters: write a carriage return as `\r`, and a CRLF
+  as `\r` followed by an actual line break; write U+2028, U+2029, and U+00A0 as
+  `\u2028`, `\u2029`, and `\u00a0`. Write any other line break as an actual line
+  break. A tab and whitespace at the end of a line may be written as `\t` and
+  `\u0020`, which shows in the code the whitespace that a case is about. State
+  the expected reports in `errors`, and the full output text of each suggestion.
+  These cases do not read the corpus. Whitespace at the end of a line is not
+  among those characters: it stays in a fixture file, where `.editorconfig`
+  keeps it.
 - Regenerate snapshots with `test:update` (without `CI=true`) when an output
   intentionally changes. Read the differences and account for each one. When
   adding a case, keep existing snapshots and add only its missing snapshot.
@@ -165,17 +176,19 @@ the test files that the change can affect (`npx vitest run <files>` in
 `packages/eslint-plugin`), and the whole suite once, before reporting the work
 as done.
 
-| What changed                                         | Test files to run                                                                                                                                                 |
-| ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A rule file `src/rules/<name>.ts`                    | `tests/rules/<name>.test.ts`                                                                                                                                      |
-| The handlers of a rule of a diagram type             | the same, and `tests/diagram-rules.test.ts`                                                                                                                       |
-| A helper of `src/utils/`                             | the tests of the rules that import it (search for the import); `tests/subgraph-ids.test.ts` for `subgraph-ids.ts`, `tests/text-nodes.test.ts` for `text-nodes.ts` |
-| The fixture directory of a rule                      | `tests/rules/<name>.test.ts`                                                                                                                                      |
-| The examples of the English document of a rule       | `tests/rules/<name>.test.ts` and `tests/rule-cases.test.ts`                                                                                                       |
-| A rule added, renamed, or removed                    | the tests above for the rule, and `tests/rules-index.test.ts`                                                                                                     |
-| `tests/rule-test.ts` or `tests/rule-cases.ts`        | every `tests/rules/**/*.test.ts`, `tests/rule-cases.test.ts`                                                                                                      |
-| `src/language.ts`, `src/source-code.ts`, token store | `tests/language.test.ts`, `tests/token-store.test.ts`, `tests/snapshot.test.ts`, `tests/inline-config.test.ts`, `tests/markdown.test.ts`                          |
-| The parser, when the plugin reads the changed nodes  | the language tests above, `tests/diagram-rules.test.ts`, and the tests of the rules that read those nodes                                                         |
+| What changed                                                  | Test files to run                                                                                                                                                                                                 |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A rule file `src/rules/<name>.ts`                             | `tests/rules/<name>.test.ts`                                                                                                                                                                                      |
+| The handlers of a rule of a diagram type                      | the same, and `tests/diagram-rules.test.ts`                                                                                                                                                                       |
+| A helper of `src/utils/`                                      | the tests of the rules that import it (search for the import); `tests/subgraph-ids.test.ts` for `subgraph-ids.ts`, `tests/compact-range.test.ts` for `compact-range.ts`, `tests/removal.test.ts` for `removal.ts` |
+| A suggestion `removePrevious`, or a rule added to its list    | `tests/suggestion-history.test.ts`                                                                                                                                                                                |
+| `tools/rule-docs.ts`, or the directive that starts an example | `tests/rule-docs.test.ts`                                                                                                                                                                                         |
+| The fixture directory of a rule                               | `tests/rules/<name>.test.ts`                                                                                                                                                                                      |
+| The examples of the English document of a rule                | `tests/rules/<name>.test.ts` and `tests/rule-cases.test.ts`                                                                                                                                                       |
+| A rule added, renamed, or removed                             | the tests above for the rule, and `tests/rules-index.test.ts`                                                                                                                                                     |
+| `tests/rule-test.ts` or `tests/rule-cases.ts`                 | every `tests/rules/**/*.test.ts`, `tests/rule-cases.test.ts`                                                                                                                                                      |
+| `src/language.ts`, `src/source-code.ts`, token store          | `tests/language.test.ts`, `tests/token-store.test.ts`, `tests/snapshot.test.ts`, `tests/inline-config.test.ts`, `tests/markdown.test.ts`                                                                          |
+| The parser, when the plugin reads the changed nodes           | the language tests above, `tests/diagram-rules.test.ts`, and the tests of the rules that read those nodes                                                                                                         |
 
 The tests that read documents are `tests/rule-cases.test.ts` and every
 `tests/rules/**/*.test.ts` (they read the examples of the English document of

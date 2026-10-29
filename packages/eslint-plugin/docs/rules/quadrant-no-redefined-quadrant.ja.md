@@ -8,38 +8,31 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
+
 <!-- end auto-generated rule notice -->
 
 `quadrant-1` から `quadrant-4` は、4 つの象限のテキストを設定する。
-mermaid.js は同じ象限の 2 つ目の文を受理し、
-最初の文が設定したテキストを黙って置き換える。
-2 つ目の文は、たいてい、テキストを書き直した残りか、
-行を貼り付けた後に番号を変え忘れたものである。
+mermaid.js は同じ象限の別の文をエラーなしに受理してそのテキストを使うので、
+前のテキストは失われる。
 
 ## 規則の詳細
 
-この規則は、同じ番号の最初のものより後の `quadrant-1`、`quadrant-2`、
-`quadrant-3`、`quadrant-4` の文を、
-その象限の前の文が設定したテキストを別の値に置き換えるときに報告する。
-対象の図種は `quadrantChart` である。
+この規則は、象限チャート（`quadrantChart`）に当てる。
+その象限の現在の空でないテキストを別の値に置き換える `quadrant-1`、
+`quadrant-2`、`quadrant-3`、`quadrant-4` の文を報告する。
+現在のテキストを繰り返す文と、空だったテキストを設定する文は報告せず、
+ほかの象限の文は別々に調べる。
 
-`quadrant-1 We should expand` の後の `quadrant-1 Need to promote` は、
-1 つ目の象限にテキスト `Need to promote` を与え、
-テキスト `We should expand` は失われる。
-空白だけを持つ引用符の中のテキストは空のテキストを設定し、
-`quadrant-1 A` の後の `quadrant-1 "  "` は報告する。
-キーワードは大文字小文字を問わず読む。
-`quadrant-10 B` は、テキスト `0 B` を持つ 1 つ目の象限の文なので、
-`quadrant-1 A` の後では報告する。
-間にあるほかの象限の文は数えない。
-
-何も失わない文は報告しない。
-空だったテキストは失われない。
-テキストは、mermaid.js が持つとおりに、両端の空白と、
-文字列の引用符とバッククォートを除いて比べる。
-そのため、`quadrant-1 A` の後の `quadrant-1 " A "` と ``quadrant-1 "`A`"`` は、
-同じテキストを設定する。
+テキストは周囲の空白、引用符、マークダウン文字列のバッククォートを除いて比べ、
 語の間の空白は数える。
+引用符の中の空白だけのテキストは空のテキストを設定するので、
+`quadrant-1 A` の後の `quadrant-1 "  "` は報告する。
+キーワードは大文字小文字を問わず読み、
+`quadrant-10 B` は 1 つ目の象限のテキストを `0 B` にするので、
+`quadrant-1 A` の後では報告する。
 `quadrant-1 A` と `quadrant-1 B` の後の 3 つ目の `quadrant-1 A` は、
 `B` を置き換えるので報告する。
 

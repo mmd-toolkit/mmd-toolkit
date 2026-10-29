@@ -9,6 +9,9 @@ Disallow a label after `;` that the label in the arrow of the link replaces.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
 A link has one label: the one in its arrow, as `+'calls'>`, or the one after
@@ -17,22 +20,17 @@ error, and the label after `;` is lost.
 
 ## Rule Details
 
-This rule reports a label after `;` of a link whose arrow holds another label.
-It applies to `wardley`.
+This rule applies to Wardley maps (`wardley-beta`). It reports a link label
+after `;` when the arrow holds a different label, including an empty label, as
+in `+''>`. An identical label after `;`, one containing only spaces, and a link
+with only one label are not reported. A link that draws nothing, because an end
+names no node or because it goes from a pipeline child to its parent, is not
+reported.
 
-`API +'calls'> Database; storage` draws the label `calls` only. An empty label
-in the arrow replaces it too: `API +''> Database; storage` draws no label.
-
-A label after `;` that is the label in the arrow, a label after `;` of only
-spaces, and a link with one label are not reported. A link that draws nothing,
-since an end names no node or since it joins a child of a pipeline to its
-parent, is not reported. Every line break (LF, CRLF, or CR) in a label is read
-as a line feed. Labels are otherwise compared as written: mermaid.js turns
-character references, as `#35;`, and the quotes of HTML attributes into other
-characters before it reads a label, so two labels that differ only in those may
-be one label for mermaid.js and two for this rule.
-
-Write one label for each link.
+Labels are otherwise compared as written. mermaid.js converts character
+references such as `#35;` and HTML attribute quotes before reading a label, so
+labels differing only in these ways may be the same for mermaid.js and different
+for this rule.
 
 Examples of **incorrect** code for this rule:
 
@@ -61,13 +59,6 @@ This rule has no options.
 ## Related Rules
 
 - [wardley-no-undef](./wardley-no-undef.md)
-
-## Background
-
-The
-[parser](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L178-L186)
-takes the label in the arrow, and the label after `;` only where the arrow has
-none.
 
 <!-- begin auto-generated rule resources -->
 

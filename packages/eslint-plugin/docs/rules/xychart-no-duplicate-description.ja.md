@@ -11,39 +11,30 @@
 
 <!-- end auto-generated rule notice -->
 
-XY チャートの説明は 1 つである。
-mermaid.js は `accDescr` の文をすべて受理し、説明を設定するそれぞれの文が、
-前に設定された説明を黙って置き換える。
-2 つ目の説明は、たいてい、テキストを書き直した残りか、
-一部を 2 度貼り付けた残りである。
+図の説明は 1 つである。
+別の `accDescr` の文が説明を設定すると、
+mermaid.js はエラーなしに後の説明を使い、前の説明は失われる。
 
 ## 規則の詳細
 
-この規則は、説明を設定する文のうち、最初のもの以外を、
-前と違う説明を設定するときに報告する。
-対象の図種は `xychart` である。
+この規則は、XY チャート（`xychart`、`xychart-beta`）に当てる。
+現在の説明を別の値に置き換える `accDescr:` の文か説明のブロックを報告する。
+現在の説明を繰り返す文は、2 つの形を混ぜても報告しない。
 
-`accDescr:` とテキストのある説明のブロックは、どちらも説明を設定し、混ぜてよい。
-`accDescr: a` と `accDescr { b }` の後、説明は `b` である。
-行にテキストのない `accDescr:` は、`accTitle:` と同じく、
-テキストを持つ次の行を取る。
-説明を持たないブロックは数えない。
-`accDescr: a` の後のブロック `accDescr {}` は、説明を `a` のままにし、
-[xychart-no-empty-description-block](./xychart-no-empty-description-block.ja.md)
-がそれを報告する。
-閉じていないブロックも数えず、
-[xychart-no-unclosed-description-block](./xychart-no-unclosed-description-block.ja.md)
-がそれを報告する。
-
-チャートがすでに持つ説明を設定する文は、どちらの形でも報告しない。
-`accDescr: d` の後のブロック `accDescr { d }` は、何も失わない。
-説明は、mermaid.js が持つとおりに、両端の空白と、
-各改行の後の空白を除いて比べる。
-そのため、ブロックの行の字下げと、その中の空行は数えない。
-改行は、LF、CRLF、CR のどれも LF として読む。
-そのため、CRLF で書いたブロックは、LF で書いたブロックと同じ説明を設定する。
+説明は、両端の空白と各改行の後の空白を除いて比べるので、
+ブロックの字下げと空行は数えない。
+LF、CRLF、CR の改行は、LF として比べる。
 `accDescr: a` と `accDescr: b` の後の 3 つ目の `accDescr: a` は、
 `b` を置き換えるので報告する。
+
+行にテキストのない `accDescr:` も説明を設定するので数える。
+その文は、空行、コメント行、ディレクティブを飛ばして、
+テキストを持つ次の行を取り、テキストの終わりまでにそうした行がなければ、
+空の説明を設定する。
+説明を持たないブロックは数えない。
+閉じていないブロックも数えず、
+[xychart-no-unclosed-description-block](./xychart-no-unclosed-description-block.ja.md)
+が報告する。
 
 この規則に**反する**コードの例:
 

@@ -9,41 +9,33 @@ Disallow an `accDescr` that replaces the description set before it.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-A use case diagram has one accessible description, which `accDescr` sets, as a
-line or as a block. A later `accDescr` replaces the description set before it
-without an error, and the earlier description is lost.
+A use case diagram has one accessible description, set by `accDescr` on a line
+or in a block. mermaid.js accepts a later description without an error and
+replaces the earlier one.
 
 ## Rule Details
 
-This rule reports an `accDescr` statement that changes the description that an
-earlier `accDescr` set, when that description is not empty. It applies to
-`usecase`.
+This rule applies to use case diagrams (`usecase-beta`). It reports an
+`accDescr` that changes a nonempty description set by the preceding `accDescr`,
+comparing line and block forms together. Repeating the same description or
+setting one after an empty description is not reported.
 
-The line form and the block form may be mixed: whichever comes first, the
-description written last is used. `accDescr:` with no text sets the empty
-description and does not take the next line; after a description, it is
-reported. A block that holds only a comment line sets the empty description too:
-mermaid.js removes the comment, so after `accDescr: d`, the block `accDescr {`,
-`%% TODO`, and `}` removes `d` and is reported. A block that holds nothing is
-reported by
-[usecase-no-empty-description-block](./usecase-no-empty-description-block.md). A
-statement after an empty description loses nothing and is not reported.
+An `accDescr:` with no text clears the description without taking the next line
+and is reported after a nonempty description. A block holding only comment lines
+also clears it and is reported after a nonempty description too. An empty block
+is reported by
+[usecase-no-empty-description-block](./usecase-no-empty-description-block.md)
+instead.
 
-A statement that sets the description that the diagram already has is not
-reported, in either form: after `accDescr: d`, the block `accDescr { d }` loses
-nothing. Descriptions are compared as mermaid.js keeps them, without the
-whitespace at their ends and without the whitespace after each line break, so
-the indentation of the lines of a block and the empty lines in it do not count.
-Every line break (LF, CRLF, or CR) is read as a line feed. After `accDescr: a`
-and `accDescr: b`, a third `accDescr: a` is reported, because it replaces `b`.
-Descriptions are otherwise compared as written: mermaid.js turns character
-references, as `#35;`, and the quotes of HTML attributes into other characters
-before it reads a description, so two descriptions that differ only in those may
-be one description for mermaid.js and two for this rule.
-
-Write one description; write a description of several lines in one block.
+Comparisons ignore whitespace at the ends and whitespace after line breaks,
+including block indentation and empty lines. LF, CRLF, and CR are compared as
+LF. Other text is compared as written, so character references and HTML
+attribute quotes can differ for this rule although mermaid.js reads them alike.
 
 Examples of **incorrect** code for this rule:
 
@@ -73,16 +65,6 @@ This rule has no options.
 - [usecase-no-duplicate-title](./usecase-no-duplicate-title.md)
 - [usecase-no-empty-description-block](./usecase-no-empty-description-block.md)
 - [usecase-no-unclosed-description-block](./usecase-no-unclosed-description-block.md)
-
-## Background
-
-The
-[`accDescr` statements](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.visitor.ts#L132-L140)
-give the description without the whitespace at its ends, the
-[model](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L243-L245)
-keeps only the last one, and the common
-[`setAccDescription`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L22-L24)
-removes the whitespace after each line break.
 
 <!-- begin auto-generated rule resources -->
 

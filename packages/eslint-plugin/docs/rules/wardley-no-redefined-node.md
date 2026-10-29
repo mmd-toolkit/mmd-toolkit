@@ -17,27 +17,22 @@ the earlier declaration without an error, and the earlier values are lost.
 
 ## Rule Details
 
-This rule reports a declaration of an anchor, a component, or a child of a
-pipeline that gives a node of the same id other values than an earlier one. It
-applies to `wardley`.
+This rule applies to Wardley maps (`wardley-beta`). It reports an anchor,
+component, or pipeline child declaration that gives a node values different from
+the ones it has from the declarations before it. mermaid.js takes anchors first,
+then components, then pipeline children, whatever their order in the text, so
+when an anchor and a component share an id, the component is reported even where
+it is written before the anchor. A pipeline child `X` of `P` has the id `P_X`
+and replaces a component named `P_X`.
 
-After `component API [0.6, 0.7] (build) inertia` and `component API [0.3, 0.8]`,
-the map has one node `API`, at the later position, without the overlay of
-`build` and without the mark of inertia.
+Positions are compared as percentages, so `0.6` and `60.0` are the same
+position. A later declaration that leaves out a label offset keeps the earlier
+offset and is not reported for it, but one that leaves out a strategy or inertia
+given before is reported. The evolution position of a pipeline parent is not
+compared, because mermaid.js draws the parent above its children.
 
-mermaid.js takes the anchors first, then the components, then the children of
-the pipelines, whatever their order in the text, so a component replaces an
-anchor of its name also where the anchor is written after it, and this rule
-compares them in that order. The child `X` of the pipeline `P` has the id `P_X`
-and replaces a component named `P_X`. Positions are compared as percentages:
-`0.6` and `60.0` are one position. An offset of the label that a later
-declaration leaves out keeps the earlier one; a strategy or an inertia left out
-does not. The position of the parent of a pipeline along evolution is not
-compared, since mermaid.js draws the parent above its children. A declaration
-that gives the values that the node already has is not reported. Names are
-compared as the rule [wardley-no-undef](./wardley-no-undef.md) compares them.
-
-Give each node its own id, or declare it once.
+A declaration repeating the node's current values is not reported. Names are
+compared as [wardley-no-undef](./wardley-no-undef.md) compares them.
 
 Examples of **incorrect** code for this rule:
 
@@ -64,16 +59,6 @@ This rule has no options.
 ## Related Rules
 
 - [wardley-no-undef](./wardley-no-undef.md)
-
-## Background
-
-The
-[parser](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L92-L171)
-adds the anchors, the components, and the children of the pipelines in that
-order, and
-[`addNode`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L92-L102)
-stores a node over the one of the same id, keeping only its offsets of the
-label.
 
 <!-- begin auto-generated rule resources -->
 

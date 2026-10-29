@@ -5,6 +5,7 @@ import type {
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { accDescrText } from "../utils/acc-text.ts"
+import { oneOfTwoRemovals } from "../utils/removal.ts"
 
 /** A statement that sets the description. */
 type DescriptionStatement =
@@ -24,7 +25,7 @@ type DescriptionStatement =
  */
 export const timelineNoDuplicateDescription: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "duplicate"
+  MessageIds: "duplicate" | "removeThis" | "removePrevious"
 }> = {
   meta: {
     type: "problem",
@@ -34,14 +35,18 @@ export const timelineNoDuplicateDescription: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("timeline-no-duplicate-description"),
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
       duplicate:
         "mermaid.js replaces the earlier description with the one of this `accDescr`.",
+      removeThis: "Remove this statement.",
+      removePrevious: "Remove the earlier statement that sets the description.",
     },
   },
   create(context) {
     let previous: DescriptionStatement | null = null
+    let beforePrevious: DescriptionStatement | null = null
 
     /** Reports `node` when a statement before it set the description. */
     function check(node: DescriptionStatement): void {
@@ -49,8 +54,16 @@ export const timelineNoDuplicateDescription: MermaidRuleDefinition<{
         context.report({
           node,
           messageId: "duplicate",
+          suggest: oneOfTwoRemovals(
+            context.sourceCode,
+            node,
+            previous,
+            beforePrevious === null ||
+              accDescrText(beforePrevious) === accDescrText(node),
+          ),
         })
       }
+      beforePrevious = previous
       previous = node
     }
 

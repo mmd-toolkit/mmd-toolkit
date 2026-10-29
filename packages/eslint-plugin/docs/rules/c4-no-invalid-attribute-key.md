@@ -11,35 +11,28 @@ Disallow incorrect casing of the color and offset keys in C4 style updates.
 
 <!-- end auto-generated rule notice -->
 
-`$BgColor="red"` is accepted, but stores the separate attribute `BgColor`. It
-does not set `bgColor`, so the element does not get that background color. A
-difference in case gives no parse error.
+mermaid.js accepts `$BgColor="red"` without an error, but treats `BgColor` as a
+separate attribute from `bgColor`. The element does not get the intended
+background color.
 
 ## Rule Details
 
-This rule reports a named key that differs only in case from `bgColor`,
-`fontColor`, or `borderColor` in an applied `UpdateElementStyle`, or from
-`textColor`, `lineColor`, `offsetX`, or `offsetY` in an applied
-`UpdateRelStyle`. It applies to `c4`.
+This rule applies to C4 diagrams (`C4Context`, `C4Container`, `C4Component`,
+`C4Dynamic`, and `C4Deployment`). It reports named keys differing only in case
+from `bgColor`, `fontColor`, or `borderColor` in `UpdateElementStyle`, or
+`textColor`, `lineColor`, `offsetX`, or `offsetY` in `UpdateRelStyle`. Each key
+is checked without whitespace at its ends, only in optional argument positions
+that the call reads and only when the update has a target. Targets include
+elements, boundaries, and the initial `global` boundary.
 
-Each key is checked without exterior whitespace, in the consumed optional
-arguments only. Each incorrectly cased key produces one report. Element style
-updates can reach a shape, a boundary, or the initial `global` boundary. The
-target is found by its alias as written: mermaid.js turns character references,
-as `#35;`, and the quotes of HTML attributes into other characters before it
-reads an alias, so for an alias that differs only in those, mermaid.js and this
-rule may find different targets.
+Other unfamiliar keys are not reported because named attributes such as `alias`,
+`from`, and `to` can change what later statements match. Required positions and
+excess arguments are not checked.
 
-The rule does not report other unfamiliar keys: mermaid.js keeps any named
-attribute, and some keys that the documentation does not list, such as `alias`,
-`from`, and `to`, change what later statements match. Keys in required argument
-positions, excess arguments, and updates that have no current target are not
-checked by this rule. A key in `UpdateLayoutConfig` is not checked either: its
-position, not its name or case, selects the counter.
-
-Use the key's exact case. Correctly spelled named offsets in a color slot are
-not reported: mermaid.js stores them as strings and the renderer reads those
-strings as offsets.
+`UpdateLayoutConfig` is not checked because position selects the setting.
+Correctly cased named offsets in color positions are not reported because
+mermaid.js can use those values as offsets. This rule checks attribute names,
+not whether color values are valid CSS.
 
 Examples of **incorrect** code for this rule:
 
@@ -73,14 +66,6 @@ This rule has no options.
 
 - [c4-no-undef](./c4-no-undef.md)
 - [c4-no-useless-argument](./c4-no-useless-argument.md)
-
-## Background
-
-The element adapter reads the exact fields
-[`bgColor`, `borderColor`, and `fontColor`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4ShapeAdapter.ts#L140-L156).
-Relationship drawing reads the exact
-[color and offset fields](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/svgDraw.ts#L26-L36).
-This is about ignored field names, not whether a color value is valid CSS.
 
 <!-- begin auto-generated rule resources -->
 

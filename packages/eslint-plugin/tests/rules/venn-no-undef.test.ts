@@ -21,6 +21,18 @@ style "A
 B" fill:red
 `,
     },
+
+    {
+      name: "valid/venn/target-crlf",
+      filename:
+        "tests/fixtures/rules/venn-no-undef/valid/venn/target-crlf-input.mmd",
+      code: `venn-beta
+set "A\r
+B"
+style "A
+B" fill:red
+`,
+    },
   ],
   invalid: [],
 })

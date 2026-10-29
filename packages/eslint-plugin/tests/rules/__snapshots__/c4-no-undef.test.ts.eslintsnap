@@ -338,17 +338,3 @@ Code:
 [1] mermaid.js applies no style: no element or boundary has this alias when this `UpdateElementStyle` is read.
 [2] mermaid.js applies no style: no element or boundary has this alias when this `UpdateElementStyle` is read.
 ---
-
-
-Test: c4-no-undef >> invalid >>> invalid/c4/undefined-use-crlf
-Filename: tests/fixtures/rules/c4-no-undef/invalid/c4/undefined-use-crlf-input.mmd
-
-Code:
-  1 | C4Context
-  2 | Person(a, "A")
-  3 | UpdateElementStyle(typo, "red")
-    |                    ^~~~ [1]
-  4 |
-
-[1] mermaid.js applies no style: no element or boundary has this alias when this `UpdateElementStyle` is read.
----

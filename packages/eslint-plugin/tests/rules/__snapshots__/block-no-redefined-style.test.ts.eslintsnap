@@ -13,6 +13,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the whole style list of `A`, losing a style set earlier.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   A
+          3 |   style A fill:#f00
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   A
+          3 |   style A stroke:#00f
+          4 |
 ---
 
 
@@ -31,6 +44,25 @@ Code:
   8 |
 
 [1] mermaid.js replaces the whole style list of `A`, losing a style set earlier.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   A
+          3 |   style A fill:#f00
+          4 |   block:G
+          5 |     B
+          6 |   end
+          7 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   A
+          3 |   block:G
+          4 |     B
+          5 |     style A stroke:#00f
+          6 |   end
+          7 |
 ---
 
 
@@ -48,7 +80,37 @@ Code:
   6 |
 
 [1] mermaid.js replaces the whole style list of `A`, losing a style set earlier.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   A
+          3 |   style A fill:#f00
+          4 |   style A fill:#f00
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   A
+          3 |   style A stroke:#00f
+          4 |   style A fill:#f00
+          5 |
 [2] mermaid.js replaces the whole style list of `A`, losing a style set earlier.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   A
+          3 |   style A fill:#f00
+          4 |   style A stroke:#00f
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   A
+          3 |   style A fill:#f00
+          4 |   style A fill:#f00
+          5 |
 ---
 
 
@@ -64,6 +126,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the whole style list of `A`, losing a style set earlier.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   A
+          3 |   style A fill:#f00
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   A
+          3 |   style A fill:#F00
+          4 |
 ---
 
 
@@ -79,6 +154,43 @@ Code:
   5 |
 
 [1] mermaid.js replaces the whole style list of `A`, losing a style set earlier.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   A
+          3 |   style A fill:#f00
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   A
+          3 |   style A ,
+          4 |
+---
+
+
+Test: block-no-redefined-style >> invalid >>> invalid/block/style-equal-predecessor
+Filename: tests/fixtures/rules/block-no-redefined-style/invalid/block/style-equal-predecessor-input.mmd
+
+Code:
+  1 | block
+  2 | A
+  3 | style A fill:#f00
+  4 | style A fill:#f00
+  5 | style A stroke:#00f
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the whole style list of `A`, losing a style set earlier.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 | A
+          3 | style A fill:#f00
+          4 | style A fill:#f00
+          5 |
 ---
 
 
@@ -94,6 +206,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the whole style list of `A`, losing a style set earlier.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   A
+          3 |   style A fill:#f00
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   A
+          3 |   style A stroke:#00f
+          4 |
 ---
 
 
@@ -109,4 +234,17 @@ Code:
   5 |
 
 [1] mermaid.js replaces the whole style list of `A`, losing a style set earlier.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   A
+          3 |   style A fill:#f00
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   A
+          3 |   style A fill:#00f
+          4 |
 ---

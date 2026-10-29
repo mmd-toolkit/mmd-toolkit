@@ -11,34 +11,31 @@ Disallow a `title` or `accTitle` statement that sets its title again.
 
 <!-- end auto-generated rule notice -->
 
-An XY chart has two titles: the title that `title` sets, drawn above the chart,
-and the accessible title that `accTitle` sets. mermaid.js accepts every
-statement that sets one of them, and each one silently replaces the value set
-before it. A second title is usually left over from rewriting the text or from
-pasting a part twice.
+`title` sets the title drawn above the diagram, and `accTitle` sets its
+accessible title. When either is set again, mermaid.js uses the later value
+without an error, and the earlier one is lost.
 
 ## Rule Details
 
-This rule reports every `title` statement after the first one, and every
-`accTitle` statement after the first one, when the statement sets a value other
-than the one before it. It applies to `xychart`.
+This rule applies to XY charts (`xychart` and `xychart-beta`). It reports a
+`title` or `accTitle` statement that replaces the current value of the same
+title with a different one. The two titles are checked separately, and a
+statement that repeats the current value is not reported.
 
-After `title first` and `title second`, the title is `second`, and so for
-`accTitle`; the keywords are read in any case, and two title statements on one
-line count as two. `accTitle:` with no text on its line takes the next line that
-holds text as the accessible title, past empty lines, comment lines, and
-directives, and with no such line before the end of the text it sets the empty
-accessible title: after `accTitle: a`, both are reported. The two titles are
-separate values: `title first` and `accTitle: second` set both, and neither is
-reported. The title of the frontmatter is another value, and it is not counted.
+`accTitle:` with no text on its line takes the next line that holds text, past
+empty lines, comment lines, and directives. With no such line before the end of
+the text, `accTitle:` sets the empty accessible title and is reported if it
+replaces a different value. The frontmatter title is a separate value and is not
+counted.
 
-A statement that sets the title that the chart already has is not reported:
-after `title Sales`, a second `title "Sales"` loses nothing. Titles are compared
-as mermaid.js keeps them: words without quotes are joined without the spaces
-between them, so `title Two words` sets the title `Twowords`, the same as
-`title Twowords`; a text in quotes and an accessible title are read without the
-whitespace at their ends. After `title a` and `title b`, a third `title a` is
-reported, because it replaces `b`.
+The keywords are read in any case, and two title statements on one line count as
+two. Unquoted words in a `title` are joined without spaces, so `title Two words`
+and `title Twowords` set the same title. Quoted titles and accessible titles are
+compared without the whitespace at their ends; `title Sales` and `title "Sales"`
+set the same title.
+
+After `accTitle: a` and `accTitle: b`, a third `accTitle: a` is reported because
+it replaces `b`.
 
 Examples of **incorrect** code for this rule:
 

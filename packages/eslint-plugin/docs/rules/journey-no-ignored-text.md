@@ -9,6 +9,9 @@ Disallow text in the data of a task that mermaid.js drops.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
 A colon written between two people, as in `Make tea: 5: Me: Cat`, drops the
@@ -18,14 +21,11 @@ people, separated by a colon, and the people are separated by commas.
 
 ## Rule Details
 
-This rule reports the text of the data of a task from its third colon, when it
-holds anything but colons and whitespace. It applies to `journey`.
-
-`Make tea: 5: Me: Cat` is a task with the person `Me` only, and
-`A: 3: a,b: c, d` has the people `a` and `b`. A third colon with nothing after
-it, as in `Make tea: 5: Me:`, drops nothing, and the rule does not report it. A
-directive in the dropped text is not part of it: `A: 5: Me: a%%{init: {}}%%b`
-drops `ab`, and `Make tea: 5: Me:` followed by a directive drops nothing.
+This rule applies to user journey diagrams (`journey`). It reports task data
+from the third colon onward when it contains anything other than colons and
+whitespace. A third colon with nothing after it is not reported because it drops
+nothing. Directives do not count as dropped text, so a third colon followed only
+by a directive is not reported either.
 
 Examples of **incorrect** code for this rule:
 

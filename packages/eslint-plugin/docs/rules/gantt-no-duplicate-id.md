@@ -17,20 +17,13 @@ usually left over from copying the line of a task.
 
 ## Rule Details
 
-This rule reports the id of a task when an earlier task has the same id. It
-applies to `gantt`.
+This rule applies to Gantt charts (`gantt`). It reports a task id that an
+earlier task already has. Only ids written as the first of three items after the
+tags are compared. Ids are case-sensitive, so `x` and `X` differ.
 
-After `Design :des1, 2024-01-06, 3d` and `Build :des1, 2024-01-09, 5d`,
-`Test :after des1, 2d` starts after `Build`, and `click des1 href "…"` makes
-only `Build` a link. A task whose data has one item starts at the end of the
-task before it, which mermaid.js also finds by its id: after
-`a : x, 2024-01-01, 1d`, the task `b : 1d` starts at the end of
-`c : x, 2024-03-01, 1d`, written after it, not at the end of `a`.
-
-The ids compared are those written as the first of three items after the tags.
-The ids that mermaid.js gives to the tasks without one, `task1`, `task2`, and so
-on, are not: `b : task1, 2024-01-01, 1d` after `a : 1d` is not reported. Ids are
-compared in their case: `x` and `X` are two ids.
+Ids that mermaid.js assigns to tasks without an explicit id, such as `task1` and
+`task2`, are not compared. For example, `b : task1, 2024-01-01, 1d` after
+`a : 1d` is not reported.
 
 Examples of **incorrect** code for this rule:
 
@@ -61,15 +54,6 @@ This rule has no options.
 ## Related Rules
 
 - [gantt-no-undef](./gantt-no-undef.md)
-
-## Background
-
-mermaid.js keeps one task for each id, and each task replaces the one stored
-before it under the same id
-([`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L588-L590)).
-A task whose data has one item keeps the id of the task before it and looks that
-id up when the chart is drawn
-([`compileTasks`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L624-L625)).
 
 <!-- begin auto-generated rule resources -->
 

@@ -18,41 +18,24 @@ only its classes apply. A reused name is usually left over from copying a block.
 
 ## Rule Details
 
-This rule reports the name of a requirement or an element when an earlier
-statement of the same kind has that name and the later statement loses
-something: it is another kind of requirement, or it holds a field whose value
-the kept statement does not have. mermaid.js keeps the requirements and the
-elements apart, so a requirement is compared with the first requirement of the
-name, and an element with the first element of the name. It applies to
-`requirement`.
+This rule applies to requirement diagrams (`requirementDiagram`). It reports a
+requirement or element that reuses a name when its kind or a field value is
+lost: the requirement kind differs from the first requirement of that name, or
+it has a field that the first statement does not have with the same value.
+Requirements and elements are compared separately with the first of the same
+name.
 
-After `requirement r` with `id: 1`, a second `requirement r` with `id: 2` and
-`text: second` leaves `r` with the id `1` and no text, and a second
-`functionalRequirement r` leaves its kind `requirement`. A field with the value
-that the kept statement has loses nothing: after `requirement r` with `id: 1`
-and `risk: low`, a second `requirement r` with `id: 1` is not reported. The
-values are compared as mermaid.js keeps them: without the whitespace at their
-ends, a string as its text without the quotes, as `text: "t"` and `text: t`, and
-`risk` and `verifyMethod` in any case, as `risk: low` and `risk: Low`.
+Each later statement that loses something gives one report.
 
-An element with the name of a requirement, or a requirement with the name of an
-element, is a second box of that name, and it is not reported: mermaid.js keeps
-both. `style`, `class`, and the classes after `:::` with that name go to the
-requirement. After `element x` and `requirement x`, a third `requirement x` with
-`id: 2` is compared with the requirement, and it is reported, since its id is
-dropped; a third `requirement x` without a field is not reported. After
-`requirement x` and `element x`, `element x:::c` is not reported, and it gives
-the class `c` to the requirement.
+A later statement that only repeats fields with their kept values is not
+reported. Values are compared without surrounding whitespace or string quotes,
+and `risk` and `verifyMethod` ignore case. Names are case-sensitive, but quotes
+around a name do not change it.
 
-A name in quotes is the same name: `requirement "r"` with `id: 2` after
-`requirement r` with `id: 1` is reported. Names differ in case: `requirement r`
-and `requirement R` are two requirements. Each statement that the rule reports
-counts once: three `requirement r` with the ids `1`, `2`, and `3` give two
-reports.
-
-A later statement of the same kind without a field, as `requirement r:::c {`
-followed by `}`, only gives the classes, and is not reported; `r:::c` writes the
-same.
+A requirement and an element with the same name are not reported because
+mermaid.js keeps both. A later statement of the same kind without fields only
+applies its classes, to the requirement when the name has one, and is not
+reported.
 
 Examples of **incorrect** code for this rule:
 
@@ -109,14 +92,6 @@ This rule has no options.
 - [er-no-redefined-entity](./er-no-redefined-entity.md)
 - [requirement-no-undef](./requirement-no-undef.md)
 - [requirement-no-duplicate-field](./requirement-no-duplicate-field.md)
-
-## Background
-
-mermaid.js adds a requirement or an element only when it has none of that name,
-and then forgets the fields read for it
-([`addRequirement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L126-L141)
-and
-[`addElement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L172-L185)).
 
 <!-- begin auto-generated rule resources -->
 

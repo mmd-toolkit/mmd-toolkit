@@ -10,38 +10,29 @@ Disallow a text node or a style for an area that no set or union declares.
 
 <!-- end auto-generated rule notice -->
 
-`text` places a text node in the area of the sets that it names, and `style`
-styles the area, or the text node, that it names. When no `set` or `union`
-declares that area, as when a name is misspelled, mermaid.js keeps the statement
-without an error, and the drawing shows no text node and styles nothing.
+`text` places text in a named area, and `style` styles an area or text node.
+When no `set` or `union` declares the named area, mermaid.js accepts the
+statement without an error but draws no text and applies no style.
 
 ## Rule Details
 
-This rule reports the names after `text` when no set or union has them as its
-names, and the names after `style` when no set or union has them and they are
-not the one id of a text node. It applies to `venn`.
+This rule applies to Venn diagrams (`venn-beta`). It reports names after `text`
+that no set or union declares, and names after `style` that name neither an area
+nor a single id of a text node. Declarations anywhere in the diagram count, so
+statements before their declarations are not reported.
 
-An area counts wherever the diagram declares it: a `text` or a `style` before
-its `set` is not reported, since mermaid.js reads the whole diagram before it
-draws it. The names are compared without their order and with their repeats, as
-the names of a union are: `style A, B` styles the union of A and B, not the two
-sets, so with `set A` and `set B` and no `union A, B`, it is reported. A union
-of three or more sets also has the areas of the pairs among them, which the
-drawing adds: after `union A, B, C`, `text A, B x` is not reported.
+Area names are compared without regard to order but with repetitions.
+`style A, B` targets the union, so separate `set A` and `set B` declarations do
+not suffice. A union of three or more sets also supplies its pair areas, so
+`text A, B x` after `union A, B, C` is not reported.
 
-A `style` with one name also styles the text node of that id, as
-`style A1 color:red` in the documentation of mermaid.js. The id of a text node
-is no area for `text` or for a `style` with more names. An indented `text`
-belongs to the set or union just before it and is not checked.
+A `style` with one name can target the id of a text node; that id is not an area
+for `text` or a `style` with several names. Indented `text` belongs to the
+preceding set or union and is not checked.
 
-Names are compared with their case and as written, with or without quotes.
-mermaid.js turns character references, as `#35;`, and the quotes of HTML
-attributes into other characters before it reads a name, so two names that
-differ only in those may be one name for mermaid.js and two for this rule. The
-drawing finds an area by its names joined with `|`, so `style A, B` styles a set
-named `"A|B"`; this rule compares the names and reports it.
-
-Correct the name, or declare the area with `set` or `union`.
+Names are case-sensitive and compared as written without surrounding quotes.
+Character references and HTML attribute quotes can make mermaid.js match
+differently.
 
 Examples of **incorrect** code for this rule:
 
@@ -83,17 +74,6 @@ style A1 color:red
 ## Options
 
 This rule has no options.
-
-## Background
-
-The drawing
-[places the text nodes of an area](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L259-L276)
-only where the layout has that area, and finds a style by the names of
-[a set or a union](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L121-L125)
-or by
-[the id of a text node](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L354-L354).
-[`ensurePairwiseSubsets`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L393-L435)
-adds the pairs of a larger union.
 
 <!-- begin auto-generated rule resources -->
 

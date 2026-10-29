@@ -12,6 +12,12 @@ Code:
   4 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6]
+          3 |
 ---
 
 
@@ -26,6 +32,12 @@ Code:
   4 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6]
+          3 |
 ---
 
 
@@ -59,6 +71,13 @@ Code:
   5 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | quadrantChart
+          2 |   accDescr: d
+          3 |   A: [0.3, 0.6]
+          4 |
 ---
 
 
@@ -105,6 +124,12 @@ Code:
   7 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6]
+          3 |
 ---
 
 
@@ -119,6 +144,12 @@ Code:
   4 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6]
+          3 |
 ---
 
 
@@ -133,6 +164,12 @@ Code:
   4 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6]
+          3 |
 ---
 
 
@@ -147,6 +184,12 @@ Code:
   4 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6]
+          3 |
 ---
 
 
@@ -163,6 +206,12 @@ Code:
   5 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6]
+          3 |
 ---
 
 
@@ -177,4 +226,10 @@ Code:
   4 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6]
+          3 |
 ---

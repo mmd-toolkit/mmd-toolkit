@@ -9,30 +9,28 @@ Disallow a style that a point or a class gives again.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-The styles of a point and of a `classDef` are a list: `radius`, `color`,
-`stroke-color`, and `stroke-width`, separated by commas. mermaid.js accepts a
-style that the list gives twice, and the later value silently replaces the
-earlier one: `radius: 5, radius: 9` gives the radius 9. A second value is
-usually left over from editing the list.
+The styles of a point and a `classDef` are written as a comma-separated list.
+When the same style is given twice, mermaid.js uses the later value without an
+error, and the earlier value is lost.
 
 ## Rule Details
 
-This rule reports a style of a point or of a `classDef` after the first one of
-the same name in its list, when it gives a value other than the one before it.
-It applies to `quadrantChart`.
+This rule applies to quadrant charts (`quadrantChart`). It reports a `radius`,
+`color`, `stroke-color`, or `stroke-width` in a point's or `classDef`'s style
+list that replaces, with a different value, the value that the same list gave
+that style earlier. Repeating that value is not reported. Styles on a point and
+its class are not compared because the point's styles take precedence.
 
-After `color: #f00, radius: 5`, a later `color: #00f` in the same list gives the
-colour `#00f`. A style of a point and a style of its class are not compared: the
-style of the point wins, as the documentation of mermaid.js says.
-
-A style that gives the value that the list already gave is not reported. Values
-are compared as mermaid.js keeps them: a radius is a number, so `radius: 05`
-after `radius: 5` is the same, and the spaces around the colon do not count; a
-colour and a stroke width are compared as written, so `stroke-color: f00` after
-`stroke-color: #f00` is reported. After `radius: 5` and `radius: 9`, a third
-`radius: 5` is reported, because it replaces 9.
+Radii are compared as numbers and spaces around the colon do not count, so
+`radius: 05` repeats `radius: 5`. Colours and stroke widths are compared as
+written, so `stroke-color: f00` after `stroke-color: #f00` is reported. After
+`radius: 5` and `radius: 9`, a third `radius: 5` is reported because it
+replaces 9.
 
 Examples of **incorrect** code for this rule:
 

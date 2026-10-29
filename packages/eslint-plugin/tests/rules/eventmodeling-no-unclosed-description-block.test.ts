@@ -41,6 +41,25 @@ new RuleTester(LANGUAGE_CONFIG).run(
           },
         ],
       },
+
+      {
+        name: "invalid/eventmodeling/crlf",
+        filename:
+          "tests/fixtures/rules/eventmodeling-no-unclosed-description-block/invalid/eventmodeling/crlf-input.mmd",
+        code: `eventmodeling accDescr { first\r
+  tf 01 cmd Buy { item }\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.",
+            line: 1,
+            column: 15,
+            endLine: 1,
+            endColumn: 25,
+          },
+        ],
+      },
     ],
   },
 )

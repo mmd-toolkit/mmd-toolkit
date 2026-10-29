@@ -9,36 +9,28 @@ Disallow an `accDescr {` block without its closing `}`.
 
 The `recommended` configuration does not enable this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-mermaid.js accepts a description block whose `}` is missing. It closes the block
-at the first `}` after the `{`, or, without one, at the end of the text, and
-reads the lines up to there as the text of the block. Without a `}`, the
-description is empty, whatever the block holds.
+mermaid.js accepts an `accDescr {` block without its closing `}` without an
+error. It reads later lines as description text until the first `}`, or the end
+of the text. Without a `}`, the description becomes empty.
 
 ## Rule Details
 
-This rule reports an `accDescr {` block that is not closed by `}`. It applies to
-`stateDiagram`.
+This rule applies to state diagrams (`stateDiagram` and `stateDiagram-v2`). It
+reports an `accDescr {` block with no closing `}`.
 
-A description written before the block is replaced by the empty one. The
-statements after the block become its text: after `accDescr { x`, the line
-`A --> B` makes no transition.
+It also reports a closed block containing a `{` on a later line than its opening
+`{`, even when its closing `}` stands alone on its line. A composite state's
+closing `}` can close the description instead, taking the states inside it into
+the description.
 
-The rule also reports a block that a `}` written for something else closes. A
-description block ends at the first `}` after its `{`; every other character up
-to there, a `{` too, is its text
-([Accessibility values](../../../spec/docs/diagrams/state.md#accessibility-values)
-in the specification). The body of a composite state ends with its own `}`, so
-after `accDescr { x`, the lines `state B {`, `C`, and `}` give the description
-`x`, `state B {`, and `C`, and no state `B` or `C`. The rule reports a block
-whose text holds a `{` on a later line than the `{` of the block, also where the
-`}` that closes it stands alone on its line, as the `}` of a body does. A
-description that holds a `{` and ends with its own `}` on a later line, as
-`accDescr {`, then `uses { here`, and `}`, is reported too: the rule does not
-tell that `}` from the `}` of a body, and such a description is rare. A `}` on
-the line of the `{`, as in `accDescr { a { b }`, closes the block as written,
-and is not reported.
+A description that intentionally includes a `{` on a later line is reported too,
+because the rule cannot distinguish its closer from a composite state's. A
+closer on the opening line, as in `accDescr { a { b }`, is not reported.
 
 Examples of **incorrect** code for this rule:
 

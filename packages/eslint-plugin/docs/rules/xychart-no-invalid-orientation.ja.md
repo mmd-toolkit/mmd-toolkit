@@ -8,9 +8,13 @@ mermaid.js が `horizontal` と読まない向きを禁止する。
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+🔧
+[`--fix` オプション](https://eslint.org/docs/latest/use/command-line-interface#--fix)
+で自動修正できる。
+
 <!-- end auto-generated rule notice -->
 
-`xychart` の後の語はチャートの向きを変える。
+`xychart` か `xychart-beta` の後の語はチャートの向きを変える。
 `xychart horizontal` はチャートを横向きに描く。
 mermaid.js はその語を大文字小文字を問わず読むが、
 チャートの向きを変えるのは小文字の `horizontal` のときだけである。
@@ -18,18 +22,14 @@ mermaid.js はその語を大文字小文字を問わず読むが、
 
 ## 規則の詳細
 
-この規則は、見出しの向きのうち、 `Horizontal` や `HORIZONTAL` のように、
-違う大文字小文字で書いた `horizontal` を報告する。
-対象の図種は `xychart` である。
-
-mermaid.js は `horizontal` でない語をすべて縦向きとするので、
-チャートは縦向きになる。
-見出しの語は設定 `xyChart.chartOrientation` にも勝つ。
+この規則は、XY チャート（`xychart`、`xychart-beta`）に当てる。
+ヘッダーの `Horizontal` や `HORIZONTAL` のように、
+違う大文字小文字で書いた `horizontal` を、2 つ目のヘッダーも含めて報告する。
+ヘッダーは `xyChart.chartOrientation` より優先するので、
 フロントマターでその設定を `horizontal` にしても、
-`xychart Horizontal` は縦向きのままである。
-2 つ目の見出しの向きも同じように読み、報告する。
-`VERTICAL` のように、どの大文字小文字の `vertical` も、
-それが名指す縦向きのチャートを与え、報告しない。
+`xychart Horizontal` は報告する。
+`vertical` は、大文字小文字にかかわらず、
+名指すとおりの縦向きの図になるので報告しない。
 
 この規則に**反する**コードの例:
 

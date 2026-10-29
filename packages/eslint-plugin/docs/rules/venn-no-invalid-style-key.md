@@ -9,24 +9,29 @@ Disallow a style property that the drawing does not read.
 
 ✅ The `recommended` configuration enables this rule.
 
+🔧 This rule is automatically fixable by the
+[`--fix` CLI option](https://eslint.org/docs/latest/use/command-line-interface#--fix).
+
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-The drawing of a venn diagram reads five style properties, the ones that the
-documentation of mermaid.js lists: `fill`, `color`, `stroke`, `stroke-width`,
-and `fill-opacity`. mermaid.js keeps any other property, as `Fill`, `colour`, or
-`opacity`, without an error, and the drawing does not use it.
+mermaid.js uses five style properties in the drawing: `fill`, `color`, `stroke`,
+`stroke-width`, and `fill-opacity`. It accepts other names such as `Fill`,
+`colour`, and `opacity` without an error, but does not use them in the drawing.
 
 ## Rule Details
 
-This rule reports the name of each property of a `style` statement that is not
-one of the five. It applies to `venn`. Names are compared with their case:
-`Fill` is reported. A property written twice is reported twice.
+This rule applies to Venn diagrams (`venn-beta`). It reports each property name
+in a `style` statement that is not one of those five. Names are case-sensitive,
+so `Fill` is reported. A property written twice is reported twice.
 
-The rule does not check which properties a target uses. For a text node, the
-drawing reads `color` only, but the documentation of mermaid.js does not say
-which properties a text node takes.
-
-Write one of the five properties, in lower case.
+The rule checks the name only, not the target. For a union, the drawing uses
+only `fill` and `color`; for a text node, only `color`. Another of the five for
+them, as `style A1 fill:red` for a text node, is not reported, because the
+documentation of mermaid.js gives the five for sets, unions, and text nodes
+alike.
 
 Examples of **incorrect** code for this rule:
 
@@ -54,18 +59,9 @@ This rule has no options.
 
 - [venn-no-duplicate-style](./venn-no-duplicate-style.md)
 
-## Background
+## Further Reading
 
-[`addStyleData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L63-L70)
-keeps every property with its name as written. The drawing reads the five
-properties for
-[the sets](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L121-L168),
-[the unions](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L171-L230),
-and
-[the text nodes](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L354-L371).
-The
-[documentation of mermaid.js](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md#L125-L145)
-lists them.
+- [Venn diagram syntax: styling](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md#L125-L145)
 
 <!-- begin auto-generated rule resources -->
 

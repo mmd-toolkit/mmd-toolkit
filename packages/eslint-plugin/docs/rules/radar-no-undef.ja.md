@@ -16,19 +16,13 @@
 
 ## 規則の詳細
 
-この規則は、図のどの `axis` 文も宣言しない軸の名前を持つ曲線の値を報告する。
-対象の図種は `radar` である。
+この規則は、レーダーチャート（`radar-beta`）に当てる。
+図のどの `axis` 文も宣言しない軸の名前を持つ曲線の値を報告する。
+名前は大文字小文字を区別して比べ、軸は id で名指すので、
+`North: 1` は `axis A["North"]` を名指さない。
+曲線の後に宣言した軸も数える。
 
-`axis A, B, C` の後では、
-`curve sales{A: 1, B: 2, C: 3, D: 9}` の値 `D: 9` は点を与えず、曲線は `1`、
-`2`、`3` から描かれる。
-
-名前は大文字小文字を区別して比べ、軸はラベルではなく id で名指す。
-`axis A["North"]` の後では、値 `North: 1` はどの軸も名指さない。
-曲線の後の `axis` 文も名前を宣言する。
-宣言した軸の値を欠く曲線は、mermaid.js が受理しない。
-
-軸の名前を直すか、その値を取り除く。
+宣言した軸の値を欠く曲線は、mermaid.js がエラーを出すので報告しない。
 
 この規則に**反する**コードの例:
 
@@ -51,11 +45,6 @@ radar-beta
 ## オプション
 
 この規則にはオプションがない。
-
-## 背景
-
-[`computeCurveEntries`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L75-L91)
-は、宣言した軸ごとにそれを名指す最初の値を取り、ほかの値を除く。
 
 <!-- begin auto-generated rule resources -->
 

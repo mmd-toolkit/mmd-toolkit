@@ -13,6 +13,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 |   accDescr: First
+          3 |   word = "a";
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | railroad-ebnf-beta
+          2 |   accDescr: Second
+          3 |   word = "a";
+          4 |
 ---
 
 
@@ -27,6 +40,17 @@ Code:
   4 | word="a";
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | railroad-abnf-beta
+          2 | accDescr { First }
+          3 | word="a";
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | railroad-abnf-beta
+          2 | accDescr: Second
+          3 | word="a";
 ---
 
 
@@ -42,6 +66,19 @@ Code:
   5 | word="a";
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | railroad-abnf-beta
+          2 | accDescr: First
+          3 | %%{init: {}}%%
+          4 | word="a";
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | railroad-abnf-beta
+          2 | accDescr:
+          3 | %%{init: {}}%%
+          4 | word="a";
 ---
 
 
@@ -58,7 +95,33 @@ Code:
   5 | word="a";
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | railroad-abnf-beta
+          2 | accDescr: A
+          3 | accDescr: A
+          4 | word="a";
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | railroad-abnf-beta
+          2 | accDescr { B }
+          3 | accDescr: A
+          4 | word="a";
 [2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | railroad-abnf-beta
+          2 | accDescr: A
+          3 | accDescr { B }
+          4 | word="a";
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | railroad-abnf-beta
+          2 | accDescr: A
+          3 | accDescr: A
+          4 | word="a";
 ---
 
 
@@ -74,6 +137,69 @@ Code:
   5 | word="a";
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | railroad-abnf-beta
+          2 | accDescr: First
+          3 | accDescr: Second
+          4 | word="a";
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | railroad-abnf-beta
+          2 | accDescr:   
+          3 | accDescr: Second
+          4 | word="a";
+---
+
+
+Test: railroad-no-duplicate-description >> invalid >>> invalid/railroad/description-equal-predecessor
+Filename: tests/fixtures/rules/railroad-no-duplicate-description/invalid/railroad/description-equal-predecessor-input.mmd
+
+Code:
+  1 | railroad-beta
+  2 | accDescr: A
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | railroad-beta
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
+---
+
+
+Test: railroad-no-duplicate-description >> invalid >>> invalid/railroad/description-removal-empty-predecessor
+Filename: tests/fixtures/rules/railroad-no-duplicate-description/invalid/railroad/description-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | railroad-beta
+  2 | accDescr {}
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | railroad-beta
+          2 | accDescr {}
+          3 | accDescr: A
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | railroad-beta
+          2 | accDescr {}
+          3 | accDescr: B
+          4 |
 ---
 
 
@@ -89,6 +215,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 |   accDescr: First
+          3 |   word = "a";
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | railroad-ebnf-beta
+          2 |   accDescr: Second
+          3 |   word = "a";
+          4 |
 ---
 
 
@@ -103,6 +242,17 @@ Code:
   4 | word="a";
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 | accDescr: First
+          3 | word="a";
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | railroad-ebnf-beta
+          2 | accDescr { Second }
+          3 | word="a";
 ---
 
 
@@ -121,6 +271,19 @@ Code:
   6 | word="a";
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 | accDescr: First
+          3 | word="a";
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | railroad-ebnf-beta
+          2 | accDescr {
+          3 | %% TODO
+          4 | }
+          5 | word="a";
 ---
 
 
@@ -137,6 +300,21 @@ Code:
   6 | word="a";
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 | accDescr: First
+          3 |
+          4 | %% comment
+          5 | word="a";
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | railroad-ebnf-beta
+          2 | accDescr:
+          3 |
+          4 | %% comment
+          5 | word="a";
 ---
 
 
@@ -151,6 +329,17 @@ Code:
   4 | word="a";
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 | accDescr: A
+          3 | word="a";
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | railroad-ebnf-beta
+          2 | accDescr: #65;
+          3 | word="a";
 ---
 
 
@@ -165,6 +354,17 @@ Code:
   4 | word=terminal("a");
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | railroad-beta
+          2 | accDescr: First
+          3 | word=terminal("a");
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | railroad-beta
+          2 | accDescr: Second
+          3 | word=terminal("a");
 ---
 
 
@@ -179,6 +379,17 @@ Code:
   4 | word=terminal("a");
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | railroad-beta
+          2 | accDescr: <b x="a">Text</b>
+          3 | word=terminal("a");
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | railroad-beta
+          2 | accDescr: <b x='a'>Text</b>
+          3 | word=terminal("a");
 ---
 
 
@@ -195,7 +406,27 @@ Code:
   5 | word=terminal("a");
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | railroad-beta
+          2 | accDescr: First
+          3 | accDescr: Third
+          4 | word=terminal("a");
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | railroad-beta
+          2 | accDescr { Second }
+          3 | accDescr: Third
+          4 | word=terminal("a");
 [2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | railroad-beta
+          2 | accDescr: First
+          3 | accDescr { Second }
+          4 | word=terminal("a");
 ---
 
 
@@ -210,6 +441,17 @@ Code:
   4 | word<-"a";
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | railroad-peg-beta
+          2 | accDescr { First }
+          3 | word<-"a";
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | railroad-peg-beta
+          2 | accDescr { Second }
+          3 | word<-"a";
 ---
 
 
@@ -229,4 +471,19 @@ Code:
   7 | word<-"a";
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | railroad-peg-beta
+          2 | accDescr: A
+          3 | accDescr: A
+          4 | word<-"a";
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | railroad-peg-beta
+          2 | accDescr {
+          3 | %% TODO
+          4 | }
+          5 | accDescr: A
+          6 | word<-"a";
 ---

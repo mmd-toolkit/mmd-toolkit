@@ -13,6 +13,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 |   accTitle: first
+          3 |   A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 |   accTitle: second
+          3 |   A
+          4 |
 ---
 
 
@@ -30,7 +43,37 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 |   accTitle: a
+          3 |   accTitle: a
+          4 |   A
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 |   accTitle: b
+          3 |   accTitle: a
+          4 |   A
+          5 |
 [2] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 |   accTitle: a
+          3 |   accTitle: b
+          4 |   A
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 |   accTitle: a
+          3 |   accTitle: a
+          4 |   A
+          5 |
 ---
 
 
@@ -44,6 +87,15 @@ Code:
     | ^~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 | accTitle: a
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 | accTitle: b
 ---
 
 
@@ -62,6 +114,19 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 | accTitle: t
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 | accTitle:
+          3 | %% c
+          4 | A
+          5 |
 ---
 
 
@@ -80,6 +145,14 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 | accTitle:
+          3 | %%{init: {}}%%
+          4 | A
+          5 |
 ---
 
 
@@ -98,4 +171,39 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 | accTitle: t
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 | accTitle:
+          3 |
+          4 | A
+          5 |
+---
+
+
+Test: er-no-duplicate-title >> invalid >>> invalid/er/title-equal-predecessor
+Filename: tests/fixtures/rules/er-no-duplicate-title/invalid/er/title-equal-predecessor-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | accTitle: A
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 | accTitle: A
+          3 | accTitle: A
+          4 |
 ---

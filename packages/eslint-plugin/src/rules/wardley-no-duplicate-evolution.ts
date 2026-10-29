@@ -1,3 +1,4 @@
+import { oneOfTwoRemovals } from "../utils/removal.ts"
 import type { WardleyEvolutionStatement } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
@@ -26,10 +27,22 @@ function stagesOf(node: WardleyEvolutionStatement): Stage[] {
   })
 }
 
+/** Stage order, displayed names and effective boundaries all participate. */
+function sameStages(left: readonly Stage[], right: readonly Stage[]): boolean {
+  return (
+    left.length === right.length &&
+    left.every(
+      (stage, at) =>
+        stage.label === right[at]?.label &&
+        stage.boundary === right[at]?.boundary,
+    )
+  )
+}
+
 /** Only a change to the drawn stage names or boundaries replaces the earlier row. */
 export const wardleyNoDuplicateEvolution: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "duplicate"
+  MessageIds: "duplicate" | "removeThis" | "removePrevious"
 }> = {
   meta: {
     type: "problem",
@@ -39,32 +52,38 @@ export const wardleyNoDuplicateEvolution: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("wardley-no-duplicate-evolution"),
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
+      removeThis: "Remove this statement.",
+      removePrevious: "Remove the earlier statement.",
       duplicate:
         "mermaid.js replaces the earlier evolution stages with these stages.",
     },
   },
   create(context) {
-    let previous: readonly Stage[] | null = null
+    let previous: {
+      node: WardleyEvolutionStatement
+      stages: readonly Stage[]
+      before: readonly Stage[] | undefined
+    } | null = null
     return {
       WardleyEvolutionStatement(node) {
         const stages = stagesOf(node)
-        if (
-          previous !== null &&
-          (previous.length !== stages.length ||
-            previous.some(
-              (stage, at) =>
-                stage.label !== stages[at]?.label ||
-                stage.boundary !== stages[at]?.boundary,
-            ))
-        ) {
+        if (previous !== null && !sameStages(previous.stages, stages)) {
           context.report({
             node,
             messageId: "duplicate",
+            suggest: oneOfTwoRemovals(
+              context.sourceCode,
+              node,
+              previous.node,
+              previous.before === undefined ||
+                sameStages(previous.before, stages),
+            ),
           })
         }
-        previous = stages
+        previous = { node, stages, before: previous?.stages }
       },
     }
   },

@@ -13,6 +13,14 @@ Code:
   5 |
 
 [1] mermaid.js draws `>` before the line as `<` and `<` after the line as `>`.
+    Suggestions:
+      - Write the markers as drawn.
+        Output:
+          1 | architecture-beta
+          2 |   service api(server)[API]
+          3 |   service db(database)[Database]
+          4 |   api:R <--> L:db
+          5 |
 ---
 
 
@@ -28,21 +36,14 @@ Code:
   5 |
 
 [1] mermaid.js draws `>` before the line as `<` and `<` after the line as `>`.
----
-
-
-Test: architecture-no-reversed-marker >> invalid >>> invalid/architecture/marker-crlf
-Filename: tests/fixtures/rules/architecture-no-reversed-marker/invalid/architecture/marker-crlf-input.mmd
-
-Code:
-  1 | architecture-beta
-  2 | service api
-  3 | service db
-  4 | api:T >-- B:db
-    |    ^~~~~~~~~ [1]
-  5 |
-
-[1] mermaid.js draws `>` before the line as `<` and `<` after the line as `>`.
+    Suggestions:
+      - Write the markers as drawn.
+        Output:
+          1 | architecture-beta
+          2 |   service api(server)[API]
+          3 |   service db(database)[Database]
+          4 |   api:R <--> L:db
+          5 |
 ---
 
 
@@ -58,6 +59,14 @@ Code:
   5 |
 
 [1] mermaid.js draws `>` before the line as `<` and `<` after the line as `>`.
+    Suggestions:
+      - Write the markers as drawn.
+        Output:
+          1 | architecture-beta
+          2 | service api
+          3 | service db
+          4 | api:R %%{init: {}}%% <-- L:db
+          5 |
 ---
 
 
@@ -73,6 +82,14 @@ Code:
   5 |
 
 [1] mermaid.js draws `>` before the line as `<` and `<` after the line as `>`.
+    Suggestions:
+      - Write the markers as drawn.
+        Output:
+          1 | architecture-beta
+          2 | service api
+          3 | service db
+          4 | api:R %%{}%% < %%{}%% -[calls]- %%{}%% > %%{}%% L:db
+          5 |
 ---
 
 
@@ -88,6 +105,14 @@ Code:
   5 |
 
 [1] mermaid.js draws `>` before the line as `<` and `<` after the line as `>`.
+    Suggestions:
+      - Write the markers as drawn.
+        Output:
+          1 | architecture-beta
+          2 | service api(server)[API]
+          3 | service db(database)[Database]
+          4 | api:R <--> L:db
+          5 |
 ---
 
 
@@ -103,6 +128,14 @@ Code:
   5 |
 
 [1] mermaid.js draws `>` before the line as `<` and `<` after the line as `>`.
+    Suggestions:
+      - Write the markers as drawn.
+        Output:
+          1 | architecture-beta
+          2 | service api
+          3 | service db
+          4 | api:R <-[calls]-> L:db
+          5 |
 ---
 
 
@@ -118,6 +151,14 @@ Code:
   5 |
 
 [1] mermaid.js draws `>` before the line as `<` and `<` after the line as `>`.
+    Suggestions:
+      - Write the markers as drawn.
+        Output:
+          1 | architecture-beta
+          2 | service api
+          3 | service db
+          4 | api:R <-- L:db
+          5 |
 ---
 
 
@@ -133,6 +174,14 @@ Code:
   5 |
 
 [1] mermaid.js draws `>` before the line as `<` and `<` after the line as `>`.
+    Suggestions:
+      - Write the markers as drawn.
+        Output:
+          1 | architecture-beta
+          2 | service a
+          3 | service b
+          4 | a:R <-[link]- L:b
+          5 |
 ---
 
 
@@ -148,6 +197,14 @@ Code:
   5 |
 
 [1] mermaid.js draws `>` before the line as `<` and `<` after the line as `>`.
+    Suggestions:
+      - Write the markers as drawn.
+        Output:
+          1 | architecture-beta
+          2 | service api
+          3 | service db
+          4 | api:R --> L:db
+          5 |
 ---
 
 
@@ -163,4 +220,12 @@ Code:
   5 |
 
 [1] mermaid.js draws `>` before the line as `<` and `<` after the line as `>`.
+    Suggestions:
+      - Write the markers as drawn.
+        Output:
+          1 | architecture-beta
+          2 | service a
+          3 | service b
+          4 | a:R -[link]-> L:b
+          5 |
 ---

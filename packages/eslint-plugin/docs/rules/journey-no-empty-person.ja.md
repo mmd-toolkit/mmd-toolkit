@@ -8,6 +8,10 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
+
 <!-- end auto-generated rule notice -->
 
 タスクの人は、2 つ目のコロンの後に、コンマで区切って書く。
@@ -17,16 +21,11 @@ mermaid.js にとってそれは名前が空の人で、 mermaid.js はエラー
 
 ## 規則の詳細
 
-この規則は、空か空白だけの、タスクの人をそれぞれ報告する。
-対象の図種は `journey` である。
-
-`Make tea: 5: Me,` の人は `Me` と空の名前で、
-`A: 3: a,,b` も `a` と `b` の間に空の名前を持つ。
-`Make tea: 5:` のように後に何もない 2 つ目のコロンは、
-名前が空の人を 1 人タスクに与える。
-`Make tea: 5` のように 2 つ目のコロンがなければ、タスクに人はおらず、
-規則は報告しない。
-`A: 3: ` の後に空白を 1 つ書いたような、空白だけの人も空である。
+この規則は、ユーザージャーニー図（`journey`）に当てる。
+タスクの 2 つ目のコロンの後の、コンマで区切る人の一覧で、
+空か空白だけの名前をそれぞれ報告する。
+後に何もない 2 つ目のコロンは、空の名前を 1 つ与えるので報告する。
+2 つ目のコロンのないタスクは、人を持たないので報告しない。
 
 この規則に**反する**コードの例:
 
@@ -67,14 +66,6 @@ journey
 ## 関連する規則
 
 - [journey-no-ignored-text](./journey-no-ignored-text.ja.md)
-
-## 背景
-
-mermaid.js は、
-[`updateActors`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L49-L58)、
-[`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)
-で、人のそれぞれの端の空白を除き、すべてのタスクの人を、空の名前も含めて、
-凡例が示すジャーニーの actor に集める。
 
 <!-- begin auto-generated rule resources -->
 

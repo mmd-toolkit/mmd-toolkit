@@ -18,6 +18,7 @@ export const noUnclosedDirective: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("no-unclosed-directive"),
     },
+
     schema: [],
     messages: {
       unclosed:
@@ -29,7 +30,10 @@ export const noUnclosedDirective: MermaidRuleDefinition<{
       Root(root) {
         for (const directive of root.directives) {
           if (directiveTakesLaterLines(directive)) {
-            context.report({ loc: directive.loc, messageId: "unclosed" })
+            context.report({
+              loc: directive.loc,
+              messageId: "unclosed",
+            })
           }
         }
       },

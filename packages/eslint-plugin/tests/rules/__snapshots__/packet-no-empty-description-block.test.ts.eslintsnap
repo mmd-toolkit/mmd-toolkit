@@ -12,6 +12,12 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet
+          2 |   0-15: "Source Port"
+          3 |
 ---
 
 
@@ -27,6 +33,13 @@ Code:
   5 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet
+          2 | accDescr: First
+          3 | accDescr { Second }
+          4 |
 ---
 
 
@@ -41,6 +54,12 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet-beta
+          2 | 0: "Flag"
+          3 |
 ---
 
 
@@ -56,6 +75,13 @@ Code:
   5 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet
+          2 | accDescr: First
+          3 | accDescr: Third
+          4 |
 ---
 
 
@@ -86,6 +112,13 @@ Code:
   5 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet
+          2 | accDescr: First
+          3 | 0: "Flag"
+          4 |
 ---
 
 
@@ -98,6 +131,25 @@ Code:
     |   ^~~~~~~~~~~ [1]
   3 |   0-15: "Source Port"
   4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet
+          2 |   0-15: "Source Port"
+          3 |
+---
+
+
+Test: packet-no-empty-description-block >> invalid >>> invalid/packet/empty-block-after-header
+Filename: tests/fixtures/rules/packet-no-empty-description-block/invalid/packet/empty-block-after-header-input.mmd
+
+Code:
+  1 | packet accDescr {}
+    |        ^~~~~~~~~~~ [1]
+  2 | 0-7: "Byte"
+  3 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
 ---
@@ -129,6 +181,13 @@ Code:
   5 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet
+          2 | %% TODO
+          3 | 0: "Flag"
+          4 |
 ---
 
 
@@ -147,24 +206,12 @@ Code:
   6 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
----
-
-
-Test: packet-no-empty-description-block >> invalid >>> invalid/packet/empty-crlf
-Filename: tests/fixtures/rules/packet-no-empty-description-block/invalid/packet/empty-crlf-input.mmd
-
-Code:
-  1 | packet
-  2 | accDescr {
-    | ^~~~~~~~~~\ [1]
-  3 |  	
-    | ~~\ [1]
-  4 | }
-    | ~ [1]
-  5 | 0: "Flag"
-  6 |
-
-[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet
+          2 | 0: "Flag"
+          3 |
 ---
 
 
@@ -212,6 +259,13 @@ Code:
   7 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet
+          2 |
+          3 | 0: "Flag"
+          4 |
 ---
 
 
@@ -227,6 +281,13 @@ Code:
   5 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet
+          2 |
+          3 | 0: "Flag"
+          4 |
 ---
 
 
@@ -241,6 +302,12 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet
+          2 | 0:"A"
+          3 |
 ---
 
 
@@ -269,4 +336,9 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet
+          2 |
 ---

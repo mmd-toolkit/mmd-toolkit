@@ -11,18 +11,14 @@ Disallow a backquoted class name without its closing backquote.
 
 <!-- end auto-generated rule notice -->
 
-A class name in backquotes may hold whitespace and other characters, as in
-``class `Animal Class!` ``. mermaid.js accepts a backquoted name that is never
-closed: the rest of the text becomes the name of one class.
+A backquoted class name can contain whitespace and other characters, as in
+``class `Animal Class!` ``. mermaid.js accepts a name without its closing
+backquote without an error: the rest of the text becomes the name of one class.
 
 ## Rule Details
 
-This rule reports a backquoted class name that is not closed by a backquote. It
-applies to `classDiagram`.
-
-After ``class `x``, a line break, and `class B`, the diagram has one class,
-whose name is `x`, a line break, `class B`, and the line breaks at the end of
-the text. Every statement after the opening backquote is part of the name.
+This rule applies to class diagrams (`classDiagram` and `classDiagram-v2`). It
+reports a backquoted class name with no closing backquote.
 
 Examples of **incorrect** code for this rule:
 

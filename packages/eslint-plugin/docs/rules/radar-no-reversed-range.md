@@ -9,6 +9,9 @@ Disallow a `min` above the `max` of a diagram.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
 `min` and `max` set the values at the center and at the outer ring. When the
@@ -18,23 +21,18 @@ the curves are lost.
 
 ## Rule Details
 
-This rule reports the later of the last `min` and the last `max` of a diagram
-when the minimum is above the maximum and the diagram has a curve that is drawn.
-It applies to `radar`.
+This rule applies to radar charts (`radar-beta`). It reports the later of the
+last `min` and the last `max` when the minimum is above the maximum and the
+diagram has a curve that is drawn. Only the last `min` and the last `max` are
+compared, so a later `min 0` or `max 20` after `min 10, max 5` leaves nothing
+reported.
 
-After `min 10, max 5`, the curves `{1, 2, 3}` and `{8, 4, 2}` are drawn alike,
-with every point on the outer ring. A later `min 0` or `max 20` that makes the
-range increase is not reported.
-
-A diagram without `max` is not reported: mermaid.js then takes the largest value
-of the curves as the maximum, which the rule does not compute, so after `min 10`
-with values up to 3 and no `max`, the points are on the outer ring and the rule
-reports nothing. A diagram with no curve that is drawn, as a curve of values
-whose count differs from the count of the axes, is not reported either. A
-minimum equal to the maximum is not reported, and neither is a range that cuts
-off values outside it, as `min 2, max 8` with the value 9.
-
-Write a `min` below the `max`.
+A diagram without `max` is not reported, because mermaid.js uses the largest
+curve value as the maximum, which the rule does not compute. A diagram in which
+mermaid.js draws no curve is not reported either, such as one with no axes, or
+one whose curves of values all have a count different from the count of the
+axes. A minimum equal to the maximum is not reported, nor is a range that cuts
+off values outside it, such as `min 2, max 8` with a value of 9.
 
 Examples of **incorrect** code for this rule:
 
@@ -59,12 +57,6 @@ radar-beta
 ## Options
 
 This rule has no options.
-
-## Background
-
-[`relativeRadius`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L175-L184)
-first bounds a value by the minimum and then by the maximum, so with the minimum
-above the maximum every value becomes the maximum, at the outer ring.
 
 <!-- begin auto-generated rule resources -->
 

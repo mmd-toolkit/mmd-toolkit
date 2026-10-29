@@ -13,6 +13,13 @@ Code:
   5 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | cynefin-beta
+          2 |   complex
+          3 |     "Investigate"
+          4 |
 ---
 
 
@@ -28,6 +35,13 @@ Code:
   5 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | cynefin-beta
+          2 |   complex
+          3 |     "Investigate"
+          4 |
 ---
 
 
@@ -41,6 +55,11 @@ Code:
     | ^~~~~~~~~~~ [1]
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr: First
 ---
 
 
@@ -52,6 +71,25 @@ Code:
   2 | complex "Investigate"
   3 | accDescr {}
     | ^~~~~~~~~~~ [1]
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Investigate"
+---
+
+
+Test: cynefin-no-empty-description-block >> invalid >>> invalid/cynefin/empty-block-after-header
+Filename: tests/fixtures/rules/cynefin-no-empty-description-block/invalid/cynefin/empty-block-after-header-input.mmd
+
+Code:
+  1 | cynefin-beta accDescr {}
+    |              ^~~~~~~~~~~ [1]
+  2 | complex
+  3 | "Investigate"
+  4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
 ---
@@ -84,6 +122,11 @@ Code:
   5 | complex "Investigate"
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Investigate"
 ---
 
 
@@ -110,6 +153,11 @@ Code:
   3 | complex "Investigate"
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Investigate"
 ---
 
 
@@ -123,4 +171,9 @@ Code:
   3 | complex "A"
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | cynefin-beta:
+          2 | complex "A"
 ---

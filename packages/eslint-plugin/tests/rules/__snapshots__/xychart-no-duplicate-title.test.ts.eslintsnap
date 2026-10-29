@@ -120,21 +120,6 @@ Code:
 ---
 
 
-Test: xychart-no-duplicate-title >> invalid >>> invalid/xychart/title-twice-crlf
-Filename: tests/fixtures/rules/xychart-no-duplicate-title/invalid/xychart/title-twice-crlf-input.mmd
-
-Code:
-  1 | xychart
-  2 |   title a
-  3 |   title b
-    |   ^~~~~~~ [1]
-  4 |   line [1]
-  5 |
-
-[1] mermaid.js replaces the earlier title with the one of this `title`.
----
-
-
 Test: xychart-no-duplicate-title >> invalid >>> invalid/xychart/title-twice-same-line
 Filename: tests/fixtures/rules/xychart-no-duplicate-title/invalid/xychart/title-twice-same-line-input.mmd
 

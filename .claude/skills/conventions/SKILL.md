@@ -182,35 +182,21 @@ machine. Run what a change can affect, not everything after every change.
 
 ## Why the inputs are fixtures, and not generated
 
-The rule above replaced three mechanisms that this repository had built and then
-removed on 2026-10-07: tests that generated their inputs, random mutation of
-fixtures, and an exploration command that put each of a fixed set of strings at
-each place collected from the corpus. The record of that day is the reason the
-rule is written as it is.
+Three other ways of choosing inputs are not used here: tests that generate their
+inputs, random mutation of fixtures, and an exploration that puts each of a
+fixed set of strings at each place collected from the corpus. The reasons:
 
-- Count is not assurance. The exploration ran about 130,000 inputs against
-  mermaid.js in more than an hour of machine time and found four implementation
-  bugs. Its places were (token kind before, token kind after, position in line)
-  collected from the corpus: 1,210 kinds for flowchart, which multiplied some
-  thirty lexical rules by the number of contexts each appears in. The two
-  findings of its first run lay next to a separator, where the rule's own
-  example would have been the host.
-- Reading the sentences finds what a product cannot. In the same afternoon,
-  listing the cases of each defining sentence and checking that each had a
-  fixture found: in the specification about 440 places where a case had no
-  fixture or no citation, 185 new fixtures and an unreachable rule copied from
-  mermaid's lexer; in the documents of `dbFromTree` 306 missing fixtures, at
-  least 23 wrong sentences and at least eight holes in the tree check; in the
-  formatting rules 386 missing fixtures, four printer bugs and about fifteen
-  sentences that did not describe the printer; in the rule documents 95 missing
-  inputs, one suggestion that mixed line terminators, three suggestions that
-  changed the reading, one that produced a rejected text, and three wrong
-  sentences; in the parser's documents of tokens, positions, and error positions
-  about 410 missing citations and 19 missing fixtures. A product of places and
-  strings reads no sentence, so it cannot see a missing citation, a wrong
-  definition, a suggestion that changes the Db, or a rule that no input reaches.
-- The mechanism stood in for a habit. Generating inputs let a change be reported
-  as done without anyone listing the cases of the sentence that defined it. The
-  rule therefore names the habit, not a tool: write the sentence, list its
-  cases, give each a fixture, cite them, and let the review read the sentence
-  again.
+- Count is not assurance. A product of places and strings multiplies a few dozen
+  lexical rules by the number of contexts each appears in, costs hours of
+  machine time, and finds little that the rule's own example, written as the
+  host, does not find.
+- Reading the sentences finds what a product cannot. Listing the cases of each
+  defining sentence and checking that each has a fixture finds missing
+  citations, wrong definitions, unreachable rules copied from mermaid's lexer,
+  suggestions that change the Db, and holes in the tree check. A product of
+  places and strings reads no sentence, so it sees none of these.
+- A mechanism stands in for a habit. When inputs can be generated, a change can
+  be reported as done without anyone listing the cases of the sentence that
+  defines it. The rule therefore names the habit, not a tool: write the
+  sentence, list its cases, give each a fixture, cite them, and let the review
+  read the sentence again.

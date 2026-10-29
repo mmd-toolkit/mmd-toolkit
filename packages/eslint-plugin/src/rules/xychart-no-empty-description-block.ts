@@ -20,6 +20,7 @@ export const xychartNoEmptyDescriptionBlock: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("xychart-no-empty-description-block"),
     },
+
     schema: [],
     messages: {
       empty:
@@ -32,7 +33,10 @@ export const xychartNoEmptyDescriptionBlock: MermaidRuleDefinition<{
       XychartAccDescrBlockStatement(node) {
         if (!node.closed || node.value !== null) return
         if (blockHoldsComment(sourceCode, node)) return
-        context.report({ node, messageId: "empty" })
+        context.report({
+          node,
+          messageId: "empty",
+        })
       },
     }
   },

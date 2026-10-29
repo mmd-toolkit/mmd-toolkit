@@ -11,6 +11,17 @@ Code:
   3 |
 
 [1] mermaid.js replaces the class given earlier for this node with this class.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::highlight
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::muted
+          3 |
 ---
 
 
@@ -27,19 +38,22 @@ Code:
   6 |
 
 [1] mermaid.js replaces the class given earlier for this node with this class.
----
-
-
-Test: treeview-no-duplicate-annotation >> invalid >>> invalid/treeview/annotations-crlf
-Filename: tests/fixtures/rules/treeview-no-duplicate-annotation/invalid/treeview/annotations-crlf-input.mmd
-
-Code:
-  1 | treeView-beta
-  2 |   file :::highlight :::muted
-    |                     ^~~~~~~~ [1]
-  3 |
-
-[1] mermaid.js replaces the class given earlier for this node with this class.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 | file :::highlight
+          3 | %% old copy
+          4 |
+          5 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 | file
+          3 | %% old copy
+          4 |
+          5 |  :::muted
+          6 |
 ---
 
 
@@ -55,6 +69,20 @@ Code:
   5 |
 
 [1] mermaid.js replaces the class given earlier for this node with this class.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 | file :::highlight
+          3 | %%{init: {}}%%
+          4 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 | file
+          3 | %%{init: {}}%%
+          4 |  :::muted
+          5 |
 ---
 
 
@@ -73,11 +101,98 @@ Code:
   5 |
 
 [1] mermaid.js replaces the class given earlier for this node with this class.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::highlight icon(file) icon(folder) :::highlight icon(file) ## First
+          3 |   ## Second
+          4 |   ## First
+          5 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file icon(file) :::muted icon(folder) :::highlight icon(file) ## First
+          3 |   ## Second
+          4 |   ## First
+          5 |
 [2] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::highlight icon(file) :::muted :::highlight icon(file) ## First
+          3 |   ## Second
+          4 |   ## First
+          5 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::highlight :::muted icon(folder) :::highlight icon(file) ## First
+          3 |   ## Second
+          4 |   ## First
+          5 |
 [3] mermaid.js replaces the class given earlier for this node with this class.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::highlight icon(file) :::muted icon(folder) icon(file) ## First
+          3 |   ## Second
+          4 |   ## First
+          5 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::highlight icon(file) icon(folder) :::highlight icon(file) ## First
+          3 |   ## Second
+          4 |   ## First
+          5 |
 [4] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::highlight icon(file) :::muted icon(folder) :::highlight ## First
+          3 |   ## Second
+          4 |   ## First
+          5 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::highlight icon(file) :::muted :::highlight icon(file) ## First
+          3 |   ## Second
+          4 |   ## First
+          5 |
 [5] mermaid.js replaces the description given earlier for this node with this description.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::highlight icon(file) :::muted icon(folder) :::highlight icon(file) ## First
+          3 |   ## First
+          4 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::highlight icon(file) :::muted icon(folder) :::highlight icon(file)
+          3 |   ## Second
+          4 |   ## First
+          5 |
 [6] mermaid.js replaces the description given earlier for this node with this description.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::highlight icon(file) :::muted icon(folder) :::highlight icon(file) ## First
+          3 |   ## Second
+          4 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::highlight icon(file) :::muted icon(folder) :::highlight icon(file) ## First
+          3 |   ## First
+          4 |
 ---
 
 
@@ -91,6 +206,17 @@ Code:
   3 |
 
 [1] mermaid.js replaces the class given earlier for this node with this class.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 | ┗━━ file :::highlight
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 | ┗━━ file :::muted
+          3 |
 ---
 
 
@@ -104,6 +230,17 @@ Code:
   3 |
 
 [1] mermaid.js replaces the class given earlier for this node with this class.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 | └── file :::highlight
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 | └── file :::muted
+          3 |
 ---
 
 
@@ -117,6 +254,17 @@ Code:
   3 |
 
 [1] mermaid.js replaces the class given earlier for this node with this class.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 | └── file :::muted
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 | └── file :::highlight
+          3 |
 ---
 
 
@@ -130,6 +278,36 @@ Code:
   3 |
 
 [1] mermaid.js replaces the class given earlier for this node with this class.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::High
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::high
+          3 |
+---
+
+
+Test: treeview-no-duplicate-annotation >> invalid >>> invalid/treeview/class-equal-predecessor
+Filename: tests/fixtures/rules/treeview-no-duplicate-annotation/invalid/treeview/class-equal-predecessor-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | file :::a :::a :::b
+    |                ^~~~ [1]
+  3 |
+
+[1] mermaid.js replaces the class given earlier for this node with this class.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 | file :::a :::a
+          3 |
 ---
 
 
@@ -143,6 +321,17 @@ Code:
   3 |
 
 [1] mermaid.js replaces the class given earlier for this node with this class.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::highlight
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::muted
+          3 |
 ---
 
 
@@ -157,6 +346,18 @@ Code:
   4 |
 
 [1] mermaid.js replaces the class given earlier for this node with this class.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::highlight
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file
+          3 |   :::muted
+          4 |
 ---
 
 
@@ -170,6 +371,17 @@ Code:
   3 |
 
 [1] mermaid.js replaces the class given earlier for this node with this class.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::muted
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::highlight
+          3 |
 ---
 
 
@@ -184,7 +396,29 @@ Code:
   3 |
 
 [1] mermaid.js replaces the class given earlier for this node with this class.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::highlight icon(file) :::highlight
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file icon(file) :::muted :::highlight
+          3 |
 [2] mermaid.js replaces the class given earlier for this node with this class.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::highlight icon(file) :::muted
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::highlight icon(file) :::highlight
+          3 |
 ---
 
 
@@ -198,6 +432,16 @@ Code:
     |  ^~~~~~~~~ [1]
 
 [1] mermaid.js replaces the description given earlier for this node with this description.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 | node ## first
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 | node
+          3 |  ## second
 ---
 
 
@@ -211,7 +455,21 @@ Code:
     |            [1]       [2]
 
 [1] mermaid.js replaces the class given earlier for this node with this class.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 | a :::first :::third
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 | a :::second :::third
 [2] mermaid.js replaces the class given earlier for this node with this class.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 | a :::first :::second
 ---
 
 
@@ -224,6 +482,15 @@ Code:
     |          ^~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 | a icon()
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 | a icon(folder)
 ---
 
 
@@ -237,6 +504,17 @@ Code:
   3 |
 
 [1] mermaid.js replaces the class given earlier for this node with this class.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::highlight
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file :::muted
+          3 |
 ---
 
 
@@ -250,6 +528,17 @@ Code:
   3 |
 
 [1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 | └── file icon(file)
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 | └── file icon(folder)
+          3 |
 ---
 
 
@@ -263,6 +552,17 @@ Code:
   3 |
 
 [1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 | └── file icon(folder)
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 | └── file icon(file)
+          3 |
 ---
 
 
@@ -281,6 +581,27 @@ Code:
   8 |
 
 [1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | ---
+          2 | config:
+          3 |   treeView:
+          4 |     defaultIconPack: custom
+          5 | ---
+          6 | treeView-beta
+          7 |   file icon(mark)
+          8 |
+      - Remove the earlier annotation.
+        Output:
+          1 | ---
+          2 | config:
+          3 |   treeView:
+          4 |     defaultIconPack: custom
+          5 | ---
+          6 | treeView-beta
+          7 |   file icon(custom:mark)
+          8 |
 ---
 
 
@@ -299,6 +620,27 @@ Code:
   8 |
 
 [1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | ---
+          2 | config:
+          3 |   treeView:
+          4 |     defaultIconPack: draftcustom
+          5 | ---
+          6 | treeView-beta
+          7 | file icon(mark)
+          8 |
+      - Remove the earlier annotation.
+        Output:
+          1 | ---
+          2 | config:
+          3 |   treeView:
+          4 |     defaultIconPack: draftcustom
+          5 | ---
+          6 | treeView-beta
+          7 | file icon(draftcustom:mark)
+          8 |
 ---
 
 
@@ -317,6 +659,27 @@ Code:
   8 |
 
 [1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | ---
+          2 | config:
+          3 |   treeView:
+          4 |     defaultIconPack: draftcustom
+          5 | ---
+          6 | treeView-beta
+          7 | file icon(draftcustom:mark)
+          8 |
+      - Remove the earlier annotation.
+        Output:
+          1 | ---
+          2 | config:
+          3 |   treeView:
+          4 |     defaultIconPack: draftcustom
+          5 | ---
+          6 | treeView-beta
+          7 | file icon(mark)
+          8 |
 ---
 
 
@@ -330,6 +693,17 @@ Code:
   3 |
 
 [1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file icon(file)
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file icon(folder)
+          3 |
 ---
 
 
@@ -343,6 +717,17 @@ Code:
   3 |
 
 [1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file icon()
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file icon(file)
+          3 |
 ---
 
 
@@ -356,6 +741,17 @@ Code:
   3 |
 
 [1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file icon(file)
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file icon()
+          3 |
 ---
 
 
@@ -369,6 +765,17 @@ Code:
   3 |
 
 [1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 | file icon(none)
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 | file icon(file)
+          3 |
 ---
 
 
@@ -382,6 +789,17 @@ Code:
   3 |
 
 [1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file icon(logos:react)
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file icon(logos:vue)
+          3 |
 ---
 
 
@@ -395,6 +813,17 @@ Code:
   3 |
 
 [1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file icon(folder)
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file icon(file)
+          3 |
 ---
 
 
@@ -409,7 +838,24 @@ Code:
   3 |
 
 [1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file icon(file) icon(folder)
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file icon() icon(folder)
+          3 |
 [2] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file icon(file) icon()
+          3 |
 ---
 
 
@@ -424,7 +870,24 @@ Code:
   3 |
 
 [1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 | file icon(file) icon(folder)
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 | file icon(custom:mark) icon(folder)
+          3 |
 [2] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 | file icon(file) icon(custom:mark)
+          3 |
 ---
 
 
@@ -441,6 +904,23 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier icon setting for this node with this icon setting.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 | root/
+          3 | ├── directory/
+          4 | │
+          5 | │   └── file icon(file)
+          6 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 | root/
+          3 | ├── directory/
+          4 | │
+          5 | │   └── file icon(folder)
+          6 |
 ---
 
 
@@ -456,6 +936,21 @@ Code:
   5 |
 
 [1] mermaid.js replaces the class given earlier for this node with this class.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 | root/
+          3 |   directory/
+          4 |     file :::first
+          5 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 | root/
+          3 |   directory/
+          4 |     file :::second
+          5 |
 ---
 
 
@@ -470,6 +965,18 @@ Code:
   4 |
 
 [1] mermaid.js replaces the description given earlier for this node with this description.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 | └── file ## First
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 | └── file
+          3 | └── ## Second
+          4 |
 ---
 
 
@@ -484,6 +991,18 @@ Code:
   4 |
 
 [1] mermaid.js replaces the description given earlier for this node with this description.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 | └── file ## Second
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 | └── file
+          3 | └── ## First
+          4 |
 ---
 
 
@@ -500,6 +1019,22 @@ Code:
   6 |
 
 [1] mermaid.js replaces the description given earlier for this node with this description.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file ## First
+          3 | %% comment
+          4 |
+          5 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file
+          3 | %% comment
+          4 |
+          5 |   ## Second
+          6 |
 ---
 
 
@@ -514,6 +1049,18 @@ Code:
   4 |
 
 [1] mermaid.js replaces the description given earlier for this node with this description.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file ## First
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file
+          3 |   ##
+          4 |
 ---
 
 
@@ -528,6 +1075,18 @@ Code:
   4 |
 
 [1] mermaid.js replaces the description given earlier for this node with this description.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file ## #35;
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file
+          3 |   ## #
+          4 |
 ---
 
 
@@ -542,6 +1101,18 @@ Code:
   4 |
 
 [1] mermaid.js replaces the description given earlier for this node with this description.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file ## First
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file
+          3 |   ## Second
+          4 |
 ---
 
 
@@ -556,6 +1127,18 @@ Code:
   4 |
 
 [1] mermaid.js replaces the description given earlier for this node with this description.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 | file ## <b title="x">Hi</b>
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 | file
+          3 |  ## <b title='x'>Hi</b>
+          4 |
 ---
 
 
@@ -570,6 +1153,18 @@ Code:
   4 |
 
 [1] mermaid.js replaces the description given earlier for this node with this description.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file ## Second
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file
+          3 |   ## First
+          4 |
 ---
 
 
@@ -584,6 +1179,18 @@ Code:
   4 |
 
 [1] mermaid.js replaces the description given earlier for this node with this description.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file ## First  line
+          3 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file
+          3 |   ## First line
+          4 |
 ---
 
 
@@ -599,6 +1206,20 @@ Code:
   5 |
 
 [1] mermaid.js replaces the description given earlier for this node with this description.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file ## First
+          3 |   ## Third
+          4 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file
+          3 |   ##
+          4 |   ## Third
+          5 |
 ---
 
 
@@ -615,7 +1236,34 @@ Code:
   5 |
 
 [1] mermaid.js replaces the description given earlier for this node with this description.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file ## First
+          3 |   ## First
+          4 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file
+          3 |   ## Second
+          4 |   ## First
+          5 |
 [2] mermaid.js replaces the description given earlier for this node with this description.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file ## First
+          3 |   ## Second
+          4 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 |   file ## First
+          3 |   ## First
+          4 |
 ---
 
 
@@ -632,5 +1280,26 @@ Code:
   5 |
 
 [1] mermaid.js replaces the description given earlier for this node with this description.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 | file ## First
+          3 |  ## Third
+          4 |
+      - Remove the earlier annotation.
+        Output:
+          1 | treeView-beta
+          2 | file
+          3 |  ## #35;
+          4 |  ## Third
+          5 |
 [2] mermaid.js replaces the description given earlier for this node with this description.
+    Suggestions:
+      - Remove this annotation.
+        Output:
+          1 | treeView-beta
+          2 | file ## First
+          3 |  ## #35;
+          4 |
 ---

@@ -48,6 +48,21 @@ accDescr: First report
 "A":1
 `,
       },
+
+      {
+        name: "valid/treemap/description-crlf",
+        filename:
+          "tests/fixtures/rules/treemap-no-duplicate-description/valid/treemap/description-crlf-input.mmd",
+        code: `treemap\r
+accDescr {\r
+ First\r
+ report\r
+}\r
+accDescr {First
+report}\r
+"A":10\r
+`,
+      },
     ],
     invalid: [
       {
@@ -66,6 +81,23 @@ report}
             column: 1,
             endLine: 4,
             endColumn: 8,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `treemap
+accDescr {First\u2028report}
+"A":10
+`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the description.",
+                output: `treemap
+accDescr {First
+report}
+"A":10
+`,
+              },
+            ],
           },
         ],
       },
@@ -84,6 +116,22 @@ accDescr { First\u2028 Second }
             column: 1,
             endLine: 3,
             endColumn: 27,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `treemap
+accDescr: First\u2028 Second
+"A":1
+`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the description.",
+                output: `treemap
+accDescr { First\u2028 Second }
+"A":1
+`,
+              },
+            ],
           },
         ],
       },
@@ -102,6 +150,22 @@ accDescr { First\u2029 Second }
             column: 1,
             endLine: 3,
             endColumn: 27,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `treemap
+accDescr: First\u2029 Second
+"A":1
+`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the description.",
+                output: `treemap
+accDescr { First\u2029 Second }
+"A":1
+`,
+              },
+            ],
           },
         ],
       },
@@ -120,6 +184,52 @@ accDescr: First report
             column: 1,
             endLine: 3,
             endColumn: 23,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `treemap
+accDescr: First\treport
+"A":1
+`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the description.",
+                output: `treemap
+accDescr: First report
+"A":1
+`,
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        name: "invalid/treemap/description-equal-predecessor-crlf",
+        filename:
+          "tests/fixtures/rules/treemap-no-duplicate-description/invalid/treemap/description-equal-predecessor-crlf-input.mmd",
+        code: `treemap\r
+accDescr: A\r
+accDescr: A\r
+accDescr: B\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier description with the one of this `accDescr`.",
+            line: 4,
+            column: 1,
+            endLine: 4,
+            endColumn: 12,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `treemap\r
+accDescr: A\r
+accDescr: A\r
+`,
+              },
+            ],
           },
         ],
       },

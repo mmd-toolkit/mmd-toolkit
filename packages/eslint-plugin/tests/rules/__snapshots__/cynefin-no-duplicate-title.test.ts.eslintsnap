@@ -14,6 +14,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 |   title First
+          3 |   complex
+          4 |     "Investigate"
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | cynefin-beta
+          2 |   title Second
+          3 |   complex
+          4 |     "Investigate"
+          5 |
 ---
 
 
@@ -28,6 +43,17 @@ Code:
   4 | complex "Investigate"
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | cynefin-beta
+          2 | accTitle: First
+          3 | complex "Investigate"
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | cynefin-beta
+          2 | accTitle: Second
+          3 | complex "Investigate"
 ---
 
 
@@ -42,6 +68,17 @@ Code:
   4 | complex "Investigate"
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | cynefin-beta
+          2 | accTitle: First
+          3 | complex "Investigate"
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | cynefin-beta
+          2 | accTitle:
+          3 | complex "Investigate"
 ---
 
 
@@ -56,6 +93,17 @@ Code:
   4 | accTitle: Second
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | cynefin-beta
+          2 | accTitle: First
+          3 | accTitle: Second
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | cynefin-beta
+          2 | accTitle:
+          3 | accTitle: Second
 ---
 
 
@@ -71,7 +119,29 @@ Code:
     | ^~~~~~~~~~~ [2]
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | cynefin-beta
+          2 | accTitle: A
+          3 | accTitle: A
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | cynefin-beta
+          2 | accTitle: B
+          3 | accTitle: A
 [2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | cynefin-beta
+          2 | accTitle: A
+          3 | accTitle: B
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | cynefin-beta
+          2 | accTitle: A
+          3 | accTitle: A
 ---
 
 
@@ -88,6 +158,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 |   title First
+          3 |   complex
+          4 |     "Investigate"
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | cynefin-beta
+          2 |   title Second
+          3 |   complex
+          4 |     "Investigate"
+          5 |
 ---
 
 
@@ -101,6 +186,15 @@ Code:
     | ^~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | cynefin-beta
+          2 | accTitle: A
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | cynefin-beta
+          2 | accTitle: #65;
 ---
 
 
@@ -117,6 +211,21 @@ Code:
     | ^~~~~ [1]
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | ---
+          2 | title: First
+          3 | ---
+          4 | cynefin-beta
+          5 | title First
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | ---
+          2 | title: First
+          3 | ---
+          4 | cynefin-beta
+          5 | title
 ---
 
 
@@ -130,6 +239,15 @@ Code:
     | ^~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | title A
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | cynefin-beta
+          2 | title #65;
 ---
 
 
@@ -143,6 +261,15 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | title <span class="x">A</span>
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | cynefin-beta
+          2 | title <span class='x'>A</span>
 ---
 
 
@@ -157,6 +284,17 @@ Code:
     | ^~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Investigate"
+          3 | title First
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Investigate"
+          3 | title Second
 ---
 
 
@@ -172,6 +310,19 @@ Code:
   5 | complex "Investigate"
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | title First
+          3 |
+          4 | complex "Investigate"
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | cynefin-beta
+          2 | title
+          3 |
+          4 | complex "Investigate"
 ---
 
 
@@ -186,6 +337,17 @@ Code:
   4 | complex "Investigate"
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | title First
+          3 | complex "Investigate"
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | cynefin-beta
+          2 | title Second
+          3 | complex "Investigate"
 ---
 
 
@@ -201,21 +363,19 @@ Code:
   5 | complex "Investigate"
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
----
-
-
-Test: cynefin-no-duplicate-title >> invalid >>> invalid/cynefin/title-crlf
-Filename: tests/fixtures/rules/cynefin-no-duplicate-title/invalid/cynefin/title-crlf-input.mmd
-
-Code:
-  1 | cynefin-beta
-  2 | accTitle: First
-  3 | %% comment
-  4 | accTitle: Second
-    | ^~~~~~~~~~~~~~~~ [1]
-  5 |
-
-[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | title First
+          3 | %% later
+          4 | complex "Investigate"
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | cynefin-beta
+          2 | title
+          3 | %% later
+          4 | complex "Investigate"
 ---
 
 
@@ -231,6 +391,19 @@ Code:
   5 | complex "Investigate"
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | cynefin-beta
+          2 | accTitle: First
+          3 | %%{init: {}}%%
+          4 | complex "Investigate"
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | cynefin-beta
+          2 | accTitle:
+          3 | %%{init: {}}%%
+          4 | complex "Investigate"
 ---
 
 
@@ -245,6 +418,12 @@ Code:
   4 | complex "Investigate"
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | cynefin-beta
+          2 | title %%{init: {}}%%
+          3 | complex "Investigate"
 ---
 
 
@@ -259,6 +438,17 @@ Code:
   4 | complex "Investigate"
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | title First
+          3 | complex "Investigate"
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | cynefin-beta
+          2 | title
+          3 | complex "Investigate"
 ---
 
 
@@ -273,6 +463,39 @@ Code:
   4 | title A
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | title A
+          3 | title A
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | cynefin-beta
+          2 | title
+          3 | title A
+---
+
+
+Test: cynefin-no-duplicate-title >> invalid >>> invalid/cynefin/title-equal-predecessor
+Filename: tests/fixtures/rules/cynefin-no-duplicate-title/invalid/cynefin/title-equal-predecessor-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | accTitle: A
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | cynefin-beta
+          2 | accTitle: A
+          3 | accTitle: A
+          4 |
 ---
 
 
@@ -290,6 +513,51 @@ Code:
   7 | complex "Investigate"
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | ---
+          2 | title: Front
+          3 | ---
+          4 | cynefin-beta
+          5 | title Body
+          6 | complex "Investigate"
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | ---
+          2 | title: Front
+          3 | ---
+          4 | cynefin-beta
+          5 | title
+          6 | complex "Investigate"
+---
+
+
+Test: cynefin-no-duplicate-title >> invalid >>> invalid/cynefin/title-removal-empty-predecessor
+Filename: tests/fixtures/rules/cynefin-no-duplicate-title/invalid/cynefin/title-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | accTitle:
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | cynefin-beta
+          2 | accTitle:
+          3 | accTitle: A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | cynefin-beta
+          2 | accTitle:
+          3 | accTitle: B
+          4 |
 ---
 
 
@@ -306,5 +574,31 @@ Code:
     | ^~~~~~~ [2]
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | title A
+          3 | accTitle: X
+          4 | title A
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | cynefin-beta
+          2 | accTitle: X
+          3 | title B
+          4 | title A
 [2] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | cynefin-beta
+          2 | title A
+          3 | accTitle: X
+          4 | title B
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | cynefin-beta
+          2 | title A
+          3 | accTitle: X
+          4 | title A
 ---

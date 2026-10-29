@@ -17,50 +17,23 @@ requirement の名前の後の requirement や、element の名前の後の elem
 
 ## 規則の詳細
 
-この規則は、同じ種類の前の文がその名前を持ち、後の文が何かを失うときに、
-requirement や element の名前を報告する。
-失うのは、後の文が requirement の別の種類であるときと、
-残る文が持たない値のフィールドを持つときである。
-mermaid.js は requirement と element を別々に持つので、
-requirement はその名前の最初の requirement と、
-element はその名前の最初の element と比べる。
-対象の図種は `requirement` である。
+この規則は、要求図（`requirementDiagram`）に当てる。
+名前を使い回す requirement や element のうち、
+種類かフィールドの値が失われるものを報告する。
+その名前の最初の requirement と種類が違う場合か、
+最初の文が同じ値では持たないフィールドがある場合である。
+requirement と element は、同じ名前の最初のものと別々に比べる。
 
-`id: 1` を持つ `requirement r` の後、
-`id: 2` と `text: second` を持つ 2 つ目の `requirement r` は、 `r` を id `1`、
-テキストなしのままにし、 2 つ目の `functionalRequirement r` は、
-その種類を `requirement` のままにする。
-残る文が持つ値のフィールドは、何も失わない。
-`id: 1` と `risk: low` を持つ `requirement r` の後の、
-`id: 1` を持つ 2 つ目の `requirement r` は報告しない。
-値は、mermaid.js が持つとおりに比べる。
-両端の空白を除き、文字列は引用符を除いたテキストとして比べるので、
-`text: "t"` と `text: t` は同じである。
-`risk` と `verifyMethod` は、`risk: low` と `risk: Low` のように、
-大文字小文字を問わず比べる。
+何かを失う後の文は、それぞれ 1 つの報告になる。
 
-requirement の名前の element や、element の名前の requirement は、
-その名前の 2 つ目の箱になり、報告しない。
-mermaid.js は両方を持つ。
-その名前を持つ `style`、`class`、`:::` の後のクラスは requirement に行く。
-`element x` と `requirement x` の後、
-`id: 2` を持つ 3 つ目の `requirement x` は requirement と比べ、
-その id は捨てられるので報告する。
-フィールドを持たない 3 つ目の `requirement x` は報告しない。
-`requirement x` と `element x` の後の `element x:::c` は報告せず、
-クラス `c` を requirement に与える。
+保たれる値のフィールドを繰り返すだけの後の文は報告しない。
+値は周囲の空白と文字列の引用符を除いて比べ、
+`risk` と `verifyMethod` は大文字小文字を区別しない。
+名前は大文字小文字を区別するが、名前を囲む引用符は名前を変えない。
 
-引用符で囲んだ名前は同じ名前である。
-`id: 1` を持つ `requirement r` の後の、
-`id: 2` を持つ `requirement "r"` は報告する。
-名前は大文字小文字で区別する。
-`requirement r` と `requirement R` は 2 つの requirement である。
-報告する文はそれぞれ数え、id が `1`、`2`、
-`3` の `requirement r` が 3 つなら 2 つ報告する。
-
-`requirement r:::c {` と `}` のように、
-フィールドを持たない同じ種類の後の文はクラスを与えるだけで、報告しない。
-`r:::c` も同じことを書く。
+同じ名前の requirement と element は、mermaid.js が両方を保つので報告しない。
+フィールドのない同じ種類の後の文は、クラスを与えるだけなので報告しない。
+そのクラスは、その名前の requirement があればそれに行く。
 
 この規則に**反する**コードの例:
 
@@ -117,14 +90,6 @@ requirementDiagram
 - [er-no-redefined-entity](./er-no-redefined-entity.ja.md)
 - [requirement-no-undef](./requirement-no-undef.ja.md)
 - [requirement-no-duplicate-field](./requirement-no-duplicate-field.ja.md)
-
-## 背景
-
-mermaid.js は、
-[`addRequirement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L126-L141)、
-[`addElement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L172-L185)
-で、その名前のものがないときだけ requirement や element を加え、その後、
-そのために読んだフィールドを忘れる。
 
 <!-- begin auto-generated rule resources -->
 

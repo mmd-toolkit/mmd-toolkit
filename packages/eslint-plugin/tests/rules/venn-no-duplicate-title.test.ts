@@ -32,6 +32,67 @@ title\rAudience
 `,
       },
     ],
-    invalid: [],
+    invalid: [
+      {
+        name: "invalid/venn/title-crlf",
+        filename:
+          "tests/fixtures/rules/venn-no-duplicate-title/invalid/venn/title-crlf-input.mmd",
+        code: `venn-beta\r
+title Audience\r
+title Coverage\r
+`,
+        errors: [
+          {
+            message: "mermaid.js replaces the earlier title with this title.",
+            line: 3,
+            column: 1,
+            endLine: 3,
+            endColumn: 15,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `venn-beta\r
+title Audience\r
+`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the title.",
+                output: `venn-beta\r
+title Coverage\r
+`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/venn/title-equal-predecessor-crlf",
+        filename:
+          "tests/fixtures/rules/venn-no-duplicate-title/invalid/venn/title-equal-predecessor-crlf-input.mmd",
+        code: `venn-beta\r
+title A\r
+title A\r
+title B\r
+`,
+        errors: [
+          {
+            message: "mermaid.js replaces the earlier title with this title.",
+            line: 4,
+            column: 1,
+            endLine: 4,
+            endColumn: 8,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `venn-beta\r
+title A\r
+title A\r
+`,
+              },
+            ],
+          },
+        ],
+      },
+    ],
   },
 )

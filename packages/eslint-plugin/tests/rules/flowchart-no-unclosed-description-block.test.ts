@@ -35,18 +35,82 @@ new RuleTester(LANGUAGE_CONFIG).run(
             endColumn: 13,
             suggestions: [
               {
-                desc: "Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.",
-                output: `flowchart LR
-  accDescr { a\u2028b }
-  C
-`,
-              },
-              {
-                desc: "Close the block at the end of the text: mermaid.js then reads all the text after the `{` as the description.",
+                desc: "Close the block at the end of the text.",
                 output: `flowchart LR
   accDescr { a\u2028b
   C
 }
+`,
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        name: "invalid/flowchart/gram-unclosed-description-block-closed-by-a-brace-cr",
+        filename:
+          "tests/fixtures/rules/flowchart-no-unclosed-description-block/invalid/flowchart/gram-unclosed-description-block-closed-by-a-brace-cr-input.mmd",
+        code: `flowchart LR\r  accDescr { x\r  A{y}\r`,
+        errors: [
+          {
+            message:
+              "mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.",
+            line: 2,
+            column: 3,
+            endLine: 2,
+            endColumn: 13,
+            suggestions: [],
+          },
+        ],
+      },
+      {
+        name: "invalid/flowchart/gram-unclosed-description-block-closed-by-a-brace-crlf",
+        filename:
+          "tests/fixtures/rules/flowchart-no-unclosed-description-block/invalid/flowchart/gram-unclosed-description-block-closed-by-a-brace-crlf-input.mmd",
+        code: `flowchart LR\r
+  accDescr { x\r
+  A{y}\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.",
+            line: 2,
+            column: 3,
+            endLine: 2,
+            endColumn: 13,
+            suggestions: [],
+          },
+        ],
+      },
+      {
+        name: "invalid/flowchart/gram-unclosed-description-block-crlf-lines",
+        filename:
+          "tests/fixtures/rules/flowchart-no-unclosed-description-block/invalid/flowchart/gram-unclosed-description-block-crlf-lines-input.mmd",
+        code: `flowchart LR\r
+  A\r
+  accDescr {\r
+    x\r
+  B --> C\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.",
+            line: 3,
+            column: 3,
+            endLine: 3,
+            endColumn: 13,
+            suggestions: [
+              {
+                desc: "Close the block at the end of the text.",
+                output: `flowchart LR\r
+  A\r
+  accDescr {\r
+    x\r
+  B --> C\r
+}\r
 `,
               },
             ],

@@ -13,6 +13,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | erDiagram
+          2 |   accDescr: first
+          3 |   A
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | erDiagram
+          2 |   accDescr: second
+          3 |   A
+          4 |
 ---
 
 
@@ -28,6 +41,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | erDiagram
+          2 |   accDescr: first
+          3 |   A
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | erDiagram
+          2 |   accDescr { second }
+          3 |   A
+          4 |
 ---
 
 
@@ -45,7 +71,37 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | erDiagram
+          2 |   accDescr: a
+          3 |   accDescr: a
+          4 |   A
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | erDiagram
+          2 |   accDescr: b
+          3 |   accDescr: a
+          4 |   A
+          5 |
 [2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | erDiagram
+          2 |   accDescr: a
+          3 |   accDescr: b
+          4 |   A
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | erDiagram
+          2 |   accDescr: a
+          3 |   accDescr: a
+          4 |   A
+          5 |
 ---
 
 
@@ -70,6 +126,25 @@ Code:
  11 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | erDiagram
+          2 |   accDescr {
+          3 |     d
+          4 |     e
+          5 |   }
+          6 |   A
+          7 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | erDiagram
+          2 |   accDescr {
+          3 |     d  
+          4 |     e
+          5 |   }
+          6 |   A
+          7 |
 ---
 
 
@@ -91,6 +166,22 @@ Code:
   8 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | erDiagram
+          2 | accDescr: a
+          3 | B
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | erDiagram
+          2 | accDescr { x
+          3 | A {
+          4 | string n
+          5 | }
+          6 | B
+          7 |
 ---
 
 
@@ -104,6 +195,15 @@ Code:
     | ^~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | erDiagram
+          2 | accDescr: a
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | erDiagram
+          2 | accDescr { b }
 ---
 
 
@@ -117,6 +217,37 @@ Code:
     | ^~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | erDiagram
+          2 | accDescr: a
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | erDiagram
+          2 | accDescr: b
+---
+
+
+Test: er-no-duplicate-description >> invalid >>> invalid/er/description-equal-predecessor
+Filename: tests/fixtures/rules/er-no-duplicate-description/invalid/er/description-equal-predecessor-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | accDescr: A
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | erDiagram
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
 ---
 
 
@@ -135,6 +266,19 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | erDiagram
+          2 | accDescr: d
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | erDiagram
+          2 | accDescr:
+          3 | %% c
+          4 | A
+          5 |
 ---
 
 
@@ -153,6 +297,14 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | erDiagram
+          2 | accDescr:
+          3 | %%{init: {}}%%
+          4 | A
+          5 |
 ---
 
 
@@ -171,4 +323,17 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | erDiagram
+          2 | accDescr: d
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | erDiagram
+          2 | accDescr:
+          3 |
+          4 | A
+          5 |
 ---

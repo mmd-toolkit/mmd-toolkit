@@ -25,6 +25,12 @@ accDescr { \u2029 }`,
             column: 1,
             endLine: 2,
             endColumn: 15,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `wardley-beta`,
+              },
+            ],
           },
         ],
       },
@@ -41,6 +47,12 @@ accDescr {\u00a0}`,
             column: 1,
             endLine: 2,
             endColumn: 13,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `wardley-beta`,
+              },
+            ],
           },
         ],
       },
@@ -56,6 +68,53 @@ accDescr {\u00a0}`,
             column: 1,
             endLine: 3,
             endColumn: 3,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `wardley-beta`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/wardley/removal-crlf-with-tab",
+        filename: "input.mmd",
+        code: `wardley-beta\r
+accDescr {\t}\r
+`,
+        errors: [
+          {
+            messageId: "empty",
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `wardley-beta\r
+`,
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        name: "invalid/wardley/empty-block-crlf",
+        filename:
+          "tests/fixtures/rules/wardley-no-empty-description-block/invalid/wardley/empty-block-crlf-input.mmd",
+        code: `wardley-beta\r
+accDescr { \r
+ }`,
+        errors: [
+          {
+            message:
+              "mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.",
+            line: 2,
+            column: 1,
+            endLine: 3,
+            endColumn: 3,
+            suggestions: [
+              { desc: "Remove the empty block.", output: `wardley-beta` },
+            ],
           },
         ],
       },

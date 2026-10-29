@@ -11,8 +11,64 @@ Code:
     |         ^~~~ [1]  ^~~~~~~ [2]
   4 |
 
+Output:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill:red, opacity:0.5
+  4 |
+
 [1] mermaid.js does not read the style property `Fill` in the drawing.
 [2] mermaid.js does not read the style property `opacity` in the drawing.
+---
+
+
+Test: venn-no-invalid-style-key >> invalid >>> invalid/venn/competing-property-after
+Filename: tests/fixtures/rules/venn-no-invalid-style-key/invalid/venn/competing-property-after-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A FILL:red
+    |         ^~~~ [1]
+  4 | style A fill:blue
+  5 |
+
+Output: unchanged
+
+[1] mermaid.js does not read the style property `FILL` in the drawing.
+    Suggestions:
+      - Write the property name in lower case.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:red
+          4 | style A fill:blue
+          5 |
+---
+
+
+Test: venn-no-invalid-style-key >> invalid >>> invalid/venn/competing-property-before
+Filename: tests/fixtures/rules/venn-no-invalid-style-key/invalid/venn/competing-property-before-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill:blue
+  4 | style A FILL:red
+    |         ^~~~ [1]
+  5 |
+
+Output: unchanged
+
+[1] mermaid.js does not read the style property `FILL` in the drawing.
+    Suggestions:
+      - Write the property name in lower case.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:blue
+          4 | style A fill:red
+          5 |
 ---
 
 
@@ -25,6 +81,12 @@ Code:
   3 | style A COLOR:red, Stroke:blue, Stroke-Width:3, Fill-Opacity:0.5
     |         ^~~~~      ^~~~~~       ^~~~~~~~~~~~    ^~~~~~~~~~~~
     |         [1]        [2]          [3]             [4]
+  4 |
+
+Output:
+  1 | venn-beta
+  2 | set A
+  3 | style A color:red, stroke:blue, stroke-width:3, fill-opacity:0.5
   4 |
 
 [1] mermaid.js does not read the style property `COLOR` in the drawing.
@@ -43,6 +105,8 @@ Code:
     |                                                                         ^~~~~~ [1]
   3 |
 
+Output: unchanged
+
 [1] mermaid.js does not read the style property `custom` in the drawing.
 ---
 
@@ -56,6 +120,8 @@ Code:
   3 | style A colour:red
     |         ^~~~~~ [1]
   4 |
+
+Output: unchanged
 
 [1] mermaid.js does not read the style property `colour` in the drawing.
 ---
@@ -71,6 +137,8 @@ Code:
     |         ^~~~~~~ [1]
   4 |
 
+Output: unchanged
+
 [1] mermaid.js does not read the style property `opacity` in the drawing.
 ---
 
@@ -83,6 +151,8 @@ Code:
   2 | style A __proto__:red,constructor:blue,hasOwnProperty:green,toString:yellow
     |         ^~~~~~~~~ [1] ^~~~~~~~~~~ [2]  ^~~~~~~~~~~~~~ [3]   ^~~~~~~~ [4]
   3 |
+
+Output: unchanged
 
 [1] mermaid.js does not read the style property `__proto__` in the drawing.
 [2] mermaid.js does not read the style property `constructor` in the drawing.
@@ -101,8 +171,48 @@ Code:
     |         ^~~~ [1]  ^~~~ [2]
   4 |
 
+Output: unchanged
+
 [1] mermaid.js does not read the style property `Fill` in the drawing.
+    Suggestions:
+      - Write the property name in lower case.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:red, Fill:blue
+          4 |
 [2] mermaid.js does not read the style property `Fill` in the drawing.
+    Suggestions:
+      - Write the property name in lower case.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A Fill:red, fill:blue
+          4 |
+---
+
+
+Test: venn-no-invalid-style-key >> invalid >>> invalid/venn/property-of-another-target
+Filename: tests/fixtures/rules/venn-no-invalid-style-key/invalid/venn/property-of-another-target-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | set B
+  4 | style A FILL:red
+    |         ^~~~ [1]
+  5 | style B fill:blue
+  6 |
+
+Output:
+  1 | venn-beta
+  2 | set A
+  3 | set B
+  4 | style A fill:red
+  5 | style B fill:blue
+  6 |
+
+[1] mermaid.js does not read the style property `FILL` in the drawing.
 ---
 
 
@@ -116,5 +226,14 @@ Code:
     |                  ^~~~ [1]
   4 |
 
+Output: unchanged
+
 [1] mermaid.js does not read the style property `Fill` in the drawing.
+    Suggestions:
+      - Write the property name in lower case.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:red,fill:blue
+          4 |
 ---

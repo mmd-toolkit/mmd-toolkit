@@ -26,8 +26,6 @@ import { textWithoutDirectives } from "./directive-free-text.ts"
 export interface BraceLine {
   /** Where the line ends, without the whitespace at its end. */
   readonly end: number
-  /** Whether text other than a directive stands on the line. */
-  readonly hasText: boolean
   /** Whether text other than a directive stands after the line. */
   readonly textBeyond: boolean
 }
@@ -35,9 +33,8 @@ export interface BraceLine {
 /**
  * The line of the `{` of a block, from the tokens `body` after it. A token may
  * hold directives, which `sourceCode.ast.directives` gives; the line of a token
- * ends at its first line terminator outside them. The block holds no directive
- * that is not closed (see `closingSuggestions` of
- * `flowchart-no-unclosed-description-block`).
+ * ends at its first line terminator outside them. A closing suggestion is not
+ * offered for a block that holds a directive that is not closed.
  */
 export function braceLineOf(
   sourceCode: MermaidSourceCode,
@@ -48,11 +45,10 @@ export function braceLineOf(
   const { directives } = sourceCode.ast
   let end = brace.range[1]
   let line = brace.loc.end.line
-  let hasText = false
 
   for (const [index, token] of body.entries()) {
     if (token.loc.start.line !== line) {
-      return { end, hasText, textBeyond: textIn(body, index) }
+      return { end, textBeyond: textIn(body, index) }
     }
     // Where the line of the token ends: at a line terminator that no
     // directive holds.
@@ -68,12 +64,11 @@ export function braceLineOf(
         break
       }
     }
-    if (token.type !== "Directive") hasText = true
     end = token.range[0] + text.slice(token.range[0], lineEnd).trimEnd().length
-    if (lineEnd < token.range[1]) return { end, hasText, textBeyond: true }
+    if (lineEnd < token.range[1]) return { end, textBeyond: true }
     line = token.loc.end.line
   }
-  return { end, hasText, textBeyond: false }
+  return { end, textBeyond: false }
 }
 
 /** Whether a token other than a directive is among `tokens`, from `from` on. */

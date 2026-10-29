@@ -12,6 +12,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 |   accTitle: first
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 |   accTitle: second
+          3 |
 ---
 
 
@@ -27,6 +38,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 |   A
+          3 |   accTitle: x
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 |   A
+          3 |   accTitle:
+          4 |
 ---
 
 
@@ -44,6 +68,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 |   flow F
+          3 |     A
+          4 |     accTitle: inner
+          5 |   end
+          6 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 |   flow F
+          3 |     A
+          4 |   end
+          5 |   accTitle: outer
+          6 |
 ---
 
 
@@ -62,6 +103,19 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: First
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle:
+          3 |
+          4 | Second
+          5 |
 ---
 
 
@@ -79,20 +133,20 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
----
-
-
-Test: agentflow-no-duplicate-title >> invalid >>> invalid/agentflow/title-crlf
-Filename: tests/fixtures/rules/agentflow-no-duplicate-title/invalid/agentflow/title-crlf-input.mmd
-
-Code:
-  1 | agentflow-beta TB
-  2 | accTitle: First
-  3 | accTitle: Second
-    | ^~~~~~~~~~~~~~~~ [1]
-  4 |
-
-[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: First
+          3 | A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle:
+          3 | %% next title
+          4 | A
+          5 |
 ---
 
 
@@ -111,6 +165,14 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle:
+          3 | %%{init: {}}%%
+          4 | Second
+          5 |
 ---
 
 
@@ -125,6 +187,17 @@ Code:
     | ^~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | A
+          3 | accTitle: First
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | A
+          3 | accTitle:
 ---
 
 
@@ -139,6 +212,39 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: #35;
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: #
+          3 |
+---
+
+
+Test: agentflow-no-duplicate-title >> invalid >>> invalid/agentflow/title-equal-predecessor
+Filename: tests/fixtures/rules/agentflow-no-duplicate-title/invalid/agentflow/title-equal-predecessor-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accTitle: A
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: A
+          3 | accTitle: A
+          4 |
 ---
 
 
@@ -154,6 +260,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: <b class="x">t</b>
+          3 | A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: <b class='x'>t</b>
+          3 | A
+          4 |
 ---
 
 
@@ -170,7 +289,27 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: First
+          3 | accTitle: Third
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: <b>x</b>
+          3 | accTitle: Third
+          4 |
 [2] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: First
+          3 | accTitle: <b>x</b>
+          4 |
 ---
 
 
@@ -188,6 +327,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: First
+          3 | global
+          4 | end
+          5 | A
+          6 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | global
+          3 |   accTitle: Second
+          4 | end
+          5 | A
+          6 |
 ---
 
 
@@ -205,6 +361,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: First
+          3 | flow F
+          4 | A
+          5 | end
+          6 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F
+          3 | accTitle: Second
+          4 | A
+          5 | end
+          6 |
 ---
 
 
@@ -221,7 +394,33 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: First
+          3 | accTitle: First
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: Second
+          3 | accTitle: First
+          4 |
 [2] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: First
+          3 | accTitle: Second
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: First
+          3 | accTitle: First
+          4 |
 ---
 
 
@@ -237,4 +436,17 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: First
+          3 | A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: Second
+          3 | A
+          4 |
 ---

@@ -17,20 +17,11 @@ file, and the tree view gets no description.
 
 ## Rule Details
 
-This rule reports a node whose name starts with `accDescr`, then spaces or tabs
-or nothing, then `{`. It applies to `treeView`.
-
-After `accDescr { Project files`, the tree has a file named
-`accDescr { Project files`, and the description is empty. A block whose `{` ends
-its line makes a file named `accDescr {`, and its lines of text become files
-too. A name in quotes, as `"accDescr { Project files"`, is written as a name and
-is not reported.
-
-A `}` on a later line, as in a file named `a}b`, closes the block: the lines up
-to it become the description and disappear from the tree. This rule does not
-report such a block.
-
-Close the block where the description ends.
+This rule applies to tree views (`treeView-beta`). It reports a node whose name
+starts with `accDescr`, then spaces or tabs or nothing, then `{`. A quoted name
+such as `"accDescr { Project files"` is written as a name and is not reported. A
+`}` on a later line, even in a file name such as `a}b`, closes the block and
+makes the preceding lines its description; such a block is not reported.
 
 Examples of **incorrect** code for this rule:
 
@@ -60,14 +51,6 @@ This rule has no options.
 
 - [treeview-no-empty-description-block](./treeview-no-empty-description-block.md)
 - [treeview-no-duplicate-description](./treeview-no-duplicate-description.md)
-
-## Background
-
-The
-[terminal of the block](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treeView/treeView.langium#L15-L15)
-matches a block only with its `}`, and the
-[terminal of a name](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treeView/treeView.langium#L57-L57)
-takes the rest of the line as the name of a node.
 
 <!-- begin auto-generated rule resources -->
 

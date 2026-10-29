@@ -9,38 +9,29 @@ Disallow an `accTitle` that replaces the title set before it.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-An agentflow has one accessible title, which `accTitle` sets. A later `accTitle`
-replaces the title set before it without an error, and the earlier title is
-lost.
+An `agentflow-beta` diagram has one accessible title, which `accTitle` sets. A
+later `accTitle` replaces it without an error, and the earlier title is lost.
 
 ## Rule Details
 
-This rule reports every `accTitle` statement after the first one, when it sets a
-title other than the one before it. It applies to `agentflow`.
+This rule applies to agentflow diagrams (`agentflow-beta`). It reports an
+`accTitle` statement that changes a title set by an earlier statement.
+Statements inside a flow or a `global` block set the title of the whole diagram
+and count too.
 
-After `accTitle: first` and `accTitle: second`, the title is `second`.
-`accTitle:` with no text sets the title too: it takes the next line that holds
-text as the title, past empty lines and directives, and when no such line
-follows, it makes the title empty. A comment line is text there: after
-`accTitle:`, the line `%% next` is the title `%% next`. Either way, a title
-written before it is lost. A statement inside a flow or a `global` block sets
-the title of the whole diagram and is counted too; mermaid.js also adds the
-value of such a statement inside a flow to the members of the flow as an id, so
-that a vertex with that id belongs to the flow.
+With no text after `accTitle:`, the next line with text supplies the title, past
+empty lines and directives; with no such line, the title becomes empty. A
+comment line counts as title text there.
 
-A statement that sets the title that the diagram already has is not reported:
-after `accTitle: a`, a second `accTitle: a` loses nothing. Titles are compared
-without the whitespace at their ends, which mermaid.js removes, so
-`accTitle:  a` sets the same title. After `accTitle: a` and `accTitle: b`, a
-third `accTitle: a` is reported, because it replaces `b`. Titles are otherwise
-compared as written: mermaid.js turns character references, as `#35;`, and the
-quotes of HTML attributes into other characters before it reads a title, so two
-titles that differ only in those may be one title for mermaid.js and two for
-this rule.
-
-Keep one `accTitle` statement.
+Repeating the current title is not reported. Titles are compared without
+whitespace at their ends and otherwise as written, so differences in character
+references or HTML attribute quotes can be reported even when mermaid.js reads
+them as the same title.
 
 Examples of **incorrect** code for this rule:
 
@@ -93,13 +84,6 @@ This rule has no options.
 ## Related Rules
 
 - [agentflow-no-duplicate-description](./agentflow-no-duplicate-description.md)
-
-## Background
-
-The
-[`accTitle` statement](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow.jison#L426-L426)
-calls the common `setAccTitle`, which replaces the title set before it, and
-returns its value, which a flow takes as a member.
 
 <!-- begin auto-generated rule resources -->
 

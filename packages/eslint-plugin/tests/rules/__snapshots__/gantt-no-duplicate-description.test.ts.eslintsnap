@@ -14,6 +14,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gantt
+          2 |   accDescr: first
+          3 |   dateFormat YYYY-MM-DD
+          4 |   Design :2024-01-06, 3d
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gantt
+          2 |   accDescr { second }
+          3 |   dateFormat YYYY-MM-DD
+          4 |   Design :2024-01-06, 3d
+          5 |
 ---
 
 
@@ -32,7 +47,41 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gantt
+          2 |   accDescr: a
+          3 |   accDescr: a
+          4 |   dateFormat YYYY-MM-DD
+          5 |   a : 2024-01-01, 1d
+          6 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gantt
+          2 |   accDescr: b
+          3 |   accDescr: a
+          4 |   dateFormat YYYY-MM-DD
+          5 |   a : 2024-01-01, 1d
+          6 |
 [2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gantt
+          2 |   accDescr: a
+          3 |   accDescr: b
+          4 |   dateFormat YYYY-MM-DD
+          5 |   a : 2024-01-01, 1d
+          6 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gantt
+          2 |   accDescr: a
+          3 |   accDescr: a
+          4 |   dateFormat YYYY-MM-DD
+          5 |   a : 2024-01-01, 1d
+          6 |
 ---
 
 
@@ -50,6 +99,20 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gantt
+          2 | dateFormat YYYY-MM-DD
+          3 | accDescr: a
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gantt
+          2 | dateFormat YYYY-MM-DD
+          3 | accDescr:
+          4 | b
+          5 |
 ---
 
 
@@ -75,6 +138,27 @@ Code:
  12 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gantt
+          2 |   accDescr {
+          3 |     d
+          4 |     e
+          5 |   }
+          6 |   dateFormat YYYY-MM-DD
+          7 |   a : 2024-01-01, 1d
+          8 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gantt
+          2 |   accDescr {
+          3 |     d  
+          4 |     e
+          5 |   }
+          6 |   dateFormat YYYY-MM-DD
+          7 |   a : 2024-01-01, 1d
+          8 |
 ---
 
 
@@ -90,6 +174,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gantt
+          2 | dateFormat YYYY-MM-DD
+          3 | accDescr: a
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gantt
+          2 | dateFormat YYYY-MM-DD
+          3 | accDescr: b
+          4 |
 ---
 
 
@@ -103,6 +200,37 @@ Code:
     | ^~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gantt
+          2 | accDescr { a }
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gantt
+          2 | accDescr: b
+---
+
+
+Test: gantt-no-duplicate-description >> invalid >>> invalid/gantt/description-equal-predecessor
+Filename: tests/fixtures/rules/gantt-no-duplicate-description/invalid/gantt/description-equal-predecessor-input.mmd
+
+Code:
+  1 | gantt
+  2 | accDescr: A
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gantt
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
 ---
 
 
@@ -116,4 +244,13 @@ Code:
     | ^~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gantt
+          2 | accDescr: a
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | gantt
+          2 | accDescr { b }
 ---

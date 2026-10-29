@@ -28,18 +28,22 @@ parser from its build in `lib/`: rebuild it with
 
 ## The tests
 
-| File                          | What it checks                            |
-| ----------------------------- | ----------------------------------------- |
-| `tests/language.test.ts`      | Language, through ESLint                  |
-| `tests/snapshot.test.ts`      | Where ESLint sees nodes, tokens, comments |
-| `tests/token-store.test.ts`   | Token methods of the source code          |
-| `tests/inline-config.test.ts` | Comments that configure ESLint            |
-| `tests/markdown.test.ts`      | Code blocks in Markdown                   |
-| `tests/diagram-rules.test.ts` | Selectors of the rules                    |
-| `tests/subgraph-ids.test.ts`  | Subgraph ids from the tree                |
-| `tests/text-nodes.test.ts`    | Text node types of the rules              |
-| `tests/rule-cases.test.ts`    | Examples of the rule documents            |
-| `tests/rules/<rule>.test.ts`  | Each implemented rule                     |
+| File                               | What it checks                            |
+| ---------------------------------- | ----------------------------------------- |
+| `tests/language.test.ts`           | Language, through ESLint                  |
+| `tests/snapshot.test.ts`           | Where ESLint sees nodes, tokens, comments |
+| `tests/token-store.test.ts`        | Token methods of the source code          |
+| `tests/inline-config.test.ts`      | Comments that configure ESLint            |
+| `tests/markdown.test.ts`           | Code blocks in Markdown                   |
+| `tests/diagram-rules.test.ts`      | Selectors of the rules                    |
+| `tests/subgraph-ids.test.ts`       | Subgraph ids from the tree                |
+| `tests/compact-range.test.ts`      | Ranges compacted across line terminators  |
+| `tests/removal.test.ts`            | Whole-line removal ranges                 |
+| `tests/suggestion-history.test.ts` | Removals of an earlier setter             |
+| `tests/rule-cases.test.ts`         | Examples of the rule documents            |
+| `tests/rule-docs.test.ts`          | Checks of the rule documents              |
+| `tests/rules-index.test.ts`        | The list of the rules                     |
+| `tests/rules/<rule>.test.ts`       | Each implemented rule                     |
 
 - `tests/language.test.ts`: The inputs of `tests/language-inputs.ts` (see
   below), fixtures of the conformance corpus of `@mmd-toolkit/tests`, run
@@ -64,23 +68,38 @@ parser from its build in `lib/`: rebuild it with
   the Db id of each subgraph derived from the tree, against the Db that
   mermaid.js gave for the corpus fixtures that hold the claims about the id (the
   test names each).
-- `tests/text-nodes.test.ts`: `TEXT_NODE_TYPES` of `src/utils/text-nodes.ts`,
-  the node types whose text can hold a line of only `%%`. Every leaf node type
-  of the flowchart in the parser is in the list, an arrow, or without a text,
-  and the specification gives a text to the first two kinds and none to the
-  last.
+- `tests/compact-range.test.ts`: `canCompactRange` of
+  `src/utils/compact-range.ts`, which says whether an edit may join the lines
+  between two places: it may when the lines in between hold nothing but
+  whitespace, and not when a comment or text would be swallowed or moved.
+- `tests/removal.test.ts`: `removalRange` of `src/utils/removal.ts`, the whole
+  lines that remove an element, whichever rule offers the removal: the
+  terminator of the first line, a text of one line, the preceding terminator on
+  the final line, and the value line read after an empty `accTitle:`.
+- `tests/suggestion-history.test.ts`: For the rules in its list, the suggestion
+  `removePrevious` on each invalid input of the rule (the incorrect examples of
+  its English document and the inputs of `invalid/` in its fixture directory):
+  the range that it removes does not contain the start of the report; the parser
+  reads the result; and the rule no longer reports that place in the result.
 - `tests/rule-cases.test.ts`: The examples of every rule document, as
   `tests/rule-cases.ts` reads them: each document has incorrect and correct
   examples, and the parser accepts each one.
+- `tests/rule-docs.test.ts`: The checks of `tools/rule-docs.ts` behind
+  `pnpm run check:docs`: the order of the diagrams in the list is that of the
+  sidebar of the documentation site, a rule whose name starts with a diagram
+  name is in the group of that diagram, and every `mmd` code block of the
+  examples, in both languages, starts with the directive that enables the rule.
+- `tests/rules-index.test.ts`: `src/rules/index.ts` is as
+  `tools/update-rules.ts` writes it, and the plugin gives ESLint those rules.
 - `tests/rules/<rule>.test.ts`: Each implemented rule, through
   `testRule(name, rule)` of `tests/rule-test.ts`: eslint-snapshot-rule-tester on
   the examples of its English document and the inputs of its fixture directory.
   Incorrect examples and `invalid/` inputs must report; correct examples and
   `valid/` inputs must not. The snapshots record each report and the text that
-  each suggestion produces. Inputs with a character that `pnpm run lint:chars`
-  checks for (U+2028, U+2029, a lone carriage return, U+00A0, and the like) use
-  ESLint's `RuleTester`, with the input and each suggestion's expected output
-  written as template literals with escapes in the test source.
+  each suggestion produces. Inputs with a carriage return or with a character
+  that `pnpm run lint:chars` checks for (U+2028, U+2029, U+00A0, and the like)
+  use ESLint's `RuleTester`, with the input and each suggestion's expected
+  output written as template literals with escapes in the test source.
 
 The tests of the language do not run on the whole corpus, which holds one input
 for each claim of the specification and is tested one by one by the parser and
@@ -113,12 +132,18 @@ case, also in a subdirectory, and a file or a directory whose name starts with
 - The input files belong to the rule tests; they need no matching corpus
   fixture. Put each input under `valid/` or `invalid/`, optionally in a
   subdirectory such as `flowchart/`, and name it after its case.
-- No fixture file holds a character that `pnpm run lint:chars` checks for (the
-  list is in [`packages/spec/docs/index.md`](../../spec/docs/index.md)). Inputs
-  with such a character are written in the test source with an escape (`\u2028`,
-  `\u2029`, `\u00a0`, or `\r` for a lone carriage return) and tested with
-  ESLint's `RuleTester`. Use template literals for `code` and each suggestion's
-  `output`, preserving the input's line terminators.
+- No fixture file holds a carriage return, alone or in a CRLF, or a character
+  that `pnpm run lint:chars` checks for (the list is in
+  [`packages/spec/docs/index.md`](../../spec/docs/index.md)). Such inputs are
+  tested with ESLint's `RuleTester`. Use template literals for `code` and each
+  suggestion's `output`, preserving the input's line terminators. Escape those
+  characters: write a carriage return as `\r`, and a CRLF as `\r` followed by an
+  actual line break; write U+2028, U+2029, and U+00A0 as `\u2028`, `\u2029`, and
+  `\u00a0`. Write any other line break as an actual line break. A tab and
+  whitespace at the end of a line may be written as `\t` and `\u0020`, which
+  shows in the code the whitespace that a case is about. Whitespace at the end
+  of a line is not among those characters: it stays in a fixture file, where
+  `.editorconfig` keeps it.
 - The common directive rule keeps its named corpus inputs in the `INVALID` and
   `VALID` tables, which its test passes to `testRule` as its corpus cases, so it
   has no fixture directory; its inputs that need escapes use `RuleTester`.
@@ -253,15 +278,16 @@ pnpm --filter @mmd-toolkit/eslint-plugin run check:docs
   `<!-- begin auto-generated rules list -->` and
   `<!-- end auto-generated rules list -->`: a table of the rules for the common
   rules and for each diagram type, with the description, a ✅ for the rules that
-  the `recommended` configuration enables, a 💡 for the rules that offer
-  suggestions (`meta.hasSuggestions`), and a 🚧 for the skeletons. The English
-  description is `meta.docs.description`; the Japanese one is the first
-  paragraph of the Japanese document.
+  the `recommended` configuration enables, a 🔧 for the rules that have a fix
+  (`meta.fixable`), a 💡 for the rules that offer suggestions
+  (`meta.hasSuggestions`), and a 🚧 for the skeletons. The English description
+  is `meta.docs.description`; the Japanese one is the first paragraph of the
+  Japanese document.
 - In each rule document, in both languages, the title (`# @mmd-toolkit/<name>`),
   and everything between `<!-- begin auto-generated rule notice -->` and
   `<!-- end auto-generated rule notice -->` after the first paragraph: whether
-  the `recommended` configuration enables the rule, and whether it offers
-  suggestions.
+  the `recommended` configuration enables the rule, whether it has a fix, and
+  whether it offers suggestions.
 - In the document of an implemented rule, in both languages, everything between
   `<!-- begin auto-generated rule resources -->` and
   `<!-- end auto-generated rule resources -->` at its end: the Resources
@@ -354,12 +380,12 @@ These choices hold for every rule, so that the rules read alike:
 - The snapshot test of a rule is one call of `testRule(name, rule)`. It checks
   the reports and suggestions on the examples of the English document and the
   inputs of the rule's fixture directory. A rule test does not run mermaid.js.
-  Use ESLint's `RuleTester` for inputs with a character that
-  `pnpm run lint:chars` checks for (U+2028, U+2029, a lone carriage return,
-  U+00A0, and the like): write the input as a template literal with escapes in
-  `code`, list the expected reports in `errors`, and write the full expected
-  text of each suggestion as a template literal in `output`. The fixture files
-  and snapshots of ordinary inputs remain the main cases of the rule.
+  Use ESLint's `RuleTester` for inputs with a carriage return or with a
+  character that `pnpm run lint:chars` checks for (U+2028, U+2029, U+00A0, and
+  the like): write the input as a template literal with escapes in `code`, list
+  the expected reports in `errors`, and write the full expected text of each
+  suggestion as a template literal in `output`. The fixture files and snapshots
+  of ordinary inputs remain the main cases of the rule.
 
 ## Types for rules
 

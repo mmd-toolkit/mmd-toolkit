@@ -10,14 +10,15 @@ Disallow nonempty arguments beyond the parameters that a C4 call reads.
 
 <!-- end auto-generated rule notice -->
 
-mermaid.js accepts more arguments than a call reads. A value beyond the last
-parameter disappears from the Db without an error. An extra empty slot can push
-a link or another value past that limit.
+mermaid.js accepts more arguments than a call reads and ignores values beyond
+the last parameter without an error. An extra empty position can push a link or
+another intended value past that limit.
 
 ## Rule Details
 
-This rule reports each nonempty positional or named argument beyond the called
-family's limit. It applies to `c4`.
+This rule applies to C4 diagrams (`C4Context`, `C4Container`, `C4Component`,
+`C4Dynamic`, and `C4Deployment`). It reports each nonempty positional or named
+argument beyond the call's limit.
 
 | Call family                                                    | Last consumed written position |
 | -------------------------------------------------------------- | ------------------------------ |
@@ -32,19 +33,14 @@ family's limit. It applies to `c4`.
 | `UpdateRelStyle`                                               | 6                              |
 | `UpdateLayoutConfig`                                           | 2                              |
 
-Every argument entry counts, including empty entries and named attributes. For
-example, a seventh argument of `Person` cannot set its link: the link is the
-sixth argument. A named argument beyond the limit is ignored too, whatever its
-key. Updates with no existing target have the same argument limits.
+Empty arguments and named attributes count as positions, and a named argument
+beyond the limit is reported whatever its key, because mermaid.js ignores it
+too. Updates without a current target have the same limits.
 
-Null entries, empty quoted strings, and whitespace-only extra values are not
-reported: they supply no nonempty value to lose. A trailing comma supplies no
-extra argument. Required arguments, the discarded index of `RelIndex`, and the
-deployment node's ignored fifth sprite slot are not excess arguments and are not
-reported by this rule.
-
-Remove an accidentally inserted empty entry, or put the value in its family's
-consumed position.
+Empty entries, empty strings, and whitespace-only extra values are not reported
+because they lose no nonempty value. A trailing comma adds no argument. Required
+arguments, the discarded index of `RelIndex`, and a deployment node's ignored
+fifth sprite position are within the limits and are not reported.
 
 Examples of **incorrect** code for this rule:
 

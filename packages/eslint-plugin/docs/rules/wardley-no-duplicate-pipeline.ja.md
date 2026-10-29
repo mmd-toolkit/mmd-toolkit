@@ -17,19 +17,15 @@ mermaid.js はエラーなしにそれを置き換え、前の pipeline の子�
 
 ## 規則の詳細
 
-この規則は、前の同じ親の pipeline と違う子を持つ pipeline を報告する。
-対象の図種は `wardley` である。
+この規則は、Wardley マップ（`wardley-beta`）に当てる。
+同じ親の直前の pipeline と違う子を持つ pipeline を報告する。
+同じ子を持つ pipeline は、順が違っても報告しない。
+後の pipeline で違う位置を与えた子は、
+代わりに [wardley-no-redefined-node](./wardley-no-redefined-node.ja.md)
+が報告する。
 
-`SQL` を持つ `Database` の pipeline と `Cloud` を持つものの後では、
-pipeline の枠は `Cloud` だけを持つ。
-
-別の順でも同じ子を持つ pipeline は報告しない。
-そこで別の位置を与えた子は
-[wardley-no-redefined-node](./wardley-no-redefined-node.ja.md) が報告する。
-pipeline の後に宣言した親も数える。
+親の宣言より前に書いた pipeline も比べる。
 名前は [wardley-no-undef](./wardley-no-undef.ja.md) が比べるとおりに比べる。
-
-親の子は 1 つの pipeline に書く。
 
 この規則に**反する**コードの例:
 
@@ -65,11 +61,6 @@ wardley-beta
 
 - [wardley-no-redefined-node](./wardley-no-redefined-node.ja.md)
 - [wardley-no-undef](./wardley-no-undef.ja.md)
-
-## 背景
-
-[`startPipeline`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L112-L120)
-は、親の子を新しく始める。
 
 <!-- begin auto-generated rule resources -->
 

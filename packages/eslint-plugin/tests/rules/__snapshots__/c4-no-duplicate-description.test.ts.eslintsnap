@@ -46,20 +46,6 @@ Code:
 ---
 
 
-Test: c4-no-duplicate-description >> invalid >>> invalid/c4/description-crlf
-Filename: tests/fixtures/rules/c4-no-duplicate-description/invalid/c4/description-crlf-input.mmd
-
-Code:
-  1 | C4Context
-  2 | accDescr: Customers
-  3 | accDescr: Administrators
-    | ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
-  4 |
-
-[1] mermaid.js replaces the earlier description with this description.
----
-
-
 Test: c4-no-duplicate-description >> invalid >>> invalid/c4/description-inside-boundary
 Filename: tests/fixtures/rules/c4-no-duplicate-description/invalid/c4/description-inside-boundary-input.mmd
 

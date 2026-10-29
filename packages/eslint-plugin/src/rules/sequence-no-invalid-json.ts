@@ -1,3 +1,6 @@
+import { canEditRange } from "../utils/edit-range.ts"
+import { trailingJsonCommas } from "../utils/json-commas.ts"
+import type { RuleFixer } from "@eslint/core"
 import type {
   SequenceLinksStatement,
   SequencePropertiesStatement,
@@ -51,6 +54,37 @@ function jsonKindOf(
   return jsonKindOfText(whole) === "object" ? "object" : kind
 }
 
+/** Remove commas before a closing bracket only outside JSON strings. */
+function commaFix(
+  sourceCode: MermaidSourceCode,
+  node: JsonStatement,
+): RuleFixer | null {
+  const literal = node.text?.value
+  if (literal == null) return null
+  const text = sourceCode.getText(literal)
+  const commas = trailingJsonCommas(text)
+  if (
+    commas.length === 0 ||
+    commas.some(
+      (at) =>
+        !canEditRange(sourceCode, [
+          literal.range[0] + at,
+          literal.range[0] + at + 1,
+        ]),
+    )
+  )
+    return null
+  const result = text
+    .split("")
+    .filter((_, index) => !commas.includes(index))
+    .join("")
+  if (jsonKindOfText(result) !== "object") return null
+  return (fixer) =>
+    commas.map((at) =>
+      fixer.removeRange([literal.range[0] + at, literal.range[0] + at + 1]),
+    )
+}
+
 /**
  * The rule `sequence-no-invalid-json`, described in
  * `docs/rules/sequence-no-invalid-json.md`: a `links` or `properties`
@@ -69,6 +103,7 @@ export const sequenceNoInvalidJson: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("sequence-no-invalid-json"),
     },
+    fixable: "code",
     schema: [],
     messages: {
       notJson:
@@ -84,7 +119,12 @@ export const sequenceNoInvalidJson: MermaidRuleDefinition<{
     function check(node: JsonStatement, keyword: string): void {
       const kind = jsonKindOf(node, sourceCode)
       if (kind === "object") return
-      context.report({ node, messageId: kind, data: { keyword } })
+      context.report({
+        node,
+        messageId: kind,
+        data: { keyword },
+        fix: commaFix(sourceCode, node),
+      })
     }
 
     return {

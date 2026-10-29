@@ -13,6 +13,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accTitle: first
+          3 |   A --> B
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accTitle: second
+          3 |   A --> B
+          4 |
 ---
 
 
@@ -30,7 +43,37 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accTitle: a
+          3 |   accTitle: a
+          4 |   A --> B
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accTitle: b
+          3 |   accTitle: a
+          4 |   A --> B
+          5 |
 [2] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accTitle: a
+          3 |   accTitle: b
+          4 |   A --> B
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accTitle: a
+          3 |   accTitle: a
+          4 |   A --> B
+          5 |
 ---
 
 
@@ -44,6 +87,15 @@ Code:
     |   ^~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accTitle: x
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accTitle:
 ---
 
 
@@ -58,6 +110,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accTitle: first
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accTitle: second
+          3 |
 ---
 
 
@@ -73,6 +136,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | stateDiagram-v2
+          2 | accTitle: t
+          3 | %% c
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | stateDiagram-v2
+          2 | accTitle:
+          3 | %% c
+          4 |
 ---
 
 
@@ -88,6 +164,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | stateDiagram-v2
+          2 | accTitle: t
+          3 | %%{init: {}}%%
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | stateDiagram-v2
+          2 | accTitle:
+          3 | %%{init: {}}%%
+          4 |
 ---
 
 
@@ -104,4 +193,41 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | stateDiagram-v2
+          2 | accTitle: t
+          3 |
+          4 |
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | stateDiagram-v2
+          2 | accTitle:
+          3 |
+          4 |
+          5 |
+---
+
+
+Test: state-no-duplicate-title >> invalid >>> invalid/state/title-equal-predecessor
+Filename: tests/fixtures/rules/state-no-duplicate-title/invalid/state/title-equal-predecessor-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | accTitle: A
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | stateDiagram-v2
+          2 | accTitle: A
+          3 | accTitle: A
+          4 |
 ---

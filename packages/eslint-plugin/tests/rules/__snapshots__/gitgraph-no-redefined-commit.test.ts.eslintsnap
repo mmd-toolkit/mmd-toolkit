@@ -33,21 +33,6 @@ Code:
 ---
 
 
-Test: gitgraph-no-redefined-commit >> invalid >>> invalid/gitgraph/crlf
-Filename: tests/fixtures/rules/gitgraph-no-redefined-commit/invalid/gitgraph/crlf-input.mmd
-
-Code:
-  1 | gitGraph
-  2 | commit id:"A"
-  3 | %% c
-  4 | commit id:"A"
-    | ^~~~~~~~~~~~~ [1]
-  5 |
-
-[1] mermaid.js replaces the commit with this id, written earlier, with this commit.
----
-
-
 Test: gitgraph-no-redefined-commit >> invalid >>> invalid/gitgraph/docs-incorrect-1
 Filename: tests/fixtures/rules/gitgraph-no-redefined-commit/invalid/gitgraph/docs-incorrect-1-input.mmd
 

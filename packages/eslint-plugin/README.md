@@ -133,10 +133,12 @@ lists them all, with a document for each rule:
   `@mmd-toolkit/no-unclosed-directive`. They check directives (`%%{ }%%`). The
   `recommended` configuration enables all of them.
 
-In the list, ✅ marks the rules that the `recommended` configuration enables,
-and 💡 marks the rules that offer
+In the list, ✅ marks the rules that the `recommended` configuration enables, 🔧
+marks the rules that have a fix, and 💡 marks the rules that offer
 [editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
-Review a suggestion in your editor and apply it; `eslint --fix` does not.
+The notice at the top of the document of a rule shows the same marks.
+`eslint --fix` applies fixes; it does not apply suggestions, which you review
+and apply in your editor.
 
 ## Documentation
 

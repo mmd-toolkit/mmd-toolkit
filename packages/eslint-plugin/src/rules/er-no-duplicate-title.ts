@@ -2,6 +2,7 @@ import type { ErAccTitleStatement } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { titleText } from "../utils/acc-text.ts"
+import { oneOfTwoRemovals } from "../utils/removal.ts"
 
 /**
  * The rule `er-no-duplicate-title`, described in
@@ -16,7 +17,7 @@ import { titleText } from "../utils/acc-text.ts"
  */
 export const erNoDuplicateTitle: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "duplicate"
+  MessageIds: "duplicate" | "removeThis" | "removePrevious"
 }> = {
   meta: {
     type: "problem",
@@ -26,22 +27,35 @@ export const erNoDuplicateTitle: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("er-no-duplicate-title"),
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
       duplicate:
         "mermaid.js replaces the earlier title with the one of this `accTitle`.",
+      removeThis: "Remove this `accTitle` statement.",
+      removePrevious: "Remove the earlier `accTitle` statement.",
     },
   },
   create(context) {
     let previous: ErAccTitleStatement | null = null
+    let beforePrevious: ErAccTitleStatement | null = null
+
     return {
       ErAccTitleStatement(node) {
         if (previous !== null && titleText(previous) !== titleText(node)) {
           context.report({
             node,
             messageId: "duplicate",
+            suggest: oneOfTwoRemovals(
+              context.sourceCode,
+              node,
+              previous,
+              beforePrevious === null ||
+                titleText(beforePrevious) === titleText(node),
+            ),
           })
         }
+        beforePrevious = previous
         previous = node
       },
     }

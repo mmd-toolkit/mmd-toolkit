@@ -13,15 +13,6 @@ Code:
   5 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 |   subgraph S
-          3 |     A-->B;
-          4 |     direction TB
-          5 |   end
-          6 |
 ---
 
 
@@ -50,15 +41,6 @@ Code:
   5 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 |   subgraph S
-          3 |     direction TB
-          4 |     A-->B
-          5 |   end
-          6 |
 ---
 
 
@@ -74,15 +56,6 @@ Code:
   5 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 |   subgraph S
-          3 |     accDescr { x }
-          4 |     direction TB
-          5 |   end
-          6 |
 ---
 
 
@@ -162,15 +135,6 @@ Code:
   5 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 |   subgraph S
-          3 |     accDescr {}
-          4 |     direction TB
-          5 |   end
-          6 |
 ---
 
 
@@ -186,15 +150,6 @@ Code:
   5 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart-elk LR
-          2 |   subgraph S
-          3 |     A-->B;
-          4 |     direction TB
-          5 |   end
-          6 |
 ---
 
 
@@ -210,15 +165,6 @@ Code:
   5 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | graph LR
-          2 |   subgraph S
-          3 |     A-->B;
-          4 |     direction TB
-          5 |   end
-          6 |
 ---
 
 
@@ -234,15 +180,6 @@ Code:
   5 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | swimlane-beta LR
-          2 |   subgraph S
-          3 |     A-->B;
-          4 |     direction TB
-          5 |   end
-          6 |
 ---
 
 
@@ -274,16 +211,6 @@ Code:
   6 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 |   subgraph S
-          3 |     A
-          4 |     accDescr { x }
-          5 |     direction TB
-          6 |   end
-          7 |
 ---
 
 
@@ -298,14 +225,6 @@ Code:
   4 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 |   A
-          3 |   accDescr { x }
-          4 |   direction TB
-          5 |
 ---
 
 
@@ -321,15 +240,6 @@ Code:
   5 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 |   subgraph S
-          3 |     direction TB
-          4 |     A-->B
-          5 |   end
-          6 |
 ---
 
 
@@ -344,14 +254,6 @@ Code:
   4 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 |   A
-          3 |   style A fill:#f00;
-          4 |   direction TB
-          5 |
 ---
 
 
@@ -365,13 +267,6 @@ Code:
   3 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 |   classDef c color:#111
-          3 |   direction TB
-          4 |
 ---
 
 
@@ -387,15 +282,6 @@ Code:
   5 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 |   subgraph S
-          3 |     A-->B;
-          4 |     direction TB; %% c
-          5 |   end
-          6 |
 ---
 
 
@@ -412,86 +298,6 @@ Code:
   6 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 |   subgraph S
-          3 |     A
-          4 |     accTitle: t
-          5 |     direction LR
-          6 |   end
-          7 |
----
-
-
-Test: flowchart-no-ignored-text >> invalid >>> invalid/flowchart/gram-ignored-text-split-keeps-cr
-Filename: tests/fixtures/rules/flowchart-no-ignored-text/invalid/flowchart/gram-ignored-text-split-keeps-cr-input.mmd
-
-Code:
-  1 | flowchart LR  subgraph S    A-->B; direction TB  end
-
-[1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR  subgraph S    A-->B;    direction TB  end
----
-
-
-Test: flowchart-no-ignored-text >> invalid >>> invalid/flowchart/gram-ignored-text-split-keeps-cr-on-last-line-without-line-break
-Filename: tests/fixtures/rules/flowchart-no-ignored-text/invalid/flowchart/gram-ignored-text-split-keeps-cr-on-last-line-without-line-break-input.mmd
-
-Code:
-  1 | flowchart LR  A-->B; direction TB
-
-[1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR  A-->B;  direction TB
----
-
-
-Test: flowchart-no-ignored-text >> invalid >>> invalid/flowchart/gram-ignored-text-split-keeps-crlf
-Filename: tests/fixtures/rules/flowchart-no-ignored-text/invalid/flowchart/gram-ignored-text-split-keeps-crlf-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   subgraph S
-  3 |     A-->B; direction TB
-    |     ^~~~~~ [1]
-  4 |   end
-  5 |
-
-[1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 |   subgraph S
-          3 |     A-->B;
-          4 |     direction TB
-          5 |   end
-          6 |
----
-
-
-Test: flowchart-no-ignored-text >> invalid >>> invalid/flowchart/gram-ignored-text-split-keeps-crlf-on-last-line-without-line-break
-Filename: tests/fixtures/rules/flowchart-no-ignored-text/invalid/flowchart/gram-ignored-text-split-keeps-crlf-on-last-line-without-line-break-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   A-->B; direction TB
-    |   ^~~~~~ [1]
-
-[1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 |   A-->B;
-          3 |   direction TB
 ---
 
 
@@ -504,12 +310,6 @@ Code:
     |   ^~~~~~ [1]
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 |   A-->B;
-          3 |   direction TB
 ---
 
 
@@ -526,16 +326,6 @@ Code:
   6 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 |   accTitle: a
-          3 |   subgraph S
-          4 |     accTitle: t
-          5 |     direction LR
-          6 |   end
-          7 |
 ---
 
 
@@ -551,27 +341,7 @@ Code:
   5 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 |   subgraph S
-          3 |     A-->B
-          4 |     direction TB
-          5 |     C-->D
-          6 |   end
-          7 |
 [2] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 |   subgraph S
-          3 |     A-->B
-          4 |     direction TB
-          5 |     C-->D
-          6 |   end
-          7 |
 ---
 
 
@@ -587,15 +357,6 @@ Code:
   5 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 |   subgraph S
-          3 |     A-->B; C;
-          4 |     direction TB
-          5 |   end
-          6 |
 ---
 
 
@@ -611,15 +372,6 @@ Code:
   5 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 |   subgraph S
-          3 |     A-->B;
-          4 |     direction TB
-          5 |   end
-          6 |
 ---
 
 
@@ -707,13 +459,6 @@ Code:
   3 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 |   direction TB
-          3 |   A-->B
-          4 |
 ---
 
 
@@ -727,13 +472,6 @@ Code:
   3 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 |   A-->B;
-          3 |   direction TB
-          4 |
 ---
 
 
@@ -750,16 +488,6 @@ Code:
   6 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 | subgraph S
-          3 |   accDescr: d
-          4 |   direction LR
-          5 | C
-          6 | end
-          7 |
 ---
 
 
@@ -773,13 +501,6 @@ Code:
   3 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 |   accTitle: t
-          3 |   direction TB
-          4 |
 ---
 
 
@@ -793,13 +514,6 @@ Code:
   3 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 | 	accTitle: t
-          3 | 	direction TB
-          4 |
 ---
 
 
@@ -815,15 +529,6 @@ Code:
   5 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 | subgraph S
-          3 | A-->B;
-          4 | direction TB
-          5 | end
-          6 |
 ---
 
 
@@ -967,15 +672,6 @@ Code:
   5 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
-    Suggestions:
-      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
-        Output:
-          1 | flowchart LR
-          2 | subgraph S
-          3 | direction TB
-          4 | A-->B
-          5 | end
-          6 |
 ---
 
 

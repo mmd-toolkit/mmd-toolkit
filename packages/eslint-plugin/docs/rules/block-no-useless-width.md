@@ -8,24 +8,26 @@ Disallow a width on the first block of an edge.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-A width after a block, as in `A:2`, makes the block span two columns. mermaid.js
-also accepts a width on the first block of an edge, as in `A:2 --> B`, without
-an error, but it drops it with the link: the block keeps the width it has, or
-one column.
+A width after a block, as in `A:2`, makes it span two columns. mermaid.js
+accepts a width on the first block of an edge, as in `A:2 --> B`, without an
+error but drops it. The block keeps its existing width or spans one column.
 
 ## Rule Details
 
-This rule reports the width before the link of an edge when it differs from the
-width that the block has: the width of its first declaration, or one column. It
-applies to `block`.
+This rule applies to block diagrams (`block-beta` and `block`). It reports a
+width before an edge's link when it differs from the width that the block keeps:
+the width of its first declaration, or one column when that declaration is an
+edge or has no width.
 
-After `A:2`, the edge `A:2 --> B` repeats the width and is not reported, while
-`A:3 --> B` is reported and leaves the width 2. `A:1 --> B` gives the width that
-the block has anyway and is not reported. Widths are compared as numbers, so
-`A:02` is two columns. To give the block a width, write it where the block is
-declared on its own, as `A:2`, before the edge.
+After `A:2`, `A:2 --> B` repeats the width and is not reported, while
+`A:3 --> B` and `A:1 --> B` are reported and leave the width at 2. Where the
+block spans one column, `A:1 --> B` is not reported. Widths are compared as
+numbers, so `A:02` is two columns.
 
 Examples of **incorrect** code for this rule:
 

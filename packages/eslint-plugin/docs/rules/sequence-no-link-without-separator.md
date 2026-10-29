@@ -9,26 +9,19 @@ Disallow a `link` statement without the `@` between its label and its URL.
 
 ✅ The `recommended` configuration enables this rule.
 
+🔧 This rule is automatically fixable by the
+[`--fix` CLI option](https://eslint.org/docs/latest/use/command-line-interface#--fix).
+
 <!-- end auto-generated rule notice -->
 
-A `link` statement gives a participant a link: its text is a label, `@`, and a
-URL, as in `link A: Dashboard @ https://x.example`. When the `@` is left out,
-mermaid.js accepts the statement anyway and sets a link whose label and URL are
-not what was written.
+A `link` statement gives a participant a link with a label, `@`, and a URL. When
+`@` is missing, mermaid.js accepts the statement without an error but sets a
+different label and URL from what was written.
 
 ## Rule Details
 
-This rule reports a `link` statement whose text holds no `@`. It applies to
-`sequence`.
-
-Without the `@`, the label is the text without its last two characters, and the
-URL is the whole text, each without the whitespace at its ends:
-`link A: Dashboard https://x.example` gives the label
-`Dashboard https://x.examp` and the URL `Dashboard https://x.example`, and
-`link A: no at` the label `no`.
-
-A `link` statement with no text is reported too: `link A:` gives the participant
-a link whose label and URL are both empty.
+This rule applies to sequence diagrams (`sequenceDiagram`). It reports a `link`
+statement with no `@` in its text, including one with no text.
 
 Examples of **incorrect** code for this rule:
 

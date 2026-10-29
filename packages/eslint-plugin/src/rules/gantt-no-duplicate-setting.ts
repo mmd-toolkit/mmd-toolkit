@@ -1,3 +1,4 @@
+import { oneOfTwoRemovals } from "../utils/removal.ts"
 import type { Node } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
@@ -24,7 +25,7 @@ const SETTING_NAMES = {
  */
 export const ganttNoDuplicateSetting: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "duplicate"
+  MessageIds: "duplicate" | "removeThis" | "removePrevious"
 }> = {
   meta: {
     type: "problem",
@@ -33,15 +34,21 @@ export const ganttNoDuplicateSetting: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("gantt-no-duplicate-setting"),
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
+      removeThis: "Remove this statement.",
+      removePrevious: "Remove the earlier statement.",
       duplicate:
         "mermaid.js replaces the earlier `{{setting}}` with the one of this statement.",
     },
   },
   create(context) {
     /** For each setting, the value that the statement before it set. */
-    const previous = new Map<string, string>()
+    const previous = new Map<
+      string,
+      { node: Node; value: string; before: string | undefined }
+    >()
 
     /**
      * Reports `node`, a statement of the setting `setting` that sets `value`,
@@ -49,14 +56,20 @@ export const ganttNoDuplicateSetting: MermaidRuleDefinition<{
      */
     function check(node: Node, setting: string, value: string): void {
       const earlier = previous.get(setting)
-      if (earlier !== undefined && earlier !== value) {
+      if (earlier !== undefined && earlier.value !== value) {
         context.report({
           node,
           messageId: "duplicate",
           data: { setting },
+          suggest: oneOfTwoRemovals(
+            context.sourceCode,
+            node,
+            earlier.node,
+            earlier.before === undefined || earlier.before === value,
+          ),
         })
       }
-      previous.set(setting, value)
+      previous.set(setting, { node, value, before: earlier?.value })
     }
 
     return {

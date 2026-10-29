@@ -31,6 +31,13 @@ accDescr {\u2028}
             column: 1,
             endLine: 2,
             endColumn: 13,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `agentflow-beta TB
+`,
+              },
+            ],
           },
         ],
       },
@@ -48,6 +55,13 @@ accDescr {\u2029}
             column: 1,
             endLine: 2,
             endColumn: 13,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `agentflow-beta TB
+`,
+              },
+            ],
           },
         ],
       },
@@ -65,6 +79,13 @@ accDescr {\u00a0}
             column: 1,
             endLine: 2,
             endColumn: 13,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `agentflow-beta TB
+`,
+              },
+            ],
           },
         ],
       },
@@ -80,6 +101,31 @@ accDescr {\u00a0}
             column: 1,
             endLine: 3,
             endColumn: 2,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `agentflow-beta TB\r`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/agentflow/removal-crlf-with-tab",
+        filename: "input.mmd",
+        code: `agentflow-beta TB\r
+accDescr {\t}\r
+`,
+        errors: [
+          {
+            messageId: "empty",
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `agentflow-beta TB\r
+`,
+              },
+            ],
           },
         ],
       },

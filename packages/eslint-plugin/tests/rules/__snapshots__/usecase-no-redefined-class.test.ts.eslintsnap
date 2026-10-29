@@ -13,6 +13,91 @@ Code:
   5 |
 
 [1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 |   A:::hot
+          3 |   classDef hot fill:red
+          4 |
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 |   A:::hot
+          3 |   classDef hot stroke:blue
+          4 |
+---
+
+
+Test: usecase-no-redefined-class >> invalid >>> invalid/usecase/class-equal-predecessor
+Filename: tests/fixtures/rules/usecase-no-redefined-class/invalid/usecase/class-equal-predecessor-input.mmd
+
+Code:
+  1 | usecase-beta
+  2 | classDef c fill:red
+  3 | classDef c fill:red
+  4 | classDef c fill:blue
+    |          ^ [1]
+  5 |
+
+[1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef c fill:red
+          3 | classDef c fill:red
+          4 |
+---
+
+
+Test: usecase-no-redefined-class >> invalid >>> invalid/usecase/class-repeated-name-earlier-definition
+Filename: tests/fixtures/rules/usecase-no-redefined-class/invalid/usecase/class-repeated-name-earlier-definition-input.mmd
+
+Code:
+  1 | usecase-beta
+  2 | classDef c,c fill:red
+  3 | classDef c fill:blue
+    |          ^ [1]
+  4 |
+
+[1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef c,c fill:red
+          3 |
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef c fill:blue
+          3 |
+---
+
+
+Test: usecase-no-redefined-class >> invalid >>> invalid/usecase/class-repeated-name-later-definition
+Filename: tests/fixtures/rules/usecase-no-redefined-class/invalid/usecase/class-repeated-name-later-definition-input.mmd
+
+Code:
+  1 | usecase-beta
+  2 | classDef c fill:red
+  3 | classDef c,c fill:blue
+    |          ^ [1]
+  4 |
+
+[1] mermaid.js replaces the styles of the class `c`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef c fill:red
+          3 |
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef c,c fill:blue
+          3 |
 ---
 
 
@@ -29,7 +114,27 @@ Code:
   5 |
 
 [1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef hot fill:red
+          3 | classDef hot fill:blue
+          4 |
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef hot fill:rgb(1\,2\,3)
+          3 | classDef hot fill:blue
+          4 |
 [2] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef hot fill:red
+          3 | classDef hot fill:rgb(1\,2\,3)
+          4 |
 ---
 
 
@@ -45,6 +150,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | A:::hot
+          3 | classDef hot fill:red
+          4 |
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 | A:::hot
+          3 | classDef hot fill:blue
+          4 |
 ---
 
 
@@ -59,20 +177,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
----
-
-
-Test: usecase-no-redefined-class >> invalid >>> invalid/usecase/classdef-crlf
-Filename: tests/fixtures/rules/usecase-no-redefined-class/invalid/usecase/classdef-crlf-input.mmd
-
-Code:
-  1 | usecase-beta
-  2 | classDef hot fill:red
-  3 | classDef hot stroke:blue
-    |          ^~~ [1]
-  4 |
-
-[1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef hot fill:rgb(1\,2\,3)
+          3 |
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef hot fill:red
+          3 |
 ---
 
 
@@ -87,6 +202,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef hot --brand:red
+          3 |
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef hot --brand:blue
+          3 |
 ---
 
 
@@ -102,6 +228,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the styles of the class `default`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | A
+          3 | classDef default fill:red
+          4 |
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 | A
+          3 | classDef default stroke:blue
+          4 |
 ---
 
 
@@ -116,6 +255,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef hot fill:red,fill:blue
+          3 |
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef hot fill:red
+          3 |
 ---
 
 
@@ -131,6 +281,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | A:::hot
+          3 | classDef hot background:url("a  b")
+          4 |
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 | A:::hot
+          3 | classDef hot background:url("a b")
+          4 |
 ---
 
 
@@ -148,6 +311,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef hot fill:red
+          3 | %% comment
+          4 |
+          5 | %%{init: {}}%%
+          6 |
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 | %% comment
+          3 |
+          4 | %%{init: {}}%%
+          5 | classDef hot fill:blue
+          6 |
 ---
 
 
@@ -162,6 +342,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef hot Fill:red
+          3 |
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef hot Fill:blue
+          3 |
 ---
 
 
@@ -193,6 +384,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | A:::hot
+          3 | classDef hot fill:red
+          4 |
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 | A:::hot
+          3 | classDef hot FILL:red
+          4 |
 ---
 
 
@@ -208,6 +412,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | A:::hot
+          3 | classDef hot color:red
+          4 |
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 | A:::hot
+          3 | classDef hot COLOR:red
+          4 |
 ---
 
 
@@ -223,6 +440,13 @@ Code:
   5 |
 
 [1] mermaid.js replaces the styles of the class `cold`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef hot fill:red
+          3 | classDef hot,cold fill:red
+          4 |
 ---
 
 
@@ -237,6 +461,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef hot fill: red
+          3 |
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef hot fill: blue
+          3 |
 ---
 
 
@@ -252,6 +487,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | A:::hot
+          3 | classDef hot font-family:"A  B"
+          4 |
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 | A:::hot
+          3 | classDef hot font-family:"A B"
+          4 |
 ---
 
 
@@ -267,6 +515,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | A:::hot
+          3 | classDef hot font-family:"A	B"
+          4 |
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 | A:::hot
+          3 | classDef hot font-family:"A B"
+          4 |
 ---
 
 
@@ -281,6 +542,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef hot fill:"red"
+          3 |
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef hot fill:blue
+          3 |
 ---
 
 
@@ -296,6 +568,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | A:::hot
+          3 | classDef hot fill:red,stroke:blue
+          4 |
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 | A:::hot
+          3 | classDef hot fill:red
+          4 |
 ---
 
 
@@ -311,6 +596,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | A:::hot
+          3 | classDef hot font-family:'A  B'
+          4 |
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 | A:::hot
+          3 | classDef hot font-family:'A B'
+          4 |
 ---
 
 
@@ -327,5 +625,31 @@ Code:
   5 |
 
 [1] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef hot fill:red
+          3 | classDef hot fill:red
+          4 |
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef hot fill:blue
+          3 | classDef hot fill:red
+          4 |
 [2] mermaid.js replaces the styles of the class `hot`, set earlier, with those of this `classDef`.
+    Suggestions:
+      - Remove this class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef hot fill:red
+          3 | classDef hot fill:blue
+          4 |
+      - Remove the earlier class definition.
+        Output:
+          1 | usecase-beta
+          2 | classDef hot fill:red
+          3 | classDef hot fill:red
+          4 |
 ---

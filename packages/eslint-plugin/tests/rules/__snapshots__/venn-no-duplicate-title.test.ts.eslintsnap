@@ -13,6 +13,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title Audience
+          3 | set A
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title Coverage
+          3 | set A
+          4 |
 ---
 
 
@@ -29,21 +42,33 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title First
+          3 | title First
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title Second
+          3 | title First
+          4 |
 [2] mermaid.js replaces the earlier title with this title.
----
-
-
-Test: venn-no-duplicate-title >> invalid >>> invalid/venn/title-crlf
-Filename: tests/fixtures/rules/venn-no-duplicate-title/invalid/venn/title-crlf-input.mmd
-
-Code:
-  1 | venn-beta
-  2 | title Audience
-  3 | title Coverage
-    | ^~~~~~~~~~~~~~ [1]
-  4 |
-
-[1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title First
+          3 | title Second
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title First
+          3 | title First
+          4 |
 ---
 
 
@@ -58,6 +83,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title #amp;
+          3 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title Second
+          3 |
 ---
 
 
@@ -72,6 +108,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title <b x="a">Text</b>
+          3 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title <b x='a'>Text</b>
+          3 |
 ---
 
 
@@ -88,7 +135,33 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title First
+          3 | title First
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title <b>Second</b>
+          3 | title First
+          4 |
 [2] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title First
+          3 | title <b>Second</b>
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title First
+          3 | title First
+          4 |
 ---
 
 
@@ -107,6 +180,19 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title Audience
+          3 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title
+          3 | %% c
+          4 | Coverage
+          5 |
 ---
 
 
@@ -123,6 +209,18 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title Audience
+          3 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title
+          3 | Coverage
+          4 |
 ---
 
 
@@ -137,6 +235,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title Audience
+          3 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title  Audience
+          3 |
 ---
 
 
@@ -151,6 +260,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title Audience
+          3 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title "Audience"
+          3 |
 ---
 
 
@@ -164,6 +284,11 @@ Code:
   3 |
 
 [1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta title Audience
+          2 |
 ---
 
 
@@ -179,6 +304,13 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title First
+          3 | title First
+          4 |
 ---
 
 
@@ -196,6 +328,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title Audience
+          3 |
+          4 | %% c
+          5 | %%{init: {}}%%
+          6 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 |
+          3 | %% c
+          4 | %%{init: {}}%%
+          5 | title Coverage
+          6 |
 ---
 
 
@@ -210,6 +359,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title Audience
+          3 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | TITLE Coverage
+          3 |
 ---
 
 
@@ -227,7 +387,37 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title First
+          3 | title First
+          4 | set A
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title  
+          3 | title First
+          4 | set A
+          5 |
 [2] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title First
+          3 | title  
+          4 | set A
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title First
+          3 | title First
+          4 | set A
+          5 |
 ---
 
 
@@ -242,4 +432,15 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title Audience
+          3 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title Coverage
+          3 |
 ---

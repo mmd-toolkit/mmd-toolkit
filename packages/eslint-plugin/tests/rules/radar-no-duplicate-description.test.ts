@@ -56,6 +56,24 @@ accDescr: First\t\treport
 accDescr: First report
 `,
       },
+
+      {
+        name: "valid/radar/description-crlf",
+        filename:
+          "tests/fixtures/rules/radar-no-duplicate-description/valid/radar/description-crlf-input.mmd",
+        code: `radar-beta\r
+accDescr {\r
+ First\r
+ Second\r
+}\r
+accDescr {\r
+ First\r
+ Second\r
+}\r
+axis A, B, C\r
+curve sales{1,2,3}\r
+`,
+      },
     ],
     invalid: [
       {
@@ -74,6 +92,24 @@ curve sales{1,2,3}
             column: 1,
             endLine: 3,
             endColumn: 27,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `radar-beta
+accDescr: First\u2028 Second
+axis A, B, C
+curve sales{1,2,3}
+`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the description.",
+                output: `radar-beta
+accDescr { First\u2028 Second }
+axis A, B, C
+curve sales{1,2,3}
+`,
+              },
+            ],
           },
         ],
       },
@@ -91,6 +127,20 @@ accDescr { First\u2029 Second }
             column: 1,
             endLine: 3,
             endColumn: 27,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `radar-beta
+accDescr: First\u2029 Second
+`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the description.",
+                output: `radar-beta
+accDescr { First\u2029 Second }
+`,
+              },
+            ],
           },
         ],
       },
@@ -108,6 +158,50 @@ accDescr: First report
             column: 1,
             endLine: 3,
             endColumn: 23,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `radar-beta
+accDescr: First\treport
+`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the description.",
+                output: `radar-beta
+accDescr: First report
+`,
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        name: "invalid/radar/description-equal-predecessor-crlf",
+        filename:
+          "tests/fixtures/rules/radar-no-duplicate-description/invalid/radar/description-equal-predecessor-crlf-input.mmd",
+        code: `radar-beta\r
+accDescr: A\r
+accDescr: A\r
+accDescr: B\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier description with the one of this `accDescr`.",
+            line: 4,
+            column: 1,
+            endLine: 4,
+            endColumn: 12,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `radar-beta\r
+accDescr: A\r
+accDescr: A\r
+`,
+              },
+            ],
           },
         ],
       },

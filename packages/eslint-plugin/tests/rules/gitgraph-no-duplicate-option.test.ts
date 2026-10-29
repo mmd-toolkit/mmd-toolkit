@@ -19,7 +19,51 @@ commit id:"a\rb" id:"a
 b"
 `,
       },
+
+      {
+        name: "valid/gitgraph/repeat-options-value-crlf",
+        filename:
+          "tests/fixtures/rules/gitgraph-no-duplicate-option/valid/gitgraph/repeat-options-value-crlf-input.mmd",
+        code: `gitGraph
+commit id:"a\r
+b" id:"a
+b"
+`,
+      },
     ],
-    invalid: [],
+    invalid: [
+      {
+        name: "invalid/gitgraph/repeat-options-crlf",
+        filename:
+          "tests/fixtures/rules/gitgraph-no-duplicate-option/invalid/gitgraph/repeat-options-crlf-input.mmd",
+        code: `gitGraph\r
+commit id:"a" id:"b"\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier `id:` value in this statement with this value.",
+            line: 2,
+            column: 15,
+            endLine: 2,
+            endColumn: 21,
+            suggestions: [
+              {
+                desc: "Remove this option.",
+                output: `gitGraph\r
+commit id:"a"\r
+`,
+              },
+              {
+                desc: "Remove the earlier option.",
+                output: `gitGraph\r
+commit id:"b"\r
+`,
+              },
+            ],
+          },
+        ],
+      },
+    ],
   },
 )

@@ -1,11 +1,28 @@
+import { canEditRange } from "../utils/edit-range.ts"
+import { canCompactRange } from "../utils/compact-range.ts"
+import type { MermaidSourceCode } from "../source-code.ts"
+import type { SuggestedEdit } from "@eslint/core"
+import type { Range } from "@mmd-toolkit/parser"
 import type { Identifier } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 
+/** The endpoint retains its declaration; only its group modifier goes. */
+function modifierSuggestions(
+  sourceCode: MermaidSourceCode,
+  range: Range,
+): SuggestedEdit<"removeModifier">[] {
+  if (!canEditRange(sourceCode, range) || !canCompactRange(sourceCode, range))
+    return []
+  return [
+    { messageId: "removeModifier", fix: (fixer) => fixer.removeRange(range) },
+  ]
+}
+
 /** Membership comes from all declarations, including those after an edge. */
 export const architectureNoUngroupedModifier: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "ungrouped"
+  MessageIds: "ungrouped" | "removeModifier"
 }> = {
   meta: {
     type: "problem",
@@ -15,8 +32,10 @@ export const architectureNoUngroupedModifier: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("architecture-no-ungrouped-modifier"),
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
+      removeModifier: "Remove this `{group}` modifier.",
       ungrouped:
         "mermaid.js moves this end away from `{{id}}` as if it had a group, although it is declared without `in`.",
     },
@@ -44,6 +63,10 @@ export const architectureNoUngroupedModifier: MermaidRuleDefinition<{
         loc: { start: opening.loc.start, end: closing.loc.end },
         messageId: "ungrouped",
         data: { id: id.name },
+        suggest: modifierSuggestions(context.sourceCode, [
+          opening.range[0],
+          closing.range[1],
+        ]),
       })
     }
 

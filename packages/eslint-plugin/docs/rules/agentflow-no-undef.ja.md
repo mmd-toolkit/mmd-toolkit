@@ -2,7 +2,7 @@
 
 英語版: [agentflow-no-undef.md](./agentflow-no-undef.md)
 
-何も宣言しない id への `style`、`class`、`click` の文を禁止する。
+どこにも宣言されていない id を指す `style`、`class`、`click` の文を禁止する。
 
 <!-- begin auto-generated rule notice -->
 
@@ -10,68 +10,32 @@
 
 <!-- end auto-generated rule notice -->
 
-`style`、`class`、`click` は、当てる要素をその id で名指す。
-id を書き誤ったときのように、どの頂点、flow、connector、
-リンクもその id を持たないと、 mermaid.js はその文をエラーなしに受理し、
-文はつもりの要素に届かない。
+`style`、`class`、`click` は、要素を id で指す。
+どの頂点、flow、connector、リンクもその id を持たないと、
+mermaid.js は文をエラーなしに受理するが、文は意図した要素に届かない。
 
 ## 規則の詳細
 
-この規則は、`style`、`class`、`click` の文の id のうち、図のどの頂点、flow、
-connector、リンクの id でもないものを報告する。
-対象の図種は `agentflow` である。
+この規則は、agentflow 図（`agentflow-beta`）に当てる。
+`style`、`class`、`click` の文の id のうち、図のどの頂点、flow、connector、
+リンクも持たないものを報告する。
+並べた id は 1 つずつ調べる。
+名前のない flow の `subGraph0` やリンクの `L_A_B_0` のような生成 id も、
+定義済みと数える。
 
-`A --> B` の後では、`style C fill:red` はスタイル `fill:red` の頂点 `C` を足し、
-`class C foo` はどの要素にもクラス `foo` を与えず、
-`click C href "…"` はどの要素もリンクにしない。
-並びの各 id を調べ、`class A,C foo` は `A` にクラスを与え、`C` を報告する。
+指す要素より前の文は報告しない。
+そこでは効かない `class` や `click`、
+最初の connector 宣言がスタイルを捨てる `style`、
+リンクでなく別の頂点にスタイルを付ける `style` も含む。
 
-図の id は、どこに書いてあっても、その頂点、flow、connector の id と、
-`A e1@--> B` の `e1` のようにリンクに与えた id である。
-flow や connector の id は、
-両端の空白と mermaid.js が消す部分を除いたその名前である。
-通常の頂点より前の `style` のスタイルは、頂点を宣言しても保たれる。
-connector より前の `style` は仮の頂点を作り、
-最初の connector 宣言はそのスタイルを捨てる。
-connector 宣言の後の `style` は connector にスタイルを付ける。
-`style F fill:red` と `flow F[Worker]` は、描画では flow の枠を赤く塗り、
-別の頂点 `F` を描かない。
-`style` は flow 宣言の前にあっても後にあっても同じである。
-リンク宣言より前の `style` も、リンクでなく、
-同じ id の別の頂点にスタイルを付ける。
-リンク宣言の後では、その id の頂点がなければ何も変えない。
-名指す要素より前の `class` 文は mermaid.js では何もせず、
-そこの `click` 文はそれをクリックできるようにしない。
-そのような文は正しく書いた図の id を名指しており、この規則は報告しない。
+`style` は未知の id に頂点を作るので、同じ id の後の `style`、`class`、
+`click` は報告しない。
+予約 id `connectors` は形付きでも `style` でも通常の頂点を作らないので、 flow、
+connector、明示したリンク id が別に宣言しなければ、その使用を毎回報告する。
 
-`style` 文が足す頂点も図の頂点なので、この規則は、
-ほかに何も宣言しない id の最初の `style` だけを報告する。
-`style C fill:red` の後の 2 つ目の `style C stroke:blue` は頂点 `C`
-にスタイルを足し、 `class C foo` と `click C href "…"` はそれに当たり、
-どれも報告しない。
-
-予約 id `connectors` は、形付きで書いても、
-`style` に書いても通常の頂点を作らない。
-同じ名前の flow、connector、明示したリンク id の別の宣言がなければ、 `style`、
-`class`、`click` の各対象を報告する。
-その `style` は頂点を作らない。
-両端の空白を除いた名前が空の connector も何も宣言しない。
-
-mermaid.js が要素に自分で与える id も図の id である。
-名前のない flow の id `subGraph0` と、
-id なしで書いたリンクの `L_A_B_0` のような id がそれである。
-mermaid.js はそれで flow やリンクを見つけ、
-`class subGraph0 hot` は flow にクラスを与えるので、そのような id は報告しない。
-id は書いたとおりに比べる。
-mermaid.js は、`#35;` のような文字参照と HTML の属性の引用符を、
-名前を読む前にほかの文字に変えるので、それだけが違う 2 つの id は、
-mermaid.js には 1 つで、この規則には 2 つのことがある。
-
-id では、`#35;` と `#` は mermaid.js でも異なる id である。
-上の文字参照の限界は、参照と mermaid.js の置き換え文字列についてであり、
-参照と復号した文字についてではない。
-
-id を直すか、要素を宣言する。
+id は書いたとおりに比べるので、文字参照や HTML の属性の引用符によって、
+mermaid.js が同じ id と読むものを、この規則は異なる id として扱うことがある。
+`#35;` と書いた id と `#` と書いた id は、mermaid.js でも別の id である。
 
 この規則に**反する**コードの例:
 
@@ -110,15 +74,6 @@ agentflow-beta TB
 ## オプション
 
 この規則にはオプションがない。
-
-## 背景
-
-[`setClass`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L928-L943)、
-[`setLink` と `setClickEvent`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1010-L1038)
-は、呼ばれるときにその id の要素を探す。
-`style` 文が呼ぶ
-[`addVertex`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L347-L565)
-は、要素のない id に頂点を足す。
 
 <!-- begin auto-generated rule resources -->
 

@@ -12,6 +12,12 @@ Code:
   4 |   B -->> A: done
   5 |
 
+Output:
+  1 | sequenceDiagram
+  2 |   A ->> B: call(x)
+  3 |   B -->> A: done
+  4 |
+
 [1] mermaid.js reads `)` as no statement and drops it.
 ---
 
@@ -26,6 +32,8 @@ Code:
   4 | )
     | ^ [1]
   5 |
+
+Output: unchanged
 
 [1] mermaid.js reads `)` as no statement and drops it.
 ---
@@ -42,6 +50,8 @@ Code:
     | ^ [1]
   5 |
 
+Output: unchanged
+
 [1] mermaid.js reads `)` as no statement and drops it.
 ---
 
@@ -57,6 +67,12 @@ Code:
   4 | B-->>A: done
   5 |
 
+Output:
+  1 | sequenceDiagram
+  2 | A->>B: call(x)
+  3 | B-->>A: done
+  4 |
+
 [1] mermaid.js reads `)` as no statement and drops it.
 ---
 
@@ -69,6 +85,8 @@ Code:
   2 | accDescr {} )
     |             ^ [1]
   3 |
+
+Output: unchanged
 
 [1] mermaid.js reads `)` as no statement and drops it.
 ---
@@ -85,6 +103,8 @@ Code:
     |    ^ [1]
   5 |
 
+Output: unchanged
+
 [1] mermaid.js reads `)` as no statement and drops it.
 ---
 
@@ -100,6 +120,8 @@ Code:
     |     ^ [1]
   5 |
 
+Output: unchanged
+
 [1] mermaid.js reads `)` as no statement and drops it.
 ---
 
@@ -112,6 +134,8 @@ Code:
   2 | )A->>B: x
     | ^ [1]
   3 |
+
+Output: unchanged
 
 [1] mermaid.js reads `)` as no statement and drops it.
 ---
@@ -126,6 +150,8 @@ Code:
     | ^ [1]
   3 |
 
+Output: unchanged
+
 [1] mermaid.js reads `)` as no statement and drops it.
 ---
 
@@ -138,6 +164,8 @@ Code:
   2 | )participant A
     | ^ [1]
   3 |
+
+Output: unchanged
 
 [1] mermaid.js reads `)` as no statement and drops it.
 ---
@@ -154,6 +182,8 @@ Code:
   4 | end
   5 |
 
+Output: unchanged
+
 [1] mermaid.js reads `)` as no statement and drops it.
 ---
 
@@ -166,6 +196,181 @@ Code:
   2 | ) accDescr {}
     | ^ [1]
   3 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/join-another-message
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/join-another-message-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: call(x
+  3 | ) B->>A: y
+    | ^ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/join-directive-on-closer-line
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/join-directive-on-closer-line-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: call(x
+  3 | )%%{init: {}}%%
+    | ^ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/join-empty-block-on-closer-line
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/join-empty-block-on-closer-line-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: call(x
+  3 | ) accDescr {}
+    | ^ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/join-excess-closers
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/join-excess-closers-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: call(x
+  3 | ))
+    | ^ [1]
+    |  ^ [2]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+[2] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/join-hash-comment
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/join-hash-comment-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: call(x # c
+  3 | )
+    | ^ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/join-nested-parentheses
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/join-nested-parentheses-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: call(f(x
+  3 | ))
+    | ^ [1]
+    |  ^ [2]
+  4 |
+
+Output:
+  1 | sequenceDiagram
+  2 | A->>B: call(f(x))
+  3 |
+
+[1] mermaid.js reads `)` as no statement and drops it.
+[2] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/join-note-text
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/join-note-text-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | Note right of A: f(x
+  3 | )
+    | ^ [1]
+  4 |
+
+Output:
+  1 | sequenceDiagram
+  2 | Note right of A: f(x)
+  3 |
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/join-semicolon
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/join-semicolon-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: call(x;
+  3 | )
+    | ^ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/join-separated-closers
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/join-separated-closers-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: call(f(x
+  3 | ) )
+    | ^ [1]
+    |   ^ [2]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+[2] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/join-text-interior
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/join-text-interior-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: call(x
+  3 | A->>B: next
+  4 | )
+    | ^ [1]
+  5 |
+
+Output: unchanged
 
 [1] mermaid.js reads `)` as no statement and drops it.
 ---
@@ -181,6 +386,8 @@ Code:
     | ^ [1]
   4 |
 
+Output: unchanged
+
 [1] mermaid.js reads `)` as no statement and drops it.
 ---
 
@@ -193,6 +400,8 @@ Code:
   2 | %%{init: {}}%%)
     |               ^ [1]
   3 |
+
+Output: unchanged
 
 [1] mermaid.js reads `)` as no statement and drops it.
 ---
@@ -207,6 +416,8 @@ Code:
     | ^ [1]
   3 |
 
+Output: unchanged
+
 [1] mermaid.js reads `)` as no statement and drops it.
 ---
 
@@ -219,6 +430,8 @@ Code:
   2 | A->>B: x
   3 | )
     | ^ [1]
+
+Output: unchanged
 
 [1] mermaid.js reads `)` as no statement and drops it.
 ---
@@ -234,31 +447,9 @@ Code:
     | ^ [1]
   4 |
 
+Output: unchanged
+
 [1] mermaid.js reads `\` as no statement and drops it.
----
-
-
-Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/lex-invalid-line-cr
-Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/lex-invalid-line-cr-input.mmd
-
-Code:
-  1 | sequenceDiagram)A->>B: x
-
-[1] mermaid.js reads `)` as no statement and drops it.
----
-
-
-Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/lex-invalid-line-crlf
-Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/lex-invalid-line-crlf-input.mmd
-
-Code:
-  1 | sequenceDiagram
-  2 | )
-    | ^ [1]
-  3 | A->>B: x
-  4 |
-
-[1] mermaid.js reads `)` as no statement and drops it.
 ---
 
 
@@ -270,6 +461,8 @@ Code:
   2 | >
     | ^ [1]
   3 |
+
+Output: unchanged
 
 [1] mermaid.js reads `>` as no statement and drops it.
 ---
@@ -283,6 +476,8 @@ Code:
   2 | <
     | ^ [1]
   3 |
+
+Output: unchanged
 
 [1] mermaid.js reads `<` as no statement and drops it.
 ---
@@ -299,6 +494,8 @@ Code:
   4 | B->>A: y
   5 |
 
+Output: unchanged
+
 [1] mermaid.js reads `)` as no statement and drops it.
 ---
 
@@ -311,6 +508,8 @@ Code:
   2 | /
     | ^ [1]
   3 |
+
+Output: unchanged
 
 [1] mermaid.js reads `/` as no statement and drops it.
 ---
@@ -325,6 +524,8 @@ Code:
     | ^ [1]
     |  ^ [2]
   3 |
+
+Output: unchanged
 
 [1] mermaid.js reads `)` as no statement and drops it.
 [2] mermaid.js reads `)` as no statement and drops it.
@@ -341,6 +542,8 @@ Code:
     |   ^ [2]
   3 |
 
+Output: unchanged
+
 [1] mermaid.js reads `)` as no statement and drops it.
 [2] mermaid.js reads `)` as no statement and drops it.
 ---
@@ -354,6 +557,8 @@ Code:
   2 | )%%{init: {}}%%
     | ^ [1]
   3 |
+
+Output: unchanged
 
 [1] mermaid.js reads `)` as no statement and drops it.
 ---
@@ -369,6 +574,8 @@ Code:
   3 | A->>B: x
   4 |
 
+Output: unchanged
+
 [1] mermaid.js reads `)` as no statement and drops it.
 ---
 
@@ -382,6 +589,8 @@ Code:
     | ^ [1]
   3 | A->>B: x
   4 |
+
+Output: unchanged
 
 [1] mermaid.js reads `)` as no statement and drops it.
 ---

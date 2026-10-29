@@ -11,42 +11,31 @@ Disallow declaring a block again.
 
 <!-- end auto-generated rule notice -->
 
-Each id names one block, and a block is placed where it is first declared.
-mermaid.js accepts a second declaration of the same id without an error, but it
-places no second block: `A B A` draws `A` once. A label or a shape written again
-replaces those of the first declaration, while a width, the children of a
-composite block, and its `columns` are lost.
+Each id names one block, placed where it is first declared. mermaid.js accepts
+another declaration without an error, but places no second block. A later label
+or shape replaces the earlier one, while a width, the children of a composite
+block, and its `columns` are lost.
 
 ## Rule Details
 
-This rule reports a declaration of an id that an earlier statement declared. It
-applies to `block`.
+This rule applies to block diagrams (`block-beta` and `block`). It reports a
+repeated block declaration written on its own or as the head of a composite
+block. Blocks are declared by standalone declarations, composite heads, and
+edges, across composite blocks; ids are case-sensitive, and `root` is declared
+from the start. A block lost by an edge chain or a composite head with a link is
+not declared.
 
-A block is declared by a block written on its own, as `A` or `A["Label"]:2`, by
-the head of a composite block, as `block:G`, and by an edge, which declares its
-two blocks. The ids are compared with their case, across composite blocks, and
-`root`, the id of the diagram, is declared from the start. A block that a chain
-or a composite head with a link loses is not declared.
+A declaration that gives a block its first shape is not reported, as in
+`B["Output"]` after `A --> B`. Adding a width there is reported because the
+width is lost. A block arrow is no such exception: when it gives a block its
+first shape, on its own or in an edge, it is reported because its directions are
+lost.
 
-A block written on its own or a composite head with an id that was declared
-before is reported, since it places nothing: after `A --> B`, a line `A` places
-nothing, and after `block:G`, its blocks, and `end`, a second `block:G` leaves
-its blocks unplaced. The one exception gives a block its first shape: after
-`A --> B`, the statement `B["Output"]` gives `B` its label and shape, and it is
-not reported. A width with it, as in `B["Output"]:2`, is lost, and that
-statement is reported. A block arrow is no such exception: a later declaration
-gives the block the kind and the label of the arrow but none of its directions,
-so after `A`, the statement `A<["Next"]>(down)` gives an arrow that points
-nowhere, and it is reported.
-
-A block in an edge that was declared before is the block itself, and it is
-reported only where its shape differs from the shape that the block has: after
-`A["First"]`, the edge `A["Second"] --> B` replaces the label `First`, while
-`A["First"] --> B` is not reported. A block arrow in an edge for a block that
-had no shape loses its directions in the same way and is reported. Shapes are
-compared by their label and their kind, and block arrows also by their
-directions, as the drawing uses them: `(x)` is the same as `(left, right)`.
-After `A["x"]`, `A["y"] --> B`, and `A["x"] --> B`, both edges are reported.
+In an edge, a previously declared block is reported only when its shape differs
+from the shape the block currently has. Shapes are compared by label and kind,
+and block arrows also by their directions as drawn: `(x)` is the same as
+`(left, right)`. After `A["x"]`, both `A["y"] --> B` and a following
+`A["x"] --> B` are reported.
 
 Examples of **incorrect** code for this rule:
 

@@ -16,6 +16,7 @@ export const c4NoInvalidAttributeKey: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("c4-no-invalid-attribute-key"),
     },
+
     schema: [],
     messages: {
       invalidKey:
@@ -40,6 +41,7 @@ export const c4NoInvalidAttributeKey: MermaidRuleDefinition<{
           context.report({
             node: argument.key,
             messageId: "invalidKey",
+
             data: { name: key, expected },
           })
         }

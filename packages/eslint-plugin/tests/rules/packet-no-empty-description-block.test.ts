@@ -26,6 +26,14 @@ accDescr {\u2028\u2029}
             column: 1,
             endLine: 2,
             endColumn: 14,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `packet
+0: "Flag"
+`,
+              },
+            ],
           },
         ],
       },
@@ -42,6 +50,13 @@ accDescr {\u00A0}
             column: 1,
             endLine: 2,
             endColumn: 13,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `packet
+`,
+              },
+            ],
           },
         ],
       },
@@ -56,6 +71,61 @@ accDescr {\u00A0}
             column: 1,
             endLine: 4,
             endColumn: 2,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `packet\r`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/packet/removal-crlf-with-tab",
+        filename: "input.mmd",
+        code: `packet\r
+accDescr {\t}\r
+`,
+        errors: [
+          {
+            messageId: "empty",
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `packet\r
+`,
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        name: "invalid/packet/empty-crlf",
+        filename:
+          "tests/fixtures/rules/packet-no-empty-description-block/invalid/packet/empty-crlf-input.mmd",
+        code: `packet\r
+accDescr {\r
+ \t\r
+}\r
+0: "Flag"\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.",
+            line: 2,
+            column: 1,
+            endLine: 4,
+            endColumn: 2,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `packet\r
+0: "Flag"\r
+`,
+              },
+            ],
           },
         ],
       },

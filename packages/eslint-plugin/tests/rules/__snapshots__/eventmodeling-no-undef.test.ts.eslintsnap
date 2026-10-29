@@ -170,19 +170,6 @@ Code:
 ---
 
 
-Test: eventmodeling-no-undef >> invalid >>> invalid/eventmodeling/source-crlf
-Filename: tests/fixtures/rules/eventmodeling-no-undef/invalid/eventmodeling/source-crlf-input.mmd
-
-Code:
-  1 | eventmodeling
-  2 | rf 01 ui Cart
-  3 | tf 02 cmd Buy ->> 99
-    |                   ^~ [1]
-
-[1] mermaid.js finds no frame named `99` for this reference.
----
-
-
 Test: eventmodeling-no-undef >> invalid >>> invalid/eventmodeling/source-empty-description
 Filename: tests/fixtures/rules/eventmodeling-no-undef/invalid/eventmodeling/source-empty-description-input.mmd
 

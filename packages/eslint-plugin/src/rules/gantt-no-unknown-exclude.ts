@@ -1,3 +1,8 @@
+import { canEditRange } from "../utils/edit-range.ts"
+import { canCompactRange } from "../utils/compact-range.ts"
+import type { MermaidSourceCode } from "../source-code.ts"
+import type { RuleFixer } from "@eslint/core"
+import type { Identifier } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 
@@ -12,6 +17,22 @@ const EXCLUDED_WORDS: readonly string[] = [
   "saturday",
   "sunday",
 ]
+
+/** Only unambiguous prefixes of at least three letters name an excluded weekday. */
+function wordFix(
+  sourceCode: MermaidSourceCode,
+  item: Identifier,
+): RuleFixer | null {
+  const prefix = item.name.toLowerCase()
+  if (prefix.length < 3) return null
+  if (
+    !canEditRange(sourceCode, item.range) ||
+    !canCompactRange(sourceCode, item.range)
+  )
+    return null
+  const word = EXCLUDED_WORDS.find((value) => value.startsWith(prefix))
+  return word === undefined ? null : (fixer) => fixer.replaceText(item, word)
+}
 
 /** Whether `text` holds an ASCII digit: an item with one is a date, which the rule does not check. */
 function holdsDigit(text: string): boolean {
@@ -37,6 +58,7 @@ export const ganttNoUnknownExclude: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("gantt-no-unknown-exclude"),
     },
+    fixable: "code",
     schema: [],
     messages: {
       unknown:
@@ -52,6 +74,7 @@ export const ganttNoUnknownExclude: MermaidRuleDefinition<{
           context.report({
             node: item,
             messageId: "unknown",
+            fix: wordFix(context.sourceCode, item),
             data: { word: item.name },
           })
         }

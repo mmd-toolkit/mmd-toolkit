@@ -12,13 +12,6 @@ Code:
   4 |
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
-    Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 |   A
-          3 |   accDescr { x }
-          4 |
 ---
 
 
@@ -35,14 +28,7 @@ Code:
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
     Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 |   A --> B
-          3 |   accDescr { x }
-          4 |   B --> C
-          5 |
-      - Close the block at the end of the text: mermaid.js then reads all the text after the `{` as the description.
+      - Close the block at the end of the text.
         Output:
           1 | flowchart LR
           2 |   A --> B
@@ -79,14 +65,6 @@ Code:
   5 |
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
-    Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 | A
-          3 | accTitle: t
-          4 | accDescr { x }
-          5 |
 ---
 
 
@@ -101,13 +79,6 @@ Code:
     | ^~~~~~~~~~ [1]
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
-    Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 | A
-          3 | accDescr: d
-          4 | accDescr { x }
 ---
 
 
@@ -125,7 +96,7 @@ Code:
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
     Suggestions:
-      - Close the block at the end of the text: mermaid.js then reads all the text after the `{` as the description.
+      - Close the block at the end of the text.
         Output:
           1 | flowchart LR
           2 |   A --> B
@@ -150,15 +121,6 @@ Code:
   6 |
 
 [1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
-    Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 |   accDescr { x }
-          3 |   B{
-          4 |   y}
-          5 |   C
-          6 |
 ---
 
 
@@ -190,15 +152,6 @@ Code:
   6 |
 
 [1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
-    Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 |   accDescr { first }
-          3 |   B --> C
-          4 |   A{y}
-          5 |   D
-          6 |
 ---
 
 
@@ -215,15 +168,6 @@ Code:
   6 |
 
 [1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
-    Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 |   accDescr { first }
-          3 |   B --> C
-          4 |   A@{ shape: rect }
-          5 |   D
-          6 |
 ---
 
 
@@ -255,13 +199,7 @@ Code:
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
     Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 |   A; accDescr { x }
-          3 |   B
-          4 |
-      - Close the block at the end of the text: mermaid.js then reads all the text after the `{` as the description.
+      - Close the block at the end of the text.
         Output:
           1 | flowchart LR
           2 |   A; accDescr { x
@@ -284,14 +222,7 @@ Code:
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
     Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 |   A
-          3 |   accDescr { a { b }
-          4 |   B
-          5 |
-      - Close the block at the end of the text: mermaid.js then reads all the text after the `{` as the description.
+      - Close the block at the end of the text.
         Output:
           1 | flowchart LR
           2 |   A
@@ -314,14 +245,6 @@ Code:
   5 |
 
 [1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
-    Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 |   accDescr: d
-          3 |   accDescr { x }
-          4 |   A{y}
-          5 |
 ---
 
 
@@ -339,51 +262,6 @@ Code:
   7 |
 
 [1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
-    Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 |   accDescr { x }
-          3 |
-          4 | %% c
-          5 |
-          6 |   A{y}
-          7 |
----
-
-
-Test: flowchart-no-unclosed-description-block >> invalid >>> invalid/flowchart/gram-unclosed-description-block-closed-by-a-brace-cr
-Filename: tests/fixtures/rules/flowchart-no-unclosed-description-block/invalid/flowchart/gram-unclosed-description-block-closed-by-a-brace-cr-input.mmd
-
-Code:
-  1 | flowchart LR  accDescr { x  A{y}
-
-[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
-    Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR  accDescr { x }  A{y}
----
-
-
-Test: flowchart-no-unclosed-description-block >> invalid >>> invalid/flowchart/gram-unclosed-description-block-closed-by-a-brace-crlf
-Filename: tests/fixtures/rules/flowchart-no-unclosed-description-block/invalid/flowchart/gram-unclosed-description-block-closed-by-a-brace-crlf-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   accDescr { x
-    |   ^~~~~~~~~~ [1]
-  3 |   A{y}
-  4 |
-
-[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
-    Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 |   accDescr { x }
-          3 |   A{y}
-          4 |
 ---
 
 
@@ -400,15 +278,6 @@ Code:
   6 |
 
 [1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
-    Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 |   subgraph S
-          3 |     accDescr { x }
-          4 |     A{y}
-          5 |   end
-          6 |
 ---
 
 
@@ -453,13 +322,6 @@ Code:
   4 |
 
 [1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
-    Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 |   accDescr { x }
-          3 |   A{y}
-          4 |
 ---
 
 
@@ -476,15 +338,6 @@ Code:
   6 |
 
 [1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
-    Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 |   accDescr { first }
-          3 |   B{
-          4 |   y}
-          5 |   D
-          6 |
 ---
 
 
@@ -512,12 +365,6 @@ Code:
   3 |   A{y}
 
 [1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
-    Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 |   accDescr { x }
-          3 |   A{y}
 ---
 
 
@@ -533,14 +380,6 @@ Code:
   5 |
 
 [1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
-    Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 |   A
-          3 |   accDescr { x }
-          4 |   A@{ shape: rect }
-          5 |
 ---
 
 
@@ -555,13 +394,6 @@ Code:
   4 |
 
 [1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
-    Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 |   accDescr { x }
-          3 |   accDescr { y }
-          4 |
 ---
 
 
@@ -578,14 +410,7 @@ Code:
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
     Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 |   A
-          3 |   accDescr { %% c }
-          4 |   B
-          5 |
-      - Close the block at the end of the text: mermaid.js then reads all the text after the `{` as the description.
+      - Close the block at the end of the text.
         Output:
           1 | flowchart LR
           2 |   A
@@ -593,32 +418,6 @@ Code:
           4 |   B
           5 | }
           6 |
----
-
-
-Test: flowchart-no-unclosed-description-block >> invalid >>> invalid/flowchart/gram-unclosed-description-block-crlf-lines
-Filename: tests/fixtures/rules/flowchart-no-unclosed-description-block/invalid/flowchart/gram-unclosed-description-block-crlf-lines-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   A
-  3 |   accDescr {
-    |   ^~~~~~~~~~ [1]
-  4 |     x
-  5 |   B --> C
-  6 |
-
-[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
-    Suggestions:
-      - Close the block at the end of the text: mermaid.js then reads all the text after the `{` as the description.
-        Output:
-          1 | flowchart LR
-          2 |   A
-          3 |   accDescr {
-          4 |     x
-          5 |   B --> C
-          6 | }
-          7 |
 ---
 
 
@@ -636,15 +435,7 @@ Code:
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
     Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 |   A --> B
-          3 |   accDescr { x %%{init: {
-          4 | }}%% }
-          5 |   B --> C
-          6 |
-      - Close the block at the end of the text: mermaid.js then reads all the text after the `{` as the description.
+      - Close the block at the end of the text.
         Output:
           1 | flowchart LR
           2 |   A --> B
@@ -667,13 +458,6 @@ Code:
   4 |
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
-    Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart-elk LR
-          2 |   A
-          3 |   accDescr { x }
-          4 |
 ---
 
 
@@ -688,13 +472,6 @@ Code:
   4 |
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
-    Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | graph LR
-          2 |   A
-          3 |   accDescr { x }
-          4 |
 ---
 
 
@@ -709,13 +486,6 @@ Code:
   4 |
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
-    Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | swimlane-beta LR
-          2 |   A
-          3 |   accDescr { x }
-          4 |
 ---
 
 
@@ -732,7 +502,7 @@ Code:
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
     Suggestions:
-      - Close the block at the end of the text: mermaid.js then reads all the text after the `{` as the description.
+      - Close the block at the end of the text.
         Output:
           1 | flowchart LR
           2 |   A
@@ -756,7 +526,7 @@ Code:
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
     Suggestions:
-      - Close the block at the end of the text: mermaid.js then reads all the text after the `{` as the description.
+      - Close the block at the end of the text.
         Output:
           1 | flowchart LR
           2 |   A --> B
@@ -796,7 +566,7 @@ Code:
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
     Suggestions:
-      - Close the block at the end of the text: mermaid.js then reads all the text after the `{` as the description.
+      - Close the block at the end of the text.
         Output:
           1 | flowchart LR
           2 |   A
@@ -822,14 +592,7 @@ Code:
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
     Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 | 	A
-          3 | 	accDescr { x }
-          4 | 	B
-          5 |
-      - Close the block at the end of the text: mermaid.js then reads all the text after the `{` as the description.
+      - Close the block at the end of the text.
         Output:
           1 | flowchart LR
           2 | 	A
@@ -852,7 +615,7 @@ Code:
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
     Suggestions:
-      - Close the block at the end of the text: mermaid.js then reads all the text after the `{` as the description.
+      - Close the block at the end of the text.
         Output:
           1 | flowchart LR
           2 |   A
@@ -877,7 +640,7 @@ Code:
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
     Suggestions:
-      - Close the block at the end of the text: mermaid.js then reads all the text after the `{` as the description.
+      - Close the block at the end of the text.
         Output:
           1 | flowchart LR
           2 |   A
@@ -903,14 +666,7 @@ Code:
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
     Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 |   accDescr {}
-          3 |   accDescr { x }
-          4 |   B
-          5 |
-      - Close the block at the end of the text: mermaid.js then reads all the text after the `{` as the description.
+      - Close the block at the end of the text.
         Output:
           1 | flowchart LR
           2 |   accDescr {}
@@ -1039,14 +795,7 @@ Code:
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
     Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 |   A
-          3 |   accDescr { x }  
-          4 |   B
-          5 |
-      - Close the block at the end of the text: mermaid.js then reads all the text after the `{` as the description.
+      - Close the block at the end of the text.
         Output:
           1 | flowchart LR
           2 |   A
@@ -1095,10 +844,4 @@ Code:
     | ^~~~~~~~~~ [1]
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
-    Suggestions:
-      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.
-        Output:
-          1 | flowchart LR
-          2 | A
-          3 | accDescr { x }
 ---

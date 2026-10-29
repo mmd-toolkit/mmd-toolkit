@@ -11,29 +11,27 @@ Disallow a repeated section id that lists its items more than once.
 
 <!-- end auto-generated rule notice -->
 
-Each column needs its own id. When two sections use `Todo`, mermaid.js accepts
-both without an error and lists every item belonging to `Todo` under both
-columns. Even an item written under only one of them appears twice.
+Each column needs its own id. mermaid.js accepts two sections with the same id
+without an error and lists all items belonging to that id under both columns.
+Even an item written under only one appears twice.
 
 ## Rule Details
 
-This rule reports each section after the first with the same id, when any item
-of the board belongs to that id. It applies to `kanban`.
+This rule applies to Kanban boards (`kanban`). It reports each section after the
+first with the same id if any item on the board belongs to that id, including
+items written later. Repeated empty sections with no items belonging to their id
+are not reported.
 
-The first node's indentation sets the section level. Every node at that level is
-a section; every other node is an item of the most recent section. Items are
-considered throughout the board: an item written after the repeated section also
-appears under the earlier section. A third section with that id is another
-report.
+The first entry's indentation sets the section level, and entries at that level
+are sections. Entries at other levels are items of the most recent section. Ids
+are case-sensitive and keep whitespace before a shape, so `Todo [Second]` after
+`Todo[First]` is not reported. Shapes without ids use their labels as ids. A
+title set by a data block, such as `Todo@{label: First}`, does not change the
+id.
 
-Ids are compared with their case, keeping trailing whitespace. A shape without
-an id uses its label as its id. Changing the title with metadata changes no id.
-Repeated item ids, an item with the same id as a section, and repeated empty
-sections with no items belonging to their id are not reported: they add no extra
-item listing.
-
-Give each column its own id, as `Todo` and `Ready`. Two columns may deliberately
-have the same displayed title when they have different ids.
+Repeated item ids and items sharing a section's id are not reported because they
+add no extra item listing. Columns with different ids and the same title, as
+`Todo[Queue]` and `Ready[Queue]`, are not reported.
 
 Examples of **incorrect** code for this rule:
 
@@ -74,12 +72,6 @@ kanban
 ## Options
 
 This rule has no options.
-
-## Background
-
-[`getData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L61-L94)
-selects the children by section id for each section, so a repeated id selects
-the same items again.
 
 <!-- begin auto-generated rule resources -->
 

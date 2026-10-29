@@ -12,25 +12,18 @@ Disallow a character that the comment after it removes.
 
 A `%%` comment can remove the character just before it when no space separates
 them. In `set A:%% size to fill in`, the colon disappears with the comment, and
-mermaid.js reads `set A` with the default size 10, without an error.
+mermaid.js reads `set A` with the default size 10 without an error.
 
 ## Rule Details
 
-This rule reports each character that a comment removes this way. It applies to
-`venn`. The character may follow a statement, as the comma in
-`style A fill:red,%% more later`, stand on a line of its own, or follow the
-header `venn-beta`.
+This rule applies to Venn diagrams (`venn-beta`). It reports each character
+removed by the comment immediately after it, whether after a statement, on its
+own line, or after the header. This happens only where mermaid.js starts reading
+a new word or sign: `set AB%% c` keeps `AB` and is not reported. `set A%% c`
+loses `A` and is not reported, because mermaid.js gives an error for it.
 
-The comment takes the character before it only where mermaid.js starts to read a
-new word or sign at that character. In `set AB%% c`, the name `AB` is read
-before the comment, and nothing is removed. `set A%% c` loses the name `A` and
-is rejected, so the rule does not see it. A space before `%%` is removed in the
-same way and changes nothing; it is not reported. A `%%` inside a label or a
-quoted name is text, not a comment.
-
-Remove the character while keeping whitespace before the comment, as in
-`set A %% size to fill in`, or complete the statement before the comment:
-`set A:20 %% size` gives A the size 20.
+Removed whitespace is not reported because it changes nothing. A `%%` inside a
+label or quoted name is text, not a comment, and nothing before it is reported.
 
 Examples of **incorrect** code for this rule:
 
@@ -51,12 +44,6 @@ set A:20 %% size
 ## Options
 
 This rule has no options.
-
-## Background
-
-The
-[comment rule of the lexer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/parser/venn.jison#L8-L8)
-reads any character but `}` before `%%` as part of the comment.
 
 <!-- begin auto-generated rule resources -->
 

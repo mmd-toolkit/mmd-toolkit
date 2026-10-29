@@ -27,5 +27,25 @@ new RuleTester(LANGUAGE_CONFIG).run("flowchart-no-undef", flowchartNoUndef, {
         },
       ],
     },
+
+    {
+      name: "invalid/flowchart/db-undef-style-of-an-unknown-id-crlf",
+      filename:
+        "tests/fixtures/rules/flowchart-no-undef/invalid/flowchart/db-undef-style-of-an-unknown-id-crlf-input.mmd",
+      code: `flowchart LR\r
+  A --> B\r
+  style C fill:red\r
+`,
+      errors: [
+        {
+          message:
+            "mermaid.js adds a new vertex with these styles for the undefined id `C`.",
+          line: 3,
+          column: 9,
+          endLine: 3,
+          endColumn: 10,
+        },
+      ],
+    },
   ],
 })

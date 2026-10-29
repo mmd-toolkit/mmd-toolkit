@@ -10,20 +10,16 @@
 
 <!-- end auto-generated rule notice -->
 
-`create` は、`participant` か `actor` の前に書き、
+`create` は `participant` や `actor` の前に書き、
 メッセージのところで参加者を作る。
-`destroy` の前に書くと、mermaid.js はそれを受理して参加者を作り、
-参加者は破棄されない。
-`create destroy A` は、`create participant A` と同じことをする。
+`destroy` の前に書くと、mermaid.js はエラーなしに受理して参加者を作るが、
+破棄しない。
+`create destroy A` は `create participant A` と同じことをする。
 
 ## 規則の詳細
 
-この規則は、前に `create` がある `destroy` の文を報告する。
-対象の図種は `sequence` である。
-
-`create destroy A` の後に `B ->> A: x` があると、
-`create participant A` と同じく、メッセージのところで `A` を作り、
-破棄したものとしては何も記録しない。
+この規則は、シーケンス図（`sequenceDiagram`）に当てる。
+`create` が前にある `destroy` の文を報告する。
 
 この規則に**反する**コードの例:
 

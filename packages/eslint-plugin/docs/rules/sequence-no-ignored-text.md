@@ -9,22 +9,22 @@ Disallow a line that mermaid.js reads as nothing.
 
 ✅ The `recommended` configuration enables this rule.
 
+🔧 This rule is automatically fixable by the
+[`--fix` CLI option](https://eslint.org/docs/latest/use/command-line-interface#--fix).
+
 <!-- end auto-generated rule notice -->
 
-A character such as `)` or `/` that stands where a statement starts, and starts
-none, is no statement. mermaid.js accepts it and drops it without an error, so
-what the author wrote has no effect. Such a character may stand on a line of its
-own, before a statement on its line, as in `) A ->> B: x`, or after the `end` of
-a block on its line.
+Characters such as `)` or `/` can stand where a statement starts without
+starting one. mermaid.js accepts and drops them without an error, so what the
+author wrote has no effect. This often happens when the end of a message is
+written on the next line.
 
 ## Rule Details
 
-This rule reports each such character. It applies to `sequence`. The line `) )`
-holds two such characters and gives two reports.
-
-Such a character usually comes about when the end of a message is written on the
-next line. A message cannot continue on the next line: `A ->> B: call(x`, a line
-break, and `)` give the message `call(x`, and the `)` is dropped.
+This rule applies to sequence diagrams (`sequenceDiagram`). It reports each
+character that mermaid.js drops in this way, whether alone on a line, before a
+statement on the same line, or after a block's `end` on that line. The line
+`) )` gives two reports.
 
 Examples of **incorrect** code for this rule:
 

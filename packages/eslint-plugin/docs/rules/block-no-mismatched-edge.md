@@ -9,23 +9,26 @@ Disallow an edge with a label whose two arrows do not match.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-An edge with a label is written with an arrow on each side of the label, as in
-`A -- "x" --> B`. mermaid.js takes the line and the markers of the edge from the
-arrow after the label only: `A -- "x" ==> B` draws a thick line, and in
-`A <-- "x" --> B` the arrowhead at `A` is lost, without an error.
+An edge with a label has an arrow on each side of the label, as in
+`A -- "x" --> B`. mermaid.js uses only the arrow after the label to draw the
+line and arrowheads. It gives no error when a different line or an arrowhead
+written before the label is lost.
 
 ## Rule Details
 
-This rule reports an edge with a label whose arrow before the label has another
-line than the arrow after it, or has an arrowhead at its start that the arrow
-after it does not have. It applies to `block`.
+This rule applies to block diagrams (`block-beta` and `block`). It reports a
+labeled edge when the arrow before the label has a different line from the arrow
+after it, or a starting arrowhead that the later arrow does not have. An edge
+with both mistakes is reported once.
 
 The lines are solid (`--`), thick (`==`), and dotted (`-.`); a longer arrow has
-the same line. To draw an arrowhead at both ends, write it on the arrow after
-the label, as in `A -- "x" <--> B`, which is not reported. An edge with both
-mistakes is reported once.
+the same line. `A -- "x" <--> B` is not reported because the arrow after the
+label specifies both arrowheads.
 
 Examples of **incorrect** code for this rule:
 

@@ -16,16 +16,15 @@ is meant as a new entity, mermaid.js ignores the second alias without an error.
 
 ## Rule Details
 
-This rule reports an entity statement with an alias when an earlier entity
-statement gave the same entity a different alias. It applies to `er`.
+This rule applies to entity relationship diagrams (`erDiagram`). It reports an
+entity statement that gives a different alias to an entity that already has one.
+The statement is reported also when it adds classes or attributes, which
+mermaid.js still applies; only its alias is ignored.
 
-After `p[Person]`, the statement `p[Human]` leaves the entity `p` with the alias
-`Person`. Only the alias is ignored: the classes and the attributes of the later
-statement apply. An alias given to an entity that has none yet is set: after
-`p`, or after a relationship that names `p`, `p[Human]` gives `p` the alias
-`Human`, and it is not reported. Neither is writing the same alias again, also
-once in quotes and once without, as `p["Person"]` and `p[Person]`. Statements
-inside a subgraph and outside it name the same entities.
+An alias for an entity that has none, including one first named in a
+relationship, is not reported. Repeating the same alias is not reported either,
+with or without quotes. Statements inside and outside a subgraph name the same
+entities.
 
 Examples of **incorrect** code for this rule:
 

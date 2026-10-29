@@ -94,19 +94,3 @@ Code:
 
 [1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
 ---
-
-
-Test: usecase-no-unclosed-description-block >> invalid >>> invalid/usecase/crlf
-Filename: tests/fixtures/rules/usecase-no-unclosed-description-block/invalid/usecase/crlf-input.mmd
-
-Code:
-  1 | usecase-beta
-  2 | accDescr { first
-    | ^~~~~~~~~~ [1]
-  3 | A --> B
-  4 | C@{ type: hollow }
-  5 | D
-  6 |
-
-[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
----

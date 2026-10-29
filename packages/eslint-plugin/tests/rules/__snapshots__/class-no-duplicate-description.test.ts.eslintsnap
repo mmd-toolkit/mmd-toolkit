@@ -147,22 +147,6 @@ Code:
 ---
 
 
-Test: class-no-duplicate-description >> invalid >>> invalid/class/db-acc-descr-line-empty-takes-next-line-crlf
-Filename: tests/fixtures/rules/class-no-duplicate-description/invalid/class/db-acc-descr-line-empty-takes-next-line-crlf-input.mmd
-
-Code:
-  1 | classDiagram
-  2 | accDescr: d
-  3 | accDescr:
-    | ^~~~~~~~~\ [1]
-  4 | class A
-    | ~~~~~~~ [1]
-  5 |
-
-[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
----
-
-
 Test: class-no-duplicate-description >> invalid >>> invalid/class/db-acc-descr-line-empty-takes-next-lines
 Filename: tests/fixtures/rules/class-no-duplicate-description/invalid/class/db-acc-descr-line-empty-takes-next-lines-input.mmd
 

@@ -13,6 +13,13 @@ Code:
   5 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | gantt
+          2 |   dateFormat YYYY-MM-DD
+          3 |   Design :2024-01-06, 3d
+          4 |
 ---
 
 
@@ -28,6 +35,13 @@ Code:
   5 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | gantt
+          2 |   dateFormat YYYY-MM-DD
+          3 |   Design :2024-01-06, 3d
+          4 |
 ---
 
 
@@ -56,6 +70,11 @@ Code:
     | ^~~~~~~~~~~ [1]
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | gantt
+          2 | accDescr: a
 ---
 
 
@@ -68,6 +87,10 @@ Code:
     | ^~~~~~~~~~~ [1]
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | gantt
 ---
 
 
@@ -85,6 +108,11 @@ Code:
   5 | title T
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | gantt
+          2 | title T
 ---
 
 

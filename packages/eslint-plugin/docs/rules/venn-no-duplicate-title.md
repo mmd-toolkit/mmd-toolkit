@@ -9,35 +9,27 @@ Disallow a title that replaces a different title.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-A `title` statement sets the title of the whole diagram. A later `title`
-replaces it without an error: after `title Audience` and `title Coverage`, the
-diagram shows only `Coverage`.
+`title` sets the title of the whole diagram. mermaid.js accepts a later `title`
+without an error and displays only the later title, losing the earlier one.
 
 ## Rule Details
 
-This rule reports every `title` statement after the first one when it sets a
-title other than the one before it. It applies to `venn`.
+This rule applies to Venn diagrams (`venn-beta`). It reports a `title` that
+changes the title set by the preceding `title` statement. Repeating the current
+title is not reported. Replacing a frontmatter title is not reported either.
 
-The keyword is read in any case. A title takes the rest of its line after the
-first space or tab, with its quotes and any further spaces: after
-`title Audience`, the statement `title "Audience"` sets the title `"Audience"`,
-with its quotes, and it is reported. `title` at the end of a line takes the next
+The keyword is case-insensitive. A title includes the rest of the line after the
+first space or tab, including quotes and further spaces, so `title "Audience"`
+differs from `title Audience`. A `title` at the end of a line takes the next
 line as its title.
 
-A statement that sets the title that the diagram already has is not reported.
-After `title First` and `title Second`, a third `title First` is reported,
-because it replaces `Second`. Titles are compared as written: mermaid.js turns
-character references, as `#35;`, and the quotes of HTML attributes into other
-characters before it reads a title, so two titles that differ only in those may
-be one title for mermaid.js and two for this rule.
-
-A `title` statement also replaces the title of the frontmatter without an error:
-with `title: Front` in the frontmatter, `title T` gives the title `T`. The rule
-does not report this.
-
-Keep one `title` statement.
+Titles are compared as written, so character references and HTML attribute
+quotes can differ for this rule although mermaid.js reads them alike.
 
 Examples of **incorrect** code for this rule:
 
@@ -61,14 +53,6 @@ set A
 ## Options
 
 This rule has no options.
-
-## Background
-
-The
-[`title` statement](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/parser/venn.jison#L72-L72)
-calls
-[`setDiagramTitle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L28-L30),
-which replaces the title set before it.
 
 <!-- begin auto-generated rule resources -->
 

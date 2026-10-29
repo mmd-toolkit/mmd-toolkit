@@ -9,46 +9,32 @@ Disallow an `accDescr {` block without its closing `}`.
 
 The `recommended` configuration does not enable this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-mermaid.js accepts a description block whose `}` is missing. It closes the block
-at the first `}` after the `{`, or, without one, at the end of the text, and
-reads the lines up to there as the text of the block. Without a `}`, the
-description is empty, whatever the block holds.
+mermaid.js accepts an `accDescr {` block without its closing `}` without an
+error. It reads later lines as description text until the first `}`, or the end
+of the text. Without a `}`, the description becomes empty.
 
 ## Rule Details
 
-This rule reports an `accDescr {` block that is not closed by `}`. It applies to
-`sequence`.
+This rule applies to sequence diagrams (`sequenceDiagram`). It reports an
+`accDescr {` block with no closing `}`.
 
-A description written before the block is replaced by the empty one. The
-statements after the block become its text: after `accDescr { x`, the line
-`A ->> B: y` makes no message.
+It also reports a closed block containing a `{` on a later line than its opening
+`{`, unless only whitespace and directives precede its closing `}` on that line.
+A block ends at the first `}` after its `{`, so the `}` of a later data block,
+JSON object, or message can close it by mistake. A block closed on the line of
+its `{`, as `accDescr { a { b }`, is not reported, and text after the closer, as
+in `};` or `} A ->> B: x`, does not affect the exception.
 
-The rule also reports a block that a `}` written for something else closes. A
-description block ends at the first `}` after its `{`; every other character up
-to there, a `{` too, is its text
-([Accessibility values](../../../spec/docs/diagrams/sequence.md#accessibility-values)
-in the specification). When a later statement holds a `{` with its `}`, as the
-data block `participant A@{ "type": "actor" }`, the JSON of
-`links A: {"a": "https://x"}`, or the text of a message, that `}` closes the
-block, and the lines up to it become the description: after `accDescr { first`,
-the lines `links A: {"a": "https://x"}` and `A ->> B: x` give the description
-`first` and `links A: {"a": "https://x"`, no link, and the message `x`. The rule
-reports a block whose text holds a `{` on a later line than the `{` of the
-block, unless the `}` that closes the block stands alone on its line. A `}` on
-the line of the `{`, as in `accDescr { a { b }`, and a `}` alone on its line
-close the block as written, and are not reported. A `}` is alone on its line
-when only whitespace and directives stand before it there, whatever follows it,
-as in `};` or `} A ->> B: x`. A `}` alone on its line is the author's also after
-such a `{`, as in `accDescr {`, `uses { here`, and `}`, whose description is
-`uses { here`. A description that holds a `{` and ends with its own `}` on a
-later line, as `accDescr {`, then `a {b }`, is reported too: the rule does not
-tell that `}` from the `}` of a data block, and such a description is rare. For
-the same reason, a data block written over lines whose `}` stands alone on its
-line is not reported: `accDescr { x`, `participant A@{`, `"type": "actor"`, `}`,
-and `A ->> B: y` give the description `x`, `participant A@{`, and
-`"type": "actor"`, and A is no actor, but its `}` looks like the author's.
+A description that intentionally includes a `{` on a later line is also reported
+when its closer does not meet that exception. Conversely, a data block whose
+closing `}` has only whitespace and directives before it is not reported, even
+though the description takes the data block's text. The rule cannot tell these
+closers apart.
 
 Examples of **incorrect** code for this rule:
 

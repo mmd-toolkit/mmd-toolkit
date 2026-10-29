@@ -9,22 +9,20 @@ Disallow a description block that is not closed by `}`.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-mermaid.js accepts a description block whose `}` is missing: the block runs to
-the end of the text and takes every statement after it as its text, and the
-description is then empty, whatever the block holds.
+When the closing `}` of an `accDescr` block is missing, mermaid.js accepts it
+without an error. The block takes all following statements as its text, and the
+description becomes empty whatever the block holds.
 
 ## Rule Details
 
-This rule reports an `accDescr {` block that is not closed by `}`. It applies to
-`xychart`.
-
-After `accDescr { Monthly sales`, the lines `title Sales` and `line [1, 2]` give
-no title and no plot, and the description is empty. A description written before
-the block is replaced by the empty one: after `accDescr: d`, the lines
-`accDescr {` and `e` give the empty description. A block that is not closed with
-nothing in it, as `accDescr {` at the end of the text, is reported too.
+This rule applies to XY charts (`xychart` and `xychart-beta`). It reports an
+`accDescr {` block without a closing `}`, also `accDescr {` with nothing after
+it at the end of the text.
 
 Examples of **incorrect** code for this rule:
 

@@ -39,7 +39,29 @@ new RuleTester(LANGUAGE_CONFIG).run(
             column: 11,
             endLine: 2,
             endColumn: 12,
-            suggestions: [],
+          },
+        ],
+      },
+
+      {
+        name: "invalid/kanban/section-directive-comments-crlf",
+        filename:
+          "tests/fixtures/rules/kanban-no-duplicate-section/invalid/kanban/section-directive-comments-crlf-input.mmd",
+        code: `kanban\r
+  Todo\r
+    docs\r
+  %% note\r
+  %%{init: {}}%%\r
+  To%%{init: {}}%%do\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js lists every item belonging to `Todo` under each section with this id.",
+            line: 6,
+            column: 3,
+            endLine: 6,
+            endColumn: 21,
           },
         ],
       },

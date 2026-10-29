@@ -18,19 +18,14 @@ later value is lost.
 
 ## Rule Details
 
-This rule reports an entry of a curve that gives an axis another value than the
-first entry of the same curve for that axis. It applies to `radar`.
+This rule applies to radar charts (`radar-beta`). It reports a curve entry that
+gives a declared axis a different value from the first entry for that axis in
+the same curve. Each entry is compared with the first one, and each curve is
+checked separately. An entry repeating the first value is not reported.
 
-After `A: 1, A: 9, A: 9, A: 1` in one curve, the curve has the value `1` for
-`A`, and the two entries with `9` are reported: each entry is compared with the
-first one, not with the one before it. Each curve has its own entries.
-
-An entry that gives the value of the first one loses nothing and is not
-reported. Values are compared as numbers: `1.0` and `01.00` are one value. An
-entry whose name no axis declares is reported by
+Values are compared as numbers, so `1.0` and `01.00` are the same value. An
+entry naming no declared axis is reported by
 [radar-no-undef](./radar-no-undef.md) instead.
-
-Give each axis one value in each curve.
 
 Examples of **incorrect** code for this rule:
 
@@ -57,11 +52,6 @@ This rule has no options.
 ## Related Rules
 
 - [radar-no-undef](./radar-no-undef.md)
-
-## Background
-
-[`computeCurveEntries`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L75-L91)
-takes, for each declared axis, the first entry that names it.
 
 <!-- begin auto-generated rule resources -->
 

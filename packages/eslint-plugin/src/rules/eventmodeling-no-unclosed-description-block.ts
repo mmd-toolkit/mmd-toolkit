@@ -15,6 +15,7 @@ export const eventmodelingNoUnclosedDescriptionBlock: MermaidRuleDefinition<{
       recommended: false,
       url: ruleDocsUrl("eventmodeling-no-unclosed-description-block"),
     },
+
     schema: [],
     messages: {
       closedByOtherBrace:

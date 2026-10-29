@@ -10,32 +10,22 @@ Disallow text that mermaid.js drops.
 
 <!-- end auto-generated rule notice -->
 
-A `direction` statement is written on a line of its own. When the line also
-holds other text, mermaid.js reads the whole line as the direction statement and
-drops the rest without an error.
+A `direction` statement is written on a line of its own. When other text shares
+the line, mermaid.js reads the whole line as the direction statement and drops
+the rest without an error.
 
 ## Rule Details
 
-This rule reports the text that stands on a direction line before `direction` or
-after the direction value, and the parts of a method line that mermaid.js drops.
-It applies to `classDiagram`.
+This rule applies to class diagrams (`classDiagram` and `classDiagram-v2`). It
+reports text before `direction` or after its direction value on the same line.
+This includes a direction inside a relation label or note, such as
+`A --> B : set direction LR now`, where the relation disappears.
 
-`class A direction LR` sets the direction `LR` and declares no class.
-`direction TBX` sets the direction `TB`, and the `X` is dropped.
+Text after the direction that starts with `%%` is not reported, because it is
+written as a comment and mermaid.js drops it as intended.
 
-A line becomes a direction statement also when it is not meant as one. When
-`direction` and a direction value stand on it, as in
-`A --> B : set direction LR now` or `note "x direction TB"`, the line is a
-direction statement, and the relation or the note is not there. The rule reports
-that too.
-
-Text after the direction that starts with `%%`, as in
-`direction LR %% vertical`, is not reported. The author means it as a comment,
-and mermaid.js drops it, as the author intended.
-
-A method line with a line separator (U+2028 or U+2029) in it is read in one part
-only, and the rule reports the other parts. Such a line is not shown as a code
-block below.
+The rule also reports the parts dropped from a method line containing U+2028 or
+U+2029: mermaid.js reads only one part of that line.
 
 Examples of **incorrect** code for this rule:
 

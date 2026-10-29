@@ -1,5 +1,18 @@
+import type { RuleFixer } from "@eslint/core"
+import type { StateIgnoredText, Node } from "@mmd-toolkit/parser"
+
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
+
+/** Only the authored character lost immediately after a one-line note's colon is repaired. */
+function noteSpaceFix(
+  node: StateIgnoredText,
+  parent: Node | null,
+): RuleFixer | null {
+  if (parent?.type !== "StateNoteStatement" || parent.textBeforeText !== node)
+    return null
+  return (fixer) => fixer.insertTextBefore(node, " ")
+}
 
 /**
  * The rule `state-no-ignored-text`, described in
@@ -19,6 +32,7 @@ export const stateNoIgnoredText: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("state-no-ignored-text"),
     },
+    fixable: "code",
     schema: [],
     messages: {
       onDirectionLine:
@@ -36,6 +50,7 @@ export const stateNoIgnoredText: MermaidRuleDefinition<{
           context.report({
             node,
             messageId: "onDirectionLine",
+
             data: { text: node.value },
           })
           return
@@ -43,6 +58,7 @@ export const stateNoIgnoredText: MermaidRuleDefinition<{
         context.report({
           node,
           messageId: "ignoredText",
+          fix: noteSpaceFix(node, parent),
           data: { text: node.value },
         })
       },

@@ -1,3 +1,8 @@
+import { canEditRange } from "../utils/edit-range.ts"
+import { canCompactRange } from "../utils/compact-range.ts"
+import type { MermaidSourceCode } from "../source-code.ts"
+import type { RuleFixer } from "@eslint/core"
+import type { GanttTaskStatement, GanttLiteral } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { itemRolesOf } from "../utils/gantt-tasks.ts"
@@ -16,6 +21,23 @@ function firstWordOf(text: string): string {
   let end = 0
   while (end < text.length && text[end].trim() !== "") end++
   return text.slice(0, end)
+}
+
+/** Only a two-item start can become tags without moving an id or an end. */
+function tagFix(
+  sourceCode: MermaidSourceCode,
+  node: GanttTaskStatement,
+  item: GanttLiteral,
+): RuleFixer | null {
+  if (
+    !canEditRange(sourceCode, item.range) ||
+    !canCompactRange(sourceCode, item.range)
+  )
+    return null
+  if (node.items.length !== 2 || node.items[0] !== item) return null
+  const words = item.value.trim().toLowerCase().split(/\s+/u)
+  if (!words.every((word) => TAG_WORDS.includes(word))) return null
+  return (fixer) => fixer.replaceText(item, words.join(", "))
 }
 
 /**
@@ -39,6 +61,7 @@ export const ganttNoInvalidTag: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("gantt-no-invalid-tag"),
     },
+    fixable: "code",
     schema: [],
     messages: {
       invalid:
@@ -53,7 +76,12 @@ export const ganttNoInvalidTag: MermaidRuleDefinition<{
           if (item === null) continue
           const word = firstWordOf(item.value)
           if (TAG_WORDS.includes(word.toLowerCase())) {
-            context.report({ node: item, messageId: "invalid", data: { word } })
+            context.report({
+              node: item,
+              messageId: "invalid",
+              data: { word },
+              fix: tagFix(context.sourceCode, node, item),
+            })
           }
         }
       },

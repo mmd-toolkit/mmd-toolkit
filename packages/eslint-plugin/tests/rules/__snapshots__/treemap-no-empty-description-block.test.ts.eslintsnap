@@ -12,6 +12,12 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | treemap
+          2 |   "Revenue": 10
+          3 |
 ---
 
 
@@ -44,6 +50,12 @@ Code:
   6 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | treemap
+          2 | "A":1
+          3 |
 ---
 
 
@@ -60,6 +72,14 @@ Code:
   6 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | treemap
+          2 | accDescr: First
+          3 | accDescr: Second
+          4 | "A":10
+          5 |
 ---
 
 
@@ -72,6 +92,25 @@ Code:
     |   ^~~~~~~~~~~ [1]
   3 |   "Revenue": 10
   4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | treemap
+          2 |   "Revenue": 10
+          3 |
+---
+
+
+Test: treemap-no-empty-description-block >> invalid >>> invalid/treemap/empty-block-after-header
+Filename: tests/fixtures/rules/treemap-no-empty-description-block/invalid/treemap/empty-block-after-header-input.mmd
+
+Code:
+  1 | treemap accDescr {}
+    |         ^~~~~~~~~~~ [1]
+  2 | "A":1
+  3 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
 ---
@@ -89,6 +128,13 @@ Code:
   5 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | treemap
+          2 | accDescr: First
+          3 | "A":10
+          4 |
 ---
 
 
@@ -104,6 +150,13 @@ Code:
   5 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | treemap
+          2 | %% TODO
+          3 | "A":10
+          4 |
 ---
 
 
@@ -132,6 +185,12 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | treemap
+          2 | "A":10
+          3 |
 ---
 
 
@@ -168,6 +227,20 @@ Code:
  12 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | treemap
+          2 | accDescr: First
+          3 | "Root"
+          4 | accDescr { Second }
+          5 |   "Branch"
+          6 | classDef aa fill:red;
+          7 |     "Leaf":1
+          8 | accDescr: Third
+          9 |   "Sibling":2
+         10 | accDescr { Fourth }
+         11 |
 ---
 
 
@@ -182,6 +255,12 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | treemap
+          2 | "Revenue":1_000
+          3 |
 ---
 
 
@@ -199,4 +278,13 @@ Code:
   7 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | treemap
+          2 | "Budget"
+          3 |   "Sales":10
+          4 | classDef warm fill:red;
+          5 |     "Costs":20
+          6 |
 ---

@@ -12,6 +12,12 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | treeView-beta
+          2 |   root/
+          3 |
 ---
 
 
@@ -30,6 +36,16 @@ Code:
   8 | root
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | treeView-beta
+          2 | title first
+          3 | accTitle: first
+          4 | accDescr: first
+          5 | title
+          6 | accTitle:
+          7 | root
 ---
 
 
@@ -62,6 +78,14 @@ Code:
   6 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr: First
+          3 |   accDescr: Third
+          4 |   root/
+          5 |
 ---
 
 
@@ -76,6 +100,12 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | treeView-beta
+          2 |   root/
+          3 |
 ---
 
 
@@ -94,6 +124,26 @@ Code:
   6 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | treeView-beta
+          2 | root/
+          3 |
+---
+
+
+Test: treeview-no-empty-description-block >> invalid >>> invalid/treeview/empty-block-after-block
+Filename: tests/fixtures/rules/treeview-no-empty-description-block/invalid/treeview/empty-block-after-block-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | accDescr { Project files } accDescr {}
+    |                            ^~~~~~~~~~~ [1]
+  3 | root/
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
 ---
 
 
@@ -109,6 +159,13 @@ Code:
   5 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr: First
+          3 |   root/
+          4 |
 ---
 
 
@@ -124,6 +181,13 @@ Code:
   5 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | treeView-beta
+          2 |   accDescr: First
+          3 |   root/
+          4 |
 ---
 
 
@@ -139,6 +203,13 @@ Code:
   5 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | treeView-beta
+          2 | root/
+          3 | └── file
+          4 |
 ---
 
 
@@ -153,6 +224,12 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | treeView-beta
+          2 | root/
+          3 |
 ---
 
 
@@ -167,6 +244,12 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | treeView-beta
+          2 |   root/
+          3 |
 ---
 
 
@@ -183,6 +266,14 @@ Code:
   6 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | treeView-beta
+          2 | accDescr: First
+          3 | root/
+          4 | └── file
+          5 |
 ---
 
 
@@ -199,6 +290,14 @@ Code:
   6 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | treeView-beta
+          2 | accDescr: First
+          3 | root/
+          4 | └── file
+          5 |
 ---
 
 
@@ -246,4 +345,15 @@ Code:
   9 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | ---
+          2 | title: Frontmatter
+          3 | ---
+          4 | %%{init: {}}%%
+          5 | treeView-beta
+          6 | %% before block
+          7 | root/
+          8 |
 ---

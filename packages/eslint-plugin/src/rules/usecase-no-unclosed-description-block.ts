@@ -15,6 +15,7 @@ export const usecaseNoUnclosedDescriptionBlock: MermaidRuleDefinition<{
       recommended: false,
       url: ruleDocsUrl("usecase-no-unclosed-description-block"),
     },
+
     schema: [],
     messages: {
       closedByOtherBrace:

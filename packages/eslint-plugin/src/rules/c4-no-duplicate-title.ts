@@ -15,6 +15,7 @@ export const c4NoDuplicateTitle: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("c4-no-duplicate-title"),
     },
+
     schema: [],
     messages: {
       duplicate: "mermaid.js replaces the earlier title with this `title`.",
@@ -22,6 +23,7 @@ export const c4NoDuplicateTitle: MermaidRuleDefinition<{
   },
   create(context) {
     let previous: C4TitleStatement | null = null
+
     return {
       C4TitleStatement(node) {
         if (previous !== null && previous.value.value !== node.value.value) {
@@ -30,6 +32,7 @@ export const c4NoDuplicateTitle: MermaidRuleDefinition<{
             messageId: "duplicate",
           })
         }
+
         previous = node
       },
       C4AccTitleStatement() {

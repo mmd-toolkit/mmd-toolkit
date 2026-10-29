@@ -13,6 +13,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | architecture-beta
+          2 |   accDescr: First
+          3 |   service api(server)[API]
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | architecture-beta
+          2 |   accDescr: Second
+          3 |   service api(server)[API]
+          4 |
 ---
 
 
@@ -27,6 +40,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | architecture-beta
+          2 | accDescr { First }
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | architecture-beta
+          2 | accDescr { Second }
+          3 |
 ---
 
 
@@ -42,6 +66,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | architecture-beta
+          2 | accDescr { First }
+          3 | service api
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | architecture-beta
+          2 | accDescr: Second
+          3 | service api
+          4 |
 ---
 
 
@@ -61,6 +98,21 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | architecture-beta
+          2 | accDescr: First
+          3 | service api
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | architecture-beta
+          2 | accDescr {
+          3 | %% TODO
+          4 | }
+          5 | service api
+          6 |
 ---
 
 
@@ -80,6 +132,21 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | architecture-beta
+          2 | accDescr: First
+          3 | accDescr: Second
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | architecture-beta
+          2 | accDescr {
+          3 | %% TODO
+          4 | }
+          5 | accDescr: Second
+          6 |
 ---
 
 
@@ -98,6 +165,25 @@ Code:
   8 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | architecture-beta
+          2 | accDescr: First
+          3 | %% note
+          4 |
+          5 | %%{init: {}}%%
+          6 | service api
+          7 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | architecture-beta
+          2 | %% note
+          3 |
+          4 | %%{init: {}}%%
+          5 | accDescr { Second }
+          6 | service api
+          7 |
 ---
 
 
@@ -113,6 +199,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | architecture-beta
+          2 | accDescr: First
+          3 | service api
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | architecture-beta
+          2 | accDescr:
+          3 | service api
+          4 |
 ---
 
 
@@ -128,6 +227,41 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | architecture-beta
+          2 | accDescr: #35;
+          3 | service api
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | architecture-beta
+          2 | accDescr: #
+          3 | service api
+          4 |
+---
+
+
+Test: architecture-no-duplicate-description >> invalid >>> invalid/architecture/description-equal-predecessor
+Filename: tests/fixtures/rules/architecture-no-duplicate-description/invalid/architecture/description-equal-predecessor-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | accDescr: A
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | architecture-beta
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
 ---
 
 
@@ -150,6 +284,33 @@ Code:
  12 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | ---
+          2 | title: Front
+          3 | ---
+          4 | architecture-beta
+          5 | accDescr: First
+          6 | ---
+          7 | accDescr: Hidden
+          8 | ---
+          9 | %% note
+         10 | %%{init: {}}%%
+         11 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | ---
+          2 | title: Front
+          3 | ---
+          4 | architecture-beta
+          5 | ---
+          6 | accDescr: Hidden
+          7 | ---
+          8 | %% note
+          9 | %%{init: {}}%%
+         10 | accDescr { Second }
+         11 |
 ---
 
 
@@ -165,6 +326,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | architecture-beta
+          2 | accDescr: First
+          3 | service api
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | architecture-beta
+          2 | accDescr { Second }
+          3 | service api
+          4 |
 ---
 
 
@@ -179,6 +353,45 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | architecture-beta
+          2 | accDescr: <b x="a">Text</b>
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | architecture-beta
+          2 | accDescr: <b x='a'>Text</b>
+          3 |
+---
+
+
+Test: architecture-no-duplicate-description >> invalid >>> invalid/architecture/description-removal-empty-predecessor
+Filename: tests/fixtures/rules/architecture-no-duplicate-description/invalid/architecture/description-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | accDescr {}
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | architecture-beta
+          2 | accDescr {}
+          3 | accDescr: A
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | architecture-beta
+          2 | accDescr {}
+          3 | accDescr: B
+          4 |
 ---
 
 
@@ -194,6 +407,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | architecture-beta
+          2 | accDescr: First
+          3 | service api(server)[API]
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | architecture-beta
+          2 | accDescr: Second
+          3 | service api(server)[API]
+          4 |
 ---
 
 
@@ -211,7 +437,37 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | architecture-beta
+          2 | accDescr: First
+          3 | accDescr: First
+          4 | service api
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | architecture-beta
+          2 | accDescr { Second }
+          3 | accDescr: First
+          4 | service api
+          5 |
 [2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | architecture-beta
+          2 | accDescr: First
+          3 | accDescr { Second }
+          4 | service api
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | architecture-beta
+          2 | accDescr: First
+          3 | accDescr: First
+          4 | service api
+          5 |
 ---
 
 
@@ -227,4 +483,17 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | architecture-beta
+          2 |   accDescr: First
+          3 |   service api(server)[API]
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | architecture-beta
+          2 |   accDescr: Second
+          3 |   service api(server)[API]
+          4 |
 ---

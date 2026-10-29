@@ -32,24 +32,31 @@ export const flowchartNoDuplicateTitle: MermaidRuleDefinition<{
     messages: {
       duplicate:
         "mermaid.js replaces the earlier title with the one of this `accTitle`.",
-      removeThis:
-        "Remove this `accTitle` statement: mermaid.js uses the last title that remains.",
-      removePrevious:
-        "Remove the earlier `accTitle` statement: mermaid.js uses the last title that remains.",
+      removeThis: "Remove this `accTitle` statement.",
+      removePrevious: "Remove the earlier `accTitle` statement.",
     },
   },
   create(context) {
     const { sourceCode } = context
     let previous: FlowchartAccTitleStatement | null = null
+    let beforePrevious: FlowchartAccTitleStatement | null = null
+
     return {
       FlowchartAccTitleStatement(node) {
         if (previous !== null && titleText(previous) !== titleText(node)) {
           context.report({
             node,
             messageId: "duplicate",
-            suggest: oneOfTwoRemovals(sourceCode, node, previous),
+            suggest: oneOfTwoRemovals(
+              sourceCode,
+              node,
+              previous,
+              beforePrevious === null ||
+                titleText(beforePrevious) === titleText(node),
+            ),
           })
         }
+        beforePrevious = previous
         previous = node
       },
     }

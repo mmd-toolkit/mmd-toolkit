@@ -9,23 +9,23 @@ Disallow a link in the head of a composite block.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
 A composite block is written as `block:G`, its blocks, and `end`. mermaid.js
-also accepts a link after the id, as in `block:G --> B`, without an error, but
-the composite then has no id and the link is lost: no block `G` exists, no edge
-is drawn, and `B` is not placed.
+accepts a link after its id, as in `block:G --> B`, without an error. The
+composite loses its id and the link: no block `G` exists, no edge is drawn, and
+`B` is not placed.
 
 ## Rule Details
 
-This rule reports the head of a composite block that has one or more links, once
-for each head. It applies to `block`.
+This rule applies to block diagrams (`block-beta` and `block`). It reports a
+composite head with one or more links, once per head. A label or width does not
+prevent a report: `block:G["Group"]:2 --> B` also loses the id and label.
 
-A label or a width in the head does not keep the id: `block:G["Group"]:2 --> B`
-also gives a composite with no id and no label. A link on the line after
-`block:G` belongs to the head too, as in `block:G` followed by a line `--> B`.
-To link the composite, write the edge after its `end`, as in `G --> B`; an edge
-between blocks inside the composite is written in its body.
+A link on the line after `block:G` belongs to the head too and is reported.
 
 Examples of **incorrect** code for this rule:
 

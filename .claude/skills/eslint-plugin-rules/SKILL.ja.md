@@ -111,6 +111,11 @@ description:
   メッセージは、提案を出すすべての場合に、当てた後に真であることを言う。
   その読み方は、2 節のとおり、規則とは独立に確かめる。
   規則のテストは mermaid.js を動かさない。
+  候補の条件が、rule-ideas の記録（8 節）が与える文で書けないときは、
+  その候補を rule-ideas に戻す。
+  提案を出さないことは、普通の結論である。
+  条件や確かめを足して候補を守ってはならず、結果を parse したり、
+  既知の相違ごとに判定したりしてもならない。
 - 別のものを書く前に、`src/utils/` の補助を使う。
   補助が持つ前提を新しい規則が破るときは、テキストではなく木から読んで決め、
   その補助を使うほかの規則も確かめ直す。
@@ -149,12 +154,20 @@ description:
   `valid/` か `invalid/` の下に置き、下位のディレクトリに置いてもよい。
   文書の例や同じ規則の別の入力と重複させない。
   共通のディレクティブの規則は、元からのコーパスの入力名の表を残す。
-- fixture のファイルに、`pnpm run lint:chars` が調べる文字は入れない。
-  U+2028、U+2029、単独の CR、U+00A0 などは、ESLint の `RuleTester` で検査する。
-  `code` と各提案の期待する `output` は、テンプレートリテラルで書き、 `\u2028`、
-  `\u2029`、`\u00a0`、`\r` を使う。
+- fixture のファイルに、CR（単独のものも CRLF の中のものも）と、
+  `pnpm run lint:chars` が調べる文字は入れない。
+  そのような入力は ESLint の `RuleTester` で検査する。
+  `code` と各提案の期待する `output` は、テンプレートリテラルで書く。
+  それらの文字はエスケープする。
+  CR は `\r` と書き、CRLF は `\r` の後に実際の改行を置く。
+  U+2028、U+2029、U+00A0 は `\u2028`、`\u2029`、`\u00a0` と書く。
+  CR 以外の改行は、実際の改行で書く。
+  タブと行末の空白は、`\t` と `\u0020` で書いてよい。
+  そう書くと、ケースが対象にする空白がコードの中で見える。
   `errors` に期待する報告を書き、各提案の出力は全文を指定する。
   この場合はコーパスを読まない。
+  行末の空白は、そのような文字ではない。
+  fixture のファイルに置き、`.editorconfig` が保つ。
 - 出力を意図して変えたときは、`test:update`（`CI=true` なしで）を使う。
   差を読み、各差を説明する。
   ケースを足すときは、既存のスナップショットを保ち、足りないものだけを足す。
@@ -166,17 +179,19 @@ SKILL `conventions` の決まり（テストの実行）に従う。
 変更が影響しうるテストのファイルだけを回し（`packages/eslint-plugin` で
 `npx vitest run <ファイル>`）、全体は、作業の完了を報告する前に 1 回だけ回す。
 
-| 変えたもの                                              | 回すテストのファイル                                                                                                                              |
-| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 規則のファイル `src/rules/<名前>.ts`                    | `tests/rules/<名前>.test.ts`                                                                                                                      |
-| 図種の規則のハンドラー                                  | 上と同じ、それと `tests/diagram-rules.test.ts`                                                                                                    |
-| `src/utils/` の補助                                     | それを import する規則のテスト（import を探す）。`subgraph-ids.ts` は `tests/subgraph-ids.test.ts`、`text-nodes.ts` は `tests/text-nodes.test.ts` |
-| 規則の fixture のディレクトリ                           | `tests/rules/<名前>.test.ts`                                                                                                                      |
-| 規則の英語の文書の例                                    | `tests/rules/<名前>.test.ts` と `tests/rule-cases.test.ts`                                                                                        |
-| 規則の追加、改名、削除                                  | その規則の上のテストと、`tests/rules-index.test.ts`                                                                                               |
-| `tests/rule-test.ts`、`tests/rule-cases.ts`             | `tests/rules/**/*.test.ts` のすべて、`tests/rule-cases.test.ts`                                                                                   |
-| `src/language.ts`、`src/source-code.ts`、トークンストア | `tests/language.test.ts`、`tests/token-store.test.ts`、`tests/snapshot.test.ts`、`tests/inline-config.test.ts`、`tests/markdown.test.ts`          |
-| parser（プラグインが読むノードが変わったとき）          | 上の言語のテスト、`tests/diagram-rules.test.ts`、そのノードを読む規則のテスト                                                                     |
+| 変えたもの                                              | 回すテストのファイル                                                                                                                                                                             |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 規則のファイル `src/rules/<名前>.ts`                    | `tests/rules/<名前>.test.ts`                                                                                                                                                                     |
+| 図種の規則のハンドラー                                  | 上と同じ、それと `tests/diagram-rules.test.ts`                                                                                                                                                   |
+| `src/utils/` の補助                                     | それを import する規則のテスト（import を探す）。`subgraph-ids.ts` は `tests/subgraph-ids.test.ts`、`compact-range.ts` は `tests/compact-range.test.ts`、`removal.ts` は `tests/removal.test.ts` |
+| 提案 `removePrevious`、またはその一覧に加える規則       | `tests/suggestion-history.test.ts`                                                                                                                                                               |
+| `tools/rule-docs.ts`、または例の先頭の指示              | `tests/rule-docs.test.ts`                                                                                                                                                                        |
+| 規則の fixture のディレクトリ                           | `tests/rules/<名前>.test.ts`                                                                                                                                                                     |
+| 規則の英語の文書の例                                    | `tests/rules/<名前>.test.ts` と `tests/rule-cases.test.ts`                                                                                                                                       |
+| 規則の追加、改名、削除                                  | その規則の上のテストと、`tests/rules-index.test.ts`                                                                                                                                              |
+| `tests/rule-test.ts`、`tests/rule-cases.ts`             | `tests/rules/**/*.test.ts` のすべて、`tests/rule-cases.test.ts`                                                                                                                                  |
+| `src/language.ts`、`src/source-code.ts`、トークンストア | `tests/language.test.ts`、`tests/token-store.test.ts`、`tests/snapshot.test.ts`、`tests/inline-config.test.ts`、`tests/markdown.test.ts`                                                         |
+| parser（プラグインが読むノードが変わったとき）          | 上の言語のテスト、`tests/diagram-rules.test.ts`、そのノードを読む規則のテスト                                                                                                                    |
 
 文書を読むテストは、`tests/rule-cases.test.ts` と、
 `tests/rules/**/*.test.ts` のすべて（規則の英語の文書の例を読む）、それに、

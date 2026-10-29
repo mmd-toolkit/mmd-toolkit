@@ -91,12 +91,16 @@ and take the evidence back to the decision about the rule.
 
 ## 3. The form of a document
 
-The form follows the rule documents of ESLint (a one-line description, Rule
-Details with examples of incorrect and correct code, Options, Related Rules). A
-rule document is for the users of the rule: it says what the rule reports and
-how mermaid.js reads the text that it reports. What implementing the rule needs
-(the condition on the tree and the fixtures) is in a second document, the rule
-notes, until the rule is implemented. The English rule document:
+A rule document is for the people who use the rule, and the documentation site
+publishes it. It answers what they want to know: what the rule reports, why that
+is a mistake, and which forms that look alike it does not report. The form is
+that of the rule documents of ESLint (as `no-unsafe-negation` and
+`no-unused-vars`): a one-line description, a short motivation, Rule Details with
+its sentences and then the examples of incorrect and correct code, Options, and
+the optional sections; each part of the form is taken from that precedent. What
+implementing the rule needs (the condition on the tree and the fixtures) is in a
+second document, the rule notes, until the rule is implemented. The English rule
+document:
 
     # @mmd-toolkit/<name>
 
@@ -108,13 +112,11 @@ notes, until the rule is implemented. The English rule document:
     …
     <!-- end auto-generated rule notice -->
 
-    <the motivation, in one or two short paragraphs>
+    <the motivation, one paragraph>
 
     ## Rule Details
 
-    <what the rule reports, the diagram types it applies to, what it does not report>
-
-    ### In each diagram type            (common rules only)
+    <a few short sentences>
 
     Examples of **incorrect** code for this rule:
 
@@ -134,13 +136,15 @@ notes, until the rule is implemented. The English rule document:
 
     This rule has no options.
 
+    ## When Not To Use It               (only when there is something real to say)
+
     ## Related Rules                    (only when there are related rules)
 
     - [<name>](./<name>.md)
 
-    ## Background                       (only when there is background)
+    ## Further Reading                  (only when there are links)
 
-    <why mermaid.js behaves so, and the state of its issues and pull requests>
+    - [<the page of the documentation, issue, or pull request of mermaid.js>](<link>)
 
     ## Resources                        (generated, implemented rules only)
 
@@ -161,10 +165,10 @@ document, under `docs/rule-notes/`):
     ## Fixtures
 
 The Japanese document has the same parts: `英語版: [<name>.md](./<name>.md)`,
-`…を禁止する。`, `## 規則の詳細`, `### 図種ごとの現れ方`,
-`この規則に**反する**コードの例:`, `この規則に**従う**コードの例:`,
-`## オプション` with `この規則にはオプションがない。`, and `## 関連する規則`.
-The Japanese rule notes have `英語版: [<name>.md](./<name>.md)`,
+`…を禁止する。`, `## 規則の詳細`, `この規則に**反する**コードの例:`,
+`この規則に**従う**コードの例:`, `## オプション` with
+`この規則にはオプションがない。`, `## 使わないとき`, `## 関連する規則`, and
+`## 参考`. The Japanese rule notes have `英語版: [<name>.md](./<name>.md)`,
 `規則 [@mmd-toolkit/<name>](…) を実装するための覚え書き。`,
 `この規則はまだ実装していない。` and `ここには、実装するときに要ることを書く。`,
 `## 木での現れ方`, and `## fixture`. Links from a Japanese document to another
@@ -176,6 +180,8 @@ How each part is written:
 - The title is the full rule id (`# @mmd-toolkit/<name>`). There is no line for
   the rule id, because the title holds it. The title is generated: when a new
   document is written, any first line is replaced by `update` (section 6).
+- The line with the link to the other language is for readers of the repository;
+  the documentation site leaves it out.
 - The first paragraph after the line of the other language is one short sentence
   that starts with Disallow (`…を禁止する。` in Japanese), as the description of
   an ESLint rule does. The English sentence is the `meta.docs.description` of
@@ -184,38 +190,29 @@ How each part is written:
   else, such as a list, comes between the title and this sentence.
 - The notice: the part between `<!-- begin auto-generated rule notice -->` and
   `<!-- end auto-generated rule notice -->`, after the first paragraph, says
-  whether the `recommended` configuration enables the rule. It is generated; it
-  is not written or changed by hand. A new document gets it from `update`.
-- The motivation: what the author writes, what mermaid.js does with it, and why
-  that is a mistake. It is short; the details go to Rule Details.
-- Rule Details: what the rule reports exactly, the diagram types it applies to
-  ("It applies to every diagram type." for a common rule, the diagram type ids
-  for a rule of a diagram type), and what it does not report, with the reason.
-  The behavior of mermaid.js is stated with the input and the value that
-  mermaid.js stores (the Db). A way to fix the text is written only when it has
-  been checked with mermaid.js.
-- In each diagram type (common rules only, a subsection of Rule Details): one
-  sentence that says what the items show ("What disappears depends on the
-  diagram type."), then one item for each diagram type that the parser supports,
-  with what happens there and an example. When a diagram type is supported, its
-  item is added (section 7); the document itself does not say that items will be
-  added.
-- Examples: "Examples of **incorrect** code for this rule:" and "Examples of
-  **correct** code for this rule:", each followed by code blocks with the info
-  string `mmd`, one example in each block. A common rule says before them which
-  diagram type the examples are ("The examples are flowcharts."). The examples
-  are ordinary writing of the mistake; a lead-in that is added only to observe
-  the behavior, such as an earlier description before an empty one, is not put
-  in an example, but stated in Rule Details and recorded in the fixtures. An
-  example that needs whitespace at the end of a line is described in a sentence,
-  because that whitespace does not survive in a code block. The correct examples
-  are chosen to show the boundary of the condition: the correct way of writing,
-  and the nearest text that the condition does not match. Every `mmd` code
-  block, including correct examples and examples outside these two groups,
-  starts with `%% eslint @mmd-toolkit/<name>: error`, using the rule documented
-  on that page. Write the comment without indentation, before the diagram header
-  and any Mermaid directives. It enables `twoslash-eslint` diagnostics on the
-  documentation site; do not add an `eslint-check` fence marker or rely on the
+  whether the `recommended` configuration enables the rule, whether it has a
+  fix, and whether it offers suggestions. It is generated; it is not written or
+  changed by hand. A new document gets it from `update`.
+- The motivation: one paragraph that says what the author writes, what
+  mermaid.js does with it without an error, and why that is a mistake, in plain
+  words.
+- Examples: in Rule Details, after its sentences, "Examples of **incorrect**
+  code for this rule:" and "Examples of **correct** code for this rule:", each
+  followed by code blocks with the info string `mmd`, one example in each block.
+  A common rule says before them which diagram type the examples are ("The
+  examples are flowcharts."). The examples are ordinary writing of the mistake;
+  a lead-in that is added only to observe the behavior, such as an earlier
+  description before an empty one, is not put in an example, but recorded in the
+  fixtures. An example that needs whitespace at the end of a line is described
+  in a sentence, because that whitespace does not survive in a code block. The
+  correct examples are chosen to show the boundary of the condition: the correct
+  way of writing, and the nearest text that the condition does not match. Every
+  `mmd` code block, including correct examples and examples outside these two
+  groups, starts with `%% eslint @mmd-toolkit/<name>: error`, using the rule
+  documented on that page. Write the comment without indentation, before the
+  diagram header and any Mermaid directives. It enables `twoslash-eslint`
+  diagnostics on the documentation site, which shows the reports when the reader
+  points at the code; do not add an `eslint-check` fence marker or rely on the
   renderer to enable rules. `check:docs` rejects missing or different leading
   comments in either language. After this comment, each code block is the
   formatted input of a fixture (step 4 of section 4), and the prose quotes an
@@ -225,36 +222,115 @@ How each part is written:
 - The examples are test cases. The tests of the rule read the English document:
   the `mmd` code blocks after the line "Examples of **incorrect** code for this
   rule:" up to the line "Examples of **correct** code for this rule:" are the
-  invalid cases, and those after the second line up to the next `## ` heading
-  the valid cases. So the two lines are written word for word, each on a line of
-  its own, the incorrect examples come first, and no other `mmd` code block
-  stands between the first line and the next `## ` heading. A code block opens
-  with a line that is exactly ` ```mmd ` and closes with a line that is exactly
-  ` ``` `. `check:docs` fails when the `mmd` code blocks of the Japanese
-  document are not those of the English document, in the same order: every
-  Mermaid example, in the examples and elsewhere, is in both documents,
-  unchanged.
+  invalid cases, and those after the second line up to the next `## ` heading,
+  `## Options`, the valid cases. So the two lines are written word for word,
+  each on a line of its own, the incorrect examples come first, and no other
+  `mmd` code block stands between the first line and the next `## ` heading; no
+  `###` heading stands before the examples either, so that they do not look as
+  if they belonged to it. A code block opens with a line that is exactly
+  ` ```mmd ` and closes with a line that is exactly ` ``` `. `check:docs` fails
+  when the `mmd` code blocks of the Japanese document are not those of the
+  English document, in the same order: every Mermaid example, in the examples
+  and elsewhere, is in both documents, unchanged.
+- Rule Details: a few short sentences before the examples, in the words of the
+  people who use the rule:
+  - The diagram types it applies to, in one form: "This rule applies to <name>
+    (<headers>)." The name is the one in the table below, and the headers are
+    every header that the diagram document of the specification defines
+    (`packages/spec/docs/diagrams/<diagram>.md`), joined with commas and "and":
+    "This rule applies to flowcharts (`flowchart`, `graph`, `flowchart-elk`, and
+    `swimlane-beta`).", "This rule applies to class diagrams (`classDiagram` and
+    `classDiagram-v2`)." The headers are not taken from the list of the
+    detection (`packages/spec/docs/detection.md`), which gives the prefixes that
+    select a diagram type: `requirement` selects requirement diagrams, but the
+    header is `requirementDiagram`. A diagram type id that is no header, such as
+    `flowchart-v2` or `swimlane`, is not used. A common rule says "This rule
+    applies to every diagram type."
+
+    | Diagram type  | Name                         |
+    | ------------- | ---------------------------- |
+    | agentflow     | agentflow diagrams           |
+    | architecture  | architecture diagrams        |
+    | block         | block diagrams               |
+    | c4            | C4 diagrams                  |
+    | class         | class diagrams               |
+    | cynefin       | Cynefin diagrams             |
+    | er            | entity relationship diagrams |
+    | eventmodeling | Event Modeling diagrams      |
+    | flowchart     | flowcharts                   |
+    | gantt         | Gantt charts                 |
+    | gitgraph      | Git graphs                   |
+    | journey       | user journey diagrams        |
+    | kanban        | Kanban boards                |
+    | mindmap       | mind maps                    |
+    | packet        | packet diagrams              |
+    | pie           | pie charts                   |
+    | quadrant      | quadrant charts              |
+    | radar         | radar charts                 |
+    | railroad      | railroad diagrams            |
+    | requirement   | requirement diagrams         |
+    | sankey        | Sankey diagrams              |
+    | sequence      | sequence diagrams            |
+    | state         | state diagrams               |
+    | timeline      | timelines                    |
+    | treemap       | treemaps                     |
+    | treeview      | tree views                   |
+    | usecase       | use case diagrams            |
+    | venn          | Venn diagrams                |
+    | wardley       | Wardley maps                 |
+    | xychart       | XY charts                    |
+
+  - What the rule reports.
+  - The forms that it does not report and that the people who use it may write,
+    with the reason.
+  - A way to fix the text is not a part of its own: the correct examples show
+    it. A sentence of Rule Details says it only when the correct examples cannot
+    show it, and only when it has been checked with mermaid.js.
+  - Nothing about fixes or suggestions: the generated notice says that the rule
+    has a fix or suggestions, and the message of each suggestion, which the
+    editor shows, says what it does.
+  - A common rule that has something to say for some diagram types says it in a
+    list in Rule Details, one item for each such diagram type, without a heading
+    and without a code block. When a diagram type is supported, its item is
+    added where it is needed (section 7).
 - Options: "This rule has no options." for a rule without options. The section
   says only what the rule has now. An option that may come later is recorded
   with the decision in the rule-ideas SKILL, not in the rule document.
-- Related Rules: only when the document has related rules, as a list of links.
 - When Not To Use It: written only when there is something real to say; no
   section is written for a sentence that would fit any rule.
-- The rule document describes what the author writes and how mermaid.js reads
-  it. It names no node type, field, or token kind of the tree; those belong to
-  the rule notes. The facts of mermaid.js, links to issues and pull requests,
-  and links to the known divergences of the specification stay in the rule
-  document, because a user needs them too. Rule Details holds what the rule
-  reports, what it does not report, and its suggestions, with every condition
-  that changes what the author gets; why mermaid.js behaves so (the part of its
-  code that does it) and the state of its issues and pull requests go to
-  Background, after the examples, and so does a link to a document that
-  describes how this repository works out a value.
-- Naming: the document names the part of mmd-toolkit that it describes: its
-  parser for what is accepted, its formatter for formatting, and mmd-toolkit for
-  the whole, not "this toolkit". It says what mermaid.js does with a mistake, as
-  "gives no error", not "says nothing". In Japanese, "この道具" and "木" are not
-  used; "AST" is used where the tree must be named.
+- Related Rules: only when the document has related rules, as a list of links.
+- Further Reading: only a list of links to what the people who use the rule can
+  read, the pages of the documentation of mermaid.js, its issues, and its pull
+  requests, without prose. A permalink to the source of mermaid.js is not for
+  them: it is kept in the record of the rule in the rule-ideas skill, not in the
+  rule document. A rule with no such link has no Further Reading section.
+- Which sentence goes where. A sentence about what mermaid.js does is checked
+  against these cases, in this order:
+  - It stays in Rule Details when it tells apart, among forms that the people
+    who use the rule may write, those that are reported and those that are not:
+    that each id of a list is checked, that the ids that mermaid.js gives to
+    unnamed links count as defined, that a statement before the vertex is not
+    reported, that numbers are compared as numbers, that a count is compared up
+    to the limit that mermaid.js draws.
+  - A page of the documentation of mermaid.js, an issue, or a pull request goes
+    to Further Reading, as a link; a permalink to its source goes to the record
+    of the rule in the rule-ideas skill.
+  - Anything else is removed: an explanation of how mermaid.js works that tells
+    apart no reported forms, a restatement of what an example shows, a sentence
+    about forms that the people who use the rule do not write, and the formula
+    "It applies to <diagram type id>". The behavior that such a sentence
+    described stays in the fixtures and the tests of the rule.
+- Words. The rule document says what mermaid.js does in what the author sees: it
+  draws something, ignores something, or gives an error. It does not use "the
+  Db", "the tree", "token", or a sentence whose subject is the parser of
+  mmd-toolkit; it names no node type, field, or token kind, which belong to the
+  rule notes. Where the document must say what mmd-toolkit does, it says
+  mmd-toolkit for the whole and its formatter for formatting, not "this
+  toolkit". It says what mermaid.js does with a mistake, as "gives no error",
+  not "says nothing". A link to a known divergence of the specification is
+  written only in a rule whose users meet that divergence. In Japanese,
+  "この道具" and "木" are not used.
+- Sentences are short, and a paragraph has three or four sentences at most.
 - Rule notes: they start with "The rule is not implemented yet. These notes are
   for implementing it." They exist only until the rule is implemented: then the
   condition lives in the code of the rule and the fixtures in its tests, so
@@ -282,14 +358,15 @@ How each part is written:
   fields, token kinds and values, and ranges. A common rule uses only the part
   of the tree that every diagram type shares (Root, its tokens, comments, and
   directives, and the shared leaf nodes); where a diagram type must supply more,
-  the section says what, and In each diagram type gives it. Whatever goes beyond
-  the tree and the tokens is named as such, with the design question it raises:
-  reading the source (whitespace is not in the tree), interpreting a value (HTML
-  in a label), reading embedded data (the argument of a directive), repeating a
-  derivation of the Db (the id of a subgraph). When the tree and the tokens
-  cannot show it at all, do not describe a way to lex the text again: either the
-  tree needs to show more, which is a change of the specification of the tree
-  (the spec skill), or the rule is not kept (the rule-ideas skill).
+  the section says what, and the list of diagram types in Rule Details gives it.
+  Whatever goes beyond the tree and the tokens is named as such, with the design
+  question it raises: reading the source (whitespace is not in the tree),
+  interpreting a value (HTML in a label), reading embedded data (the argument of
+  a directive), repeating a derivation of the Db (the id of a subgraph). When
+  the tree and the tokens cannot show it at all, do not describe a way to lex
+  the text again: either the tree needs to show more, which is a change of the
+  specification of the tree (the spec skill), or the rule is not kept (the
+  rule-ideas skill).
 - Fixtures (in the rule notes): "The behavior of mermaid.js that the rule relies
   on is recorded in these fixtures of `@mmd-toolkit/tests`:", followed by the
   fixtures that back the claims and the examples. While some have no fixture
@@ -416,9 +493,10 @@ skeleton that reports nothing.
   and `<!-- end auto-generated rules list -->`, one table for the common rules
   and one for each diagram type, whose rows hold the English description, the
   first paragraph of the Japanese document, a ✅ for a rule that `recommended`
-  enables, and a 🚧 for a rule that is not implemented yet. Do not write these
-  parts by hand; after a change of the first paragraph of a Japanese document,
-  run `update`.
+  enables, a 🔧 for a rule that has a fix, a 💡 for a rule that offers
+  suggestions, and a 🚧 for a rule that is not implemented yet. Do not write
+  these parts by hand; after a change of the first paragraph of a Japanese
+  document, run `update`.
 - What is written by hand in the index: what comes before the generated list
   (the introduction, with the sentence that says `recommended` enables the rules
   marked ✅, and the section on rule ids). The criteria for `recommended` are in
@@ -439,14 +517,15 @@ skeleton that reports nothing.
    uses for its sidebar; `tests/rule-docs.test.ts` fails when the two orders
    differ, and `update` fails for a rule of a diagram type that is missing.
 2. For each common rule, run an ordinary example of the new diagram type through
-   mermaid.js. When it behaves as in the other diagram types, add an item to In
-   each diagram type (what happens, an example, its fixture). When it behaves
-   differently, or when one definition over the shared part of the tree no
-   longer covers it, the rule no longer meets the condition for a common rule
-   (the criteria of the rule-ideas skill). Moving it to the rules of a diagram
-   type is a decision about the rule: make it with the rule-ideas skill first,
-   with the result of mermaid.js as the evidence, and then move the document
-   (section 8).
+   mermaid.js. When it behaves as in the other diagram types and the rule has
+   something to say for that diagram type, add an item to the list of diagram
+   types in its Rule Details (what happens there), and its fixture to the tests
+   of the rule. When it behaves differently, or when one definition over the
+   shared part of the tree no longer covers it, the rule no longer meets the
+   condition for a common rule (the criteria of the rule-ideas skill). Moving it
+   to the rules of a diagram type is a decision about the rule: make it with the
+   rule-ideas skill first, with the result of mermaid.js as the evidence, and
+   then move the document (section 8).
 3. Write the documents of the rules of that diagram type with the procedure
    above.
 

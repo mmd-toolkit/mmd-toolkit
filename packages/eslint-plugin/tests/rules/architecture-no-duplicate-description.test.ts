@@ -41,6 +41,19 @@ accDescr {A
 B}
 `,
       },
+
+      {
+        name: "valid/architecture/description-crlf-equivalent",
+        filename:
+          "tests/fixtures/rules/architecture-no-duplicate-description/valid/architecture/description-crlf-equivalent-input.mmd",
+        code: `architecture-beta\r
+accDescr { First\r
+Second }\r
+accDescr {First\r
+Second}\r
+service api\r
+`,
+      },
     ],
     invalid: [
       {
@@ -58,6 +71,22 @@ service api
             column: 1,
             endLine: 3,
             endColumn: 23,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `architecture-beta
+accDescr: First\u2028 Second
+service api
+`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the description.",
+                output: `architecture-beta
+accDescr: First\u2028Second
+service api
+`,
+              },
+            ],
           },
         ],
       },
@@ -76,6 +105,22 @@ accDescr: Second
             column: 1,
             endLine: 3,
             endColumn: 13,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `architecture-beta
+accDescr: First
+accDescr: Second
+`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the description.",
+                output: `architecture-beta
+accDescr: \t\u0020
+accDescr: Second
+`,
+              },
+            ],
           },
         ],
       },
@@ -93,6 +138,50 @@ accDescr: A\u2029B
             column: 1,
             endLine: 3,
             endColumn: 14,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `architecture-beta
+accDescr: A\u2029 B
+`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the description.",
+                output: `architecture-beta
+accDescr: A\u2029B
+`,
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        name: "invalid/architecture/description-equal-predecessor-crlf",
+        filename:
+          "tests/fixtures/rules/architecture-no-duplicate-description/invalid/architecture/description-equal-predecessor-crlf-input.mmd",
+        code: `architecture-beta\r
+accDescr: A\r
+accDescr: A\r
+accDescr: B\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier description with the one of this `accDescr`.",
+            line: 4,
+            column: 1,
+            endLine: 4,
+            endColumn: 12,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `architecture-beta\r
+accDescr: A\r
+accDescr: A\r
+`,
+              },
+            ],
           },
         ],
       },

@@ -9,24 +9,24 @@ Disallow an orientation that mermaid.js does not read as `horizontal`.
 
 ✅ The `recommended` configuration enables this rule.
 
+🔧 This rule is automatically fixable by the
+[`--fix` CLI option](https://eslint.org/docs/latest/use/command-line-interface#--fix).
+
 <!-- end auto-generated rule notice -->
 
-The word after `xychart` turns the chart: `xychart horizontal` draws it
-horizontal. mermaid.js reads the word in any case, but turns the chart only for
-`horizontal` in lower case: `xychart Horizontal` is drawn vertical, without an
-error.
+The word after `xychart` or `xychart-beta` turns the chart: `xychart horizontal`
+draws it horizontal. mermaid.js reads the word in any case, but turns the chart
+only for `horizontal` in lower case: `xychart Horizontal` is drawn vertical,
+without an error.
 
 ## Rule Details
 
-This rule reports the orientation of a header that is `horizontal` in another
-case, as `Horizontal` or `HORIZONTAL`. It applies to `xychart`.
-
-mermaid.js takes any word other than `horizontal` as vertical, so the chart is
-vertical. The word of the header also wins over the setting
-`xyChart.chartOrientation`: with that setting `horizontal` in the frontmatter,
-`xychart Horizontal` is still vertical. The orientation of a second header is
-read in the same way and is reported too. `vertical` in any case, as `VERTICAL`,
-gives the vertical chart that it names, and it is not reported.
+This rule applies to XY charts (`xychart` and `xychart-beta`). It reports
+`horizontal` in another case in a header, such as `Horizontal` or `HORIZONTAL`,
+including in a second header. The header overrides `xyChart.chartOrientation`,
+so `xychart Horizontal` is reported even when that setting is `horizontal` in
+the frontmatter. `vertical` in any case is not reported because it gives the
+vertical chart that it names.
 
 Examples of **incorrect** code for this rule:
 

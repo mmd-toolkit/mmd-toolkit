@@ -55,6 +55,22 @@ root/
             column: 3,
             endLine: 3,
             endColumn: 25,
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `treeView-beta
+  accTitle: First\treport
+  root/
+`,
+              },
+              {
+                desc: "Remove the earlier `accTitle` statement.",
+                output: `treeView-beta
+  accTitle: First report
+  root/
+`,
+              },
+            ],
           },
         ],
       },
@@ -74,6 +90,22 @@ root/
             column: 1,
             endLine: 3,
             endColumn: 30,
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `treeView-beta
+└── accTitle: First\treport
+root/
+`,
+              },
+              {
+                desc: "Remove the earlier `accTitle` statement.",
+                output: `treeView-beta
+└── accTitle: First    report
+root/
+`,
+              },
+            ],
           },
         ],
       },
@@ -94,6 +126,24 @@ root/
             column: 1,
             endLine: 3,
             endColumn: 13,
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `treeView-beta
+accTitle: First
+accTitle: Second
+root/
+`,
+              },
+              {
+                desc: "Remove the earlier `accTitle` statement.",
+                output: `treeView-beta
+accTitle: \t\u0020
+accTitle: Second
+root/
+`,
+              },
+            ],
           },
         ],
       },
@@ -113,6 +163,22 @@ root/
             column: 1,
             endLine: 3,
             endColumn: 16,
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `treeView-beta
+accTitle: A\u2028B\u2029C
+root/
+`,
+              },
+              {
+                desc: "Remove the earlier `accTitle` statement.",
+                output: `treeView-beta
+accTitle: A B C
+root/
+`,
+              },
+            ],
           },
         ],
       },
@@ -128,6 +194,82 @@ root/
             column: 1,
             endLine: 3,
             endColumn: 17,
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `treeView-beta\raccTitle: First\rroot/\r`,
+              },
+              {
+                desc: "Remove the earlier `accTitle` statement.",
+                output: `treeView-beta\raccTitle: Second\rroot/\r`,
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        name: "invalid/treeview/acc-title-crlf",
+        filename:
+          "tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/acc-title-crlf-input.mmd",
+        code: `treeView-beta\r
+  accTitle: First\r
+  accTitle: Second\r
+  root/\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier accessible title with the one of this `accTitle`.",
+            line: 3,
+            column: 3,
+            endLine: 3,
+            endColumn: 19,
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `treeView-beta\r
+  accTitle: First\r
+  root/\r
+`,
+              },
+              {
+                desc: "Remove the earlier `accTitle` statement.",
+                output: `treeView-beta\r
+  accTitle: Second\r
+  root/\r
+`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/treeview/title-equal-predecessor-crlf",
+        filename:
+          "tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/title-equal-predecessor-crlf-input.mmd",
+        code: `treeView-beta\r
+accTitle: A\r
+accTitle: A\r
+accTitle: B\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier accessible title with the one of this `accTitle`.",
+            line: 4,
+            column: 1,
+            endLine: 4,
+            endColumn: 12,
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `treeView-beta\r
+accTitle: A\r
+accTitle: A\r
+`,
+              },
+            ],
           },
         ],
       },

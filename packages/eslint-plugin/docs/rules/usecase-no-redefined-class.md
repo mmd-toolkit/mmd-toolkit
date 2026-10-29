@@ -10,35 +10,28 @@ before it.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-A `classDef` defines the styles of a class. A later `classDef` of the same class
-replaces the whole definition without an error, unlike a flowchart, where the
-styles are added: after `classDef hot fill:red` and `classDef hot stroke:blue`,
-the class has no fill.
+`classDef` defines a class's styles. A later `classDef` for that class replaces
+the whole definition without an error. Adding a stroke in another definition can
+therefore remove an earlier fill.
 
 ## Rule Details
 
-This rule reports a class of a `classDef` whose earlier definition has a style
-that the later one drops or gives another value. It applies to `usecase`. Each
-class of a `classDef` with several classes, as `classDef hot,cold fill:red`, is
-checked on its own.
+This rule applies to use case diagrams (`usecase-beta`). It reports each class
+in a `classDef` that drops or changes a style from its latest definition.
+Keeping every style is not reported, even when adding or reordering styles.
 
-A definition that keeps every style of the earlier one is not reported, also
-when it adds styles or writes them in another order. Styles are compared as
-mermaid.js draws them: of a property written twice in one definition, the last
-value counts; property names are compared as written, with their case, because
-mermaid.js tells the styles of the label from those of the shape by the written
-name: after `color:red`, `COLOR:red` goes to the shape, and the label is no
-longer red; values are compared as CSS reads them, without the whitespace at
-their ends, with a run of whitespace outside a quoted string as one space, and
-otherwise as written: `font-family:"A  B"` and `font-family:"A B"` name two
-fonts. After `fill:red` and `fill:blue`, a third definition with `fill:red` is
-reported, because it changes `blue`.
+When a property repeats within one definition, its last value is compared.
+Property names are case-sensitive because names such as `color` style the label
+while `COLOR` styles the shape. Values ignore whitespace at the ends and compare
+runs of whitespace outside quoted strings as one space; `font-family:"A  B"` and
+`font-family:"A B"` remain different.
 
-A `style` statement adds its styles to an element and is not compared.
-
-Write one `classDef` for each class, with all its styles.
+A `style` statement adds styles to an element and is not compared.
 
 Examples of **incorrect** code for this rule:
 
@@ -62,16 +55,6 @@ usecase-beta
 ## Options
 
 This rule has no options.
-
-## Background
-
-[`applyClassDefinitions`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L846-L852)
-keeps the last definition of each class whole, and
-[`getCompiledStyles`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L118-L134)
-takes the last value of a property in it.
-[`styles2String`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L53-L104)
-gives a style whose written name is `color`, `font-size`, or another property of
-text to the label, and every other style to the shape.
 
 <!-- begin auto-generated rule resources -->
 

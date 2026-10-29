@@ -20,6 +20,7 @@ export const classNoBareClassName: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("class-no-bare-class-name"),
     },
+
     schema: [],
     messages: {
       bare: "mermaid.js reads `{{text}}` as a class name alone: it declares no class and changes nothing.",

@@ -1,7 +1,28 @@
+import { canEditRange } from "../utils/edit-range.ts"
+import type { RuleFixer } from "@eslint/core"
+import type { MermaidSourceCode } from "../source-code.ts"
+import { indentationOf, lineTerminatorOf } from "../utils/line-text.ts"
 import type { Comment } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { textWithoutDirectives } from "../utils/directive-free-text.ts"
+
+/** Preserve the indentation of the statement that the comment follows. */
+function commentFix(
+  sourceCode: MermaidSourceCode,
+  comment: Comment,
+): RuleFixer | null {
+  const start = comment.range[0] - comment.loc.start.column
+  const prefix = sourceCode.text.slice(start, comment.range[0])
+  const gap = prefix.length - prefix.trimEnd().length
+  if (!canEditRange(sourceCode, [comment.range[0] - gap, comment.range[1]]))
+    return null
+  const line = `${indentationOf(sourceCode, comment.loc.start.line)}${sourceCode.getText(comment)}${lineTerminatorOf(sourceCode, comment.loc.start.line)}`
+  return (fixer) => [
+    fixer.insertTextBeforeRange([start, start], line),
+    fixer.removeRange([comment.range[0] - gap, comment.range[1]]),
+  ]
+}
 
 /**
  * The rule `class-no-inline-comment`, described in
@@ -23,6 +44,7 @@ export const classNoInlineComment: MermaidRuleDefinition<{
       recommended: false,
       url: ruleDocsUrl("class-no-inline-comment"),
     },
+    fixable: "code",
     schema: [],
     messages: {
       inline:
@@ -58,7 +80,11 @@ export const classNoInlineComment: MermaidRuleDefinition<{
             filter: (token) => token.type !== "Directive",
           })
           if (after === null) continue
-          context.report({ loc: comment.loc, messageId: "inline" })
+          context.report({
+            loc: comment.loc,
+            messageId: "inline",
+            fix: commentFix(sourceCode, comment),
+          })
         }
       },
     }

@@ -9,6 +9,10 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
+
 <!-- end auto-generated rule notice -->
 
 icon の行 `::icon(…)` と class の行 `:::…` は、
@@ -20,25 +24,18 @@ class の行を 2 つ書くのは、たいてい 2 つのクラスのためで�
 
 ## 規則の詳細
 
-この規則は、ノードの最初の icon の行より後の icon の行と、
-最初の class の行より後の class の行を、前と違う値を設定するときに報告する。
-対象の図種は `mindmap` である。
+この規則は、マインドマップ（`mindmap`）に当てる。
+同じノードの同じ種類の現在の値を別の値に置き換える icon の行か class
+の行を報告する。
+icon と class の行は別々に調べ、別のノードの行とは比べない。
 
-`:::urgent` と `:::large` の後、ノードのクラスは `large` だけになり、
-`::icon(fa fa-book)` と `::icon(fa fa-pen)` の後、icon は `fa fa-pen` になる。
-2 つの種類は別々に数える。
-1 つのノードの icon の行と class の行は報告せず、 `:::urgent`、
-`::icon(fa fa-book)`、`:::large` では `:::large` だけを報告する。
-行は、字下げにかかわらず、空行、コメント行、ディレクティブを越えても、
-その前に最後に書いたノードのものであり、`::icon(` は大文字小文字を問わず読む。
-ノードの icon の行とその子の icon の行は 2 つのノードのもので、報告しない。
+各行は、字下げや、間の空行、コメント行、ディレクティブにかかわらず、
+その前に最後に書いたノードのものである。
+`::icon(` は大文字小文字を問わず読む。
+現在の値の繰り返しは報告しない。
 
-ノードがすでに持つ icon や class を設定する行は、報告しない。
-`:::urgent` の後の 2 つ目の `:::urgent` は、何も失わない。
-値は、mermaid.js が持つとおりに、書いたとおりに比べる。
-`:::` の後の行の終わりまでのテキストと、`::icon(` の括弧の中のテキストである。
-そのため、`:::urgent large` と `:::large urgent` は 2 つの値であり、
-描いた図ではノードが同じ 2 つのクラスを持つが、2 つ目を報告する。
+`:::` の後と `::icon(` の中のテキストは書いたとおりに比べるので、
+`:::urgent large` の後の `:::large urgent` は、同じクラスを与えても報告する。
 `:::urgent` と `:::large` の後の 3 つ目の `:::urgent` は、
 `large` を置き換えるので報告する。
 
@@ -93,12 +90,6 @@ mindmap
 ## オプション
 
 この規則にはオプションがない。
-
-## 背景
-
-mermaid.js は、
-[`decorateNode`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L154-L167)
-で、最後に加えたノードの icon や class を、それまでの値を置き換えて設定する。
 
 <!-- begin auto-generated rule resources -->
 

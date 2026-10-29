@@ -51,6 +51,72 @@ flowchart LR
 A --> B`,
       },
     ],
-    invalid: [],
+    invalid: [
+      {
+        name: "invalid/flowchart/flowchart-unclosed-crlf",
+        filename:
+          "tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/flowchart-unclosed-crlf-input.mmd",
+        code: `flowchart LR\r
+A --> B\r
+%%{init: {"theme":"dark"}\r
+A --> B`,
+        output: null,
+        errors: [
+          {
+            message:
+              "mermaid.js reads no settings from this init directive because its JSON argument is invalid.",
+            line: 3,
+            column: 1,
+            endLine: 4,
+            endColumn: 8,
+          },
+        ],
+      },
+
+      {
+        name: "name-case-autofix-crlf",
+        filename: "name-case-autofix-crlf.mmd",
+        code: `%%{INIT: {"theme":"dark"}}%%\r
+flowchart LR\r
+A --> B\r
+`,
+        output: `%%{init: {"theme":"dark"}}%%\r
+flowchart LR\r
+A --> B\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js reads no settings from `INIT`; init directive names are case-sensitive.",
+            line: 1,
+            column: 1,
+            endLine: 1,
+            endColumn: 29,
+          },
+        ],
+      },
+      {
+        name: "json-commas-autofix-crlf",
+        filename: "json-commas-autofix-crlf.mmd",
+        code: `%%{init: {"theme":"dark",}}%%\r
+flowchart LR\r
+A --> B\r
+`,
+        output: `%%{init: {"theme":"dark"}}%%\r
+flowchart LR\r
+A --> B\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js reads no settings from this init directive because its JSON argument is invalid.",
+            line: 1,
+            column: 1,
+            endLine: 1,
+            endColumn: 30,
+          },
+        ],
+      },
+    ],
   },
 )

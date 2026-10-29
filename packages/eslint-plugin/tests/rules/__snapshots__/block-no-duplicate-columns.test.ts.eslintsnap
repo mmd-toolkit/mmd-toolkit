@@ -14,6 +14,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier column count with this count for the whole block.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   columns 2
+          3 |   A B
+          4 |   C
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   A B
+          3 |   columns 3
+          4 |   C
+          5 |
 ---
 
 
@@ -29,6 +44,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier column count with this count for the whole block.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   columns auto
+          3 |   A
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   columns 2
+          3 |   A
+          4 |
 ---
 
 
@@ -46,7 +74,37 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier column count with this count for the whole block.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   columns 2
+          3 |   columns 2
+          4 |   A
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   columns 3
+          3 |   columns 2
+          4 |   A
+          5 |
 [2] mermaid.js replaces the earlier column count with this count for the whole block.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   columns 2
+          3 |   columns 3
+          4 |   A
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   columns 2
+          3 |   columns 2
+          4 |   A
+          5 |
 ---
 
 
@@ -63,6 +121,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier column count with this count for the whole block.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   columns 2
+          3 |   %% c
+          4 |   A
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   %% c
+          3 |   columns 3
+          4 |   A
+          5 |
 ---
 
 
@@ -79,6 +152,43 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier column count with this count for the whole block.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   columns 2
+          3 |   %%{init: {}}%%
+          4 |   A
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   %%{init: {}}%%
+          3 |   columns 3
+          4 |   A
+          5 |
+---
+
+
+Test: block-no-duplicate-columns >> invalid >>> invalid/block/columns-equal-predecessor
+Filename: tests/fixtures/rules/block-no-duplicate-columns/invalid/block/columns-equal-predecessor-input.mmd
+
+Code:
+  1 | block
+  2 | columns 2
+  3 | columns 2
+  4 | columns 3
+    | ^~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier column count with this count for the whole block.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 | columns 2
+          3 | columns 2
+          4 |
 ---
 
 
@@ -97,6 +207,25 @@ Code:
   8 |
 
 [1] mermaid.js replaces the earlier column count with this count for the whole block.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   columns 2
+          3 |   block:G
+          4 |     columns 3
+          5 |     A
+          6 |   end
+          7 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   block:G
+          3 |     columns 3
+          4 |     A
+          5 |   end
+          6 |   columns 4
+          7 |
 ---
 
 
@@ -113,6 +242,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier column count with this count for the whole block.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   columns 2
+          3 |   A B
+          4 |   C
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   A B
+          3 |   columns 3
+          4 |   C
+          5 |
 ---
 
 
@@ -130,6 +274,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier column count with this count for the whole block.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   block:G
+          3 |     columns 2
+          4 |     A
+          5 |   end
+          6 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   block:G
+          3 |     A
+          4 |     columns 3
+          5 |   end
+          6 |
 ---
 
 
@@ -145,4 +306,17 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier column count with this count for the whole block.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   columns 0
+          3 |   A
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   columns auto
+          3 |   A
+          4 |
 ---

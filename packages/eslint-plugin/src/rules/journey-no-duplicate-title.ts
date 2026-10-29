@@ -5,6 +5,7 @@ import type {
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { titleText } from "../utils/acc-text.ts"
+import { oneOfTwoRemovals } from "../utils/removal.ts"
 
 /**
  * The rule `journey-no-duplicate-title`, described in
@@ -23,7 +24,8 @@ import { titleText } from "../utils/acc-text.ts"
  */
 export const journeyNoDuplicateTitle: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "duplicateTitle" | "duplicateAccTitle"
+  MessageIds:
+    "duplicateTitle" | "duplicateAccTitle" | "removeThis" | "removePrevious"
 }> = {
   meta: {
     type: "problem",
@@ -33,17 +35,24 @@ export const journeyNoDuplicateTitle: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("journey-no-duplicate-title"),
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
       duplicateTitle:
         "mermaid.js replaces the earlier title with the one of this `title`.",
       duplicateAccTitle:
         "mermaid.js replaces the earlier accessible title with the one of this `accTitle`.",
+      removeThis: "Remove this {{statement}}.",
+      removePrevious: "Remove the earlier {{statement}}.",
     },
   },
   create(context) {
     let previousTitle: JourneyTitleStatement | null = null
+    let beforePreviousTitle: JourneyTitleStatement | null = null
+
     let previousAccTitle: JourneyAccTitleStatement | null = null
+    let beforePreviousAccTitle: JourneyAccTitleStatement | null = null
+
     return {
       JourneyTitleStatement(node) {
         if (
@@ -53,8 +62,20 @@ export const journeyNoDuplicateTitle: MermaidRuleDefinition<{
           context.report({
             node,
             messageId: "duplicateTitle",
+            suggest: oneOfTwoRemovals(
+              context.sourceCode,
+              node,
+              previousTitle,
+              beforePreviousTitle === null ||
+                titleText(beforePreviousTitle) === titleText(node),
+              {
+                current: "statement",
+                previous: "statement that sets the title",
+              },
+            ),
           })
         }
+        beforePreviousTitle = previousTitle
         previousTitle = node
       },
       JourneyAccTitleStatement(node) {
@@ -65,8 +86,20 @@ export const journeyNoDuplicateTitle: MermaidRuleDefinition<{
           context.report({
             node,
             messageId: "duplicateAccTitle",
+            suggest: oneOfTwoRemovals(
+              context.sourceCode,
+              node,
+              previousAccTitle,
+              beforePreviousAccTitle === null ||
+                titleText(beforePreviousAccTitle) === titleText(node),
+              {
+                current: "`accTitle` statement",
+                previous: "`accTitle` statement",
+              },
+            ),
           })
         }
+        beforePreviousAccTitle = previousAccTitle
         previousAccTitle = node
       },
     }

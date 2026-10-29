@@ -1,3 +1,4 @@
+import { emptyBlockRemovalSuggestions } from "../utils/description-block-suggestions.ts"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { blockHoldsComment } from "../utils/description-block.ts"
@@ -14,7 +15,7 @@ import { blockHoldsComment } from "../utils/description-block.ts"
  */
 export const journeyNoEmptyDescriptionBlock: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "empty"
+  MessageIds: "empty" | "removeBlock"
 }> = {
   meta: {
     type: "problem",
@@ -23,10 +24,12 @@ export const journeyNoEmptyDescriptionBlock: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("journey-no-empty-description-block"),
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
       empty:
         "mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.",
+      removeBlock: "Remove the empty block.",
     },
   },
   create(context) {
@@ -35,7 +38,11 @@ export const journeyNoEmptyDescriptionBlock: MermaidRuleDefinition<{
       JourneyAccDescrBlockStatement(node) {
         if (node.value !== null) return
         if (blockHoldsComment(sourceCode, node)) return
-        context.report({ node, messageId: "empty" })
+        context.report({
+          node,
+          messageId: "empty",
+          suggest: emptyBlockRemovalSuggestions(context.sourceCode, node),
+        })
       },
     }
   },

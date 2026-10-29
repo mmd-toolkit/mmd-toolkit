@@ -9,6 +9,9 @@ Disallow an `accDescr` that replaces the description set before it.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
 An Event Modeling diagram has one accessible description, which `accDescr` sets,
@@ -17,33 +20,29 @@ it without an error, and the earlier description is lost.
 
 ## Rule Details
 
-This rule reports an `accDescr` statement whose text differs from the text of
-the `accDescr` before it, when that text is not empty. It applies to
-`eventmodeling`.
+This rule applies to Event Modeling diagrams (`eventmodeling`). It reports an
+`accDescr` whose text differs from the preceding `accDescr`, when the preceding
+text is not empty. Line and block forms are compared with each other.
 
-The line form and the block form may be mixed: whichever comes last, the
-description written last is used. mermaid.js keeps the whole statement, with
-`accDescr` and its `:` or its braces, as the description, so a statement with no
-text sets a description too: after a description, `accDescr:` with no text, or
-with only whitespace, is reported, and so is a block that holds only comment
-lines, since mermaid.js removes the comments. A block that holds nothing else is
-reported by
+After a nonempty text, an empty or whitespace-only `accDescr:` is reported,
+because mermaid.js keeps the whole statement, `accDescr:` included, as the
+description. A block containing only comment lines is reported too, because
+mermaid.js removes the comments. Going back to an earlier description is
+reported: after `accDescr: a` and `accDescr: b`, a third `accDescr: a` is
+reported. An empty block, such as `accDescr {}`, or one containing only
+directives is reported instead by
 [eventmodeling-no-empty-description-block](./eventmodeling-no-empty-description-block.md).
-A statement after one with no text loses no text and is not reported.
+A statement after one with no text is not reported, because no text is lost.
 
-Texts are compared by their words: without the whitespace at the start and the
-end of each line, without empty lines, and with a run of two or more spaces or
-tabs as one space. Every line break (LF, CRLF, or CR) is read as a line feed,
-and U+2028 and U+2029 end a line too, in both forms. So `accDescr: d` and the
-block `accDescr { d }` give the same words and are not reported, though
-mermaid.js keeps the `:` in the one and the braces in the other. After
-`accDescr: a` and `accDescr: b`, a third `accDescr: a` is reported, because it
-replaces `b`. Texts are otherwise compared as written: mermaid.js turns
-character references, as `#35;`, and the quotes of HTML attributes into other
-characters before it reads a description, so two texts that differ only in those
-may be one description for mermaid.js and two for this rule.
+Texts are compared without whitespace at the start and end of each line, without
+empty lines, and with a run of two or more spaces or tabs as one space. LF,
+CRLF, and CR are read as LF. `accDescr: d` and `accDescr { d }` are not reported
+as different, though mermaid.js keeps different punctuation in them.
 
-Keep one `accDescr` statement.
+Texts are otherwise compared as written. mermaid.js converts character
+references such as `#35;` and HTML attribute quotes before reading a
+description, so texts differing only in these ways may be the same for
+mermaid.js and different for this rule.
 
 Examples of **incorrect** code for this rule:
 
@@ -69,17 +68,6 @@ This rule has no options.
 
 - [eventmodeling-no-duplicate-title](./eventmodeling-no-duplicate-title.md)
 - [eventmodeling-no-empty-description-block](./eventmodeling-no-empty-description-block.md)
-
-## Background
-
-The
-[terminal](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L60-L60)
-of `accDescr` takes the whole statement, and the
-[value converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L6-L41)
-does not convert it, since its name is no name that the converter knows. The
-parser keeps the last description, and
-[`populateCommonDb`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14)
-sets it, since it is never empty.
 
 <!-- begin auto-generated rule resources -->
 

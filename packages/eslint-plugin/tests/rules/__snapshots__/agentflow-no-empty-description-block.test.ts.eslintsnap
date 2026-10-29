@@ -14,6 +14,12 @@ Code:
   5 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | agentflow-beta TB
+          2 |   A
+          3 |
 ---
 
 
@@ -112,6 +118,12 @@ Code:
   4 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | agentflow-beta TB
+          2 | A
+          3 |
 ---
 
 
@@ -128,6 +140,12 @@ Code:
   5 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | agentflow-beta TB
+          2 | A
+          3 |
 ---
 
 
@@ -173,6 +191,13 @@ Code:
   5 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | A
+          4 |
 ---
 
 
@@ -187,6 +212,12 @@ Code:
   4 |
 
 [1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | agentflow-beta TB
+          2 | A
+          3 |
 ---
 
 

@@ -44,6 +44,18 @@ accDescr: A \tB
 accDescr { A B }
 word="a";`,
       },
+
+      {
+        name: "valid/railroad/ir-description-crlf",
+        filename:
+          "tests/fixtures/rules/railroad-no-duplicate-description/valid/railroad/ir-description-crlf-input.mmd",
+        code: `railroad-beta\r
+accDescr { First\r
+Second }\r
+accDescr {First\r
+Second}\r
+word=terminal("a");`,
+      },
     ],
     invalid: [
       {
@@ -60,6 +72,20 @@ word="a";`,
             column: 1,
             endLine: 3,
             endColumn: 12,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `railroad-abnf-beta
+accDescr: First
+word="a";`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the description.",
+                output: `railroad-abnf-beta
+accDescr: \t
+word="a";`,
+              },
+            ],
           },
         ],
       },
@@ -77,6 +103,20 @@ word<-"a";`,
             column: 1,
             endLine: 3,
             endColumn: 23,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `railroad-peg-beta
+accDescr: First\u2028 Second
+word<-"a";`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the description.",
+                output: `railroad-peg-beta
+accDescr: First\u2028Second
+word<-"a";`,
+              },
+            ],
           },
         ],
       },
@@ -94,6 +134,20 @@ word=terminal("a");`,
             column: 1,
             endLine: 3,
             endColumn: 23,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `railroad-beta
+accDescr: First\u2029 Second
+word=terminal("a");`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the description.",
+                output: `railroad-beta
+accDescr: First\u2029Second
+word=terminal("a");`,
+              },
+            ],
           },
         ],
       },
@@ -111,6 +165,50 @@ word="a";`,
             column: 1,
             endLine: 3,
             endColumn: 14,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `railroad-ebnf-beta
+accDescr: A\tB
+word="a";`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the description.",
+                output: `railroad-ebnf-beta
+accDescr: A B
+word="a";`,
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        name: "invalid/railroad/description-equal-predecessor-crlf",
+        filename:
+          "tests/fixtures/rules/railroad-no-duplicate-description/invalid/railroad/description-equal-predecessor-crlf-input.mmd",
+        code: `railroad-beta\r
+accDescr: A\r
+accDescr: A\r
+accDescr: B\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier description with the one of this `accDescr`.",
+            line: 4,
+            column: 1,
+            endLine: 4,
+            endColumn: 12,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `railroad-beta\r
+accDescr: A\r
+accDescr: A\r
+`,
+              },
+            ],
           },
         ],
       },

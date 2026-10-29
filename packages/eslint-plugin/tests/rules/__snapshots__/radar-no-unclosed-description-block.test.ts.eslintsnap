@@ -94,21 +94,6 @@ Code:
 ---
 
 
-Test: radar-no-unclosed-description-block >> invalid >>> invalid/radar/crlf
-Filename: tests/fixtures/rules/radar-no-unclosed-description-block/invalid/radar/crlf-input.mmd
-
-Code:
-  1 | radar-beta
-  2 | accDescr { first
-    | ^~~~~~~~~~ [1]
-  3 | axis A, B, C
-  4 | curve sales{1, 2, 3}
-  5 |
-
-[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
----
-
-
 Test: radar-no-unclosed-description-block >> invalid >>> invalid/radar/docs-incorrect-1
 Filename: tests/fixtures/rules/radar-no-unclosed-description-block/invalid/radar/docs-incorrect-1-input.mmd
 

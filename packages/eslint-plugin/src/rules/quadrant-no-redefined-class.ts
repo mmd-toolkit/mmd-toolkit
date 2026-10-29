@@ -1,3 +1,5 @@
+import type { QuadrantClassDefStatement } from "@mmd-toolkit/parser"
+import { oneOfTwoRemovals } from "../utils/removal.ts"
 import type { QuadrantLiteral } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
@@ -25,7 +27,7 @@ function stylesOf(
  */
 export const quadrantNoRedefinedClass: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "redefined"
+  MessageIds: "redefined" | "removeThis" | "removePrevious"
 }> = {
   meta: {
     type: "problem",
@@ -35,27 +37,47 @@ export const quadrantNoRedefinedClass: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("quadrant-no-redefined-class"),
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
+      removeThis: "Remove this statement.",
+      removePrevious: "Remove the earlier statement.",
       redefined:
         "mermaid.js replaces the styles of the class `{{name}}`, set earlier, with those of this `classDef`.",
     },
   },
   create(context) {
-    const classes = new Map<string, Map<string, string | number>>()
+    const classes = new Map<
+      string,
+      {
+        node: QuadrantClassDefStatement
+        styles: Map<string, string | number>
+        before: Map<string, string | number> | undefined
+      }
+    >()
     return {
       QuadrantClassDefStatement(node) {
         const name = node.name.name
         const styles = stylesOf(node.styles)
         const earlier = classes.get(name)
-        if (earlier !== undefined && dropsOrChangesStyles(earlier, styles)) {
+        if (
+          earlier !== undefined &&
+          dropsOrChangesStyles(earlier.styles, styles)
+        ) {
           context.report({
             node,
             messageId: "redefined",
             data: { name },
+            suggest: oneOfTwoRemovals(
+              context.sourceCode,
+              node,
+              earlier.node,
+              earlier.before === undefined ||
+                !dropsOrChangesStyles(earlier.before, styles),
+            ),
           })
         }
-        classes.set(name, styles)
+        classes.set(name, { node, styles, before: earlier?.styles })
       },
     }
   },

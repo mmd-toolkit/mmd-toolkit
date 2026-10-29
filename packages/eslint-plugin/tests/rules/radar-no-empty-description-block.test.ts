@@ -22,7 +22,22 @@ axis A, B, C
 curve sales{1,2,3}
 `,
         errors: [
-          { messageId: "empty", line: 2, column: 1, endLine: 3, endColumn: 4 },
+          {
+            messageId: "empty",
+            line: 2,
+            column: 1,
+            endLine: 3,
+            endColumn: 4,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `radar-beta
+axis A, B, C
+curve sales{1,2,3}
+`,
+              },
+            ],
+          },
         ],
       },
       {
@@ -32,7 +47,20 @@ curve sales{1,2,3}
 accDescr {\u2028 \u2029}
 `,
         errors: [
-          { messageId: "empty", line: 2, column: 1, endLine: 2, endColumn: 15 },
+          {
+            messageId: "empty",
+            line: 2,
+            column: 1,
+            endLine: 2,
+            endColumn: 15,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `radar-beta
+`,
+              },
+            ],
+          },
         ],
       },
       {
@@ -42,7 +70,39 @@ accDescr {\u2028 \u2029}
 accDescr {\r  }
 `,
         errors: [
-          { messageId: "empty", line: 2, column: 1, endLine: 3, endColumn: 4 },
+          {
+            messageId: "empty",
+            line: 2,
+            column: 1,
+            endLine: 3,
+            endColumn: 4,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `radar-beta
+`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/radar/removal-crlf-with-tab",
+        filename: "input.mmd",
+        code: `radar-beta\r
+accDescr {\t}\r
+`,
+        errors: [
+          {
+            messageId: "empty",
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `radar-beta\r
+`,
+              },
+            ],
+          },
         ],
       },
     ],

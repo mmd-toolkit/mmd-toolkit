@@ -13,6 +13,14 @@ Code:
   5 |
 
 [1] mermaid.js draws every point of every curve on the outer ring: the final `min` is above the final `max`.
+    Suggestions:
+      - Swap the final `min` and `max` values.
+        Output:
+          1 | radar-beta
+          2 |   axis A, B, C
+          3 |   curve sales{1, 2, 3}
+          4 |   min 5, max 10
+          5 |
 ---
 
 
@@ -28,6 +36,14 @@ Code:
   5 |
 
 [1] mermaid.js draws every point of every curve on the outer ring: the final `min` is above the final `max`.
+    Suggestions:
+      - Swap the final `min` and `max` values.
+        Output:
+          1 | radar-beta
+          2 |   axis A, B, C
+          3 |   curve sales{1, 2, 3}
+          4 |   min 5, max 10
+          5 |
 ---
 
 
@@ -43,6 +59,14 @@ Code:
   5 |
 
 [1] mermaid.js draws every point of every curve on the outer ring: the final `min` is above the final `max`.
+    Suggestions:
+      - Swap the final `min` and `max` values.
+        Output:
+          1 | radar-beta
+          2 | axis A, B, C
+          3 | curve short{1, 2}, sales{1, 2, 3}
+          4 | min 5, max 10
+          5 |
 ---
 
 
@@ -58,6 +82,14 @@ Code:
   5 |
 
 [1] mermaid.js draws every point of every curve on the outer ring: the final `min` is above the final `max`.
+    Suggestions:
+      - Swap the final `min` and `max` values.
+        Output:
+          1 | radar-beta
+          2 | min 5, max 10
+          3 | curve sales{A:1, B:2, C:3}
+          4 | axis A, B, C
+          5 |
 ---
 
 
@@ -73,6 +105,14 @@ Code:
   5 |
 
 [1] mermaid.js draws every point of every curve on the outer ring: the final `min` is above the final `max`.
+    Suggestions:
+      - Swap the final `min` and `max` values.
+        Output:
+          1 | radar-beta
+          2 | axis A, B, C
+          3 | curve sales{8,4,2}
+          4 | min 5, max 10
+          5 |
 ---
 
 
@@ -88,6 +128,14 @@ Code:
   5 |
 
 [1] mermaid.js draws every point of every curve on the outer ring: the final `min` is above the final `max`.
+    Suggestions:
+      - Swap the final `min` and `max` values.
+        Output:
+          1 | radar-beta
+          2 | axis A, B, C
+          3 | curve sales{1,2,3}
+          4 | min 5, max 10
+          5 |
 ---
 
 
@@ -104,4 +152,13 @@ Code:
   6 |
 
 [1] mermaid.js draws every point of every curve on the outer ring: the final `min` is above the final `max`.
+    Suggestions:
+      - Swap the final `min` and `max` values.
+        Output:
+          1 | radar-beta
+          2 | axis A, B, C
+          3 | curve sales{1,2,3}
+          4 | max 10, min 5
+          5 | graticule polygon
+          6 |
 ---

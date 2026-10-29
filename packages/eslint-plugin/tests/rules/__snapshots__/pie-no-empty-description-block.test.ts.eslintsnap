@@ -12,6 +12,12 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | pie
+          2 |   "A" : 1
+          3 |
 ---
 
 
@@ -25,6 +31,11 @@ Code:
     | ^~~~~~~~~~~ [1]
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | pie
+          2 | accDescr: First
 ---
 
 
@@ -53,23 +64,10 @@ Code:
     | ~~ [1]
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
----
-
-
-Test: pie-no-empty-description-block >> invalid >>> invalid/pie/empty-block-crlf
-Filename: tests/fixtures/rules/pie-no-empty-description-block/invalid/pie/empty-block-crlf-input.mmd
-
-Code:
-  1 | pie
-  2 | accDescr {
-    | ^~~~~~~~~~\ [1]
-  3 |  	
-    | ~~\ [1]
-  4 | }
-    | ~ [1]
-  5 |
-
-[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | pie
 ---
 
 
@@ -98,6 +96,10 @@ Code:
     | ~~~ [1]
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | pie
 ---
 
 
@@ -124,7 +126,17 @@ Code:
     | ^~~~~~~~~~~ [2]
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | pie
+          2 | accDescr {}
 [2] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | pie
+          2 | accDescr {}
 ---
 
 
@@ -139,4 +151,8 @@ Code:
     | ~~ [1]
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | pie
 ---

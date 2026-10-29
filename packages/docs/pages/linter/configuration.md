@@ -75,9 +75,10 @@ Rule ids have two forms:
   `@mmd-toolkit/flowchart-no-undef`.
 
 The [rule list](../../../eslint-plugin/docs/rules/index.md) marks rules enabled
-by the recommended preset with ✅ and rules with editor suggestions with 💡.
-Suggestions are applied by choosing a proposed change in your editor; they are
-not automatic fixes for `eslint --fix`.
+by the recommended preset with ✅, rules with fixes with 🔧, and rules with
+editor suggestions with 💡. `eslint --fix` applies fixes. Suggestions are
+applied by choosing a proposed change in your editor; `eslint --fix` does not
+apply them.
 
 ## Combining language configurations
 

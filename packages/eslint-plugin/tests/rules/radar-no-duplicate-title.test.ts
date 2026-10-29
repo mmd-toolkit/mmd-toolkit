@@ -27,6 +27,16 @@ title \u00a0First\u00a0
 title First
 `,
       },
+
+      {
+        name: "valid/radar/title-crlf-equivalent",
+        filename:
+          "tests/fixtures/rules/radar-no-duplicate-title/valid/radar/title-crlf-equivalent-input.mmd",
+        code: `radar-beta\r
+title First  report\r
+title First report\r
+`,
+      },
     ],
     invalid: [
       {
@@ -44,6 +54,20 @@ title First report
             column: 1,
             endLine: 3,
             endColumn: 19,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `radar-beta
+title First\treport
+`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the title.",
+                output: `radar-beta
+title First report
+`,
+              },
+            ],
           },
         ],
       },
@@ -62,6 +86,20 @@ title First\u2028Second
             column: 1,
             endLine: 3,
             endColumn: 19,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `radar-beta
+title First\u2028 Second
+`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the title.",
+                output: `radar-beta
+title First\u2028Second
+`,
+              },
+            ],
           },
         ],
       },
@@ -83,6 +121,50 @@ accTitle: First\u2029Second
             column: 1,
             endLine: 3,
             endColumn: 23,
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `radar-beta
+accTitle: First\u2029 Second
+`,
+              },
+              {
+                desc: "Remove the earlier `accTitle` statement.",
+                output: `radar-beta
+accTitle: First\u2029Second
+`,
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        name: "invalid/radar/title-equal-predecessor-crlf",
+        filename:
+          "tests/fixtures/rules/radar-no-duplicate-title/invalid/radar/title-equal-predecessor-crlf-input.mmd",
+        code: `radar-beta\r
+accTitle: A\r
+accTitle: A\r
+accTitle: B\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier accessible title with the one of this `accTitle`.",
+            line: 4,
+            column: 1,
+            endLine: 4,
+            endColumn: 12,
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `radar-beta\r
+accTitle: A\r
+accTitle: A\r
+`,
+              },
+            ],
           },
         ],
       },

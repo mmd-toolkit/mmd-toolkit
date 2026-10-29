@@ -9,44 +9,38 @@ Disallow a `title` or `accTitle` statement that sets its title again.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-A user journey has two titles: the title that `title` sets, drawn above the
-journey, and the accessible title that `accTitle` sets. mermaid.js accepts every
-statement that sets one of them, and each one silently replaces the value set
-before it. A second title is usually left over from rewriting the text or from
-pasting a part twice.
+`title` sets the title drawn above the diagram, and `accTitle` sets its
+accessible title. When either is set again, mermaid.js uses the later value
+without an error, and the earlier one is lost.
 
 ## Rule Details
 
-This rule reports every `title` statement after the first one, and every
-`accTitle` statement after the first one, when the statement sets a value other
-than the one before it. It applies to `journey`.
+This rule applies to user journey diagrams (`journey`). It reports a `title` or
+`accTitle` statement that replaces the current value of the same title with a
+different one. The two titles are checked separately, and a statement that
+repeats the current value is not reported.
 
-After `title first` and `title second`, the title is `second`, and so for
-`accTitle`. `accTitle:` with no text on its line takes the next line that holds
-text as the accessible title, past empty lines, comment lines, and directives:
-after `accTitle: a`, the lines `accTitle:` and `T` give the accessible title
-`T`, and the second statement is reported. The two titles are separate values:
-`title first` and `accTitle: second` set both, and neither is reported.
+An `accTitle:` with no text on its line also sets the accessible title and is
+counted: it takes the next line that holds text, past empty lines, comment
+lines, and directives. Replacing the frontmatter title with a `title` statement
+is not reported.
 
-The word `title` starts a title statement in any case, also at the start of a
-line meant as a task: after `title My day`, the line `Title page: 5: Me` gives
-the title `page: 5: Me` and no task, and the rule reports it as a second title.
-Without an earlier title, the line is the only title, and it is not reported.
+`accTitle` values are compared without whitespace at their ends, while `title`
+values keep their whitespace: `title  T` after `title T` is reported even if the
+drawing looks the same.
 
-A `title` statement also replaces the title of the frontmatter without an error:
-with `title: Frontmatter title` in the frontmatter, `title Statement title`
-gives the title `Statement title`. The rule does not report this.
+mermaid.js reads `title` in any case as a title statement, also at the start of
+a line meant as a task: after `title My day`, `Title page: 5: Me` sets the title
+`page: 5: Me` instead of a task and is reported. Without an earlier title, it is
+not reported.
 
-A statement that sets the title that the diagram already has is not reported:
-after `accTitle: a`, a second `accTitle: a` loses nothing. Titles are compared
-as mermaid.js keeps them, without the whitespace at their ends, so
-`accTitle:  a` sets the same title. After `accTitle: a` and `accTitle: b`, a
-third `accTitle: a` is reported, because it replaces `b`. The same holds for
-`title`, whose text keeps its whitespace: after `title T`, the statement
-`title  T`, with two spaces, sets another title, and it is reported, also where
-the two titles look the same when drawn.
+After `accTitle: a` and `accTitle: b`, a third `accTitle: a` is reported because
+it replaces `b`.
 
 Examples of **incorrect** code for this rule:
 

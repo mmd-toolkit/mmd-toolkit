@@ -11,32 +11,27 @@ Disallow an axis statement that replaces the title or the data of the axis.
 
 <!-- end auto-generated rule notice -->
 
-`x-axis` and `y-axis` set the title and the data of an axis: the categories or
-the range. mermaid.js accepts a second statement of the same axis and silently
-replaces what the first one set: every statement sets the title, the empty title
-when it has none, and a statement with data replaces the data.
+`x-axis` and `y-axis` set an axis's title and data: categories or a range.
+mermaid.js accepts another statement for the same axis without an error: it
+always sets the title, empty when omitted, and replaces the data when it gives
+data, so earlier values can be lost.
 
 ## Rule Details
 
-This rule reports an `x-axis` or a `y-axis` statement after the first one of the
-same axis, when it replaces a title or data that an earlier statement of that
-axis set with another value. It applies to `xychart`.
+This rule applies to XY charts (`xychart` and `xychart-beta`). It reports an
+`x-axis` or `y-axis` statement that replaces a title or data already set for the
+same axis with a different value. The axes are checked separately, and the
+keywords are read in any case.
 
-After `x-axis Month [jan, feb]`, the statement `x-axis Year [2023, 2024]` gives
-the axis the title `Year` and the categories `2023` and `2024`. After
-`y-axis Revenue`, the statement `y-axis 0 --> 100` gives the range and the empty
-title, and the title `Revenue` is lost. After `x-axis [a, b]`, the statement
-`x-axis 0 --> 10` replaces the categories with the range. The keywords are read
-in any case, and the x axis and the y axis are counted apart.
+A statement without a title is reported after a title, because it clears it; a
+statement with only a title keeps the categories or the range and is not
+reported for them. Adding a title or data without losing an existing value is
+not reported. Replacing categories with a range is reported.
 
-A statement that loses nothing is not reported: after `x-axis [a, b]`, the
-statement `x-axis Month` adds the title and keeps the categories, and after
-`y-axis T`, the statement `y-axis T 0 --> 10` keeps the title and adds the
-range. Values are compared as mermaid.js keeps them: a title or a category in
-words is joined without the spaces between its words, and a text in quotes is
-read without the whitespace at its ends, so `x-axis "T" ["a"]` after
-`x-axis T [a]` sets the same axis. After `x-axis A [a]` and `x-axis B [b]`, a
-third `x-axis A [a]` is reported, because it replaces `B` and `b`.
+Unquoted words in titles and categories are joined without spaces, while quoted
+text is compared without surrounding whitespace. After `x-axis A [a]` and
+`x-axis B [b]`, a third `x-axis A [a]` is reported because it replaces `B` and
+`b`.
 
 Examples of **incorrect** code for this rule:
 

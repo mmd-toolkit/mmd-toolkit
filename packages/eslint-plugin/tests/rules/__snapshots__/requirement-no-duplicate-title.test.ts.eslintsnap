@@ -15,6 +15,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 |   accTitle: first
+          3 |   requirement r {
+          4 |     id: 1
+          5 |   }
+          6 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 |   accTitle: second
+          3 |   requirement r {
+          4 |     id: 1
+          5 |   }
+          6 |
 ---
 
 
@@ -34,7 +51,45 @@ Code:
   8 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 |   accTitle: a
+          3 |   accTitle: a
+          4 |   requirement r {
+          5 |     id: 1
+          6 |   }
+          7 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 |   accTitle: b
+          3 |   accTitle: a
+          4 |   requirement r {
+          5 |     id: 1
+          6 |   }
+          7 |
 [2] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 |   accTitle: a
+          3 |   accTitle: b
+          4 |   requirement r {
+          5 |     id: 1
+          6 |   }
+          7 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 |   accTitle: a
+          3 |   accTitle: a
+          4 |   requirement r {
+          5 |     id: 1
+          6 |   }
+          7 |
 ---
 
 
@@ -53,6 +108,19 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 | accTitle: a
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 | accTitle:
+          3 | %% c
+          4 | T
+          5 |
 ---
 
 
@@ -71,6 +139,14 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 | accTitle:
+          3 | %%{init: {}}%%
+          4 | T
+          5 |
 ---
 
 
@@ -89,6 +165,19 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 | accTitle: a
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 | accTitle:
+          3 |
+          4 | T
+          5 |
 ---
 
 
@@ -107,7 +196,29 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 | accTitle: a
+          3 | ACCTITLE: c
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 | accTitle:
+          3 | b
+          4 | ACCTITLE: c
+          5 |
 [2] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 | accTitle: a
+          3 | accTitle:
+          4 | b
+          5 |
 ---
 
 
@@ -124,21 +235,27 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 | accTitle: a
+          3 | accTitle: c
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 | accTitle: b
+          3 | accTitle: c
+          4 |
 [2] mermaid.js replaces the earlier title with the one of this `accTitle`.
----
-
-
-Test: requirement-no-duplicate-title >> invalid >>> invalid/requirement/acc-title-twice-crlf
-Filename: tests/fixtures/rules/requirement-no-duplicate-title/invalid/requirement/acc-title-twice-crlf-input.mmd
-
-Code:
-  1 | requirementDiagram
-  2 | accTitle: a
-  3 | accTitle: b
-    | ^~~~~~~~~~~ [1]
-  4 |
-
-[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 | accTitle: a
+          3 | accTitle: b
+          4 |
 ---
 
 
@@ -156,6 +273,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 | accTitle: a
+          3 | requirement r {
+          4 |   id: 1
+          5 | }
+          6 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 | accTitle: b
+          3 | requirement r {
+          4 |   id: 1
+          5 | }
+          6 |
 ---
 
 
@@ -170,6 +304,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 | accTitle: a
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 | ACCTITLE: b
+          3 |
 ---
 
 
@@ -186,4 +331,41 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 | accTitle:   t1  
+          3 | accDescr:  d1  
+          4 | accDescr: d2
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 | accTitle: t2
+          3 | accDescr:  d1  
+          4 | accDescr: d2
+          5 |
+---
+
+
+Test: requirement-no-duplicate-title >> invalid >>> invalid/requirement/title-equal-predecessor
+Filename: tests/fixtures/rules/requirement-no-duplicate-title/invalid/requirement/title-equal-predecessor-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accTitle: A
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | requirementDiagram
+          2 | accTitle: A
+          3 | accTitle: A
+          4 |
 ---

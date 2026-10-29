@@ -13,6 +13,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the evolution target of `API`, set earlier, with this target.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 |   component API [0.3, 0.4]
+          3 |   evolve API 0.6
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 |   component API [0.3, 0.4]
+          3 |   evolve API 0.9
+          4 |
 ---
 
 
@@ -28,6 +41,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the evolution target of `API`, set earlier, with this target.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 |   component API [0.3, 0.4]
+          3 |   evolve API 0.6
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 |   component API [0.3, 0.4]
+          3 |   evolve API 0.9
+          4 |
 ---
 
 
@@ -42,6 +68,17 @@ Code:
     | ^~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the evolution target of `U`, set earlier, with this target.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | anchor U [0.8,0.5]
+          3 | evolve U 0.6
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | anchor U [0.8,0.5]
+          3 | evolve U 0.9
 ---
 
 
@@ -59,6 +96,23 @@ Code:
   7 | }
 
 [1] mermaid.js replaces the evolution target of `P_X`, set earlier, with this target.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | evolve P_X 0.6
+          3 | component P [0.4,0.5]
+          4 | pipeline P {
+          5 | component X [0.7]
+          6 | }
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | evolve P_X 0.9
+          3 | component P [0.4,0.5]
+          4 | pipeline P {
+          5 | component X [0.7]
+          6 | }
 ---
 
 
@@ -73,6 +127,17 @@ Code:
   4 | component API [0.3,0.4]
 
 [1] mermaid.js replaces the evolution target of `API`, set earlier, with this target.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | evolve API 0.6
+          3 | component API [0.3,0.4]
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | evolve API 0.9
+          3 | component API [0.3,0.4]
 ---
 
 
@@ -87,6 +152,17 @@ Code:
     | ^~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the evolution target of `API`, set earlier, with this target.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | component API [0.3,0.4]
+          3 | evolve API 0.6
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | component API [0.3,0.4]
+          3 | evolve API 0.9
 ---
 
 
@@ -103,5 +179,55 @@ Code:
     | ^~~~~~~~~~~~ [2]
 
 [1] mermaid.js replaces the evolution target of `A`, set earlier, with this target.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | component A [0.1,0.2]
+          3 | evolve A 0.4
+          4 | evolve A 0.4
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | component A [0.1,0.2]
+          3 | evolve A 0.8
+          4 | evolve A 0.4
 [2] mermaid.js replaces the evolution target of `A`, set earlier, with this target.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | component A [0.1,0.2]
+          3 | evolve A 0.4
+          4 | evolve A 0.8
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | component A [0.1,0.2]
+          3 | evolve A 0.4
+          4 | evolve A 0.4
+---
+
+
+Test: wardley-no-duplicate-evolve >> invalid >>> invalid/wardley/target-equal-predecessor
+Filename: tests/fixtures/rules/wardley-no-duplicate-evolve/invalid/wardley/target-equal-predecessor-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component A [0.3,0.4]
+  3 | evolve A 0.6
+  4 | evolve A 0.6
+  5 | evolve A 0.9
+    | ^~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the evolution target of `A`, set earlier, with this target.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | component A [0.3,0.4]
+          3 | evolve A 0.6
+          4 | evolve A 0.6
+          5 |
 ---

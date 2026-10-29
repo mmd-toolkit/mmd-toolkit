@@ -9,31 +9,27 @@ Disallow an `accTitle` statement that sets the title again.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-A diagram has one accessible title. mermaid.js accepts every `accTitle`
-statement, and each one silently replaces the title set before it. A second
-title is usually left over from rewriting the text or from pasting a part twice.
+A diagram has one accessible title. When another `accTitle` statement sets it,
+mermaid.js replaces the earlier title without an error, so the earlier one is
+lost.
 
 ## Rule Details
 
-This rule reports every `accTitle` statement after the first one, when it sets a
-title other than the one before it. It applies to `stateDiagram`.
+This rule applies to state diagrams (`stateDiagram` and `stateDiagram-v2`). It
+reports an `accTitle` statement that changes a title set by an earlier
+statement. Repeating the current title is not reported, and whitespace at the
+ends is ignored when comparing titles.
 
-After `accTitle: first` and `accTitle: second`, the title is `second`.
-`accTitle:` with no text sets the title too: it takes the next line that holds
-text as the title, past empty lines, comment lines, and directives, and when no
-such line follows, it makes the title empty.
-
-Inside a composite state, `accTitle: x` is no `accTitle` statement: mermaid.js
-reads it as a state `accTitle` with the description `x`, and the rule does not
-count it.
-
-A statement that sets the title that the diagram already has is not reported:
-after `accTitle: a`, a second `accTitle: a` loses nothing. Titles are compared
-as mermaid.js keeps them, without the whitespace at their ends, so
-`accTitle:  a` sets the same title. After `accTitle: a` and `accTitle: b`, a
-third `accTitle: a` is reported, because it replaces `b`.
+An `accTitle:` with no text also sets the title and is counted: the next line
+with text supplies the title, past empty lines, comment lines, and directives;
+with no such line, the title becomes empty. Inside a composite state,
+`accTitle: x` defines a state named `accTitle` with description `x`, so it is
+not counted.
 
 Examples of **incorrect** code for this rule:
 

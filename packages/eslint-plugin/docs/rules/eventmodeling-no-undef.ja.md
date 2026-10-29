@@ -18,30 +18,24 @@ mermaid.js はエラーなしに受理し、その source からの関係も、
 
 ## 規則の詳細
 
-この規則は、どのフレームも名指さない `tf` や `timeframe` の文の source と、
+この規則は、イベントモデリング図（`eventmodeling`）に当てる。
+どのフレームも名指さない `tf` や `timeframe` の文の source と、
 どの `data` ブロックも名指さないフレームの `[[ ]]` の参照を報告する。
-対象の図種は `eventmodeling` である。
-
-`tf 01 ui Cart` の後で、フレーム `tf 02 cmd Buy ->> 99` は関係を持たない。
-source を持つフレームは、その source からだけ関係を描き、
-前のフレームからは描かない。
-`data Payload` があるとき、
-フレーム `tf 01 evt Bought [[Paylod]]` はデータを示さない。
-`tf 01 evt Bought [[Paylod]] {fallback }` のようにインラインのデータがあると、
-ブロックの代わりにインラインのデータを示す。
-
 参照の後に宣言したフレームやデータブロックも数える。
-名前は大文字小文字を区別して、書いたとおりに比べる。
-`1`、`01`、`001` は 3 つのフレームを名指す。
-後に宣言したフレームを名指す source も数える。
-ただし mermaid.js は、フレームを置くときにその関係を描くので、
-そこからの関係は描かない。
-reset frame（`rf` や `resetframe`）の source は調べない。
-mermaid.js は、source が何を名指しても reset frame の関係を描かないからである。
-`note` と `gwt` が名指すフレームも調べない。
-mermaid.js はどちらの文も描かないからである。
+どの `data` ブロックも名指さない `[[ ]]` の参照は、
+フレームがインラインのデータを持ち、
+mermaid.js がそれを代わりに示すときも報告する。
+名前は大文字小文字を区別して書いたとおりに比べるので、`1`、`01`、
+`001` は 3 つのフレームを名指す。
 
-名前を直すか、フレームやデータブロックを宣言する。
+後のフレームを名指す source は、mermaid.js がそこからの関係を描かないが、
+報告しない。
+
+reset frame（`rf`、`resetframe`）の source は、
+何を名指しても mermaid.js が関係を描かないので調べないが、
+その `[[ ]]` の参照は調べる。
+`note` と `gwt` が名指すフレームも、
+mermaid.js がどちらの文も描かないので調べない。
 
 この規則に**反する**コードの例:
 
@@ -86,17 +80,6 @@ items
 ## 関連する規則
 
 - [eventmodeling-no-redefined-data](./eventmodeling-no-redefined-data.ja.md)
-
-## 背景
-
-[`getState`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L106-L128)
-は、 source が番号を与えるフレームを取ってそれぞれから関係を描き、
-source のないフレームにだけ、前のフレームからの関係を推して描く。
-[`decidePositionRelation`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L570-L593)
-は、 reset frame の関係も、まだ置いていないフレームからの関係も描かない。
-[フレームのデータ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L339-L362)
-は、その名前の最初のデータブロックであり、
-その名前のブロックがなければインラインのデータである。
 
 <!-- begin auto-generated rule resources -->
 

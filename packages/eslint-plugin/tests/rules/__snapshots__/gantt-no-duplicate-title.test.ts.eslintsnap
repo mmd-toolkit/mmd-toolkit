@@ -14,6 +14,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gantt
+          2 |   title first
+          3 |   dateFormat YYYY-MM-DD
+          4 |   Design :2024-01-06, 3d
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | gantt
+          2 |   title second
+          3 |   dateFormat YYYY-MM-DD
+          4 |   Design :2024-01-06, 3d
+          5 |
 ---
 
 
@@ -30,6 +45,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | gantt
+          2 |   accTitle: first
+          3 |   dateFormat YYYY-MM-DD
+          4 |   Design :2024-01-06, 3d
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | gantt
+          2 |   accTitle: second
+          3 |   dateFormat YYYY-MM-DD
+          4 |   Design :2024-01-06, 3d
+          5 |
 ---
 
 
@@ -48,7 +78,41 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | gantt
+          2 |   accTitle: a
+          3 |   accTitle: a
+          4 |   dateFormat YYYY-MM-DD
+          5 |   a : 2024-01-01, 1d
+          6 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | gantt
+          2 |   accTitle: b
+          3 |   accTitle: a
+          4 |   dateFormat YYYY-MM-DD
+          5 |   a : 2024-01-01, 1d
+          6 |
 [2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | gantt
+          2 |   accTitle: a
+          3 |   accTitle: b
+          4 |   dateFormat YYYY-MM-DD
+          5 |   a : 2024-01-01, 1d
+          6 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | gantt
+          2 |   accTitle: a
+          3 |   accTitle: a
+          4 |   dateFormat YYYY-MM-DD
+          5 |   a : 2024-01-01, 1d
+          6 |
 ---
 
 
@@ -68,6 +132,21 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | gantt
+          2 | dateFormat YYYY-MM-DD
+          3 | accTitle: a
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | gantt
+          2 | dateFormat YYYY-MM-DD
+          3 | accTitle:
+          4 | %% c
+          5 | T
+          6 |
 ---
 
 
@@ -87,6 +166,15 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | gantt
+          2 | dateFormat YYYY-MM-DD
+          3 | accTitle:
+          4 | %%{init: {}}%%
+          5 | T
+          6 |
 ---
 
 
@@ -104,21 +192,20 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
----
-
-
-Test: gantt-no-duplicate-title >> invalid >>> invalid/gantt/acc-title-twice-crlf
-Filename: tests/fixtures/rules/gantt-no-duplicate-title/invalid/gantt/acc-title-twice-crlf-input.mmd
-
-Code:
-  1 | gantt
-  2 | dateFormat YYYY-MM-DD
-  3 | accTitle: a
-  4 | accTitle: b
-    | ^~~~~~~~~~~ [1]
-  5 |
-
-[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | gantt
+          2 | dateFormat YYYY-MM-DD
+          3 | accTitle: a
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | gantt
+          2 | dateFormat YYYY-MM-DD
+          3 | accTitle:
+          4 | T
+          5 |
 ---
 
 
@@ -132,6 +219,15 @@ Code:
     | ^~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | gantt
+          2 | accTitle: a
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | gantt
+          2 | accTitle: b
 ---
 
 
@@ -145,6 +241,37 @@ Code:
     | ^~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gantt
+          2 | title a
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | gantt
+          2 | title b
+---
+
+
+Test: gantt-no-duplicate-title >> invalid >>> invalid/gantt/title-equal-predecessor
+Filename: tests/fixtures/rules/gantt-no-duplicate-title/invalid/gantt/title-equal-predecessor-input.mmd
+
+Code:
+  1 | gantt
+  2 | accTitle: A
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | gantt
+          2 | accTitle: A
+          3 | accTitle: A
+          4 |
 ---
 
 
@@ -161,4 +288,19 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gantt
+          2 |   title T
+          3 |   dateFormat YYYY-MM-DD
+          4 |   a : 2024-01-01, 1d
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | gantt
+          2 |   title  T
+          3 |   dateFormat YYYY-MM-DD
+          4 |   a : 2024-01-01, 1d
+          5 |
 ---

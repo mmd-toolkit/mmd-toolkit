@@ -5,6 +5,7 @@ import type {
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { titleText } from "../utils/acc-text.ts"
+import { oneOfTwoRemovals } from "../utils/removal.ts"
 
 /**
  * The rule `timeline-no-duplicate-title`, described in
@@ -24,7 +25,8 @@ import { titleText } from "../utils/acc-text.ts"
  */
 export const timelineNoDuplicateTitle: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "duplicateTitle" | "duplicateAccTitle"
+  MessageIds:
+    "duplicateTitle" | "duplicateAccTitle" | "removeThis" | "removePrevious"
 }> = {
   meta: {
     type: "problem",
@@ -34,17 +36,24 @@ export const timelineNoDuplicateTitle: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("timeline-no-duplicate-title"),
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
       duplicateTitle:
         "mermaid.js replaces the earlier title with the one of this `title`.",
       duplicateAccTitle:
         "mermaid.js replaces the earlier accessible title with the one of this `accTitle`.",
+      removeThis: "Remove this {{statement}}.",
+      removePrevious: "Remove the earlier {{statement}}.",
     },
   },
   create(context) {
     let previousTitle: TimelineTitleStatement | null = null
+    let beforePreviousTitle: TimelineTitleStatement | null = null
+
     let previousAccTitle: TimelineAccTitleStatement | null = null
+    let beforePreviousAccTitle: TimelineAccTitleStatement | null = null
+
     return {
       TimelineTitleStatement(node) {
         if (
@@ -54,8 +63,20 @@ export const timelineNoDuplicateTitle: MermaidRuleDefinition<{
           context.report({
             node,
             messageId: "duplicateTitle",
+            suggest: oneOfTwoRemovals(
+              context.sourceCode,
+              node,
+              previousTitle,
+              beforePreviousTitle === null ||
+                titleText(beforePreviousTitle) === titleText(node),
+              {
+                current: "statement",
+                previous: "statement that sets the title",
+              },
+            ),
           })
         }
+        beforePreviousTitle = previousTitle
         previousTitle = node
       },
       TimelineAccTitleStatement(node) {
@@ -66,8 +87,20 @@ export const timelineNoDuplicateTitle: MermaidRuleDefinition<{
           context.report({
             node,
             messageId: "duplicateAccTitle",
+            suggest: oneOfTwoRemovals(
+              context.sourceCode,
+              node,
+              previousAccTitle,
+              beforePreviousAccTitle === null ||
+                titleText(beforePreviousAccTitle) === titleText(node),
+              {
+                current: "`accTitle` statement",
+                previous: "`accTitle` statement",
+              },
+            ),
           })
         }
+        beforePreviousAccTitle = previousAccTitle
         previousAccTitle = node
       },
     }

@@ -14,7 +14,37 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier `ticks` value with this value.
+    Suggestions:
+      - Remove this option.
+        Output:
+          1 | radar-beta
+          2 |   axis A, B, C
+          3 |   curve sales{1, 2, 3}
+          4 |   ticks 2, ticks 2
+          5 |
+      - Remove the earlier option.
+        Output:
+          1 | radar-beta
+          2 |   axis A, B, C
+          3 |   curve sales{1, 2, 3}
+          4 |    ticks 3, ticks 2
+          5 |
 [2] mermaid.js replaces the earlier `ticks` value with this value.
+    Suggestions:
+      - Remove this option.
+        Output:
+          1 | radar-beta
+          2 |   axis A, B, C
+          3 |   curve sales{1, 2, 3}
+          4 |   ticks 2, ticks 3
+          5 |
+      - Remove the earlier option.
+        Output:
+          1 | radar-beta
+          2 |   axis A, B, C
+          3 |   curve sales{1, 2, 3}
+          4 |   ticks 2, ticks 2
+          5 |
 ---
 
 
@@ -31,7 +61,60 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier `ticks` value with this value.
+    Suggestions:
+      - Remove this option.
+        Output:
+          1 | radar-beta
+          2 |   axis A, B, C
+          3 |   curve sales{1, 2, 3}
+          4 |   ticks 2, ticks 2
+          5 |
+      - Remove the earlier option.
+        Output:
+          1 | radar-beta
+          2 |   axis A, B, C
+          3 |   curve sales{1, 2, 3}
+          4 |    ticks 3, ticks 2
+          5 |
 [2] mermaid.js replaces the earlier `ticks` value with this value.
+    Suggestions:
+      - Remove this option.
+        Output:
+          1 | radar-beta
+          2 |   axis A, B, C
+          3 |   curve sales{1, 2, 3}
+          4 |   ticks 2, ticks 3
+          5 |
+      - Remove the earlier option.
+        Output:
+          1 | radar-beta
+          2 |   axis A, B, C
+          3 |   curve sales{1, 2, 3}
+          4 |   ticks 2, ticks 2
+          5 |
+---
+
+
+Test: radar-no-duplicate-option >> invalid >>> invalid/radar/option-equal-predecessor
+Filename: tests/fixtures/rules/radar-no-duplicate-option/invalid/radar/option-equal-predecessor-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | axis A
+  3 | curve C{1}
+  4 | ticks 2, ticks 2, ticks 3
+    |                   ^~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier `ticks` value with this value.
+    Suggestions:
+      - Remove this option.
+        Output:
+          1 | radar-beta
+          2 | axis A
+          3 | curve C{1}
+          4 | ticks 2, ticks 2
+          5 |
 ---
 
 
@@ -49,10 +132,55 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier `showLegend` value with this value.
+    Suggestions:
+      - Remove the earlier option.
+        Output:
+          1 | radar-beta
+          2 | axis A, B, C
+          3 | curve sales{1,2,3}
+          4 |  ticks 2, min 1, max 4, graticule polygon
+          5 | showLegend true ticks 3 min 0 max 5 graticule circle
+          6 |
 [2] mermaid.js replaces the earlier `ticks` value with this value.
+    Suggestions:
+      - Remove the earlier option.
+        Output:
+          1 | radar-beta
+          2 | axis A, B, C
+          3 | curve sales{1,2,3}
+          4 | showLegend false, min 1, max 4, graticule polygon
+          5 | showLegend true ticks 3 min 0 max 5 graticule circle
+          6 |
 [3] mermaid.js replaces the earlier `min` value with this value.
+    Suggestions:
+      - Remove the earlier option.
+        Output:
+          1 | radar-beta
+          2 | axis A, B, C
+          3 | curve sales{1,2,3}
+          4 | showLegend false, ticks 2, max 4, graticule polygon
+          5 | showLegend true ticks 3 min 0 max 5 graticule circle
+          6 |
 [4] mermaid.js replaces the earlier `max` value with this value.
+    Suggestions:
+      - Remove the earlier option.
+        Output:
+          1 | radar-beta
+          2 | axis A, B, C
+          3 | curve sales{1,2,3}
+          4 | showLegend false, ticks 2, min 1, graticule polygon
+          5 | showLegend true ticks 3 min 0 max 5 graticule circle
+          6 |
 [5] mermaid.js replaces the earlier `graticule` value with this value.
+    Suggestions:
+      - Remove the earlier option.
+        Output:
+          1 | radar-beta
+          2 | axis A, B, C
+          3 | curve sales{1,2,3}
+          4 | showLegend false, ticks 2, min 1, max 4
+          5 | showLegend true ticks 3 min 0 max 5 graticule circle
+          6 |
 ---
 
 
@@ -66,10 +194,65 @@ Code:
   3 |
 
 [1] mermaid.js replaces the earlier `showLegend` value with this value.
+    Suggestions:
+      - Remove this option.
+        Output:
+          1 | radar-beta
+          2 | showLegend false, ticks 2, ticks 3, min 1, min 0, max 4, max 5, graticule polygon, graticule circle
+          3 |
+      - Remove the earlier option.
+        Output:
+          1 | radar-beta
+          2 |  showLegend true, ticks 2, ticks 3, min 1, min 0, max 4, max 5, graticule polygon, graticule circle
+          3 |
 [2] mermaid.js replaces the earlier `ticks` value with this value.
+    Suggestions:
+      - Remove this option.
+        Output:
+          1 | radar-beta
+          2 | showLegend false, showLegend true, ticks 2, min 1, min 0, max 4, max 5, graticule polygon, graticule circle
+          3 |
+      - Remove the earlier option.
+        Output:
+          1 | radar-beta
+          2 | showLegend false, showLegend true, ticks 3, min 1, min 0, max 4, max 5, graticule polygon, graticule circle
+          3 |
 [3] mermaid.js replaces the earlier `min` value with this value.
+    Suggestions:
+      - Remove this option.
+        Output:
+          1 | radar-beta
+          2 | showLegend false, showLegend true, ticks 2, ticks 3, min 1, max 4, max 5, graticule polygon, graticule circle
+          3 |
+      - Remove the earlier option.
+        Output:
+          1 | radar-beta
+          2 | showLegend false, showLegend true, ticks 2, ticks 3, min 0, max 4, max 5, graticule polygon, graticule circle
+          3 |
 [4] mermaid.js replaces the earlier `max` value with this value.
+    Suggestions:
+      - Remove this option.
+        Output:
+          1 | radar-beta
+          2 | showLegend false, showLegend true, ticks 2, ticks 3, min 1, min 0, max 4, graticule polygon, graticule circle
+          3 |
+      - Remove the earlier option.
+        Output:
+          1 | radar-beta
+          2 | showLegend false, showLegend true, ticks 2, ticks 3, min 1, min 0, max 5, graticule polygon, graticule circle
+          3 |
 [5] mermaid.js replaces the earlier `graticule` value with this value.
+    Suggestions:
+      - Remove this option.
+        Output:
+          1 | radar-beta
+          2 | showLegend false, showLegend true, ticks 2, ticks 3, min 1, min 0, max 4, max 5, graticule polygon
+          3 |
+      - Remove the earlier option.
+        Output:
+          1 | radar-beta
+          2 | showLegend false, showLegend true, ticks 2, ticks 3, min 1, min 0, max 4, max 5, graticule circle
+          3 |
 ---
 
 
@@ -86,7 +269,37 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier `ticks` value with this value.
+    Suggestions:
+      - Remove this option.
+        Output:
+          1 | radar-beta
+          2 | axis A, B, C
+          3 | curve sales{1,2,3}
+          4 | ticks 2, ticks 2
+          5 |
+      - Remove the earlier option.
+        Output:
+          1 | radar-beta
+          2 | axis A, B, C
+          3 | curve sales{1,2,3}
+          4 |  ticks 3, ticks 2
+          5 |
 [2] mermaid.js replaces the earlier `ticks` value with this value.
+    Suggestions:
+      - Remove this option.
+        Output:
+          1 | radar-beta
+          2 | axis A, B, C
+          3 | curve sales{1,2,3}
+          4 | ticks 2, ticks 3
+          5 |
+      - Remove the earlier option.
+        Output:
+          1 | radar-beta
+          2 | axis A, B, C
+          3 | curve sales{1,2,3}
+          4 | ticks 2, ticks 2
+          5 |
 ---
 
 
@@ -108,6 +321,28 @@ Code:
  10 |
 
 [1] mermaid.js replaces the earlier `ticks` value with this value.
+    Suggestions:
+      - Remove this option.
+        Output:
+          1 | radar-beta
+          2 | axis A, B, C
+          3 | curve sales{1,2,3}
+          4 | ticks 2
+          5 | %% note
+          6 | %%{init: {}}%%
+          7 |
+          8 |
+      - Remove the earlier option.
+        Output:
+          1 | radar-beta
+          2 | axis A, B, C
+          3 | curve sales{1,2,3}
+          4 | %% note
+          5 | %%{init: {}}%%
+          6 |
+          7 | ticks %%{}%%
+          8 | 3
+          9 |
 ---
 
 
@@ -124,6 +359,22 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier `min` value with this value.
+    Suggestions:
+      - Remove this option.
+        Output:
+          1 | radar-beta
+          2 | axis A, B, C
+          3 | curve sales{1,2,3}
+          4 | min 10, max 5
+          5 |
+      - Remove the earlier option.
+        Output:
+          1 | radar-beta
+          2 | axis A, B, C
+          3 | curve sales{1,2,3}
+          4 |  max 5
+          5 | min 0
+          6 |
 ---
 
 
@@ -139,6 +390,21 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier `ticks` value with this value.
+    Suggestions:
+      - Remove this option.
+        Output:
+          1 | radar-beta
+          2 | axis A, B, C
+          3 | curve sales{1,2,3}
+          4 | ticks 33
+          5 |
+      - Remove the earlier option.
+        Output:
+          1 | radar-beta
+          2 | axis A, B, C
+          3 | curve sales{1,2,3}
+          4 |  ticks 3
+          5 |
 ---
 
 
@@ -152,6 +418,12 @@ Code:
   3 |
 
 [1] mermaid.js replaces the earlier `ticks` value with this value.
+    Suggestions:
+      - Remove this option.
+        Output:
+          1 | radar-beta
+          2 | ticks 32.5, ticks 32
+          3 |
 ---
 
 
@@ -167,4 +439,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier `ticks` value with this value.
+    Suggestions:
+      - Remove this option.
+        Output:
+          1 | radar-beta
+          2 | axis A, B, C
+          3 | curve sales{1,2,3}
+          4 | ticks 2.5
+          5 |
+      - Remove the earlier option.
+        Output:
+          1 | radar-beta
+          2 | axis A, B, C
+          3 | curve sales{1,2,3}
+          4 |  ticks 3
+          5 |
 ---

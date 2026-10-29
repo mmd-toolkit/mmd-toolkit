@@ -9,23 +9,21 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
+
 <!-- end auto-generated rule notice -->
 
-mermaid.js は `}` のない説明のブロックを受理する。
-ブロックはテキストの終わりまで続き、その後のすべての文をテキストとして取り、
-説明は、ブロックが何を持っていても空になる。
+`accDescr` のブロックの閉じる `}` がないとき、
+mermaid.js はエラーなしに受理する。
+ブロックは後の文をすべてテキストとして取り、何を持っていても説明は空になる。
 
 ## 規則の詳細
 
-この規則は、`}` で閉じていない `accDescr {` のブロックを報告する。
-対象の図種は `xychart` である。
-
-`accDescr { Monthly sales` の後の `title Sales` と `line [1, 2]` の行は、
-タイトルもプロットも与えず、説明は空になる。
-ブロックの前に書いた説明は、空の説明に置き換わる。
-`accDescr: d` の後の `accDescr {` と `e` の行は、空の説明を与える。
-テキストの終わりの `accDescr {` のように、
-何も持たずに閉じていないブロックも報告する。
+この規則は、XY チャート（`xychart`、`xychart-beta`）に当てる。
+閉じる `}` のない `accDescr {` のブロックを、
+テキストの終わりで後に何もない `accDescr {` も含めて報告する。
 
 この規則に**反する**コードの例:
 

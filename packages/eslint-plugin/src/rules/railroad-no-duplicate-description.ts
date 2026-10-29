@@ -9,11 +9,16 @@ import {
   descriptionBlockText,
   descriptionLineText,
 } from "../utils/common-value-text.ts"
+import { oneOfTwoRemovals } from "../utils/removal.ts"
+
+/** A statement that sets the diagram's description. */
+type DescriptionStatement =
+  RailroadAccDescrStatement | RailroadAccDescrBlockStatement
 
 /** Line and block statements share one replacement history. */
 export const railroadNoDuplicateDescription: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "duplicate"
+  MessageIds: "duplicate" | "removeThis" | "removePrevious"
 }> = {
   meta: {
     type: "problem",
@@ -23,33 +28,48 @@ export const railroadNoDuplicateDescription: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("railroad-no-duplicate-description"),
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
       duplicate:
         "mermaid.js replaces the earlier description with the one of this `accDescr`.",
+      removeThis: "Remove this statement.",
+      removePrevious: "Remove the earlier statement that sets the description.",
     },
   },
   create(context) {
-    let previous: string | null = null
+    let previous: {
+      node: DescriptionStatement
+      value: string
+      beforeValue: string | null
+    } | null = null
 
     /** Empty blocks reset history, but their report belongs to the empty-block rule. */
     function check(
-      node: RailroadAccDescrStatement | RailroadAccDescrBlockStatement,
+      node: DescriptionStatement,
       value: string,
       emptyBlock: boolean,
     ): void {
       if (
         !emptyBlock &&
         previous !== null &&
-        previous !== "" &&
-        previous !== value
+        previous.value !== "" &&
+        previous.value !== value
       ) {
         context.report({
           node,
           messageId: "duplicate",
+          suggest: oneOfTwoRemovals(
+            context.sourceCode,
+            node,
+            previous.node,
+            previous.beforeValue === null ||
+              previous.beforeValue === "" ||
+              previous.beforeValue === value,
+          ),
         })
       }
-      previous = value
+      previous = { node, value, beforeValue: previous?.value ?? null }
     }
 
     return {

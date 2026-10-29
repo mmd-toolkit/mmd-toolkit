@@ -31,6 +31,39 @@ D
 `,
       },
     ],
-    invalid: [],
+    invalid: [
+      {
+        name: "invalid/usecase/closing-crlf-with-tab",
+        filename: "input.mmd",
+        code: `usecase-beta\r
+accDescr { First\tline\r
+actor C@{ type: hollow }\r
+D\r
+`,
+        errors: [{ messageId: "closedByOtherBrace" }],
+      },
+
+      {
+        name: "invalid/usecase/crlf",
+        filename:
+          "tests/fixtures/rules/usecase-no-unclosed-description-block/invalid/usecase/crlf-input.mmd",
+        code: `usecase-beta\r
+accDescr { first\r
+A --> B\r
+C@{ type: hollow }\r
+D\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.",
+            line: 2,
+            column: 1,
+            endLine: 2,
+            endColumn: 11,
+          },
+        ],
+      },
+    ],
   },
 )

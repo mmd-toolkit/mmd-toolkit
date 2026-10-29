@@ -9,6 +9,9 @@ Disallow an `evolution` that replaces the stages set before it.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
 A map has one row of stages. A later `evolution` replaces the stages set before
@@ -16,25 +19,18 @@ it without an error, and the earlier stages are lost.
 
 ## Rule Details
 
-This rule reports an `evolution` that gives other stages than the `evolution`
-before it: other names, or other boundaries where they are drawn. It applies to
-`wardley`.
+This rule applies to Wardley maps (`wardley-beta`). It reports an `evolution`
+that changes the names or drawn boundaries of the stages set by the preceding
+`evolution`. A statement repeating the current stages is not reported. Names are
+compared without spaces at their ends, with a second name joined to the first by
+a `/` with one space on each side, as mermaid.js shows them.
 
-After `evolution Genesis -> Custom` and `evolution Early -> Late`, the map shows
-only `Early` and `Late`.
-
-An `evolution` that gives the stages that the map already has is not reported.
-Names are compared without the spaces at their ends, and a second name is joined
-to the first with a `/` that has one space on each side, as mermaid.js shows
-them. mermaid.js draws the boundaries only where every stage has one and draws
-equal stages otherwise, so the boundaries are compared as drawn:
-`A@0.5 -> B@1.0` and `A -> B` give one row of stages. Names are otherwise
-compared as written: mermaid.js turns character references, as `#35;`, and the
-quotes of HTML attributes into other characters before it reads a name, so two
-names that differ only in those may be one name for mermaid.js and two for this
-rule.
-
-Write one `evolution`.
+Boundaries are compared as drawn: mermaid.js uses them only when every stage has
+one, and draws stages of equal width otherwise, so `A@0.5 -> B@1.0` and `A -> B`
+are the same. Names are otherwise compared as written. mermaid.js converts
+character references such as `#35;` and HTML attribute quotes before reading a
+name, so names differing only in these ways may be the same for mermaid.js and
+different for this rule.
 
 Examples of **incorrect** code for this rule:
 
@@ -56,13 +52,6 @@ wardley-beta
 ## Options
 
 This rule has no options.
-
-## Background
-
-The parser keeps the last `evolution`, and the
-[map](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L76-L90)
-takes its names, joining a second name with a `/` that has one space on each
-side, and its boundaries.
 
 <!-- begin auto-generated rule resources -->
 

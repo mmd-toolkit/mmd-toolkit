@@ -10,6 +10,8 @@ Code:
     |                        ^~~~~~~ [1]
   3 |
 
+Output: unchanged
+
 [1] mermaid.js reads only the number at the start of this value and drops the rest of it.
 ---
 
@@ -22,6 +24,8 @@ Code:
   2 | Electricity grid,Homes,unknown
     |                        ^~~~~~~ [1]
   3 |
+
+Output: unchanged
 
 [1] mermaid.js reads this value as NaN, because it does not start with a number: the link has no size.
 ---
@@ -36,6 +40,8 @@ Code:
     |     ^~~~~ [1]
   3 |
 
+Output: unchanged
+
 [1] mermaid.js reads this value as NaN, because it does not start with a number: the link has no size.
 ---
 
@@ -49,7 +55,15 @@ Code:
     |     ^~~~~ [1]
   3 |
 
+Output: unchanged
+
 [1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+    Suggestions:
+      - Write the number as `1.5`.
+        Output:
+          1 | sankey
+          2 | a,b,"1.5"
+          3 |
 ---
 
 
@@ -61,6 +75,8 @@ Code:
   2 | a,b,"1"""
     |     ^~~~~ [1]
   3 |
+
+Output: unchanged
 
 [1] mermaid.js reads only the number at the start of this value and drops the rest of it.
 ---
@@ -76,6 +92,8 @@ Code:
   3 | c,d,1
   4 |
 
+Output: unchanged
+
 [1] mermaid.js reads this value as NaN, because it does not start with a number: the link has no size.
 ---
 
@@ -89,6 +107,8 @@ Code:
     |     ^~~~ [1]
   3 |
 
+Output: unchanged
+
 [1] mermaid.js reads only the number at the start of this value and drops the rest of it.
 ---
 
@@ -100,6 +120,11 @@ Code:
   1 | sankey
   2 | a,b,0x10
     |     ^~~~ [1]
+  3 |
+
+Output:
+  1 | sankey
+  2 | a,b,16
   3 |
 
 [1] mermaid.js reads only the number at the start of this value and drops the rest of it.
@@ -115,6 +140,8 @@ Code:
     |     ^~~ [1]
   3 |
 
+Output: unchanged
+
 [1] mermaid.js reads this value as NaN, because it does not start with a number: the link has no size.
 ---
 
@@ -127,6 +154,8 @@ Code:
   2 | a,b,abc
     |     ^~~ [1]
   3 |
+
+Output: unchanged
 
 [1] mermaid.js reads this value as NaN, because it does not start with a number: the link has no size.
 ---
@@ -141,6 +170,8 @@ Code:
     |     ^~~~ [1]
   3 |
 
+Output: unchanged
+
 [1] mermaid.js reads this value as NaN, because it does not start with a number: the link has no size.
 ---
 
@@ -153,6 +184,8 @@ Code:
   2 | a,b,1;
     |     ^~ [1]
   3 |
+
+Output: unchanged
 
 [1] mermaid.js reads only the number at the start of this value and drops the rest of it.
 ---
@@ -168,6 +201,8 @@ Code:
   3 | c,d,2
   4 |
 
+Output: unchanged
+
 [1] mermaid.js reads only the number at the start of this value and drops the rest of it.
 ---
 
@@ -180,6 +215,8 @@ Code:
   2 | a,b,1abc
     |     ^~~~ [1]
   3 |
+
+Output: unchanged
 
 [1] mermaid.js reads only the number at the start of this value and drops the rest of it.
 ---
@@ -194,6 +231,8 @@ Code:
     |     ^~~~~ [1]
   3 |
 
+Output: unchanged
+
 [1] mermaid.js reads only the number at the start of this value and drops the rest of it.
 ---
 
@@ -206,6 +245,8 @@ Code:
   2 | a,b,1 2
     |     ^~~ [1]
   3 |
+
+Output: unchanged
 
 [1] mermaid.js reads only the number at the start of this value and drops the rest of it.
 ---
@@ -220,6 +261,8 @@ Code:
     |     ^~~ [1]
   3 |
 
+Output: unchanged
+
 [1] mermaid.js reads only the number at the start of this value and drops the rest of it.
 ---
 
@@ -232,6 +275,44 @@ Code:
   2 | a,b,1_000
     |     ^~~~~ [1]
   3 |
+
+Output:
+  1 | sankey
+  2 | a,b,1000
+  3 |
+
+[1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/negative-infinity-case
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/negative-infinity-case-input.mmd
+
+Code:
+  1 | sankey-beta
+  2 | a,b,-infinity
+    |     ^~~~~~~~~ [1]
+  3 |
+
+Output:
+  1 | sankey-beta
+  2 | a,b,-Infinity
+  3 |
+
+[1] mermaid.js reads this value as NaN, because it does not start with a number: the link has no size.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/number-holds-directive
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/number-holds-directive-input.mmd
+
+Code:
+  1 | sankey-beta
+  2 | a,b,1%%{init: {"theme":"dark"}}%%_000
+    |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 |
+
+Output: unchanged
 
 [1] mermaid.js reads only the number at the start of this value and drops the rest of it.
 ---
@@ -247,6 +328,8 @@ Code:
   3 | c,d,2
   4 |
 
+Output: unchanged
+
 [1] mermaid.js reads this value as NaN, because it does not start with a number: the link has no size.
 ---
 
@@ -260,6 +343,8 @@ Code:
     |     ^~ [1]
   3 |
 
+Output: unchanged
+
 [1] mermaid.js reads only the number at the start of this value and drops the rest of it.
 ---
 
@@ -271,6 +356,11 @@ Code:
   1 | sankey
   2 | a,b,infinity
     |     ^~~~~~~~ [1]
+  3 |
+
+Output:
+  1 | sankey
+  2 | a,b,Infinity
   3 |
 
 [1] mermaid.js reads this value as NaN, because it does not start with a number: the link has no size.
@@ -286,6 +376,8 @@ Code:
     |     ^~~~~~~~~ [1]
   3 |
 
+Output: unchanged
+
 [1] mermaid.js reads only the number at the start of this value and drops the rest of it.
 ---
 
@@ -298,6 +390,8 @@ Code:
   2 | a,b,%% c
     |     ^~~~ [1]
   3 |
+
+Output: unchanged
 
 [1] mermaid.js reads this value as NaN, because it does not start with a number: the link has no size.
 ---
@@ -316,6 +410,8 @@ Code:
     | ~~ [1]
   5 |
 
+Output: unchanged
+
 [1] mermaid.js reads only the number at the start of this value and drops the rest of it.
 ---
 
@@ -331,6 +427,8 @@ Code:
     | ~~ [1]
   4 |
 
+Output: unchanged
+
 [1] mermaid.js reads only the number at the start of this value and drops the rest of it.
 ---
 
@@ -343,6 +441,8 @@ Code:
   2 | a,b,"1,234"
     |     ^~~~~~~ [1]
   3 |
+
+Output: unchanged
 
 [1] mermaid.js reads only the number at the start of this value and drops the rest of it.
 ---
@@ -358,7 +458,16 @@ Code:
     |     ^~~~~ [1]
   4 |
 
+Output: unchanged
+
 [1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+    Suggestions:
+      - Write the number as `1.5`.
+        Output:
+          1 | sankey
+          2 | a,b,1
+          3 | c,d,"1.5"
+          4 |
 ---
 
 
@@ -371,17 +480,24 @@ Code:
     |     ^ [1]
   3 |
 
+Output: unchanged
+
 [1] mermaid.js reads this value as NaN, because it does not start with a number: the link has no size.
 ---
 
 
-Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/value-text-after-number-crlf
-Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/value-text-after-number-crlf-input.mmd
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/value-underscore-decimal
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/value-underscore-decimal-input.mmd
 
 Code:
-  1 | sankey
-  2 | a,b,1x
-    |     ^~ [1]
+  1 | sankey-beta
+  2 | a,b,1_000.5
+    |     ^~~~~~~ [1]
+  3 |
+
+Output:
+  1 | sankey-beta
+  2 | a,b,1000.5
   3 |
 
 [1] mermaid.js reads only the number at the start of this value and drops the rest of it.
@@ -396,6 +512,8 @@ Code:
   2 | a,b,5 TWh
     |     ^~~~~ [1]
   3 |
+
+Output: unchanged
 
 [1] mermaid.js reads only the number at the start of this value and drops the rest of it.
 ---

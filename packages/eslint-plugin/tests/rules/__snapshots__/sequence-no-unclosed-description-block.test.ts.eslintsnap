@@ -27,6 +27,15 @@ Code:
   5 |
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+    Suggestions:
+      - Close the block at the end of the text.
+        Output:
+          1 | sequenceDiagram
+          2 |   A ->> B: x
+          3 |   accDescr { y
+          4 |   B ->> A: z
+          5 | }
+          6 |
 ---
 
 
@@ -105,20 +114,6 @@ Code:
 ---
 
 
-Test: sequence-no-unclosed-description-block >> invalid >>> invalid/sequence/db-acc-descr-block-unclosed-crlf
-Filename: tests/fixtures/rules/sequence-no-unclosed-description-block/invalid/sequence/db-acc-descr-block-unclosed-crlf-input.mmd
-
-Code:
-  1 | sequenceDiagram
-  2 | accDescr: d
-  3 | accDescr { x
-    | ^~~~~~~~~~ [1]
-  4 |
-
-[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
----
-
-
 Test: sequence-no-unclosed-description-block >> invalid >>> invalid/sequence/db-acc-descr-block-unclosed-directive-only
 Filename: tests/fixtures/rules/sequence-no-unclosed-description-block/invalid/sequence/db-acc-descr-block-unclosed-directive-only-input.mmd
 
@@ -187,6 +182,15 @@ Code:
   5 |
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+    Suggestions:
+      - Close the block at the end of the text.
+        Output:
+          1 | sequenceDiagram
+          2 | accDescr: d
+          3 | accDescr { first
+          4 | A->>B: x
+          5 | }
+          6 |
 ---
 
 
@@ -227,6 +231,20 @@ Code:
   2 | accDescr: x
   3 | accDescr {
     | ^~~~~~~~~~ [1]
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---
+
+
+Test: sequence-no-unclosed-description-block >> invalid >>> invalid/sequence/unclosed-directive-in-block
+Filename: tests/fixtures/rules/sequence-no-unclosed-description-block/invalid/sequence/unclosed-directive-in-block-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr { first %%{wrap skip tail
+    | ^~~~~~~~~~ [1]
+  3 | A ->> B: x
+  4 |
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
 ---

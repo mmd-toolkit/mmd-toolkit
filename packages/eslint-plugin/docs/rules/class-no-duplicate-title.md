@@ -11,26 +11,20 @@ Disallow an `accTitle` statement that sets the title again.
 
 <!-- end auto-generated rule notice -->
 
-A diagram has one accessible title. mermaid.js accepts every `accTitle`
-statement, and each one silently replaces the title set before it. A second
-title is usually left over from rewriting the text or from pasting a part twice,
-and the formatted text does not show which one counts.
+A diagram has one accessible title. When another `accTitle` statement sets it,
+mermaid.js replaces the earlier title without an error, so the earlier one is
+lost.
 
 ## Rule Details
 
-This rule reports every `accTitle` statement after the first one, when it sets a
-title other than the one before it. It applies to `classDiagram`.
+This rule applies to class diagrams (`classDiagram` and `classDiagram-v2`). It
+reports an `accTitle` statement that changes a title set by an earlier
+statement. Repeating the current title is not reported, while going back to an
+earlier one is (after `accTitle: a` and `accTitle: b`, a third `accTitle: a` is
+reported), and whitespace at the ends is ignored when comparing titles.
 
-After `accTitle: first` and `accTitle: second`, the title is `second`.
-`accTitle:` with no text sets the title too: it takes the next line that holds
-text as the title, past empty lines, comment lines, and directives. When no such
-line follows, mermaid.js rejects it.
-
-A statement that sets the title that the diagram already has is not reported:
-after `accTitle: a`, a second `accTitle: a` loses nothing. Titles are compared
-as mermaid.js keeps them, without the whitespace at their ends, so
-`accTitle:  a` sets the same title. After `accTitle: a` and `accTitle: b`, a
-third `accTitle: a` is reported, because it replaces `b`.
+With no text after `accTitle:`, the next line with text supplies the title, past
+empty lines, comment lines, and directives.
 
 Examples of **incorrect** code for this rule:
 

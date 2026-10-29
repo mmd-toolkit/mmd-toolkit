@@ -10,54 +10,38 @@ Disallow a style update that replaces a value that an earlier update gave.
 
 <!-- end auto-generated rule notice -->
 
-`UpdateElementStyle` and `UpdateRelStyle` set the style of an element, a
-boundary, or a relationship, and a later update replaces only the fields that it
-gives. When it gives a field again, the earlier value is lost without an error:
-after `UpdateElementStyle(a, $bgColor="red")`, the update
-`UpdateElementStyle(a, $bgColor="blue")` leaves only the blue background.
+`UpdateElementStyle` and `UpdateRelStyle` update the style of an element,
+boundary, or relationship. Each supplied style attribute replaces its earlier
+value without an error, so a later background color can erase an earlier one.
 
 ## Rule Details
 
-This rule reports an argument of `UpdateElementStyle` or `UpdateRelStyle` that
-gives a field of its target a value other than the one that an earlier update,
-or an earlier argument of the same update, gave that field. It applies to `c4`.
-`UpdateElementStyle` updates an element or a boundary, the initial boundary
-`global` included, and `UpdateRelStyle` updates a relationship; the grammar of
-mermaid.js has no other style update.
+This rule applies to C4 diagrams (`C4Context`, `C4Container`, `C4Component`,
+`C4Dynamic`, and `C4Deployment`). It reports an argument that changes a style
+attribute set by an earlier update or an earlier argument in the same update.
+Repeating a value or setting an attribute for the first time is not reported.
+After `$bgColor="red"` and `$bgColor="blue"`, a third `$bgColor="red"` is
+reported, because it replaces `blue`. Empty arguments set empty values; when one
+replaces an earlier value, the update is reported.
 
-The target is the one that the update finds, as [c4-no-undef](./c4-no-undef.md)
-describes: the first element, or else the first boundary, whose alias equals the
-first argument, or the first relationship whose endpoints, in their order, equal
-the first two arguments, among those declared before the update. A named
-`$alias`, `$from`, or `$to` changes what later updates find, and the field that
-it gives is not compared. An update that finds no target changes nothing and is
-not compared.
+Only updates that find a target are compared: the first matching element,
+otherwise boundary, or the first relationship with matching endpoints in order,
+declared before the update. The initial boundary `global` is also a target.
+Named `$alias`, `$from`, and `$to` change what later updates find and are not
+compared.
 
-A field is the parameter of the place of an argument, as `bgColor` for the
-second argument of `UpdateElementStyle`, or the key of a named attribute, as
-`$bgColor`, in any place: `UpdateElementStyle(a, "red", $bgColor="blue")` gives
-`bgColor` twice. Keys are compared with their case: `$BgColor` is another field,
-which [c4-no-invalid-attribute-key](./c4-no-invalid-attribute-key.md) reports. A
-value that a declaration gives is not compared. When a declaration writes a
-field, that field's previous update value is no longer compared; update values
-of fields that the declaration leaves unchanged are kept.
+An argument's position or named key selects its attribute, so
+`UpdateElementStyle(a, "red", $bgColor="blue")` sets `bgColor` twice. Keys are
+compared with their case: `$BgColor` is another attribute and is not compared
+with `$bgColor`; [c4-no-invalid-attribute-key](./c4-no-invalid-attribute-key.md)
+reports it. Declaration values are not compared; a declaration resets
+comparisons only for the attributes it writes.
 
-An empty argument gives its field the empty value: after
-`UpdateElementStyle(a, $bgColor="red")`, the update
-`UpdateElementStyle(a, , "white")` replaces `red` with the empty value. The
-empty argument has no text of its own, so the rule reports its update.
-
-A value that the field already has is not reported, nor a field that the target
-has not had. After `red` and `blue`, a third `red` is reported, because it
-replaces `blue`. Values are compared without the whitespace at their ends, and
-otherwise as written: mermaid.js turns character references, as `#35;`, and the
-quotes of HTML attributes into other characters before it reads a value, and it
-reads the offsets in the fifth and sixth places of `UpdateRelStyle` as whole
-numbers, so two values that differ only in those, as `10` and `010` for an
-offset, may be one value for mermaid.js and two for this rule.
-
-Give each field of a target once. To give one field, use a named attribute, as
-`UpdateElementStyle(a, $fontColor="white")`.
+Values are compared with whitespace at the ends removed and otherwise as
+written. Character references and HTML attribute quotes may therefore differ for
+this rule while mermaid.js reads them alike. The offsets in positions five and
+six of `UpdateRelStyle` are also compared as written, so `10` and `010` can be
+reported as different although mermaid.js reads both as the same whole number.
 
 Examples of **incorrect** code for this rule:
 
@@ -104,14 +88,6 @@ This rule has no options.
 
 - [c4-no-undef](./c4-no-undef.md)
 - [c4-no-invalid-attribute-key](./c4-no-invalid-attribute-key.md)
-
-## Background
-
-[`updateElStyle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L494-L590)
-and
-[`updateRelStyle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L593-L638)
-assign each field that an argument gives, an empty argument included, over the
-value that the target had.
 
 <!-- begin auto-generated rule resources -->
 

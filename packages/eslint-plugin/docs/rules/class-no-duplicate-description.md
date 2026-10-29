@@ -11,33 +11,24 @@ Disallow an `accDescr` statement that sets the description again.
 
 <!-- end auto-generated rule notice -->
 
-A diagram has one description. mermaid.js accepts every `accDescr` statement,
-and each one silently replaces the description set before it. A second
-description is usually left over from rewriting the text or from pasting a part
-twice.
+A diagram has one description. When another `accDescr` statement sets it,
+mermaid.js replaces the earlier description without an error, so the earlier one
+is lost.
 
 ## Rule Details
 
-This rule reports every statement that sets the description after the first one,
-when it sets a description other than the one before it. It applies to
-`classDiagram`.
+This rule applies to class diagrams (`classDiagram` and `classDiagram-v2`). It
+reports an `accDescr` statement that changes a description set by an earlier
+statement. The line form and blocks containing text are compared together.
 
-`accDescr:` and a description block with text both set the description.
-`accDescr:` with no text takes the next line that holds text as the description,
-past empty lines, comment lines, and directives; when no such line follows,
-mermaid.js rejects it. The line form and the block form may be mixed: whichever
-comes first, the description written last is used. After `accDescr: first` and
-`accDescr: second`, the description is `second`, and so it is after a block with
-`first` followed by `accDescr: second`.
+With no text after `accDescr:`, the next line with text supplies the
+description, past empty lines, comment lines, and directives.
 
-A statement that sets the description that the diagram already has is not
-reported, in either form: after `accDescr: d`, the block `accDescr { d }` loses
-nothing. Descriptions are compared as mermaid.js keeps them, without the
-whitespace at their ends and without the whitespace after each line break, so
-the indentation of the lines of a block and the empty lines in it do not count.
-Every line break (LF, CRLF, or CR) is read as a line feed, so a block written
-with CRLF sets the same description as one written with LF. After `accDescr: a`
-and `accDescr: b`, a third `accDescr: a` is reported, because it replaces `b`.
+Repeating the current description is not reported, while going back to an
+earlier one is: after `accDescr: a` and `accDescr: b`, a third `accDescr: a` is
+reported. Comparisons ignore whitespace at the ends and after each line break,
+including indentation and empty lines in blocks, and treat LF, CRLF, and CR as
+LF.
 
 Examples of **incorrect** code for this rule:
 

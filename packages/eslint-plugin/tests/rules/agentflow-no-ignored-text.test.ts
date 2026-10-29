@@ -45,6 +45,25 @@ direction TB;\u00a0%% c
           },
         ],
       },
+
+      {
+        name: "invalid/agentflow/direction-crlf",
+        filename:
+          "tests/fixtures/rules/agentflow-no-ignored-text/invalid/agentflow/direction-crlf-input.mmd",
+        code: `agentflow-beta TB\r
+A-->B; direction LR\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js reads this line as a `direction` statement and drops this text.",
+            line: 2,
+            column: 1,
+            endLine: 2,
+            endColumn: 7,
+          },
+        ],
+      },
     ],
   },
 )

@@ -9,43 +9,43 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
+
 <!-- end auto-generated rule notice -->
 
-Event Modeling の図は、
+イベントモデリング図は、
 `accDescr` が行かブロックで設定するアクセシブルな説明を 1 つ持つ。
 後の `accDescr` は、前に設定した説明をエラーなしに置き換え、前の説明は失われる。
 
 ## 規則の詳細
 
-この規則は、前の `accDescr` の文字と違う文字を持つ `accDescr` 文を、
-前の文字が空でないときに報告する。
-対象の図種は `eventmodeling` である。
-
-行の形とブロックの形は混ぜてよく、どちらが後でも、最後に書いた説明が使われる。
-mermaid.js は、`accDescr` とその `:` や括弧を含めた文全体を説明として保つので、
-文字のない文も説明を設定する。
-説明の後では、文字のない `accDescr:` や空白だけのものを報告し、
-コメント行だけを持つブロックも、mermaid.js がコメントを取り除くので報告する。
-ほかに何も持たないブロックは、
+この規則は、イベントモデリング図（`eventmodeling`）に当てる。
+直前の `accDescr` の文字が空でないとき、
+それと違う文字を持つ `accDescr` を報告する。
+行の形とブロックの形は互いに比べる。
+空でない文字の後では、文字がないか空白だけの `accDescr:` を報告する。
+mermaid.js が `accDescr:` を含む文全体を説明として保つからである。
+コメント行だけのブロックも、mermaid.js がコメントを取り除くので報告する。
+前の説明に戻す文は報告する。
+`accDescr: a` と `accDescr: b` の後の 3 つ目の `accDescr: a` は報告する。
+`accDescr {}` のような空のブロックとディレクティブだけのブロックは、
+代わりに
 [eventmodeling-no-empty-description-block](./eventmodeling-no-empty-description-block.ja.md)
 が報告する。
-文字のない文の後の文は文字を失わず、報告しない。
+文字のない文の後の文は、文字が失われないので報告しない。
 
-文字は語で比べる。
-各行の始めと終わりの空白と空の行を除き、
+文字は、各行の先頭と末尾の空白と空の行を除き、
 2 つ以上の空白やタブの連なりを 1 つの空白として比べる。
-すべての改行（LF、CRLF、CR）は LF として読み、 U+2028 と U+2029 も、
-どちらの形でも行を終える。
-そのため `accDescr: d` とブロック `accDescr { d }` は同じ語を与え、報告しない。
-mermaid.js は、一方には `:` を、他方には括弧を保つが、それは比べない。
-`accDescr: a` と `accDescr: b` の後の 3 つ目の `accDescr: a` は、
-`b` を置き換えるので報告する。
-文字はそのほかは書いたとおりに比べる。
-mermaid.js は、`#35;` のような文字参照と HTML の属性の引用符を、
-説明を読む前にほかの文字に変えるので、それだけが違う 2 つの文字は、
-mermaid.js には 1 つの説明で、この規則には 2 つのことがある。
+LF、CRLF、CR は LF として読む。
+`accDescr: d` と `accDescr { d }` は、mermaid.js が違う記号を保つが、
+違うものとして報告しない。
 
-`accDescr` 文は 1 つにする。
+文字はそのほかは書いたとおりに比べる。
+mermaid.js は、
+説明を読む前に `#35;` のような文字参照と HTML の属性の引用符を変換するので、
+それらだけが違う文字は、mermaid.js には同じでも、この規則には違うことがある。
 
 この規則に**反する**コードの例:
 
@@ -71,17 +71,6 @@ eventmodeling accDescr: Second
 
 - [eventmodeling-no-duplicate-title](./eventmodeling-no-duplicate-title.ja.md)
 - [eventmodeling-no-empty-description-block](./eventmodeling-no-empty-description-block.ja.md)
-
-## 背景
-
-`accDescr` の
-[終端記号](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L60-L60)
-は文全体を取り、
-[値の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L6-L41)
-は、その名前が知っている名前でないので、それを変換しない。
-パーサーは最後の説明を保ち、
-[`populateCommonDb`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14)
-は、それが空になることはないので、それを設定する。
 
 <!-- begin auto-generated rule resources -->
 

@@ -11,20 +11,16 @@ Disallow writing the label of a class again, differently.
 
 <!-- end auto-generated rule notice -->
 
-A class may be declared many times, and the label written last wins. When a name
-that is already in use is declared again for what is meant as a new class, the
-earlier label is lost without an error.
+A class may be declared many times, and the last label is used. Reusing a name
+for what was meant as another class loses the earlier label without an error.
 
 ## Rule Details
 
-This rule reports a class statement with a label when the same class was
-declared before with a different label. It applies to `classDiagram`.
-
-After `class A["First"]`, the statement `class A["Second"]` gives the class `A`
-the label `Second`, and the label `First` is lost. Declaring the class again
-without a label, as in `class A`, keeps its label and is not reported, and
-neither is writing the same label again. Members written in two class statements
-of the same class are added together; they are not compared.
+This rule applies to class diagrams (`classDiagram` and `classDiagram-v2`). It
+reports a class statement whose label differs from the label that the class
+already has. Declaring the class again without a label, or with the current
+label, is not reported. Members in repeated class declarations are added
+together and are not compared.
 
 Examples of **incorrect** code for this rule:
 

@@ -1,3 +1,5 @@
+import type { QuadrantQuadrantStatement } from "@mmd-toolkit/parser"
+import { oneOfTwoRemovals } from "../utils/removal.ts"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 
@@ -10,7 +12,7 @@ import { ruleDocsUrl } from "../rule-docs-url.ts"
  */
 export const quadrantNoRedefinedQuadrant: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "redefined"
+  MessageIds: "redefined" | "removeThis" | "removePrevious"
 }> = {
   meta: {
     type: "problem",
@@ -20,28 +22,50 @@ export const quadrantNoRedefinedQuadrant: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("quadrant-no-redefined-quadrant"),
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
+      removeThis: "Remove this statement.",
+      removePrevious: "Remove the earlier statement.",
       redefined:
         "mermaid.js replaces the text of `quadrant-{{quadrant}}`, set earlier, with the one of this statement.",
     },
   },
   create(context) {
-    const texts = new Map<number, string>()
+    const texts = new Map<
+      number,
+      {
+        node: QuadrantQuadrantStatement
+        value: string
+        before: string | undefined
+      }
+    >()
     return {
       QuadrantQuadrantStatement(node) {
         const value = node.text.value.trim()
         const earlier = texts.get(node.quadrant)
-        if (earlier !== undefined && earlier !== "" && earlier !== value) {
+        if (
+          earlier !== undefined &&
+          earlier.value !== "" &&
+          earlier.value !== value
+        ) {
           context.report({
             node,
             messageId: "redefined",
+            suggest: oneOfTwoRemovals(
+              context.sourceCode,
+              node,
+              earlier.node,
+              earlier.before === undefined ||
+                earlier.before === "" ||
+                earlier.before === value,
+            ),
             data: {
               quadrant: String(node.quadrant),
             },
           })
         }
-        texts.set(node.quadrant, value)
+        texts.set(node.quadrant, { node, value, before: earlier?.value })
       },
     }
   },

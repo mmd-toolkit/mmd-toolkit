@@ -13,6 +13,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 |   accDescr: First
+          3 |   "A" : 1
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | pie
+          2 |   accDescr: Second
+          3 |   "A" : 1
+          4 |
 ---
 
 
@@ -26,6 +39,15 @@ Code:
     | ^~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | accDescr {First}
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | pie
+          2 | accDescr {Second}
 ---
 
 
@@ -43,6 +65,17 @@ Code:
     | ~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | accDescr: First
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | pie
+          2 | accDescr {
+          3 | %% TODO
+          4 | }
 ---
 
 
@@ -61,6 +94,19 @@ Code:
   6 | accDescr: Third
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | accDescr: First
+          3 | accDescr: Third
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | pie
+          2 | accDescr {
+          3 | %% TODO
+          4 | }
+          5 | accDescr: Third
 ---
 
 
@@ -75,6 +121,17 @@ Code:
   4 | "A":1
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | accDescr: First
+          3 | "A":1
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | pie
+          2 | accDescr:
+          3 | "A":1
 ---
 
 
@@ -89,6 +146,39 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | accDescr: #35;
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | pie
+          2 | accDescr: #
+          3 |
+---
+
+
+Test: pie-no-duplicate-description >> invalid >>> invalid/pie/description-equal-predecessor
+Filename: tests/fixtures/rules/pie-no-duplicate-description/invalid/pie/description-equal-predecessor-input.mmd
+
+Code:
+  1 | pie
+  2 | accDescr: A
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
 ---
 
 
@@ -103,6 +193,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | accDescr: <b x="v">A</b>
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | pie
+          2 | accDescr: <b x='v'>A</b>
+          3 |
 ---
 
 
@@ -116,6 +217,15 @@ Code:
     | ^~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | accDescr: First
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | pie
+          2 | accDescr {Second}
 ---
 
 
@@ -129,6 +239,15 @@ Code:
     | ^~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | accDescr {First}
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | pie
+          2 | accDescr:Second
 ---
 
 
@@ -142,6 +261,15 @@ Code:
     | ^~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | accDescr:First
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | pie
+          2 | accDescr {Second}
 ---
 
 
@@ -158,6 +286,88 @@ Code:
     | ~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | accDescr {A
+          3 | B}
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | pie
+          2 | accDescr {A
+          3 | C}
+---
+
+
+Test: pie-no-duplicate-description >> invalid >>> invalid/pie/description-removal-empty-predecessor
+Filename: tests/fixtures/rules/pie-no-duplicate-description/invalid/pie/description-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | pie
+  2 | accDescr {}
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | accDescr {}
+          3 | accDescr: A
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | pie
+          2 | accDescr {}
+          3 | accDescr: B
+          4 |
+---
+
+
+Test: pie-no-duplicate-description >> invalid >>> invalid/pie/description-remove-previous-matching-value
+Filename: tests/fixtures/rules/pie-no-duplicate-description/invalid/pie/description-remove-previous-matching-value-input.mmd
+
+Code:
+  1 | pie
+  2 | accDescr: A
+  3 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  4 | accDescr: A
+    | ^~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | pie
+          2 | accDescr: B
+          3 | accDescr: A
+          4 |
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | accDescr: A
+          3 | accDescr: B
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | pie
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
 ---
 
 
@@ -173,6 +383,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | accDescr {a	b}
+          3 | "A":1
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | pie
+          2 | accDescr: a b
+          3 | "A":1
+          4 |
 ---
 
 
@@ -188,7 +411,24 @@ Code:
     | ^~~~~~~~~~~~~~ [2]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | accDescr:First
+          3 | accDescr:Third
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | pie
+          2 | accDescr {Second}
+          3 | accDescr:Third
 [2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | accDescr:First
+          3 | accDescr {Second}
 ---
 
 
@@ -205,6 +445,21 @@ Code:
     | ^~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | accDescr: First
+          3 | %% c
+          4 |
+          5 | %%{init: {}}%%
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | pie
+          2 | %% c
+          3 |
+          4 | %%{init: {}}%%
+          5 | accDescr: Second
 ---
 
 
@@ -218,6 +473,11 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | pie
+          2 | accDescr: Sec%%{init: {}}%%ond
 ---
 
 
@@ -232,4 +492,15 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | accDescr: First
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | pie
+          2 | accDescr: 	
+          3 |
 ---

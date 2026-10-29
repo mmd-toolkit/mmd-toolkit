@@ -9,41 +9,32 @@ Disallow a style that replaces an earlier value of the same target.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-In `style A fill:red, fill:blue`, mermaid.js keeps only `blue`. A later
-`style A fill:blue` statement replaces `red` in the same way: the drawing merges
-the `style` statements of one target, and a later value of a property replaces
-the earlier one. mermaid.js gives no error.
+mermaid.js merges `style` statements for the same target and keeps the last
+value of each property. A later value replaces an earlier one without an error,
+whether both appear in one statement or separate statements.
 
 ## Rule Details
 
-This rule reports a property `fill`, `color`, `stroke`, `stroke-width`, or
-`fill-opacity` that gives a target a value other than the one that the same
-property gave it before, in the same statement or in an earlier one. It applies
-to `venn`.
+This rule applies to Venn diagrams (`venn-beta`). It reports a `fill`, `color`,
+`stroke`, `stroke-width`, or `fill-opacity` property that changes the same
+target's latest value, within or across statements. New properties and repeated
+values are not reported. Other properties are checked by
+[venn-no-invalid-style-key](./venn-no-invalid-style-key.md).
 
-A target is the list of names after `style`, compared without their order:
-`style B, A` styles the target of `style A, B`. A property that the target has
-not had before is not reported: `style A fill:red` and `style A stroke:blue`
-give A both. Other properties change nothing in the drawing; they are not
-compared, and [venn-no-invalid-style-key](./venn-no-invalid-style-key.md)
-reports them.
+Targets are compared by their lists of names without regard to order, so
+`style B, A` and `style A, B` have the same target. Values are compared as
+written without surrounding quotes; spaces inside quotes count. Unquoted `2px`
+and `2 px` differ for this rule even though mermaid.js joins their parts into
+the same value.
 
-A property that gives the value that the target already has is not reported.
-Values are compared as written, with or without quotes: `fill:"red"` after
-`fill:red` is the same, while the spaces inside quotes count. After `fill:red`
-and `fill:blue`, a third `fill:red` is reported, because it replaces `blue`.
-mermaid.js joins the parts of a value without quotes with one space, also where
-no space separates them, so `2px` and `2 px` are one value for mermaid.js and
-two for this rule.
-
-mermaid.js converts character references and HTML attribute quotes before it
-reads names and values, and the drawing joins target names with `|`, so two
-spellings may be one value or target for mermaid.js and two for this rule, or
-the reverse.
-
-Give each property of a target once.
+mermaid.js converts character references and HTML attribute quotes in names and
+values. These conversions can make its matching differ from this rule's
+comparisons.
 
 Examples of **incorrect** code for this rule:
 
@@ -79,14 +70,6 @@ This rule has no options.
 ## Related Rules
 
 - [venn-no-invalid-style-key](./venn-no-invalid-style-key.md)
-
-## Background
-
-[`addStyleData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L63-L70)
-keeps the last value of a property in one statement, and
-[`buildStyleByKey`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L17-L29)
-merges the statements of one target, the later values replacing the earlier
-ones.
 
 <!-- begin auto-generated rule resources -->
 

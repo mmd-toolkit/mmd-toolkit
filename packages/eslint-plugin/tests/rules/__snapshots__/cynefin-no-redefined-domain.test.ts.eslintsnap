@@ -17,6 +17,23 @@ Code:
   8 |
 
 [1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 |   complex
+          3 |     "Investigate"
+          4 |   clear
+          5 |     "Restart"
+          6 |
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 |   clear
+          3 |     "Restart"
+          4 |   complex
+          5 |     "Experiment"
+          6 |
 ---
 
 
@@ -36,6 +53,23 @@ Code:
   8 |
 
 [1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 |   complex
+          3 |     "Investigate"
+          4 |   clear
+          5 |     "Restart"
+          6 |
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 |   clear
+          3 |     "Restart"
+          4 |   complex
+          5 |     "Experiment"
+          6 |
 ---
 
 
@@ -62,6 +96,17 @@ Code:
     | ^~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Old"
+          3 | accDescr {}
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr {}
+          3 | complex "New"
 ---
 
 
@@ -80,6 +125,21 @@ Code:
     | ~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex
+          3 | "Investigate"
+          4 | clear
+          5 | "Restart"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | clear
+          3 | "Restart"
+          4 | complex
+          5 | "Experiment"
 ---
 
 
@@ -94,6 +154,17 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Experiment"
+          3 | clear "Restart"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | clear "Restart"
+          3 | complex "Investigate"
 ---
 
 
@@ -107,6 +178,15 @@ Code:
     | ^~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta:
+          2 | complex "First"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta:
+          2 | complex "Second"
 ---
 
 
@@ -120,23 +200,15 @@ Code:
     | ^~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
----
-
-
-Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-crlf-comment-directive
-Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-crlf-comment-directive-input.mmd
-
-Code:
-  1 | cynefin-beta
-  2 | complex "Old"
-  3 | %% copied section
-  4 | %%{init: {}}%%
-  5 |
-  6 | complex 'New'
-    | ^~~~~~~~~~~~~ [1]
-  7 |
-
-[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A\rB"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A\nB"
 ---
 
 
@@ -150,6 +222,15 @@ Code:
     | ^~~~~~~ [1]
 
 [1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Investigate"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex
 ---
 
 
@@ -164,6 +245,17 @@ Code:
   4 | complex "A"
 
 [1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A"
+          3 | complex "A"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex
+          3 | complex "A"
 ---
 
 
@@ -177,6 +269,37 @@ Code:
     | ^~~~~~~ [1]
 
 [1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex ""
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-equal-predecessor
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-equal-predecessor-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | complex "A"
+  3 | complex "A"
+  4 | complex "B"
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A"
+          3 | complex "A"
+          4 |
 ---
 
 
@@ -190,6 +313,15 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "In\qvestigate"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Inqvestigate"
 ---
 
 
@@ -203,6 +335,15 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "<b x="a">A</b>"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "<b x='a'>A</b>"
 ---
 
 
@@ -216,6 +357,15 @@ Code:
     | ^~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex " A "
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A"
 ---
 
 
@@ -229,6 +379,15 @@ Code:
     | ^~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A  B"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A B"
 ---
 
 
@@ -248,8 +407,59 @@ Code:
     | ^~~~~~~~~~~ [3]
 
 [1] mermaid.js replaces the items of the domain `complicated`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complicated "A"
+          3 | clear "A"
+          4 | chaotic "A"
+          5 | clear "B"
+          6 | chaotic "B"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | clear "A"
+          3 | chaotic "A"
+          4 | complicated "B"
+          5 | clear "B"
+          6 | chaotic "B"
 [2] mermaid.js replaces the items of the domain `clear`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complicated "A"
+          3 | clear "A"
+          4 | chaotic "A"
+          5 | complicated "B"
+          6 | chaotic "B"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complicated "A"
+          3 | chaotic "A"
+          4 | complicated "B"
+          5 | clear "B"
+          6 | chaotic "B"
 [3] mermaid.js replaces the items of the domain `chaotic`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complicated "A"
+          3 | clear "A"
+          4 | chaotic "A"
+          5 | complicated "B"
+          6 | clear "B"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complicated "A"
+          3 | clear "A"
+          4 | complicated "B"
+          5 | clear "B"
+          6 | chaotic "B"
 ---
 
 
@@ -264,6 +474,17 @@ Code:
     | ^~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A"
+          3 | complex "A" "B"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A"
+          3 | complex "A"
 ---
 
 
@@ -277,6 +498,15 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Investigate" "Investigate"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Investigate"
 ---
 
 
@@ -290,6 +520,15 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Investigate" "Experiment"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Experiment"
 ---
 
 
@@ -305,7 +544,29 @@ Code:
     | ^~~~~~~~~~~ [2]
 
 [1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A"
+          3 | complex "A"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "B"
+          3 | complex "A"
 [2] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A"
+          3 | complex "B"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A"
+          3 | complex "A"
 ---
 
 
@@ -321,6 +582,19 @@ Code:
   5 | complex --> clear : "Move"
 
 [1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Old"
+          3 | clear "Restart"
+          4 | complex --> clear : "Move"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | clear "Restart"
+          3 | complex "New"
+          4 | complex --> clear : "Move"
 ---
 
 
@@ -336,6 +610,19 @@ Code:
     | ^~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex --> clear : "Move"
+          3 | complex "Old"
+          4 | clear "Restart"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex --> clear : "Move"
+          3 | clear "Restart"
+          4 | complex "New"
 ---
 
 
@@ -349,6 +636,15 @@ Code:
     | ^~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "#65;"
 ---
 
 
@@ -362,4 +658,13 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the items of the domain `confusion`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | confusion "A" "B" "C" "D"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | confusion "A" "B" "C" "E"
 ---

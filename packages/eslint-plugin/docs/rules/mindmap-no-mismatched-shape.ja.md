@@ -8,6 +8,10 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
+
 <!-- end auto-generated rule notice -->
 
 形は、`[text]` や `((text))` のように、開きとその閉じで書く。
@@ -17,20 +21,14 @@
 
 ## 規則の詳細
 
-この規則は、形の閉じが開きの閉じでないときに、その閉じを報告する。
-`[` の `]`、`(` の `)`、`((` の `))`、`))` の `((`、`)` の `(`、
+この規則は、マインドマップ（`mindmap`）に当てる。
+形の閉じが開きと合わないときに報告する。
+対応する閉じは、`[` の `]`、`(` の `)`、`((` の `))`、`))` の `((`、`)` の `(`、
 `{{` の `}}` である。
-対象の図種は `mindmap` である。
+引用符の中や複数行のラベル、前にノードのテキストがない形も、同じように調べる。
 
-`Write[draft)` は四角、`a((x)` は円、`a))x(` は爆発、`a)x)` は雲、
-`a{{x]` は六角形になる。
-開き `(` では、`)` でない閉じはどれも雲を与える。
-`Review(notes))` と `a(x]` は、角丸の四角でなく雲である。
-ラベルが文字列のものや行をまたぐもの、
-`((x)` のようにノードのテキストのない形も、同じように報告する。
-開き `(-` と `-)` は調べない。
-mermaid.js は閉じにかかわらずそれらに既定の形を描き、
-その文書もそれらに形を挙げていない。
+開き `(-` と `-)` は、mermaid.js が閉じにかかわらず既定の形を描き、
+その文書も形を挙げていないので調べない。
 
 この規則に**反する**コードの例:
 
@@ -68,14 +66,9 @@ mindmap
 
 この規則にはオプションがない。
 
-## 背景
+## 参考
 
-mermaid.js は、
-[`getType`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L127-L145)
-で、形の種類を開きから取り、閉じは `(` のときだけ見る。
-その文書は、
-[syntax/mindmap.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/mindmap.md#L56-L109)
-で、それぞれの形を、開きと閉じとともに挙げる。
+- [syntax/mindmap.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/mindmap.md#L56-L109)
 
 <!-- begin auto-generated rule resources -->
 

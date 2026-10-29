@@ -37,11 +37,6 @@ export function itemRolesOf(task: GanttTaskStatement): TaskItemRoles {
   }
 }
 
-/** Whether mermaid.js reads the items of the data of `task`. */
-export function readsItems(task: GanttTaskStatement): boolean {
-  return itemRolesOf(task).idKind !== "none"
-}
-
 /**
  * The ids of the tasks, as mermaid.js gives them: the written id of each task
  * that writes one (the empty text for an empty one), and `task1`, `task2`, and

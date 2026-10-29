@@ -13,6 +13,19 @@ Code:
   5 |
 
 [1] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 |   annotations [0.1, 0.2]
+          3 |   annotation 1, [0.6, 0.7] "Review"
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 |   annotations [0.3, 0.4]
+          3 |   annotation 1, [0.6, 0.7] "Review"
+          4 |
 ---
 
 
@@ -27,6 +40,17 @@ Code:
   4 | annotation 1,[0.6,0.7] "Review"
 
 [1] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.0,1.0]
+          3 | annotation 1,[0.6,0.7] "Review"
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.0,0.99]
+          3 | annotation 1,[0.6,0.7] "Review"
 ---
 
 
@@ -41,6 +65,17 @@ Code:
   4 | annotation 1,[0.6,0.7] "Review"
 
 [1] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.1,0.2]
+          3 | annotation 1,[0.6,0.7] "Review"
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.3,0.4]
+          3 | annotation 1,[0.6,0.7] "Review"
 ---
 
 
@@ -55,6 +90,12 @@ Code:
   4 | annotation 1,[0.6,0.7] "Review"
 
 [1] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.1,0.2]
+          3 | annotation 1,[0.6,0.7] "Review"
 ---
 
 
@@ -70,6 +111,19 @@ Code:
   5 | annotation 1,[0.6,0.7] "Review"
 
 [1] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.1,0.2]
+          3 | annotations [10,20]
+          4 | annotation 1,[0.6,0.7] "Review"
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.3,0.4]
+          3 | annotations [10,20]
+          4 | annotation 1,[0.6,0.7] "Review"
 ---
 
 
@@ -86,7 +140,33 @@ Code:
   5 | annotation 1,[0.6,0.7] "Review"
 
 [1] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.1,0.2]
+          3 | annotations [0.3,0.4]
+          4 | annotation 1,[0.6,0.7] "Review"
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.3,0.4]
+          3 | annotations [0.3,0.4]
+          4 | annotation 1,[0.6,0.7] "Review"
 [2] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.1,0.2]
+          3 | annotations [0.3,0.4]
+          4 | annotation 1,[0.6,0.7] "Review"
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.3,0.4]
+          3 | annotations [0.3,0.4]
+          4 | annotation 1,[0.6,0.7] "Review"
 ---
 
 
@@ -101,6 +181,17 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | annotation 1,[0.6,0.7] "Review"
+          3 | annotations [0.1,0.2]
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | annotation 1,[0.6,0.7] "Review"
+          3 | annotations [0.3,0.4]
 ---
 
 
@@ -115,6 +206,17 @@ Code:
   4 | annotation 1,[0.6,0.7] " "
 
 [1] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.1,0.2]
+          3 | annotation 1,[0.6,0.7] " "
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.3,0.4]
+          3 | annotation 1,[0.6,0.7] " "
 ---
 
 
@@ -130,4 +232,58 @@ Code:
   5 |
 
 [1] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 |   annotations [0.1, 0.2]
+          3 |   annotation 1, [0.6, 0.7] "Review"
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 |   annotations [0.3, 0.4]
+          3 |   annotation 1, [0.6, 0.7] "Review"
+          4 |
+---
+
+
+Test: wardley-no-duplicate-annotations >> invalid >>> invalid/wardley/first-position-removal-still-reports-third
+Filename: tests/fixtures/rules/wardley-no-duplicate-annotations/invalid/wardley/first-position-removal-still-reports-third-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | annotations [0.1, 0.2]
+  3 | annotations [0.3, 0.4]
+    | ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 | annotations [0.5, 0.6]
+    | ^~~~~~~~~~~~~~~~~~~~~~ [2]
+  5 | annotation 1, [0.6, 0.7] "Review"
+  6 |
+
+[1] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.1, 0.2]
+          3 | annotations [0.5, 0.6]
+          4 | annotation 1, [0.6, 0.7] "Review"
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.3, 0.4]
+          3 | annotations [0.5, 0.6]
+          4 | annotation 1, [0.6, 0.7] "Review"
+          5 |
+[2] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.1, 0.2]
+          3 | annotations [0.3, 0.4]
+          4 | annotation 1, [0.6, 0.7] "Review"
+          5 |
 ---

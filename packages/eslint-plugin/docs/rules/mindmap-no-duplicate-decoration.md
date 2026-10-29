@@ -9,6 +9,9 @@ Disallow a second icon or a second class line for one node.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
 An icon line, `::icon(…)`, and a class line, `:::…`, decorate the node written
@@ -18,27 +21,19 @@ usually written for two classes, which go on one line, as in `:::urgent large`.
 
 ## Rule Details
 
-This rule reports every icon line of a node after its first icon line, and every
-class line after its first class line, when the line sets a value other than the
-one before it. It applies to `mindmap`.
+This rule applies to mind maps (`mindmap`). It reports an icon or class line
+that replaces the current value of the same kind on the same node with a
+different one. Icon and class lines are checked separately, and lines on
+different nodes are not compared.
 
-After `:::urgent` and `:::large`, the node has the class `large` only, and after
-`::icon(fa fa-book)` and `::icon(fa fa-pen)`, the icon `fa fa-pen`. The two
-kinds are counted apart: an icon line and a class line on one node are not
-reported, and in `:::urgent`, `::icon(fa fa-book)`, and `:::large`, only
-`:::large` is reported. A line belongs to the node written last before it
-whatever its indentation, also across empty lines, comment lines, and
-directives, and `::icon(` is read in any case. An icon line of a node and one of
-its child are on two nodes, and they are not reported.
+Each line belongs to the last node written before it, regardless of indentation
+or intervening empty lines, comment lines, or directives. `::icon(` is read in
+any case. Repeating the current value is not reported.
 
-A line that sets the icon or the class that the node already has is not
-reported: after `:::urgent`, a second `:::urgent` loses nothing. The values are
-compared as mermaid.js keeps them, as written: the text after `:::` to the end
-of the line, and the text inside the parentheses of `::icon(`. So
-`:::urgent large` and `:::large urgent` are two values, and the second is
-reported, although the node gets the same two classes in the drawing. After
-`:::urgent` and `:::large`, a third `:::urgent` is reported, because it replaces
-`large`.
+The text after `:::` and inside `::icon(` is compared as written, so
+`:::large urgent` after `:::urgent large` is reported even though both give the
+same classes. After `:::urgent` and `:::large`, a third `:::urgent` is reported
+because it replaces `large`.
 
 Examples of **incorrect** code for this rule:
 
@@ -91,12 +86,6 @@ mindmap
 ## Options
 
 This rule has no options.
-
-## Background
-
-mermaid.js sets the icon or the class of the node that it added last, replacing
-what it had
-([`decorateNode`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L154-L167)).
 
 <!-- begin auto-generated rule resources -->
 

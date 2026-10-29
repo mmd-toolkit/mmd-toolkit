@@ -25,6 +25,18 @@ tf 01 evt Bought accTitle: First report`,
             column: 18,
             endLine: 2,
             endColumn: 40,
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `eventmodeling accTitle: First\treport
+tf 01 evt Bought`,
+              },
+              {
+                desc: "Remove the earlier `accTitle` statement.",
+                output: `eventmodeling
+tf 01 evt Bought accTitle: First report`,
+              },
+            ],
           },
         ],
       },
@@ -40,6 +52,16 @@ tf 01 evt Bought accTitle: First report`,
             column: 18,
             endLine: 2,
             endColumn: 34,
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `eventmodeling accTitle: First\rtf 01 evt Bought`,
+              },
+              {
+                desc: "Remove the earlier `accTitle` statement.",
+                output: `eventmodeling\rtf 01 evt Bought accTitle: Second`,
+              },
+            ],
           },
         ],
       },
@@ -56,6 +78,76 @@ tf 01 evt Bought accTitle: A B C`,
             column: 18,
             endLine: 2,
             endColumn: 33,
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `eventmodeling accTitle: A\u2028B\u2029C
+tf 01 evt Bought`,
+              },
+              {
+                desc: "Remove the earlier `accTitle` statement.",
+                output: `eventmodeling
+tf 01 evt Bought accTitle: A B C`,
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        name: "invalid/eventmodeling/acc-title-crlf-change",
+        filename:
+          "tests/fixtures/rules/eventmodeling-no-duplicate-title/invalid/eventmodeling/acc-title-crlf-change-input.mmd",
+        code: `eventmodeling accTitle: First\r
+tf 01 evt Bought accTitle: Second`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier accessible title with the one of this `accTitle`.",
+            line: 2,
+            column: 18,
+            endLine: 2,
+            endColumn: 34,
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `eventmodeling accTitle: First\r
+tf 01 evt Bought`,
+              },
+              {
+                desc: "Remove the earlier `accTitle` statement.",
+                output: `eventmodeling\r
+tf 01 evt Bought accTitle: Second`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/eventmodeling/title-equal-predecessor-crlf",
+        filename:
+          "tests/fixtures/rules/eventmodeling-no-duplicate-title/invalid/eventmodeling/title-equal-predecessor-crlf-input.mmd",
+        code: `eventmodeling accTitle: A\r
+tf 01 evt Bought accTitle: A\r
+tf 02 evt Sent accTitle: B\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier accessible title with the one of this `accTitle`.",
+            line: 3,
+            column: 16,
+            endLine: 3,
+            endColumn: 27,
+            suggestions: [
+              {
+                desc: "Remove this `accTitle` statement.",
+                output: `eventmodeling accTitle: A\r
+tf 01 evt Bought accTitle: A\r
+tf 02 evt Sent\r
+`,
+              },
+            ],
           },
         ],
       },

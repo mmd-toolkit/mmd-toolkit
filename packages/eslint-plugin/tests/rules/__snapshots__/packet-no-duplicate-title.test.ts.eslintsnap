@@ -13,6 +13,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 |   title First
+          3 |   0-15: "Source Port"
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | packet
+          2 |   title Second
+          3 |   0-15: "Source Port"
+          4 |
 ---
 
 
@@ -29,6 +42,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | packet
+          2 | accTitle: First
+          3 | %% next
+          4 | 0: "Flag"
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | packet
+          2 | accTitle:
+          3 | %% next
+          4 | 0: "Flag"
+          5 |
 ---
 
 
@@ -44,6 +72,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | packet
+          2 | accTitle: First
+          3 | accTitle: First
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | packet
+          2 | accTitle:
+          3 | accTitle: First
+          4 |
 ---
 
 
@@ -59,6 +100,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | packet
+          2 | accTitle: First
+          3 | 0: "Flag"
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | packet
+          2 | accTitle: Second
+          3 | 0: "Flag"
+          4 |
 ---
 
 
@@ -75,7 +129,27 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | packet
+          2 | accTitle: First
+          3 | accTitle: 	
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | packet
+          2 | accTitle: Second
+          3 | accTitle: 	
+          4 |
 [2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | packet
+          2 | accTitle: First
+          3 | accTitle: Second
+          4 |
 ---
 
 
@@ -92,7 +166,27 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | packet
+          2 | accTitle: First
+          3 | accTitle: Third
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | packet
+          2 | accTitle: Second
+          3 | accTitle: Third
+          4 |
 [2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | packet
+          2 | accTitle: First
+          3 | accTitle: Second
+          4 |
 ---
 
 
@@ -108,6 +202,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet-beta
+          2 | title First
+          3 | 0: "Flag"
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | packet-beta
+          2 | title Second
+          3 | 0: "Flag"
+          4 |
 ---
 
 
@@ -123,21 +230,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
----
-
-
-Test: packet-no-duplicate-title >> invalid >>> invalid/packet/title-crlf
-Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/title-crlf-input.mmd
-
-Code:
-  1 | packet
-  2 | title First
-  3 | %% comment
-  4 | title Second
-    | ^~~~~~~~~~~~ [1]
-  5 |
-
-[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 |   title First
+          3 |   0-15: "Source Port"
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | packet
+          2 |   title Second
+          3 |   0-15: "Source Port"
+          4 |
 ---
 
 
@@ -153,6 +258,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | title First
+          3 | %%{init: {"packet": {"showBits": false}}}%%
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | packet
+          2 | %%{init: {"packet": {"showBits": false}}}%%
+          3 | title Second
+          4 |
 ---
 
 
@@ -169,6 +287,21 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | title First
+          3 | %% next
+          4 | 0: "Flag"
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | packet
+          2 | title
+          3 | %% next
+          4 | 0: "Flag"
+          5 |
 ---
 
 
@@ -183,6 +316,39 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | title #35;
+          3 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | packet
+          2 | title #
+          3 |
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/title-equal-predecessor
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/title-equal-predecessor-input.mmd
+
+Code:
+  1 | packet
+  2 | accTitle: A
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | packet
+          2 | accTitle: A
+          3 | accTitle: A
+          4 |
 ---
 
 
@@ -198,6 +364,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | title First
+          3 | title First
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | packet
+          2 | title
+          3 | title First
+          4 |
 ---
 
 
@@ -214,7 +393,33 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | title First
+          3 | title First
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | packet
+          2 | title Second
+          3 | title First
+          4 |
 [2] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | title First
+          3 | title Second
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | packet
+          2 | title First
+          3 | title First
+          4 |
 ---
 
 
@@ -230,6 +435,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | title First
+          3 | 0: "Flag"
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | packet
+          2 | title Second
+          3 | 0: "Flag"
+          4 |
 ---
 
 
@@ -245,6 +463,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | title First
+          3 | title First
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | packet
+          2 | title  	
+          3 | title First
+          4 |
 ---
 
 
@@ -263,6 +494,25 @@ Code:
   8 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | ---
+          2 | title: Front
+          3 | ---
+          4 | packet
+          5 | title Body
+          6 | 0: "Flag"
+          7 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | ---
+          2 | title: Front
+          3 | ---
+          4 | packet
+          5 | title
+          6 | 0: "Flag"
+          7 |
 ---
 
 
@@ -281,6 +531,25 @@ Code:
   8 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | ---
+          2 | title: First
+          3 | ---
+          4 | packet
+          5 | title First
+          6 | 0: "Flag"
+          7 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | ---
+          2 | title: First
+          3 | ---
+          4 | packet
+          5 | title
+          6 | 0: "Flag"
+          7 |
 ---
 
 
@@ -298,6 +567,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | title First
+          3 | ---
+          4 | title Hidden
+          5 | ---
+          6 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | packet
+          2 | ---
+          3 | title Hidden
+          4 | ---
+          5 | title Second
+          6 |
 ---
 
 
@@ -312,6 +598,45 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | title <span class="x">T</span>
+          3 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | packet
+          2 | title <span class='x'>T</span>
+          3 |
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/title-removal-empty-predecessor
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/title-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | packet
+  2 | accTitle:
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | packet
+          2 | accTitle:
+          3 | accTitle: A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | packet
+          2 | accTitle:
+          3 | accTitle: B
+          4 |
 ---
 
 
@@ -328,7 +653,27 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | title First
+          3 | title
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | packet
+          2 | title Second
+          3 | title
+          4 |
 [2] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | title First
+          3 | title Second
+          4 |
 ---
 
 
@@ -345,7 +690,27 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | title First
+          3 | title Third
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | packet
+          2 | title Second
+          3 | title Third
+          4 |
 [2] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | title First
+          3 | title Second
+          4 |
 ---
 
 
@@ -365,7 +730,45 @@ Code:
   8 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | title First
+          3 | title Second
+          4 | accTitle: First
+          5 | accTitle:
+          6 | accTitle: Second
+          7 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | packet
+          2 | title
+          3 | title Second
+          4 | accTitle: First
+          5 | accTitle:
+          6 | accTitle: Second
+          7 |
 [2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | packet
+          2 | title First
+          3 | title
+          4 | title Second
+          5 | accTitle: First
+          6 | accTitle: Second
+          7 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | packet
+          2 | title First
+          3 | title
+          4 | title Second
+          5 | accTitle:
+          6 | accTitle: Second
+          7 |
 ---
 
 
@@ -383,5 +786,35 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | title A	B
+          3 | accTitle: C	D
+          4 | accTitle: C D
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | packet
+          2 | title A B
+          3 | accTitle: C	D
+          4 | accTitle: C D
+          5 |
 [2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | packet
+          2 | title A	B
+          3 | title A B
+          4 | accTitle: C	D
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | packet
+          2 | title A	B
+          3 | title A B
+          4 | accTitle: C D
+          5 |
 ---

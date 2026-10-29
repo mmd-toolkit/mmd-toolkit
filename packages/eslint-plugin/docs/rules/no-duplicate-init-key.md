@@ -8,28 +8,27 @@ Disallow a key written twice in one object of the JSON of an init directive.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
-mermaid.js reads the JSON of an init directive with the last value of a key that
-one object holds twice, without an error, and the earlier value is lost.
+When one JSON object in an init directive contains a key twice, mermaid.js uses
+its last value without an error. The earlier value is lost.
 
 ## Rule Details
 
-This rule reports a key that an object of the JSON of an init directive holds
-again with another value. It applies to every diagram type.
+This rule applies to every diagram type. It reports a key repeated with a
+different value in the same JSON object of an init directive, at any depth. Keys
+are compared as JSON reads them after replacing each `'` with `"`, as mermaid.js
+does.
 
-After `%%{init: {"theme": "dark", "theme": "forest"}}%%`, the theme is `forest`.
-Objects at every depth are checked, as the object of `flowchart` in
-`{"flowchart": {"inheritDir": true, "inheritDir": false}}`. Keys are compared as
-JSON reads them, with every `'` read as `"`, as mermaid.js does. A key written
-again with an equal value is not reported, nor are the keys of two init
-directives: the documentation combines the init directives of a text, with the
-last value of each key, as a way of writing.
+Repeating an equal value is not reported. Nor is repeating a key in separate
+init directives: combining their settings with the last value of each key is a
+documented way of writing. Invalid JSON is reported by
+[no-invalid-init-directive](./no-invalid-init-directive.md) instead.
 
-Only JSON that mermaid.js reads is checked: where the JSON is not valid,
-[no-invalid-init-directive](./no-invalid-init-directive.md) reports it.
-
-Keep one of the two members.
+The examples are flowcharts.
 
 Examples of **incorrect** code for this rule:
 
@@ -57,13 +56,9 @@ This rule has no options.
 
 - [no-invalid-init-directive](./no-invalid-init-directive.md)
 
-## Background
+## Further Reading
 
-[`detectDirective`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L159-L198)
-reads each JSON argument with `JSON.parse`, which keeps the last value of a key,
-and the
-[documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/config/directives.md#L88-L96)
-combines the init directives of a text with the last value given for each key.
+- [Directives](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/config/directives.md#L88-L96)
 
 <!-- begin auto-generated rule resources -->
 

@@ -30,6 +30,14 @@ service api
             column: 1,
             endLine: 3,
             endColumn: 3,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `architecture-beta
+service api
+`,
+              },
+            ],
           },
         ],
       },
@@ -46,6 +54,13 @@ accDescr {\u2028\u2029}
             column: 1,
             endLine: 2,
             endColumn: 14,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `architecture-beta
+`,
+              },
+            ],
           },
         ],
       },
@@ -62,6 +77,13 @@ accDescr {\u00A0}
             column: 1,
             endLine: 2,
             endColumn: 13,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `architecture-beta
+`,
+              },
+            ],
           },
         ],
       },
@@ -76,6 +98,60 @@ accDescr {\u00A0}
             column: 1,
             endLine: 4,
             endColumn: 2,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `architecture-beta\r`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/architecture/removal-crlf-with-tab",
+        filename: "input.mmd",
+        code: `architecture-beta\r
+accDescr {\t}\r
+`,
+        errors: [
+          {
+            messageId: "empty",
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `architecture-beta\r
+`,
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        name: "invalid/architecture/empty-crlf",
+        filename:
+          "tests/fixtures/rules/architecture-no-empty-description-block/invalid/architecture/empty-crlf-input.mmd",
+        code: `architecture-beta\r
+accDescr {\r
+}\r
+service api\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.",
+            line: 2,
+            column: 1,
+            endLine: 3,
+            endColumn: 2,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `architecture-beta\r
+service api\r
+`,
+              },
+            ],
           },
         ],
       },

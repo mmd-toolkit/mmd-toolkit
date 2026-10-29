@@ -20,6 +20,7 @@ export const classNoIgnoredText: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("class-no-ignored-text"),
     },
+
     schema: [],
     messages: {
       onDirectionLine:
@@ -49,6 +50,7 @@ export const classNoIgnoredText: MermaidRuleDefinition<{
         context.report({
           node,
           messageId: "onDirectionLine",
+
           data: { text: node.value },
         })
       },

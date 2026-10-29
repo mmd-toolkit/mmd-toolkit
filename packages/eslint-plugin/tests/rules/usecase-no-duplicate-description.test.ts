@@ -34,6 +34,31 @@ accDescr {First
 \u00a0Second}
 `,
       },
+
+      {
+        name: "valid/usecase/description-block-crlf",
+        filename:
+          "tests/fixtures/rules/usecase-no-duplicate-description/valid/usecase/description-block-crlf-input.mmd",
+        code: `usecase-beta
+accDescr {First\r
+Second}\r
+accDescr {First
+Second}
+`,
+      },
+      {
+        name: "valid/usecase/description-crlf-indent",
+        filename:
+          "tests/fixtures/rules/usecase-no-duplicate-description/valid/usecase/description-crlf-indent-input.mmd",
+        code: `usecase-beta\r
+accDescr {First\r
+Second}\r
+accDescr { \r
+  First\r
+\tSecond\r
+}\r
+`,
+      },
     ],
     invalid: [
       {
@@ -50,6 +75,20 @@ accDescr: First\u2028Second
             column: 1,
             endLine: 3,
             endColumn: 23,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `usecase-beta
+accDescr: First\u2028 Second
+`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the description.",
+                output: `usecase-beta
+accDescr: First\u2028Second
+`,
+              },
+            ],
           },
         ],
       },
@@ -67,6 +106,50 @@ accDescr {First\u2029Second}
             column: 1,
             endLine: 3,
             endColumn: 24,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `usecase-beta
+accDescr {First\u2029 Second}
+`,
+              },
+              {
+                desc: "Remove the earlier statement that sets the description.",
+                output: `usecase-beta
+accDescr {First\u2029Second}
+`,
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        name: "invalid/usecase/description-equal-predecessor-crlf",
+        filename:
+          "tests/fixtures/rules/usecase-no-duplicate-description/invalid/usecase/description-equal-predecessor-crlf-input.mmd",
+        code: `usecase-beta\r
+accDescr: A\r
+accDescr: A\r
+accDescr: B\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the earlier description with the one of this `accDescr`.",
+            line: 4,
+            column: 1,
+            endLine: 4,
+            endColumn: 12,
+            suggestions: [
+              {
+                desc: "Remove this statement.",
+                output: `usecase-beta\r
+accDescr: A\r
+accDescr: A\r
+`,
+              },
+            ],
           },
         ],
       },

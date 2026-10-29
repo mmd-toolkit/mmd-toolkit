@@ -11,58 +11,38 @@
 <!-- end auto-generated rule notice -->
 
 `UpdateElementStyle` と `UpdateRelStyle` は、要素、境界、
-関係のスタイルを設定し、後の更新は、それが与える欄だけを置き換える。
-ある欄をもう一度与えると、前の値はエラーなしに失われる。
-`UpdateElementStyle(a, $bgColor="red")` の後の
-`UpdateElementStyle(a, $bgColor="blue")` は、青い背景だけを残す。
+関係のスタイルを更新する。
+与えたスタイル属性は前の値をエラーなしに置き換えるため、
+後の背景色で前の背景色が失われることがある。
 
 ## 規則の詳細
 
-この規則は、`UpdateElementStyle` か `UpdateRelStyle` の引数のうち、
-前の更新か同じ更新の前の引数がその欄に与えた値と違う値を、
-対象の欄に与えるものを報告する。
-対象の図種は `c4` である。
-`UpdateElementStyle` は、初めからある境界 `global` を含めて要素か境界を、
-`UpdateRelStyle` は関係を更新する。
-mermaid.js の文法にほかのスタイル更新はない。
+この規則は、C4 図（`C4Context`、`C4Container`、`C4Component`、`C4Dynamic`、
+`C4Deployment`）に当てる。
+前の更新や同じ更新の前の引数が設定したスタイル属性を変える引数を報告する。
+同じ値の繰り返しや、初めて設定する属性は報告しない。
+`$bgColor="red"`、`$bgColor="blue"` の後の 3 つ目の `$bgColor="red"` は、
+`blue` を置き換えるので報告する。
+空の引数は空の値を設定し、前の値を置き換えるときは更新を報告する。
 
-対象は、[c4-no-undef](./c4-no-undef.ja.md) が述べるとおり、
-更新が見つけるものである。
-更新より前に宣言したもののうち、 alias が最初の引数に等しい最初の要素か、
-なければ最初の境界、
-または端点がその順で最初の 2 つの引数に等しい最初の関係である。
-名前付きの `$alias`、`$from`、`$to` は後の更新が見つけるものを変え、
-それが与える欄は比べない。
-対象を見つけない更新は何も変えず、比べない。
+対象が見つかる更新だけを比べ、対象は更新前に宣言した最初に一致する要素、
+なければ境界、または端点が順に一致する最初の関係である。
+初めからある境界 `global` も対象になる。
+名前付きの `$alias`、`$from`、`$to` は後の更新が見つけるものを変え、比べない。
 
-欄は、
-`UpdateElementStyle` の 2 つ目の引数の `bgColor` のような引数の位置の引数名か、
-どの位置にあってもよい `$bgColor` のような名前付きの属性のキーである。
-`UpdateElementStyle(a, "red", $bgColor="blue")` は `bgColor` を 2 度与える。
+引数の位置か名前付きキーが属性を選ぶので、
+`UpdateElementStyle(a, "red", $bgColor="blue")` は `bgColor` を 2 度設定する。
 キーは大文字小文字を区別して比べる。
-`$BgColor` は別の欄で、
+`$BgColor` は別の属性なので `$bgColor` と比べず、
 [c4-no-invalid-attribute-key](./c4-no-invalid-attribute-key.ja.md) が報告する。
-宣言が与える値は比べない。
-宣言がある欄に値を与えると、その欄の前の更新の値は、その後の比較に使わない。
-宣言が変えない欄の更新の値は保つ。
+宣言の値は比べず、宣言が値を与えた属性だけ、それまでの更新との比較を終える。
 
-空の引数は、その欄に空の値を与える。
-`UpdateElementStyle(a, $bgColor="red")` の後の
-`UpdateElementStyle(a, , "white")` は、 `red` を空の値で置き換える。
-空の引数はそれ自身の文字を持たないので、規則はその更新を報告する。
-
-欄がすでに持つ値と、対象がまだ持たない欄は報告しない。
-`red` と `blue` の後の 3 つ目の `red` は、`blue` を置き換えるので報告する。
-値は、両端の空白を除き、ほかは書いたとおりに比べる。
-mermaid.js は、`#35;` のような文字参照と HTML の属性の引用符を、
-値を読む前にほかの文字に変え、
-`UpdateRelStyle` の 5 つ目と 6 つ目の位置のずれを整数として読むので、
-ずれの `10` と `010` のように、それだけが違う 2 つの値は、
-mermaid.js には 1 つで、この規則には 2 つのことがある。
-
-対象の欄は、それぞれ 1 度だけ与える。
-1 つの欄を与えるには、`UpdateElementStyle(a, $fontColor="white")` のように、
-名前付きの属性を使う。
+値は両端の空白を除き、ほかは書いたとおりに比べる。
+そのため、文字参照や HTML 属性の引用符が違う値を mermaid.js が同じに読んでも、
+この規則は違うものとすることがある。
+`UpdateRelStyle` の 5 番目と 6 番目の offset も書いたとおりに比べ、
+`10` と `010` は mermaid.js が同じ整数として読んでも、
+異なる値として報告することがある。
 
 この規則に**反する**コードの例:
 
@@ -109,12 +89,6 @@ C4Context
 
 - [c4-no-undef](./c4-no-undef.ja.md)
 - [c4-no-invalid-attribute-key](./c4-no-invalid-attribute-key.ja.md)
-
-## 背景
-
-[`updateElStyle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L494-L590)、
-[`updateRelStyle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L593-L638)
-は、空の引数を含めて引数が与える欄を、それぞれ対象が持っていた値の上に代入する。
 
 <!-- begin auto-generated rule resources -->
 

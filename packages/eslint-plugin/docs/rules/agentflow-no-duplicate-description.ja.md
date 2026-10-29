@@ -9,52 +9,32 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
+
 <!-- end auto-generated rule notice -->
 
-agentflow は、`accDescr` が設定するアクセシブルな説明を 1 つ持つ。
-後の `accDescr` は、前に設定した説明をエラーなしに置き換え、前の説明は失われる。
+`agentflow-beta` の図は、`accDescr` が設定するアクセシブルな説明を 1 つ持つ。
+後の `accDescr` は、エラーなしにそれを置き換え、前の説明は失われる。
 
 ## 規則の詳細
 
-この規則は、最初のものより後の説明を設定する文のうち、
-その前の説明と違う説明を設定するものを、それぞれ報告する。
-対象の図種は `agentflow` である。
+この規則は、agentflow 図（`agentflow-beta`）に当てる。
+前の文が設定した説明を変える `accDescr` の文を報告する。
+行の形とブロックの形をまとめて比べる。
+flow や `global` のブロックの中の文も、図全体の説明を設定するので数える。
 
-`accDescr:` は説明を設定する。
-文字がなくても説明を設定する。
-空の行と指示子を越えて、文字のある次の行を説明として取り、
-そのような行が続かなければ、説明を空にする。
-説明を持つ閉じたブロックも説明を設定する。
-行の形とブロックの形は混ぜてよく、どちらが先でも、最後に書いた説明が使われる。
-flow や `global` のブロックの中の文も図全体の説明を設定し、数える。
-mermaid.js は、flow の中のそのような文の値を、
-id として flow のメンバーにも加える。
+`accDescr:` の後にテキストがないと、空行とディレクティブを越えて、
+テキストのある次の行を説明にし、そのような行がなければ説明を空にする。
+ブロックの中も含め、コメント行も説明のテキストとして数える。
+空のブロックと閉じていないブロックは、この規則では数えない。
 
-説明の中ではコメント行も文字である。
-ブロック `accDescr {`、`%% TODO`、`}` は説明 `%% TODO` を設定し、
-`accDescr: d` の後では報告する。
-mermaid.js は、図のほかの場所ではコメントであるそのような行を、
-ブロックの中では保つ。
-
-何も持たないブロックと、説明を空にする閉じないブロックは数えない。
-[agentflow-no-empty-description-block](./agentflow-no-empty-description-block.ja.md)、
-[agentflow-no-unclosed-description-block](./agentflow-no-unclosed-description-block.ja.md)
-がそれらを報告する。
-
-図がすでに持つ説明を設定する文は、どちらの形でも報告しない。
-`accDescr: d` の後のブロック `accDescr { d }` は何も失わない。
-説明は mermaid.js が保つとおりに、
-両端の空白と各改行の後の空白を除いて比べるので、
-ブロックの行の字下げとその中の空の行は数えない。
-改行（LF、CRLF、CR）はどれも LF として読む。
-`accDescr: a` と `accDescr: b` の後の 3 つ目の `accDescr: a` は、
-`b` を置き換えるので報告する。
-説明はそのほかは書いたとおりに比べる。
-mermaid.js は、`#35;` のような文字参照と HTML の属性の引用符を、
-説明を読む前にほかの文字に変えるので、それだけが違う 2 つの説明は、
-mermaid.js には 1 つで、この規則には 2 つのことがある。
-
-説明は 1 つにし、複数行の説明は 1 つのブロックに書く。
+現在の説明の繰り返しは報告しない。
+両端と各改行の後の空白を除いて比べるので、ブロックの字下げと空行は数えず、LF、
+CRLF、CR はどれも LF として比べる。
+そのほかは書いたとおりに比べるので、文字参照や HTML の属性の引用符の違いは、
+mermaid.js が同じ説明として読んでも報告することがある。
 
 この規則に**反する**コードの例:
 
@@ -95,14 +75,6 @@ agentflow-beta TB
 - [agentflow-no-duplicate-title](./agentflow-no-duplicate-title.ja.md)
 - [agentflow-no-empty-description-block](./agentflow-no-empty-description-block.ja.md)
 - [agentflow-no-unclosed-description-block](./agentflow-no-unclosed-description-block.ja.md)
-
-## 背景
-
-[`accDescr` 文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow.jison#L427-L428)
-は、前に設定した説明を置き換える共通の `setAccDescription` を呼ぶ。
-[ブロック](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow.jison#L61-L63)
-の字句解析にはコメントの規則がなく、
-agentflow はコメントを保ったまま文字を読む。
 
 <!-- begin auto-generated rule resources -->
 

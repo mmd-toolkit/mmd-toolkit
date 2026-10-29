@@ -11,28 +11,22 @@
 <!-- end auto-generated rule notice -->
 
 2 つ目の `title` は、図全体の表示タイトルを置き換える。
-mermaid.js は両方をエラーなしに受理し、前のタイトルは失われる。
+mermaid.js は両方の文をエラーなしに受理し、前のタイトルは失われる。
 
 ## 規則の詳細
 
-この規則は、直前にタイトルを設定した文が別の `title` で、
-保存される値が異なるとき、その `title` を報告する。
-対象の図種は `c4` である。
-
-最初の文ではなく、最後に設定した文と比べる。
-`First`、`Second`、`First` なら 2 件報告する。
-境界内のタイトルも、図全体のタイトルを設定する。
+この規則は、C4 図（`C4Context`、`C4Container`、`C4Component`、`C4Dynamic`、
+`C4Deployment`）に当てる。
+直前にタイトルを設定した文も `title` で、その値と異なる `title` を報告する。
+境界内のタイトルも図全体のタイトルを設定する。
 同じ値の繰り返しは報告しない。
-タイトルは引用符と最初の区切りの後の空白を残す。
-`title "Banking"` は `title Banking` と異なり、値の余分な空白も意味を持つ。
+`title First`、`title Second` の後の 3 つ目の `title First` も報告する。
 
-`accTitle:` は報告せず、その前の `title` との比較もそこで終える。
-mermaid 12.0.0 は、この形式をアクセシブルなタイトルではなく、
-表示タイトルへ誤って保存する。
-AST で形式を区別できるため、`title` と混ぜた並びも含め、
-このアクセシビリティの不具合を作者の誤りとして報告しない。
-
-図にはタイトルを 1 つ書く。
+引用符と最初の区切りの後の空白は意味を持つので、
+`title "Banking"` は `title Banking` と異なる。
+`accTitle:` は報告せず、前の `title` との比較も終える。
+mermaid 12.0.0 は、この形式を誤って表示タイトルに使う。
+この規則は、そのアクセシビリティの不具合を作者の誤りとして報告しない。
 
 この規則に**反する**コードの例:
 
@@ -74,13 +68,10 @@ C4Context
 
 - [c4-no-duplicate-description](./c4-no-duplicate-description.ja.md)
 
-## 背景
+## 参考
 
-[issue #8040](https://github.com/mermaid-js/mermaid/issues/8040) は、
-`accTitle:` の不具合を記録する。
-設定先を直す
-[PR #8041](https://github.com/mermaid-js/mermaid/pull/8041)（open）がある。
-普通の `title` 同士の報告は、その不具合に依存しない。
+- [issue #8040: C4: accTitle sets the visible title instead of the accessible title](https://github.com/mermaid-js/mermaid/issues/8040)
+- [プルリクエスト #8041: fix(c4): send accTitle to the accessible title](https://github.com/mermaid-js/mermaid/pull/8041)
 
 <!-- begin auto-generated rule resources -->
 

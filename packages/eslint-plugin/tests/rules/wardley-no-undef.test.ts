@@ -17,6 +17,18 @@ component C [0.6,0.7]
 "A
 B" -> C`,
     },
+
+    {
+      name: "valid/wardley/name-reference-crlf",
+      filename:
+        "tests/fixtures/rules/wardley-no-undef/valid/wardley/name-reference-crlf-input.mmd",
+      code: `wardley-beta\r
+component "A\r
+B" [0.3,0.4]\r
+component C [0.6,0.8]\r
+"A
+B" -> C`,
+    },
   ],
   invalid: [
     {

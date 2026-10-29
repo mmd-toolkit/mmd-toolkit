@@ -29,6 +29,12 @@ new RuleTester(LANGUAGE_CONFIG).run(
             column: 15,
             endLine: 3,
             endColumn: 3,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `eventmodeling tf 01 evt Bought`,
+              },
+            ],
           },
         ],
       },
@@ -44,6 +50,37 @@ new RuleTester(LANGUAGE_CONFIG).run(
             column: 15,
             endLine: 1,
             endColumn: 27,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `eventmodeling tf 01 evt Bought`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/eventmodeling/removal-crlf-with-tab",
+        filename: "input.mmd",
+        code: `eventmodeling\r
+---\r
+hidden\r
+---\r
+\taccDescr {\t}\r
+`,
+        errors: [
+          {
+            messageId: "empty",
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `eventmodeling\r
+---\r
+hidden\r
+---\r
+`,
+              },
+            ],
           },
         ],
       },

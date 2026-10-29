@@ -13,6 +13,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | sequenceDiagram
+          2 |   A ->> B: x
+          3 |   accDescr: first
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | sequenceDiagram
+          2 |   A ->> B: x
+          3 |   accDescr: second
+          4 |
 ---
 
 
@@ -28,6 +41,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | sequenceDiagram
+          2 |   A ->> B: x
+          3 |   accDescr { first }
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | sequenceDiagram
+          2 |   A ->> B: x
+          3 |   accDescr: second
+          4 |
 ---
 
 
@@ -45,6 +71,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | sequenceDiagram
+          2 |   loop every minute
+          3 |     A ->> B: x
+          4 |     accDescr: inner
+          5 |   end
+          6 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | sequenceDiagram
+          2 |   loop every minute
+          3 |     A ->> B: x
+          4 |   end
+          5 |   accDescr: outer
+          6 |
 ---
 
 
@@ -62,7 +105,37 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | sequenceDiagram
+          2 |   accDescr: a
+          3 |   accDescr: a
+          4 |   A ->> B: x
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | sequenceDiagram
+          2 |   accDescr: b
+          3 |   accDescr: a
+          4 |   A ->> B: x
+          5 |
 [2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | sequenceDiagram
+          2 |   accDescr: a
+          3 |   accDescr: b
+          4 |   A ->> B: x
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | sequenceDiagram
+          2 |   accDescr: a
+          3 |   accDescr: a
+          4 |   A ->> B: x
+          5 |
 ---
 
 
@@ -87,6 +160,25 @@ Code:
  11 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | sequenceDiagram
+          2 |   accDescr {
+          3 |     d
+          4 |     e
+          5 |   }
+          6 |   A ->> B: x
+          7 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | sequenceDiagram
+          2 |   accDescr {
+          3 |     d  
+          4 |     e
+          5 |   }
+          6 |   A ->> B: x
+          7 |
 ---
 
 
@@ -100,6 +192,15 @@ Code:
     | ^~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accDescr: x
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | sequenceDiagram
+          2 | accDescr:
 ---
 
 
@@ -118,6 +219,19 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accDescr: d
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | sequenceDiagram
+          2 | accDescr:
+          3 | %% c
+          4 | A->>B: x
+          5 |
 ---
 
 
@@ -136,6 +250,14 @@ Code:
   6 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | sequenceDiagram
+          2 | accDescr:
+          3 | %%{init: {}}%%
+          4 | A->>B: x
+          5 |
 ---
 
 
@@ -151,6 +273,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accDescr: x
+          3 | %% c
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | sequenceDiagram
+          2 | accDescr:
+          3 | %% c
+          4 |
 ---
 
 
@@ -166,6 +301,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accDescr: x
+          3 | %%{init: {}}%%
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | sequenceDiagram
+          2 | accDescr:
+          3 | %%{init: {}}%%
+          4 |
 ---
 
 
@@ -181,6 +329,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accDescr: x
+          3 |
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | sequenceDiagram
+          2 | accDescr:
+          3 |
+          4 |
 ---
 
 
@@ -194,6 +355,15 @@ Code:
     | ^~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accDescr: x
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | sequenceDiagram
+          2 | accDescr:   
 ---
 
 
@@ -209,6 +379,19 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | sequenceDiagram
+          2 | A->>B: x
+          3 | accDescr { first }
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | sequenceDiagram
+          2 | A->>B: x
+          3 | accDescr: second
+          4 |
 ---
 
 
@@ -226,6 +409,23 @@ Code:
   7 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | sequenceDiagram
+          2 | loop every minute
+          3 | A->>B: x
+          4 | accDescr: inner
+          5 | end
+          6 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | sequenceDiagram
+          2 | loop every minute
+          3 | A->>B: x
+          4 | end
+          5 | accDescr: outer
+          6 |
 ---
 
 
@@ -241,4 +441,39 @@ Code:
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | sequenceDiagram
+          2 | A->>B: x
+          3 | accDescr: first
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | sequenceDiagram
+          2 | A->>B: x
+          3 | accDescr: second
+          4 |
+---
+
+
+Test: sequence-no-duplicate-description >> invalid >>> invalid/sequence/description-equal-predecessor
+Filename: tests/fixtures/rules/sequence-no-duplicate-description/invalid/sequence/description-equal-predecessor-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr: A
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
 ---

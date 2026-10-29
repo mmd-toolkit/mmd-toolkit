@@ -12,6 +12,13 @@ Code:
   4 |
 
 [1] mermaid.js takes the empty name after this separator as a person of the task.
+    Suggestions:
+      - Remove this empty person and its separator.
+        Output:
+          1 | journey
+          2 |   section Work
+          3 |     Make tea: 5: Me
+          4 |
 ---
 
 
@@ -26,6 +33,13 @@ Code:
   4 |
 
 [1] mermaid.js takes the empty name after this separator as a person of the task.
+    Suggestions:
+      - Remove this empty person and its separator.
+        Output:
+          1 | journey
+          2 |   section Work
+          3 |     Make tea: 5
+          4 |
 ---
 
 
@@ -39,6 +53,12 @@ Code:
   3 |
 
 [1] mermaid.js takes the empty name after this separator as a person of the task.
+    Suggestions:
+      - Remove this empty person and its separator.
+        Output:
+          1 | journey
+          2 |   A: 3 
+          3 |
 ---
 
 
@@ -52,6 +72,12 @@ Code:
   3 |
 
 [1] mermaid.js takes the empty name after this separator as a person of the task.
+    Suggestions:
+      - Remove this empty person and its separator.
+        Output:
+          1 | journey
+          2 |   A: 3: a,b
+          3 |
 ---
 
 
@@ -65,6 +91,12 @@ Code:
   3 |
 
 [1] mermaid.js takes the empty name after this separator as a person of the task.
+    Suggestions:
+      - Remove this empty person and its separator.
+        Output:
+          1 | journey
+          2 |   A: 5: Me
+          3 |
 ---
 
 
@@ -78,6 +110,12 @@ Code:
   3 |
 
 [1] mermaid.js takes the empty name after this separator as a person of the task.
+    Suggestions:
+      - Remove this empty person and its separator.
+        Output:
+          1 | journey
+          2 |   A: 5
+          3 |
 ---
 
 
@@ -93,7 +131,21 @@ Code:
   4 |
 
 [1] mermaid.js takes the empty name after this separator as a person of the task.
+    Suggestions:
+      - Remove this empty person and its separator.
+        Output:
+          1 | journey
+          2 |   section Work
+          3 |     A: 5
+          4 |
 [2] mermaid.js takes the empty name after this separator as a person of the task.
+    Suggestions:
+      - Remove this empty person and its separator.
+        Output:
+          1 | journey
+          2 |   section Work
+          3 |     A: 5
+          4 |
 ---
 
 
@@ -123,4 +175,12 @@ Code:
   5 |
 
 [1] mermaid.js takes the empty name after this separator as a person of the task.
+    Suggestions:
+      - Remove this empty person and its separator.
+        Output:
+          1 | journey
+          2 |   title My day
+          3 |   section Work
+          4 |     Make tea: 5:Me
+          5 |
 ---

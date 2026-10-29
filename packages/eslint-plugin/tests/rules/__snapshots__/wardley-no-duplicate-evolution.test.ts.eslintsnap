@@ -12,6 +12,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 |   evolution Genesis -> Custom
+          3 |
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 |   evolution Early -> Late
+          3 |
 ---
 
 
@@ -26,6 +37,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 |   evolution Genesis -> Custom
+          3 |
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 |   evolution Early -> Late
+          3 |
 ---
 
 
@@ -39,6 +61,15 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution Early@0.2 -> Late@1.0
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution Early -> Late
 ---
 
 
@@ -52,6 +83,15 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution Genesis -> Custom
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution Early -> Late
 ---
 
 
@@ -65,6 +105,15 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution A -> B
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution "#65;" -> B
 ---
 
 
@@ -78,6 +127,15 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution "<b x="a">T</b>" -> B
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution "<b x='a'>T</b>" -> B
 ---
 
 
@@ -92,6 +150,17 @@ Code:
   4 |
 
 [1] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution a -> "b/c" -> d
+          3 |
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution a -> b / c -> d
+          3 |
 ---
 
 
@@ -105,6 +174,15 @@ Code:
     | ^~~~~~~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution A -> B
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution A -> B -> C
 ---
 
 
@@ -120,7 +198,29 @@ Code:
     | ^~~~~~~~~~~~~~~~ [2]
 
 [1] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution A -> B
+          3 | evolution A -> B
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution C -> D
+          3 | evolution A -> B
 [2] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution A -> B
+          3 | evolution C -> D
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution A -> B
+          3 | evolution A -> B
 ---
 
 
@@ -134,4 +234,35 @@ Code:
     | ^~~~~~~~~~~~~~~~ [1]
 
 [1] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution A / " " -> B
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution A -> B
+---
+
+
+Test: wardley-no-duplicate-evolution >> invalid >>> invalid/wardley/stages-equal-predecessor
+Filename: tests/fixtures/rules/wardley-no-duplicate-evolution/invalid/wardley/stages-equal-predecessor-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | evolution Early -> Late
+  3 | evolution Early -> Late
+  4 | evolution Start -> End
+    | ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution Early -> Late
+          3 | evolution Early -> Late
+          4 |
 ---

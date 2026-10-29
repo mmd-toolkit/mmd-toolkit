@@ -9,6 +9,9 @@ Disallow an `accDescr` that replaces the description set before it.
 
 ✅ The `recommended` configuration enables this rule.
 
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
+
 <!-- end auto-generated rule notice -->
 
 A treemap has one accessible description, which `accDescr` sets, on a line or in
@@ -17,36 +20,29 @@ error, and the earlier description is lost.
 
 ## Rule Details
 
-This rule reports an `accDescr` statement that changes the description that an
-earlier `accDescr` set, when that description is not empty. It applies to
-`treemap`.
+This rule applies to treemaps (`treemap` and `treemap-beta`). It reports an
+`accDescr` that changes a nonempty description set by the preceding `accDescr`.
+The line and block forms are compared with each other. An empty or
+whitespace-only `accDescr:` clears the description without taking the next line,
+and is reported after a nonempty description.
 
-The line form and the block form may be mixed: whichever comes last, the
-description written last is used. `accDescr:` with no text, or with only
-whitespace, leaves the description empty and does not take the next line: after
-a description, it is reported. A block that holds only comment lines leaves the
-description empty too, since mermaid.js removes the comments, so after
-`accDescr: d`, the block `accDescr {`, `%% TODO`, and `}` removes `d` and is
-reported. A block that holds nothing else is reported by
-[treemap-no-empty-description-block](./treemap-no-empty-description-block.md). A
-statement after an empty description loses nothing and is not reported.
+A block containing only comment lines also clears the description, because
+mermaid.js removes the comments, and is reported after a nonempty description.
+An empty block, such as `accDescr {}`, or one containing only directives is
+reported instead by
+[treemap-no-empty-description-block](./treemap-no-empty-description-block.md).
 
-A statement that sets the description that the diagram already has is not
-reported, in either form: after `accDescr: d`, the block `accDescr { d }` loses
-nothing. Descriptions are compared as mermaid.js keeps them: without the
-whitespace at the start and the end of each line, without empty lines, and with
-a run of two or more spaces or tabs as one space, so the indentation of the
-lines of a block and the empty lines between them do not count. Every line break
-(LF, CRLF, or CR) is read as a line feed. In a block, U+2028 and U+2029 end a
-line too, and the whitespace beside them goes with them; on a line of
-`accDescr:`, they are text. After `accDescr: a` and `accDescr: b`, a third
-`accDescr: a` is reported, because it replaces `b`. Descriptions are otherwise
-compared as written: mermaid.js turns character references, as `#35;`, and the
-quotes of HTML attributes into other characters before it reads a description,
-so two descriptions that differ only in those may be one description for
-mermaid.js and two for this rule.
+A statement after an empty description, or one that repeats the current
+description in either form, is not reported. Going back to an earlier
+description is reported: after `accDescr: a` and `accDescr: b`, a third
+`accDescr: a` is reported. Descriptions are compared without whitespace at the
+start and end of each line, without empty lines, and with a run of two or more
+spaces or tabs as one space. LF, CRLF, and CR are read as LF.
 
-Keep one `accDescr` statement.
+Descriptions are otherwise compared as written. mermaid.js converts character
+references such as `#35;` and HTML attribute quotes before reading a
+description. Descriptions differing only in these ways may be the same for
+mermaid.js and different for this rule.
 
 Examples of **incorrect** code for this rule:
 
@@ -75,16 +71,6 @@ This rule has no options.
 
 - [treemap-no-duplicate-title](./treemap-no-duplicate-title.md)
 - [treemap-no-empty-description-block](./treemap-no-empty-description-block.md)
-
-## Background
-
-The
-[value converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L57-L68)
-removes the whitespace at the ends of a description and of each line of a block,
-and the empty lines of a block, and makes a run of two or more spaces or tabs
-one space. The parser keeps the last description, and
-[`populateCommonDb`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14)
-sets it only when it is not empty.
 
 <!-- begin auto-generated rule resources -->
 

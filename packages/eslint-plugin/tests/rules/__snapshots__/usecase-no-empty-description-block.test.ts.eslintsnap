@@ -12,6 +12,12 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | usecase-beta
+          2 |   A
+          3 |
 ---
 
 
@@ -40,6 +46,12 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | usecase-beta
+          2 | accDescr: First
+          3 |
 ---
 
 
@@ -51,6 +63,26 @@ Code:
   2 | accDescr: First
   3 | accDescr {  }
     | ^~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | usecase-beta
+          2 | accDescr: First
+          3 |
+---
+
+
+Test: usecase-no-empty-description-block >> invalid >>> invalid/usecase/empty-block-after-directive
+Filename: tests/fixtures/rules/usecase-no-empty-description-block/invalid/usecase/empty-block-after-directive-input.mmd
+
+Code:
+  1 | usecase-beta
+  2 | %%{init: {}}%% accDescr {}
+    |                ^~~~~~~~~~~ [1]
+  3 | A
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
@@ -68,6 +100,12 @@ Code:
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | usecase-beta
+          2 | A
+          3 |
 ---
 
 
@@ -84,4 +122,10 @@ Code:
   5 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | usecase-beta
+          2 | A
+          3 |
 ---

@@ -24,12 +24,15 @@ import {
 function removalSuggestion(
   sourceCode: MermaidSourceCode,
   node: FlowchartAccDescrBlockStatement,
-): SuggestedEdit<"removeBlock"> {
+): SuggestedEdit<"removeBlock">[] {
   const range = removalRange(sourceCode, node)
-  return {
-    messageId: "removeBlock",
-    fix: (fixer) => fixer.removeRange(range),
-  }
+  if (range === null) return []
+  return [
+    {
+      messageId: "removeBlock",
+      fix: (fixer) => fixer.removeRange(range),
+    },
+  ]
 }
 
 /**
@@ -40,10 +43,8 @@ function removalSuggestion(
  * that holds only comments is meant to do nothing, and is not reported.
  *
  * The suggestion to remove the block is offered only for a block that is the
- * first token of its line. Whether removing the whitespace before a block that
- * follows something on its line changes how mermaid.js reads what comes before
- * depends on that statement, and the tree does not tell it, so such a block
- * gets no suggestion.
+ * only statement on its lines. Text, a separator, or a comment sharing either
+ * edge line with it prevents whole-line removal.
  */
 export const flowchartNoEmptyDescriptionBlock: MermaidRuleDefinition<{
   RuleOptions: []
@@ -63,8 +64,7 @@ export const flowchartNoEmptyDescriptionBlock: MermaidRuleDefinition<{
         "mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.",
       emptyAfterSubgraphName:
         "mermaid.js reads whitespace after the name `{{name}}` as part of the subgraph name, so the subgraph gets a generated id. This empty block sets no description.",
-      removeBlock:
-        "Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.",
+      removeBlock: "Remove the empty block.",
     },
   },
   create(context) {
@@ -136,17 +136,8 @@ export const flowchartNoEmptyDescriptionBlock: MermaidRuleDefinition<{
         })
         const startsLine =
           previous === null || previous.loc.end.line < node.loc.start.line
-        // Removing the block would remove a directive, whose settings
-        // mermaid.js applies.
-        const holdsDirective = sourceCode.ast.directives.some(
-          (directive) =>
-            node.range[0] <= directive.range[0] &&
-            directive.range[0] < node.range[1],
-        )
         const suggestable =
-          startsLine &&
-          !holdsDirective &&
-          !startsNameTextWithLineBreakingUnit(node)
+          startsLine && !startsNameTextWithLineBreakingUnit(node)
         const subgraph = subgraphNamedByTextAfterName(node)
         context.report({
           node,
@@ -154,7 +145,7 @@ export const flowchartNoEmptyDescriptionBlock: MermaidRuleDefinition<{
           data: {
             name: subgraph === null ? "" : nameOwnText(sourceCode, subgraph),
           },
-          suggest: suggestable ? [removalSuggestion(sourceCode, node)] : [],
+          suggest: suggestable ? removalSuggestion(sourceCode, node) : [],
         })
       },
     }

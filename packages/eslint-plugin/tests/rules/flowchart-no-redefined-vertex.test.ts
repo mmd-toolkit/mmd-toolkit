@@ -32,6 +32,40 @@ b"]
   A["a\rb"]
 `,
       },
+
+      {
+        name: "valid/flowchart/db-redefined-vertex-label-differs-by-crlf-and-lf",
+        filename:
+          "tests/fixtures/rules/flowchart-no-redefined-vertex/valid/flowchart/db-redefined-vertex-label-differs-by-crlf-and-lf-input.mmd",
+        code: `flowchart LR
+  A["a\r
+b"]\r
+  A["a
+b"]
+`,
+      },
+      {
+        name: "valid/flowchart/db-vertex-label-carriage-return-redefined",
+        filename:
+          "tests/fixtures/rules/flowchart-no-redefined-vertex/valid/flowchart/db-vertex-label-carriage-return-redefined-input.mmd",
+        code: `flowchart LR
+  A["a
+b"]
+  A["a\r
+b"]
+`,
+      },
+      {
+        name: "valid/flowchart/label-line-breaks-crlf-and-lf",
+        filename:
+          "tests/fixtures/rules/flowchart-no-redefined-vertex/valid/flowchart/label-line-breaks-crlf-and-lf-input.mmd",
+        code: `flowchart LR\r
+  A["a\r
+b"] --> B\r
+  C --> A["a
+b"]\r
+`,
+      },
     ],
     invalid: [],
   },

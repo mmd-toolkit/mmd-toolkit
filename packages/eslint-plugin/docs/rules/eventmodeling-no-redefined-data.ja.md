@@ -17,30 +17,23 @@ mermaid.js はエラーなしにそれを受理し、その中身は失われる
 
 ## 規則の詳細
 
-この規則は、前の `data` ブロックが同じ名前を持つ `data` ブロックを、
-フレームがその名前を参照し、中身が最初のブロックの中身と違うときに報告する。
-対象の図種は `eventmodeling` である。
+この規則は、イベントモデリング図（`eventmodeling`）に当てる。
+フレームが名前を参照し、中身が最初のブロックと違うとき、
+前のブロックと同じ名前を持つ後の `data` ブロックを報告する。
+後のブロックはそれぞれ最初のブロックと比べる。
+time frame（`tf`、`timeframe`）も reset frame（`rf`、`resetframe`）も、
+ブロックの前でも後でも数える。
 
-`first` を持つブロック `Payload` と、`second` を持つブロック `Payload` の後で、
-`[[Payload]]` を持つフレームは `first` を示す。
-後のブロックは最初のブロックと比べる。
-`first`、`second`、`first`、`third` の後では、
-2 つ目と 4 つ目のブロックを報告する。
+どのフレームも名前を参照しないブロックは、どれも示されないので報告しない。
 
-どちらの種類のフレームも、ブロックの前でも後でも数える。
-どのフレームも参照しない名前のブロックは、どれも示されないので報告しない。
 `` `json` `` のような逆引用符の中のデータの型は、
 mermaid.js が示さないので比べない。
-mermaid.js はブロックの空白と行を書いたとおりに示すので、
-中身は書いたとおりに比べ、すべての改行（LF、CRLF、CR）は LF として読む。
-後の空のブロックも、空白 1 つだけが違うブロックも報告する。
-ブロックの中のコメント行は、mermaid.js が取り除くので中身ではない。
-mermaid.js は、`#35;` のような文字参照と HTML を、
-ブロックを示す前にほかの文字に変えるので、
-それだけが違う 2 つの中身は同じに示されることがあり、それでも報告する。
-
-`Payload01` と `Payload02` のように中身ごとに名前を与えるか、
-ブロックを 1 つにする。
+中身は、LF、CRLF、CR を LF として、書いたとおりに比べるので、
+後の空のブロックも、空白 1 つだけが違うものも報告する。
+ブロックの中のコメント行は、mermaid.js が取り除くので中身として数えない。
+mermaid.js は、
+ブロックを示す前に `#35;` のような文字参照と HTML を変換するので、
+それらだけが違う中身は、同じに示されても報告することがある。
 
 この規則に**反する**コードの例:
 
@@ -79,14 +72,10 @@ second
 
 - [eventmodeling-no-undef](./eventmodeling-no-undef.ja.md)
 
-## 背景
+## 参考
 
-[フレームのデータ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L348-L362)
-は、その名前の最初のデータブロックであり、
-[文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L95-L97)
-は、繰り返すエンティティのブロックに番号の付いた名前を与える。
-[文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L309-L311)
-は、描画がどのデータの型も特別に扱わないとも述べる。
+- [Event Modeling の構文: データブロックの名前](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L95-L97)
+- [Event Modeling の構文: データの型](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L309-L311)
 
 <!-- begin auto-generated rule resources -->
 

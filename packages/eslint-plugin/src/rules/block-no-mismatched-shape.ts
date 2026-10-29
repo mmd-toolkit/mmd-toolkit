@@ -1,3 +1,7 @@
+import { canEditRange } from "../utils/edit-range.ts"
+import type { SuggestedEdit } from "@eslint/core"
+import type { BlockShape } from "@mmd-toolkit/parser"
+import type { MermaidSourceCode } from "../source-code.ts"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import {
@@ -6,10 +10,24 @@ import {
 } from "../utils/block-declarations.ts"
 import { BLOCK_SHAPES } from "../utils/block-shapes.ts"
 
+/** Each documented closing of this opening is a possible intended shape. */
+function closingSuggestions(
+  sourceCode: MermaidSourceCode,
+  shape: BlockShape,
+): SuggestedEdit<"writeClosing">[] {
+  const token = sourceCode.getLastToken(shape)
+  if (token === null || !canEditRange(sourceCode, token.range)) return []
+  return Object.keys(BLOCK_SHAPES[shape.open] ?? {}).map((closing) => ({
+    messageId: "writeClosing",
+    data: { closing },
+    fix: (fixer) => fixer.replaceText(token, closing),
+  }))
+}
+
 /** Reports known shape openings with unknown pairs, excluding composite heads. */
 export const blockNoMismatchedShape: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "mismatched"
+  MessageIds: "mismatched" | "writeClosing"
 }> = {
   meta: {
     type: "problem",
@@ -18,8 +36,10 @@ export const blockNoMismatchedShape: MermaidRuleDefinition<{
       recommended: true,
       url: ruleDocsUrl("block-no-mismatched-shape"),
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
+      writeClosing: "Close with `{{closing}}`.",
       mismatched:
         "mermaid.js recognizes no shape for this pair: the closing `{{close}}` does not match the opening `{{open}}`.",
     },
@@ -37,6 +57,7 @@ export const blockNoMismatchedShape: MermaidRuleDefinition<{
               node: shape,
               messageId: "mismatched",
               data: { open: shape.open, close: shape.close },
+              suggest: closingSuggestions(context.sourceCode, shape),
             })
           }
         }

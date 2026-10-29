@@ -56,6 +56,13 @@ const RESOURCES_BEGIN = "<!-- begin auto-generated rule resources -->"
 const RESOURCES_END = "<!-- end auto-generated rule resources -->"
 
 /**
+ * The page of ESLint on the `--fix` option, which the generated parts link to as
+ * the notices of eslint-doc-generator do.
+ */
+const FIX_URL =
+  "https://eslint.org/docs/latest/use/command-line-interface#--fix"
+
+/**
  * The page of ESLint on suggestions, which the generated parts link to as the
  * notices of eslint-doc-generator do.
  */
@@ -70,10 +77,12 @@ const WORDS: Record<
     readonly rule: string
     readonly description: string
     readonly legend: string
+    readonly fixLegend: string
     readonly suggestionsLegend: string
     readonly skeletonLegend: string
     readonly enabled: string
     readonly notEnabled: string
+    readonly fix: string
     readonly suggestions: string
     readonly resources: string
     readonly ruleSource: string
@@ -85,10 +94,12 @@ const WORDS: Record<
     rule: "Rule",
     description: "Description",
     legend: "✅ The `recommended` configuration enables the rule.",
+    fixLegend: `🔧 Automatically fixable by the [\`--fix\` CLI option](${FIX_URL}).`,
     suggestionsLegend: `💡 Manually fixable by [editor suggestions](${SUGGESTIONS_URL}).`,
     skeletonLegend: "🚧 The rule is not implemented yet: it reports nothing.",
     enabled: "✅ The `recommended` configuration enables this rule.",
     notEnabled: "The `recommended` configuration does not enable this rule.",
+    fix: `🔧 This rule is automatically fixable by the [\`--fix\` CLI option](${FIX_URL}).`,
     suggestions: `💡 This rule is manually fixable by [editor suggestions](${SUGGESTIONS_URL}).`,
     resources: "Resources",
     ruleSource: "Rule source",
@@ -99,10 +110,12 @@ const WORDS: Record<
     rule: "規則",
     description: "説明",
     legend: "✅ は、`recommended` の設定が有効にする規則。",
+    fixLegend: `🔧 は、\n[\`--fix\` オプション](${FIX_URL})\nで自動修正できる規則。`,
     suggestionsLegend: `💡 は、\n[エディターの修正候補](${SUGGESTIONS_URL})\nがある規則。`,
     skeletonLegend: "🚧 は、まだ実装していない規則。\n何も報告しない。",
     enabled: "✅ `recommended` の設定は、この規則を有効にする。",
     notEnabled: "`recommended` の設定は、この規則を有効にしない。",
+    fix: `🔧\n[\`--fix\` オプション](${FIX_URL})\nで自動修正できる。`,
     suggestions: `💡\n[エディターの修正候補](${SUGGESTIONS_URL})\nを選んで適用できる。`,
     resources: "リソース",
     ruleSource: "規則のソース",
@@ -219,6 +232,11 @@ export function isRecommended(rule: RuleDefinition): boolean {
   return rule.meta?.docs?.recommended === true
 }
 
+/** Whether `rule` has a fix, which `eslint --fix` applies. */
+function hasFix(rule: RuleDefinition): boolean {
+  return rule.meta?.fixable !== undefined
+}
+
 /** Whether `rule` offers suggestions. */
 function hasSuggestions(rule: RuleDefinition): boolean {
   return rule.meta?.hasSuggestions === true
@@ -308,6 +326,8 @@ function renderList(
     "",
     words.legend,
     "",
+    words.fixLegend,
+    "",
     words.suggestionsLegend,
     "",
     words.skeletonLegend,
@@ -315,17 +335,18 @@ function renderList(
   for (const [diagram, names] of groupsOf()) {
     lines.push("", `## ${diagram ?? words.commonRules}`, "")
     lines.push(
-      `| ${words.rule} | ${words.description} | ✅ | 💡 | 🚧 |`,
-      "| --- | --- | --- | --- | --- |",
+      `| ${words.rule} | ${words.description} | ✅ | 🔧 | 💡 | 🚧 |`,
+      "| --- | --- | --- | --- | --- | --- |",
     )
     for (const name of names) {
       const rule = ruleOf(name)
       const link = `[${name}](./${name}${SUFFIX[language]})`
       const recommended = isRecommended(rule) ? "✅" : ""
+      const fix = hasFix(rule) ? "🔧" : ""
       const suggestions = hasSuggestions(rule) ? "💡" : ""
       const skeleton = skeletons.has(name) ? "🚧" : ""
       lines.push(
-        `| ${link} | ${descriptionOf(docsDir, name, rule, language)} | ${recommended} | ${suggestions} | ${skeleton} |`,
+        `| ${link} | ${descriptionOf(docsDir, name, rule, language)} | ${recommended} | ${fix} | ${suggestions} | ${skeleton} |`,
       )
     }
   }
@@ -333,7 +354,7 @@ function renderList(
   return lines.join("\n")
 }
 
-/** The generated notice of a rule document, between its markers: whether `recommended` enables the rule, and whether it offers suggestions. */
+/** The generated notice of a rule document, between its markers: whether `recommended` enables the rule, whether it has a fix, and whether it offers suggestions. */
 function renderNotice(name: string, language: DocumentLanguage): string {
   const words = WORDS[language]
   const rule = ruleOf(name)
@@ -343,6 +364,7 @@ function renderNotice(name: string, language: DocumentLanguage): string {
     isRecommended(rule) ? words.enabled : words.notEnabled,
     "",
   ]
+  if (hasFix(rule)) lines.push(words.fix, "")
   if (hasSuggestions(rule)) lines.push(words.suggestions, "")
   lines.push(NOTICE_END)
   return lines.join("\n")

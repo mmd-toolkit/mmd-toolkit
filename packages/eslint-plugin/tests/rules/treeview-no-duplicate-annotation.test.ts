@@ -41,6 +41,34 @@ root/ :::first icon(pack:file) :::last icon() ##  detail\u0020\u0020
             column: 32,
             endLine: 7,
             endColumn: 39,
+            suggestions: [
+              {
+                desc: "Remove this annotation.",
+                output: `treeView-beta
+title  Tree 
+accTitle:  Access 
+accDescr: Line 
+accDescr {  Block
+  text  }
+root/ :::first icon(pack:file) icon() ##  detail  
+  "child/ "
+''
+`,
+              },
+              {
+                desc: "Remove the earlier annotation.",
+                output: `treeView-beta
+title  Tree 
+accTitle:  Access 
+accDescr: Line 
+accDescr {  Block
+  text  }
+root/ icon(pack:file) :::last icon() ##  detail  
+  "child/ "
+''
+`,
+              },
+            ],
           },
           {
             message:
@@ -49,6 +77,34 @@ root/ :::first icon(pack:file) :::last icon() ##  detail\u0020\u0020
             column: 40,
             endLine: 7,
             endColumn: 46,
+            suggestions: [
+              {
+                desc: "Remove this annotation.",
+                output: `treeView-beta
+title  Tree 
+accTitle:  Access 
+accDescr: Line 
+accDescr {  Block
+  text  }
+root/ :::first icon(pack:file) :::last ##  detail  
+  "child/ "
+''
+`,
+              },
+              {
+                desc: "Remove the earlier annotation.",
+                output: `treeView-beta
+title  Tree 
+accTitle:  Access 
+accDescr: Line 
+accDescr {  Block
+  text  }
+root/ :::first :::last icon() ##  detail  
+  "child/ "
+''
+`,
+              },
+            ],
           },
         ],
       },
@@ -67,6 +123,21 @@ root/ :::first icon(pack:file) :::last icon() ##  detail\u0020\u0020
             column: 1,
             endLine: 3,
             endColumn: 14,
+            suggestions: [
+              {
+                desc: "Remove this annotation.",
+                output: `treeView-beta
+└── file ## a\tb
+`,
+              },
+              {
+                desc: "Remove the earlier annotation.",
+                output: `treeView-beta
+└── file
+└── ## a    b
+`,
+              },
+            ],
           },
         ],
       },
@@ -85,6 +156,21 @@ file ## A\u2028B\u2029C
             column: 2,
             endLine: 3,
             endColumn: 10,
+            suggestions: [
+              {
+                desc: "Remove this annotation.",
+                output: `treeView-beta
+file ## A\u2028B\u2029C
+`,
+              },
+              {
+                desc: "Remove the earlier annotation.",
+                output: `treeView-beta
+file
+ ## A B C
+`,
+              },
+            ],
           },
         ],
       },
@@ -104,6 +190,23 @@ file ## First
             column: 2,
             endLine: 3,
             endColumn: 7,
+            suggestions: [
+              {
+                desc: "Remove this annotation.",
+                output: `treeView-beta
+file ## First
+ ## Second
+`,
+              },
+              {
+                desc: "Remove the earlier annotation.",
+                output: `treeView-beta
+file
+ ## \t 
+ ## Second
+`,
+              },
+            ],
           },
         ],
       },
@@ -119,6 +222,49 @@ file ## First
             column: 2,
             endLine: 3,
             endColumn: 11,
+            suggestions: [
+              {
+                desc: "Remove this annotation.",
+                output: `treeView-beta\rfile :::first\r`,
+              },
+              {
+                desc: "Remove the earlier annotation.",
+                output: `treeView-beta\rfile\r :::second\r`,
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        name: "invalid/treeview/annotations-crlf",
+        filename:
+          "tests/fixtures/rules/treeview-no-duplicate-annotation/invalid/treeview/annotations-crlf-input.mmd",
+        code: `treeView-beta\r
+  file :::highlight :::muted\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the class given earlier for this node with this class.",
+            line: 2,
+            column: 21,
+            endLine: 2,
+            endColumn: 29,
+            suggestions: [
+              {
+                desc: "Remove this annotation.",
+                output: `treeView-beta\r
+  file :::highlight\r
+`,
+              },
+              {
+                desc: "Remove the earlier annotation.",
+                output: `treeView-beta\r
+  file :::muted\r
+`,
+              },
+            ],
           },
         ],
       },
