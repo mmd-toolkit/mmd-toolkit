@@ -53,9 +53,9 @@ What holds for the package `packages/eslint-plugin`:
    and which it does not, and when a rule is common. Read them every time: the
    criteria change.
 2. The skill `conventions` (`.claude/skills/conventions/SKILL.md`): English
-   documents with a Japanese pair made by the AI session, no invisible
-   characters, prose wrapped by Prettier, `mmd` as the info string of code
-   blocks that hold Mermaid text, links to mermaid.js source.
+   documents with a Japanese pair, no invisible characters, prose wrapped by
+   Prettier, `mmd` as the info string of code blocks that hold Mermaid text,
+   links to mermaid.js source.
 3. The tree: `packages/spec/docs/ast.md` and
    `packages/spec/docs/ast/<diagram>.md`. The condition of a rule is written
    with the node types, fields, and token kinds defined there.

@@ -56,7 +56,7 @@ fixture で確かめて書く手順。
    このパッケージが持つ規則と持たない規則、規則を共通にする条件。
    基準は変わるので、毎回読む。
 2. SKILL `conventions`（`.claude/skills/conventions/SKILL.md`）。
-   英語の文書と日本語の対（日本語は AI が書く）、見えない文字を書かないこと、
+   英語の文書と日本語の対、見えない文字を書かないこと、
    Prettier による文章の折り返し、
    Mermaid のテキストのコードブロックの info string は `mmd`、
    mermaid.js のソースへのリンクの書き方。
