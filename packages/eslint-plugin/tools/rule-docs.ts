@@ -134,6 +134,20 @@ function paragraphsOf(text: string): string[] {
     .filter((paragraph) => paragraph !== "")
 }
 
+/**
+ * The documents of the same directory that `document` links to, as the file
+ * names the links give (`./name.md` and `./name.ja.md`), without any heading.
+ */
+function siblingLinks(document: string): string[] {
+  const targets: string[] = []
+  for (const part of document.split("](./").slice(1)) {
+    const end = part.indexOf(")")
+    const target = part.slice(0, end).split("#")[0] ?? ""
+    if (target.endsWith(".md")) targets.push(target)
+  }
+  return targets
+}
+
 /** The words that open the line that links to the other language. */
 const LANGUAGE_LINE_STARTS = ["Japanese version:", "英語版:"]
 
@@ -521,10 +535,12 @@ function documentsUnder(
  * and their tests under `testsDir`: a rule without a test, which the generated
  * link to it would miss, a rule without an English document (the original), a
  * document without a rule, an English document whose first paragraph is not
- * the rule's `meta.docs.description`, an English document that links to a
- * Japanese version that does not exist, a Japanese document whose Mermaid code
- * blocks are not those of the English one, and an example without its
- * rule-enabling comment. A rule may lack its Japanese document.
+ * the rule's `meta.docs.description`, a link from a document to another
+ * document of the same directory that does not exist (an English document that
+ * links to a Japanese version that does not exist, a Japanese document that
+ * links to the Japanese version of a rule that has none), a Japanese document
+ * whose Mermaid code blocks are not those of the English one, and an example
+ * without its rule-enabling comment. A rule may lack its Japanese document.
  */
 export function mismatches(
   docsDir: string = RULE_DOCS_DIR,
@@ -565,14 +581,7 @@ export function mismatches(
       )
     }
     const japanesePath = ruleDocumentPath(docsDir, name, "ja")
-    if (!existsSync(japanesePath)) {
-      if (english.includes(`(./${name}${SUFFIX.ja})`)) {
-        problems.push(
-          `${englishPath} links to ${japanesePath}, which does not exist`,
-        )
-      }
-      continue
-    }
+    if (!existsSync(japanesePath)) continue
     const englishBlocks = mmdCodeBlocks(english)
     const japaneseBlocks = mmdCodeBlocks(readFileSync(japanesePath, "utf8"))
     if (
@@ -585,11 +594,19 @@ export function mismatches(
     }
   }
   for (const { name, language } of documentsUnder(docsDir)) {
+    const path = ruleDocumentPath(docsDir, name, language)
+    // The list in the index is generated: a stale link there is what `update`
+    // rewrites, so it is not a mismatch that stops `update`.
     if (name === "index") continue
+    for (const target of siblingLinks(readFileSync(path, "utf8"))) {
+      if (!existsSync(`${docsDir}${target}`)) {
+        problems.push(
+          `${path} links to ${docsDir}${target}, which does not exist`,
+        )
+      }
+    }
     if (!(name in rules)) {
-      problems.push(
-        `${ruleDocumentPath(docsDir, name, language)} is the document of no rule`,
-      )
+      problems.push(`${path} is the document of no rule`)
     }
   }
   return problems

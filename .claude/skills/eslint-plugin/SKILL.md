@@ -153,8 +153,10 @@ document has the same parts: `英語版: [<name>.md](./<name>.md)`,
 `この規則に**従う**コードの例:`, `## オプション` with
 `この規則にはオプションがない。`, `## 使わないとき`, `## 関連する規則`, and
 `## 参考`. Links from a Japanese document to another document point to its
-Japanese version (`.ja.md`). When the line with the link to the English version
-is wider than 80 columns, break it after `英語版:`.
+Japanese version (`.ja.md`), or to its English document when it has no Japanese
+version (`check:docs` reports a link whose target does not exist). When the line
+with the link to the English version is wider than 80 columns, break it after
+`英語版:`.
 
 How each part is written:
 

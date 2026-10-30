@@ -1,5 +1,6 @@
 /** Checks the authoring requirements enforced by the rule-document command. */
 import {
+  existsSync,
   mkdirSync,
   mkdtempSync,
   readdirSync,
@@ -199,11 +200,15 @@ describe("a rule without a Japanese document", () => {
     return document.slice(0, start) + document.slice(end).trimStart()
   }
 
-  it("is reported when its English document links to the missing one", () => {
-    const englishPath = ruleDocumentPath(`${directory}/`, name, "en")
-    expect(mismatches(`${directory}/`)).toEqual([
-      `${englishPath} links to ${ruleDocumentPath(`${directory}/`, name, "ja")}, which does not exist`,
-    ])
+  it("is reported when a document links to the missing one", () => {
+    const missing = ruleDocumentPath(`${directory}/`, name, "ja")
+    const problems = mismatches(`${directory}/`)
+    expect(problems).toContain(
+      `${ruleDocumentPath(`${directory}/`, name, "en")} links to ${missing}, which does not exist`,
+    )
+    expect(problems).toContain(
+      `${ruleDocumentPath(`${directory}/`, "class-no-undef", "ja")} links to ${missing}, which does not exist`,
+    )
   })
 
   describe("whose English document links to no Japanese one", () => {
@@ -215,7 +220,28 @@ describe("a rule without a Japanese document", () => {
       )
     })
 
-    it("is accepted", () => {
+    it("is reported while a Japanese document links to its missing Japanese version", () => {
+      expect(mismatches(`${directory}/`)).toEqual(
+        expect.arrayContaining([
+          expect.stringContaining(
+            `class-no-undef.ja.md links to ${ruleDocumentPath(`${directory}/`, name, "ja")}`,
+          ),
+        ]),
+      )
+    })
+
+    it("is accepted when the Japanese documents link to its English one", () => {
+      for (const ruleName of Object.keys(rules)) {
+        const path = ruleDocumentPath(`${directory}/`, ruleName, "ja")
+        if (!existsSync(path)) continue
+        writeFileSync(
+          path,
+          readFileSync(path, "utf8").replaceAll(
+            `./${name}.ja.md`,
+            `./${name}.md`,
+          ),
+        )
+      }
       expect(mismatches(`${directory}/`)).toEqual([])
     })
 
