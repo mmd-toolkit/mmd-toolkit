@@ -85,22 +85,17 @@ AGENTS.md は、それぞれを 1 行で述べ、守らせる検査の名前を�
   pin したコミットは `packages/spec/docs/index.md` に 1 か所で記録する。
   Markdown 文書の mermaid.js へのリンクがそれ以外を指していると、
   `pnpm run lint:docs` が失敗する。
-- リポジトリ内の Markdown 文書は英語で書き、
-  同じ内容の日本語版を隣に `<名前>.ja.md` として置く。
-  README、`packages/spec/docs/` 配下、この文書などである。
-  両方を同じ変更で更新する。
-  英語版を変えたら、`.ja.md` に同じ変更が入るまでその変更は完了ではない。
-  日本語版が無い文書や、英語版より古い日本語版があれば、そのとき日本語版を書く。
-  日本語版について `pnpm run lint:docs`（`pnpm run lint` と CI に含まれる）は、
-  無いもの、英語版より古いもの、
-  fixture の引用や見出しが英語版と違うものを一覧にし、
+- Markdown 文書（README、`packages/spec/docs/` 配下、
+  この文書など）は英語で書き、同じ内容の日本語版 `<名前>.ja.md` を隣に置いて、
+  同じ変更で直す。
+  日本語版が無い、または英語版より古い文書は、日本語版を書く。
+  `pnpm run lint:docs` はそれらと、
+  fixture の引用や見出しが英日で違う対を一覧にし、
   英語の原本がない `.ja.md` があるときだけ失敗する。
-  日本語版がまだ無い英語の文書には「Japanese version:」の行を置かない。
-  日本語版を書くときに、言語の行を両方の文書に足す。
-  ツールが生成したファイルは対象外。
-  `.changeset/README.md` と、
-  changesets がリリース時に公開パッケージごとに書く `CHANGELOG.md` である。
-  検査の対象は `scripts/markdown-files.mjs` が定める。
+  日本語版がまだ無い英語の文書には「Japanese version:」の行を置かず、
+  日本語版を書くときに両方へ足す。
+  対象外は `.changeset/README.md` と changesets が書く `CHANGELOG.md`
+  （検査の対象は `scripts/markdown-files.mjs` が定める）。
 - Markdown 文書の文章は、Prettier が 80 桁で折り返す。
   設定は `prettier.config.js` の `proseWrap: "always"`。
   文書を編集したら `pnpm run format` を実行する。

@@ -160,12 +160,11 @@ flowchart、sequence、class、state が済んでいる。
   - 不可視文字を実際の文字として書かない（`pnpm run lint:chars`）。
     例外は、適合コーパスの fixture だけ。
   - Markdown 文書は英語で書き、`.ja.md` の対を同じ変更で直す。
-    日本語版が無い文書と、英語版より古い日本語版は、日本語版を書く。
+    日本語版が無い、または英語版より古い文書は、日本語版を書く。
     どちらも `pnpm run lint:docs` が一覧にする。
-    `pnpm run lint:docs` は、英語の原本がない `.ja.md` があると失敗し、
-    mermaid.js のソースへのリンクが、
-    pin したコミットのパーマリンクであることを確かめる。
-    changesets が書く `CHANGELOG.md` に日本語版はない。
+    `CHANGELOG.md` に対はない。
+    mermaid.js のソースへのリンクは、
+    pin したコミットのパーマリンクにする（`pnpm run lint:docs`）。
   - 文章は 80 桁で折り返す。
     英語は Prettier が折り返す（`pnpm run format:check`）。
     日本語は書き手が折り返し、`pnpm run lint:ja` が確かめる。

@@ -1,14 +1,10 @@
-// Reports the state of the Japanese versions of the Markdown documents.
-// English is the source. The Japanese version next to a document
-// (`<name>.ja.md`) is written by the AI agents that follow the agent
-// instructions of this repository, so a change written by hand may lack it
-// until an agent adds it. The check fails only when a `.ja.md` has no English
-// original.
-// Documents without a Japanese version, and Japanese versions whose English
-// original was committed after them, are listed as information and do not fail
-// the check. Only committed history is read: a change in the working tree is
-// not seen, a commit that touches only the Japanese version counts as bringing
-// it up to date, and a shallow clone has no history to compare.
+// Reports the state of the Japanese versions (`<name>.ja.md`) of the Markdown
+// documents. It fails only when a `.ja.md` has no English original. Documents
+// without a Japanese version, and Japanese versions committed before the last
+// change of their English original, are listed as information. Only committed
+// history is read: a change in the working tree is not seen, a commit that
+// touches only the Japanese version counts as bringing it up to date, and a
+// shallow clone has no history to compare.
 // Which documents are covered: scripts/markdown-files.mjs.
 import { execFileSync } from "node:child_process"
 import { markdownFiles } from "./markdown-files.mjs"
