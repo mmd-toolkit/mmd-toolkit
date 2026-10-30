@@ -83,10 +83,12 @@ The procedures of a package are in the skill of that package.
   the `.ja.md` carries the same change. A document may arrive without a Japanese
   version, or with one older than the English; write the Japanese then.
   `pnpm run lint:docs` (part of `pnpm run lint` and CI) lists both cases and
-  fails only on a `.ja.md` that has no English original. Generated files are
-  exempt: `.changeset/README.md` and the `CHANGELOG.md` that changesets writes
-  into each published package at release; `scripts/markdown-files.mjs` lists
-  what the check covers.
+  fails only on a `.ja.md` that has no English original. An English document
+  whose Japanese version does not exist yet has no `Japanese version:` line; add
+  the language lines to both documents when writing the Japanese. Generated
+  files are exempt: `.changeset/README.md` and the `CHANGELOG.md` that
+  changesets writes into each published package at release;
+  `scripts/markdown-files.mjs` lists what the check covers.
 - Prose in Markdown documents is wrapped at 80 columns by Prettier
   (`proseWrap: "always"` in `prettier.config.js`). Run `pnpm run format` after
   editing a document; `pnpm run format:check` fails otherwise. Do not write a

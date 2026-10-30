@@ -25,9 +25,10 @@ pnpm run format:check
 
 - `pnpm test` runs the tests of every package.
 - `pnpm run lint` runs ESLint, the type check, the document checks, and the
-  check for invisible characters. Documents are written in English; the
-  maintainers add the Japanese versions, so a change to an English document
-  needs no Japanese counterpart.
+  check for invisible characters. Documents are written in English. A Japanese
+  version next to a document (`<name>.ja.md`) is welcome but not required: the
+  AI agents that work in this repository write the Japanese versions that are
+  missing. Do not link to a Japanese version that does not exist.
 - `pnpm run format:check` checks the formatting with Prettier; `pnpm run format`
   applies it.
 - `pnpm run update` writes the files that are generated from the sources: today,

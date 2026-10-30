@@ -3,8 +3,10 @@
 // maintainers produce the Japanese version next to it (`<name>.ja.md`)
 // afterwards. The check fails only when a `.ja.md` has no English original.
 // Documents without a Japanese version, and Japanese versions whose English
-// original was committed after them, are listed as information for the
-// maintainers and do not fail the check.
+// original was committed after them, are listed as information and do not fail
+// the check. Only committed history is read: a change in the working tree is
+// not seen, a commit that touches only the Japanese version counts as bringing
+// it up to date, and a shallow clone has no history to compare.
 // Which documents are covered: scripts/markdown-files.mjs.
 import { execFileSync } from "node:child_process"
 import { markdownFiles } from "./markdown-files.mjs"
@@ -35,7 +37,12 @@ function lastCommitTimes() {
   return times
 }
 
-const commitTimes = lastCommitTimes()
+const shallow =
+  execFileSync("git", ["rev-parse", "--is-shallow-repository"], {
+    cwd: root,
+    encoding: "utf8",
+  }).trim() === "true"
+const commitTimes = shallow ? new Map() : lastCommitTimes()
 const orphans = []
 const missing = []
 const outdated = []
@@ -51,7 +58,10 @@ for (const file of files) {
     missing.push(file)
     continue
   }
-  if ((commitTimes.get(file) ?? 0) > (commitTimes.get(japanese) ?? 0))
+  if (
+    !shallow &&
+    (commitTimes.get(file) ?? 0) > (commitTimes.get(japanese) ?? 0)
+  )
     outdated.push(file)
 }
 
@@ -60,8 +70,11 @@ if (orphans.length > 0) {
   for (const p of orphans) process.stderr.write(`  ${p}\n`)
   process.exitCode = 1
 } else {
+  const age = shallow
+    ? "age not compared (shallow clone)"
+    : `${outdated.length} whose English original is newer`
   process.stdout.write(
-    `check-ja-docs: ${files.size} Markdown files; ${missing.length} without a Japanese version, ${outdated.length} whose English original is newer.\n`,
+    `check-ja-docs: ${files.size} Markdown files; ${missing.length} without a Japanese version, ${age}.\n`,
   )
   for (const file of missing) process.stdout.write(`  missing: ${file}\n`)
   for (const file of outdated) process.stdout.write(`  outdated: ${file}\n`)

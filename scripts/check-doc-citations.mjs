@@ -2,9 +2,10 @@
 // inconsistent: the specification (packages/spec) and the documents of the
 // parser and of the tests that it points to (packages/parser/docs,
 // packages/tests/docs). It reports a relative link whose file or anchor does
-// not exist, a fixture citation (`[fixture: <diagram>/<name>]`) whose fixture
-// does not exist, an English document and its Japanese pair that cite
-// different fixtures, and a pair whose headings have different levels.
+// not exist, and a fixture citation (`[fixture: <diagram>/<name>]`) whose
+// fixture does not exist. A Japanese version that cites other fixtures than its
+// English original, or whose headings have other levels, is listed as
+// information: it is behind the English, which is not an error.
 import { existsSync, readFileSync, readdirSync } from "node:fs"
 import path from "node:path"
 
@@ -108,6 +109,11 @@ for (const file of files) {
     }
   }
 }
+// A Japanese version that cites other fixtures or has another heading structure
+// than its English original is behind the English; this is information for
+// whoever writes the Japanese versions, not a failure, since an English-only
+// change is accepted.
+const behind = []
 for (const file of files) {
   if (!file.endsWith(".ja.md")) continue
   const english = file.replace(/\.ja\.md$/u, ".md")
@@ -117,10 +123,10 @@ for (const file of files) {
     citationsByFile.get(english).join("\n") !==
     citationsByFile.get(file).join("\n")
   ) {
-    problems.push(`different fixture citations: ${shown} and its pair`)
+    behind.push(`${shown}: its Japanese version cites other fixtures`)
   }
   if (headingLevels(english) !== headingLevels(file)) {
-    problems.push(`different heading structure: ${shown} and its pair`)
+    behind.push(`${shown}: its Japanese version has another heading structure`)
   }
 }
 
@@ -134,6 +140,7 @@ if (problems.length > 0) {
     citationCount += citations.length
   }
   process.stdout.write(
-    `check-doc-citations: ${files.length} documents, ${citationCount} fixture citations, no problems.\n`,
+    `check-doc-citations: ${files.length} documents, ${citationCount} fixture citations, no problems; ${behind.length} Japanese versions behind their English.\n`,
   )
+  for (const line of behind) process.stdout.write(`  behind: ${line}\n`)
 }
