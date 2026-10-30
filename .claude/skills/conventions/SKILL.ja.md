@@ -32,7 +32,7 @@ AGENTS.md は、それぞれを 1 行で述べ、守らせる検査の名前を�
   既知の危険な自動修正: `regexp/no-missing-g-flag` は、
   `new RegExp(re)` を `new RegExp(re, "g")` に書き換えて、元のフラグを落とす。
   `new RegExp(re.source, re.flags)` と書けば報告されない。
-- 性能の直し（性能の review の報告の直し。parser でも printer でも）も、
+- 性能の直し（性能の review の報告の直し。parser でも printer でもほかでも）も、
   読みやすさを先にする。
   書いた人にしか分からない速い形は、あるべき形ではない。
   速さのための構造には、その理由を 1 つのコメントでその場に書く。
