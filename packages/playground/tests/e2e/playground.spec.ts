@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test"
-import { encodeState } from "../../src/share.ts"
+import { decodeState, encodeState } from "../../src/share.ts"
 import { defaultSource, exampleGroups } from "../../src/examples.ts"
 import { edit, savedSource, shortcut } from "./helpers.ts"
 
@@ -152,12 +152,17 @@ test("shares and reloads large input with a long URL", async ({ page }) => {
   )
   await expect(page.locator(".type-badge")).toHaveText("flowchart-v2")
   await page.getByRole("button", { name: "Share", exact: true }).click()
-  // The page compresses the source itself and replaces the hash with its own
-  // result, which can differ in bytes from the one encoded here, so the URL is
-  // read once the share link exists rather than before.
-  const shareLink = page.getByLabel("Share this input", { exact: true })
-  await expect(shareLink).not.toHaveValue("")
-  expect(await shareLink.inputValue()).toBe(page.url())
+  // Until the page has compressed the source, the field shows the URL from
+  // start-up and the copy button is disabled; the page then replaces the hash
+  // with its own result, so the link is compared with the URL after that.
+  await expect(
+    page.getByRole("button", { name: "Copy Link", exact: true }),
+  ).toBeEnabled()
+  const shareLink = await page
+    .getByLabel("Share this input", { exact: true })
+    .inputValue()
+  expect(shareLink).toBe(page.url())
+  expect((await decodeState(new URL(shareLink).hash)).source).toBe(source)
   expect(await savedSource(page)).toBe(source)
   await page.reload()
   await expect(page.locator(".source-pane .pane-footer")).toContainText(
