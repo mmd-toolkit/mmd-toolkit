@@ -235,14 +235,20 @@ pnpm run -s lint:docs
 pnpm run -s lint:chars
 ```
 
-Besides the English and Japanese pairs, `pnpm run lint:docs` checks the links of
-the specification's documents and of the parser's and the tests' documents
-(`packages/parser/docs`, `packages/tests/docs`), their anchors, the fixture
-citations (also those wrapped after `[fixture:`), the same set of citations in
-each English document and its Japanese pair, and the same heading structure in
-both (`scripts/check-doc-citations.mjs`). It also checks that every link to
-mermaid.js in the checked documents points to the commit recorded in
-`packages/spec/docs/index.md` (`scripts/check-mermaid-links.mjs`).
+`pnpm run lint:docs` fails on the checks of each document on its own: that the
+links of the specification's documents and of the parser's and the tests'
+documents (`packages/parser/docs`, `packages/tests/docs`), their anchors, and
+the fixture citations (also those wrapped after `[fixture:`) point to what
+exists (`scripts/check-doc-citations.mjs`), and that every link to mermaid.js in
+the checked documents points to the commit recorded in
+`packages/spec/docs/index.md` (`scripts/check-mermaid-links.mjs`). It also fails
+on a `.ja.md` without an English original (`scripts/check-ja-docs.mjs`). The
+comparisons of the English and the Japanese do not fail it and are listed as
+information: a document without a Japanese version, a Japanese version older
+than the English, and a Japanese version whose fixture citations or heading
+structure differ from the English (listed as behind). When a document of the
+specification has no Japanese version, or one older than the English, write the
+Japanese version then, with the same citations and the same heading structure.
 
 When fixtures were added, also run `pnpm run -s fixtures:check` in
 `packages/tests`, which runs every fixture through mermaid.js again and fails

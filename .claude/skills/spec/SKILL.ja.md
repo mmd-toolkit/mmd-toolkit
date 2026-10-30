@@ -238,14 +238,22 @@ pnpm run -s lint:docs
 pnpm run -s lint:chars
 ```
 
-`pnpm run lint:docs` は、日英の対のほかに、仕様の文書と、
-parser と tests の文書（`packages/parser/docs`、
-`packages/tests/docs`）のリンク、アンカー、
-fixture の引用（`[fixture:` の後で行が折り返されたものも読む）、
-日英の引用の集合、見出しの構造を確かめる（`scripts/check-doc-citations.mjs`）。
+`pnpm run lint:docs` が失敗にするのは、文書ごとに決まる検査である。
+1 つは `scripts/check-doc-citations.mjs` で、仕様の文書と、
+parser と tests の文書（`packages/parser/docs`、`packages/tests/docs`）の、
+リンク、アンカー、
+fixture の引用（`[fixture:` の後で行が折り返されたものも読む）が、
+あるものを指していること。
+もう 1 つは `scripts/check-mermaid-links.mjs` で、
 検査の対象の文書の mermaid.js へのリンクが、
-すべて `packages/spec/docs/index.md` に記録した commit を指していることも、
-`scripts/check-mermaid-links.mjs` で確かめる。
+すべて `packages/spec/docs/index.md` に記録した commit を指していること。
+英語の原本のない `.ja.md` も失敗にする（`scripts/check-ja-docs.mjs`）。
+英日の比較は失敗にせず、情報として一覧する。
+日本語版が無い文書、英語版より古い日本語版、
+fixture の引用か見出しの構造が英語版と違う日本語版である。
+最後のものは behind として一覧する。
+仕様の文書に、日本語版が無いか、英語版より古い日本語版があれば、
+そのとき日本語版を、同じ引用と同じ見出しの構造で書く。
 
 `packages/tests` で `pnpm run -s fixtures:check` も通す（fixture
 を足したとき）。
