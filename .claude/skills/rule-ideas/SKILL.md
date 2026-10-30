@@ -92,19 +92,20 @@ Read them before every decision.
 
 Kept (an author's mistake that mermaid accepts silently):
 
-| Input                                                                                                | What mermaid does                                                       | Rule                                                                                                                                                        |
-| ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `%%{init: {...}}` (the closing `%%` forgotten)                                                       | The directive runs to the end of the text, and the diagram is empty     | no-unclosed-directive (common)                                                                                                                              |
-| `%%{init: {"flowchart": {"inheritDir": true},}}%%` (a trailing comma)                                | All init configuration is dropped                                       | no-invalid-init-directive (common)                                                                                                                          |
-| `C-->A[End]` after `A[Start]-->B`                                                                    | The label of A becomes End                                              | flowchart-no-redefined-vertex                                                                                                                               |
-| `style C fill:red` (C mistyped)                                                                      | Adds a styled vertex C                                                  | flowchart-no-undef                                                                                                                                          |
-| `class C foo` or `click C href "…"` (C mistyped)                                                     | Nothing: no vertex gets the class or the link                           | flowchart-no-undef                                                                                                                                          |
-| `style C fill:red`, then `class C foo` (C mistyped in both)                                          | `style` adds the vertex C, and the class applies to it                  | flowchart-no-undef, on the `style` only: the first `style` of an id that nothing else defines is reported, and a vertex that `style` adds counts as defined |
-| An `accDescr {` block left unclosed                                                                  | The description is empty                                                | flowchart-no-unclosed-description-block                                                                                                                     |
-| `accDescr {}` in a diagram without a description (also with only whitespace inside, or on two lines) | Nothing happens (the description stays empty)                           | flowchart-no-empty-description-block                                                                                                                        |
-| `accDescr: second` after `accDescr: first`                                                           | The description is replaced by `second` without a word                  | flowchart-no-duplicate-description                                                                                                                          |
-| `accTitle: second` after `accTitle: first`                                                           | The title is replaced by `second` without a word                        | flowchart-no-duplicate-title                                                                                                                                |
-| `A-->B; direction TB` in a subgraph (the same with or without the `;`)                               | The rest of the direction line is dropped: A, B, and the edge disappear | flowchart-no-ignored-text (a direction statement is written on a line of its own; mermaid drops the statements written on the same line without a word)     |
+| Input                                                                                                | What mermaid does                                                                               | Rule                                                                                                                                                        |
+| ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `%%{init: {...}}` (the closing `%%` forgotten)                                                       | The directive runs to the end of the text, and the diagram is empty                             | no-unclosed-directive (common)                                                                                                                              |
+| `%%{init: {"flowchart": {"inheritDir": true},}}%%` (a trailing comma)                                | All init configuration is dropped                                                               | no-invalid-init-directive (common)                                                                                                                          |
+| `%%{init: {"fontFamily": "O'Brien"}}%%` (a `'` inside a string in `"`)                               | All init configuration is dropped: mermaid.js turns every `'` into `"` before it reads the JSON | no-invalid-init-directive (common)                                                                                                                          |
+| `C-->A[End]` after `A[Start]-->B`                                                                    | The label of A becomes End                                                                      | flowchart-no-redefined-vertex                                                                                                                               |
+| `style C fill:red` (C mistyped)                                                                      | Adds a styled vertex C                                                                          | flowchart-no-undef                                                                                                                                          |
+| `class C foo` or `click C href "…"` (C mistyped)                                                     | Nothing: no vertex gets the class or the link                                                   | flowchart-no-undef                                                                                                                                          |
+| `style C fill:red`, then `class C foo` (C mistyped in both)                                          | `style` adds the vertex C, and the class applies to it                                          | flowchart-no-undef, on the `style` only: the first `style` of an id that nothing else defines is reported, and a vertex that `style` adds counts as defined |
+| An `accDescr {` block left unclosed                                                                  | The description is empty                                                                        | flowchart-no-unclosed-description-block                                                                                                                     |
+| `accDescr {}` in a diagram without a description (also with only whitespace inside, or on two lines) | Nothing happens (the description stays empty)                                                   | flowchart-no-empty-description-block                                                                                                                        |
+| `accDescr: second` after `accDescr: first`                                                           | The description is replaced by `second` without a word                                          | flowchart-no-duplicate-description                                                                                                                          |
+| `accTitle: second` after `accTitle: first`                                                           | The title is replaced by `second` without a word                                                | flowchart-no-duplicate-title                                                                                                                                |
+| `A-->B; direction TB` in a subgraph (the same with or without the `;`)                               | The rest of the direction line is dropped: A, B, and the edge disappear                         | flowchart-no-ignored-text (a direction statement is written on a line of its own; mermaid drops the statements written on the same line without a word)     |
 
 Dropped:
 
@@ -310,7 +311,6 @@ Dropped:
 | In every diagram type, a key of the settings that mermaid.js does not know (`theem`) or does not take from a directive (`securityLevel`)                                                                       | A key unknown to the schema can be meant: `themeVariables` and diagrams added from outside take keys of their own, and the keys not taken from a directive are documented (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | In every diagram type, a directive whose name neither ends with `init` or `initialize` nor is `wrap`                                                                                                           | Nothing is shown lost: mermaid.js accepts any name, and a directive that sets nothing may be written on purpose (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | In every diagram type, a directive at all, which the documentation replaces with the frontmatter                                                                                                               | Style: a directive still works as written (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| In every diagram type, JSON valid as written that turning `'` into `"` breaks (`{"fontFamily": "O'Brien"}`)                                                                                                    | A defect of mermaid.js: the author writes valid JSON, and mermaid.js drops the settings (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | In every diagram type, a valid init directive after `%%}%%` on its line, which gives no settings                                                                                                               | No ordinary writing: no author writes `%%}%%` before a directive; mermaid.js removes such a line before it reads the settings (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | In every diagram type, `title`, `accTitle`, and `accDescr` written twice, and an empty `accDescr` block, as common rules                                                                                       | Not common: kanban reads `accTitle` as a column, ishikawa as a node, info publishes none of them, and an empty block keeps the description in some diagram types and clears it in others (run); they stay rules of each diagram type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 
@@ -1051,17 +1051,29 @@ gives no report (run in every header of the detection table).
 
 no-invalid-init-directive: (1) the settings of every init directive are dropped,
 or, for a name in another case, the settings of that directive (run in every
-diagram type); (2) none: JSON that is valid as written and that turning `'` into
-`"` breaks is a defect of mermaid.js and not reported
+diagram type); mermaid.js turns every `'` into `"` before it reads the JSON
+(read in
+[`detectDirective`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L159-L198)),
+so it reads any JSON that is valid after that, also one that mixes the two
+quotes (`{'theme": "dark"}`), and reads `\'` inside a string of either quote as
+`"` (the steps run in Node). Where the JSON is broken after the replacement but
+valid as its quotes are written, apart from trailing commas, each character that
+makes the difference (a `'` inside a string in `"`, an unescaped `"` inside a
+string in `'`) and each trailing comma is reported apart, with its fix; each
+`\'` inside a string is reported with its fix too; one `--fix` pass applies them
+all; any other JSON that is broken after the replacement is reported once as
+invalid, with no fix; (2) none: JSON that is valid after the replacement, as
+`{'theme': 'dark'}` and `{"fontFamily": "Arial'}`, and `\u0027` are not reported
 ([#3640](https://github.com/mermaid-js/mermaid/issues/3640) (open) concerns the
 quotes), a word argument or none comes from not knowing the syntax, and a
 directive after `%%}%%` on its line drops only its own settings when text
 follows the line and those of every init directive on the last line, which the
 document states; (3) "init trailing comma", "init directive ignored", "directive
 case sensitive", "init json", "json5", "trailing comma init"; (4) correct the
-JSON, or write the name in lower case. The name follows ESLint, where invalid is
-a form written incorrectly that does not work as meant (no-invalid-regexp,
-valid-typeof), as both reported forms are.
+JSON, write `\u0027` for a `'` and `\"` for a `"` inside a string, or write the
+name in lower case. The name follows ESLint, where invalid is a form written
+incorrectly that does not work as meant (no-invalid-regexp, valid-typeof), as
+the reported forms are.
 
 no-duplicate-init-key: (1) the earlier value of a key that one object of the
 JSON holds twice is lost (run in every diagram type); (2) none: a key written
@@ -2289,12 +2301,18 @@ above; a rule named with none offers nothing.
   likely fix is a new label, the name of another axis, or a new name (criterion
   1). eventmodeling-no-undef gets none.
 - The common rules: no-unclosed-directive gets none (criterion 3: closing the
-  directive gives back the lines that it took). no-invalid-init-directive
-  removes trailing commas when the JSON then is valid, and writes in lower case
-  a name that ends with `init` or `initialize` only in another case when its
-  JSON is valid (with JSON that is not valid, the lower case would drop the
-  settings of every init directive; run). no-duplicate-init-key removes this
-  member or the one of the same key before it (run).
+  directive gives back the lines that it took). no-invalid-init-directive writes
+  `\u0027` for each reported `'` and `\'`, writes `\"` for each reported `"`,
+  and removes each reported trailing comma (the reports in its notes in section
+  7; the steps run in Node); and writes in lower case a name that ends with
+  `init` or `initialize` only in another case when the directive has no
+  argument, a word argument, or JSON that mermaid.js reads, with no error in its
+  structure, no trailing comma, and no quote that breaks it: mermaid.js reads no
+  JSON from a missing or a word argument (read in
+  [`directiveRegex`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/regexes.ts#L12-L13)),
+  and with broken JSON the lower case would leave mermaid.js reading no settings
+  from the directive (run). no-duplicate-init-key removes this member or the one
+  of the same key before it (run).
 
 The rules whose report is an element, a label, or a name written again for
 another value, where the likely fix is a new id or name, get none by criterion
@@ -2315,7 +2333,7 @@ again get the two removals.
   - gantt-no-invalid-tag, gantt-no-unknown-exclude (only one word of `excludes`
     starts with the item), quadrant-no-invalid-coordinate, and
     xychart-no-invalid-orientation;
-  - no-invalid-init-directive (both edits), sequence-no-invalid-json,
+  - no-invalid-init-directive (all three edits), sequence-no-invalid-json,
     sequence-no-ignored-text, sequence-no-link-without-separator, and
     state-no-ignored-text (the space after the `:` of a note);
   - sankey-no-invalid-value and treemap-no-invalid-value for `Infinity` in

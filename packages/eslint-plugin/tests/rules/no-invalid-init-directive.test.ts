@@ -53,6 +53,89 @@ A --> B`,
     ],
     invalid: [
       {
+        name: "apostrophe-with-line-separator-in-directive",
+        filename: "apostrophe-line-separator.mmd",
+        code: `flowchart LR
+%%{init: {"fontFamily": "O'Brien"}\u2028
+A --> B
+`,
+        output: `flowchart LR
+%%{init: {"fontFamily": "O\\u0027Brien"}\u2028
+A --> B
+`,
+        errors: [
+          {
+            messageId: "apostropheInDoubleQuotedString",
+            line: 2,
+            column: 27,
+            endLine: 2,
+            endColumn: 28,
+          },
+        ],
+      },
+      {
+        name: "apostrophe-multiline-crlf",
+        filename: "apostrophe-multiline-crlf.mmd",
+        code: `%%{init: {"fontFamily":\r
+"O'Brien"}}%%\r
+flowchart LR\r
+A --> B\r
+`,
+        output: `%%{init: {"fontFamily":\r
+"O\\u0027Brien"}}%%\r
+flowchart LR\r
+A --> B\r
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js turns this ' into \" before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \\u0027.",
+            line: 2,
+            column: 3,
+            endLine: 2,
+            endColumn: 4,
+          },
+        ],
+      },
+      {
+        name: "non-JSON-whitespace-inside-object",
+        filename: "non-json-whitespace.mmd",
+        code: `%%{init: {"theme":\u00a0"dark"}}%%
+flowchart LR
+A --> B
+`,
+        output: null,
+        errors: [
+          {
+            message:
+              "mermaid.js reads no settings from this init directive because its JSON argument is invalid.",
+            line: 1,
+            column: 19,
+            endLine: 1,
+            endColumn: 20,
+          },
+        ],
+      },
+      {
+        name: "control-character-inside-string",
+        filename: "control-character.mmd",
+        code: `%%{init: {"theme":"da\u0001rk"}}%%
+flowchart LR
+A --> B
+`,
+        output: null,
+        errors: [
+          {
+            message:
+              "mermaid.js reads no settings from this init directive because its JSON argument is invalid.",
+            line: 1,
+            column: 22,
+            endLine: 1,
+            endColumn: 23,
+          },
+        ],
+      },
+      {
         name: "invalid/flowchart/flowchart-unclosed-crlf",
         filename:
           "tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/flowchart-unclosed-crlf-input.mmd",
@@ -65,7 +148,7 @@ A --> B`,
           {
             message:
               "mermaid.js reads no settings from this init directive because its JSON argument is invalid.",
-            line: 3,
+            line: 4,
             column: 1,
             endLine: 4,
             endColumn: 8,
@@ -89,15 +172,15 @@ A --> B\r
             message:
               "mermaid.js reads no settings from `INIT`; init directive names are case-sensitive.",
             line: 1,
-            column: 1,
+            column: 4,
             endLine: 1,
-            endColumn: 29,
+            endColumn: 8,
           },
         ],
       },
       {
-        name: "json-commas-autofix-crlf",
-        filename: "json-commas-autofix-crlf.mmd",
+        name: "trailing-comma-autofix-crlf",
+        filename: "trailing-comma-autofix-crlf.mmd",
         code: `%%{init: {"theme":"dark",}}%%\r
 flowchart LR\r
 A --> B\r
@@ -109,11 +192,11 @@ A --> B\r
         errors: [
           {
             message:
-              "mermaid.js reads no settings from this init directive because its JSON argument is invalid.",
+              "mermaid.js reads no settings from this init directive because of this trailing comma.",
             line: 1,
-            column: 1,
+            column: 25,
             endLine: 1,
-            endColumn: 30,
+            endColumn: 26,
           },
         ],
       },

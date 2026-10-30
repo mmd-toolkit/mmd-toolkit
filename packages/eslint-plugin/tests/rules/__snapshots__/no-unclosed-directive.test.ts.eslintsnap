@@ -493,6 +493,42 @@ Code:
 ---
 
 
+Test: no-unclosed-directive >> invalid >>> invalid/flowchart/boundary-broken-array-closed-then-later-word
+Filename: tests/fixtures/rules/no-unclosed-directive/invalid/flowchart/boundary-broken-array-closed-then-later-word-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A --> B
+  3 | %%{init: [bad]
+    | ^~~~~~~~~~~~~~\ [1]
+  4 | C --> D
+    | ~~~~~~~\ [1]
+  5 | }%%
+    | ~~~ [1]
+  6 |
+
+[1] mermaid.js takes text from later lines into this directive, so that text disappears from the diagram.
+---
+
+
+Test: no-unclosed-directive >> invalid >>> invalid/flowchart/boundary-broken-object-closed-then-later-word
+Filename: tests/fixtures/rules/no-unclosed-directive/invalid/flowchart/boundary-broken-object-closed-then-later-word-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A --> B
+  3 | %%{init: {bad}
+    | ^~~~~~~~~~~~~~\ [1]
+  4 | C --> D
+    | ~~~~~~~\ [1]
+  5 | }%%
+    | ~~~ [1]
+  6 |
+
+[1] mermaid.js takes text from later lines into this directive, so that text disappears from the diagram.
+---
+
+
 Test: no-unclosed-directive >> invalid >>> invalid/flowchart/boundary-closed-json-then-later-word
 Filename: tests/fixtures/rules/no-unclosed-directive/invalid/flowchart/boundary-closed-json-then-later-word-input.mmd
 
@@ -505,6 +541,42 @@ Code:
     | ~~~~~~~\ [1]
   5 | }%%
     | ~~~ [1]
+
+[1] mermaid.js takes text from later lines into this directive, so that text disappears from the diagram.
+---
+
+
+Test: no-unclosed-directive >> invalid >>> invalid/flowchart/boundary-invalid-escape-quoted-brace-then-later-word
+Filename: tests/fixtures/rules/no-unclosed-directive/invalid/flowchart/boundary-invalid-escape-quoted-brace-then-later-word-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A --> B
+  3 | %%{init: {"x":"\x}","y":1}
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+  4 | C --> D
+    | ~~~~~~~\ [1]
+  5 | }%%
+    | ~~~ [1]
+  6 |
+
+[1] mermaid.js takes text from later lines into this directive, so that text disappears from the diagram.
+---
+
+
+Test: no-unclosed-directive >> invalid >>> invalid/flowchart/boundary-mixed-quotes-closed-then-later-word
+Filename: tests/fixtures/rules/no-unclosed-directive/invalid/flowchart/boundary-mixed-quotes-closed-then-later-word-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A --> B
+  3 | %%{init: {
+    | ^~~~~~~~~~\ [1]
+  4 | 'theme": "dark"
+    | ~~~~~~~~~~~~~~~\ [1]
+  5 | } x
+    | ~~~ [1]
+  6 |
 
 [1] mermaid.js takes text from later lines into this directive, so that text disappears from the diagram.
 ---

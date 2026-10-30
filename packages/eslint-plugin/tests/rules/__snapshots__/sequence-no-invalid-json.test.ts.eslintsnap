@@ -41,6 +41,22 @@ Output:
 ---
 
 
+Test: sequence-no-invalid-json >> invalid >>> invalid/links-array-trailing-comma
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/links-array-trailing-comma-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   participant A
+  3 |   links A: [1,2,]
+    |   ^~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
+---
+
+
 Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/db-links-array-value
 Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/db-links-array-value-input.mmd
 

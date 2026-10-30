@@ -66,6 +66,12 @@ The procedures of a package are in the skill of that package.
   exception. A test of the formatter or of the linter that needs such a
   character writes it as an escape, in the test code or in a JSON fixture, and
   not literally in a fixture file.
+- Never silence the lint to make it pass: a report is fixed in the code (the
+  JSDoc, the flag, the helper, the escape). An `eslint-disable` comment is a
+  last resort for the rare place that cannot follow a rule in any other way, and
+  it carries the reason (`-- …`). The rules that carry these conventions have no
+  such place: `pnpm run lint` rejects a comment that disables one of them, or
+  that names no rule; `eslint.config.mjs` lists them and what to do instead.
 
 ## Documents
 

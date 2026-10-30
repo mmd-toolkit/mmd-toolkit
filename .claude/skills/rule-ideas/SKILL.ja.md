@@ -103,19 +103,20 @@ description:
 
 残したもの（書き手の側の誤りを、mermaid が黙って受け入れるもの）:
 
-| 入力                                                               | mermaid の結果                                           | 規則                                                                                                                                    |
-| ------------------------------------------------------------------ | -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `%%{init: {...}}`（最後の `%%` を書き忘れ）                        | 文の終わりまでがディレクティブになり、図が空             | no-unclosed-directive（共通）                                                                                                           |
-| `%%{init: {"flowchart": {"inheritDir": true},}}%%`（末尾のカンマ） | init の設定がすべて捨てられる                            | no-invalid-init-directive（共通）                                                                                                       |
-| `A[Start]-->B` の後に `C-->A[End]`                                 | A のラベルが End に置き換わる                            | flowchart-no-redefined-vertex                                                                                                           |
-| `style C fill:red`（C の打ち間違い）                               | スタイル付きの頂点 C が増える                            | flowchart-no-undef                                                                                                                      |
-| `class C foo` か `click C href "…"`（C の打ち間違い）              | 何もしない（どの頂点にもクラスやリンクが付かない）       | flowchart-no-undef                                                                                                                      |
-| `style C fill:red` の後の `class C foo`（どちらも C の打ち間違い） | `style` が頂点 C を足し、クラスはそれに付く              | flowchart-no-undef。`style` だけを報告する。ほかに何も定義していない id の最初の `style` を報告し、`style` が足す頂点は定義として数える |
-| `accDescr {` の閉じ忘れ                                            | 説明が空になる                                           | flowchart-no-unclosed-description-block                                                                                                 |
-| 説明のない図の `accDescr {}`（空白だけや 2 行に分けた形も）        | 何も起きない（説明は空のまま）                           | flowchart-no-empty-description-block                                                                                                    |
-| `accDescr: first` の後の `accDescr: second`                        | 説明が黙って `second` に置き換わる                       | flowchart-no-duplicate-description                                                                                                      |
-| `accTitle: first` の後の `accTitle: second`                        | タイトルが黙って `second` に置き換わる                   | flowchart-no-duplicate-title                                                                                                            |
-| subgraph の中の `A-->B; direction TB`（`;` で区切っても同じ）      | 方向の文の行のほかのテキストが捨てられ、A、B、辺が消える | flowchart-no-ignored-text（方向の文は単独の行に書くもの。同じ行に書いた文を mermaid が黙って捨てる）                                    |
+| 入力                                                                    | mermaid の結果                                                                             | 規則                                                                                                                                    |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `%%{init: {...}}`（最後の `%%` を書き忘れ）                             | 文の終わりまでがディレクティブになり、図が空                                               | no-unclosed-directive（共通）                                                                                                           |
+| `%%{init: {"flowchart": {"inheritDir": true},}}%%`（末尾のカンマ）      | init の設定がすべて捨てられる                                                              | no-invalid-init-directive（共通）                                                                                                       |
+| `%%{init: {"fontFamily": "O'Brien"}}%%`（`"` で囲んだ文字列の中の `'`） | init の設定がすべて捨てられる。mermaid.js は JSON を読む前に、すべての `'` を `"` に変える | no-invalid-init-directive（共通）                                                                                                       |
+| `A[Start]-->B` の後に `C-->A[End]`                                      | A のラベルが End に置き換わる                                                              | flowchart-no-redefined-vertex                                                                                                           |
+| `style C fill:red`（C の打ち間違い）                                    | スタイル付きの頂点 C が増える                                                              | flowchart-no-undef                                                                                                                      |
+| `class C foo` か `click C href "…"`（C の打ち間違い）                   | 何もしない（どの頂点にもクラスやリンクが付かない）                                         | flowchart-no-undef                                                                                                                      |
+| `style C fill:red` の後の `class C foo`（どちらも C の打ち間違い）      | `style` が頂点 C を足し、クラスはそれに付く                                                | flowchart-no-undef。`style` だけを報告する。ほかに何も定義していない id の最初の `style` を報告し、`style` が足す頂点は定義として数える |
+| `accDescr {` の閉じ忘れ                                                 | 説明が空になる                                                                             | flowchart-no-unclosed-description-block                                                                                                 |
+| 説明のない図の `accDescr {}`（空白だけや 2 行に分けた形も）             | 何も起きない（説明は空のまま）                                                             | flowchart-no-empty-description-block                                                                                                    |
+| `accDescr: first` の後の `accDescr: second`                             | 説明が黙って `second` に置き換わる                                                         | flowchart-no-duplicate-description                                                                                                      |
+| `accTitle: first` の後の `accTitle: second`                             | タイトルが黙って `second` に置き換わる                                                     | flowchart-no-duplicate-title                                                                                                            |
+| subgraph の中の `A-->B; direction TB`（`;` で区切っても同じ）           | 方向の文の行のほかのテキストが捨てられ、A、B、辺が消える                                   | flowchart-no-ignored-text（方向の文は単独の行に書くもの。同じ行に書いた文を mermaid が黙って捨てる）                                    |
 
 落としたもの:
 
@@ -321,7 +322,6 @@ description:
 | すべての図種で、mermaid.js が知らない設定のキー（`theem`）や、指令から取らないキー（`securityLevel`）                                                                                     | スキーマにないキーも意図されうる。`themeVariables` と外から足した図種は自分のキーを取り、指令から取らないキーは文書にある（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | すべての図種で、`init` か `initialize` で終わらず、`wrap` でもない名前の指令                                                                                                              | 失われるものが示せない。mermaid.js はどの名前も受理し、何も設定しない指令を意図して書くこともある（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | すべての図種で、指令そのもの（文書はフロントマターに置き換える）                                                                                                                          | 体裁である。指令は書いたとおりに働く（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| すべての図種で、書いたとおりで正しく、`'` を `"` に変えると壊れる JSON（`{"fontFamily": "O'Brien"}`）                                                                                     | mermaid.js の不具合である。書き手は正しい JSON を書き、mermaid.js が設定を捨てる（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | すべての図種で、その行の `%%}%%` の後にある正しい init の指令で、設定を与えないもの                                                                                                       | 普通の書き方ではない。指令の前に `%%}%%` を書く書き手はいない。mermaid.js は設定を読む前にそのような行を取り除く（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | すべての図種で、2 度書いた `title`、`accTitle`、`accDescr` と空の `accDescr` のブロックを共通の規則にすること                                                                             | 共通ではない。kanban は `accTitle` を列として、ishikawa はノードとして読み、info はどれも公開せず、空のブロックは図種により説明を保つか空にする（実行）。各図種の規則のままにする                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
@@ -1121,9 +1121,24 @@ merged の [#7989](https://github.com/mermaid-js/mermaid/pull/7989) で、
 
 no-invalid-init-directive: (1) どの init の指令の設定も捨てられるか、
 大文字小文字の違う名前ではその指令の設定が捨てられる（すべての図種で実行）。
+mermaid.js は、JSON を読む前に、すべての `'` を `"` に変える（読んだのは、
+[`detectDirective`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L159-L198)）。
+そのため、変えた後の JSON として正しければ、
+`{'theme": "dark"}` のように 2 種類の引用符が混ざっていても読む。
+どちらの引用符の文字列でも、
+中の `\'` は `"` として読む（その手順を Node で実行）。
+変えた後の JSON が壊れていて、
+末尾の `,` のほかは書かれた引用符どおりに読めば正しいときは、
+その差になる文字（`"` で囲んだ文字列の中の `'`、
+`'` で囲んだ文字列の中のエスケープしていない `"`）と末尾の `,` を 1 つずつ、
+修正を付けて報告する。
+文字列の中の `\'` も、修正を付けて報告する。
+1 回の `--fix` ですべて直る。
+それ以外で変えた後の JSON が壊れていれば、invalid として 1 件、
+修正なしで報告する。
 (2) なし。
-書いたとおりで正しく、
-`'` を `"` に変えると壊れる JSON は mermaid.js の不具合で、報告しない。
+`{'theme': 'dark'}` や `{"fontFamily": "Arial'}` のように変えた後の JSON
+として正しいものと、 `\u0027` は報告しない。
 [#3640](https://github.com/mermaid-js/mermaid/issues/3640)（open）は、
 引用符に関するものである。
 語の引数やなしは構文を知らないことによる。
@@ -1131,11 +1146,12 @@ no-invalid-init-directive: (1) どの init の指令の設定も捨てられる�
 最後の行ではすべての init の指令の設定を捨て、文書がそれを述べる。
 (3) 「init trailing comma」「init directive ignored」「directive case
 sensitive」「init json」「json5」「trailing comma init」。
-(4) JSON を直すか、名前を小文字で書く。
+(4) JSON を直すか、文字列の中の `'` を `\u0027`、`"` を `\"` と書くか、
+名前を小文字で書く。
 名前は ESLint に合わせる。
 ESLint は、
 正しく書かれておらず意図どおりに働かない形を invalid と呼び（no-invalid-regexp、
-valid-typeof）、報告する 2 つの形はそれに当たる。
+valid-typeof）、報告する形はそれに当たる。
 
 no-duplicate-init-key: (1) JSON の 1 つのオブジェクトが 2 度持つキーでは、
 前の値が失われる（すべての図種で実行）。
@@ -2612,11 +2628,17 @@ fixture: 上の sankey の値（出さない）と、
   eventmodeling-no-undef は提案を付けない。
 - 共通の規則: no-unclosed-directive は提案を付けない（基準
   3。ディレクティブを閉じると、それが取っていた行が戻る）。
-  no-invalid-init-directive は、それで JSON が正しくなるとき、
-  末尾の `,` を消す。
-  また、別の大文字小文字でだけ `init` か `initialize` で終わる名前を、
-  その JSON が正しいとき小文字で書く（JSON が正しくないと、
-  小文字にするとすべての init のディレクティブの設定が捨てられる。実行）。
+  no-invalid-init-directive は、報告した `'` と `\'` のそれぞれに `\u0027` を、
+  報告した `"` のそれぞれに `\"` を書き、
+  報告した末尾の `,` を 1 つずつ消す（報告は 7 節のその注のとおり。その手順を
+  Node で実行）。
+  さらに、別の大文字小文字でだけ `init` か `initialize` で終わる名前を、
+  引数がないか、語か、mermaid.js が読める JSON（構造の誤りも、末尾の `,` も、
+  壊す引用符もないもの）のとき、小文字で書く。
+  引数がないか語なら、mermaid.js は JSON を読まない（読んだのは、
+  [`directiveRegex`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/regexes.ts#L12-L13)）。
+  壊れた JSON のときに小文字にすると、
+  mermaid.js はそのディレクティブから設定を読まない（実行）。
   no-duplicate-init-key は、このメンバーか、前の同じキーのものを消す（実行）。
 
 報告が、別の値のためにもう一度書いた要素、ラベル、名前で、
@@ -2640,8 +2662,9 @@ fixture: 上の sankey の値（出さない）と、
   - gantt-no-invalid-tag、
     gantt-no-unknown-exclude（項目で始まる `excludes` の語は 1 つだけである）、
     quadrant-no-invalid-coordinate、xychart-no-invalid-orientation。
-  - no-invalid-init-directive（両方の書き換え）、sequence-no-invalid-json、
-    sequence-no-ignored-text、sequence-no-link-without-separator、
+  - no-invalid-init-directive（3 つの書き換えすべて）、
+    sequence-no-invalid-json、 sequence-no-ignored-text、
+    sequence-no-link-without-separator、
     state-no-ignored-text（ノートの `:` の後の空白）。
   - sankey-no-invalid-value と treemap-no-invalid-value の、
     別の大文字小文字の `Infinity`（sankey）、`_` で区切った数字、

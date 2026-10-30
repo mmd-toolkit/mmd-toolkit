@@ -55,6 +55,10 @@ parser from its build in `lib/`: rebuild it with
   `src/utils/compact-range.ts`, which says whether an edit may join the lines
   between two places: it may when the lines in between hold nothing but
   whitespace, and not when a comment or text would be swallowed or moved.
+- `tests/json.test.ts`: JSON readings, problem ranges, and value comparisons of
+  `src/utils/json.ts`.
+- `tests/directive-arguments.test.ts`: Bracketed argument ends following
+  mermaid.js's reading of quotes.
 - `tests/removal.test.ts`: `removalRange` of `src/utils/removal.ts`, the whole
   lines that remove an element, whichever rule offers the removal: the
   terminator of the first line, a text of one line, the preceding terminator on
