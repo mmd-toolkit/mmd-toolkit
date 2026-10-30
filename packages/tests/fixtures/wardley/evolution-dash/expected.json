@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does dash after evolution reject?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 10: Expecting: one of these possible Token sequences:\n  1. [ID]\n  2. [STRING]\n  3. [NAME_WITH_SPACES]\nbut found: '-'"
+  }
+}

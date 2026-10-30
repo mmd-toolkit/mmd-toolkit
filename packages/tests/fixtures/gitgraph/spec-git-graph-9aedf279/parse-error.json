@@ -1,0 +1,17 @@
+{
+  "message": "A cherry-pick of a merge requires a nonempty parent",
+  "range": [
+    275,
+    278
+  ],
+  "loc": {
+    "start": {
+      "line": 12,
+      "column": 23
+    },
+    "end": {
+      "line": 12,
+      "column": 26
+    }
+  }
+}

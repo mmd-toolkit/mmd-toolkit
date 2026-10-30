@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A C4 header preceded by a hash line is rejected with UnknownDiagramError."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: # comment\nC4Context\nPerson(a, \"A\")\n"
+  }
+}

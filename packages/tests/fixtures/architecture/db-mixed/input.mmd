@@ -1,0 +1,14 @@
+architecture-beta
+accTitle: Network
+accDescr {
+  Clients and storage
+}
+junction cross in inner
+service api "API\nnode" [API] in outer
+group outer(cloud)[Outer]
+group inner(server)[Inner] in outer
+service db(database)['Database'] in inner
+api{group}:R <-[traffic]-> L:db{group}
+api:B -- T:cross
+align row api db
+align column cross db

@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, x-axis: the last x-axis statement is the axis."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": [
+        "b",
+        "c"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}

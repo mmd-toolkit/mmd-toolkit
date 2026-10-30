@@ -1,0 +1,466 @@
+{
+  "type": "Root",
+  "diagramType": "sequence",
+  "body": {
+    "type": "SequenceDiagram",
+    "body": [
+      {
+        "type": "SequenceMessageStatement",
+        "from": {
+          "type": "SequenceIdentifier",
+          "name": "A",
+          "range": [
+            20,
+            21
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 4
+            },
+            "end": {
+              "line": 2,
+              "column": 5
+            }
+          }
+        },
+        "fromCentralConnection": false,
+        "arrow": {
+          "type": "SequenceArrow",
+          "value": "->>",
+          "startMarker": "none",
+          "line": "solid",
+          "endMarker": "arrow",
+          "range": [
+            21,
+            24
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 5
+            },
+            "end": {
+              "line": 2,
+              "column": 8
+            }
+          }
+        },
+        "activation": null,
+        "toCentralConnection": false,
+        "to": {
+          "type": "SequenceIdentifier",
+          "name": "B",
+          "range": [
+            24,
+            25
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 8
+            },
+            "end": {
+              "line": 2,
+              "column": 9
+            }
+          }
+        },
+        "text": {
+          "type": "SequenceText",
+          "wrap": null,
+          "value": {
+            "type": "SequenceLiteral",
+            "value": "I #9829; you!",
+            "range": [
+              27,
+              40
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 11
+              },
+              "end": {
+                "line": 2,
+                "column": 24
+              }
+            }
+          },
+          "range": [
+            27,
+            40
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 11
+            },
+            "end": {
+              "line": 2,
+              "column": 24
+            }
+          }
+        },
+        "range": [
+          20,
+          40
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 4
+          },
+          "end": {
+            "line": 2,
+            "column": 24
+          }
+        }
+      },
+      {
+        "type": "SequenceMessageStatement",
+        "from": {
+          "type": "SequenceIdentifier",
+          "name": "B",
+          "range": [
+            45,
+            46
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 4
+            },
+            "end": {
+              "line": 3,
+              "column": 5
+            }
+          }
+        },
+        "fromCentralConnection": false,
+        "arrow": {
+          "type": "SequenceArrow",
+          "value": "->>",
+          "startMarker": "none",
+          "line": "solid",
+          "endMarker": "arrow",
+          "range": [
+            46,
+            49
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 5
+            },
+            "end": {
+              "line": 3,
+              "column": 8
+            }
+          }
+        },
+        "activation": null,
+        "toCentralConnection": false,
+        "to": {
+          "type": "SequenceIdentifier",
+          "name": "A",
+          "range": [
+            49,
+            50
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 8
+            },
+            "end": {
+              "line": 3,
+              "column": 9
+            }
+          }
+        },
+        "text": {
+          "type": "SequenceText",
+          "wrap": null,
+          "value": {
+            "type": "SequenceLiteral",
+            "value": "I #9829; you #infin; times more!",
+            "range": [
+              52,
+              84
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 11
+              },
+              "end": {
+                "line": 3,
+                "column": 43
+              }
+            }
+          },
+          "range": [
+            52,
+            84
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 11
+            },
+            "end": {
+              "line": 3,
+              "column": 43
+            }
+          }
+        },
+        "range": [
+          45,
+          84
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 4
+          },
+          "end": {
+            "line": 3,
+            "column": 43
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      84
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 43
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "sequenceDiagram",
+      "range": [
+        0,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "A",
+      "range": [
+        20,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "->>",
+      "range": [
+        21,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 5
+        },
+        "end": {
+          "line": 2,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "B",
+      "range": [
+        24,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        25,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 9
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "I #9829; you!",
+      "range": [
+        27,
+        40
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 11
+        },
+        "end": {
+          "line": 2,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "B",
+      "range": [
+        45,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 4
+        },
+        "end": {
+          "line": 3,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "->>",
+      "range": [
+        46,
+        49
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 5
+        },
+        "end": {
+          "line": 3,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "A",
+      "range": [
+        49,
+        50
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        50,
+        51
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 9
+        },
+        "end": {
+          "line": 3,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "I #9829; you #infin; times more!",
+      "range": [
+        52,
+        84
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 11
+        },
+        "end": {
+          "line": 3,
+          "column": 43
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    85
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 0
+    }
+  }
+}

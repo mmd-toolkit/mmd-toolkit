@@ -1,0 +1,70 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Building the summary, namespaces: an existing namespace becomes explicit, and a label replaces its label."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "C",
+        "type": "",
+        "label": "C",
+        "text": "C",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "A.B"
+      },
+      {
+        "id": "D",
+        "type": "",
+        "label": "D",
+        "text": "D",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "A"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "A",
+        "label": "L",
+        "classes": [
+          "D"
+        ],
+        "notes": [],
+        "children": [
+          "A.B"
+        ],
+        "explicit": true
+      },
+      {
+        "id": "A.B",
+        "label": "B",
+        "classes": [
+          "C"
+        ],
+        "notes": [],
+        "children": [],
+        "parent": "A",
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

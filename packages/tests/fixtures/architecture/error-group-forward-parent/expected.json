@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A parent group must precede its child within the group publication list."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The group [inner]'s parent does not exist. Please make sure the parent is created before this group"
+  }
+}

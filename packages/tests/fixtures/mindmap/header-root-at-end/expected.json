@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Detection: the header may not end the diagram text; the root on its line follows it."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": []
+    }
+  }
+}

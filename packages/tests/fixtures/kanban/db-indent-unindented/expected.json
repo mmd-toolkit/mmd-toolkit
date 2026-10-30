@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unindented first section establishes level zero."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "T",
+        "label": "T",
+        "isGroup": true
+      },
+      {
+        "id": "B",
+        "label": "B",
+        "isGroup": false,
+        "parentId": "T"
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The literal equals alternative in NODE_STRING is observed in the generated lexer."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nagentflow-beta TBA=B\n------------------^"
+  }
+}

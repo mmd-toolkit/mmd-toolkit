@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, keywords: a character outside ASCII glued after `classDef`."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...adrantChartclassDefé c1 color: #f00\n----------------------^\nExpecting 'SPACE', got 'UNICODE_TEXT'"
+  }
+}

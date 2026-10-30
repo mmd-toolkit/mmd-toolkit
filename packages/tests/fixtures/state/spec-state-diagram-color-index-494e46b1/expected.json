@@ -1,0 +1,104 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/stateDiagram-colorIndex.spec.ts",
+    "line": 30,
+    "test": "state diagram colour slots > spends one slot on a composite named twice, so the cycle does not skip"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Loop",
+        "shape": "roundedWithTitle",
+        "label": "Loop",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "Loop_start",
+        "shape": "stateStart",
+        "label": "Loop_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "Loop"
+      },
+      {
+        "id": "Spin",
+        "shape": "rect",
+        "label": "Spin",
+        "classes": [],
+        "styles": [],
+        "parentId": "Loop"
+      },
+      {
+        "id": "Exit",
+        "shape": "roundedWithTitle",
+        "label": "Exit",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "Exit_start",
+        "shape": "stateStart",
+        "label": "Exit_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "Exit"
+      },
+      {
+        "id": "Bye",
+        "shape": "rect",
+        "label": "Bye",
+        "classes": [],
+        "styles": [],
+        "parentId": "Exit"
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "Loop",
+        "label": ""
+      },
+      {
+        "start": "Loop_start",
+        "end": "Spin",
+        "label": ""
+      },
+      {
+        "start": "Loop",
+        "end": "Loop",
+        "label": ""
+      },
+      {
+        "start": "Loop",
+        "end": "Exit",
+        "label": ""
+      },
+      {
+        "start": "Exit_start",
+        "end": "Bye",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

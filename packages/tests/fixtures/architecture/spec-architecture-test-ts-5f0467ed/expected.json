@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/architecture.test.ts",
+    "line": 107,
+    "test": "architecture > should handle service titles with quotes > should handle service with quoted title using single quotes"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The service [db]'s parent does not exist. Please make sure the parent is created before this service"
+  }
+}

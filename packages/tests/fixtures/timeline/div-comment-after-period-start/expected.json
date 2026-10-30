@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Comments: `a%% c` is the period `a%% c` here; mermaid.js reads a comment and no period."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "b",
+        "events": []
+      }
+    ]
+  }
+}

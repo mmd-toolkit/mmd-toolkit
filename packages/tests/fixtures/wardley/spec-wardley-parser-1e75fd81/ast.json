@@ -1,0 +1,1107 @@
+{
+  "type": "Root",
+  "diagramType": "wardley",
+  "body": {
+    "type": "WardleyDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "WardleyTitleStatement",
+        "value": {
+          "type": "WardleyLiteral",
+          "value": "Test Annotations",
+          "range": [
+            19,
+            35
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 6
+            },
+            "end": {
+              "line": 2,
+              "column": 22
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          13,
+          35
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 22
+          }
+        }
+      },
+      {
+        "type": "WardleyComponentStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "WardleyIdentifier",
+          "name": "API",
+          "range": [
+            46,
+            49
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 10
+            },
+            "end": {
+              "line": 3,
+              "column": 13
+            }
+          }
+        },
+        "textBeforeCoordinates": [],
+        "coordinates": {
+          "type": "WardleyCoordinates",
+          "textBeforeVisibility": [],
+          "visibility": {
+            "type": "NumericLiteral",
+            "value": 0.6,
+            "raw": "0.6",
+            "range": [
+              51,
+              54
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 15
+              },
+              "end": {
+                "line": 3,
+                "column": 18
+              }
+            }
+          },
+          "textBeforeComma": [],
+          "textBeforeEvolution": [],
+          "evolution": {
+            "type": "NumericLiteral",
+            "value": 0.7,
+            "raw": "0.7",
+            "range": [
+              56,
+              59
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 20
+              },
+              "end": {
+                "line": 3,
+                "column": 23
+              }
+            }
+          },
+          "textBeforeClose": [],
+          "range": [
+            50,
+            60
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 14
+            },
+            "end": {
+              "line": 3,
+              "column": 24
+            }
+          }
+        },
+        "decorations": [],
+        "textAfter": [],
+        "range": [
+          36,
+          60
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 24
+          }
+        }
+      },
+      {
+        "type": "WardleyAnnotationsStatement",
+        "textBeforeCoordinates": [],
+        "coordinates": {
+          "type": "WardleyCoordinates",
+          "textBeforeVisibility": [],
+          "visibility": {
+            "type": "NumericLiteral",
+            "value": 0.1,
+            "raw": "0.1",
+            "range": [
+              74,
+              77
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 13
+              },
+              "end": {
+                "line": 4,
+                "column": 16
+              }
+            }
+          },
+          "textBeforeComma": [],
+          "textBeforeEvolution": [],
+          "evolution": {
+            "type": "NumericLiteral",
+            "value": 0.9,
+            "raw": "0.9",
+            "range": [
+              79,
+              82
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 18
+              },
+              "end": {
+                "line": 4,
+                "column": 21
+              }
+            }
+          },
+          "textBeforeClose": [],
+          "range": [
+            73,
+            83
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 12
+            },
+            "end": {
+              "line": 4,
+              "column": 22
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          61,
+          83
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 22
+          }
+        }
+      },
+      {
+        "type": "WardleyAnnotationStatement",
+        "textBeforeNumber": [],
+        "number": {
+          "type": "NumericLiteral",
+          "value": 1,
+          "raw": "1",
+          "range": [
+            95,
+            96
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 11
+            },
+            "end": {
+              "line": 5,
+              "column": 12
+            }
+          }
+        },
+        "textBeforeComma": [],
+        "textBeforeCoordinates": [],
+        "coordinates": {
+          "type": "WardleyCoordinates",
+          "textBeforeVisibility": [],
+          "visibility": {
+            "type": "NumericLiteral",
+            "value": 0.6,
+            "raw": "0.6",
+            "range": [
+              98,
+              101
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 14
+              },
+              "end": {
+                "line": 5,
+                "column": 17
+              }
+            }
+          },
+          "textBeforeComma": [],
+          "textBeforeEvolution": [],
+          "evolution": {
+            "type": "NumericLiteral",
+            "value": 0.65,
+            "raw": "0.65",
+            "range": [
+              103,
+              107
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 19
+              },
+              "end": {
+                "line": 5,
+                "column": 23
+              }
+            }
+          },
+          "textBeforeClose": [],
+          "range": [
+            97,
+            108
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 13
+            },
+            "end": {
+              "line": 5,
+              "column": 24
+            }
+          }
+        },
+        "textBeforeText": [],
+        "text": {
+          "type": "StringLiteral",
+          "value": "Critical component",
+          "raw": "\"Critical component\"",
+          "closed": true,
+          "range": [
+            109,
+            129
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 25
+            },
+            "end": {
+              "line": 5,
+              "column": 45
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          84,
+          129
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 45
+          }
+        }
+      },
+      {
+        "type": "WardleyAnnotationStatement",
+        "textBeforeNumber": [],
+        "number": {
+          "type": "NumericLiteral",
+          "value": 2,
+          "raw": "2",
+          "range": [
+            141,
+            142
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 11
+            },
+            "end": {
+              "line": 6,
+              "column": 12
+            }
+          }
+        },
+        "textBeforeComma": [],
+        "textBeforeCoordinates": [],
+        "coordinates": {
+          "type": "WardleyCoordinates",
+          "textBeforeVisibility": [],
+          "visibility": {
+            "type": "NumericLiteral",
+            "value": 0.5,
+            "raw": "0.5",
+            "range": [
+              144,
+              147
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 14
+              },
+              "end": {
+                "line": 6,
+                "column": 17
+              }
+            }
+          },
+          "textBeforeComma": [],
+          "textBeforeEvolution": [],
+          "evolution": {
+            "type": "NumericLiteral",
+            "value": 0.5,
+            "raw": "0.5",
+            "range": [
+              149,
+              152
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 19
+              },
+              "end": {
+                "line": 6,
+                "column": 22
+              }
+            }
+          },
+          "textBeforeClose": [],
+          "range": [
+            143,
+            153
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 13
+            },
+            "end": {
+              "line": 6,
+              "column": 23
+            }
+          }
+        },
+        "textBeforeText": [],
+        "text": {
+          "type": "StringLiteral",
+          "value": "Performance layer",
+          "raw": "\"Performance layer\"",
+          "closed": true,
+          "range": [
+            154,
+            173
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 24
+            },
+            "end": {
+              "line": 6,
+              "column": 43
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          130,
+          173
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 43
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      173
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 6,
+        "column": 43
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "wardley-beta",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        13,
+        18
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Test Annotations",
+      "range": [
+        19,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "component",
+      "range": [
+        36,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "API",
+      "range": [
+        46,
+        49
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 10
+        },
+        "end": {
+          "line": 3,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        50,
+        51
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 14
+        },
+        "end": {
+          "line": 3,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.6",
+      "range": [
+        51,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 15
+        },
+        "end": {
+          "line": 3,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        54,
+        55
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 18
+        },
+        "end": {
+          "line": 3,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.7",
+      "range": [
+        56,
+        59
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 20
+        },
+        "end": {
+          "line": 3,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        59,
+        60
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 23
+        },
+        "end": {
+          "line": 3,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "annotations",
+      "range": [
+        61,
+        72
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        73,
+        74
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 12
+        },
+        "end": {
+          "line": 4,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.1",
+      "range": [
+        74,
+        77
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 13
+        },
+        "end": {
+          "line": 4,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        77,
+        78
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 16
+        },
+        "end": {
+          "line": 4,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.9",
+      "range": [
+        79,
+        82
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 18
+        },
+        "end": {
+          "line": 4,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        82,
+        83
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 21
+        },
+        "end": {
+          "line": 4,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "annotation",
+      "range": [
+        84,
+        94
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "1",
+      "range": [
+        95,
+        96
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 11
+        },
+        "end": {
+          "line": 5,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        96,
+        97
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 12
+        },
+        "end": {
+          "line": 5,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        97,
+        98
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 13
+        },
+        "end": {
+          "line": 5,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.6",
+      "range": [
+        98,
+        101
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 14
+        },
+        "end": {
+          "line": 5,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        101,
+        102
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 17
+        },
+        "end": {
+          "line": 5,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.65",
+      "range": [
+        103,
+        107
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 19
+        },
+        "end": {
+          "line": 5,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        107,
+        108
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 23
+        },
+        "end": {
+          "line": 5,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Critical component\"",
+      "range": [
+        109,
+        129
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 25
+        },
+        "end": {
+          "line": 5,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "annotation",
+      "range": [
+        130,
+        140
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "2",
+      "range": [
+        141,
+        142
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 11
+        },
+        "end": {
+          "line": 6,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        142,
+        143
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 12
+        },
+        "end": {
+          "line": 6,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        143,
+        144
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 13
+        },
+        "end": {
+          "line": 6,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.5",
+      "range": [
+        144,
+        147
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 14
+        },
+        "end": {
+          "line": 6,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        147,
+        148
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 17
+        },
+        "end": {
+          "line": 6,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.5",
+      "range": [
+        149,
+        152
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 19
+        },
+        "end": {
+          "line": 6,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        152,
+        153
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 22
+        },
+        "end": {
+          "line": 6,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Performance layer\"",
+      "range": [
+        154,
+        173
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 24
+        },
+        "end": {
+          "line": 6,
+          "column": 43
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    173
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 6,
+      "column": 43
+    }
+  }
+}

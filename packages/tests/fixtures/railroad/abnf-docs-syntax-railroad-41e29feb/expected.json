@@ -1,0 +1,120 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/railroad.md",
+    "line": 190
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "address",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "nonterminal",
+              "name": "local-part"
+            },
+            {
+              "type": "terminal",
+              "value": "@"
+            },
+            {
+              "type": "nonterminal",
+              "name": "domain"
+            }
+          ]
+        }
+      },
+      {
+        "name": "local-part",
+        "definition": {
+          "type": "repetition",
+          "element": {
+            "type": "choice",
+            "alternatives": [
+              {
+                "type": "nonterminal",
+                "name": "ALPHA"
+              },
+              {
+                "type": "nonterminal",
+                "name": "DIGIT"
+              },
+              {
+                "type": "terminal",
+                "value": "."
+              },
+              {
+                "type": "terminal",
+                "value": "-"
+              }
+            ]
+          },
+          "min": 1,
+          "max": "Infinity"
+        }
+      },
+      {
+        "name": "domain",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "nonterminal",
+              "name": "label"
+            },
+            {
+              "type": "repetition",
+              "element": {
+                "type": "sequence",
+                "elements": [
+                  {
+                    "type": "terminal",
+                    "value": "."
+                  },
+                  {
+                    "type": "nonterminal",
+                    "name": "label"
+                  }
+                ]
+              },
+              "min": 0,
+              "max": "Infinity"
+            }
+          ]
+        }
+      },
+      {
+        "name": "label",
+        "definition": {
+          "type": "repetition",
+          "element": {
+            "type": "choice",
+            "alternatives": [
+              {
+                "type": "nonterminal",
+                "name": "ALPHA"
+              },
+              {
+                "type": "nonterminal",
+                "name": "DIGIT"
+              },
+              {
+                "type": "terminal",
+                "value": "-"
+              }
+            ]
+          },
+          "min": 1,
+          "max": "Infinity"
+        }
+      }
+    ]
+  }
+}

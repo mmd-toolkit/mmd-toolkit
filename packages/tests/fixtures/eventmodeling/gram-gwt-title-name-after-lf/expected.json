@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Common statements: A GWT reference can use title as an identifier after LF whitespace. Accepted by Mermaid."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": []
+  }
+}

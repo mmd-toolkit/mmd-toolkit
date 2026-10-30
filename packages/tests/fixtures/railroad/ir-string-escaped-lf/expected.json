@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: A backslash followed by a physical LF is not a string escape."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 14: unexpected character: ->\"<- at offset: 27, skipped 1 characters.\nLexer error on line 2, column 16: unexpected character: ->\\<- at offset: 29, skipped 1 characters.\nLexer error on line 3, column 2: unexpected character: ->\"<- at offset: 32, skipped 1 characters. Parse error on line 2, column 15: Expecting token of type 'RR_STRING' but found `a`.\nParse error on line 3, column 1: Expecting token of type '=' but found `b`.\nParse error on line 3, column 3: Expecting token of type '=' but found `)`."
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md F3: The HTML tag ends in a common comment, so later node attribute-like quotes remain."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "<a x=\"a",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "<a x=\"a",
+      "children": [
+        {
+          "text": "B=\"c\">D",
+          "children": []
+        }
+      ]
+    }
+  }
+}

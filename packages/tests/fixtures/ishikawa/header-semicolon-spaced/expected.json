@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[H: detection and ISHIKAWA] Is a spaced semicolon part of the first label?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "; R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "; R",
+      "children": []
+    }
+  }
+}

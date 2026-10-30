@@ -1,0 +1,1076 @@
+{
+  "type": "Root",
+  "diagramType": "sequence",
+  "body": {
+    "type": "SequenceDiagram",
+    "body": [
+      {
+        "type": "SequenceAutonumberStatement",
+        "start": null,
+        "step": null,
+        "off": false,
+        "range": [
+          16,
+          26
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 10
+          }
+        }
+      },
+      {
+        "type": "SequenceMessageStatement",
+        "from": {
+          "type": "SequenceIdentifier",
+          "name": "Alice",
+          "range": [
+            27,
+            32
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 3,
+              "column": 5
+            }
+          }
+        },
+        "fromCentralConnection": false,
+        "arrow": {
+          "type": "SequenceArrow",
+          "value": "->>",
+          "startMarker": "none",
+          "line": "solid",
+          "endMarker": "arrow",
+          "range": [
+            32,
+            35
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 5
+            },
+            "end": {
+              "line": 3,
+              "column": 8
+            }
+          }
+        },
+        "activation": null,
+        "toCentralConnection": false,
+        "to": {
+          "type": "SequenceIdentifier",
+          "name": "John",
+          "range": [
+            35,
+            39
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 8
+            },
+            "end": {
+              "line": 3,
+              "column": 12
+            }
+          }
+        },
+        "text": {
+          "type": "SequenceText",
+          "wrap": null,
+          "value": {
+            "type": "SequenceLiteral",
+            "value": "Hello John,<br>how are you?",
+            "range": [
+              41,
+              68
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 14
+              },
+              "end": {
+                "line": 3,
+                "column": 41
+              }
+            }
+          },
+          "range": [
+            41,
+            68
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 14
+            },
+            "end": {
+              "line": 3,
+              "column": 41
+            }
+          }
+        },
+        "range": [
+          27,
+          68
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 41
+          }
+        }
+      },
+      {
+        "type": "SequenceAutonumberStatement",
+        "start": {
+          "type": "NumericLiteral",
+          "value": 50,
+          "raw": "50",
+          "range": [
+            80,
+            82
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 11
+            },
+            "end": {
+              "line": 4,
+              "column": 13
+            }
+          }
+        },
+        "step": {
+          "type": "NumericLiteral",
+          "value": 10,
+          "raw": "10",
+          "range": [
+            83,
+            85
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 14
+            },
+            "end": {
+              "line": 4,
+              "column": 16
+            }
+          }
+        },
+        "off": false,
+        "range": [
+          69,
+          85
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 16
+          }
+        }
+      },
+      {
+        "type": "SequenceMessageStatement",
+        "from": {
+          "type": "SequenceIdentifier",
+          "name": "Alice",
+          "range": [
+            86,
+            91
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 5,
+              "column": 5
+            }
+          }
+        },
+        "fromCentralConnection": false,
+        "arrow": {
+          "type": "SequenceArrow",
+          "value": "->>",
+          "startMarker": "none",
+          "line": "solid",
+          "endMarker": "arrow",
+          "range": [
+            91,
+            94
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 5
+            },
+            "end": {
+              "line": 5,
+              "column": 8
+            }
+          }
+        },
+        "activation": null,
+        "toCentralConnection": false,
+        "to": {
+          "type": "SequenceIdentifier",
+          "name": "John",
+          "range": [
+            94,
+            98
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 8
+            },
+            "end": {
+              "line": 5,
+              "column": 12
+            }
+          }
+        },
+        "text": {
+          "type": "SequenceText",
+          "wrap": null,
+          "value": {
+            "type": "SequenceLiteral",
+            "value": "John,<br />can you hear me?",
+            "range": [
+              100,
+              127
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 14
+              },
+              "end": {
+                "line": 5,
+                "column": 41
+              }
+            }
+          },
+          "range": [
+            100,
+            127
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 14
+            },
+            "end": {
+              "line": 5,
+              "column": 41
+            }
+          }
+        },
+        "range": [
+          86,
+          127
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 41
+          }
+        }
+      },
+      {
+        "type": "SequenceMessageStatement",
+        "from": {
+          "type": "SequenceIdentifier",
+          "name": "John",
+          "range": [
+            128,
+            132
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 0
+            },
+            "end": {
+              "line": 6,
+              "column": 4
+            }
+          }
+        },
+        "fromCentralConnection": false,
+        "arrow": {
+          "type": "SequenceArrow",
+          "value": "-->>",
+          "startMarker": "none",
+          "line": "dotted",
+          "endMarker": "arrow",
+          "range": [
+            132,
+            136
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 4
+            },
+            "end": {
+              "line": 6,
+              "column": 8
+            }
+          }
+        },
+        "activation": null,
+        "toCentralConnection": false,
+        "to": {
+          "type": "SequenceIdentifier",
+          "name": "Alice",
+          "range": [
+            136,
+            141
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 8
+            },
+            "end": {
+              "line": 6,
+              "column": 13
+            }
+          }
+        },
+        "text": {
+          "type": "SequenceText",
+          "wrap": null,
+          "value": {
+            "type": "SequenceLiteral",
+            "value": "Hi Alice,<br />I can hear you!",
+            "range": [
+              143,
+              173
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 15
+              },
+              "end": {
+                "line": 6,
+                "column": 45
+              }
+            }
+          },
+          "range": [
+            143,
+            173
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 15
+            },
+            "end": {
+              "line": 6,
+              "column": 45
+            }
+          }
+        },
+        "range": [
+          128,
+          173
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 45
+          }
+        }
+      },
+      {
+        "type": "SequenceAutonumberStatement",
+        "start": null,
+        "step": null,
+        "off": true,
+        "range": [
+          174,
+          188
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 14
+          }
+        }
+      },
+      {
+        "type": "SequenceMessageStatement",
+        "from": {
+          "type": "SequenceIdentifier",
+          "name": "John",
+          "range": [
+            189,
+            193
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 0
+            },
+            "end": {
+              "line": 8,
+              "column": 4
+            }
+          }
+        },
+        "fromCentralConnection": false,
+        "arrow": {
+          "type": "SequenceArrow",
+          "value": "-->>",
+          "startMarker": "none",
+          "line": "dotted",
+          "endMarker": "arrow",
+          "range": [
+            193,
+            197
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 4
+            },
+            "end": {
+              "line": 8,
+              "column": 8
+            }
+          }
+        },
+        "activation": null,
+        "toCentralConnection": false,
+        "to": {
+          "type": "SequenceIdentifier",
+          "name": "Alice",
+          "range": [
+            197,
+            202
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 8
+            },
+            "end": {
+              "line": 8,
+              "column": 13
+            }
+          }
+        },
+        "text": {
+          "type": "SequenceText",
+          "wrap": null,
+          "value": {
+            "type": "SequenceLiteral",
+            "value": "I feel great!",
+            "range": [
+              204,
+              217
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 15
+              },
+              "end": {
+                "line": 8,
+                "column": 28
+              }
+            }
+          },
+          "range": [
+            204,
+            217
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 15
+            },
+            "end": {
+              "line": 8,
+              "column": 28
+            }
+          }
+        },
+        "range": [
+          189,
+          217
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 0
+          },
+          "end": {
+            "line": 8,
+            "column": 28
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      217
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 8,
+        "column": 28
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "sequenceDiagram",
+      "range": [
+        0,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "autonumber",
+      "range": [
+        16,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Alice",
+      "range": [
+        27,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "->>",
+      "range": [
+        32,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 5
+        },
+        "end": {
+          "line": 3,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "John",
+      "range": [
+        35,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        39,
+        40
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 12
+        },
+        "end": {
+          "line": 3,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Hello John,<br>how are you?",
+      "range": [
+        41,
+        68
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 14
+        },
+        "end": {
+          "line": 3,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "autonumber",
+      "range": [
+        69,
+        79
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "50",
+      "range": [
+        80,
+        82
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 11
+        },
+        "end": {
+          "line": 4,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "10",
+      "range": [
+        83,
+        85
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 14
+        },
+        "end": {
+          "line": 4,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Alice",
+      "range": [
+        86,
+        91
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "->>",
+      "range": [
+        91,
+        94
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 5
+        },
+        "end": {
+          "line": 5,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "John",
+      "range": [
+        94,
+        98
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 8
+        },
+        "end": {
+          "line": 5,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        98,
+        99
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 12
+        },
+        "end": {
+          "line": 5,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "John,<br />can you hear me?",
+      "range": [
+        100,
+        127
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 14
+        },
+        "end": {
+          "line": 5,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "John",
+      "range": [
+        128,
+        132
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->>",
+      "range": [
+        132,
+        136
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 4
+        },
+        "end": {
+          "line": 6,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Alice",
+      "range": [
+        136,
+        141
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 8
+        },
+        "end": {
+          "line": 6,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        141,
+        142
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 13
+        },
+        "end": {
+          "line": 6,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Hi Alice,<br />I can hear you!",
+      "range": [
+        143,
+        173
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 15
+        },
+        "end": {
+          "line": 6,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "autonumber",
+      "range": [
+        174,
+        184
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "off",
+      "range": [
+        185,
+        188
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 11
+        },
+        "end": {
+          "line": 7,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "John",
+      "range": [
+        189,
+        193
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->>",
+      "range": [
+        193,
+        197
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 4
+        },
+        "end": {
+          "line": 8,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Alice",
+      "range": [
+        197,
+        202
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 8
+        },
+        "end": {
+          "line": 8,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        202,
+        203
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 13
+        },
+        "end": {
+          "line": 8,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "I feel great!",
+      "range": [
+        204,
+        217
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 15
+        },
+        "end": {
+          "line": 8,
+          "column": 28
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    217
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 8,
+      "column": 28
+    }
+  }
+}

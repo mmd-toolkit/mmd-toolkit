@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Comments: `%%` inside a class is a character of it."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "class": "c %% d",
+      "children": []
+    }
+  }
+}

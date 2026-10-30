@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/railroad.md RailroadAccDescrStatement: Is line accDescr value null when a percent comment starts immediately after the colon without padding?"
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

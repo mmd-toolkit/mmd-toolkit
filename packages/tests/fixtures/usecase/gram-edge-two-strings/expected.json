@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: The label compatibility lookahead does not allow two adjacent quoted labels."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting: one of these possible Token sequences:\n  1. [FORWARD_SOLID]\n  2. [MARKERLESS_SOLID]\n  3. [FORWARD_CIRCLE]\n  4. [FORWARD_CROSS]\nbut found: '\"second\"' at line 2, column 14 [26,34)"
+  }
+}

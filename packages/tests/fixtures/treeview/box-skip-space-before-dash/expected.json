@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: Dashes after the prefix's separating spaces are content, not a second dash run."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "── x",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

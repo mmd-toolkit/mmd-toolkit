@@ -1,0 +1,232 @@
+{
+  "type": "Root",
+  "diagramType": "packet",
+  "body": {
+    "type": "PacketDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "PacketRelativeBlockStatement",
+        "textBeforeCount": [],
+        "count": {
+          "type": "NumericLiteral",
+          "value": 1,
+          "raw": "1",
+          "range": [
+            22,
+            23
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 22
+            },
+            "end": {
+              "line": 1,
+              "column": 23
+            }
+          }
+        },
+        "textBeforeColon": [],
+        "textBeforeLabel": [],
+        "label": {
+          "type": "StringLiteral",
+          "value": "A",
+          "raw": "\"A\"",
+          "closed": true,
+          "range": [
+            24,
+            27
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 24
+            },
+            "end": {
+              "line": 1,
+              "column": 27
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          21,
+          27
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 21
+          },
+          "end": {
+            "line": 1,
+            "column": 27
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      27
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 1,
+        "column": 27
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [
+    {
+      "type": "Directive",
+      "name": "wrap",
+      "value": "wrap",
+      "closed": true,
+      "range": [
+        11,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 11
+        },
+        "end": {
+          "line": 1,
+          "column": 21
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "packet-beta",
+      "range": [
+        0,
+        11
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Directive",
+      "value": "%%{wrap}%%",
+      "range": [
+        11,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 11
+        },
+        "end": {
+          "line": 1,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "+",
+      "range": [
+        21,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 21
+        },
+        "end": {
+          "line": 1,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "1",
+      "range": [
+        22,
+        23
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 22
+        },
+        "end": {
+          "line": 1,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        23,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 23
+        },
+        "end": {
+          "line": 1,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"A\"",
+      "range": [
+        24,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 24
+        },
+        "end": {
+          "line": 1,
+          "column": 27
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    28
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 0
+    }
+  }
+}

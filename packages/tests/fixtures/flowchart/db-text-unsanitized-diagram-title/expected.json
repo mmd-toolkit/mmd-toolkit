@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The title of the diagram holds an HTML tag with an onclick attribute. The summary records the text as written, before HTML sanitization, which would remove the attribute."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "<b onclick=x>t</b>",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "title": "<b onclick=x>t</b>"
+  }
+}

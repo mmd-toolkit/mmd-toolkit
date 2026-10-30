@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Hidden directive after accessibility title at EOF."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

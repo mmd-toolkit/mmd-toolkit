@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: second separator is literal whitespace"
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

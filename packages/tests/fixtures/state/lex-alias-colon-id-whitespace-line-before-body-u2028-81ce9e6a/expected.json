@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A state alias whose id has a `:`, whitespace that runs over line feeds, and a body that starts after it, with U+2028 in the text. mermaid.js reads the states \"A : x\", \"B\"."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A : x",
+        "shape": "roundedWithTitle",
+        "label": "d",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "A : x"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

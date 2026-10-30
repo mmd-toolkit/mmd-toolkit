@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unquoted flow name cannot concatenate a string token."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...beta TBflow First \"second\"Aend\n----------------------^\nExpecting 'COMMENT', 'SEMI', 'NEWLINE', 'SPACE', 'EOF', 'GRAPH', 'DIR', 'flow', 'SQS', 'end', 'global', 'connector', 'SHAPE_DATA', 'AMP', 'COLON', 'START_LINK', 'STYLE', 'LINKSTYLE', 'CLASSDEF', 'CLASS', 'CLICK', 'DOWN', 'UP', 'NUM', 'NODE_STRING', 'BRKT', 'MINUS', 'MULT', 'UNICODE_TEXT', got 'STR'"
+  }
+}

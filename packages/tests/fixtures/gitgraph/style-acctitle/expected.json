@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The classDef rule reaches accessibility title text."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "classDef:#x",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

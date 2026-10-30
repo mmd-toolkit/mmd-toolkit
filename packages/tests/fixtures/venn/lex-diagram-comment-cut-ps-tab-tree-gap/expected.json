@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "R4: PS and a tab at the end of the common comment region do not end the diagram comment."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10,
+        "label": "style:ﬂ°x¶ßy"
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

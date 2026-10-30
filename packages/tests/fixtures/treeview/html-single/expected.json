@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check HTML attribute rewriting and line-break text in single."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "<b x=",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "y'>a</b><BR>z'",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

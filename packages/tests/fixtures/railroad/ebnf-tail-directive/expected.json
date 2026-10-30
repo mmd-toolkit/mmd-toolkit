@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A closed directive after an EBNF rule is removed before lexing."
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

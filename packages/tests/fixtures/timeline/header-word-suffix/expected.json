@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, header: a word that starts with the header is rejected as a period before the header ends."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\ntimelinex\n^\nExpecting 'timeline', 'timeline_lr', 'timeline_td', got 'period'"
+  }
+}

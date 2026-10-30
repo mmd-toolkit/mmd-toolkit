@@ -1,0 +1,134 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: xychart-no-duplicate-description >> invalid >>> docs/rules/xychart-no-duplicate-description.md incorrect 1
+Filename: xychart-no-duplicate-description-incorrect-1.mmd
+
+Code:
+  1 | xychart
+  2 |   accDescr: first
+  3 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  4 |     second
+    | ~~~~~~~~~~\ [1]
+  5 |   }
+    | ~~~ [1]
+  6 |   line [1, 2]
+  7 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+---
+
+
+Test: xychart-no-duplicate-description >> invalid >>> invalid/xychart/acc-descr-around-empty-block
+Filename: tests/fixtures/rules/xychart-no-duplicate-description/invalid/xychart/acc-descr-around-empty-block-input.mmd
+
+Code:
+  1 | xychart
+  2 |   accDescr: a
+  3 |   accDescr {}
+  4 |   accDescr: b
+    |   ^~~~~~~~~~~ [1]
+  5 |   line [1]
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+---
+
+
+Test: xychart-no-duplicate-description >> invalid >>> invalid/xychart/acc-descr-back-to-first
+Filename: tests/fixtures/rules/xychart-no-duplicate-description/invalid/xychart/acc-descr-back-to-first-input.mmd
+
+Code:
+  1 | xychart
+  2 |   accDescr: a
+  3 |   accDescr: b
+    |   ^~~~~~~~~~~ [1]
+  4 |   accDescr: a
+    |   ^~~~~~~~~~~ [2]
+  5 |   line [1]
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+---
+
+
+Test: xychart-no-duplicate-description >> invalid >>> invalid/xychart/acc-descr-twice
+Filename: tests/fixtures/rules/xychart-no-duplicate-description/invalid/xychart/acc-descr-twice-input.mmd
+
+Code:
+  1 | xychart
+  2 |   accDescr: a
+  3 |   accDescr: b
+    |   ^~~~~~~~~~~ [1]
+  4 |   line [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+---
+
+
+Test: xychart-no-duplicate-description >> invalid >>> invalid/xychart/acc-descr-upper-case-second
+Filename: tests/fixtures/rules/xychart-no-duplicate-description/invalid/xychart/acc-descr-upper-case-second-input.mmd
+
+Code:
+  1 | xychart
+  2 |   accDescr: a
+  3 |   ACCDESCR { b }
+    |   ^~~~~~~~~~~~~~ [1]
+  4 |   line [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+---
+
+
+Test: xychart-no-duplicate-description >> invalid >>> invalid/xychart/acc-descr-value-after-comment-line
+Filename: tests/fixtures/rules/xychart-no-duplicate-description/invalid/xychart/acc-descr-value-after-comment-line-input.mmd
+
+Code:
+  1 | xychart
+  2 |   accDescr: a
+  3 |   accDescr:
+    |   ^~~~~~~~~\ [1]
+  4 |   %% c
+    | ~~~~~~\ [1]
+  5 |   b
+    | ~~~ [1]
+  6 |   line [1]
+  7 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+---
+
+
+Test: xychart-no-duplicate-description >> invalid >>> invalid/xychart/db-acc-descr-block-then-line
+Filename: tests/fixtures/rules/xychart-no-duplicate-description/invalid/xychart/db-acc-descr-block-then-line-input.mmd
+
+Code:
+  1 | xychart-beta
+  2 |  accDescr {
+  3 |  x
+  4 |  }
+  5 |  accDescr: d
+    |  ^~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+---
+
+
+Test: xychart-no-duplicate-description >> invalid >>> invalid/xychart/db-acc-descr-empty-at-end-after-value
+Filename: tests/fixtures/rules/xychart-no-duplicate-description/invalid/xychart/db-acc-descr-empty-at-end-after-value-input.mmd
+
+Code:
+  1 | xychart-beta
+  2 | accDescr: d
+  3 | accDescr:
+    | ^~~~~~~~~ [1]
+  4 |
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+---

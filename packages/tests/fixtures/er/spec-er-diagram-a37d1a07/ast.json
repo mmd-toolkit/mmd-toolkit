@@ -1,0 +1,315 @@
+{
+  "type": "Root",
+  "diagramType": "er",
+  "body": {
+    "type": "ErDiagram",
+    "body": [
+      {
+        "type": "ErRelationshipStatement",
+        "left": {
+          "type": "ErEntityReference",
+          "name": {
+            "type": "ErIdentifier",
+            "name": "CAR",
+            "range": [
+              10,
+              13
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 2,
+                "column": 3
+              }
+            }
+          },
+          "cssClasses": [],
+          "range": [
+            10,
+            13
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 3
+            }
+          }
+        },
+        "relationship": {
+          "type": "ErRelationship",
+          "leftCardinality": "only-one",
+          "line": "identifying",
+          "rightCardinality": "zero-or-more",
+          "range": [
+            14,
+            20
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 4
+            },
+            "end": {
+              "line": 2,
+              "column": 10
+            }
+          }
+        },
+        "right": {
+          "type": "ErEntityReference",
+          "name": {
+            "type": "ErIdentifier",
+            "name": "DRIVER",
+            "range": [
+              21,
+              27
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 11
+              },
+              "end": {
+                "line": 2,
+                "column": 17
+              }
+            }
+          },
+          "cssClasses": [],
+          "range": [
+            21,
+            27
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 11
+            },
+            "end": {
+              "line": 2,
+              "column": 17
+            }
+          }
+        },
+        "role": {
+          "type": "StringLiteral",
+          "value": "insured for",
+          "raw": "\"insured for\"",
+          "closed": true,
+          "range": [
+            30,
+            43
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 20
+            },
+            "end": {
+              "line": 2,
+              "column": 33
+            }
+          }
+        },
+        "range": [
+          10,
+          43
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 33
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      43
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 33
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "erDiagram",
+      "range": [
+        0,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "CAR",
+      "range": [
+        10,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "||",
+      "range": [
+        14,
+        16
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        16,
+        18
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "o{",
+      "range": [
+        18,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "DRIVER",
+      "range": [
+        21,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 11
+        },
+        "end": {
+          "line": 2,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        28,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 18
+        },
+        "end": {
+          "line": 2,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"insured for\"",
+      "range": [
+        30,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 20
+        },
+        "end": {
+          "line": 2,
+          "column": 33
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    43
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 33
+    }
+  }
+}

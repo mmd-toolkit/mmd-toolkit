@@ -1,0 +1,352 @@
+{
+  "type": "Root",
+  "diagramType": "kanban",
+  "body": {
+    "type": "KanbanDiagram",
+    "body": [
+      {
+        "type": "KanbanNode",
+        "indent": 1,
+        "id": {
+          "type": "KanbanLiteral",
+          "value": "__proto__",
+          "range": [
+            8,
+            17
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 1
+            },
+            "end": {
+              "line": 2,
+              "column": 10
+            }
+          }
+        },
+        "shape": null,
+        "data": [],
+        "decorations": [],
+        "children": [
+          {
+            "type": "KanbanNode",
+            "indent": 3,
+            "id": {
+              "type": "KanbanLiteral",
+              "value": "constructor",
+              "range": [
+                21,
+                32
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 3
+                },
+                "end": {
+                  "line": 3,
+                  "column": 14
+                }
+              }
+            },
+            "shape": null,
+            "data": [],
+            "decorations": [],
+            "children": [],
+            "range": [
+              21,
+              32
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 3
+              },
+              "end": {
+                "line": 3,
+                "column": 14
+              }
+            }
+          },
+          {
+            "type": "KanbanNode",
+            "indent": 3,
+            "id": {
+              "type": "KanbanLiteral",
+              "value": "toString",
+              "range": [
+                36,
+                44
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 3
+                },
+                "end": {
+                  "line": 4,
+                  "column": 11
+                }
+              }
+            },
+            "shape": null,
+            "data": [],
+            "decorations": [],
+            "children": [],
+            "range": [
+              36,
+              44
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 3
+              },
+              "end": {
+                "line": 4,
+                "column": 11
+              }
+            }
+          }
+        ],
+        "range": [
+          8,
+          44
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 1
+          },
+          "end": {
+            "line": 4,
+            "column": 11
+          }
+        }
+      },
+      {
+        "type": "KanbanNode",
+        "indent": 1,
+        "id": {
+          "type": "KanbanLiteral",
+          "value": "hasOwnProperty",
+          "range": [
+            46,
+            60
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 1
+            },
+            "end": {
+              "line": 5,
+              "column": 15
+            }
+          }
+        },
+        "shape": null,
+        "data": [],
+        "decorations": [],
+        "children": [
+          {
+            "type": "KanbanNode",
+            "indent": 3,
+            "id": {
+              "type": "KanbanLiteral",
+              "value": "__proto__",
+              "range": [
+                64,
+                73
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 3
+                },
+                "end": {
+                  "line": 6,
+                  "column": 12
+                }
+              }
+            },
+            "shape": null,
+            "data": [],
+            "decorations": [],
+            "children": [],
+            "range": [
+              64,
+              73
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 3
+              },
+              "end": {
+                "line": 6,
+                "column": 12
+              }
+            }
+          }
+        ],
+        "range": [
+          46,
+          73
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 1
+          },
+          "end": {
+            "line": 6,
+            "column": 12
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      73
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 6,
+        "column": 12
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "kanban",
+      "range": [
+        0,
+        6
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "__proto__",
+      "range": [
+        8,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 1
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "constructor",
+      "range": [
+        21,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 3
+        },
+        "end": {
+          "line": 3,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "toString",
+      "range": [
+        36,
+        44
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 3
+        },
+        "end": {
+          "line": 4,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "hasOwnProperty",
+      "range": [
+        46,
+        60
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 1
+        },
+        "end": {
+          "line": 5,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "__proto__",
+      "range": [
+        64,
+        73
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 3
+        },
+        "end": {
+          "line": 6,
+          "column": 12
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    74
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 7,
+      "column": 0
+    }
+  }
+}

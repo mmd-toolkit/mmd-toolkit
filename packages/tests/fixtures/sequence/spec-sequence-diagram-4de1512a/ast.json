@@ -1,0 +1,900 @@
+{
+  "type": "Root",
+  "diagramType": "sequence",
+  "body": {
+    "type": "SequenceDiagram",
+    "body": [
+      {
+        "type": "SequenceParticipantStatement",
+        "kind": "participant",
+        "created": false,
+        "id": {
+          "type": "SequenceIdentifier",
+          "name": "Alice",
+          "range": [
+            41,
+            46
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 18
+            },
+            "end": {
+              "line": 3,
+              "column": 23
+            }
+          }
+        },
+        "data": {
+          "type": "SequenceDataBlock",
+          "value": " \"type\" : \"boundary\" ",
+          "range": [
+            46,
+            70
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 23
+            },
+            "end": {
+              "line": 3,
+              "column": 47
+            }
+          }
+        },
+        "alias": {
+          "type": "SequenceText",
+          "wrap": null,
+          "value": {
+            "type": "SequenceLiteral",
+            "value": "Public API",
+            "range": [
+              74,
+              84
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 51
+              },
+              "end": {
+                "line": 3,
+                "column": 61
+              }
+            }
+          },
+          "range": [
+            74,
+            84
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 51
+            },
+            "end": {
+              "line": 3,
+              "column": 61
+            }
+          }
+        },
+        "range": [
+          29,
+          84
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 6
+          },
+          "end": {
+            "line": 3,
+            "column": 61
+          }
+        }
+      },
+      {
+        "type": "SequenceParticipantStatement",
+        "kind": "participant",
+        "created": false,
+        "id": {
+          "type": "SequenceIdentifier",
+          "name": "Bob",
+          "range": [
+            103,
+            106
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 18
+            },
+            "end": {
+              "line": 4,
+              "column": 21
+            }
+          }
+        },
+        "data": {
+          "type": "SequenceDataBlock",
+          "value": " \"type\" : \"control\" ",
+          "range": [
+            106,
+            129
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 21
+            },
+            "end": {
+              "line": 4,
+              "column": 44
+            }
+          }
+        },
+        "alias": {
+          "type": "SequenceText",
+          "wrap": null,
+          "value": {
+            "type": "SequenceLiteral",
+            "value": "Controller",
+            "range": [
+              133,
+              143
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 48
+              },
+              "end": {
+                "line": 4,
+                "column": 58
+              }
+            }
+          },
+          "range": [
+            133,
+            143
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 48
+            },
+            "end": {
+              "line": 4,
+              "column": 58
+            }
+          }
+        },
+        "range": [
+          91,
+          143
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 6
+          },
+          "end": {
+            "line": 4,
+            "column": 58
+          }
+        }
+      },
+      {
+        "type": "SequenceMessageStatement",
+        "from": {
+          "type": "SequenceIdentifier",
+          "name": "Alice",
+          "range": [
+            150,
+            155
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 6
+            },
+            "end": {
+              "line": 5,
+              "column": 11
+            }
+          }
+        },
+        "fromCentralConnection": false,
+        "arrow": {
+          "type": "SequenceArrow",
+          "value": "->>",
+          "startMarker": "none",
+          "line": "solid",
+          "endMarker": "arrow",
+          "range": [
+            155,
+            158
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 11
+            },
+            "end": {
+              "line": 5,
+              "column": 14
+            }
+          }
+        },
+        "activation": null,
+        "toCentralConnection": false,
+        "to": {
+          "type": "SequenceIdentifier",
+          "name": "Bob",
+          "range": [
+            158,
+            161
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 14
+            },
+            "end": {
+              "line": 5,
+              "column": 17
+            }
+          }
+        },
+        "text": {
+          "type": "SequenceText",
+          "wrap": null,
+          "value": {
+            "type": "SequenceLiteral",
+            "value": "Request",
+            "range": [
+              163,
+              170
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 19
+              },
+              "end": {
+                "line": 5,
+                "column": 26
+              }
+            }
+          },
+          "range": [
+            163,
+            170
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 19
+            },
+            "end": {
+              "line": 5,
+              "column": 26
+            }
+          }
+        },
+        "range": [
+          150,
+          170
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 6
+          },
+          "end": {
+            "line": 5,
+            "column": 26
+          }
+        }
+      },
+      {
+        "type": "SequenceMessageStatement",
+        "from": {
+          "type": "SequenceIdentifier",
+          "name": "Bob",
+          "range": [
+            177,
+            180
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 6
+            },
+            "end": {
+              "line": 6,
+              "column": 9
+            }
+          }
+        },
+        "fromCentralConnection": false,
+        "arrow": {
+          "type": "SequenceArrow",
+          "value": "-->>",
+          "startMarker": "none",
+          "line": "dotted",
+          "endMarker": "arrow",
+          "range": [
+            180,
+            184
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 9
+            },
+            "end": {
+              "line": 6,
+              "column": 13
+            }
+          }
+        },
+        "activation": null,
+        "toCentralConnection": false,
+        "to": {
+          "type": "SequenceIdentifier",
+          "name": "Alice",
+          "range": [
+            184,
+            189
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 13
+            },
+            "end": {
+              "line": 6,
+              "column": 18
+            }
+          }
+        },
+        "text": {
+          "type": "SequenceText",
+          "wrap": null,
+          "value": {
+            "type": "SequenceLiteral",
+            "value": "Response",
+            "range": [
+              191,
+              199
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 20
+              },
+              "end": {
+                "line": 6,
+                "column": 28
+              }
+            }
+          },
+          "range": [
+            191,
+            199
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 20
+            },
+            "end": {
+              "line": 6,
+              "column": 28
+            }
+          }
+        },
+        "range": [
+          177,
+          199
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 6
+          },
+          "end": {
+            "line": 6,
+            "column": 28
+          }
+        }
+      }
+    ],
+    "range": [
+      7,
+      199
+    ],
+    "loc": {
+      "start": {
+        "line": 2,
+        "column": 6
+      },
+      "end": {
+        "line": 6,
+        "column": 28
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "sequenceDiagram",
+      "range": [
+        7,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "participant",
+      "range": [
+        29,
+        40
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 6
+        },
+        "end": {
+          "line": 3,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Alice",
+      "range": [
+        41,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 18
+        },
+        "end": {
+          "line": 3,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        46,
+        48
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 23
+        },
+        "end": {
+          "line": 3,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " \"type\" : \"boundary\" ",
+      "range": [
+        48,
+        69
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 25
+        },
+        "end": {
+          "line": 3,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        69,
+        70
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 46
+        },
+        "end": {
+          "line": 3,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "as",
+      "range": [
+        71,
+        73
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 48
+        },
+        "end": {
+          "line": 3,
+          "column": 50
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Public API",
+      "range": [
+        74,
+        84
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 51
+        },
+        "end": {
+          "line": 3,
+          "column": 61
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "participant",
+      "range": [
+        91,
+        102
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 6
+        },
+        "end": {
+          "line": 4,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Bob",
+      "range": [
+        103,
+        106
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 18
+        },
+        "end": {
+          "line": 4,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        106,
+        108
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 21
+        },
+        "end": {
+          "line": 4,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " \"type\" : \"control\" ",
+      "range": [
+        108,
+        128
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 23
+        },
+        "end": {
+          "line": 4,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        128,
+        129
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 43
+        },
+        "end": {
+          "line": 4,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "as",
+      "range": [
+        130,
+        132
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 45
+        },
+        "end": {
+          "line": 4,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Controller",
+      "range": [
+        133,
+        143
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 48
+        },
+        "end": {
+          "line": 4,
+          "column": 58
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Alice",
+      "range": [
+        150,
+        155
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 6
+        },
+        "end": {
+          "line": 5,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "->>",
+      "range": [
+        155,
+        158
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 11
+        },
+        "end": {
+          "line": 5,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Bob",
+      "range": [
+        158,
+        161
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 14
+        },
+        "end": {
+          "line": 5,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        161,
+        162
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 17
+        },
+        "end": {
+          "line": 5,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Request",
+      "range": [
+        163,
+        170
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 19
+        },
+        "end": {
+          "line": 5,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Bob",
+      "range": [
+        177,
+        180
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 6
+        },
+        "end": {
+          "line": 6,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->>",
+      "range": [
+        180,
+        184
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 9
+        },
+        "end": {
+          "line": 6,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Alice",
+      "range": [
+        184,
+        189
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 13
+        },
+        "end": {
+          "line": 6,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        189,
+        190
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 18
+        },
+        "end": {
+          "line": 6,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Response",
+      "range": [
+        191,
+        199
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 20
+        },
+        "end": {
+          "line": 6,
+          "column": 28
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    206
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 7,
+      "column": 6
+    }
+  }
+}

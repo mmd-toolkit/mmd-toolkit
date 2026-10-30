@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Does public line normalization end a native comment at a source CRLF?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "value": 1
+      },
+      {
+        "name": "B",
+        "value": 2
+      }
+    ],
+    "classDefs": []
+  }
+}

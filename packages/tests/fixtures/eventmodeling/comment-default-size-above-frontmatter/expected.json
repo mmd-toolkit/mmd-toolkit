@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md, mermaid.js and this specification, Step 5: the source is 50018 characters, and 50001 measured after the frontmatter trivia: longer than maxTextSize, so Step 5 removes the comment line from the parser's input, and the data value lacks it."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": {
+          "kind": "block",
+          "value": "{\nx\ny\n}\n"
+        }
+      }
+    ]
+  },
+  "embedded": {
+    "title": "T"
+  }
+}

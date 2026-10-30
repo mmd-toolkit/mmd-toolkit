@@ -1,0 +1,500 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: treemap-no-invalid-value >> invalid >>> docs/rules/treemap-no-invalid-value.md incorrect 1
+Filename: treemap-no-invalid-value-incorrect-1.mmd
+
+Code:
+  1 | treemap
+  2 |   "Revenue": 1_000
+    |              ^~~~~ [1]
+  3 |
+
+Output:
+  1 | treemap
+  2 |   "Revenue": 1000
+  3 |
+
+[1] mermaid.js reads this value as `1` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/comma-after-bare-point
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/comma-after-bare-point-input.mmd
+
+Code:
+  1 | treemap
+  2 | "A": 1.,5
+    |      ^~~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads this value as `1.5` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/comma-after-point-and-at-end
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/comma-after-point-and-at-end-input.mmd
+
+Code:
+  1 | treemap
+  2 | "A": 1.234,5,
+    |      ^~~~~~~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads this value as `1.2345` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/comma-after-point-before-three
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/comma-after-point-before-three-input.mmd
+
+Code:
+  1 | treemap
+  2 | "A": 1.2,345
+    |      ^~~~~~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads this value as `1.2345` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/comma-after-point
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/comma-after-point-input.mmd
+
+Code:
+  1 | treemap
+  2 | "A": 1.234,5
+    |      ^~~~~~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads this value as `1.2345` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/comma-before-end-short
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/comma-before-end-short-input.mmd
+
+Code:
+  1 | treemap
+  2 | "A": 1,5,
+    |      ^~~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads this value as `15` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/comma-decimal-comma-separator
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/comma-decimal-comma-separator-input.mmd
+
+Code:
+  1 | treemap
+  2 | "i", 0,5
+    |      ^~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads this value as `5` after removing its commas.
+    Suggestions:
+      - Write the number as `0.5`.
+        Output:
+          1 | treemap
+          2 | "i", 0.5
+          3 |
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/comma-decimal
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/comma-decimal-input.mmd
+
+Code:
+  1 | treemap
+  2 | "A": 0,5
+    |      ^~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads this value as `5` after removing its commas.
+    Suggestions:
+      - Write the number as `0.5`.
+        Output:
+          1 | treemap
+          2 | "A": 0.5
+          3 |
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/comma-decimal-two-digits
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/comma-decimal-two-digits-input.mmd
+
+Code:
+  1 | treemap
+  2 | "A": 3,14
+    |      ^~~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads this value as `314` after removing its commas.
+    Suggestions:
+      - Write the number as `3.14`.
+        Output:
+          1 | treemap
+          2 | "A": 3.14
+          3 |
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/comma-empty-group
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/comma-empty-group-input.mmd
+
+Code:
+  1 | treemap
+  2 | "A": 1,,5
+    |      ^~~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads this value as `15` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/comma-groups-of-two
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/comma-groups-of-two-input.mmd
+
+Code:
+  1 | treemap
+  2 | "A": 12,34,56
+    |      ^~~~~~~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads this value as `123456` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/docs-incorrect-1
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/docs-incorrect-1-input.mmd
+
+Code:
+  1 | treemap
+  2 |   "Revenue": 1_000
+    |              ^~~~~ [1]
+  3 |
+
+Output:
+  1 | treemap
+  2 |   "Revenue": 1000
+  3 |
+
+[1] mermaid.js reads this value as `1` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/nested-leaf-after-statement-gap
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/nested-leaf-after-statement-gap-input.mmd
+
+Code:
+  1 | treemap
+  2 | "Root"
+  3 | accTitle: Map
+  4 |   "Branch"
+  5 | classDef aa fill:red;
+  6 |     "Bad":1_000:::aa
+    |           ^~~~~ [1]
+  7 |   "Good":1,234.5
+  8 |
+
+Output:
+  1 | treemap
+  2 | "Root"
+  3 | accTitle: Map
+  4 |   "Branch"
+  5 | classDef aa fill:red;
+  6 |     "Bad":1000:::aa
+  7 |   "Good":1,234.5
+  8 |
+
+[1] mermaid.js reads this value as `1` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/number-class-selector
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/number-class-selector-input.mmd
+
+Code:
+  1 | treemap
+  2 | "A":1_000:::warm
+    |     ^~~~~ [1]
+  3 | classDef warm fill:red;
+  4 |
+
+Output:
+  1 | treemap
+  2 | "A":1000:::warm
+  3 | classDef warm fill:red;
+  4 |
+
+[1] mermaid.js reads this value as `1` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/number-comma-dot-no-digit
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/number-comma-dot-no-digit-input.mmd
+
+Code:
+  1 | treemap
+  2 | "A":.,
+    |     ^~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads this value as `NaN` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/number-comma-separator-invalid
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/number-comma-separator-invalid-input.mmd
+
+Code:
+  1 | treemap
+  2 | "A",1.2.3
+    |     ^~~~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads this value as `1.2` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/number-comma-unusual
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/number-comma-unusual-input.mmd
+
+Code:
+  1 | treemap
+  2 | "A":1,2,3,
+    |     ^~~~~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads this value as `123` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/number-commas-around-dots
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/number-commas-around-dots-input.mmd
+
+Code:
+  1 | treemap
+  2 | "A":1,.2,.3
+    |     ^~~~~~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads this value as `1.2` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/number-directive-gap
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/number-directive-gap-input.mmd
+
+Code:
+  1 | treemap
+  2 | "A":%%{init: {}}%%1_000
+    |                   ^~~~~ [1]
+  3 |
+
+Output:
+  1 | treemap
+  2 | "A":%%{init: {}}%%1000
+  3 |
+
+[1] mermaid.js reads this value as `1` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/number-dot-alone
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/number-dot-alone-input.mmd
+
+Code:
+  1 | treemap
+  2 | "Revenue":.
+    |           ^ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads this value as `NaN` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/number-dot
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/number-dot-input.mmd
+
+Code:
+  1 | treemap
+  2 | "Budget"
+  3 |   "Sales":.
+    |           ^ [1]
+  4 |   "Costs":20
+  5 |
+
+Output: unchanged
+
+[1] mermaid.js reads this value as `NaN` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/number-dot-underscore
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/number-dot-underscore-input.mmd
+
+Code:
+  1 | treemap
+  2 | "Revenue":._
+    |           ^~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads this value as `NaN` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/number-empty-block
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/number-empty-block-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr {}
+  3 | "Revenue":1_000
+    |           ^~~~~ [1]
+  4 |
+
+Output:
+  1 | treemap
+  2 | accDescr {}
+  3 | "Revenue":1000
+  4 |
+
+[1] mermaid.js reads this value as `1` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/number-multiple-dots-alone
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/number-multiple-dots-alone-input.mmd
+
+Code:
+  1 | treemap
+  2 | "Revenue":1.2.3
+    |           ^~~~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads this value as `1.2` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/number-multiple-dots
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/number-multiple-dots-input.mmd
+
+Code:
+  1 | treemap
+  2 | "Budget"
+  3 |   "Sales":1.2.3
+    |           ^~~~~ [1]
+  4 |   "Costs":20
+  5 |
+
+Output: unchanged
+
+[1] mermaid.js reads this value as `1.2` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/number-underscore-alone
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/number-underscore-alone-input.mmd
+
+Code:
+  1 | treemap
+  2 | "Revenue":1_000
+    |           ^~~~~ [1]
+  3 |
+
+Output:
+  1 | treemap
+  2 | "Revenue":1000
+  3 |
+
+[1] mermaid.js reads this value as `1` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/number-underscore-before-digit
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/number-underscore-before-digit-input.mmd
+
+Code:
+  1 | treemap
+  2 | "A":._1
+    |     ^~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads this value as `NaN` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/number-underscore-end
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/number-underscore-end-input.mmd
+
+Code:
+  1 | treemap
+  2 | "Revenue":1_
+    |           ^~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads this value as `1` after removing its commas.
+---
+
+
+Test: treemap-no-invalid-value >> invalid >>> invalid/treemap/number-underscore
+Filename: tests/fixtures/rules/treemap-no-invalid-value/invalid/treemap/number-underscore-input.mmd
+
+Code:
+  1 | treemap
+  2 | "Budget"
+  3 |   "Sales":1_000
+    |           ^~~~~ [1]
+  4 |   "Costs":20
+  5 |
+
+Output:
+  1 | treemap
+  2 | "Budget"
+  3 |   "Sales":1000
+  4 |   "Costs":20
+  5 |
+
+[1] mermaid.js reads this value as `1` after removing its commas.
+---

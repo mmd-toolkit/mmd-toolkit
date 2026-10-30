@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does C4Component inside a description block select C4 instead of radar?"
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nradar-betaaccDescr \n^"
+  }
+}

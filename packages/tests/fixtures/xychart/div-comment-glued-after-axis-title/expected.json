@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Known divergences: mermaid.js's comment takes the `T` before `%%`, so the axis has no title and the input is rejected; here the title is `T`."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...t-beta x-axis T%% c\n----------------------^\nExpecting 'SQUARE_BRACES_START', 'NUMBER_WITH_DECIMAL', 'STR', 'MD_STR', 'AMP', 'NUM', 'ALPHA', 'PLUS', 'EQUALS', 'MULT', 'DOT', 'BRKT', 'MINUS', 'UNDERSCORE', got 'NEWLINE'"
+  }
+}

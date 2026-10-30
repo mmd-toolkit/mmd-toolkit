@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Directives inside units, Trivia between units: a comment line after `classDef a fill:red `; accepted, style `fill:redA`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "a",
+        "styles": [
+          "fill:redA"
+        ]
+      }
+    ],
+    "subGraphs": []
+  }
+}

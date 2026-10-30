@@ -1,0 +1,352 @@
+{
+  "type": "Root",
+  "diagramType": "sequence",
+  "body": {
+    "type": "SequenceDiagram",
+    "body": [
+      {
+        "type": "SequenceParticipantStatement",
+        "kind": "participant",
+        "created": false,
+        "id": {
+          "type": "SequenceIdentifier",
+          "name": "Gina",
+          "range": [
+            37,
+            41
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 18
+            },
+            "end": {
+              "line": 3,
+              "column": 22
+            }
+          }
+        },
+        "data": {
+          "type": "SequenceDataBlock",
+          "value": " \"type\" : \"database\" ",
+          "range": [
+            41,
+            65
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 22
+            },
+            "end": {
+              "line": 3,
+              "column": 46
+            }
+          }
+        },
+        "alias": null,
+        "range": [
+          25,
+          65
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 6
+          },
+          "end": {
+            "line": 3,
+            "column": 46
+          }
+        }
+      },
+      {
+        "type": "SequenceParticipantStatement",
+        "kind": "participant",
+        "created": false,
+        "id": {
+          "type": "SequenceIdentifier",
+          "name": "Harry",
+          "range": [
+            84,
+            89
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 18
+            },
+            "end": {
+              "line": 4,
+              "column": 23
+            }
+          }
+        },
+        "data": {
+          "type": "SequenceDataBlock",
+          "value": " \"type\" : \"database\" ",
+          "range": [
+            90,
+            114
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 24
+            },
+            "end": {
+              "line": 4,
+              "column": 48
+            }
+          }
+        },
+        "alias": null,
+        "range": [
+          72,
+          114
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 6
+          },
+          "end": {
+            "line": 4,
+            "column": 48
+          }
+        }
+      }
+    ],
+    "range": [
+      3,
+      114
+    ],
+    "loc": {
+      "start": {
+        "line": 2,
+        "column": 2
+      },
+      "end": {
+        "line": 4,
+        "column": 48
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "sequenceDiagram",
+      "range": [
+        3,
+        18
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "participant",
+      "range": [
+        25,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 6
+        },
+        "end": {
+          "line": 3,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Gina",
+      "range": [
+        37,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 18
+        },
+        "end": {
+          "line": 3,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        41,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 22
+        },
+        "end": {
+          "line": 3,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " \"type\" : \"database\" ",
+      "range": [
+        43,
+        64
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 24
+        },
+        "end": {
+          "line": 3,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        64,
+        65
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 45
+        },
+        "end": {
+          "line": 3,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "participant",
+      "range": [
+        72,
+        83
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 6
+        },
+        "end": {
+          "line": 4,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Harry",
+      "range": [
+        84,
+        89
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 18
+        },
+        "end": {
+          "line": 4,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        90,
+        92
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 24
+        },
+        "end": {
+          "line": 4,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " \"type\" : \"database\" ",
+      "range": [
+        92,
+        113
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 26
+        },
+        "end": {
+          "line": 4,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        113,
+        114
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 47
+        },
+        "end": {
+          "line": 4,
+          "column": 48
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    119
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 4
+    }
+  }
+}

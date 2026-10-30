@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A GWT can omit when and contain unresolved references."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": []
+  }
+}

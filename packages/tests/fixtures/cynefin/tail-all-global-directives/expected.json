@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A closed global directive can follow every statement form."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "D",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "A"
+          }
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear"
+      },
+      {
+        "from": "clear",
+        "to": "chaotic",
+        "label": "L"
+      }
+    ]
+  }
+}

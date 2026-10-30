@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an inline percent pair remain within an unquoted note label?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [
+      {
+        "id": "A",
+        "label": "A",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [
+      {
+        "target": "A",
+        "label": "text %% inline",
+        "labelType": "text"
+      }
+    ],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

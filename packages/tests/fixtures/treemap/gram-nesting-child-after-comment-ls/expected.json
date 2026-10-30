@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "diagrams/treemap.md Indentation and parents: child after comment ls; retain the authored occurrences and nesting without changing acceptance or the Db."
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "children": [
+          {
+            "name": "C",
+            "value": 2
+          }
+        ]
+      }
+    ],
+    "classDefs": []
+  }
+}

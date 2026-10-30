@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The block carryover kind entity in header-line tests the kanban reading at this text position."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "ﬂ°°35¶ß",
+        "label": "ﬂ°°35¶ß",
+        "isGroup": true
+      },
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": false,
+        "parentId": "ﬂ°°35¶ß"
+      }
+    ]
+  }
+}

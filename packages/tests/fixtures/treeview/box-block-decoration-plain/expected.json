@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does the same accessibility block keep its decoration-only line outside box mode?"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "a\n│\nb",
+    "nodes": [
+      {
+        "name": "x",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

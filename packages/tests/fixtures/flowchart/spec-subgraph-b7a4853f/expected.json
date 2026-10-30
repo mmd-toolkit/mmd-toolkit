@@ -1,0 +1,110 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/subgraph.spec.js",
+    "line": 331,
+    "test": "when parsing subgraphs > should attach `@{ view: collapsed }` metadata to a subgraph and collapse it"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "C",
+        "props": {}
+      },
+      {
+        "id": "one",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "one",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B_0"
+      },
+      {
+        "start": "C",
+        "end": "A",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_C_A_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "one",
+        "nodes": [
+          "B",
+          "A"
+        ],
+        "title": "My Group",
+        "classes": [],
+        "labelType": "text",
+        "metadata": {
+          "view": "collapsed"
+        }
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "one",
+        "set": {
+          "metadata": {
+            "view": "collapsed"
+          }
+        }
+      }
+    ]
+  }
+}

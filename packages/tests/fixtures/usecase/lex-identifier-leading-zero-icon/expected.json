@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: Bare integers remain identifiers, including leading zeros."
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "A",
+        "label": "A",
+        "labelType": "text",
+        "type": "icon",
+        "icon": "01",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

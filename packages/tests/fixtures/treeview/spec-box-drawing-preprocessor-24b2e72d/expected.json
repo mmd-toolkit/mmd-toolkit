@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/treeView/boxDrawingPreprocessor.spec.ts",
+    "line": 242,
+    "test": "boxDrawingPreprocessor > preprocessBoxDrawing > annotations > should preserve ## description annotation"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "index.js",
+        "nodeType": "file",
+        "description": "entry point",
+        "children": []
+      }
+    ]
+  }
+}

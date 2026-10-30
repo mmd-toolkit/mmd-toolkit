@@ -1,0 +1,231 @@
+{
+  "type": "Root",
+  "diagramType": "wardley",
+  "body": {
+    "type": "WardleyDiagram",
+    "textBeforeHeader": [
+      {
+        "type": "WardleyIgnoredText",
+        "kind": "yaml-block",
+        "value": "---\nx\n---",
+        "range": [
+          5,
+          14
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "WardleyIgnoredText",
+        "kind": "directive",
+        "value": "%%{x}%%",
+        "range": [
+          19,
+          36
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 1
+          },
+          "end": {
+            "line": 6,
+            "column": 18
+          }
+        }
+      }
+    ],
+    "body": [],
+    "range": [
+      5,
+      49
+    ],
+    "loc": {
+      "start": {
+        "line": 2,
+        "column": 0
+      },
+      "end": {
+        "line": 7,
+        "column": 12
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [
+    {
+      "type": "Comment",
+      "mark": "%%",
+      "value": " c",
+      "range": [
+        0,
+        4
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Comment",
+      "mark": "%%",
+      "value": "",
+      "range": [
+        15,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 2
+        }
+      }
+    }
+  ],
+  "directives": [
+    {
+      "type": "Directive",
+      "name": "wrap",
+      "value": "wrap",
+      "closed": true,
+      "range": [
+        22,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 4
+        },
+        "end": {
+          "line": 6,
+          "column": 14
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "RawText",
+      "value": "---\nx\n---",
+      "range": [
+        5,
+        14
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "%%{",
+      "range": [
+        19,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 1
+        },
+        "end": {
+          "line": 6,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Directive",
+      "value": "%%{wrap}%%",
+      "range": [
+        22,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 4
+        },
+        "end": {
+          "line": 6,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "x}%%",
+      "range": [
+        32,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 14
+        },
+        "end": {
+          "line": 6,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "wardley-beta",
+      "range": [
+        37,
+        49
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 12
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    49
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 7,
+      "column": 12
+    }
+  }
+}

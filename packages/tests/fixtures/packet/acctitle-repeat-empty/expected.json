@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A final whitespace-only accessibility title suppresses previous assignments."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  }
+}

@@ -1,0 +1,453 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: requirement-no-duplicate-description >> invalid >>> docs/rules/requirement-no-duplicate-description.md incorrect 1
+Filename: requirement-no-duplicate-description-incorrect-1.mmd
+
+Code:
+  1 | requirementDiagram
+  2 |   accDescr: first
+  3 |   accDescr { second }
+    |   ^~~~~~~~~~~~~~~~~~~ [1]
+  4 |   requirement r {
+  5 |     id: 1
+  6 |   }
+  7 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 |   accDescr: first
+          3 |   requirement r {
+          4 |     id: 1
+          5 |   }
+          6 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 |   accDescr { second }
+          3 |   requirement r {
+          4 |     id: 1
+          5 |   }
+          6 |
+---
+
+
+Test: requirement-no-duplicate-description >> invalid >>> invalid/requirement/acc-descr-back-to-first
+Filename: tests/fixtures/rules/requirement-no-duplicate-description/invalid/requirement/acc-descr-back-to-first-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 |   accDescr: a
+  3 |   accDescr: b
+    |   ^~~~~~~~~~~ [1]
+  4 |   accDescr: a
+    |   ^~~~~~~~~~~ [2]
+  5 |   requirement r {
+  6 |     id: 1
+  7 |   }
+  8 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 |   accDescr: a
+          3 |   accDescr: a
+          4 |   requirement r {
+          5 |     id: 1
+          6 |   }
+          7 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 |   accDescr: b
+          3 |   accDescr: a
+          4 |   requirement r {
+          5 |     id: 1
+          6 |   }
+          7 |
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 |   accDescr: a
+          3 |   accDescr: b
+          4 |   requirement r {
+          5 |     id: 1
+          6 |   }
+          7 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 |   accDescr: a
+          3 |   accDescr: a
+          4 |   requirement r {
+          5 |     id: 1
+          6 |   }
+          7 |
+---
+
+
+Test: requirement-no-duplicate-description >> invalid >>> invalid/requirement/acc-descr-comment-block-between
+Filename: tests/fixtures/rules/requirement-no-duplicate-description/invalid/requirement/acc-descr-comment-block-between-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr: a
+  3 | accDescr {
+  4 | %% c
+  5 | }
+  6 | accDescr: b
+    | ^~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: a
+          3 | accDescr {
+          4 | %% c
+          5 | }
+          6 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr {
+          3 | %% c
+          4 | }
+          5 | accDescr: b
+          6 |
+---
+
+
+Test: requirement-no-duplicate-description >> invalid >>> invalid/requirement/acc-descr-line-then-block
+Filename: tests/fixtures/rules/requirement-no-duplicate-description/invalid/requirement/acc-descr-line-then-block-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr: a
+  3 | accDescr { b }
+    | ^~~~~~~~~~~~~~ [1]
+  4 | requirement r {
+  5 |   id: 1
+  6 | }
+  7 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: a
+          3 | requirement r {
+          4 |   id: 1
+          5 | }
+          6 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr { b }
+          3 | requirement r {
+          4 |   id: 1
+          5 | }
+          6 |
+---
+
+
+Test: requirement-no-duplicate-description >> invalid >>> invalid/requirement/acc-descr-mixed-case-second
+Filename: tests/fixtures/rules/requirement-no-duplicate-description/invalid/requirement/acc-descr-mixed-case-second-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr: a
+  3 | AccDescr: b
+    | ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: a
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 | AccDescr: b
+          3 |
+---
+
+
+Test: requirement-no-duplicate-description >> invalid >>> invalid/requirement/acc-descr-mixed-with-empty-block
+Filename: tests/fixtures/rules/requirement-no-duplicate-description/invalid/requirement/acc-descr-mixed-with-empty-block-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr: a
+  3 | accDescr {}
+  4 | accDescr { b }
+    | ^~~~~~~~~~~~~~ [1]
+  5 | accDescr: c
+    | ^~~~~~~~~~~ [2]
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: a
+          3 | accDescr {}
+          4 | accDescr: c
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr {}
+          3 | accDescr { b }
+          4 | accDescr: c
+          5 |
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: a
+          3 | accDescr {}
+          4 | accDescr { b }
+          5 |
+---
+
+
+Test: requirement-no-duplicate-description >> invalid >>> invalid/requirement/acc-descr-second-takes-next-line
+Filename: tests/fixtures/rules/requirement-no-duplicate-description/invalid/requirement/acc-descr-second-takes-next-line-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr: a
+  3 | accDescr:
+    | ^~~~~~~~~\ [1]
+  4 | b
+    | ~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: a
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr:
+          3 | b
+          4 |
+---
+
+
+Test: requirement-no-duplicate-description >> invalid >>> invalid/requirement/acc-descr-three-times
+Filename: tests/fixtures/rules/requirement-no-duplicate-description/invalid/requirement/acc-descr-three-times-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr: a
+  3 | accDescr: b
+    | ^~~~~~~~~~~ [1]
+  4 | accDescr { c }
+    | ^~~~~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: a
+          3 | accDescr { c }
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: b
+          3 | accDescr { c }
+          4 |
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: a
+          3 | accDescr: b
+          4 |
+---
+
+
+Test: requirement-no-duplicate-description >> invalid >>> invalid/requirement/acc-descr-trailing-space-inside-block
+Filename: tests/fixtures/rules/requirement-no-duplicate-description/invalid/requirement/acc-descr-trailing-space-inside-block-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 |   accDescr {
+  3 |     d
+  4 |     e
+  5 |   }
+  6 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  7 |     d  
+    | ~~~~~~~\ [1]
+  8 |     e
+    | ~~~~~\ [1]
+  9 |   }
+    | ~~~ [1]
+ 10 |   requirement r {
+ 11 |     id: 1
+ 12 |   }
+ 13 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 |   accDescr {
+          3 |     d
+          4 |     e
+          5 |   }
+          6 |   requirement r {
+          7 |     id: 1
+          8 |   }
+          9 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 |   accDescr {
+          3 |     d  
+          4 |     e
+          5 |   }
+          6 |   requirement r {
+          7 |     id: 1
+          8 |   }
+          9 |
+---
+
+
+Test: requirement-no-duplicate-description >> invalid >>> invalid/requirement/acc-descr-twice-lines
+Filename: tests/fixtures/rules/requirement-no-duplicate-description/invalid/requirement/acc-descr-twice-lines-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr: a
+  3 | accDescr: b
+    | ^~~~~~~~~~~ [1]
+  4 | requirement r {
+  5 |   id: 1
+  6 | }
+  7 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: a
+          3 | requirement r {
+          4 |   id: 1
+          5 | }
+          6 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: b
+          3 | requirement r {
+          4 |   id: 1
+          5 | }
+          6 |
+---
+
+
+Test: requirement-no-duplicate-description >> invalid >>> invalid/requirement/db-acc-descr-block-then-line
+Filename: tests/fixtures/rules/requirement-no-duplicate-description/invalid/requirement/db-acc-descr-block-then-line-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr { b }
+  3 | accDescr: a
+    | ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr { b }
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: a
+          3 |
+---
+
+
+Test: requirement-no-duplicate-description >> invalid >>> invalid/requirement/db-acc-title-descr
+Filename: tests/fixtures/rules/requirement-no-duplicate-description/invalid/requirement/db-acc-title-descr-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accTitle:   t1  
+  3 | accTitle: t2
+  4 | accDescr:  d1  
+  5 | accDescr: d2
+    | ^~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accTitle:   t1  
+          3 | accTitle: t2
+          4 | accDescr:  d1  
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | requirementDiagram
+          2 | accTitle:   t1  
+          3 | accTitle: t2
+          4 | accDescr: d2
+          5 |
+---
+
+
+Test: requirement-no-duplicate-description >> invalid >>> invalid/requirement/description-equal-predecessor
+Filename: tests/fixtures/rules/requirement-no-duplicate-description/invalid/requirement/description-equal-predecessor-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr: A
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
+---

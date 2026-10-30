@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-attachment-mapping.spec.ts",
+    "line": 18,
+    "test": "issue #75: standalone `id@{ ... }` attachment mappings > a connector attachment maps as `attachment`"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "github",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "GitHub",
+        "props": {},
+        "metadata": {
+          "protocol": "mcp",
+          "transport": "stdio"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "github",
+        "set": {
+          "metadata": {
+            "protocol": "mcp",
+            "transport": "stdio"
+          }
+        }
+      }
+    ]
+  }
+}

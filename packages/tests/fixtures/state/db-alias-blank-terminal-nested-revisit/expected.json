@@ -1,0 +1,63 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Building the summary from the tree, shape: Blank aliases preserve P_start stateStart and P_end stateEnd after transitions in P."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "P",
+        "shape": "roundedWithTitle",
+        "label": "P",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "P_start",
+        "shape": "stateStart",
+        "label": "P_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "P"
+      },
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": [],
+        "parentId": "P"
+      },
+      {
+        "id": "P_end",
+        "shape": "stateEnd",
+        "label": "P_end",
+        "classes": [],
+        "styles": [],
+        "parentId": "P"
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "P_start",
+        "end": "A",
+        "label": ""
+      },
+      {
+        "start": "A",
+        "end": "P_end",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

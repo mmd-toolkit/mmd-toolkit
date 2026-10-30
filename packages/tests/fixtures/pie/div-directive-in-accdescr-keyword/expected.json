@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Directive removal can reconstruct the description keyword."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A",
+    "showData": false,
+    "sections": []
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Companion of db-subgraph-metadata-proto-null with another name that objects inherit: the metadata is {\"constructor\": null}."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "S",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "S",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "S",
+        "nodes": [],
+        "title": "S",
+        "classes": [],
+        "labelType": "text",
+        "metadata": {
+          "constructor": null
+        }
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "S",
+        "set": {
+          "metadata": {
+            "constructor": null
+          }
+        }
+      }
+    ]
+  }
+}

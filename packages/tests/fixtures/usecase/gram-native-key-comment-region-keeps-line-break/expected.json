@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Grammar: A common %% comment after the key leaves the earlier physical LF between that native metadata key and its colon, so the property is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> COLON <-- but found --> '\n' <-- at line 2, column 14 [26,27)"
+  }
+}

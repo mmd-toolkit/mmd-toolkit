@@ -1,0 +1,30 @@
+{
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": [
+      {
+        "name": "c1",
+        "color": "#ff0"
+      }
+    ]
+  }
+}

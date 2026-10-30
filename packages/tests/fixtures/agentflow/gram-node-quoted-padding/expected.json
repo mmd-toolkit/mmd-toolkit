@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Bracket labels trim both ordinary and markdown strings."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "padded",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "markdown",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

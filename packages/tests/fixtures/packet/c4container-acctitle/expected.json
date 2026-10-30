@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4Container in ACC_TITLE activates global C4 detection."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\npacketaccTitle: C4C\n^"
+  }
+}

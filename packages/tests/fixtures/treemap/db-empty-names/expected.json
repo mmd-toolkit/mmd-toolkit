@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do empty section and leaf names remain published?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "",
+        "children": [
+          {
+            "name": "",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "name": "",
+        "classSelector": "emptyClass",
+        "children": []
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "emptyClass",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

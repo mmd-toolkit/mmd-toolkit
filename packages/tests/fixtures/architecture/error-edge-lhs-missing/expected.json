@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The left endpoint must exist after node publication."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The left-hand id [missing] does not yet exist. Please create the service/group before declaring an edge to it."
+  }
+}

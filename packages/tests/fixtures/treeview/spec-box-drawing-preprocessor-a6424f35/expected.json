@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/treeView/boxDrawingPreprocessor.spec.ts",
+    "line": 319,
+    "test": "boxDrawingPreprocessor > preprocessBoxDrawing > metadata lines > should pass through accDescr line"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "A description",
+    "nodes": [
+      {
+        "name": "file.txt",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

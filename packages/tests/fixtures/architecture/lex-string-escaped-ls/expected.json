@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Strings and labels: a backslash cannot escape a line separator in a string, but a label may fall back to bare text. Case: string-escaped-ls."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 11: unexpected character: ->\"<- at offset: 28, skipped 1 characters.\nLexer error on line 2, column 13: unexpected character: ->\\<- at offset: 30, skipped 2 characters.\nLexer error on line 2, column 16: unexpected character: ->\"<- at offset: 33, skipped 1 characters. Parse error on line 2, column 12: Expecting: one of these possible Token sequences:\n  1. [NEWLINE]\n  2. [EOF]\nbut found: 'A'\nParse error on line 2, column 15: Expecting token of type ':' but found `B`.\nParse error on line 2, column 17: Expecting: one of these possible Token sequences:\n  1. [--]\n  2. [-]\nbut found: '\n'"
+  }
+}

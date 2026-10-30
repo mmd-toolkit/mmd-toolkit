@@ -1,0 +1,64 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "With two matching shapes and a matching boundary, UpdateElementStyle selects the first shape, ahead of the second shape and the boundary."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "shared",
+        "label": {
+          "text": "First"
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "global",
+        "bgColor": "red"
+      },
+      {
+        "alias": "shared",
+        "label": {
+          "text": "Second"
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      },
+      {
+        "alias": "shared",
+        "label": {
+          "text": "Boundary"
+        },
+        "type": {
+          "text": "system"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 1,
+    "c4BoundaryInRow": 2
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check ls inside title text."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": []
+  }
+}

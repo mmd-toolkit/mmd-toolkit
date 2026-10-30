@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Whitespace: U+00A0 is a word character, so the keyword after it is inside a text."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nquadrantChart x-axis L\n--------------^\nExpecting 'ALPHA', 'NUM', 'MINUS', 'COMMA', 'AMP', 'BRKT', 'MULT', 'UNICODE_TEXT', 'SPACE', 'point_start', 'class_name', 'AXIS-TEXT-DELIMITER', 'NEWLINE', 'SEMI', 'EOF', 'PUNCTUATION', 'PLUS', 'EQUALS', 'DOT', 'UNDERSCORE', got 'X-AXIS'"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Click statements: text right after a call part; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...click id1 call f()x\n----------------------^\nExpecting 'taskData', got 'NL'"
+  }
+}

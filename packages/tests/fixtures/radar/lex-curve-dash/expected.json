@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A trailing dash after curve is a lexical error."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 6: unexpected character: ->-<- at offset: 16, skipped 1 characters. "
+  }
+}

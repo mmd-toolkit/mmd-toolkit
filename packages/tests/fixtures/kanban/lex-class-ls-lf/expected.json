@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md C02 (Decorations and comments): Separator following a nonempty class."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

@@ -1,0 +1,544 @@
+{
+  "type": "Root",
+  "diagramType": "agentflow",
+  "body": {
+    "type": "AgentflowDiagram",
+    "direction": "TB",
+    "body": [
+      {
+        "type": "AgentflowVertexStatement",
+        "first": {
+          "type": "AgentflowVertexGroup",
+          "vertices": [
+            {
+              "type": "AgentflowVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "graph",
+                "range": [
+                  18,
+                  23
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 0
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 5
+                  }
+                }
+              },
+              "shape": null,
+              "cssClass": null,
+              "data": [],
+              "range": [
+                18,
+                23
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 0
+                },
+                "end": {
+                  "line": 2,
+                  "column": 5
+                }
+              }
+            }
+          ],
+          "range": [
+            18,
+            23
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 5
+            }
+          }
+        },
+        "links": [],
+        "range": [
+          18,
+          23
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 5
+          }
+        }
+      },
+      {
+        "type": "AgentflowVertexStatement",
+        "first": {
+          "type": "AgentflowVertexGroup",
+          "vertices": [
+            {
+              "type": "AgentflowVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "flowchart",
+                "range": [
+                  24,
+                  33
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 0
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 9
+                  }
+                }
+              },
+              "shape": null,
+              "cssClass": null,
+              "data": [],
+              "range": [
+                24,
+                33
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 0
+                },
+                "end": {
+                  "line": 3,
+                  "column": 9
+                }
+              }
+            }
+          ],
+          "range": [
+            24,
+            33
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 3,
+              "column": 9
+            }
+          }
+        },
+        "links": [],
+        "range": [
+          24,
+          33
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 9
+          }
+        }
+      },
+      {
+        "type": "AgentflowVertexStatement",
+        "first": {
+          "type": "AgentflowVertexGroup",
+          "vertices": [
+            {
+              "type": "AgentflowVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "flowchart-elk",
+                "range": [
+                  34,
+                  47
+                ],
+                "loc": {
+                  "start": {
+                    "line": 4,
+                    "column": 0
+                  },
+                  "end": {
+                    "line": 4,
+                    "column": 13
+                  }
+                }
+              },
+              "shape": null,
+              "cssClass": null,
+              "data": [],
+              "range": [
+                34,
+                47
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 0
+                },
+                "end": {
+                  "line": 4,
+                  "column": 13
+                }
+              }
+            }
+          ],
+          "range": [
+            34,
+            47
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 4,
+              "column": 13
+            }
+          }
+        },
+        "links": [],
+        "range": [
+          34,
+          47
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 13
+          }
+        }
+      },
+      {
+        "type": "AgentflowVertexStatement",
+        "first": {
+          "type": "AgentflowVertexGroup",
+          "vertices": [
+            {
+              "type": "AgentflowVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "swimlane-beta",
+                "range": [
+                  48,
+                  61
+                ],
+                "loc": {
+                  "start": {
+                    "line": 5,
+                    "column": 0
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 13
+                  }
+                }
+              },
+              "shape": null,
+              "cssClass": null,
+              "data": [],
+              "range": [
+                48,
+                61
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 0
+                },
+                "end": {
+                  "line": 5,
+                  "column": 13
+                }
+              }
+            }
+          ],
+          "range": [
+            48,
+            61
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 5,
+              "column": 13
+            }
+          }
+        },
+        "links": [],
+        "range": [
+          48,
+          61
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 13
+          }
+        }
+      },
+      {
+        "type": "AgentflowVertexStatement",
+        "first": {
+          "type": "AgentflowVertexGroup",
+          "vertices": [
+            {
+              "type": "AgentflowVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "subgraph",
+                "range": [
+                  62,
+                  70
+                ],
+                "loc": {
+                  "start": {
+                    "line": 6,
+                    "column": 0
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 8
+                  }
+                }
+              },
+              "shape": null,
+              "cssClass": null,
+              "data": [],
+              "range": [
+                62,
+                70
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 0
+                },
+                "end": {
+                  "line": 6,
+                  "column": 8
+                }
+              }
+            }
+          ],
+          "range": [
+            62,
+            70
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 0
+            },
+            "end": {
+              "line": 6,
+              "column": 8
+            }
+          }
+        },
+        "links": [],
+        "range": [
+          62,
+          70
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 8
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      70
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 6,
+        "column": 8
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "agentflow-beta",
+      "range": [
+        0,
+        14
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "TB",
+      "range": [
+        15,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 15
+        },
+        "end": {
+          "line": 1,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "graph",
+      "range": [
+        18,
+        23
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "flowchart",
+      "range": [
+        24,
+        33
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "flowchart-elk",
+      "range": [
+        34,
+        47
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "swimlane-beta",
+      "range": [
+        48,
+        61
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "subgraph",
+      "range": [
+        62,
+        70
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 8
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    71
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 7,
+      "column": 0
+    }
+  }
+}

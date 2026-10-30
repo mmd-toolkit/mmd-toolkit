@@ -1,0 +1,648 @@
+{
+  "type": "Root",
+  "diagramType": "wardley",
+  "body": {
+    "type": "WardleyDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "WardleyComponentStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "WardleyIdentifier",
+          "name": "foo-bar",
+          "range": [
+            23,
+            30
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 10
+            },
+            "end": {
+              "line": 2,
+              "column": 17
+            }
+          }
+        },
+        "textBeforeCoordinates": [],
+        "coordinates": {
+          "type": "WardleyCoordinates",
+          "textBeforeVisibility": [],
+          "visibility": {
+            "type": "NumericLiteral",
+            "value": 0.3,
+            "raw": "0.3",
+            "range": [
+              32,
+              35
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 19
+              },
+              "end": {
+                "line": 2,
+                "column": 22
+              }
+            }
+          },
+          "textBeforeComma": [],
+          "textBeforeEvolution": [],
+          "evolution": {
+            "type": "NumericLiteral",
+            "value": 0.3,
+            "raw": "0.3",
+            "range": [
+              37,
+              40
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 24
+              },
+              "end": {
+                "line": 2,
+                "column": 27
+              }
+            }
+          },
+          "textBeforeClose": [],
+          "range": [
+            31,
+            41
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 18
+            },
+            "end": {
+              "line": 2,
+              "column": 28
+            }
+          }
+        },
+        "decorations": [],
+        "textAfter": [],
+        "range": [
+          13,
+          41
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 28
+          }
+        }
+      },
+      {
+        "type": "WardleyComponentStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "WardleyIdentifier",
+          "name": "baz",
+          "range": [
+            52,
+            55
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 10
+            },
+            "end": {
+              "line": 3,
+              "column": 13
+            }
+          }
+        },
+        "textBeforeCoordinates": [],
+        "coordinates": {
+          "type": "WardleyCoordinates",
+          "textBeforeVisibility": [],
+          "visibility": {
+            "type": "NumericLiteral",
+            "value": 0.6,
+            "raw": "0.6",
+            "range": [
+              57,
+              60
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 15
+              },
+              "end": {
+                "line": 3,
+                "column": 18
+              }
+            }
+          },
+          "textBeforeComma": [],
+          "textBeforeEvolution": [],
+          "evolution": {
+            "type": "NumericLiteral",
+            "value": 0.6,
+            "raw": "0.6",
+            "range": [
+              62,
+              65
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 20
+              },
+              "end": {
+                "line": 3,
+                "column": 23
+              }
+            }
+          },
+          "textBeforeClose": [],
+          "range": [
+            56,
+            66
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 14
+            },
+            "end": {
+              "line": 3,
+              "column": 24
+            }
+          }
+        },
+        "decorations": [],
+        "textAfter": [],
+        "range": [
+          42,
+          66
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 24
+          }
+        }
+      },
+      {
+        "type": "WardleyLinkStatement",
+        "from": {
+          "type": "WardleyIdentifier",
+          "name": "foo-bar",
+          "range": [
+            67,
+            74
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 4,
+              "column": 7
+            }
+          }
+        },
+        "textBeforeFromPort": [],
+        "fromPort": null,
+        "textBeforeArrow": [],
+        "arrow": {
+          "type": "WardleyArrow",
+          "value": "->",
+          "kind": "dependency",
+          "line": "solid",
+          "startMarker": "none",
+          "label": null,
+          "endMarker": "arrow",
+          "range": [
+            74,
+            76
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 7
+            },
+            "end": {
+              "line": 4,
+              "column": 9
+            }
+          }
+        },
+        "textBeforeTo": [],
+        "to": {
+          "type": "WardleyIdentifier",
+          "name": "baz",
+          "range": [
+            76,
+            79
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 9
+            },
+            "end": {
+              "line": 4,
+              "column": 12
+            }
+          }
+        },
+        "textBeforeToPort": [],
+        "toPort": null,
+        "textBeforeLabel": [],
+        "label": null,
+        "textAfter": [],
+        "range": [
+          67,
+          79
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 12
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      79
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 4,
+        "column": 12
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "wardley-beta",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "component",
+      "range": [
+        13,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "foo-bar",
+      "range": [
+        23,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        31,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 18
+        },
+        "end": {
+          "line": 2,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.3",
+      "range": [
+        32,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 19
+        },
+        "end": {
+          "line": 2,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        35,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 22
+        },
+        "end": {
+          "line": 2,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.3",
+      "range": [
+        37,
+        40
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 24
+        },
+        "end": {
+          "line": 2,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        40,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 27
+        },
+        "end": {
+          "line": 2,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "component",
+      "range": [
+        42,
+        51
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "baz",
+      "range": [
+        52,
+        55
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 10
+        },
+        "end": {
+          "line": 3,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        56,
+        57
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 14
+        },
+        "end": {
+          "line": 3,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.6",
+      "range": [
+        57,
+        60
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 15
+        },
+        "end": {
+          "line": 3,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        60,
+        61
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 18
+        },
+        "end": {
+          "line": 3,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.6",
+      "range": [
+        62,
+        65
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 20
+        },
+        "end": {
+          "line": 3,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        65,
+        66
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 23
+        },
+        "end": {
+          "line": 3,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "foo-bar",
+      "range": [
+        67,
+        74
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "->",
+      "range": [
+        74,
+        76
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 7
+        },
+        "end": {
+          "line": 4,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "baz",
+      "range": [
+        76,
+        79
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 9
+        },
+        "end": {
+          "line": 4,
+          "column": 12
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    79
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 12
+    }
+  }
+}

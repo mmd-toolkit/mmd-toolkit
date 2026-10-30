@@ -1,0 +1,302 @@
+{
+  "type": "Root",
+  "diagramType": "agentflow",
+  "body": {
+    "type": "AgentflowDiagram",
+    "direction": null,
+    "body": [
+      {
+        "type": "AgentflowConnectorStatement",
+        "name": {
+          "type": "AgentflowName",
+          "parts": [
+            {
+              "type": "AgentflowLabel",
+              "kind": "text",
+              "value": "F ",
+              "range": [
+                25,
+                27
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 10
+                },
+                "end": {
+                  "line": 2,
+                  "column": 12
+                }
+              }
+            },
+            {
+              "type": "AgentflowIgnoredText",
+              "kind": "click",
+              "value": "click",
+              "range": [
+                27,
+                32
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 12
+                },
+                "end": {
+                  "line": 2,
+                  "column": 17
+                }
+              }
+            },
+            {
+              "type": "AgentflowIgnoredText",
+              "kind": "empty-string",
+              "value": "\"\"",
+              "range": [
+                33,
+                35
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 18
+                },
+                "end": {
+                  "line": 2,
+                  "column": 20
+                }
+              }
+            },
+            {
+              "type": "AgentflowIgnoredText",
+              "kind": "empty-markdown-string",
+              "value": "\"``\"",
+              "range": [
+                35,
+                39
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 20
+                },
+                "end": {
+                  "line": 2,
+                  "column": 24
+                }
+              }
+            },
+            {
+              "type": "AgentflowLabel",
+              "kind": "text",
+              "value": "A",
+              "range": [
+                39,
+                40
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 24
+                },
+                "end": {
+                  "line": 2,
+                  "column": 25
+                }
+              }
+            }
+          ],
+          "range": [
+            25,
+            40
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 10
+            },
+            "end": {
+              "line": 2,
+              "column": 25
+            }
+          }
+        },
+        "title": null,
+        "data": [],
+        "range": [
+          15,
+          40
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 25
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      40
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 25
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "agentflow-beta",
+      "range": [
+        0,
+        14
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "connector",
+      "range": [
+        15,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "F ",
+      "range": [
+        25,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "click",
+      "range": [
+        27,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "\"\"",
+      "range": [
+        33,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 18
+        },
+        "end": {
+          "line": 2,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "\"``\"",
+      "range": [
+        35,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 20
+        },
+        "end": {
+          "line": 2,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "A",
+      "range": [
+        39,
+        40
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 24
+        },
+        "end": {
+          "line": 2,
+          "column": 25
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    41
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 0
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Non-ASCII characters cannot occur in IDs."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 12: unexpected character: ->界<- at offset: 29, skipped 1 characters. "
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "CRLF inside a block becomes LF before its converter."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A\nB",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

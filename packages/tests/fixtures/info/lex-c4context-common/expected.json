@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: C4Context is anchored only"
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

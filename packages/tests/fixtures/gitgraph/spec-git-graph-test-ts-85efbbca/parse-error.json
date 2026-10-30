@@ -1,0 +1,17 @@
+{
+  "message": "A merge requires a commit at the current branch tip",
+  "range": [
+    10,
+    22
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 1
+    },
+    "end": {
+      "line": 2,
+      "column": 13
+    }
+  }
+}

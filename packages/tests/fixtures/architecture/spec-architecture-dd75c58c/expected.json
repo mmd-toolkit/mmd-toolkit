@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/architecture/architecture.spec.ts",
+    "line": 238,
+    "test": "architecture diagrams > should store services in the order they were added"
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service",
+        "icon": "server",
+        "title": "A"
+      },
+      {
+        "id": "20",
+        "type": "service",
+        "icon": "server",
+        "title": "B"
+      },
+      {
+        "id": "10",
+        "type": "service",
+        "icon": "server",
+        "title": "C"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

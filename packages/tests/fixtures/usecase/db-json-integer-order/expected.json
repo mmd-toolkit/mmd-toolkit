@@ -1,0 +1,60 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does propertyOrder preserve integer-like JSON key source order?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "J",
+        "value": {
+          "1": "one",
+          "2": "two",
+          "10": "ten"
+        },
+        "propertyOrder": {
+          "": [
+            "10",
+            "2",
+            "1"
+          ]
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "J",
+        "set": {
+          "value": {
+            "1": "one",
+            "2": "two",
+            "10": "ten"
+          },
+          "propertyOrder": {
+            "": [
+              "10",
+              "2",
+              "1"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

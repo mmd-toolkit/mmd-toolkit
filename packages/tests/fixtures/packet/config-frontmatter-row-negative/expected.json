@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A negative YAML row width can skip publication of a written block entirely."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  },
+  "embedded": {
+    "config": {
+      "packet": {
+        "bitsPerRow": -4
+      }
+    }
+  }
+}

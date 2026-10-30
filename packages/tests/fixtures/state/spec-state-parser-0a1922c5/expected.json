@@ -1,0 +1,83 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/parser/state-parser.spec.js",
+    "line": 129,
+    "test": "state parser can parse... > groups (clusters/containers) > state \"Group Name\" as stateIdentifier"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "namedState1",
+        "shape": "rect",
+        "label": "Small State 1",
+        "description": [],
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "bigState1",
+        "shape": "roundedWithTitle",
+        "label": "Big State 1",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "bigState1InternalState",
+        "shape": "rect",
+        "label": "bigState1InternalState",
+        "classes": [],
+        "styles": [],
+        "parentId": "bigState1"
+      },
+      {
+        "id": "namedState2",
+        "shape": "rect",
+        "label": "Small State 2",
+        "description": [],
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "bigState2",
+        "shape": "roundedWithTitle",
+        "label": "bigState2",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "bigState2InternalState",
+        "shape": "rect",
+        "label": "bigState2InternalState",
+        "classes": [],
+        "styles": [],
+        "parentId": "bigState2"
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "namedState1",
+        "end": "bigState1",
+        "label": "should point to \\nBig State 1 container"
+      },
+      {
+        "start": "namedState2",
+        "end": "bigState2",
+        "label": "should point to \\nbigState2 container"
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

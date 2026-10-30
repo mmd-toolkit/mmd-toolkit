@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Detection: `MINDMAP` matches no detector."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: MINDMAP\nroot\n"
+  }
+}

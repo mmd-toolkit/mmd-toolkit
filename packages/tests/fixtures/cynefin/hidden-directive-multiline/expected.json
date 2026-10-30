@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A native directive with a non-global name can span lines."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "chaotic",
+        "items": [
+          {
+            "label": "C"
+          }
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear"
+      }
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Building the summary from the tree, Ids: a state whose id is `[*]` in a composite statement, an alias or pseudostate definition, or a note statement has the id of its parent followed by `_start`; the id `[*]x` is not `[*]`, so it is kept."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "[*]x",
+        "shape": "roundedWithTitle",
+        "label": "[*]x",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "[*]x"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

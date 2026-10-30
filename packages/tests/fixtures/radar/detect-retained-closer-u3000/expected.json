@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md: Can detection pass a retained YAML closer whose following U+3000 the native lexer rejects?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 3, column 4: unexpected character: ->　<- at offset: 9, skipped 1 characters. "
+  }
+}

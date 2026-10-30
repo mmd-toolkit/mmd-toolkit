@@ -1,0 +1,143 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: block-no-undef >> invalid >>> docs/rules/block-no-undef.md incorrect 1
+Filename: block-no-undef-incorrect-1.mmd
+
+Code:
+  1 | block
+  2 |   A
+  3 |   classDef c fill:#f00
+  4 |   class Typo c
+    |         ^~~~ [1]
+  5 |
+
+[1] mermaid.js gives this class to an unplaced block `Typo`: no statement of the diagram declares this id.
+---
+
+
+Test: block-no-undef >> invalid >>> invalid/block/class-anonymous-composite
+Filename: tests/fixtures/rules/block-no-undef/invalid/block/class-anonymous-composite-input.mmd
+
+Code:
+  1 | block
+  2 |   block:G --> B
+  3 |     A
+  4 |   end
+  5 |   classDef c fill:#f00
+  6 |   class G c
+    |         ^ [1]
+  7 |
+
+[1] mermaid.js gives this class to an unplaced block `G`: no statement of the diagram declares this id.
+---
+
+
+Test: block-no-undef >> invalid >>> invalid/block/class-list-one-typo
+Filename: tests/fixtures/rules/block-no-undef/invalid/block/class-list-one-typo-input.mmd
+
+Code:
+  1 | block
+  2 |   A
+  3 |   classDef c fill:#f00
+  4 |   class A,Typo c
+    |           ^~~~ [1]
+  5 |
+
+[1] mermaid.js gives this class to an unplaced block `Typo`: no statement of the diagram declares this id.
+---
+
+
+Test: block-no-undef >> invalid >>> invalid/block/class-node-lost-in-chain
+Filename: tests/fixtures/rules/block-no-undef/invalid/block/class-node-lost-in-chain-input.mmd
+
+Code:
+  1 | block
+  2 |   A --> B --> C
+  3 |   classDef c fill:#f00
+  4 |   class A c
+    |         ^ [1]
+  5 |
+
+[1] mermaid.js gives this class to an unplaced block `A`: no statement of the diagram declares this id.
+---
+
+
+Test: block-no-undef >> invalid >>> invalid/block/class-object-prototype-name
+Filename: tests/fixtures/rules/block-no-undef/invalid/block/class-object-prototype-name-input.mmd
+
+Code:
+  1 | block
+  2 |   A
+  3 |   classDef c fill:#f00
+  4 |   class constructor c
+    |         ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js gives this class to an unplaced block `constructor`: no statement of the diagram declares this id.
+---
+
+
+Test: block-no-undef >> invalid >>> invalid/block/class-other-case
+Filename: tests/fixtures/rules/block-no-undef/invalid/block/class-other-case-input.mmd
+
+Code:
+  1 | block
+  2 |   A
+  3 |   classDef c fill:#f00
+  4 |   class a c
+    |         ^ [1]
+  5 |
+
+[1] mermaid.js gives this class to an unplaced block `a`: no statement of the diagram declares this id.
+---
+
+
+Test: block-no-undef >> invalid >>> invalid/block/class-typo
+Filename: tests/fixtures/rules/block-no-undef/invalid/block/class-typo-input.mmd
+
+Code:
+  1 | block
+  2 |   A
+  3 |   classDef c fill:#f00
+  4 |   class Typo c
+    |         ^~~~ [1]
+  5 |
+
+[1] mermaid.js gives this class to an unplaced block `Typo`: no statement of the diagram declares this id.
+---
+
+
+Test: block-no-undef >> invalid >>> invalid/block/class-undeclared-twice
+Filename: tests/fixtures/rules/block-no-undef/invalid/block/class-undeclared-twice-input.mmd
+
+Code:
+  1 | block
+  2 |   A
+  3 |   classDef c fill:#f00
+  4 |   class X c
+    |         ^ [1]
+  5 |   class X c
+    |         ^ [2]
+  6 |
+
+[1] mermaid.js gives this class to an unplaced block `X`: no statement of the diagram declares this id.
+[2] mermaid.js gives this class to an unplaced block `X`: no statement of the diagram declares this id.
+---
+
+
+Test: block-no-undef >> invalid >>> invalid/block/head-link-target-only
+Filename: tests/fixtures/rules/block-no-undef/invalid/block/head-link-target-only-input.mmd
+
+Code:
+  1 | block
+  2 |   block:G --> B
+  3 |     A
+  4 |   end
+  5 |   classDef c fill:#f00
+  6 |   class B c
+    |         ^ [1]
+  7 |
+
+[1] mermaid.js gives this class to an unplaced block `B`: no statement of the diagram declares this id.
+---

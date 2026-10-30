@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Public parse also skips validation of reset frames."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "reset",
+        "name": "01",
+        "modelEntityType": "cmd",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "reset",
+        "name": "02",
+        "modelEntityType": "processor",
+        "entityIdentifier": "B",
+        "sourceFrames": [
+          "01"
+        ],
+        "data": null
+      }
+    ]
+  }
+}

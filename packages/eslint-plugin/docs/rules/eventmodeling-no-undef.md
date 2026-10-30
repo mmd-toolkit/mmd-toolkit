@@ -1,0 +1,88 @@
+# @mmd-toolkit/eventmodeling-no-undef
+
+Japanese version: [eventmodeling-no-undef.ja.md](./eventmodeling-no-undef.ja.md)
+
+Disallow a source or a data reference that names nothing.
+
+<!-- begin auto-generated rule notice -->
+
+✅ The `recommended` configuration enables this rule.
+
+<!-- end auto-generated rule notice -->
+
+A time frame or a reset frame names its sources by their numbers after `->>`,
+and its data block by its name between `[[` and `]]`. When the name is the name
+of no frame or of no data block, mermaid.js accepts it without an error, and
+draws no relation from that source and no data of that reference.
+
+## Rule Details
+
+This rule applies to Event Modeling diagrams (`eventmodeling`). It reports a
+source of a `tf`, `timeframe`, `rf`, or `resetframe` statement that names no
+frame, and a `[[ ]]` reference of a frame that names no `data` block. A frame or
+data block declared after the reference counts. A `[[ ]]` reference that names
+no `data` block is reported even when the frame has inline data, which
+mermaid.js then shows instead. Names are compared as written, with their case,
+so `1`, `01`, and `001` name three frames.
+
+A source naming a later frame is not reported, though mermaid.js draws no
+relation from it.
+
+The sources of a reset frame (`rf` or `resetframe`) are checked as those of a
+time frame, because mermaid.js draws a relation from each explicit source that
+names a frame and none from one that names no frame. A reset frame without
+sources has none to check. Frames named by `note` and `gwt` are not checked,
+because mermaid.js draws neither statement.
+
+Examples of **incorrect** code for this rule:
+
+```mmd
+%% eslint @mmd-toolkit/eventmodeling-no-undef: error
+eventmodeling
+  tf 01 ui Cart
+  tf 02 cmd Buy ->> 99
+```
+
+```mmd
+%% eslint @mmd-toolkit/eventmodeling-no-undef: error
+eventmodeling
+  tf 01 evt Bought [[Paylod]]
+  data Payload {
+items
+}
+```
+
+Examples of **correct** code for this rule:
+
+```mmd
+%% eslint @mmd-toolkit/eventmodeling-no-undef: error
+eventmodeling
+  tf 01 ui Cart
+  tf 02 cmd Buy ->> 01
+```
+
+```mmd
+%% eslint @mmd-toolkit/eventmodeling-no-undef: error
+eventmodeling
+  tf 01 evt Bought [[Payload]]
+  data Payload {
+items
+}
+```
+
+## Options
+
+This rule has no options.
+
+## Related Rules
+
+- [eventmodeling-no-redefined-data](./eventmodeling-no-redefined-data.md)
+
+<!-- begin auto-generated rule resources -->
+
+## Resources
+
+- [Rule source](../../src/rules/eventmodeling-no-undef.ts)
+- [Tests source](../../tests/rules/eventmodeling-no-undef.test.ts)
+
+<!-- end auto-generated rule resources -->

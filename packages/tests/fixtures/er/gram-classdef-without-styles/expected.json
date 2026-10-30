@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Other statements: `classDef a` without styles; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nerDiagramclassDef a\n-------------------^\nExpecting 'COLON', 'STYLE_TEXT', 'COMMA', 'NUM', 'BRKT', got 'NEWLINE'"
+  }
+}

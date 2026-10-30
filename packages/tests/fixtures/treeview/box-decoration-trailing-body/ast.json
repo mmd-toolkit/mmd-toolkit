@@ -1,0 +1,192 @@
+{
+  "type": "Root",
+  "diagramType": "treeView",
+  "body": {
+    "type": "TreeviewDiagram",
+    "body": [
+      {
+        "type": "TreeviewNode",
+        "indent": 4,
+        "textBefore": [],
+        "prefix": {
+          "type": "TreeviewBranchPrefix",
+          "value": "├──",
+          "marker": "├",
+          "range": [
+            14,
+            17
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 3
+            }
+          }
+        },
+        "textBeforeName": [],
+        "name": {
+          "type": "TreeviewIdentifier",
+          "name": "node",
+          "range": [
+            18,
+            22
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 4
+            },
+            "end": {
+              "line": 2,
+              "column": 8
+            }
+          }
+        },
+        "annotations": [],
+        "range": [
+          14,
+          22
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 8
+          }
+        },
+        "children": []
+      },
+      {
+        "type": "TreeviewIgnoredText",
+        "kind": "box-decoration",
+        "value": "│",
+        "range": [
+          23,
+          24
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 1
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      24
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 1
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "treeView-beta",
+      "range": [
+        0,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "├──",
+      "range": [
+        14,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "node",
+      "range": [
+        18,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "│",
+      "range": [
+        23,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 1
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    24
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 1
+    }
+  }
+}

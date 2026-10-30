@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md, style and classDef lines: for eventmodeling, comment regions are not left out, so the line rule ignores the last ; of the comment line inside the data block, and the data value lacks it."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": {
+          "kind": "block",
+          "value": "{\n%% style A fill:#f00\n}\n"
+        }
+      }
+    ]
+  }
+}

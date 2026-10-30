@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The first closing brace ends the description and later text is parsed as a node."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "one",
+    "nodes": [
+      {
+        "name": "two}",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "root",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

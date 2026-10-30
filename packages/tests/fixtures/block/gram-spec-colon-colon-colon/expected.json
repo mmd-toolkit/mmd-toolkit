@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, shapes and edges: `:::` is not read as a class: the lexer stops at it, and the text is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nblock-beta  A:::c\n-------------^"
+  }
+}

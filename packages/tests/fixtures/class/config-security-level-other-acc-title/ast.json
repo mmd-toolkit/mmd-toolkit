@@ -1,0 +1,243 @@
+{
+  "type": "Root",
+  "diagramType": "classDiagram",
+  "body": {
+    "type": "ClassDiagram",
+    "body": [
+      {
+        "type": "ClassAccTitleStatement",
+        "value": {
+          "type": "ClassLiteral",
+          "value": "a<b>=c<br>d",
+          "range": [
+            25,
+            36
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 12
+            },
+            "end": {
+              "line": 2,
+              "column": 23
+            }
+          }
+        },
+        "range": [
+          15,
+          36
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 2
+          },
+          "end": {
+            "line": 2,
+            "column": 23
+          }
+        }
+      },
+      {
+        "type": "ClassDeclaration",
+        "name": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "A",
+            "range": [
+              45,
+              46
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 8
+              },
+              "end": {
+                "line": 3,
+                "column": 9
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            45,
+            46
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 8
+            },
+            "end": {
+              "line": 3,
+              "column": 9
+            }
+          }
+        },
+        "label": null,
+        "cssClass": null,
+        "annotation": null,
+        "members": null,
+        "range": [
+          39,
+          46
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 2
+          },
+          "end": {
+            "line": 3,
+            "column": 9
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      46
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 9
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "classDiagram",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accTitle",
+      "range": [
+        15,
+        23
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        23,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "a<b>=c<br>d",
+      "range": [
+        25,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "class",
+      "range": [
+        39,
+        44
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 3,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "A",
+      "range": [
+        45,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    47
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 0
+    }
+  }
+}

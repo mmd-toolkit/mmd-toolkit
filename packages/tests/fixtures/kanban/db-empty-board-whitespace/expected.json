@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A whitespace-only document tests preprocessing."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": []
+  }
+}

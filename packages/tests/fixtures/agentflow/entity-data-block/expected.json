@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Entity preprocessing also reaches metadata text."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "ﬂ°°35¶ß &amp;",
+        "props": {},
+        "metadata": {
+          "label": "ﬂ°°35¶ß &amp;",
+          "instruction": "ﬂ°quot¶ß"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "labelType": "markdown",
+          "text": "ﬂ°°35¶ß &amp;",
+          "metadata": {
+            "label": "ﬂ°°35¶ß &amp;",
+            "instruction": "ﬂ°quot¶ß"
+          }
+        }
+      }
+    ]
+  }
+}

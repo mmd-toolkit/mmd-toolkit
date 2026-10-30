@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, plot: a title in quotes holds punctuation."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 1
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 1
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "a, b [c]",
+        "data": [
+          [
+            "1",
+            1
+          ]
+        ]
+      }
+    ]
+  }
+}

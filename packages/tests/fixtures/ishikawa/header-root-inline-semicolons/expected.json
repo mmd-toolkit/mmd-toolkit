@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[G] Are multiple semicolons literal in a root on the header line?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R;;",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R;;",
+      "children": [
+        {
+          "text": "A",
+          "children": []
+        }
+      ]
+    }
+  }
+}

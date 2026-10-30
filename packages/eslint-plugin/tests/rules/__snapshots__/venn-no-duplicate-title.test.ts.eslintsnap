@@ -1,0 +1,446 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: venn-no-duplicate-title >> invalid >>> docs/rules/venn-no-duplicate-title.md incorrect 1
+Filename: venn-no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | venn-beta
+  2 | title Audience
+  3 | title Coverage
+    | ^~~~~~~~~~~~~~ [1]
+  4 | set A
+  5 |
+
+[1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title Audience
+          3 | set A
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title Coverage
+          3 | set A
+          4 |
+---
+
+
+Test: venn-no-duplicate-title >> invalid >>> invalid/venn/three-titles
+Filename: tests/fixtures/rules/venn-no-duplicate-title/invalid/venn/three-titles-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | title First
+  3 | title Second
+    | ^~~~~~~~~~~~ [1]
+  4 | title First
+    | ^~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title First
+          3 | title First
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title Second
+          3 | title First
+          4 |
+[2] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title First
+          3 | title Second
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title First
+          3 | title First
+          4 |
+---
+
+
+Test: venn-no-duplicate-title >> invalid >>> invalid/venn/title-entity
+Filename: tests/fixtures/rules/venn-no-duplicate-title/invalid/venn/title-entity-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | title #amp;
+  3 | title Second
+    | ^~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title #amp;
+          3 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title Second
+          3 |
+---
+
+
+Test: venn-no-duplicate-title >> invalid >>> invalid/venn/title-html-attribute-quotes
+Filename: tests/fixtures/rules/venn-no-duplicate-title/invalid/venn/title-html-attribute-quotes-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | title <b x="a">Text</b>
+  3 | title <b x='a'>Text</b>
+    | ^~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title <b x="a">Text</b>
+          3 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title <b x='a'>Text</b>
+          3 |
+---
+
+
+Test: venn-no-duplicate-title >> invalid >>> invalid/venn/title-html
+Filename: tests/fixtures/rules/venn-no-duplicate-title/invalid/venn/title-html-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | title First
+  3 | title <b>Second</b>
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  4 | title First
+    | ^~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title First
+          3 | title First
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title <b>Second</b>
+          3 | title First
+          4 |
+[2] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title First
+          3 | title <b>Second</b>
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title First
+          3 | title First
+          4 |
+---
+
+
+Test: venn-no-duplicate-title >> invalid >>> invalid/venn/title-next-comment
+Filename: tests/fixtures/rules/venn-no-duplicate-title/invalid/venn/title-next-comment-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | title Audience
+  3 | title
+    | ^~~~~\ [1]
+  4 | %% c
+    | ~~~~\ [1]
+  5 | Coverage
+    | ~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title Audience
+          3 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title
+          3 | %% c
+          4 | Coverage
+          5 |
+---
+
+
+Test: venn-no-duplicate-title >> invalid >>> invalid/venn/title-next-line
+Filename: tests/fixtures/rules/venn-no-duplicate-title/invalid/venn/title-next-line-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | title Audience
+  3 | title
+    | ^~~~~\ [1]
+  4 | Coverage
+    | ~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title Audience
+          3 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title
+          3 | Coverage
+          4 |
+---
+
+
+Test: venn-no-duplicate-title >> invalid >>> invalid/venn/title-padding
+Filename: tests/fixtures/rules/venn-no-duplicate-title/invalid/venn/title-padding-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | title Audience
+  3 | title  Audience
+    | ^~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title Audience
+          3 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title  Audience
+          3 |
+---
+
+
+Test: venn-no-duplicate-title >> invalid >>> invalid/venn/title-quotes
+Filename: tests/fixtures/rules/venn-no-duplicate-title/invalid/venn/title-quotes-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | title Audience
+  3 | title "Audience"
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title Audience
+          3 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title "Audience"
+          3 |
+---
+
+
+Test: venn-no-duplicate-title >> invalid >>> invalid/venn/title-same-line
+Filename: tests/fixtures/rules/venn-no-duplicate-title/invalid/venn/title-same-line-input.mmd
+
+Code:
+  1 | venn-beta title Audience
+  2 | title Coverage
+    | ^~~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta title Audience
+          2 |
+---
+
+
+Test: venn-no-duplicate-title >> invalid >>> invalid/venn/title-same-value-three
+Filename: tests/fixtures/rules/venn-no-duplicate-title/invalid/venn/title-same-value-three-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | title First
+  3 | title First
+  4 | title Second
+    | ^~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title First
+          3 | title First
+          4 |
+---
+
+
+Test: venn-no-duplicate-title >> invalid >>> invalid/venn/title-trivia
+Filename: tests/fixtures/rules/venn-no-duplicate-title/invalid/venn/title-trivia-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | title Audience
+  3 |
+  4 | %% c
+  5 | %%{init: {}}%%
+  6 | title Coverage
+    | ^~~~~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title Audience
+          3 |
+          4 | %% c
+          5 | %%{init: {}}%%
+          6 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 |
+          3 | %% c
+          4 | %%{init: {}}%%
+          5 | title Coverage
+          6 |
+---
+
+
+Test: venn-no-duplicate-title >> invalid >>> invalid/venn/title-upper
+Filename: tests/fixtures/rules/venn-no-duplicate-title/invalid/venn/title-upper-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | title Audience
+  3 | TITLE Coverage
+    | ^~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title Audience
+          3 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | TITLE Coverage
+          3 |
+---
+
+
+Test: venn-no-duplicate-title >> invalid >>> invalid/venn/title-whitespace-latest
+Filename: tests/fixtures/rules/venn-no-duplicate-title/invalid/venn/title-whitespace-latest-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | title First
+  3 | title  
+    | ^~~~~~~ [1]
+  4 | title First
+    | ^~~~~~~~~~~ [2]
+  5 | set A
+  6 |
+
+[1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title First
+          3 | title First
+          4 | set A
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title  
+          3 | title First
+          4 | set A
+          5 |
+[2] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title First
+          3 | title  
+          4 | set A
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title First
+          3 | title First
+          4 | set A
+          5 |
+---
+
+
+Test: venn-no-duplicate-title >> invalid >>> invalid/venn/two-titles
+Filename: tests/fixtures/rules/venn-no-duplicate-title/invalid/venn/two-titles-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | title Audience
+  3 | title Coverage
+    | ^~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier title with this title.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | venn-beta
+          2 | title Audience
+          3 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | venn-beta
+          2 | title Coverage
+          3 |
+---

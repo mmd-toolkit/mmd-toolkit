@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, the style line rule: the `#` and the `;` on other lines of a text in quotes keep the `;`."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "style:#x\nb;c",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": []
+  }
+}

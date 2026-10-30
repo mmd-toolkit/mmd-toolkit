@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Whitespace: a U+00A0 before the closing brace is left out of the value."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "x",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": []
+  }
+}

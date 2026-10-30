@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unterminated double-quoted IR string rejects at EOF."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 14: unexpected character: ->\"<- at offset: 27, skipped 1 characters. Parse error on line 2, column 15: Expecting token of type 'RR_STRING' but found `a`.\nParse error on line ?, column ?: Expecting token of type '=' but found ``."
+  }
+}

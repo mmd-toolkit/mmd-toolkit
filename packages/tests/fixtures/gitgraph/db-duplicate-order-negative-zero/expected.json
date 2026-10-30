@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A lexical -0 error rejects before duplicate-branch validation."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 3, column 16: unexpected character: ->-<- at offset: 41, skipped 1 characters. "
+  }
+}

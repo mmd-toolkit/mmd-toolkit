@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: A name list is nonempty, keeps order and repeated names, and has no empty item or trailing comma. This input is rejected by mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...-betaset Aunion A,\n---------------------^\nExpecting 'IDENTIFIER', 'STRING', got 'NEWLINE'"
+  }
+}

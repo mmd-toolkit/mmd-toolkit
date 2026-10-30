@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The shared style rule sees lines inside multiline quotes."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a\nstyle x:#f00\nb"
+        }
+      }
+    ]
+  }
+}

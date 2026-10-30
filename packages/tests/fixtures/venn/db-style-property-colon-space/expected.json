@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A space at this argument boundary retains all written arguments in one statement."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "fill": "red"
+        }
+      }
+    ]
+  }
+}

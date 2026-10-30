@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A later dateFormat statement replaces the earlier one."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "DD/MM/YYYY",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [],
+    "links": []
+  }
+}

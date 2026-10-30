@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "When no shape matches and two boundaries share the target alias, UpdateElementStyle selects the first boundary."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      },
+      {
+        "alias": "shared",
+        "label": {
+          "text": "First"
+        },
+        "parentBoundary": "global",
+        "bgColor": "red"
+      },
+      {
+        "alias": "shared",
+        "label": {
+          "text": "Second"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 1,
+    "c4BoundaryInRow": 2
+  }
+}

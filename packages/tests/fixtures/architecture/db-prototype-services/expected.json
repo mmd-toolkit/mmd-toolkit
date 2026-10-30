@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Object.prototype names remain ordinary service IDs and edge endpoints."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "__proto__",
+        "type": "service"
+      },
+      {
+        "id": "constructor",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [
+      {
+        "lhsId": "__proto__",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "constructor",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false
+      }
+    ],
+    "layoutHints": []
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Array frontmatter title conversion is recorded separately from the Db summary."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  },
+  "embedded": {
+    "title": "A,B"
+  }
+}

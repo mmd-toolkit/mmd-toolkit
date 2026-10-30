@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Empty description blocks: an unclosed empty block after a title on its line, at the end of the text, is a statement; accepted."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": []
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}

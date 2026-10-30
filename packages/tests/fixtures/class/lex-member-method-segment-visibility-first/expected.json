@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Member lines: a segment that starts with + has that visibility mark, and the name b."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "b",
+            "parameters": "c",
+            "returnType": ""
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

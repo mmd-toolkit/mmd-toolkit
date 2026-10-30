@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Text before a branch is discarded by preprocessing."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "b",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

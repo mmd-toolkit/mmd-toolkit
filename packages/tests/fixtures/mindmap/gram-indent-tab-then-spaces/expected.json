@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Indentation and parents: a tab is one character, so `  b` is deeper than `\\ta`."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "a",
+          "level": 1,
+          "descr": "a",
+          "type": 0,
+          "children": [
+            {
+              "nodeId": "b",
+              "level": 2,
+              "descr": "b",
+              "type": 0,
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

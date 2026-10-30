@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md The statement context: rule 8: a line feed between `accDescr` and the colon."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "d",
+    "sections": [],
+    "tasks": []
+  }
+}

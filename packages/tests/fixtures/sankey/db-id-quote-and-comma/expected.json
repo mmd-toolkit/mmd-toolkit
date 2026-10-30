@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, nodes: an id with a comma and quotes is one node."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a",
+      "b,\"c\""
+    ],
+    "links": [
+      {
+        "source": "a",
+        "target": "b,\"c\"",
+        "value": 1
+      }
+    ]
+  }
+}

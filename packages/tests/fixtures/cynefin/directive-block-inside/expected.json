@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can removing a directive join a block description keyword?"
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A",
+    "domains": [],
+    "transitions": []
+  }
+}

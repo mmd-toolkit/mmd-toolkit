@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: A selected semicolon inside a whole hex-color unit is accepted."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "x": "#abc"
+        }
+      }
+    ]
+  }
+}

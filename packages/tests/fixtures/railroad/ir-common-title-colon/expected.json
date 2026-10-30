@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A title colon does not satisfy its required horizontal separator."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 6: unexpected character: ->:<- at offset: 19, skipped 1 characters. Parse error on line ?, column ?: Expecting token of type '=' but found ``."
+  }
+}

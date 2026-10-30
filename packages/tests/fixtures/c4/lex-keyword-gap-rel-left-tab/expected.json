@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`Rel_Left` followed by a tab before `(` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nC4ContextRel_Left\t(a, b, \"Uses\", \"HTT\n-----------------^"
+  }
+}

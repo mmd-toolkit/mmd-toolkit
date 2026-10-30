@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md G06, E01 (Grammar and acceptance): Empty class at end with only appended newline."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      }
+    ]
+  }
+}

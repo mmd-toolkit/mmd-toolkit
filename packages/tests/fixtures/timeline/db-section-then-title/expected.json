@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, sections: a title between a section and a task changes nothing."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "S"
+    ],
+    "tasks": [
+      {
+        "section": "S",
+        "task": "a",
+        "events": []
+      }
+    ]
+  }
+}

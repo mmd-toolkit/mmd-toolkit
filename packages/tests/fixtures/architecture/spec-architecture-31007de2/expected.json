@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/architecture/architecture.spec.ts",
+    "line": 205,
+    "test": "architecture diagrams > should throw when missing a group"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The service [a]'s parent does not exist. Please make sure the parent is created before this service"
+  }
+}

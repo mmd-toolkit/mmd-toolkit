@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/railroad.test.ts",
+    "line": 19,
+    "test": "Railroad parser > should parse optional, oneOrMore, and zeroOrMore"
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r1",
+        "definition": {
+          "type": "optional",
+          "element": {
+            "type": "terminal",
+            "value": "a"
+          }
+        }
+      },
+      {
+        "name": "r2",
+        "definition": {
+          "type": "repetition",
+          "element": {
+            "type": "terminal",
+            "value": "b"
+          },
+          "min": 1,
+          "max": "Infinity"
+        }
+      },
+      {
+        "name": "r3",
+        "definition": {
+          "type": "repetition",
+          "element": {
+            "type": "terminal",
+            "value": "c"
+          },
+          "min": 0,
+          "max": "Infinity"
+        }
+      }
+    ]
+  }
+}

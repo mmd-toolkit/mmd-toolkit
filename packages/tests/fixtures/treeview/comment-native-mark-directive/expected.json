@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Comments and boundaries: a shared directive between percent characters can form a native Comment mark."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

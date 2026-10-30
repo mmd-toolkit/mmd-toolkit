@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A closed global directive after a complete rule is removed."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

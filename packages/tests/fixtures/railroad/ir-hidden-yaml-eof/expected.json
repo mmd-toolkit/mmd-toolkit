@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A native YAML closer can use the appended LF at EOF."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/treeView/parser.spec.ts",
+    "line": 289,
+    "test": "box-drawing ↔ indent equivalence > flat list"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "src",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "index.js",
+            "nodeType": "file",
+            "children": []
+          },
+          {
+            "name": "App.tsx",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "package.json",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

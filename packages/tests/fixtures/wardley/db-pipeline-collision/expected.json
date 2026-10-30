@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a synthetic child id merge an authored node without preserving cleared strategy?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "P",
+        "label": "P",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "P_X",
+        "label": "X",
+        "x": 50,
+        "y": 10,
+        "className": "pipeline-component"
+      }
+    ],
+    "links": [
+      {
+        "source": "P_X",
+        "target": "P",
+        "dashed": false
+      }
+    ],
+    "trends": [],
+    "pipelines": [
+      {
+        "nodeId": "P",
+        "componentIds": [
+          "P_X"
+        ]
+      }
+    ],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

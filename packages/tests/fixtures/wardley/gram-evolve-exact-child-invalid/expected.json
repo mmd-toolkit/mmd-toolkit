@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Semantic acceptance conditions: An exact synthetic child ID makes an evolve target subject to range checking."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Evolve target for \"P_X\" must be between 0-1 (decimal) or 0-100 (percentage). Received: 101"
+  }
+}

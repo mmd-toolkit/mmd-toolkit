@@ -1,0 +1,95 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/stateDiagram.md",
+    "line": 462
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "yswsii",
+        "shape": "rect",
+        "label": "Your state with spaces in it",
+        "description": [],
+        "classes": [
+          "yourState"
+        ],
+        "styles": []
+      },
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "SomeOtherState",
+        "shape": "rect",
+        "label": "SomeOtherState",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "YetAnotherState",
+        "shape": "rect",
+        "label": "YetAnotherState",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "root_end",
+        "shape": "stateEnd",
+        "label": "root_end",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "yswsii",
+        "label": ""
+      },
+      {
+        "start": "root_start",
+        "end": "SomeOtherState",
+        "label": ""
+      },
+      {
+        "start": "SomeOtherState",
+        "end": "YetAnotherState",
+        "label": ""
+      },
+      {
+        "start": "yswsii",
+        "end": "YetAnotherState",
+        "label": ""
+      },
+      {
+        "start": "YetAnotherState",
+        "end": "root_end",
+        "label": ""
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "yourState",
+        "styles": [
+          "font-style:italic",
+          "font-weight:bold",
+          "fill:white"
+        ]
+      }
+    ],
+    "links": []
+  }
+}

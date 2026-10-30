@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P3: HTML, entities and semicolon preprocessing] Are numeric hash references encoded in a child?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "Aﬂ°°35¶ßBﬂ°x41¶ßC",
+          "children": []
+        }
+      ]
+    }
+  }
+}

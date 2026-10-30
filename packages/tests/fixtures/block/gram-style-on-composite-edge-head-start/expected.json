@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Composites: the nodes of the edge statement after block: make no block, so style on its first node throws in the Db."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot set properties of undefined (setting 'styles')"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, character references: two references in a row are two placeholders."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "ﬂ°°35¶ßﬂ°°36¶ß",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": []
+  }
+}

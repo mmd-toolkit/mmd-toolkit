@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, composite blocks: `block:G` cannot be the end of an edge: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nblock-beta  A --> block:G    B  end\n------------------^\nExpecting 'NODE_ID', got 'id-block'"
+  }
+}

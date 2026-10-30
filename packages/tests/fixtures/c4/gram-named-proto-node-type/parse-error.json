@@ -1,0 +1,17 @@
+{
+  "message": "A consumed named attribute cannot have the key __proto__",
+  "range": [
+    22,
+    31
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 12
+    },
+    "end": {
+      "line": 2,
+      "column": 21
+    }
+  }
+}

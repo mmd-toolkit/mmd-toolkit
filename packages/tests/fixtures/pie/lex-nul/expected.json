@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A NUL lexer error cannot be recovered into acceptance."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 5: unexpected character: ->\u0000<- at offset: 8, skipped 1 characters. "
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "type": "Root",
+  "diagramType": "pie",
+  "body": {
+    "type": "PieDiagram",
+    "showData": false,
+    "textBeforeHeader": [],
+    "textBeforeShowData": [],
+    "body": [],
+    "range": [
+      2,
+      5
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 2
+      },
+      "end": {
+        "line": 1,
+        "column": 5
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "pie",
+      "range": [
+        2,
+        5
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 2
+        },
+        "end": {
+          "line": 1,
+          "column": 5
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    7
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 1,
+      "column": 7
+    }
+  }
+}

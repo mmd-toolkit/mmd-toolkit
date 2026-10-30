@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Two semicolons remain line description text."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "D;;",
+    "domains": [],
+    "transitions": []
+  }
+}

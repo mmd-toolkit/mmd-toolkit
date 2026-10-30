@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md, Units and contexts: The title rule reads title foo before an identifier can be read in a bare style value, so the style is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nvenn-betastyle A x:title foo\n-------------------^\nExpecting 'NUMERIC', 'IDENTIFIER', 'STRING', 'HEXCOLOR', 'RGBCOLOR', 'RGBACOLOR', got 'TITLE'"
+  }
+}

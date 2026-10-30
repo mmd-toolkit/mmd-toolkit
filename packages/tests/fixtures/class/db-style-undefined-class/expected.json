@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Building the summary, styles: a style for a class that does not exist changes nothing."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

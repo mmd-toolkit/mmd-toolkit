@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check the complete whitespace boundary set at acctitle: 2008."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "title",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "next",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

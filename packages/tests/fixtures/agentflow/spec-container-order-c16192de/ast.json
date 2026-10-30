@@ -1,0 +1,1352 @@
+{
+  "type": "Root",
+  "diagramType": "agentflow",
+  "body": {
+    "type": "AgentflowDiagram",
+    "direction": "TB",
+    "body": [
+      {
+        "type": "AgentflowFlowStatement",
+        "name": {
+          "type": "AgentflowName",
+          "parts": [
+            {
+              "type": "AgentflowLabel",
+              "kind": "text",
+              "value": "one",
+              "range": [
+                29,
+                32
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 11
+                },
+                "end": {
+                  "line": 2,
+                  "column": 14
+                }
+              }
+            }
+          ],
+          "range": [
+            29,
+            32
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 11
+            },
+            "end": {
+              "line": 2,
+              "column": 14
+            }
+          }
+        },
+        "title": {
+          "type": "AgentflowLabel",
+          "kind": "string",
+          "value": "One",
+          "range": [
+            33,
+            38
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 15
+            },
+            "end": {
+              "line": 2,
+              "column": 20
+            }
+          }
+        },
+        "data": [],
+        "body": [
+          {
+            "type": "AgentflowVertexStatement",
+            "first": {
+              "type": "AgentflowVertexGroup",
+              "vertices": [
+                {
+                  "type": "AgentflowVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "a",
+                    "range": [
+                      48,
+                      49
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 3,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 3,
+                        "column": 9
+                      }
+                    }
+                  },
+                  "shape": {
+                    "type": "AgentflowShape",
+                    "name": "rectangle",
+                    "property": null,
+                    "label": {
+                      "type": "AgentflowLabel",
+                      "kind": "string",
+                      "value": "a",
+                      "range": [
+                        50,
+                        53
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 3,
+                          "column": 10
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 13
+                        }
+                      }
+                    },
+                    "range": [
+                      49,
+                      54
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 3,
+                        "column": 9
+                      },
+                      "end": {
+                        "line": 3,
+                        "column": 14
+                      }
+                    }
+                  },
+                  "cssClass": null,
+                  "data": [],
+                  "range": [
+                    48,
+                    54
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 14
+                    }
+                  }
+                }
+              ],
+              "range": [
+                48,
+                54
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 8
+                },
+                "end": {
+                  "line": 3,
+                  "column": 14
+                }
+              }
+            },
+            "links": [],
+            "range": [
+              48,
+              54
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 8
+              },
+              "end": {
+                "line": 3,
+                "column": 14
+              }
+            }
+          }
+        ],
+        "range": [
+          24,
+          64
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 6
+          },
+          "end": {
+            "line": 4,
+            "column": 9
+          }
+        }
+      },
+      {
+        "type": "AgentflowFlowStatement",
+        "name": {
+          "type": "AgentflowName",
+          "parts": [
+            {
+              "type": "AgentflowLabel",
+              "kind": "text",
+              "value": "two",
+              "range": [
+                76,
+                79
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 11
+                },
+                "end": {
+                  "line": 5,
+                  "column": 14
+                }
+              }
+            }
+          ],
+          "range": [
+            76,
+            79
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 11
+            },
+            "end": {
+              "line": 5,
+              "column": 14
+            }
+          }
+        },
+        "title": {
+          "type": "AgentflowLabel",
+          "kind": "string",
+          "value": "Two",
+          "range": [
+            80,
+            85
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 15
+            },
+            "end": {
+              "line": 5,
+              "column": 20
+            }
+          }
+        },
+        "data": [],
+        "body": [
+          {
+            "type": "AgentflowVertexStatement",
+            "first": {
+              "type": "AgentflowVertexGroup",
+              "vertices": [
+                {
+                  "type": "AgentflowVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "b",
+                    "range": [
+                      95,
+                      96
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 6,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 6,
+                        "column": 9
+                      }
+                    }
+                  },
+                  "shape": {
+                    "type": "AgentflowShape",
+                    "name": "rectangle",
+                    "property": null,
+                    "label": {
+                      "type": "AgentflowLabel",
+                      "kind": "string",
+                      "value": "b",
+                      "range": [
+                        97,
+                        100
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 6,
+                          "column": 10
+                        },
+                        "end": {
+                          "line": 6,
+                          "column": 13
+                        }
+                      }
+                    },
+                    "range": [
+                      96,
+                      101
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 6,
+                        "column": 9
+                      },
+                      "end": {
+                        "line": 6,
+                        "column": 14
+                      }
+                    }
+                  },
+                  "cssClass": null,
+                  "data": [],
+                  "range": [
+                    95,
+                    101
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 6,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 6,
+                      "column": 14
+                    }
+                  }
+                }
+              ],
+              "range": [
+                95,
+                101
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 8
+                },
+                "end": {
+                  "line": 6,
+                  "column": 14
+                }
+              }
+            },
+            "links": [],
+            "range": [
+              95,
+              101
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 8
+              },
+              "end": {
+                "line": 6,
+                "column": 14
+              }
+            }
+          }
+        ],
+        "range": [
+          71,
+          111
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 6
+          },
+          "end": {
+            "line": 7,
+            "column": 9
+          }
+        }
+      },
+      {
+        "type": "AgentflowVertexStatement",
+        "first": {
+          "type": "AgentflowVertexGroup",
+          "vertices": [
+            {
+              "type": "AgentflowVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "two",
+                "range": [
+                  118,
+                  121
+                ],
+                "loc": {
+                  "start": {
+                    "line": 8,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 8,
+                    "column": 9
+                  }
+                }
+              },
+              "shape": null,
+              "cssClass": null,
+              "data": [
+                {
+                  "type": "AgentflowDataBlock",
+                  "value": " view: \"collapsed\" ",
+                  "range": [
+                    121,
+                    143
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 8,
+                      "column": 9
+                    },
+                    "end": {
+                      "line": 8,
+                      "column": 31
+                    }
+                  }
+                }
+              ],
+              "range": [
+                118,
+                143
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 6
+                },
+                "end": {
+                  "line": 8,
+                  "column": 31
+                }
+              }
+            }
+          ],
+          "range": [
+            118,
+            143
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 6
+            },
+            "end": {
+              "line": 8,
+              "column": 31
+            }
+          }
+        },
+        "links": [],
+        "range": [
+          118,
+          143
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 6
+          },
+          "end": {
+            "line": 8,
+            "column": 31
+          }
+        }
+      },
+      {
+        "type": "AgentflowFlowStatement",
+        "name": {
+          "type": "AgentflowName",
+          "parts": [
+            {
+              "type": "AgentflowLabel",
+              "kind": "text",
+              "value": "three",
+              "range": [
+                155,
+                160
+              ],
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 11
+                },
+                "end": {
+                  "line": 9,
+                  "column": 16
+                }
+              }
+            }
+          ],
+          "range": [
+            155,
+            160
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 11
+            },
+            "end": {
+              "line": 9,
+              "column": 16
+            }
+          }
+        },
+        "title": {
+          "type": "AgentflowLabel",
+          "kind": "string",
+          "value": "Three",
+          "range": [
+            161,
+            168
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 17
+            },
+            "end": {
+              "line": 9,
+              "column": 24
+            }
+          }
+        },
+        "data": [],
+        "body": [
+          {
+            "type": "AgentflowVertexStatement",
+            "first": {
+              "type": "AgentflowVertexGroup",
+              "vertices": [
+                {
+                  "type": "AgentflowVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "c",
+                    "range": [
+                      178,
+                      179
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 10,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 10,
+                        "column": 9
+                      }
+                    }
+                  },
+                  "shape": {
+                    "type": "AgentflowShape",
+                    "name": "rectangle",
+                    "property": null,
+                    "label": {
+                      "type": "AgentflowLabel",
+                      "kind": "string",
+                      "value": "c",
+                      "range": [
+                        180,
+                        183
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 10,
+                          "column": 10
+                        },
+                        "end": {
+                          "line": 10,
+                          "column": 13
+                        }
+                      }
+                    },
+                    "range": [
+                      179,
+                      184
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 10,
+                        "column": 9
+                      },
+                      "end": {
+                        "line": 10,
+                        "column": 14
+                      }
+                    }
+                  },
+                  "cssClass": null,
+                  "data": [],
+                  "range": [
+                    178,
+                    184
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 10,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 10,
+                      "column": 14
+                    }
+                  }
+                }
+              ],
+              "range": [
+                178,
+                184
+              ],
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 8
+                },
+                "end": {
+                  "line": 10,
+                  "column": 14
+                }
+              }
+            },
+            "links": [],
+            "range": [
+              178,
+              184
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 8
+              },
+              "end": {
+                "line": 10,
+                "column": 14
+              }
+            }
+          }
+        ],
+        "range": [
+          150,
+          194
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 6
+          },
+          "end": {
+            "line": 11,
+            "column": 9
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      194
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 11,
+        "column": 9
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "agentflow-beta",
+      "range": [
+        0,
+        14
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "TB",
+      "range": [
+        15,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 15
+        },
+        "end": {
+          "line": 1,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "flow",
+      "range": [
+        24,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "one",
+      "range": [
+        29,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 11
+        },
+        "end": {
+          "line": 2,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        32,
+        33
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 14
+        },
+        "end": {
+          "line": 2,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"One\"",
+      "range": [
+        33,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 15
+        },
+        "end": {
+          "line": 2,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        38,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 20
+        },
+        "end": {
+          "line": 2,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "a",
+      "range": [
+        48,
+        49
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        49,
+        50
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 9
+        },
+        "end": {
+          "line": 3,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"a\"",
+      "range": [
+        50,
+        53
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 10
+        },
+        "end": {
+          "line": 3,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        53,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 13
+        },
+        "end": {
+          "line": 3,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "end",
+      "range": [
+        61,
+        64
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 6
+        },
+        "end": {
+          "line": 4,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "flow",
+      "range": [
+        71,
+        75
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 6
+        },
+        "end": {
+          "line": 5,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "two",
+      "range": [
+        76,
+        79
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 11
+        },
+        "end": {
+          "line": 5,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        79,
+        80
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 14
+        },
+        "end": {
+          "line": 5,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Two\"",
+      "range": [
+        80,
+        85
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 15
+        },
+        "end": {
+          "line": 5,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        85,
+        86
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 20
+        },
+        "end": {
+          "line": 5,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "b",
+      "range": [
+        95,
+        96
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 8
+        },
+        "end": {
+          "line": 6,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        96,
+        97
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 9
+        },
+        "end": {
+          "line": 6,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"b\"",
+      "range": [
+        97,
+        100
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 10
+        },
+        "end": {
+          "line": 6,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        100,
+        101
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 13
+        },
+        "end": {
+          "line": 6,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "end",
+      "range": [
+        108,
+        111
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 6
+        },
+        "end": {
+          "line": 7,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "two",
+      "range": [
+        118,
+        121
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 6
+        },
+        "end": {
+          "line": 8,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        121,
+        123
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 9
+        },
+        "end": {
+          "line": 8,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " view: \"collapsed\" ",
+      "range": [
+        123,
+        142
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 11
+        },
+        "end": {
+          "line": 8,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        142,
+        143
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 30
+        },
+        "end": {
+          "line": 8,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "flow",
+      "range": [
+        150,
+        154
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 6
+        },
+        "end": {
+          "line": 9,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "three",
+      "range": [
+        155,
+        160
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 11
+        },
+        "end": {
+          "line": 9,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        160,
+        161
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 16
+        },
+        "end": {
+          "line": 9,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Three\"",
+      "range": [
+        161,
+        168
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 17
+        },
+        "end": {
+          "line": 9,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        168,
+        169
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 24
+        },
+        "end": {
+          "line": 9,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "c",
+      "range": [
+        178,
+        179
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 8
+        },
+        "end": {
+          "line": 10,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        179,
+        180
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 9
+        },
+        "end": {
+          "line": 10,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"c\"",
+      "range": [
+        180,
+        183
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 10
+        },
+        "end": {
+          "line": 10,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        183,
+        184
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 13
+        },
+        "end": {
+          "line": 10,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "end",
+      "range": [
+        191,
+        194
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 6
+        },
+        "end": {
+          "line": 11,
+          "column": 9
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    199
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 12,
+      "column": 4
+    }
+  }
+}

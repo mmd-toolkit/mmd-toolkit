@@ -1,0 +1,14 @@
+---
+title: "<b>Title</b>"
+---
+usecase-beta
+accTitle: <b>Accessible</b>
+accDescr: <i>Description</i>
+actor A("<b>Actor</b>") <<Human &amp; role>>
+B["<i>Use case</i>"] <<Core>>
+systemBoundary S("<b>System</b>")
+C("`<em>Markdown</em>`")
+end
+A -- "<b>Edge</b>" --> B
+note for B "<br>Note"
+json J@{"<b>key</b>":"<i>value</i>"}

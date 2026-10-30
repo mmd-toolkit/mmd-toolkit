@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/state.md Tokens: in a composite body, the ignored `;` after a description is an Identifier token; B has the description `style:#x`."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "roundedWithTitle",
+        "label": "A",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "style:#x",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "parentId": "A"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

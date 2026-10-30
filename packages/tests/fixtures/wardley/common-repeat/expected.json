@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are only final common AST assignments published?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Three",
+    "accTitle": "Second",
+    "accDescr": "E",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

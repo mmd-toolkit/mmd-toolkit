@@ -1,0 +1,1411 @@
+{
+  "type": "Root",
+  "diagramType": "eventmodeling",
+  "body": {
+    "type": "EventmodelingDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "EventmodelingTimeFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "01",
+          "range": [
+            17,
+            19
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 3
+            },
+            "end": {
+              "line": 2,
+              "column": 5
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "ui",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "A",
+            "range": [
+              23,
+              24
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 10
+              }
+            }
+          },
+          "tail": [],
+          "range": [
+            23,
+            24
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 9
+            },
+            "end": {
+              "line": 2,
+              "column": 10
+            }
+          }
+        },
+        "sourceFrames": [],
+        "dataReference": null,
+        "data": null,
+        "range": [
+          14,
+          24
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 10
+          }
+        }
+      },
+      {
+        "type": "EventmodelingTimeFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "02",
+          "range": [
+            35,
+            37
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 10
+            },
+            "end": {
+              "line": 3,
+              "column": 12
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "cmd",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "B",
+            "range": [
+              42,
+              43
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 17
+              },
+              "end": {
+                "line": 3,
+                "column": 18
+              }
+            }
+          },
+          "tail": [],
+          "range": [
+            42,
+            43
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 17
+            },
+            "end": {
+              "line": 3,
+              "column": 18
+            }
+          }
+        },
+        "sourceFrames": [],
+        "dataReference": null,
+        "data": null,
+        "range": [
+          25,
+          43
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 18
+          }
+        }
+      },
+      {
+        "type": "EventmodelingTimeFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "03",
+          "range": [
+            47,
+            49
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 3
+            },
+            "end": {
+              "line": 4,
+              "column": 5
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "command",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "C",
+            "range": [
+              58,
+              59
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 14
+              },
+              "end": {
+                "line": 4,
+                "column": 15
+              }
+            }
+          },
+          "tail": [],
+          "range": [
+            58,
+            59
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 14
+            },
+            "end": {
+              "line": 4,
+              "column": 15
+            }
+          }
+        },
+        "sourceFrames": [],
+        "dataReference": null,
+        "data": null,
+        "range": [
+          44,
+          59
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 15
+          }
+        }
+      },
+      {
+        "type": "EventmodelingResetFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "04",
+          "range": [
+            63,
+            65
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 3
+            },
+            "end": {
+              "line": 5,
+              "column": 5
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "evt",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "D",
+            "range": [
+              70,
+              71
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 10
+              },
+              "end": {
+                "line": 5,
+                "column": 11
+              }
+            }
+          },
+          "tail": [],
+          "range": [
+            70,
+            71
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 10
+            },
+            "end": {
+              "line": 5,
+              "column": 11
+            }
+          }
+        },
+        "sourceFrames": [],
+        "dataReference": null,
+        "data": null,
+        "range": [
+          60,
+          71
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 11
+          }
+        }
+      },
+      {
+        "type": "EventmodelingResetFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "05",
+          "range": [
+            83,
+            85
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 11
+            },
+            "end": {
+              "line": 6,
+              "column": 13
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "event",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "E",
+            "range": [
+              92,
+              93
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 20
+              },
+              "end": {
+                "line": 6,
+                "column": 21
+              }
+            }
+          },
+          "tail": [],
+          "range": [
+            92,
+            93
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 20
+            },
+            "end": {
+              "line": 6,
+              "column": 21
+            }
+          }
+        },
+        "sourceFrames": [],
+        "dataReference": null,
+        "data": null,
+        "range": [
+          72,
+          93
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 21
+          }
+        }
+      },
+      {
+        "type": "EventmodelingTimeFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "06",
+          "range": [
+            97,
+            99
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 3
+            },
+            "end": {
+              "line": 7,
+              "column": 5
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "rmo",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "F",
+            "range": [
+              104,
+              105
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 10
+              },
+              "end": {
+                "line": 7,
+                "column": 11
+              }
+            }
+          },
+          "tail": [],
+          "range": [
+            104,
+            105
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 10
+            },
+            "end": {
+              "line": 7,
+              "column": 11
+            }
+          }
+        },
+        "sourceFrames": [],
+        "dataReference": null,
+        "data": null,
+        "range": [
+          94,
+          105
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 11
+          }
+        }
+      },
+      {
+        "type": "EventmodelingTimeFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "07",
+          "range": [
+            109,
+            111
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 3
+            },
+            "end": {
+              "line": 8,
+              "column": 5
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "readmodel",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "G",
+            "range": [
+              122,
+              123
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 16
+              },
+              "end": {
+                "line": 8,
+                "column": 17
+              }
+            }
+          },
+          "tail": [],
+          "range": [
+            122,
+            123
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 16
+            },
+            "end": {
+              "line": 8,
+              "column": 17
+            }
+          }
+        },
+        "sourceFrames": [],
+        "dataReference": null,
+        "data": null,
+        "range": [
+          106,
+          123
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 0
+          },
+          "end": {
+            "line": 8,
+            "column": 17
+          }
+        }
+      },
+      {
+        "type": "EventmodelingTimeFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "08",
+          "range": [
+            127,
+            129
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 3
+            },
+            "end": {
+              "line": 9,
+              "column": 5
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "pcr",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "H",
+            "range": [
+              134,
+              135
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 10
+              },
+              "end": {
+                "line": 9,
+                "column": 11
+              }
+            }
+          },
+          "tail": [],
+          "range": [
+            134,
+            135
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 10
+            },
+            "end": {
+              "line": 9,
+              "column": 11
+            }
+          }
+        },
+        "sourceFrames": [],
+        "dataReference": null,
+        "data": null,
+        "range": [
+          124,
+          135
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 0
+          },
+          "end": {
+            "line": 9,
+            "column": 11
+          }
+        }
+      },
+      {
+        "type": "EventmodelingTimeFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "09",
+          "range": [
+            139,
+            141
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 3
+            },
+            "end": {
+              "line": 10,
+              "column": 5
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "processor",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "I",
+            "range": [
+              152,
+              153
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 16
+              },
+              "end": {
+                "line": 10,
+                "column": 17
+              }
+            }
+          },
+          "tail": [],
+          "range": [
+            152,
+            153
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 16
+            },
+            "end": {
+              "line": 10,
+              "column": 17
+            }
+          }
+        },
+        "sourceFrames": [],
+        "dataReference": null,
+        "data": null,
+        "range": [
+          136,
+          153
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 0
+          },
+          "end": {
+            "line": 10,
+            "column": 17
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      153
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 10,
+        "column": 17
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "eventmodeling",
+      "range": [
+        0,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "tf",
+      "range": [
+        14,
+        16
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "01",
+      "range": [
+        17,
+        19
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 3
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "ui",
+      "range": [
+        20,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        23,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 9
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "timeframe",
+      "range": [
+        25,
+        34
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "02",
+      "range": [
+        35,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 10
+        },
+        "end": {
+          "line": 3,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "cmd",
+      "range": [
+        38,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 13
+        },
+        "end": {
+          "line": 3,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "B",
+      "range": [
+        42,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 17
+        },
+        "end": {
+          "line": 3,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "tf",
+      "range": [
+        44,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "03",
+      "range": [
+        47,
+        49
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 3
+        },
+        "end": {
+          "line": 4,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "command",
+      "range": [
+        50,
+        57
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 6
+        },
+        "end": {
+          "line": 4,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "C",
+      "range": [
+        58,
+        59
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 14
+        },
+        "end": {
+          "line": 4,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "rf",
+      "range": [
+        60,
+        62
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "04",
+      "range": [
+        63,
+        65
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 3
+        },
+        "end": {
+          "line": 5,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "evt",
+      "range": [
+        66,
+        69
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 6
+        },
+        "end": {
+          "line": 5,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "D",
+      "range": [
+        70,
+        71
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 10
+        },
+        "end": {
+          "line": 5,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "resetframe",
+      "range": [
+        72,
+        82
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "05",
+      "range": [
+        83,
+        85
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 11
+        },
+        "end": {
+          "line": 6,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "event",
+      "range": [
+        86,
+        91
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 14
+        },
+        "end": {
+          "line": 6,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "E",
+      "range": [
+        92,
+        93
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 20
+        },
+        "end": {
+          "line": 6,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "tf",
+      "range": [
+        94,
+        96
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "06",
+      "range": [
+        97,
+        99
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 3
+        },
+        "end": {
+          "line": 7,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "rmo",
+      "range": [
+        100,
+        103
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 6
+        },
+        "end": {
+          "line": 7,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "F",
+      "range": [
+        104,
+        105
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 10
+        },
+        "end": {
+          "line": 7,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "tf",
+      "range": [
+        106,
+        108
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "07",
+      "range": [
+        109,
+        111
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 3
+        },
+        "end": {
+          "line": 8,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "readmodel",
+      "range": [
+        112,
+        121
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 6
+        },
+        "end": {
+          "line": 8,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "G",
+      "range": [
+        122,
+        123
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 16
+        },
+        "end": {
+          "line": 8,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "tf",
+      "range": [
+        124,
+        126
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "08",
+      "range": [
+        127,
+        129
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 3
+        },
+        "end": {
+          "line": 9,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "pcr",
+      "range": [
+        130,
+        133
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 6
+        },
+        "end": {
+          "line": 9,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "H",
+      "range": [
+        134,
+        135
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 10
+        },
+        "end": {
+          "line": 9,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "tf",
+      "range": [
+        136,
+        138
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 0
+        },
+        "end": {
+          "line": 10,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "09",
+      "range": [
+        139,
+        141
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 3
+        },
+        "end": {
+          "line": 10,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "processor",
+      "range": [
+        142,
+        151
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 6
+        },
+        "end": {
+          "line": 10,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "I",
+      "range": [
+        152,
+        153
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 16
+        },
+        "end": {
+          "line": 10,
+          "column": 17
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    154
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 11,
+      "column": 0
+    }
+  }
+}

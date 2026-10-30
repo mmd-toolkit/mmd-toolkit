@@ -1,0 +1,158 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/usecase.md",
+    "line": 350
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "Customer",
+        "label": "Customer",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [
+          "external",
+          "critical"
+        ],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "Checkout",
+        "label": "Checkout",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [
+          "critical",
+          "external"
+        ],
+        "styles": [
+          "stroke:#c33",
+          "stroke-width:4px"
+        ]
+      },
+      {
+        "id": "Profile",
+        "label": "Edit profile",
+        "labelType": "text",
+        "shape": "rect",
+        "business": false,
+        "parentId": "Account",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [
+      {
+        "id": "Account",
+        "label": "Account",
+        "labelType": "text",
+        "type": "rect",
+        "classes": [
+          "data"
+        ],
+        "styles": [
+          "stroke:#536878"
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "source": "Customer",
+        "target": "Checkout",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "Checkout",
+        "target": "Profile",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "Profile",
+        "target": "Session",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "Session",
+        "value": {
+          "active": true
+        },
+        "propertyOrder": {
+          "": [
+            "active"
+          ]
+        },
+        "classes": [
+          "data"
+        ],
+        "styles": []
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "default",
+        "styles": [
+          "stroke:#7f8ea3"
+        ]
+      },
+      {
+        "id": "external",
+        "styles": [
+          "stroke-width:3px"
+        ]
+      },
+      {
+        "id": "critical",
+        "styles": [
+          "stroke-width:3px"
+        ]
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "Session",
+        "set": {
+          "value": {
+            "active": true
+          },
+          "propertyOrder": {
+            "": [
+              "active"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

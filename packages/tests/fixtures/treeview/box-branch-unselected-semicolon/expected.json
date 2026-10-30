@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: A semicolon before the only hash trigger is unselected and becomes branch content."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": ";── child style:#x",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

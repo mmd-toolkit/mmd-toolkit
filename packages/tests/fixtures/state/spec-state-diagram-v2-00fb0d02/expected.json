@@ -1,0 +1,108 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/stateDiagram-v2.spec.js",
+    "line": 288,
+    "test": "state diagram V2,  > when parsing an info graph it > should handle fork statements"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "fork_state",
+        "shape": "fork",
+        "label": "fork_state",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "State2",
+        "shape": "rect",
+        "label": "State2",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "State3",
+        "shape": "rect",
+        "label": "State3",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "join_state",
+        "shape": "join",
+        "label": "join_state",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "State4",
+        "shape": "rect",
+        "label": "State4",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "root_end",
+        "shape": "stateEnd",
+        "label": "root_end",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "fork_state",
+        "label": ""
+      },
+      {
+        "start": "fork_state",
+        "end": "State2",
+        "label": ""
+      },
+      {
+        "start": "fork_state",
+        "end": "State3",
+        "label": ""
+      },
+      {
+        "start": "State2",
+        "end": "join_state",
+        "label": ""
+      },
+      {
+        "start": "State3",
+        "end": "join_state",
+        "label": ""
+      },
+      {
+        "start": "join_state",
+        "end": "State4",
+        "label": ""
+      },
+      {
+        "start": "State4",
+        "end": "root_end",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

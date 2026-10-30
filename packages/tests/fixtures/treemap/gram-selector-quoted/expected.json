@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can a selector be quoted?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 7: Expecting token of type 'ID2' but found `\"styled\"`."
+  }
+}

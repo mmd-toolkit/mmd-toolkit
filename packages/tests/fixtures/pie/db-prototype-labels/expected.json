@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Map labels do not have object prototype semantics."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "__proto__",
+        "value": 1
+      },
+      {
+        "label": "constructor",
+        "value": 2
+      },
+      {
+        "label": "prototype",
+        "value": 3
+      }
+    ]
+  }
+}

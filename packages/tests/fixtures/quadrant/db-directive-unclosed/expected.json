@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, directives: a directive with no closing `}%%` takes the rest of the text, so the title after it is not read."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": []
+  }
+}

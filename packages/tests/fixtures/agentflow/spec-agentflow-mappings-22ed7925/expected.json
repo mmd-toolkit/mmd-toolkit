@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-mappings.spec.ts",
+    "line": 234,
+    "test": "agentflow element mappings > reset > clear() drops element mappings and the frontmatter offset"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "c",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "c",
+        "props": {}
+      },
+      {
+        "id": "d",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "d",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "c",
+        "end": "d",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_c_d_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

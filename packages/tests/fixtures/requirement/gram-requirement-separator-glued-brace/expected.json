@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Requirements: the class list ends at `{`."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": [
+          "c"
+        ]
+      }
+    ],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

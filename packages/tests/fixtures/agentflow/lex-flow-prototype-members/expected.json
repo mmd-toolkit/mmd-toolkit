@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Flow membership deduplication reads prototype-shaped ids differently from the vertex map."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "__proto__",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "__proto__",
+        "props": {}
+      },
+      {
+        "id": "constructor",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "constructor",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "F",
+        "nodes": [
+          "__proto__",
+          "constructor"
+        ],
+        "title": "",
+        "classes": [],
+        "labelType": "text",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  }
+}

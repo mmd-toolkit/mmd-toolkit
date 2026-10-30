@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does empty final body title preserve the frontmatter title?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Front",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  },
+  "embedded": {
+    "title": "Front"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "C4Container",
+        "label": "C4Container",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

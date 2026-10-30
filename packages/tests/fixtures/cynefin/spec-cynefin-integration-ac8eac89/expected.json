@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/cynefin/cynefin.integration.spec.ts",
+    "line": 55,
+    "test": "Cynefin Parsing - Basic > should parse domain with multiple items"
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "First item"
+          },
+          {
+            "label": "Second item"
+          },
+          {
+            "label": "Third item"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A numeric option requires a value."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 6: Expecting token of type 'NUMBER' but found `\n`."
+  }
+}

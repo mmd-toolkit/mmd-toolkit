@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Named entries reject when the diagram has no axes."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Axes must be populated before curves for reference entries"
+  }
+}

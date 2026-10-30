@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A prototype name is not a transition endpoint."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 13: unexpected character: ->c<- at offset: 25, skipped 11 characters. Parse error on line 2, column 9: Expecting token of type 'EOF' but found `-->`."
+  }
+}

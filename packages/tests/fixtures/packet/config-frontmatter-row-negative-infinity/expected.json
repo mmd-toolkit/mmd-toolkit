@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does YAML -.inf retain its numeric type as a -Infinity tag and publish no rows?"
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  },
+  "embedded": {
+    "config": {
+      "packet": {
+        "bitsPerRow": {
+          "nonFinite": "-Infinity"
+        }
+      }
+    }
+  }
+}

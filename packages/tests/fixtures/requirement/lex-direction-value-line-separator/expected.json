@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The statement context: the whitespace before the value may be a U+2028."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

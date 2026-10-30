@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can an empty line follow the header?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

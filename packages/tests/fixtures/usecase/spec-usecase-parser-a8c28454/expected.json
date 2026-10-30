@@ -1,0 +1,124 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/usecase.parser.spec.ts",
+    "line": 1149,
+    "test": "usecase parser publication and normalized AST > accepts ids that start with a digit"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "1",
+        "label": "Customer",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "1mg",
+        "label": "Milligram",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "2",
+        "label": "Place order",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "3rd",
+        "label": "Third party",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [
+      {
+        "source": "1",
+        "target": "2",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "1mg",
+        "target": "3rd",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "2",
+        "target": "4",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "4",
+        "value": {
+          "a": 1
+        },
+        "propertyOrder": {
+          "": [
+            "a"
+          ]
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "4",
+        "set": {
+          "value": {
+            "a": 1
+          },
+          "propertyOrder": {
+            "": [
+              "a"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

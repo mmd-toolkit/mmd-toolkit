@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, y-axis: punctuation that is a character of a text is part of it."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "Low, high!",
+      "top": "High?"
+    },
+    "points": [],
+    "classes": []
+  }
+}

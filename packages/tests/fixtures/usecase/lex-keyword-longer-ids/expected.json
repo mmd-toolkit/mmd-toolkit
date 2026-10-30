@@ -1,0 +1,61 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do longer identifiers win over keyword prefixes?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "actorName",
+        "label": "actorName",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "includeMore",
+        "label": "includeMore",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "extended",
+        "label": "extended",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [
+      {
+        "source": "includeMore",
+        "target": "extended",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

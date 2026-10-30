@@ -1,0 +1,315 @@
+{
+  "type": "Root",
+  "diagramType": "pie",
+  "body": {
+    "type": "PieDiagram",
+    "showData": false,
+    "textBeforeHeader": [],
+    "textBeforeShowData": [],
+    "body": [
+      {
+        "type": "PieTitleStatement",
+        "value": {
+          "type": "PieLiteral",
+          "value": "\"A\\nB\" 'C\\tD'",
+          "range": [
+            10,
+            23
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 6
+            },
+            "end": {
+              "line": 2,
+              "column": 19
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          4,
+          23
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 19
+          }
+        }
+      },
+      {
+        "type": "PieAccTitleStatement",
+        "value": {
+          "type": "PieLiteral",
+          "value": " \"A\\nB\" 'C\\tD'",
+          "range": [
+            33,
+            47
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 9
+            },
+            "end": {
+              "line": 3,
+              "column": 23
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          24,
+          47
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 23
+          }
+        }
+      },
+      {
+        "type": "PieAccDescrStatement",
+        "value": {
+          "type": "PieLiteral",
+          "value": " \"A\\nB\" 'C\\tD'",
+          "range": [
+            57,
+            71
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 9
+            },
+            "end": {
+              "line": 4,
+              "column": 23
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          48,
+          71
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 23
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      71
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 4,
+        "column": 23
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "pie",
+      "range": [
+        0,
+        3
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        4,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "\"A\\nB\" 'C\\tD'",
+      "range": [
+        10,
+        23
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accTitle",
+      "range": [
+        24,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        32,
+        33
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " \"A\\nB\" 'C\\tD'",
+      "range": [
+        33,
+        47
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 9
+        },
+        "end": {
+          "line": 3,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accDescr",
+      "range": [
+        48,
+        56
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        56,
+        57
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 8
+        },
+        "end": {
+          "line": 4,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " \"A\\nB\" 'C\\tD'",
+      "range": [
+        57,
+        71
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 9
+        },
+        "end": {
+          "line": 4,
+          "column": 23
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    72
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 0
+    }
+  }
+}

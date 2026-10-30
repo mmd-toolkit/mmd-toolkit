@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The hidden terminal can pass a closer whose following character is not whitespace."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

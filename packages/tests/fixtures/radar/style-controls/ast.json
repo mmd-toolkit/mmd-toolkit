@@ -1,0 +1,314 @@
+{
+  "type": "Root",
+  "diagramType": "radar",
+  "body": {
+    "type": "RadarDiagram",
+    "textBeforeHeader": [],
+    "textBeforeColon": [],
+    "body": [
+      {
+        "type": "RadarTitleStatement",
+        "value": {
+          "type": "RadarLiteral",
+          "value": "Style A: #x;",
+          "range": [
+            17,
+            29
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 6
+            },
+            "end": {
+              "line": 2,
+              "column": 18
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          11,
+          29
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 18
+          }
+        }
+      },
+      {
+        "type": "RadarAccTitleStatement",
+        "value": {
+          "type": "RadarLiteral",
+          "value": " style A: # x;",
+          "range": [
+            39,
+            53
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 9
+            },
+            "end": {
+              "line": 3,
+              "column": 23
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          30,
+          53
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 23
+          }
+        }
+      },
+      {
+        "type": "RadarAccDescrStatement",
+        "value": {
+          "type": "RadarLiteral",
+          "value": " style A: value;",
+          "range": [
+            63,
+            79
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 9
+            },
+            "end": {
+              "line": 4,
+              "column": 25
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          54,
+          79
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 25
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      79
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 4,
+        "column": 25
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "radar-beta",
+      "range": [
+        0,
+        10
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        11,
+        16
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Style A: #x;",
+      "range": [
+        17,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accTitle",
+      "range": [
+        30,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        38,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " style A: # x;",
+      "range": [
+        39,
+        53
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 9
+        },
+        "end": {
+          "line": 3,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accDescr",
+      "range": [
+        54,
+        62
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        62,
+        63
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 8
+        },
+        "end": {
+          "line": 4,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " style A: value;",
+      "range": [
+        63,
+        79
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 9
+        },
+        "end": {
+          "line": 4,
+          "column": 25
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    79
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 25
+    }
+  }
+}

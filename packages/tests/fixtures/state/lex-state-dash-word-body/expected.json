@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Lexical structure, The state context, rule 7: `-b` is no word, so `a` and the composite state `-b` are read."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "-b",
+        "shape": "roundedWithTitle",
+        "label": "-b",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

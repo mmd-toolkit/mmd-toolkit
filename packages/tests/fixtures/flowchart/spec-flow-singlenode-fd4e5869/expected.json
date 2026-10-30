@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-singlenode.spec.js",
+    "line": 305,
+    "test": "[Singlenodes] when parsing > should handle nodes ending in href"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "node_href",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "node_href",
+        "props": {}
+      },
+      {
+        "id": "node.href",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "node.href",
+        "props": {}
+      },
+      {
+        "id": "node-href",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "node-href",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

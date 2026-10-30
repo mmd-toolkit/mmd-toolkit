@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A reachable diagram title is stored but never drawn."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": []
+  }
+}

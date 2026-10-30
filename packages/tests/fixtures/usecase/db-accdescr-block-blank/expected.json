@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an accessibility block retain an empty interior line?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "first\nlast",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

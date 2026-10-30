@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The converted form reads each line terminator as `\\n`. The first note has a `\\r\\n`, the second a lone `\\r`, and both texts hold one line feed."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "text": "a\nb"
+      },
+      {
+        "id": "note1",
+        "text": "c\nd"
+      }
+    ],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

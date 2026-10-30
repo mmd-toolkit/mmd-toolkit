@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[G: start, document, statement and stop] Does a comment before the root create no node?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": []
+    }
+  }
+}

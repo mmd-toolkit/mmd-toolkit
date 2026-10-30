@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Opaque reference derivation preserves a retained YAML prefix."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "str is not iterable"
+  }
+}

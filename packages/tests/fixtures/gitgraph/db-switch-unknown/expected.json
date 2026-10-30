@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Switch rejects an unknown branch through checkout validation."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Trying to checkout branch which is not yet created. (Help try using \"branch missing\")"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read shape removed doc?"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {},
+        "metadata": {
+          "shape": "doc"
+        },
+        "type": "doc"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "metadata": {
+            "shape": "doc"
+          },
+          "type": "doc"
+        }
+      }
+    ]
+  }
+}

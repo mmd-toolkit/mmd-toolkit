@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/eventmodeling.md Common statement values: Do spaces and tabs on both sides of the selected semicolon join into the leading run of accDescr?"
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": " \t accDescr: D",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "00",
+        "modelEntityType": "evt",
+        "entityIdentifier": "M",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "\"style:#x\""
+        }
+      }
+    ]
+  }
+}

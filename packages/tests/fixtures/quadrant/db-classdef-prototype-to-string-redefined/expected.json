@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, classDef: the third definition meets a partner that is not the first, and the order of first definitions stays."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": [
+      {
+        "name": "toString",
+        "radius": 4
+      },
+      {
+        "name": "hasOwnProperty",
+        "radius": 3
+      }
+    ]
+  }
+}

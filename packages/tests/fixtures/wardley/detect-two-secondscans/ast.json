@@ -1,0 +1,248 @@
+{
+  "type": "Root",
+  "diagramType": "wardley",
+  "body": {
+    "type": "WardleyDiagram",
+    "textBeforeHeader": [
+      {
+        "type": "WardleyIgnoredText",
+        "kind": "directive",
+        "value": "%%{x}%%",
+        "range": [
+          0,
+          17
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 1,
+            "column": 17
+          }
+        }
+      },
+      {
+        "type": "WardleyIgnoredText",
+        "kind": "directive",
+        "value": "%%{y}%%",
+        "range": [
+          18,
+          35
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 17
+          }
+        }
+      }
+    ],
+    "body": [],
+    "range": [
+      0,
+      48
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 12
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [
+    {
+      "type": "Directive",
+      "name": "wrap",
+      "value": "wrap",
+      "closed": true,
+      "range": [
+        3,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 3
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Directive",
+      "name": "wrap",
+      "value": "wrap",
+      "closed": true,
+      "range": [
+        21,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 3
+        },
+        "end": {
+          "line": 2,
+          "column": 13
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "RawText",
+      "value": "%%{",
+      "range": [
+        0,
+        3
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Directive",
+      "value": "%%{wrap}%%",
+      "range": [
+        3,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 3
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "x}%%",
+      "range": [
+        13,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 13
+        },
+        "end": {
+          "line": 1,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "%%{",
+      "range": [
+        18,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Directive",
+      "value": "%%{wrap}%%",
+      "range": [
+        21,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 3
+        },
+        "end": {
+          "line": 2,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "y}%%",
+      "range": [
+        31,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 13
+        },
+        "end": {
+          "line": 2,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "wardley-beta",
+      "range": [
+        36,
+        48
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 12
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    48
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 12
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-from-tree/requirement.md, the last of a description block and an accDescr line is the description."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "a",
+    "requirements": [],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/treeView.html",
+    "line": 209
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "src",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "App.tsx",
+            "nodeType": "file",
+            "cssClass": "highlight",
+            "description": "main component",
+            "children": []
+          },
+          {
+            "name": "index.js",
+            "nodeType": "file",
+            "description": "entry point",
+            "children": []
+          },
+          {
+            "name": "config.ts",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "docs",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "guide.md",
+            "nodeType": "file",
+            "description": "user guide",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "package.json",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

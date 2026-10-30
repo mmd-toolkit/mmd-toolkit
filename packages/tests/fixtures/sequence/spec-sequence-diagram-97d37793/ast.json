@@ -1,0 +1,576 @@
+{
+  "type": "Root",
+  "diagramType": "sequence",
+  "body": {
+    "type": "SequenceDiagram",
+    "body": [
+      {
+        "type": "SequenceBoxStatement",
+        "text": {
+          "type": "SequenceBoxText",
+          "value": "rgb(34, 56, 0) Group1",
+          "colorCandidate": {
+            "type": "SequenceLiteral",
+            "value": "rgb(34, 56, 0)",
+            "range": [
+              21,
+              35
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 4
+              },
+              "end": {
+                "line": 3,
+                "column": 18
+              }
+            }
+          },
+          "remainder": {
+            "type": "SequenceLiteral",
+            "value": "Group1",
+            "range": [
+              36,
+              42
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 19
+              },
+              "end": {
+                "line": 3,
+                "column": 25
+              }
+            }
+          },
+          "range": [
+            21,
+            42
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 4
+            },
+            "end": {
+              "line": 3,
+              "column": 25
+            }
+          }
+        },
+        "body": [
+          {
+            "type": "SequenceParticipantStatement",
+            "kind": "participant",
+            "created": false,
+            "id": {
+              "type": "SequenceIdentifier",
+              "name": "Alice",
+              "range": [
+                55,
+                60
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 12
+                },
+                "end": {
+                  "line": 4,
+                  "column": 17
+                }
+              }
+            },
+            "data": null,
+            "alias": null,
+            "range": [
+              43,
+              60
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 4,
+                "column": 17
+              }
+            }
+          },
+          {
+            "type": "SequenceParticipantStatement",
+            "kind": "participant",
+            "created": false,
+            "id": {
+              "type": "SequenceIdentifier",
+              "name": "Bob",
+              "range": [
+                73,
+                76
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 12
+                },
+                "end": {
+                  "line": 5,
+                  "column": 15
+                }
+              }
+            },
+            "data": null,
+            "alias": null,
+            "range": [
+              61,
+              76
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 0
+              },
+              "end": {
+                "line": 5,
+                "column": 15
+              }
+            }
+          }
+        ],
+        "range": [
+          17,
+          80
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "SequenceMessageStatement",
+        "from": {
+          "type": "SequenceIdentifier",
+          "name": "Alice",
+          "range": [
+            81,
+            86
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 0
+            },
+            "end": {
+              "line": 7,
+              "column": 5
+            }
+          }
+        },
+        "fromCentralConnection": false,
+        "arrow": {
+          "type": "SequenceArrow",
+          "value": "->",
+          "startMarker": "none",
+          "line": "solid",
+          "endMarker": "none",
+          "range": [
+            86,
+            88
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 5
+            },
+            "end": {
+              "line": 7,
+              "column": 7
+            }
+          }
+        },
+        "activation": null,
+        "toCentralConnection": false,
+        "to": {
+          "type": "SequenceIdentifier",
+          "name": "Bob",
+          "range": [
+            88,
+            91
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 7
+            },
+            "end": {
+              "line": 7,
+              "column": 10
+            }
+          }
+        },
+        "text": {
+          "type": "SequenceText",
+          "wrap": null,
+          "value": {
+            "type": "SequenceLiteral",
+            "value": "Hello Bob, how are you?",
+            "range": [
+              93,
+              116
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 12
+              },
+              "end": {
+                "line": 7,
+                "column": 35
+              }
+            }
+          },
+          "range": [
+            93,
+            116
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 12
+            },
+            "end": {
+              "line": 7,
+              "column": 35
+            }
+          }
+        },
+        "range": [
+          81,
+          116
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 35
+          }
+        }
+      }
+    ],
+    "range": [
+      1,
+      116
+    ],
+    "loc": {
+      "start": {
+        "line": 2,
+        "column": 0
+      },
+      "end": {
+        "line": 7,
+        "column": 35
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "sequenceDiagram",
+      "range": [
+        1,
+        16
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "box",
+      "range": [
+        17,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "rgb(34, 56, 0)",
+      "range": [
+        21,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 4
+        },
+        "end": {
+          "line": 3,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " ",
+      "range": [
+        35,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 18
+        },
+        "end": {
+          "line": 3,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Group1",
+      "range": [
+        36,
+        42
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 19
+        },
+        "end": {
+          "line": 3,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "participant",
+      "range": [
+        43,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Alice",
+      "range": [
+        55,
+        60
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 12
+        },
+        "end": {
+          "line": 4,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "participant",
+      "range": [
+        61,
+        72
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Bob",
+      "range": [
+        73,
+        76
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 12
+        },
+        "end": {
+          "line": 5,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "end",
+      "range": [
+        77,
+        80
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Alice",
+      "range": [
+        81,
+        86
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "->",
+      "range": [
+        86,
+        88
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 5
+        },
+        "end": {
+          "line": 7,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Bob",
+      "range": [
+        88,
+        91
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 7
+        },
+        "end": {
+          "line": 7,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        91,
+        92
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 10
+        },
+        "end": {
+          "line": 7,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Hello Bob, how are you?",
+      "range": [
+        93,
+        116
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 12
+        },
+        "end": {
+          "line": 7,
+          "column": 35
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    116
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 7,
+      "column": 35
+    }
+  }
+}

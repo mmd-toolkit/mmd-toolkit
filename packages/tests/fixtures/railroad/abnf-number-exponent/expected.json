@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Exponent-looking text becomes an exact repeat of reference e3 and another terminal."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "repetition",
+              "element": {
+                "type": "nonterminal",
+                "name": "e3"
+              },
+              "min": 1,
+              "max": 1
+            },
+            {
+              "type": "terminal",
+              "value": "a"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

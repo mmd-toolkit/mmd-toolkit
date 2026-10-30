@@ -1,0 +1,104 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/railroad.md",
+    "line": 80
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "sign",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "terminal",
+              "value": "+"
+            },
+            {
+              "type": "terminal",
+              "value": "-"
+            }
+          ]
+        }
+      },
+      {
+        "name": "number",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "optional",
+              "element": {
+                "type": "nonterminal",
+                "name": "sign"
+              }
+            },
+            {
+              "type": "repetition",
+              "element": {
+                "type": "nonterminal",
+                "name": "digit"
+              },
+              "min": 1,
+              "max": "Infinity"
+            }
+          ]
+        }
+      },
+      {
+        "name": "digit",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "terminal",
+              "value": "0"
+            },
+            {
+              "type": "terminal",
+              "value": "1"
+            },
+            {
+              "type": "terminal",
+              "value": "2"
+            },
+            {
+              "type": "terminal",
+              "value": "3"
+            },
+            {
+              "type": "terminal",
+              "value": "4"
+            },
+            {
+              "type": "terminal",
+              "value": "5"
+            },
+            {
+              "type": "terminal",
+              "value": "6"
+            },
+            {
+              "type": "terminal",
+              "value": "7"
+            },
+            {
+              "type": "terminal",
+              "value": "8"
+            },
+            {
+              "type": "terminal",
+              "value": "9"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

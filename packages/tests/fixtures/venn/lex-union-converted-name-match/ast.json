@@ -1,0 +1,272 @@
+{
+  "type": "Root",
+  "diagramType": "venn",
+  "body": {
+    "type": "VennDiagram",
+    "body": [
+      {
+        "type": "VennSubsetStatement",
+        "kind": "set",
+        "sets": [
+          {
+            "type": "StringLiteral",
+            "value": "a#35;b",
+            "raw": "\"a#35;b\"",
+            "closed": true,
+            "range": [
+              14,
+              22
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 4
+              },
+              "end": {
+                "line": 2,
+                "column": 12
+              }
+            }
+          }
+        ],
+        "label": null,
+        "size": null,
+        "range": [
+          10,
+          22
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 12
+          }
+        }
+      },
+      {
+        "type": "VennSubsetStatement",
+        "kind": "union",
+        "sets": [
+          {
+            "type": "StringLiteral",
+            "value": "a#35;b",
+            "raw": "\"a#35;b\"",
+            "closed": true,
+            "range": [
+              29,
+              37
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 6
+              },
+              "end": {
+                "line": 3,
+                "column": 14
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "a#35;b",
+            "raw": "\"a#35;b\"",
+            "closed": true,
+            "range": [
+              38,
+              46
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 15
+              },
+              "end": {
+                "line": 3,
+                "column": 23
+              }
+            }
+          }
+        ],
+        "label": null,
+        "size": null,
+        "range": [
+          23,
+          46
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 23
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      46
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 23
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "venn-beta",
+      "range": [
+        0,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "set",
+      "range": [
+        10,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"a#35;b\"",
+      "range": [
+        14,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "union",
+      "range": [
+        23,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"a#35;b\"",
+      "range": [
+        29,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 6
+        },
+        "end": {
+          "line": 3,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        37,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 14
+        },
+        "end": {
+          "line": 3,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"a#35;b\"",
+      "range": [
+        38,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 15
+        },
+        "end": {
+          "line": 3,
+          "column": 23
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    47
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 0
+    }
+  }
+}

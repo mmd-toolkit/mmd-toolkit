@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Two spaced semicolons after an alignment reject."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 18: unexpected character: ->;<- at offset: 58, skipped 2 characters. "
+  }
+}

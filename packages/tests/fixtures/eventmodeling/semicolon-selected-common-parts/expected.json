@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A selected semicolon between the keyword and colon splits no atom."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "accTitle: A",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "00",
+        "modelEntityType": "evt",
+        "entityIdentifier": "Marker",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "\"style:#x\""
+        }
+      }
+    ]
+  }
+}

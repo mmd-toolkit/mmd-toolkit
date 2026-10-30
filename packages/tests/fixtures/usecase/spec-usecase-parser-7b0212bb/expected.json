@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/usecase.parser.spec.ts",
+    "line": 139,
+    "test": "usecase parser publication and normalized AST > publishes accessibility text through common DB and normalized AST transactionally"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "Authentication use cases",
+    "accDescr": "First line\nSecond line",
+    "actors": [
+      {
+        "id": "User",
+        "label": "User",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

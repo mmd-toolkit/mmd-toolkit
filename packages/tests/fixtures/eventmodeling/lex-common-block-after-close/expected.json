@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Common statements: A complete description block can be followed by another statement on the same line. Accepted by Mermaid."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "accTitle: T",
+    "accDescr": " accDescr {}",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

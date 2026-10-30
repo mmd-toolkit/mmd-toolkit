@@ -1,0 +1,118 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js",
+    "line": 348,
+    "test": "Central Connection Parsing > when parsing central connection syntax > should handle multiple central connection types in one diagram"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Alice",
+        "description": "Alice",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "Bob"
+      },
+      {
+        "name": "Bob",
+        "description": "Bob",
+        "wrap": false,
+        "prevActor": "Alice",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "Charlie"
+      },
+      {
+        "name": "Charlie",
+        "description": "Charlie",
+        "wrap": false,
+        "prevActor": "Bob",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "Alice",
+        "to": "Bob",
+        "message": "Message 1",
+        "wrap": false,
+        "type": 0,
+        "activate": true,
+        "centralConnection": 61
+      },
+      {
+        "from": "Bob",
+        "message": "",
+        "wrap": false,
+        "type": 59,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Alice",
+        "message": "",
+        "wrap": false,
+        "type": 60,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Bob",
+        "to": "Charlie",
+        "message": "Message 2",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 60
+      },
+      {
+        "from": "Bob",
+        "message": "",
+        "wrap": false,
+        "type": 60,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Charlie",
+        "to": "Alice",
+        "message": "Message 3",
+        "wrap": false,
+        "type": 34,
+        "activate": true,
+        "centralConnection": 61
+      },
+      {
+        "from": "Alice",
+        "message": "",
+        "wrap": false,
+        "type": 59,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Charlie",
+        "message": "",
+        "wrap": false,
+        "type": 60,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

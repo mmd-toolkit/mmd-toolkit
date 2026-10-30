@@ -1,0 +1,60 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The composite body context: click, href, and strings are not read here, so the line is four state ids."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "roundedWithTitle",
+        "label": "A",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "click",
+        "shape": "rect",
+        "label": "click",
+        "classes": [],
+        "styles": [],
+        "parentId": "A"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "A"
+      },
+      {
+        "id": "href",
+        "shape": "rect",
+        "label": "href",
+        "classes": [],
+        "styles": [],
+        "parentId": "A"
+      },
+      {
+        "id": "\"u\"",
+        "shape": "rect",
+        "label": "\"u\"",
+        "classes": [],
+        "styles": [],
+        "parentId": "A"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Known divergences: detection: the word `C4Deployment` in a class name is detected too."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nquadrantChartA:::C4\n^"
+  }
+}

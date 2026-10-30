@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Rejections outside the grammar: a `topAxis` statement rejects the whole text, whatever else it holds."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "yy.TopAxis is not a function"
+  }
+}

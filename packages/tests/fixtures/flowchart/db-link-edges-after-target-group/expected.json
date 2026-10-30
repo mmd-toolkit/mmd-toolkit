@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The edges of a link come after its target group, so no edge has the id e1 when the target e1 is added: the vertex e1 exists, and then the edge from A to e1 takes the edge id e1."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "e1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "e1",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "e1",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": true,
+        "stroke": "normal",
+        "length": 1,
+        "id": "e1"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Shapes: each bracketed shape of the table and its Db type."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "N0",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "N1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "N2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "type": "circle",
+        "props": {}
+      },
+      {
+        "id": "N3",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "type": "doublecircle",
+        "props": {}
+      },
+      {
+        "id": "N4",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "type": "diamond",
+        "props": {}
+      },
+      {
+        "id": "N5",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "type": "hexagon",
+        "props": {}
+      },
+      {
+        "id": "N6",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "type": "stadium",
+        "props": {}
+      },
+      {
+        "id": "N7",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "type": "subroutine",
+        "props": {}
+      },
+      {
+        "id": "N8",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "type": "cylinder",
+        "props": {}
+      },
+      {
+        "id": "N9",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "type": "odd",
+        "props": {}
+      },
+      {
+        "id": "N10",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "type": "ellipse",
+        "props": {}
+      },
+      {
+        "id": "N11",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "type": "trapezoid",
+        "props": {}
+      },
+      {
+        "id": "N12",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "type": "lean_right",
+        "props": {}
+      },
+      {
+        "id": "N13",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "type": "inv_trapezoid",
+        "props": {}
+      },
+      {
+        "id": "N14",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "type": "lean_left",
+        "props": {}
+      },
+      {
+        "id": "N15",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "type": "rect",
+        "props": {
+          "a": "b"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

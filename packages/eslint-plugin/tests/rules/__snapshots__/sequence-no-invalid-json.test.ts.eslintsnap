@@ -1,0 +1,424 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: sequence-no-invalid-json >> invalid >>> docs/rules/sequence-no-invalid-json.md incorrect 1
+Filename: sequence-no-invalid-json-incorrect-1.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   participant A
+  3 |   links A: {"Dashboard": "https://x.example",}
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output:
+  1 | sequenceDiagram
+  2 |   participant A
+  3 |   links A: {"Dashboard": "https://x.example"}
+  4 |
+
+[1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> docs/rules/sequence-no-invalid-json.md incorrect 2
+Filename: sequence-no-invalid-json-incorrect-2.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   participant A
+  3 |   properties A: {"class": "internal",}
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output:
+  1 | sequenceDiagram
+  2 |   participant A
+  3 |   properties A: {"class": "internal"}
+  4 |
+
+[1] mermaid.js sets nothing from this `properties` statement because its text is not JSON.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/db-links-array-value
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/db-links-array-value-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | links A: [1, 2]
+    | ^~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js does not read names from this `links` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/db-links-empty
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/db-links-empty-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | links A:
+    | ^~~~~~~~ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/db-links-false
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/db-links-false-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | links A: false
+    | ^~~~~~~~~~~~~~ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js does not read names from this `links` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/db-links-not-json
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/db-links-not-json-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | links A: not json
+    | ^~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/db-links-null
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/db-links-null-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | links A: null
+    | ^~~~~~~~~~~~~ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js does not read names from this `links` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/db-links-number-value
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/db-links-number-value-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | links A: 5
+    | ^~~~~~~~~~ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js does not read names from this `links` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/db-links-string-value
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/db-links-string-value-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | links A: "ab"
+    | ^~~~~~~~~~~~~ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js does not read names from this `links` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/db-links-then-empty-description-block-text
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/db-links-then-empty-description-block-text-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | links A: {"a": "b"} accDescr {}
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/db-links-trailing-comma
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/db-links-trailing-comma-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | links A: {"Dashboard": "https://x.example",}
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | links A: {"Dashboard": "https://x.example"}
+  4 |
+
+[1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/db-links-true
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/db-links-true-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | links A: true
+    | ^~~~~~~~~~~~~ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js does not read names from this `links` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/db-links-wrap-prefix-only
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/db-links-wrap-prefix-only-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | links A: wrap:
+    | ^~~~~~~~~~~~~~ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/db-properties-empty
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/db-properties-empty-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | properties A:
+    | ^~~~~~~~~~~~~ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js sets nothing from this `properties` statement because its text is not JSON.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/db-properties-false
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/db-properties-false-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | properties A: false
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js does not read names from this `properties` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/db-properties-not-json
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/db-properties-not-json-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | properties A: {bad
+    | ^~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js sets nothing from this `properties` statement because its text is not JSON.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/db-properties-null
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/db-properties-null-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | properties A: null
+    | ^~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js does not read names from this `properties` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/db-properties-number-value
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/db-properties-number-value-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | properties A: 5
+    | ^~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js does not read names from this `properties` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/db-properties-trailing-comma
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/db-properties-trailing-comma-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | properties A: {"class": "internal",}
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | properties A: {"class": "internal"}
+  4 |
+
+[1] mermaid.js sets nothing from this `properties` statement because its text is not JSON.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/db-properties-true
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/db-properties-true-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | properties A: true
+    | ^~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js does not read names from this `properties` statement because its JSON is not an object: a string and an array give their positions, and any other value gives nothing.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/db-properties-wrap-prefix-only
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/db-properties-wrap-prefix-only-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | participant A
+  3 | properties A: nowrap:
+    | ^~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js sets nothing from this `properties` statement because its text is not JSON.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/links-not-json-before-and-after-hash
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/links-not-json-before-and-after-hash-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   participant A
+  3 |   links A: {"Docs": "https://x.example/",} # note
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output:
+  1 | sequenceDiagram
+  2 |   participant A
+  3 |   links A: {"Docs": "https://x.example/"} # note
+  4 |
+
+[1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/trailing-comma-after-hash-url
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/trailing-comma-after-hash-url-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | links A: {"Docs": "https://x.example/#top",}
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js sets nothing from this `links` statement because its text is not JSON.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/trailing-comma-quoted-comma
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/trailing-comma-quoted-comma-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | properties A: {"class": "a,}",}
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 |
+
+Output:
+  1 | sequenceDiagram
+  2 | properties A: {"class": "a,}"}
+  3 |
+
+[1] mermaid.js sets nothing from this `properties` statement because its text is not JSON.
+---
+
+
+Test: sequence-no-invalid-json >> invalid >>> invalid/sequence/trailing-commas-nested
+Filename: tests/fixtures/rules/sequence-no-invalid-json/invalid/sequence/trailing-commas-nested-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | properties A: {"a": [1, 2,], "b": 1,}
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 |
+
+Output:
+  1 | sequenceDiagram
+  2 | properties A: {"a": [1, 2], "b": 1}
+  3 |
+
+[1] mermaid.js sets nothing from this `properties` statement because its text is not JSON.
+---

@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md E02 (Empty forms): Empty string before nonempty string."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "x",
+        "isGroup": true
+      }
+    ]
+  }
+}

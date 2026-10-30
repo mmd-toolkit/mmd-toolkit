@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Grammar, links: an edge id must end with its `@`."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nflowchart LRA e1 @-->B\n--------------^\nExpecting 'SEMI', 'NEWLINE', 'EOF', 'AMP', 'START_LINK', 'LINK', 'LINK_ID', got 'NODE_STRING'"
+  }
+}

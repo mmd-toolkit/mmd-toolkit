@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md (Diagram detection): the first `%%{` starts no directive in the source, so the diagram text starts with it and the input is rejected here; the second directive scan of mermaid.js finds a directive from the first `%%{` to `x}%%` and detects a flowchart, but its flowchart lexer reads the text without that removal and rejects it, so both reject the input."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n%%{x}%%flowchart L\n^\nExpecting 'NEWLINE', 'SPACE', 'GRAPH', got 'NODE_STRING'"
+  }
+}

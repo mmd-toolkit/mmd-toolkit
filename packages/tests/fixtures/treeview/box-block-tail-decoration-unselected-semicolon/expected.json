@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Common forms and Box-drawing reading; ast/treeview.md TreeviewAccDescrBlockStatement: An unselected semicolon makes the bar line contain non-box content and keeps it in the lexical reading. Mermaid accepts with accDescr \"a\\n\\u2502;\"."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "a\n│;",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

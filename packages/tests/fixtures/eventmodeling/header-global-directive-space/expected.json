@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Header boundary: Global directive removal leaves the space required after the header. Accepted by Mermaid."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

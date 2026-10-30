@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The input of config-security-level-other-label-characters with the root htmlLabels the text `true`: HTML labels are enabled and the label is changed."
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": "true"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a&lt;b&gt;&equals;c",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

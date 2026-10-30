@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The attribute block context, rule 4: U+00A0 splits a word; rejected, three words."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...gramA { str ing a}\n--------------------^\nExpecting 'ATTRIBUTE_WORD', '?', got 'BLOCK_STOP'"
+  }
+}

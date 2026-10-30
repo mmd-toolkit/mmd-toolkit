@@ -1,0 +1,63 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Building the summary: [*] in a composite state A is A_start before the arrow and A_end after it."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "roundedWithTitle",
+        "label": "A",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "A_start",
+        "shape": "stateStart",
+        "label": "A_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "A"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "A"
+      },
+      {
+        "id": "A_end",
+        "shape": "stateEnd",
+        "label": "A_end",
+        "classes": [],
+        "styles": [],
+        "parentId": "A"
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "A_start",
+        "end": "B",
+        "label": ""
+      },
+      {
+        "start": "B",
+        "end": "A_end",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

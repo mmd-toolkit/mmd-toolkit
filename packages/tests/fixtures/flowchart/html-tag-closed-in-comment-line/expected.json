@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md HTML attribute quotes: the `>` on the comment line ends the tag `<b`, so `=\"d\"` in the label of B is outside any tag, the `\"` stays, and the flowchart grammar rejects it."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...chart LRA[<b]B[c=\"d\">e]\n---------------------^\nExpecting 'SQE', 'DOUBLECIRCLEEND', 'PE', '-)', 'STADIUMEND', 'SUBROUTINEEND', 'PIPE', 'CYLINDEREND', 'DIAMOND_STOP', 'TAGEND', 'TRAPEND', 'INVTRAPEND', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got 'STR'"
+  }
+}

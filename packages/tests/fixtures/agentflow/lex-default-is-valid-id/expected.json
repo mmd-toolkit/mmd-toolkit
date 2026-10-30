@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md: Default is a keyword at an id position."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "default",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "default",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

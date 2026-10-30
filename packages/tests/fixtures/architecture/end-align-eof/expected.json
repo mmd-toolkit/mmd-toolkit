@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An alignment is accepted at written EOF."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service"
+      },
+      {
+        "id": "db",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": [
+      {
+        "direction": "row",
+        "members": [
+          "api",
+          "db"
+        ]
+      }
+    ]
+  }
+}

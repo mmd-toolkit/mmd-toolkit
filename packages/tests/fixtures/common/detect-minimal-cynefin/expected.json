@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md entry 38: minimal accepted example of `cynefin`. The header line alone is accepted."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  }
+}

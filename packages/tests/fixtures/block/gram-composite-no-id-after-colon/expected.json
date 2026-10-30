@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, composite blocks: `block:` with no id is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...ta  block:    A  end\n--------------------^\nExpecting 'BLOCK_DIAGRAM_KEY', 'LINK', 'START_LINK', 'SPACE_BLOCK', 'COLUMNS', 'id-block', 'NODE_ID', 'classDef', 'class', 'style', got 'end'"
+  }
+}

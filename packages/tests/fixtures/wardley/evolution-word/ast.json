@@ -1,0 +1,238 @@
+{
+  "type": "Root",
+  "diagramType": "wardley",
+  "body": {
+    "type": "WardleyDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "WardleyEvolutionStatement",
+        "stages": [
+          {
+            "type": "WardleyEvolutionStage",
+            "textBefore": [],
+            "name": {
+              "type": "WardleyIdentifier",
+              "name": "_A",
+              "range": [
+                22,
+                24
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 9
+                },
+                "end": {
+                  "line": 2,
+                  "column": 11
+                }
+              }
+            },
+            "textBeforeBoundaryMark": [],
+            "textBeforeBoundary": [],
+            "boundary": null,
+            "textBeforeSecondNameMark": [],
+            "textBeforeSecondName": [],
+            "secondName": null,
+            "textAfter": [],
+            "range": [
+              22,
+              24
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 11
+              }
+            }
+          },
+          {
+            "type": "WardleyEvolutionStage",
+            "textBefore": [],
+            "name": {
+              "type": "WardleyIdentifier",
+              "name": "B",
+              "range": [
+                28,
+                29
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 15
+                },
+                "end": {
+                  "line": 2,
+                  "column": 16
+                }
+              }
+            },
+            "textBeforeBoundaryMark": [],
+            "textBeforeBoundary": [],
+            "boundary": null,
+            "textBeforeSecondNameMark": [],
+            "textBeforeSecondName": [],
+            "secondName": null,
+            "textAfter": [],
+            "range": [
+              28,
+              29
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 15
+              },
+              "end": {
+                "line": 2,
+                "column": 16
+              }
+            }
+          }
+        ],
+        "range": [
+          13,
+          29
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 16
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      29
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 16
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "wardley-beta",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "evolution",
+      "range": [
+        13,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "_A",
+      "range": [
+        22,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 9
+        },
+        "end": {
+          "line": 2,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "->",
+      "range": [
+        25,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "B",
+      "range": [
+        28,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 15
+        },
+        "end": {
+          "line": 2,
+          "column": 16
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    29
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 16
+    }
+  }
+}

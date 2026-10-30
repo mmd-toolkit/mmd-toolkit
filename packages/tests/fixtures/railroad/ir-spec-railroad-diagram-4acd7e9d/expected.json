@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/railroad/parser/railroadDiagram.spec.ts",
+    "line": 173,
+    "test": "Railroad Parser > Complex Grammars > should parse multiple rules"
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "rule1",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      },
+      {
+        "name": "rule2",
+        "definition": {
+          "type": "terminal",
+          "value": "b"
+        }
+      },
+      {
+        "name": "rule3",
+        "definition": {
+          "type": "terminal",
+          "value": "c"
+        }
+      }
+    ]
+  }
+}

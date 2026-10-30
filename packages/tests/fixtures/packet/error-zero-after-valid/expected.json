@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A zero count rejects after a valid prefix too."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Packet block 1 is invalid. Cannot have a zero bit field."
+  }
+}

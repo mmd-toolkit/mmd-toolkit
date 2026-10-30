@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-metadata-prototype-keys.spec.ts",
+    "line": 14,
+    "test": "agentflow @{ } metadata: prototype-shaped keys are stripped > drops an authored __proto__ key from vertex metadata"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "type": "square",
+        "props": {},
+        "metadata": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "a",
+        "set": {
+          "metadata": {}
+        }
+      }
+    ]
+  }
+}

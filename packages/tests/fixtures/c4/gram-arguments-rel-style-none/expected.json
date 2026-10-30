@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`UpdateRelStyle` with no arguments is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...s\")UpdateRelStyle()\n----------------------^\nExpecting 'STR', 'STR_KEY', 'ATTRIBUTE', 'ATTRIBUTE_EMPTY', got 'NEWLINE'"
+  }
+}

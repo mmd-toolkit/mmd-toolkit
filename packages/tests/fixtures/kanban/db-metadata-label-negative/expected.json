@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "label metadata with negative tests truthiness, conversion, or validation."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "-2",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "label": "-2"
+        }
+      }
+    ]
+  }
+}

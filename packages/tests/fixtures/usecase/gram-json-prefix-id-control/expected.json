@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure: The complete raw JSON prefix id is valid."
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "Table",
+        "value": {},
+        "propertyOrder": {
+          "": []
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "Table",
+        "set": {
+          "value": {},
+          "propertyOrder": {
+            "": []
+          }
+        }
+      }
+    ]
+  }
+}

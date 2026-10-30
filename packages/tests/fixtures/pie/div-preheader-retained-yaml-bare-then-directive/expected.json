@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does detection pass bare-line LS trivia between retained YAML and a retained second-scan directive? Mermaid rejects; the specified reading keeps both forms and accepts an empty pie."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 5, column 1: unexpected character: -> <- at offset: 16, skipped 1 characters. "
+  }
+}

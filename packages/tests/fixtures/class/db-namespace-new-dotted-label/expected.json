@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The text of the label is the `label` of `A.B`, while the part `A` gets the part itself as label and is not explicit."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "C",
+        "type": "",
+        "label": "C",
+        "text": "C",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "A.B"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "A",
+        "label": "A",
+        "classes": [],
+        "notes": [],
+        "children": [
+          "A.B"
+        ],
+        "explicit": false
+      },
+      {
+        "id": "A.B",
+        "label": "L",
+        "classes": [
+          "C"
+        ],
+        "notes": [],
+        "children": [],
+        "parent": "A",
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

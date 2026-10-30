@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Diagram and statements: `title T` is two entities; accepted."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-title-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "title",
+        "classes": []
+      },
+      {
+        "id": "entity-T-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "T",
+        "classes": []
+      },
+      {
+        "id": "entity-A-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "bom at line-start tests whitespace, token boundaries, and indentation."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "isGroup": true
+      }
+    ]
+  }
+}

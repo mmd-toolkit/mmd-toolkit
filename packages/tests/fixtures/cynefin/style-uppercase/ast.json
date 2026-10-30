@@ -1,0 +1,157 @@
+{
+  "type": "Root",
+  "diagramType": "cynefin",
+  "body": {
+    "type": "CynefinDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "CynefinDomainStatement",
+        "name": "complex",
+        "textAfterName": [],
+        "items": [
+          {
+            "type": "CynefinDomainItem",
+            "textBefore": [],
+            "label": {
+              "type": "StringLiteral",
+              "value": "STYLE:#x;",
+              "raw": "\"STYLE:#x;\"",
+              "closed": true,
+              "range": [
+                21,
+                32
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 8
+                },
+                "end": {
+                  "line": 2,
+                  "column": 19
+                }
+              }
+            },
+            "textAfter": [],
+            "range": [
+              21,
+              32
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 8
+              },
+              "end": {
+                "line": 2,
+                "column": 19
+              }
+            }
+          }
+        ],
+        "range": [
+          13,
+          32
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 19
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      32
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 19
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "cynefin-beta",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "complex",
+      "range": [
+        13,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"STYLE:#x;\"",
+      "range": [
+        21,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 19
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    32
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 19
+    }
+  }
+}

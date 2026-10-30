@@ -1,0 +1,80 @@
+{
+  "type": "Root",
+  "diagramType": "info",
+  "body": {
+    "type": "InfoDiagram",
+    "showInfo": true,
+    "textBeforeHeader": [],
+    "textBeforeShowInfo": [],
+    "body": [],
+    "range": [
+      2,
+      16
+    ],
+    "loc": {
+      "start": {
+        "line": 3,
+        "column": 0
+      },
+      "end": {
+        "line": 5,
+        "column": 8
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "info",
+      "range": [
+        2,
+        6
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "showInfo",
+      "range": [
+        8,
+        16
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 8
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    18
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 7,
+      "column": 0
+    }
+  }
+}

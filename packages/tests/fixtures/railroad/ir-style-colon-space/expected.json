@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A space before hash prevents the shared style semicolon rule."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": []
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/treeView/boxDrawingPreprocessor.spec.ts",
+    "line": 413,
+    "test": "boxDrawingPreprocessor > preprocessBoxDrawing > error cases > should throw on indented line without box chars in box mode"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Line 3: Unexpected indentation without box-drawing characters. In box-drawing format, use ├── or └── prefixes for indented nodes."
+  }
+}

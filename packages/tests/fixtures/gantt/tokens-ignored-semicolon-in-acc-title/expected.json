@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Trivia between units: an ignored `;` in an accessibility title line; the title `style:`, the placeholder, `y`."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "style:ﬂ°x¶ßy",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [],
+    "links": []
+  }
+}

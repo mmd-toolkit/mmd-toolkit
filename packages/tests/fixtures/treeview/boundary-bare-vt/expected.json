@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check the complete whitespace boundary set at bare: vt."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node\u000b",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "next",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

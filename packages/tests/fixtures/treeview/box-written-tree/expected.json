@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: Branch prefixes and an intervening decoration remain distinct authored syntax."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "src",
+            "nodeType": "directory",
+            "cssClass": "high",
+            "icon": "folder",
+            "description": "entry",
+            "children": [
+              {
+                "name": "my file",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "other",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The header boundary is judged after global directive removal."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 1: Expecting: one of these possible Token sequences:\n  1. [radar-beta]\n  2. [radar-beta:]\n  3. [radar-beta, :]\nbut found: 'radar-betaaxis'"
+  }
+}

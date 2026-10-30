@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-from-tree/mindmap.md, converted form: an attribute quote in a node text is a single quote."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "<b a='x'>t</b>",
+      "level": 0,
+      "descr": "<b a='x'>t</b>",
+      "type": 0,
+      "children": []
+    }
+  }
+}

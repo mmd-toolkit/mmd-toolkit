@@ -1,0 +1,133 @@
+{
+  "type": "Root",
+  "diagramType": "architecture",
+  "body": {
+    "type": "ArchitectureDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "ArchitectureTitleStatement",
+        "value": {
+          "type": "ArchitectureLiteral",
+          "value": "sample title\t",
+          "range": [
+            25,
+            38
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 25
+            },
+            "end": {
+              "line": 1,
+              "column": 38
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          19,
+          38
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 19
+          },
+          "end": {
+            "line": 1,
+            "column": 38
+          }
+        }
+      }
+    ],
+    "range": [
+      1,
+      38
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 1
+      },
+      "end": {
+        "line": 1,
+        "column": 38
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "architecture-beta",
+      "range": [
+        1,
+        18
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 1
+        },
+        "end": {
+          "line": 1,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        19,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 19
+        },
+        "end": {
+          "line": 1,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "sample title\t",
+      "range": [
+        25,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 25
+        },
+        "end": {
+          "line": 1,
+          "column": 38
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    38
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 1,
+      "column": 38
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Lexical structure: `ACCTITLE` and `ACCDESCR` are read as `accTitle` and `accDescr`."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "T",
+    "accDescr": "D",
+    "requirements": [],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

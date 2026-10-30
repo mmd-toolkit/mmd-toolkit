@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Rejections outside the grammar: `topAxis` in any case is rejected, because the Db has no method for it."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "yy.TopAxis is not a function"
+  }
+}

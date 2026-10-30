@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A capitalized global is an ordinary id."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "Global",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Global",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

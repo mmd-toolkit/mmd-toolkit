@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/railroad.html",
+    "line": 91
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "rule",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "terminal",
+              "value": "A"
+            },
+            {
+              "type": "terminal",
+              "value": "B"
+            }
+          ]
+        }
+      },
+      {
+        "name": "another",
+        "definition": {
+          "type": "repetition",
+          "element": {
+            "type": "nonterminal",
+            "name": "rule"
+          },
+          "min": 1,
+          "max": "Infinity"
+        }
+      }
+    ]
+  }
+}

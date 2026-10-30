@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "diagrams/eventmodeling.md, Native hidden forms and comments: the comment line is not removed before the eventmodeling lexer reads the text, so it is part of the text of the slash block comment."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

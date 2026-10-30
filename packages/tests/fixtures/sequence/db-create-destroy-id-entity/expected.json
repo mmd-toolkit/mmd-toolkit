@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The participant and the entry of `createdActors` have the placeholder of `#amp;` in the id."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Cﬂ°amp¶ß",
+        "description": "Cﬂ°amp¶ß",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "A"
+      },
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "prevActor": "Cﬂ°amp¶ß",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [
+      {
+        "id": "Cﬂ°amp¶ß",
+        "messageIndex": 0
+      }
+    ],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "A",
+        "to": "Cﬂ°amp¶ß",
+        "message": "x",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

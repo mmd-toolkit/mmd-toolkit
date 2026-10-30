@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md requirement, a style statement stops at the first name that is no requirement or element: the names after it get nothing."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [
+          "fill:red"
+        ],
+        "classes": []
+      },
+      {
+        "name": "s",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

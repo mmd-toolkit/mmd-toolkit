@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A description terminal can end at the brace inside directive-looking text."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "%%{!",
+    "rules": []
+  }
+}

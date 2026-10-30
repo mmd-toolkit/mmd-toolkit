@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The statement context: the run before `direction` may not hold a U+2028, so the line is a name, which is no statement."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...agrama direction LR\n----------------------^\nExpecting 'STYLE_SEPARATOR', 'END_ARROW_L', 'LINE', got 'NEWLINE'"
+  }
+}

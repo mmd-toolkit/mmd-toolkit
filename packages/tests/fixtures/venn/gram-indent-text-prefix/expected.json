@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The gram indent text prefix form is rejected by the grammar or its validation."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\nvenn-betaset A textItem\n---------------^\nExpecting 'EOF', 'NEWLINE', 'TITLE', 'SET', 'UNION', 'TEXT', 'INDENT_TEXT', 'STYLE', got 'IDENTIFIER'"
+  }
+}

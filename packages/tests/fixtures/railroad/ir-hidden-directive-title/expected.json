@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A title composite terminal stops at the directive percent pair."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

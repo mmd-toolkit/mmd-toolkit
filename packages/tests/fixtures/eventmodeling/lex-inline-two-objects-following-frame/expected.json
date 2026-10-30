@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Data: Greedy inline braces read through the last same-line closer, enclosing apparent later frame text. Accepted by Mermaid."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "{x} tf 02 evt B {y}"
+        }
+      }
+    ]
+  }
+}

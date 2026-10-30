@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Nodes and shapes: a markdown string ends only at a backquote and a quote."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 3. Unrecognized text.\nmindmaproot  a[\"`x\"]\n------------------^"
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "type": "Root",
+  "diagramType": "radar",
+  "body": {
+    "type": "RadarDiagram",
+    "textBeforeHeader": [],
+    "textBeforeColon": [],
+    "body": [
+      {
+        "type": "RadarAccDescrStatement",
+        "value": {
+          "type": "RadarLiteral",
+          "value": " My Accessible Description",
+          "range": [
+            28,
+            54
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 11
+            },
+            "end": {
+              "line": 3,
+              "column": 37
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          19,
+          54
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 2
+          },
+          "end": {
+            "line": 3,
+            "column": 37
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      54
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 37
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "radar-beta",
+      "range": [
+        0,
+        10
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accDescr",
+      "range": [
+        19,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 3,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        27,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 10
+        },
+        "end": {
+          "line": 3,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " My Accessible Description",
+      "range": [
+        28,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 11
+        },
+        "end": {
+          "line": 3,
+          "column": 37
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    59
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 4
+    }
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "type": "Root",
+  "diagramType": "usecase",
+  "body": {
+    "type": "UsecaseDiagram",
+    "body": [
+      {
+        "type": "UsecaseEntityStatement",
+        "entity": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "A",
+            "range": [
+              18,
+              19
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 4,
+                "column": 1
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            18,
+            19
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 4,
+              "column": 1
+            }
+          }
+        },
+        "range": [
+          18,
+          19
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 1
+          }
+        }
+      }
+    ],
+    "range": [
+      5,
+      19
+    ],
+    "loc": {
+      "start": {
+        "line": 3,
+        "column": 0
+      },
+      "end": {
+        "line": 4,
+        "column": 1
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [
+    {
+      "type": "Comment",
+      "mark": "%%",
+      "value": "",
+      "range": [
+        0,
+        2
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 2
+        }
+      }
+    }
+  ],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "usecase-beta",
+      "range": [
+        5,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        18,
+        19
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 1
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    20
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 0
+    }
+  }
+}

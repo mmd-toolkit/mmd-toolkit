@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Common values: the second title space is a nonempty authored literal."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  }
+}

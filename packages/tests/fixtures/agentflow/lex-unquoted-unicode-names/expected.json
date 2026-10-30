@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read unquoted unicode names?"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "犬",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "API"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "猫",
+        "nodes": [
+          "A"
+        ],
+        "title": "Title",
+        "classes": [],
+        "labelType": "text",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  }
+}

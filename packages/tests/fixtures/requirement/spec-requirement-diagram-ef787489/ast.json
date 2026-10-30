@@ -1,0 +1,205 @@
+{
+  "type": "Root",
+  "diagramType": "requirement",
+  "body": {
+    "type": "RequirementDiagram",
+    "body": [
+      {
+        "type": "RequirementRelationshipStatement",
+        "left": {
+          "type": "RequirementIdentifier",
+          "name": "a",
+          "range": [
+            20,
+            21
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 3,
+              "column": 1
+            }
+          }
+        },
+        "relationship": "contains",
+        "arrow": "forward",
+        "right": {
+          "type": "RequirementIdentifier",
+          "name": "b",
+          "range": [
+            36,
+            37
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 16
+            },
+            "end": {
+              "line": 3,
+              "column": 17
+            }
+          }
+        },
+        "range": [
+          20,
+          37
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 17
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      37
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 17
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "requirementDiagram",
+      "range": [
+        0,
+        18
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "a",
+      "range": [
+        20,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-",
+      "range": [
+        22,
+        23
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 3,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "contains",
+      "range": [
+        24,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 4
+        },
+        "end": {
+          "line": 3,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "->",
+      "range": [
+        33,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 13
+        },
+        "end": {
+          "line": 3,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "b",
+      "range": [
+        36,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 16
+        },
+        "end": {
+          "line": 3,
+          "column": 17
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    37
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 17
+    }
+  }
+}

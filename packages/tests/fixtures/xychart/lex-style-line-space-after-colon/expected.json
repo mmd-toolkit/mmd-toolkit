@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, style line: whitespace between the `:` and the `#` stops the rule."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "style: ﬂ°x¶ßy",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": []
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}

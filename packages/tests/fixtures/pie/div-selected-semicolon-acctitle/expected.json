@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Known divergences: **[ignored-semicolon-as-token-boundary](../known-divergences/ignored-semicolon-as-token-boundary.md).** A selected semicolon strictly inside a fixed keyword or number has the same rejection rule. Case: selected-semicolon-acctitle."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "A",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

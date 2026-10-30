@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A converted frontmatter array title is embedded but cleared from the Db."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": []
+  },
+  "embedded": {
+    "title": "A,B"
+  }
+}

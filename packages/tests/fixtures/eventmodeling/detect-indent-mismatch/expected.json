@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Detection: Leading trimming removes the opening indentation; the unindented closer then matches. Accepted by Mermaid."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": []
+  }
+}

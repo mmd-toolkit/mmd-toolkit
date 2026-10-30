@@ -1,0 +1,217 @@
+{
+  "type": "Root",
+  "diagramType": "treeView",
+  "body": {
+    "type": "TreeviewDiagram",
+    "body": [
+      {
+        "type": "TreeviewNode",
+        "indent": 0,
+        "textBefore": [],
+        "prefix": null,
+        "textBeforeName": [],
+        "name": {
+          "type": "TreeviewIdentifier",
+          "name": "node",
+          "range": [
+            25,
+            29
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 3,
+              "column": 4
+            }
+          }
+        },
+        "annotations": [],
+        "range": [
+          25,
+          29
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 4
+          }
+        },
+        "children": []
+      },
+      {
+        "type": "TreeviewNode",
+        "indent": 0,
+        "textBefore": [],
+        "prefix": null,
+        "textBeforeName": [],
+        "name": {
+          "type": "TreeviewIdentifier",
+          "name": "other",
+          "range": [
+            38,
+            43
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 5,
+              "column": 5
+            }
+          }
+        },
+        "annotations": [],
+        "range": [
+          38,
+          43
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 5
+          }
+        },
+        "children": []
+      }
+    ],
+    "range": [
+      0,
+      43
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 5,
+        "column": 5
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [
+    {
+      "type": "Comment",
+      "mark": "%%",
+      "value": " comment",
+      "range": [
+        14,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Comment",
+      "mark": "%%",
+      "value": " next",
+      "range": [
+        30,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 7
+        }
+      }
+    }
+  ],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "treeView-beta",
+      "range": [
+        0,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "node",
+      "range": [
+        25,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "other",
+      "range": [
+        38,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 5
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    43
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 5
+    }
+  }
+}

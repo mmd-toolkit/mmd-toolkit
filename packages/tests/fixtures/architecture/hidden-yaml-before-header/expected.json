@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The same YAML at the leading frontmatter position is parsed and rejected."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "unexpected end of the stream within a flow collection (2:1)\n\n 1 | invalid: [\n 2 | \n-----^"
+  }
+}

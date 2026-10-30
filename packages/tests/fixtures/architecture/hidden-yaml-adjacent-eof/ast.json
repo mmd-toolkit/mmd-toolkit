@@ -1,0 +1,98 @@
+{
+  "type": "Root",
+  "diagramType": "architecture",
+  "body": {
+    "type": "ArchitectureDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "ArchitectureIgnoredText",
+        "kind": "yaml-block",
+        "value": "---\n---",
+        "range": [
+          18,
+          25
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 3
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      25
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 3
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "architecture-beta",
+      "range": [
+        0,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "---\n---",
+      "range": [
+        18,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 3
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    25
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 3
+    }
+  }
+}

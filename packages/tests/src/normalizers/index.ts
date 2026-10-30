@@ -1,0 +1,233 @@
+import type { DbSummary } from "../types.ts"
+import { normalizeAgentflow, patchAgentflowDb } from "./agentflow.ts"
+import { normalizeArchitecture } from "./architecture.ts"
+import { normalizeBlock, patchBlockDb } from "./block.ts"
+import { normalizeC4, patchC4Db } from "./c4.ts"
+import { normalizeCynefin } from "./cynefin.ts"
+import { normalizeClass, patchClassDb } from "./class.ts"
+import {
+  normalizeEventmodeling,
+  patchEventmodelingDb,
+} from "./eventmodeling.ts"
+import { normalizeEr } from "./er.ts"
+import { normalizeFlowchart, patchFlowDb } from "./flowchart.ts"
+import { normalizeGantt, patchGanttDb } from "./gantt.ts"
+import { normalizeGitgraph, patchGitgraphDb } from "./gitgraph.ts"
+import { normalizeInfo } from "./info.ts"
+import { normalizeIshikawa } from "./ishikawa.ts"
+import { normalizeJourney } from "./journey.ts"
+import { normalizeKanban, patchKanbanDb } from "./kanban.ts"
+import { normalizeMindmap } from "./mindmap.ts"
+import { normalizePacket } from "./packet.ts"
+import { normalizePie } from "./pie.ts"
+import { normalizeQuadrant, patchQuadrantDb } from "./quadrant.ts"
+import { normalizeRadar } from "./radar.ts"
+import { normalizeRailroad } from "./railroad.ts"
+import { normalizeRequirement } from "./requirement.ts"
+import { normalizeSankey } from "./sankey.ts"
+import { normalizeSequence, patchSequenceDb } from "./sequence.ts"
+import { normalizeState } from "./state.ts"
+import { normalizeTimeline } from "./timeline.ts"
+import { normalizeTreemap } from "./treemap.ts"
+import { normalizeTreeview } from "./treeview.ts"
+import { normalizeWardley } from "./wardley.ts"
+import { normalizeUsecase, patchUsecaseDb } from "./usecase.ts"
+import { normalizeVenn } from "./venn.ts"
+import { normalizeXyChart } from "./xychart.ts"
+
+/**
+ * Turns a mermaid Db into its summary. Receives the Db right after parsing.
+ */
+export type Normalizer = (db: unknown) => DbSummary
+
+/**
+ * Normalizers keyed by the diagram id mermaid reports (`Diagram.type`).
+ *
+ * To support a new diagram type, add a module next to this one and register
+ * every id that shares its Db here.
+ */
+const normalizers: ReadonlyMap<string, Normalizer> = new Map<
+  string,
+  Normalizer
+>([
+  // `graph` and `flowchart` are both detected as `flowchart-v2`.
+  ["flowchart-v2", normalizeFlowchart],
+  ["flowchart-elk", normalizeFlowchart],
+  ["swimlane", normalizeFlowchart],
+  ["sequence", normalizeSequence],
+  // `classDiagram` and `classDiagram-v2` are both detected as `classDiagram`.
+  ["classDiagram", normalizeClass],
+  // `stateDiagram` and `stateDiagram-v2` are both detected as `stateDiagram`.
+  ["stateDiagram", normalizeState],
+  ["er", normalizeEr],
+  ["gantt", normalizeGantt],
+  ["journey", normalizeJourney],
+  ["mindmap", normalizeMindmap],
+  ["requirement", normalizeRequirement],
+  ["sankey", normalizeSankey],
+  ["timeline", normalizeTimeline],
+  ["xychart", normalizeXyChart],
+  ["quadrantChart", normalizeQuadrant],
+  ["block", normalizeBlock],
+  ["kanban", normalizeKanban],
+  ["c4", normalizeC4],
+  ["venn", normalizeVenn],
+  // Both `ishikawa` and `ishikawa-beta` are detected as `ishikawa`.
+  ["ishikawa", normalizeIshikawa],
+  ["agentflow", normalizeAgentflow],
+  ["usecase", normalizeUsecase],
+  ["pie", normalizePie],
+  ["gitGraph", normalizeGitgraph],
+  ["info", normalizeInfo],
+  ["packet", normalizePacket],
+  ["architecture", normalizeArchitecture],
+  ["radar", normalizeRadar],
+  ["treemap", normalizeTreemap],
+  ["treeView", normalizeTreeview],
+  ["railroad", normalizeRailroad],
+  ["railroadEbnf", normalizeRailroad],
+  ["railroadAbnf", normalizeRailroad],
+  ["railroadPeg", normalizeRailroad],
+  ["wardley", normalizeWardley],
+  ["cynefin", normalizeCynefin],
+  ["eventmodeling", normalizeEventmodeling],
+  // The pseudo diagram whose whole text is `error`: its Db holds nothing.
+  ["error", () => ({})],
+])
+
+/**
+ * Changes a Db class for summarizing. Receives the Db's prototype (or the Db,
+ * see {@link DbPatchEntry.appliedTo}). A patch
+ * does what its diagram type needs of the following:
+ *
+ * - make a sanitizer the Db calls (`@braintree/sanitize-url` through
+ *   `utils.formatUrl()`) have no effect, since summaries record values with
+ *   the sanitizers disabled. Needed for every Db that calls `formatUrl()`:
+ *   flowchart, class and agentflow in mermaid@12.2.0;
+ * - record a value that a site setting changes as the other settings give it
+ *   (the link target of class under `securityLevel: sandbox`), since summaries
+ *   are the same under every `securityLevel`;
+ * - give a stand-in for a browser function the Db calls while mermaid parses
+ *   (see `browser-stand-ins.ts`);
+ * - record the effect of each `@{ ... }` data block (see `data-blocks.ts`),
+ *   for every diagram type whose syntax has data blocks;
+ * - observe generated-id provenance without changing publication (gitgraph),
+ *   so the normalizer can distinguish generated ids from authored ones.
+ */
+export type DbPatch = (prototype: object) => void
+
+/**
+ * A Db patch, with a text mermaid detects as its diagram id. `runMermaid()`
+ * parses the text once before any input, to reach the Db class, and patches
+ * its prototype, so that no input is ever parsed by an unpatched Db.
+ */
+export interface DbPatchEntry {
+  readonly sampleText: string
+  readonly patch: DbPatch
+  /**
+   * What the patch receives: the prototype of the Db class (the default), or
+   * the Db itself, for a diagram type whose Db is one object that every
+   * diagram shares and that has no class (gantt).
+   */
+  readonly appliedTo?: "prototype" | "object"
+}
+
+/**
+ * Db patches keyed by diagram id. Ids that share a Db class share its patch,
+ * which is applied once.
+ */
+const dbPatches: ReadonlyMap<string, DbPatchEntry> = new Map<
+  string,
+  DbPatchEntry
+>([
+  [
+    "eventmodeling",
+    {
+      sampleText: "eventmodeling\n",
+      patch: patchEventmodelingDb,
+      appliedTo: "object",
+    },
+  ],
+  [
+    "gitGraph",
+    { sampleText: "gitGraph\n", patch: patchGitgraphDb, appliedTo: "object" },
+  ],
+  ["agentflow", { sampleText: "agentflow-beta TB\n", patch: patchAgentflowDb }],
+  [
+    "usecase",
+    {
+      sampleText: "usecase-beta\n",
+      patch: patchUsecaseDb,
+      appliedTo: "object",
+    },
+  ],
+  ["flowchart-v2", { sampleText: "flowchart LR\n", patch: patchFlowDb }],
+  ["flowchart-elk", { sampleText: "flowchart-elk LR\n", patch: patchFlowDb }],
+  ["swimlane", { sampleText: "swimlane-beta LR\n", patch: patchFlowDb }],
+  ["sequence", { sampleText: "sequenceDiagram\n", patch: patchSequenceDb }],
+  [
+    "classDiagram",
+    { sampleText: "classDiagram\n  class A\n", patch: patchClassDb },
+  ],
+  [
+    "gantt",
+    { sampleText: "gantt\n", patch: patchGanttDb, appliedTo: "object" },
+  ],
+  [
+    "quadrantChart",
+    {
+      sampleText: "quadrantChart\n",
+      patch: patchQuadrantDb,
+      appliedTo: "object",
+    },
+  ],
+  [
+    "block",
+    {
+      sampleText: "block-beta\n  A\n",
+      patch: patchBlockDb,
+      appliedTo: "object",
+    },
+  ],
+  [
+    "c4",
+    {
+      sampleText: 'C4Context\nPerson(a, "A")\n',
+      patch: patchC4Db,
+      appliedTo: "object",
+    },
+  ],
+  [
+    "kanban",
+    {
+      sampleText: "kanban\n",
+      patch: patchKanbanDb,
+      appliedTo: "object",
+    },
+  ],
+])
+
+/**
+ * Returns every Db patch, keyed by diagram id.
+ */
+export function getDbPatches(): ReadonlyMap<string, DbPatchEntry> {
+  return dbPatches
+}
+
+/**
+ * Returns the normalizer for a mermaid diagram id, if one is registered.
+ */
+export function getNormalizer(diagramType: string): Normalizer | undefined {
+  return normalizers.get(diagramType)
+}
+
+/**
+ * Summarizes `db`, or returns `null` when `diagramType` has no normalizer yet.
+ */
+export function normalizeDb(
+  diagramType: string,
+  db: unknown,
+): DbSummary | null {
+  const normalizer = normalizers.get(diagramType)
+  return normalizer ? normalizer(db) : null
+}

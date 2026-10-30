@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4Component in a text icon is checked against global C4 detection."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "iconText": "C4Component"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

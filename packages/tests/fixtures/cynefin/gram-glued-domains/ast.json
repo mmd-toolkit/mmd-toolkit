@@ -1,0 +1,367 @@
+{
+  "type": "Root",
+  "diagramType": "cynefin",
+  "body": {
+    "type": "CynefinDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "CynefinDomainStatement",
+        "name": "complex",
+        "textAfterName": [],
+        "items": [],
+        "range": [
+          13,
+          20
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 7
+          }
+        }
+      },
+      {
+        "type": "CynefinDomainStatement",
+        "name": "clear",
+        "textAfterName": [],
+        "items": [
+          {
+            "type": "CynefinDomainItem",
+            "textBefore": [],
+            "label": {
+              "type": "StringLiteral",
+              "value": "A",
+              "raw": "\"A\"",
+              "closed": true,
+              "range": [
+                26,
+                29
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 13
+                },
+                "end": {
+                  "line": 2,
+                  "column": 16
+                }
+              }
+            },
+            "textAfter": [],
+            "range": [
+              26,
+              29
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 13
+              },
+              "end": {
+                "line": 2,
+                "column": 16
+              }
+            }
+          }
+        ],
+        "range": [
+          20,
+          29
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 7
+          },
+          "end": {
+            "line": 2,
+            "column": 16
+          }
+        }
+      },
+      {
+        "type": "CynefinDomainStatement",
+        "name": "complicated",
+        "textAfterName": [],
+        "items": [],
+        "range": [
+          30,
+          41
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 17
+          },
+          "end": {
+            "line": 2,
+            "column": 28
+          }
+        }
+      },
+      {
+        "type": "CynefinDomainStatement",
+        "name": "chaotic",
+        "textAfterName": [],
+        "items": [],
+        "range": [
+          41,
+          48
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 28
+          },
+          "end": {
+            "line": 2,
+            "column": 35
+          }
+        }
+      },
+      {
+        "type": "CynefinDomainStatement",
+        "name": "confusion",
+        "textAfterName": [],
+        "items": [
+          {
+            "type": "CynefinDomainItem",
+            "textBefore": [],
+            "label": {
+              "type": "StringLiteral",
+              "value": "B",
+              "raw": "\"B\"",
+              "closed": true,
+              "range": [
+                58,
+                61
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 45
+                },
+                "end": {
+                  "line": 2,
+                  "column": 48
+                }
+              }
+            },
+            "textAfter": [],
+            "range": [
+              58,
+              61
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 45
+              },
+              "end": {
+                "line": 2,
+                "column": 48
+              }
+            }
+          }
+        ],
+        "range": [
+          48,
+          61
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 35
+          },
+          "end": {
+            "line": 2,
+            "column": 48
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      61
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 48
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "cynefin-beta",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "complex",
+      "range": [
+        13,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "clear",
+      "range": [
+        20,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 7
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"A\"",
+      "range": [
+        26,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 13
+        },
+        "end": {
+          "line": 2,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "complicated",
+      "range": [
+        30,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 17
+        },
+        "end": {
+          "line": 2,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "chaotic",
+      "range": [
+        41,
+        48
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 28
+        },
+        "end": {
+          "line": 2,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "confusion",
+      "range": [
+        48,
+        57
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 35
+        },
+        "end": {
+          "line": 2,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"B\"",
+      "range": [
+        58,
+        61
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 45
+        },
+        "end": {
+          "line": 2,
+          "column": 48
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    61
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 48
+    }
+  }
+}

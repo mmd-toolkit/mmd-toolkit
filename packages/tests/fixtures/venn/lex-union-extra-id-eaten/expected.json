@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: A swallowed non-whitespace prefix is an `ignored-text` unit and a VennIgnoredText node when the remaining input is accepted. This input is accepted by mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "A",
+          "A"
+        ],
+        "size": 2.5
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

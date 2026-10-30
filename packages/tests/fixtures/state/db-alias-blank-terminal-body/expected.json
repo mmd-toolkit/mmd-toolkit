@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Building the summary from the tree, shape: A blank alias with a body supplies its untrimmed description and has shape roundedWithTitle."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "roundedWithTitle",
+        "label": " ",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": [],
+        "parentId": "root_start"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

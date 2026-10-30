@@ -1,0 +1,139 @@
+{
+  "type": "Root",
+  "diagramType": "sequence",
+  "body": {
+    "type": "SequenceDiagram",
+    "body": [
+      {
+        "type": "SequenceAutonumberStatement",
+        "start": null,
+        "step": null,
+        "off": false,
+        "range": [
+          16,
+          26
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 10
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      26
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 10
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [
+    {
+      "type": "Comment",
+      "mark": "%%",
+      "value": " c %%{wrap ;\n%% e",
+      "range": [
+        27,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 11
+        },
+        "end": {
+          "line": 3,
+          "column": 4
+        }
+      }
+    }
+  ],
+  "directives": [
+    {
+      "type": "Directive",
+      "name": "wrap",
+      "value": "wrap ;\n%% e",
+      "closed": false,
+      "range": [
+        32,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 16
+        },
+        "end": {
+          "line": 3,
+          "column": 4
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "sequenceDiagram",
+      "range": [
+        0,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "autonumber",
+      "range": [
+        16,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    46
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 4
+    }
+  }
+}

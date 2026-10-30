@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An accessibility-looking keyword tests whether it takes the following node."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "accTitle:",
+        "label": "accTitle:",
+        "isGroup": true
+      },
+      {
+        "id": "S",
+        "label": "Todo",
+        "isGroup": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/railroad.md",
+    "line": 233
+  },
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "Identifier",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "special",
+              "text": "!Keyword"
+            },
+            {
+              "type": "nonterminal",
+              "name": "Letter"
+            },
+            {
+              "type": "repetition",
+              "element": {
+                "type": "nonterminal",
+                "name": "Letter"
+              },
+              "min": 0,
+              "max": "Infinity"
+            }
+          ]
+        }
+      },
+      {
+        "name": "Keyword",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "terminal",
+              "value": "if"
+            },
+            {
+              "type": "terminal",
+              "value": "else"
+            },
+            {
+              "type": "terminal",
+              "value": "while"
+            }
+          ]
+        }
+      },
+      {
+        "name": "Letter",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "terminal",
+              "value": "a"
+            },
+            {
+              "type": "terminal",
+              "value": "b"
+            },
+            {
+              "type": "terminal",
+              "value": "c"
+            },
+            {
+              "type": "terminal",
+              "value": "_"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

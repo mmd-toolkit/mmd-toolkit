@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A cross-frontmatter attribute damages otherwise matching body quotes."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 22: unexpected character: ->><- at offset: 35, skipped 1 characters.\nLexer error on line 2, column 24: unexpected character: ->\"<- at offset: 37, skipped 1 characters. Parse error on line 2, column 23: Expecting end of file but found `t`."
+  }
+}

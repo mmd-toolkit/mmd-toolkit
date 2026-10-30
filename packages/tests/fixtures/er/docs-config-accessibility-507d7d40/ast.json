@@ -1,0 +1,997 @@
+{
+  "type": "Root",
+  "diagramType": "er",
+  "body": {
+    "type": "ErDiagram",
+    "body": [
+      {
+        "type": "ErAccTitleStatement",
+        "value": {
+          "type": "ErLiteral",
+          "value": "My Entity Relationship Diagram",
+          "range": [
+            29,
+            59
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 16
+            },
+            "end": {
+              "line": 2,
+              "column": 46
+            }
+          }
+        },
+        "range": [
+          19,
+          59
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 6
+          },
+          "end": {
+            "line": 2,
+            "column": 46
+          }
+        }
+      },
+      {
+        "type": "ErAccDescrStatement",
+        "value": {
+          "type": "ErLiteral",
+          "value": "My Entity Relationship Diagram Description",
+          "range": [
+            76,
+            118
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 16
+            },
+            "end": {
+              "line": 3,
+              "column": 58
+            }
+          }
+        },
+        "range": [
+          66,
+          118
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 6
+          },
+          "end": {
+            "line": 3,
+            "column": 58
+          }
+        }
+      },
+      {
+        "type": "ErRelationshipStatement",
+        "left": {
+          "type": "ErEntityReference",
+          "name": {
+            "type": "ErIdentifier",
+            "name": "CUSTOMER",
+            "range": [
+              124,
+              132
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 4
+              },
+              "end": {
+                "line": 5,
+                "column": 12
+              }
+            }
+          },
+          "cssClasses": [],
+          "range": [
+            124,
+            132
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 4
+            },
+            "end": {
+              "line": 5,
+              "column": 12
+            }
+          }
+        },
+        "relationship": {
+          "type": "ErRelationship",
+          "leftCardinality": "only-one",
+          "line": "identifying",
+          "rightCardinality": "zero-or-more",
+          "range": [
+            133,
+            139
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 13
+            },
+            "end": {
+              "line": 5,
+              "column": 19
+            }
+          }
+        },
+        "right": {
+          "type": "ErEntityReference",
+          "name": {
+            "type": "ErIdentifier",
+            "name": "ORDER",
+            "range": [
+              140,
+              145
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 20
+              },
+              "end": {
+                "line": 5,
+                "column": 25
+              }
+            }
+          },
+          "cssClasses": [],
+          "range": [
+            140,
+            145
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 20
+            },
+            "end": {
+              "line": 5,
+              "column": 25
+            }
+          }
+        },
+        "role": {
+          "type": "ErIdentifier",
+          "name": "places",
+          "range": [
+            148,
+            154
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 28
+            },
+            "end": {
+              "line": 5,
+              "column": 34
+            }
+          }
+        },
+        "range": [
+          124,
+          154
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 4
+          },
+          "end": {
+            "line": 5,
+            "column": 34
+          }
+        }
+      },
+      {
+        "type": "ErRelationshipStatement",
+        "left": {
+          "type": "ErEntityReference",
+          "name": {
+            "type": "ErIdentifier",
+            "name": "ORDER",
+            "range": [
+              159,
+              164
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 4
+              },
+              "end": {
+                "line": 6,
+                "column": 9
+              }
+            }
+          },
+          "cssClasses": [],
+          "range": [
+            159,
+            164
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 4
+            },
+            "end": {
+              "line": 6,
+              "column": 9
+            }
+          }
+        },
+        "relationship": {
+          "type": "ErRelationship",
+          "leftCardinality": "only-one",
+          "line": "identifying",
+          "rightCardinality": "one-or-more",
+          "range": [
+            165,
+            171
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 10
+            },
+            "end": {
+              "line": 6,
+              "column": 16
+            }
+          }
+        },
+        "right": {
+          "type": "ErEntityReference",
+          "name": {
+            "type": "ErIdentifier",
+            "name": "LINE-ITEM",
+            "range": [
+              172,
+              181
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 17
+              },
+              "end": {
+                "line": 6,
+                "column": 26
+              }
+            }
+          },
+          "cssClasses": [],
+          "range": [
+            172,
+            181
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 17
+            },
+            "end": {
+              "line": 6,
+              "column": 26
+            }
+          }
+        },
+        "role": {
+          "type": "ErIdentifier",
+          "name": "contains",
+          "range": [
+            184,
+            192
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 29
+            },
+            "end": {
+              "line": 6,
+              "column": 37
+            }
+          }
+        },
+        "range": [
+          159,
+          192
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 4
+          },
+          "end": {
+            "line": 6,
+            "column": 37
+          }
+        }
+      },
+      {
+        "type": "ErRelationshipStatement",
+        "left": {
+          "type": "ErEntityReference",
+          "name": {
+            "type": "ErIdentifier",
+            "name": "CUSTOMER",
+            "range": [
+              197,
+              205
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 4
+              },
+              "end": {
+                "line": 7,
+                "column": 12
+              }
+            }
+          },
+          "cssClasses": [],
+          "range": [
+            197,
+            205
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 4
+            },
+            "end": {
+              "line": 7,
+              "column": 12
+            }
+          }
+        },
+        "relationship": {
+          "type": "ErRelationship",
+          "leftCardinality": "one-or-more",
+          "line": "non-identifying",
+          "rightCardinality": "one-or-more",
+          "range": [
+            206,
+            212
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 13
+            },
+            "end": {
+              "line": 7,
+              "column": 19
+            }
+          }
+        },
+        "right": {
+          "type": "ErEntityReference",
+          "name": {
+            "type": "ErIdentifier",
+            "name": "DELIVERY-ADDRESS",
+            "range": [
+              213,
+              229
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 20
+              },
+              "end": {
+                "line": 7,
+                "column": 36
+              }
+            }
+          },
+          "cssClasses": [],
+          "range": [
+            213,
+            229
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 20
+            },
+            "end": {
+              "line": 7,
+              "column": 36
+            }
+          }
+        },
+        "role": {
+          "type": "ErIdentifier",
+          "name": "uses",
+          "range": [
+            232,
+            236
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 39
+            },
+            "end": {
+              "line": 7,
+              "column": 43
+            }
+          }
+        },
+        "range": [
+          197,
+          236
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 4
+          },
+          "end": {
+            "line": 7,
+            "column": 43
+          }
+        }
+      }
+    ],
+    "range": [
+      3,
+      236
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 3
+      },
+      "end": {
+        "line": 7,
+        "column": 43
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "erDiagram",
+      "range": [
+        3,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 3
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accTitle",
+      "range": [
+        19,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        27,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 14
+        },
+        "end": {
+          "line": 2,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "My Entity Relationship Diagram",
+      "range": [
+        29,
+        59
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 16
+        },
+        "end": {
+          "line": 2,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accDescr",
+      "range": [
+        66,
+        74
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 6
+        },
+        "end": {
+          "line": 3,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        74,
+        75
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 14
+        },
+        "end": {
+          "line": 3,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "My Entity Relationship Diagram Description",
+      "range": [
+        76,
+        118
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 16
+        },
+        "end": {
+          "line": 3,
+          "column": 58
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "CUSTOMER",
+      "range": [
+        124,
+        132
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 4
+        },
+        "end": {
+          "line": 5,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "||",
+      "range": [
+        133,
+        135
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 13
+        },
+        "end": {
+          "line": 5,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        135,
+        137
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 15
+        },
+        "end": {
+          "line": 5,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "o{",
+      "range": [
+        137,
+        139
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 17
+        },
+        "end": {
+          "line": 5,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "ORDER",
+      "range": [
+        140,
+        145
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 20
+        },
+        "end": {
+          "line": 5,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        146,
+        147
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 26
+        },
+        "end": {
+          "line": 5,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "places",
+      "range": [
+        148,
+        154
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 28
+        },
+        "end": {
+          "line": 5,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "ORDER",
+      "range": [
+        159,
+        164
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 4
+        },
+        "end": {
+          "line": 6,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "||",
+      "range": [
+        165,
+        167
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 10
+        },
+        "end": {
+          "line": 6,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        167,
+        169
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 12
+        },
+        "end": {
+          "line": 6,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "|{",
+      "range": [
+        169,
+        171
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 14
+        },
+        "end": {
+          "line": 6,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "LINE-ITEM",
+      "range": [
+        172,
+        181
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 17
+        },
+        "end": {
+          "line": 6,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        182,
+        183
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 27
+        },
+        "end": {
+          "line": 6,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "contains",
+      "range": [
+        184,
+        192
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 29
+        },
+        "end": {
+          "line": 6,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "CUSTOMER",
+      "range": [
+        197,
+        205
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 4
+        },
+        "end": {
+          "line": 7,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}|",
+      "range": [
+        206,
+        208
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 13
+        },
+        "end": {
+          "line": 7,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "..",
+      "range": [
+        208,
+        210
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 15
+        },
+        "end": {
+          "line": 7,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "|{",
+      "range": [
+        210,
+        212
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 17
+        },
+        "end": {
+          "line": 7,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "DELIVERY-ADDRESS",
+      "range": [
+        213,
+        229
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 20
+        },
+        "end": {
+          "line": 7,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        230,
+        231
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 37
+        },
+        "end": {
+          "line": 7,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "uses",
+      "range": [
+        232,
+        236
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 39
+        },
+        "end": {
+          "line": 7,
+          "column": 43
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    238
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 9,
+      "column": 0
+    }
+  }
+}

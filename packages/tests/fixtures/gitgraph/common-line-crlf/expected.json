@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "CRLF normalization terminates common line values."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "T",
+    "accTitle": "A",
+    "accDescr": "D",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`dir` is the last `direction` statement of the body: `BT`; the diagram direction stays TB."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A"
+        ],
+        "title": "S",
+        "classes": [],
+        "cssStyles": [],
+        "dir": "BT"
+      }
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Db normalization, subgraphs: the second `A` is left out, and both `__proto__` are kept: `A`, `__proto__`, `__proto__`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "__proto__",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "__proto__",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A",
+          "__proto__",
+          "__proto__"
+        ],
+        "title": "S",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

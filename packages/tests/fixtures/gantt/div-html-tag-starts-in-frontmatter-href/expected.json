@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Known divergences: with `title: <a` in the frontmatter, mermaid.js reads the quotes inside the tag as `'` and the URL `u='v'>w`; here the string ends at its second quote, rejected (html-tag-in-frontmatter)."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "<a",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-01-01"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "a ",
+        "classes": [
+          "clickable"
+        ],
+        "id": "id1",
+        "order": 0
+      }
+    ],
+    "links": [
+      {
+        "id": "id1",
+        "url": "u='v'>w"
+      }
+    ]
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

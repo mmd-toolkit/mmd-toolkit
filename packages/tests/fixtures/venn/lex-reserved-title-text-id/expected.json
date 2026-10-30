@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The lex reserved title text id form stores {\"texts\":[{\"sets\":[\"A\"],\"id\":\"title\"}]}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "title"
+      }
+    ],
+    "styles": []
+  }
+}

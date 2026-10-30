@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a strategy keyword consume only its prefix?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 29: Expecting token of type ')' but found `er)`.\nParse error on line 2, column 32: Expecting: one of these possible Token sequences:\n  1. [STRING]\n  2. [ID]\n  3. [NAME_WITH_SPACES]\nbut found: '\n'"
+  }
+}

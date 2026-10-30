@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Directives (Where a directive is): `%%{-x}%%` is not a directive because no word follows `%%{`, so it is diagram text and flowchart rejects it."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nflowchart LR%%{-x}%%A-->B\n------------------^\nExpecting 'SEMI', 'NEWLINE', 'SPACE', 'EOF', 'SHAPE_DATA', 'STYLE_SEPARATOR', 'START_LINK', 'LINK', 'LINK_ID', got 'NODE_STRING'"
+  }
+}

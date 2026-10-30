@@ -1,0 +1,116 @@
+{
+  "type": "Root",
+  "diagramType": "er",
+  "body": {
+    "type": "ErDiagram",
+    "body": [
+      {
+        "type": "ErEntityStatement",
+        "name": {
+          "type": "ErIdentifier",
+          "name": "_foo",
+          "range": [
+            10,
+            14
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 4
+            }
+          }
+        },
+        "alias": null,
+        "cssClasses": [],
+        "attributes": null,
+        "range": [
+          10,
+          14
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 4
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      14
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 4
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "erDiagram",
+      "range": [
+        0,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "_foo",
+      "range": [
+        10,
+        14
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 4
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    15
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 0
+    }
+  }
+}

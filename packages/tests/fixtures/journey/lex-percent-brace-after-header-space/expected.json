@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Comments: `%%{ }%%` after the header and a space is a comment."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A",
+        "people": [],
+        "score": 1
+      }
+    ]
+  }
+}

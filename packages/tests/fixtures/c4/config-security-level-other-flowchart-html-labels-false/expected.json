@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The configuration {\"securityLevel\":\"other\",\"flowchart\":{\"htmlLabels\":false}} keeps title \"<b>T</b> = value\", accDescr \"<i>D</i> = value\" and label.text \"A\"."
+  },
+  "config": {
+    "securityLevel": "other",
+    "flowchart": {
+      "htmlLabels": false
+    }
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "<b>T</b> = value",
+    "accTitle": "",
+    "accDescr": "<i>D</i> = value",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "A"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md requirement, an unquoted name may hold spaces and loses the whitespace at its ends."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "spaced name",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

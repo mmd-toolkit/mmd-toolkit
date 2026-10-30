@@ -1,0 +1,287 @@
+{
+  "type": "Root",
+  "diagramType": "gitGraph",
+  "body": {
+    "type": "GitgraphDiagram",
+    "direction": null,
+    "textBeforeHeader": [],
+    "textBeforeDirection": [],
+    "textBeforeColon": [],
+    "body": [
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [
+          {
+            "type": "GitgraphTagOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": {
+              "type": "StringLiteral",
+              "value": "test tag",
+              "raw": "\"test tag\"",
+              "closed": true,
+              "range": [
+                30,
+                40
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 20
+                },
+                "end": {
+                  "line": 2,
+                  "column": 30
+                }
+              }
+            },
+            "range": [
+              25,
+              40
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 15
+              },
+              "end": {
+                "line": 2,
+                "column": 30
+              }
+            }
+          },
+          {
+            "type": "GitgraphTypeOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": "HIGHLIGHT",
+            "range": [
+              41,
+              55
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 31
+              },
+              "end": {
+                "line": 2,
+                "column": 45
+              }
+            }
+          }
+        ],
+        "textAfter": [],
+        "range": [
+          18,
+          55
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 8
+          },
+          "end": {
+            "line": 2,
+            "column": 45
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      55
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 45
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "gitGraph",
+      "range": [
+        0,
+        8
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        8,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 8
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        18,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "tag",
+      "range": [
+        25,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 15
+        },
+        "end": {
+          "line": 2,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        28,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 18
+        },
+        "end": {
+          "line": 2,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"test tag\"",
+      "range": [
+        30,
+        40
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 20
+        },
+        "end": {
+          "line": 2,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "type",
+      "range": [
+        41,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 31
+        },
+        "end": {
+          "line": 2,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        45,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 35
+        },
+        "end": {
+          "line": 2,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "HIGHLIGHT",
+      "range": [
+        46,
+        55
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 36
+        },
+        "end": {
+          "line": 2,
+          "column": 45
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    64
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 8
+    }
+  }
+}

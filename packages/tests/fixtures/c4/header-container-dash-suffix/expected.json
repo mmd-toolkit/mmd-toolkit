@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4Container header followed immediately by dash is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nC4Container-xPerson(a, \"A\")\n-----------^"
+  }
+}

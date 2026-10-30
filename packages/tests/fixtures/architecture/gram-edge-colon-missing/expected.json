@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Grammar: a port direction requires its colon."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 4, column 3: Expecting token of type ':' but found `R`."
+  }
+}

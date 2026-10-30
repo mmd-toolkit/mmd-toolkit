@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The input of config-security-level-other-label-characters with a directive that sets securityLevel other under the site securityLevel loose: a directive does not set securityLevel, so the site value stays and the label is recorded as written."
+  },
+  "config": {
+    "securityLevel": "loose"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a<b>=c",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

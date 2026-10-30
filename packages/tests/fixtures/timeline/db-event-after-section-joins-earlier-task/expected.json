@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, events: an event line after a section belongs to the last task, which lies in the section before."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "S"
+    ],
+    "tasks": [
+      {
+        "section": "",
+        "task": "a",
+        "events": [
+          "e"
+        ]
+      }
+    ]
+  }
+}

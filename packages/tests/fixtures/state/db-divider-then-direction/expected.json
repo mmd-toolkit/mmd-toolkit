@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Db normalization, Building the summary from the tree, Regions: a direction statement after the last divider is a statement, so the body is divided: the last region has LR, A has TB."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "roundedWithTitle",
+        "label": "A",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "divider-id-1",
+        "shape": "divider",
+        "label": "",
+        "classes": [],
+        "styles": [],
+        "parentId": "A",
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "divider-id-1"
+      },
+      {
+        "id": "generated-region-1",
+        "shape": "divider",
+        "label": "",
+        "classes": [],
+        "styles": [],
+        "parentId": "A",
+        "dir": "LR"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

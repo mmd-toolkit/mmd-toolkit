@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A directive after the whitespace that follows the accessibility title text: the title is trimmed."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "T",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

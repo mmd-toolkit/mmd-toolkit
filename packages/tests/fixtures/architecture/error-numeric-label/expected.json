@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unquoted number is an ID, not a numeric label or text icon."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 13: Expecting: one of these possible Token sequences:\n  1. [NEWLINE]\n  2. [EOF]\nbut found: '12'\nParse error on line 2, column 15: Expecting token of type ':' but found `\n`."
+  }
+}

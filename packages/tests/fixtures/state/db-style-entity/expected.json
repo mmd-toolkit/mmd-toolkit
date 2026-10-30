@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An entity is its placeholder in a text; this shows it for the text of a style statement, where no colon and hash make the line rule ignore the semicolon."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": [
+          "xﬂ°amp¶ßy"
+        ]
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

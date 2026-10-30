@@ -1,0 +1,68 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/eventmodeling.md",
+    "line": 132
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "ui",
+        "entityIdentifier": "CartUI",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "command",
+        "entityIdentifier": "AddItem",
+        "sourceFrames": [],
+        "data": {
+          "kind": "block",
+          "value": "{\n  description: 'john'\n  image: 'avatar_john'\n  price: 20.4\n}\n"
+        }
+      },
+      {
+        "kind": "time",
+        "name": "03",
+        "modelEntityType": "event",
+        "entityIdentifier": "ItemAdded",
+        "sourceFrames": [],
+        "data": {
+          "kind": "block",
+          "value": "{\n  description: string\n  image: string\n  price: number\n}\n"
+        }
+      },
+      {
+        "kind": "time",
+        "name": "04",
+        "modelEntityType": "command",
+        "entityIdentifier": "AddItem",
+        "sourceFrames": [],
+        "data": {
+          "kind": "block",
+          "value": "{\n  description: 'jack'\n  image: 'avatar_jack'\n  price: 12.5\n}\n"
+        }
+      },
+      {
+        "kind": "time",
+        "name": "05",
+        "modelEntityType": "event",
+        "entityIdentifier": "ItemAdded",
+        "sourceFrames": [],
+        "data": {
+          "kind": "block",
+          "value": "{\n  description: string\n  image: string\n  price: number\n}\n"
+        }
+      }
+    ]
+  }
+}

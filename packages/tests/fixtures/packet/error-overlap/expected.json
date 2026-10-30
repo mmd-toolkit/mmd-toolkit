@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Overlapping ranges are rejected as noncontiguous."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Packet block 1 - 2 is not contiguous. It should start from 2."
+  }
+}

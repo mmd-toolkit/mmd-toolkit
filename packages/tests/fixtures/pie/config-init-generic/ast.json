@@ -1,0 +1,101 @@
+{
+  "type": "Root",
+  "diagramType": "pie",
+  "body": {
+    "type": "PieDiagram",
+    "showData": false,
+    "textBeforeHeader": [],
+    "textBeforeShowData": [],
+    "body": [],
+    "range": [
+      44,
+      47
+    ],
+    "loc": {
+      "start": {
+        "line": 2,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 3
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [
+    {
+      "type": "Directive",
+      "name": "init",
+      "value": "init: {\"config\":{\"textPosition\":0.3}}",
+      "closed": true,
+      "range": [
+        0,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 43
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "Directive",
+      "value": "%%{init: {\"config\":{\"textPosition\":0.3}}}%%",
+      "range": [
+        0,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "pie",
+      "range": [
+        44,
+        47
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 3
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    47
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 3
+    }
+  }
+}

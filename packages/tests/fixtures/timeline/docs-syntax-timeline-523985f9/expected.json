@@ -1,0 +1,57 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/timeline.md",
+    "line": 74
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "Timeline of Industrial Revolution",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "17th-20th century",
+      "21st century"
+    ],
+    "tasks": [
+      {
+        "section": "17th-20th century",
+        "task": "Industry 1.0 ",
+        "events": [
+          "Machinery, Water power, Steam <br>power"
+        ]
+      },
+      {
+        "section": "17th-20th century",
+        "task": "Industry 2.0 ",
+        "events": [
+          "Electricity, Internal combustion engine, Mass production"
+        ]
+      },
+      {
+        "section": "17th-20th century",
+        "task": "Industry 3.0 ",
+        "events": [
+          "Electronics, Computers, Automation"
+        ]
+      },
+      {
+        "section": "21st century",
+        "task": "Industry 4.0 ",
+        "events": [
+          "Internet, Robotics, Internet of Things"
+        ]
+      },
+      {
+        "section": "21st century",
+        "task": "Industry 5.0 ",
+        "events": [
+          "Artificial intelligence, Big data, 3D printing"
+        ]
+      }
+    ]
+  }
+}

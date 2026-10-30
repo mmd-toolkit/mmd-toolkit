@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The comment is the text between the double quotes, without them, alone and after one or two keys."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [
+          {
+            "type": "int",
+            "name": "a",
+            "keys": [],
+            "comment": "the a"
+          },
+          {
+            "type": "int",
+            "name": "b",
+            "keys": [
+              "PK"
+            ],
+            "comment": "with key"
+          },
+          {
+            "type": "int",
+            "name": "c",
+            "keys": [
+              "PK",
+              "UK"
+            ],
+            "comment": "two keys"
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

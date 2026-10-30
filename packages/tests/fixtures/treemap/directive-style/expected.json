@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a global directive disappear inside a style value?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": [
+      {
+        "id": "styled",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

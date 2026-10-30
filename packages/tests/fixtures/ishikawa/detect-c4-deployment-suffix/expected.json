@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[H: detection and ISHIKAWA] Does the C4 detector require a keyword boundary?"
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nishikawaaC4Deployme\n^"
+  }
+}

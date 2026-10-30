@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Semicolons in common line values are retained as text."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "A ;",
+    "accDescr": "D;",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

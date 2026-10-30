@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Rejections outside the grammar: `create destroy A` with an id that a participant has already is rejected, as `create participant A` is."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "It is not possible to have actors with the same id, even if one is destroyed before the next is created. Use 'AS' aliases to simulate the behavior"
+  }
+}

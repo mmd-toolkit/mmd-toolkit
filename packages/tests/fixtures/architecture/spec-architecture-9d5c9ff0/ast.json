@@ -1,0 +1,1054 @@
+{
+  "type": "Root",
+  "diagramType": "architecture",
+  "body": {
+    "type": "ArchitectureDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "ArchitectureGroupStatement",
+        "textBeforeId": [],
+        "id": {
+          "type": "Identifier",
+          "name": "__proto__",
+          "range": [
+            30,
+            39
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 12
+            },
+            "end": {
+              "line": 2,
+              "column": 21
+            }
+          }
+        },
+        "textBeforeIcon": [],
+        "icon": {
+          "type": "Identifier",
+          "name": "cloud",
+          "range": [
+            40,
+            45
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 22
+            },
+            "end": {
+              "line": 2,
+              "column": 27
+            }
+          }
+        },
+        "textBeforeTitle": [],
+        "title": {
+          "type": "ArchitectureLabel",
+          "kind": "text",
+          "value": "Marker",
+          "range": [
+            46,
+            54
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 28
+            },
+            "end": {
+              "line": 2,
+              "column": 36
+            }
+          }
+        },
+        "textBeforeIn": [],
+        "textBeforeParent": [],
+        "in": null,
+        "textAfter": [],
+        "range": [
+          24,
+          54
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 6
+          },
+          "end": {
+            "line": 2,
+            "column": 36
+          }
+        }
+      },
+      {
+        "type": "ArchitectureServiceStatement",
+        "textBeforeId": [],
+        "id": {
+          "type": "Identifier",
+          "name": "a",
+          "range": [
+            69,
+            70
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 14
+            },
+            "end": {
+              "line": 3,
+              "column": 15
+            }
+          }
+        },
+        "textBeforeIcon": [],
+        "icon": {
+          "type": "Identifier",
+          "name": "server",
+          "range": [
+            71,
+            77
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 16
+            },
+            "end": {
+              "line": 3,
+              "column": 22
+            }
+          }
+        },
+        "textBeforeTitle": [],
+        "title": {
+          "type": "ArchitectureLabel",
+          "kind": "text",
+          "value": "A",
+          "range": [
+            78,
+            81
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 23
+            },
+            "end": {
+              "line": 3,
+              "column": 26
+            }
+          }
+        },
+        "textBeforeIn": [],
+        "textBeforeParent": [],
+        "in": {
+          "type": "Identifier",
+          "name": "__proto__",
+          "range": [
+            85,
+            94
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 30
+            },
+            "end": {
+              "line": 3,
+              "column": 39
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          61,
+          94
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 6
+          },
+          "end": {
+            "line": 3,
+            "column": 39
+          }
+        }
+      },
+      {
+        "type": "ArchitectureServiceStatement",
+        "textBeforeId": [],
+        "id": {
+          "type": "Identifier",
+          "name": "b",
+          "range": [
+            109,
+            110
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 14
+            },
+            "end": {
+              "line": 4,
+              "column": 15
+            }
+          }
+        },
+        "textBeforeIcon": [],
+        "icon": {
+          "type": "Identifier",
+          "name": "server",
+          "range": [
+            111,
+            117
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 16
+            },
+            "end": {
+              "line": 4,
+              "column": 22
+            }
+          }
+        },
+        "textBeforeTitle": [],
+        "title": {
+          "type": "ArchitectureLabel",
+          "kind": "text",
+          "value": "B",
+          "range": [
+            118,
+            121
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 23
+            },
+            "end": {
+              "line": 4,
+              "column": 26
+            }
+          }
+        },
+        "textBeforeIn": [],
+        "textBeforeParent": [],
+        "in": {
+          "type": "Identifier",
+          "name": "__proto__",
+          "range": [
+            125,
+            134
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 30
+            },
+            "end": {
+              "line": 4,
+              "column": 39
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          101,
+          134
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 6
+          },
+          "end": {
+            "line": 4,
+            "column": 39
+          }
+        }
+      },
+      {
+        "type": "ArchitectureEdgeStatement",
+        "lhsId": {
+          "type": "Identifier",
+          "name": "a",
+          "range": [
+            141,
+            142
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 6
+            },
+            "end": {
+              "line": 5,
+              "column": 7
+            }
+          }
+        },
+        "textBeforeLhsGroup": [],
+        "lhsGroup": false,
+        "textBeforeArrow": [],
+        "arrow": {
+          "type": "ArchitectureArrow",
+          "value": ":R -- L:",
+          "textBeforeStartDirection": [],
+          "startDirection": "R",
+          "textBeforeStartMarker": [],
+          "startMarker": "none",
+          "textBeforeLine": [],
+          "line": "solid",
+          "textBeforeTitle": [],
+          "title": null,
+          "textBeforeEndDash": [],
+          "textBeforeEndMarker": [],
+          "endMarker": "none",
+          "textBeforeEndDirection": [],
+          "endDirection": "L",
+          "textBeforeEndColon": [],
+          "range": [
+            142,
+            150
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 7
+            },
+            "end": {
+              "line": 5,
+              "column": 15
+            }
+          }
+        },
+        "textBeforeRhsId": [],
+        "rhsId": {
+          "type": "Identifier",
+          "name": "b",
+          "range": [
+            150,
+            151
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 15
+            },
+            "end": {
+              "line": 5,
+              "column": 16
+            }
+          }
+        },
+        "textBeforeRhsGroup": [],
+        "rhsGroup": false,
+        "textAfter": [],
+        "range": [
+          141,
+          151
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 6
+          },
+          "end": {
+            "line": 5,
+            "column": 16
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      151
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 5,
+        "column": 16
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "architecture-beta",
+      "range": [
+        0,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "group",
+      "range": [
+        24,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "__proto__",
+      "range": [
+        30,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        39,
+        40
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 21
+        },
+        "end": {
+          "line": 2,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "cloud",
+      "range": [
+        40,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 22
+        },
+        "end": {
+          "line": 2,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        45,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 27
+        },
+        "end": {
+          "line": 2,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        46,
+        47
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 28
+        },
+        "end": {
+          "line": 2,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Marker",
+      "range": [
+        47,
+        53
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 29
+        },
+        "end": {
+          "line": 2,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        53,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 35
+        },
+        "end": {
+          "line": 2,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "service",
+      "range": [
+        61,
+        68
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 6
+        },
+        "end": {
+          "line": 3,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "a",
+      "range": [
+        69,
+        70
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 14
+        },
+        "end": {
+          "line": 3,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        70,
+        71
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 15
+        },
+        "end": {
+          "line": 3,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "server",
+      "range": [
+        71,
+        77
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 16
+        },
+        "end": {
+          "line": 3,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        77,
+        78
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 22
+        },
+        "end": {
+          "line": 3,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        78,
+        79
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 23
+        },
+        "end": {
+          "line": 3,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "A",
+      "range": [
+        79,
+        80
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 24
+        },
+        "end": {
+          "line": 3,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        80,
+        81
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 25
+        },
+        "end": {
+          "line": 3,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "in",
+      "range": [
+        82,
+        84
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 27
+        },
+        "end": {
+          "line": 3,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "__proto__",
+      "range": [
+        85,
+        94
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 30
+        },
+        "end": {
+          "line": 3,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "service",
+      "range": [
+        101,
+        108
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 6
+        },
+        "end": {
+          "line": 4,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "b",
+      "range": [
+        109,
+        110
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 14
+        },
+        "end": {
+          "line": 4,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        110,
+        111
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 15
+        },
+        "end": {
+          "line": 4,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "server",
+      "range": [
+        111,
+        117
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 16
+        },
+        "end": {
+          "line": 4,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        117,
+        118
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 22
+        },
+        "end": {
+          "line": 4,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        118,
+        119
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 23
+        },
+        "end": {
+          "line": 4,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "B",
+      "range": [
+        119,
+        120
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 24
+        },
+        "end": {
+          "line": 4,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        120,
+        121
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 25
+        },
+        "end": {
+          "line": 4,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "in",
+      "range": [
+        122,
+        124
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 27
+        },
+        "end": {
+          "line": 4,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "__proto__",
+      "range": [
+        125,
+        134
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 30
+        },
+        "end": {
+          "line": 4,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "a",
+      "range": [
+        141,
+        142
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 6
+        },
+        "end": {
+          "line": 5,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        142,
+        143
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 7
+        },
+        "end": {
+          "line": 5,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "R",
+      "range": [
+        143,
+        144
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 8
+        },
+        "end": {
+          "line": 5,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        145,
+        147
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 10
+        },
+        "end": {
+          "line": 5,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "L",
+      "range": [
+        148,
+        149
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 13
+        },
+        "end": {
+          "line": 5,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        149,
+        150
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 14
+        },
+        "end": {
+          "line": 5,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "b",
+      "range": [
+        150,
+        151
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 15
+        },
+        "end": {
+          "line": 5,
+          "column": 16
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    151
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 16
+    }
+  }
+}

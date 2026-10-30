@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A description block encloses YAML-looking lines as value text."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A\n---\nx\n---\nB",
+    "domains": [],
+    "transitions": []
+  }
+}

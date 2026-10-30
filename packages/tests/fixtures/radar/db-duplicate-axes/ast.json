@@ -1,0 +1,965 @@
+{
+  "type": "Root",
+  "diagramType": "radar",
+  "body": {
+    "type": "RadarDiagram",
+    "textBeforeHeader": [],
+    "textBeforeColon": [],
+    "body": [
+      {
+        "type": "RadarAxisStatement",
+        "axes": [
+          {
+            "type": "RadarAxis",
+            "textBefore": [],
+            "name": {
+              "type": "Identifier",
+              "name": "A",
+              "range": [
+                16,
+                17
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 5
+                },
+                "end": {
+                  "line": 2,
+                  "column": 6
+                }
+              }
+            },
+            "textBeforeLabel": [],
+            "textBeforeLabelValue": [],
+            "label": {
+              "type": "StringLiteral",
+              "value": "First",
+              "raw": "\"First\"",
+              "closed": true,
+              "range": [
+                18,
+                25
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 7
+                },
+                "end": {
+                  "line": 2,
+                  "column": 14
+                }
+              }
+            },
+            "textBeforeLabelClose": [],
+            "textAfter": [],
+            "range": [
+              16,
+              26
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 5
+              },
+              "end": {
+                "line": 2,
+                "column": 15
+              }
+            }
+          },
+          {
+            "type": "RadarAxis",
+            "textBefore": [],
+            "name": {
+              "type": "Identifier",
+              "name": "B",
+              "range": [
+                27,
+                28
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 16
+                },
+                "end": {
+                  "line": 2,
+                  "column": 17
+                }
+              }
+            },
+            "textBeforeLabel": [],
+            "textBeforeLabelValue": [],
+            "label": null,
+            "textBeforeLabelClose": [],
+            "textAfter": [],
+            "range": [
+              27,
+              28
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 16
+              },
+              "end": {
+                "line": 2,
+                "column": 17
+              }
+            }
+          },
+          {
+            "type": "RadarAxis",
+            "textBefore": [],
+            "name": {
+              "type": "Identifier",
+              "name": "A",
+              "range": [
+                29,
+                30
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 18
+                },
+                "end": {
+                  "line": 2,
+                  "column": 19
+                }
+              }
+            },
+            "textBeforeLabel": [],
+            "textBeforeLabelValue": [],
+            "label": {
+              "type": "StringLiteral",
+              "value": "Third",
+              "raw": "\"Third\"",
+              "closed": true,
+              "range": [
+                31,
+                38
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 20
+                },
+                "end": {
+                  "line": 2,
+                  "column": 27
+                }
+              }
+            },
+            "textBeforeLabelClose": [],
+            "textAfter": [],
+            "range": [
+              29,
+              39
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 18
+              },
+              "end": {
+                "line": 2,
+                "column": 28
+              }
+            }
+          }
+        ],
+        "range": [
+          11,
+          39
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 28
+          }
+        }
+      },
+      {
+        "type": "RadarCurveStatement",
+        "curves": [
+          {
+            "type": "RadarCurve",
+            "textBefore": [],
+            "name": {
+              "type": "Identifier",
+              "name": "c",
+              "range": [
+                46,
+                47
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 6
+                },
+                "end": {
+                  "line": 3,
+                  "column": 7
+                }
+              }
+            },
+            "textBeforeLabel": [],
+            "textBeforeLabelValue": [],
+            "label": null,
+            "textBeforeLabelClose": [],
+            "textBeforeEntries": [],
+            "entries": [
+              {
+                "type": "RadarNamedEntry",
+                "textBefore": [],
+                "axis": {
+                  "type": "Identifier",
+                  "name": "B",
+                  "range": [
+                    48,
+                    49
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 9
+                    }
+                  }
+                },
+                "textBeforeColon": [],
+                "textBeforeValue": [],
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 2,
+                  "raw": "2",
+                  "range": [
+                    50,
+                    51
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 10
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 11
+                    }
+                  }
+                },
+                "textAfter": [],
+                "range": [
+                  48,
+                  51
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 11
+                  }
+                }
+              },
+              {
+                "type": "RadarNamedEntry",
+                "textBefore": [],
+                "axis": {
+                  "type": "Identifier",
+                  "name": "A",
+                  "range": [
+                    52,
+                    53
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 12
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 13
+                    }
+                  }
+                },
+                "textBeforeColon": [],
+                "textBeforeValue": [],
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 1,
+                  "raw": "1",
+                  "range": [
+                    54,
+                    55
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 14
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 15
+                    }
+                  }
+                },
+                "textAfter": [],
+                "range": [
+                  52,
+                  55
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 12
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 15
+                  }
+                }
+              },
+              {
+                "type": "RadarNamedEntry",
+                "textBefore": [],
+                "axis": {
+                  "type": "Identifier",
+                  "name": "A",
+                  "range": [
+                    56,
+                    57
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 16
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 17
+                    }
+                  }
+                },
+                "textBeforeColon": [],
+                "textBeforeValue": [],
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 9,
+                  "raw": "9",
+                  "range": [
+                    58,
+                    59
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 18
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 19
+                    }
+                  }
+                },
+                "textAfter": [],
+                "range": [
+                  56,
+                  59
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 16
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 19
+                  }
+                }
+              }
+            ],
+            "textAfter": [],
+            "range": [
+              46,
+              60
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 6
+              },
+              "end": {
+                "line": 3,
+                "column": 20
+              }
+            }
+          }
+        ],
+        "range": [
+          40,
+          60
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 20
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      60
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 20
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "radar-beta",
+      "range": [
+        0,
+        10
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "axis",
+      "range": [
+        11,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        16,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 5
+        },
+        "end": {
+          "line": 2,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        17,
+        18
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"First\"",
+      "range": [
+        18,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 7
+        },
+        "end": {
+          "line": 2,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        25,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 14
+        },
+        "end": {
+          "line": 2,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        26,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 15
+        },
+        "end": {
+          "line": 2,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "B",
+      "range": [
+        27,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 16
+        },
+        "end": {
+          "line": 2,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        28,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 17
+        },
+        "end": {
+          "line": 2,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        29,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 18
+        },
+        "end": {
+          "line": 2,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        30,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 19
+        },
+        "end": {
+          "line": 2,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Third\"",
+      "range": [
+        31,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 20
+        },
+        "end": {
+          "line": 2,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        38,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 27
+        },
+        "end": {
+          "line": 2,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "curve",
+      "range": [
+        40,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "c",
+      "range": [
+        46,
+        47
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 6
+        },
+        "end": {
+          "line": 3,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        47,
+        48
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 7
+        },
+        "end": {
+          "line": 3,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "B",
+      "range": [
+        48,
+        49
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        49,
+        50
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 9
+        },
+        "end": {
+          "line": 3,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "2",
+      "range": [
+        50,
+        51
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 10
+        },
+        "end": {
+          "line": 3,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        51,
+        52
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 11
+        },
+        "end": {
+          "line": 3,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        52,
+        53
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 12
+        },
+        "end": {
+          "line": 3,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        53,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 13
+        },
+        "end": {
+          "line": 3,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "1",
+      "range": [
+        54,
+        55
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 14
+        },
+        "end": {
+          "line": 3,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        55,
+        56
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 15
+        },
+        "end": {
+          "line": 3,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        56,
+        57
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 16
+        },
+        "end": {
+          "line": 3,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        57,
+        58
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 17
+        },
+        "end": {
+          "line": 3,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "9",
+      "range": [
+        58,
+        59
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 18
+        },
+        "end": {
+          "line": 3,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        59,
+        60
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 19
+        },
+        "end": {
+          "line": 3,
+          "column": 20
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    60
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 20
+    }
+  }
+}

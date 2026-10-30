@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The last value of a repeated property in one style statement wins."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "fill": "blue",
+          "color": "white"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "type": "Root",
+  "diagramType": "treeView",
+  "body": {
+    "type": "TreeviewDiagram",
+    "body": [
+      {
+        "type": "TreeviewNode",
+        "indent": 4,
+        "textBefore": [],
+        "prefix": {
+          "type": "TreeviewBranchPrefix",
+          "value": "├─",
+          "marker": "├",
+          "range": [
+            14,
+            16
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 2
+            }
+          }
+        },
+        "textBeforeName": [],
+        "name": {
+          "type": "TreeviewIdentifier",
+          "name": ";─ child style:#x",
+          "range": [
+            16,
+            33
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 2
+            },
+            "end": {
+              "line": 2,
+              "column": 19
+            }
+          }
+        },
+        "annotations": [],
+        "range": [
+          14,
+          33
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 19
+          }
+        },
+        "children": []
+      }
+    ],
+    "range": [
+      0,
+      33
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 19
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "treeView-beta",
+      "range": [
+        0,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "├─",
+      "range": [
+        14,
+        16
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": ";─ child style:#x",
+      "range": [
+        16,
+        33
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 19
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    33
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 19
+    }
+  }
+}

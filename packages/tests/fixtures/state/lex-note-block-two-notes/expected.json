@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Notation: the rule of a note text over lines reads as few characters as possible, so the first note ends at its own end note line and the second note is read after it; the notes are x on A and y on B."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [
+      {
+        "state": "A",
+        "position": "right of",
+        "text": "x"
+      },
+      {
+        "state": "B",
+        "position": "left of",
+        "text": "y"
+      }
+    ],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

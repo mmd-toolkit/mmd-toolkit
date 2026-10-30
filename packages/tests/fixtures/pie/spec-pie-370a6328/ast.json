@@ -1,0 +1,541 @@
+{
+  "type": "Root",
+  "diagramType": "pie",
+  "body": {
+    "type": "PieDiagram",
+    "showData": false,
+    "textBeforeHeader": [],
+    "textBeforeShowData": [],
+    "body": [
+      {
+        "type": "PieTitleStatement",
+        "value": {
+          "type": "PieLiteral",
+          "value": "Default text position: Animal adoption",
+          "range": [
+            10,
+            48
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 10
+            },
+            "end": {
+              "line": 1,
+              "column": 48
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          4,
+          48
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 4
+          },
+          "end": {
+            "line": 1,
+            "column": 48
+          }
+        }
+      },
+      {
+        "type": "PieAccTitleStatement",
+        "value": {
+          "type": "PieLiteral",
+          "value": " simple pie char demo",
+          "range": [
+            66,
+            87
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 17
+            },
+            "end": {
+              "line": 2,
+              "column": 38
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          57,
+          87
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 8
+          },
+          "end": {
+            "line": 2,
+            "column": 38
+          }
+        }
+      },
+      {
+        "type": "PieAccDescrStatement",
+        "value": {
+          "type": "PieLiteral",
+          "value": " pie chart with 3 sections: dogs, cats, rats. Most are dogs.",
+          "range": [
+            105,
+            165
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 17
+            },
+            "end": {
+              "line": 3,
+              "column": 77
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          96,
+          165
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 8
+          },
+          "end": {
+            "line": 3,
+            "column": 77
+          }
+        }
+      },
+      {
+        "type": "PieSectionStatement",
+        "label": {
+          "type": "StringLiteral",
+          "value": "dogs",
+          "raw": "\"dogs\"",
+          "closed": true,
+          "range": [
+            175,
+            181
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 9
+            },
+            "end": {
+              "line": 4,
+              "column": 15
+            }
+          }
+        },
+        "textBeforeColon": [],
+        "textBeforeValue": [],
+        "value": {
+          "type": "NumericLiteral",
+          "value": 0,
+          "raw": "0",
+          "range": [
+            184,
+            185
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 18
+            },
+            "end": {
+              "line": 4,
+              "column": 19
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          175,
+          185
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 9
+          },
+          "end": {
+            "line": 4,
+            "column": 19
+          }
+        }
+      },
+      {
+        "type": "PieSectionStatement",
+        "label": {
+          "type": "StringLiteral",
+          "value": "rats",
+          "raw": "\"rats\"",
+          "closed": true,
+          "range": [
+            194,
+            200
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 8
+            },
+            "end": {
+              "line": 5,
+              "column": 14
+            }
+          }
+        },
+        "textBeforeColon": [],
+        "textBeforeValue": [],
+        "value": {
+          "type": "NumericLiteral",
+          "value": 40.12,
+          "raw": "40.12",
+          "range": [
+            203,
+            208
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 17
+            },
+            "end": {
+              "line": 5,
+              "column": 22
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          194,
+          208
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 8
+          },
+          "end": {
+            "line": 5,
+            "column": 22
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      208
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 5,
+        "column": 22
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "pie",
+      "range": [
+        0,
+        3
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        4,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 4
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Default text position: Animal adoption",
+      "range": [
+        10,
+        48
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 10
+        },
+        "end": {
+          "line": 1,
+          "column": 48
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accTitle",
+      "range": [
+        57,
+        65
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        65,
+        66
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 16
+        },
+        "end": {
+          "line": 2,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " simple pie char demo",
+      "range": [
+        66,
+        87
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 17
+        },
+        "end": {
+          "line": 2,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accDescr",
+      "range": [
+        96,
+        104
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        104,
+        105
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 16
+        },
+        "end": {
+          "line": 3,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " pie chart with 3 sections: dogs, cats, rats. Most are dogs.",
+      "range": [
+        105,
+        165
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 17
+        },
+        "end": {
+          "line": 3,
+          "column": 77
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"dogs\"",
+      "range": [
+        175,
+        181
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 9
+        },
+        "end": {
+          "line": 4,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        182,
+        183
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 16
+        },
+        "end": {
+          "line": 4,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0",
+      "range": [
+        184,
+        185
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 18
+        },
+        "end": {
+          "line": 4,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"rats\"",
+      "range": [
+        194,
+        200
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 8
+        },
+        "end": {
+          "line": 5,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        201,
+        202
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 15
+        },
+        "end": {
+          "line": 5,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "40.12",
+      "range": [
+        203,
+        208
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 17
+        },
+        "end": {
+          "line": 5,
+          "column": 22
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    215
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 6,
+      "column": 6
+    }
+  }
+}

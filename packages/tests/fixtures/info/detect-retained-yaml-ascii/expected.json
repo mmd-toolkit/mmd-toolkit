@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ASCII control after a retained YAML prefix and bare line."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

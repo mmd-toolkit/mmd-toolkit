@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do literal dashes select box mode even when the preceding reference is not a branch?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Line 4: Unexpected indentation without box-drawing characters. In box-drawing format, use ├── or └── prefixes for indented nodes."
+  }
+}

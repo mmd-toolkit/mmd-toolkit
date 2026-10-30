@@ -1,0 +1,304 @@
+{
+  "type": "Root",
+  "diagramType": "eventmodeling",
+  "body": {
+    "type": "EventmodelingDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "EventmodelingTimeFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "01",
+          "range": [
+            17,
+            19
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 3
+            },
+            "end": {
+              "line": 2,
+              "column": 5
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "evt",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "A",
+            "range": [
+              24,
+              25
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 10
+              },
+              "end": {
+                "line": 2,
+                "column": 11
+              }
+            }
+          },
+          "tail": [],
+          "range": [
+            24,
+            25
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 10
+            },
+            "end": {
+              "line": 2,
+              "column": 11
+            }
+          }
+        },
+        "sourceFrames": [],
+        "dataReference": null,
+        "data": {
+          "type": "EventmodelingInlineData",
+          "textBefore": [],
+          "dataType": null,
+          "textBeforeDataType": [],
+          "textBeforeTypeClose": [],
+          "textBeforeValue": [],
+          "value": {
+            "type": "EventmodelingLiteral",
+            "value": " -0 +1 NaN Infinity 1e400 1e-999 0.99999999999999999 ",
+            "range": [
+              27,
+              80
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 13
+              },
+              "end": {
+                "line": 2,
+                "column": 66
+              }
+            }
+          },
+          "range": [
+            26,
+            81
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 12
+            },
+            "end": {
+              "line": 2,
+              "column": 67
+            }
+          }
+        },
+        "range": [
+          14,
+          81
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 67
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      81
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 67
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "eventmodeling",
+      "range": [
+        0,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "tf",
+      "range": [
+        14,
+        16
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "01",
+      "range": [
+        17,
+        19
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 3
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "evt",
+      "range": [
+        20,
+        23
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        24,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        26,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " -0 +1 NaN Infinity 1e400 1e-999 0.99999999999999999 ",
+      "range": [
+        27,
+        80
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 13
+        },
+        "end": {
+          "line": 2,
+          "column": 66
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        80,
+        81
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 66
+        },
+        "end": {
+          "line": 2,
+          "column": 67
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    82
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 0
+    }
+  }
+}

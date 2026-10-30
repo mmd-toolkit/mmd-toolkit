@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: A common comment-region-only description has null value."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  }
+}

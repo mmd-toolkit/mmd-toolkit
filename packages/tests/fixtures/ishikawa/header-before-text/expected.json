@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[H: detection and ISHIKAWA] Must the header precede ordinary text?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: R\nishikawa\n"
+  }
+}

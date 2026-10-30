@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, quadrants: a colon after a text of a quadrant is rejected: the point form is not a text."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ntChartquadrant-1 A: [0.3, 0.6]\n----------------------^\nExpecting 'ALPHA', 'NUM', 'MINUS', 'COMMA', 'AMP', 'BRKT', 'MULT', 'UNICODE_TEXT', 'SPACE', 'NEWLINE', 'SEMI', 'EOF', 'PUNCTUATION', 'PLUS', 'EQUALS', 'DOT', 'UNDERSCORE', got 'point_start'"
+  }
+}

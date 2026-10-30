@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Subgraphs: a `,` of the statement context is no name piece, so the input is rejected; this is the reference input of gram-subgraph-name-click-comma."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...wchart LRsubgraph a,bAend\n----------------------^\nExpecting 'SEMI', 'NEWLINE', 'SPACE', 'EOF', 'GRAPH', 'DIR', 'subgraph', 'SQS', 'end', 'AMP', 'COLON', 'START_LINK', 'STYLE', 'LINKSTYLE', 'CLASSDEF', 'CLASS', 'CLICK', 'DOWN', 'UP', 'NUM', 'NODE_STRING', 'BRKT', 'MINUS', 'MULT', 'UNICODE_TEXT', got 'COMMA'"
+  }
+}

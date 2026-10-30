@@ -1,0 +1,201 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/state.html",
+    "line": 158
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "First",
+        "shape": "roundedWithTitle",
+        "label": "the first composite",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "Second",
+        "shape": "roundedWithTitle",
+        "label": "Second",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "Third",
+        "shape": "roundedWithTitle",
+        "label": "Third",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "First_start",
+        "shape": "stateStart",
+        "label": "First_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "First"
+      },
+      {
+        "id": "1st",
+        "shape": "rect",
+        "label": "1st",
+        "classes": [],
+        "styles": [],
+        "parentId": "First"
+      },
+      {
+        "id": "innerFirst",
+        "shape": "roundedWithTitle",
+        "label": "innerFirst",
+        "classes": [],
+        "styles": [],
+        "parentId": "First",
+        "dir": "TB"
+      },
+      {
+        "id": "1st1st",
+        "shape": "rect",
+        "label": "1 in innerFirst",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "parentId": "innerFirst"
+      },
+      {
+        "id": "1st2nd",
+        "shape": "rect",
+        "label": "2 in innerFirst",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "parentId": "innerFirst"
+      },
+      {
+        "id": "innerFirst_start",
+        "shape": "stateStart",
+        "label": "innerFirst_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "innerFirst"
+      },
+      {
+        "id": "2nd",
+        "shape": "rect",
+        "label": "2nd",
+        "classes": [],
+        "styles": [],
+        "parentId": "Second"
+      },
+      {
+        "id": "Second_end",
+        "shape": "stateEnd",
+        "label": "Second_end",
+        "classes": [],
+        "styles": [],
+        "parentId": "Second"
+      },
+      {
+        "id": "Third_start",
+        "shape": "stateStart",
+        "label": "Third_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "Third"
+      },
+      {
+        "id": "3rd",
+        "shape": "rect",
+        "label": "3rd",
+        "classes": [],
+        "styles": [],
+        "parentId": "Third"
+      },
+      {
+        "id": "Third_end",
+        "shape": "stateEnd",
+        "label": "Third_end",
+        "classes": [],
+        "styles": [],
+        "parentId": "Third"
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "First",
+        "label": ""
+      },
+      {
+        "start": "First",
+        "end": "Second",
+        "label": ""
+      },
+      {
+        "start": "First",
+        "end": "Third",
+        "label": ""
+      },
+      {
+        "start": "First_start",
+        "end": "1st",
+        "label": ""
+      },
+      {
+        "start": "innerFirst_start",
+        "end": "1st1st",
+        "label": ""
+      },
+      {
+        "start": "1st1st",
+        "end": "1st2nd",
+        "label": ""
+      },
+      {
+        "start": "1st",
+        "end": "innerFirst",
+        "label": ""
+      },
+      {
+        "start": "innerFirst",
+        "end": "2nd",
+        "label": ""
+      },
+      {
+        "start": "2nd",
+        "end": "Second_end",
+        "label": ""
+      },
+      {
+        "start": "Third_start",
+        "end": "3rd",
+        "label": ""
+      },
+      {
+        "start": "3rd",
+        "end": "Third_end",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

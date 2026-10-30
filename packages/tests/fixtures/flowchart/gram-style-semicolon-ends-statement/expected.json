@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Style, class, and link style statements: the line has no `#` after a `:`, so the line rule ignores no `;`, and the `;` ends the statement: A has the style `fill:red`, and `stroke:blue` is a vertex."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [
+          "fill:red"
+        ],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "stroke:blue",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "stroke:blue",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

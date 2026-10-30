@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokens.md Comment regions in tokens: a comment line inside a data block cuts its token; the value is the text before and after the region joined, and mermaid.js reads the alias `Bob`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "Bob",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "actor"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "description": "Bob",
+          "type": "actor"
+        }
+      }
+    ]
+  }
+}

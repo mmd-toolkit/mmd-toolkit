@@ -1,0 +1,191 @@
+{
+  "type": "Root",
+  "diagramType": "kanban",
+  "body": {
+    "type": "KanbanDiagram",
+    "body": [
+      {
+        "type": "KanbanNode",
+        "indent": 8,
+        "id": {
+          "type": "KanbanLiteral",
+          "value": "root",
+          "range": [
+            15,
+            19
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 8
+            },
+            "end": {
+              "line": 2,
+              "column": 12
+            }
+          }
+        },
+        "shape": null,
+        "data": [
+          {
+            "type": "KanbanDataBlock",
+            "value": " icon: star, assigned: knsv ",
+            "range": [
+              19,
+              50
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 12
+              },
+              "end": {
+                "line": 2,
+                "column": 43
+              }
+            }
+          }
+        ],
+        "decorations": [],
+        "children": [],
+        "range": [
+          15,
+          50
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 8
+          },
+          "end": {
+            "line": 2,
+            "column": 43
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      50
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 43
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "kanban",
+      "range": [
+        0,
+        6
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "root",
+      "range": [
+        15,
+        19
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        19,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " icon: star, assigned: knsv ",
+      "range": [
+        21,
+        49
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 14
+        },
+        "end": {
+          "line": 2,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        49,
+        50
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 42
+        },
+        "end": {
+          "line": 2,
+          "column": 43
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    55
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 4
+    }
+  }
+}

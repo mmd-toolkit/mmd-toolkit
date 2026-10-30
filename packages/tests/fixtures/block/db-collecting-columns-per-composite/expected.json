@@ -1,0 +1,48 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, how the blocks are collected: each composite has its own columns, and one without `columns` has none."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": 2,
+      "children": [
+        {
+          "id": "G",
+          "label": "",
+          "type": "composite",
+          "widthInColumns": 1,
+          "columns": 3,
+          "children": [
+            {
+              "id": "A",
+              "label": "A",
+              "type": "na",
+              "widthInColumns": 1
+            }
+          ]
+        },
+        {
+          "id": "H",
+          "label": "",
+          "type": "composite",
+          "widthInColumns": 1,
+          "children": [
+            {
+              "id": "B",
+              "label": "B",
+              "type": "na",
+              "widthInColumns": 1
+            }
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

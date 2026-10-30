@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ticket on a section tests what getData exposes."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true,
+        "ticket": "High"
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "S",
+        "set": {
+          "ticket": "High"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A longer semicolon comment consumes the required rule terminator."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line ?, column ?: Expecting token of type ';' but found ``."
+  }
+}

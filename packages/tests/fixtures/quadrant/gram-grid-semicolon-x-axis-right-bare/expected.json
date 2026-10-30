@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, punctuation: a `;` inside a word in a bare right text of the x axis."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...artx-axis L --> a;b\n----------------------^\nExpecting 'ALPHA', 'NUM', 'MINUS', 'COMMA', 'AMP', 'BRKT', 'MULT', 'UNICODE_TEXT', 'SPACE', 'point_start', 'class_name', 'PUNCTUATION', 'PLUS', 'EQUALS', 'DOT', 'UNDERSCORE', got 'NEWLINE'"
+  }
+}

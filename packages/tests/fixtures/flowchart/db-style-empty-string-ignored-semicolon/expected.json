@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences/tokenless-empty-forms.md, The difference: mermaid.js reads nothing for the empty string between the vertex id and the style, which this specification rejects; the line rule ignores the last `;`, and leaving the empty string out joins the spaces around it, so nothing follows for the reference input, to which mermaid.js gives the style `fill:#f00` instead of ` fill:#f00`."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [
+          " fill:#f00"
+        ],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

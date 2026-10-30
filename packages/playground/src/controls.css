@@ -1,0 +1,38 @@
+/* Each component imports these controls as scoped styles. Defaults use :where
+   so third-party controls can keep their own padding, borders and shape. */
+:where(button),
+:where(select),
+:where(input) {
+  font: inherit;
+}
+:where(button),
+:where(select) {
+  cursor: pointer;
+}
+:where(button) {
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 12px;
+  font-size: 12px;
+}
+button:hover:not(:disabled) {
+  background: var(--subtle);
+}
+button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+:where(select) {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 9px;
+  font-size: 12px;
+}

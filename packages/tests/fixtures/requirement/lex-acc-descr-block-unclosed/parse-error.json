@@ -1,0 +1,17 @@
+{
+  "message": "The description block has no } before the end of the text",
+  "range": [
+    19,
+    27
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 8
+    }
+  }
+}

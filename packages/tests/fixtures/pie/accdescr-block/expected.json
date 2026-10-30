@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A block trims line indentation and ends, collapses horizontal runs and blank lines."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A B\nC D",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      }
+    ]
+  }
+}

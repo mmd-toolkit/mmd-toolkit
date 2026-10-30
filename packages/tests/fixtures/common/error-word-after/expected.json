@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md (Diagram detection): the `error` pseudo-diagram is the word `error` with nothing but whitespace and line terminators after it in the diagram text; `error x` matches no detector and is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: error x"
+  }
+}

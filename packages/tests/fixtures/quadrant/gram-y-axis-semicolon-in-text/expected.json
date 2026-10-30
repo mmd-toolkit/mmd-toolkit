@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, y-axis: a `;` in a text of an axis ends the statement, so the rest is read as a statement."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...rantCharty-axis B;V\n----------------------^\nExpecting 'ALPHA', 'NUM', 'MINUS', 'COMMA', 'AMP', 'BRKT', 'MULT', 'UNICODE_TEXT', 'SPACE', 'point_start', 'class_name', 'PUNCTUATION', 'PLUS', 'EQUALS', 'DOT', 'UNDERSCORE', got 'NEWLINE'"
+  }
+}

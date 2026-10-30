@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A percent pair glued to a bare id is consumed with that id, so the following words make this statement invalid."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...ta TB%% beforeA%% after bare idB\n---------------------^\nExpecting 'COMMENT', 'SEMI', 'NEWLINE', 'EOF', 'AMP', 'START_LINK', 'LINK', 'LINK_ID', got 'NODE_STRING'"
+  }
+}

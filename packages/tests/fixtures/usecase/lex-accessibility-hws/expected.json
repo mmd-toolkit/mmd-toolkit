@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do accessibility tokens accept horizontal whitespace around punctuation?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "Title",
+    "accDescr": "Description",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

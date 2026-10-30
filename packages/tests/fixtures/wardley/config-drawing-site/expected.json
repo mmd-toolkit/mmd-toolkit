@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does site drawing configuration leave the published Db unchanged?"
+  },
+  "config": {
+    "wardley-beta": {
+      "width": 12,
+      "height": 13,
+      "padding": 2,
+      "nodeRadius": 7,
+      "showGrid": true
+    },
+    "wardley": {
+      "width": 14,
+      "height": 15,
+      "showGrid": true
+    }
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "A",
+        "label": "A",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {},
+    "size": {
+      "width": 800,
+      "height": 600
+    }
+  }
+}

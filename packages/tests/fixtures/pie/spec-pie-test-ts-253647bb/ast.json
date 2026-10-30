@@ -1,0 +1,361 @@
+{
+  "type": "Root",
+  "diagramType": "pie",
+  "body": {
+    "type": "PieDiagram",
+    "showData": false,
+    "textBeforeHeader": [],
+    "textBeforeShowData": [],
+    "body": [
+      {
+        "type": "PieTitleStatement",
+        "value": {
+          "type": "PieLiteral",
+          "value": "sample wow",
+          "range": [
+            10,
+            20
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 10
+            },
+            "end": {
+              "line": 1,
+              "column": 20
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          4,
+          20
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 4
+          },
+          "end": {
+            "line": 1,
+            "column": 20
+          }
+        }
+      },
+      {
+        "type": "PieSectionStatement",
+        "label": {
+          "type": "StringLiteral",
+          "value": "GitHub",
+          "raw": "\"GitHub\"",
+          "closed": true,
+          "range": [
+            29,
+            37
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 8
+            },
+            "end": {
+              "line": 2,
+              "column": 16
+            }
+          }
+        },
+        "textBeforeColon": [],
+        "textBeforeValue": [],
+        "value": {
+          "type": "NumericLiteral",
+          "value": 100,
+          "raw": "100",
+          "range": [
+            39,
+            42
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 18
+            },
+            "end": {
+              "line": 2,
+              "column": 21
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          29,
+          42
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 8
+          },
+          "end": {
+            "line": 2,
+            "column": 21
+          }
+        }
+      },
+      {
+        "type": "PieSectionStatement",
+        "label": {
+          "type": "StringLiteral",
+          "value": "GitLab",
+          "raw": "\"GitLab\"",
+          "closed": true,
+          "range": [
+            51,
+            59
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 8
+            },
+            "end": {
+              "line": 3,
+              "column": 16
+            }
+          }
+        },
+        "textBeforeColon": [],
+        "textBeforeValue": [],
+        "value": {
+          "type": "NumericLiteral",
+          "value": 50,
+          "raw": "50",
+          "range": [
+            61,
+            63
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 18
+            },
+            "end": {
+              "line": 3,
+              "column": 20
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          51,
+          63
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 8
+          },
+          "end": {
+            "line": 3,
+            "column": 20
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      63
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 20
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "pie",
+      "range": [
+        0,
+        3
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        4,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 4
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "sample wow",
+      "range": [
+        10,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 10
+        },
+        "end": {
+          "line": 1,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"GitHub\"",
+      "range": [
+        29,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        37,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 16
+        },
+        "end": {
+          "line": 2,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "100",
+      "range": [
+        39,
+        42
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 18
+        },
+        "end": {
+          "line": 2,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"GitLab\"",
+      "range": [
+        51,
+        59
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        59,
+        60
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 16
+        },
+        "end": {
+          "line": 3,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "50",
+      "range": [
+        61,
+        63
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 18
+        },
+        "end": {
+          "line": 3,
+          "column": 20
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    63
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 20
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Attributes: a key where the name is expected; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...DiagramA { string PK}\n---------------------^\nExpecting 'ATTRIBUTE_WORD', '?', got 'ATTRIBUTE_KEY'"
+  }
+}

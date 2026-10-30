@@ -1,0 +1,478 @@
+{
+  "type": "Root",
+  "diagramType": "architecture",
+  "body": {
+    "type": "ArchitectureDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "ArchitectureServiceStatement",
+        "textBeforeId": [],
+        "id": {
+          "type": "Identifier",
+          "name": "api",
+          "range": [
+            52,
+            55
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 8
+            },
+            "end": {
+              "line": 3,
+              "column": 11
+            }
+          }
+        },
+        "textBeforeIcon": [],
+        "icon": null,
+        "textBeforeTitle": [],
+        "title": null,
+        "textBeforeIn": [],
+        "textBeforeParent": [],
+        "in": null,
+        "textAfter": [],
+        "range": [
+          44,
+          55
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 11
+          }
+        }
+      },
+      {
+        "type": "ArchitectureServiceStatement",
+        "textBeforeId": [],
+        "id": {
+          "type": "Identifier",
+          "name": "db",
+          "range": [
+            64,
+            66
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 8
+            },
+            "end": {
+              "line": 4,
+              "column": 10
+            }
+          }
+        },
+        "textBeforeIcon": [],
+        "icon": null,
+        "textBeforeTitle": [],
+        "title": null,
+        "textBeforeIn": [],
+        "textBeforeParent": [],
+        "in": null,
+        "textAfter": [],
+        "range": [
+          56,
+          66
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 10
+          }
+        }
+      },
+      {
+        "type": "ArchitectureEdgeStatement",
+        "lhsId": {
+          "type": "Identifier",
+          "name": "api",
+          "range": [
+            67,
+            70
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 5,
+              "column": 3
+            }
+          }
+        },
+        "textBeforeLhsGroup": [],
+        "lhsGroup": false,
+        "textBeforeArrow": [],
+        "arrow": {
+          "type": "ArchitectureArrow",
+          "value": ":R -- L:",
+          "textBeforeStartDirection": [],
+          "startDirection": "R",
+          "textBeforeStartMarker": [],
+          "startMarker": "none",
+          "textBeforeLine": [],
+          "line": "solid",
+          "textBeforeTitle": [],
+          "title": null,
+          "textBeforeEndDash": [],
+          "textBeforeEndMarker": [],
+          "endMarker": "none",
+          "textBeforeEndDirection": [],
+          "endDirection": "L",
+          "textBeforeEndColon": [],
+          "range": [
+            70,
+            78
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 3
+            },
+            "end": {
+              "line": 5,
+              "column": 11
+            }
+          }
+        },
+        "textBeforeRhsId": [],
+        "rhsId": {
+          "type": "Identifier",
+          "name": "db",
+          "range": [
+            78,
+            80
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 11
+            },
+            "end": {
+              "line": 5,
+              "column": 13
+            }
+          }
+        },
+        "textBeforeRhsGroup": [],
+        "rhsGroup": false,
+        "textAfter": [],
+        "range": [
+          67,
+          80
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 13
+          }
+        }
+      }
+    ],
+    "range": [
+      26,
+      80
+    ],
+    "loc": {
+      "start": {
+        "line": 2,
+        "column": 0
+      },
+      "end": {
+        "line": 5,
+        "column": 13
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [
+    {
+      "type": "Directive",
+      "name": "init",
+      "value": "init:{\"maxEdges\":0}",
+      "closed": true,
+      "range": [
+        0,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 25
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "Directive",
+      "value": "%%{init:{\"maxEdges\":0}}%%",
+      "range": [
+        0,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "architecture-beta",
+      "range": [
+        26,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "service",
+      "range": [
+        44,
+        51
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "api",
+      "range": [
+        52,
+        55
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "service",
+      "range": [
+        56,
+        63
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "db",
+      "range": [
+        64,
+        66
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 8
+        },
+        "end": {
+          "line": 4,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "api",
+      "range": [
+        67,
+        70
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        70,
+        71
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 3
+        },
+        "end": {
+          "line": 5,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "R",
+      "range": [
+        71,
+        72
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 4
+        },
+        "end": {
+          "line": 5,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        73,
+        75
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 6
+        },
+        "end": {
+          "line": 5,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "L",
+      "range": [
+        76,
+        77
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 9
+        },
+        "end": {
+          "line": 5,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        77,
+        78
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 10
+        },
+        "end": {
+          "line": 5,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "db",
+      "range": [
+        78,
+        80
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 11
+        },
+        "end": {
+          "line": 5,
+          "column": 13
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    81
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 6,
+      "column": 0
+    }
+  }
+}

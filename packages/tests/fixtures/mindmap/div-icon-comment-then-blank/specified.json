@@ -1,0 +1,22 @@
+{
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "icon": "x",
+      "children": [
+        {
+          "nodeId": "b",
+          "level": 2,
+          "descr": "b",
+          "type": 0,
+          "children": []
+        }
+      ]
+    }
+  }
+}

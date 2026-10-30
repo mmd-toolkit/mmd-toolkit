@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An omitted lower bound and upper bound zero publish repetition from zero to zero."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "repetition",
+          "element": {
+            "type": "terminal",
+            "value": "b"
+          },
+          "min": 0,
+          "max": 0
+        }
+      }
+    ]
+  }
+}

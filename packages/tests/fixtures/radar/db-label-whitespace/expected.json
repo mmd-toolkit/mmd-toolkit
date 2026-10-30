@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Quoted labels preserve whitespace after string conversion."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "  a\t  b  "
+      }
+    ],
+    "curves": [
+      {
+        "label": "  c  d  ",
+        "entries": [
+          1
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

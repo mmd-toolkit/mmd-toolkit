@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Known divergences: `C4Container` in a title makes mermaid.js detect C4, which rejects the text; accepted here."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nxycharttitle \"C4Con\n^"
+  }
+}

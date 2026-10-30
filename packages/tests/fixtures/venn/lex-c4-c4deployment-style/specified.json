@@ -1,0 +1,21 @@
+{
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "custom": "C4Deployment"
+        }
+      }
+    ]
+  }
+}

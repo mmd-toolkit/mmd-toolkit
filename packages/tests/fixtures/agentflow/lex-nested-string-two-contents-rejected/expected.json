@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md: Two string contents across nested delimiters are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...tflow-beta TBA[\"`a\"b\"`\"]\n----------------------^\nExpecting 'SQE', 'DOUBLECIRCLEEND', 'PE', '-)', 'STADIUMEND', 'SUBROUTINEEND', 'PIPE', 'CYLINDEREND', 'DIAMOND_STOP', 'TAGEND', 'TRAPEND', 'INVTRAPEND', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got 'STR'"
+  }
+}

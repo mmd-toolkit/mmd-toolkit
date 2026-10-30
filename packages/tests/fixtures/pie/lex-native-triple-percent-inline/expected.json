@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can three percent signs begin a native inline comment after a number? It accepts both sections A = 1 and B = 2."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      },
+      {
+        "label": "B",
+        "value": 2
+      }
+    ]
+  }
+}

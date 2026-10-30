@@ -1,0 +1,17 @@
+{
+  "message": "An icon or a class line needs a node before it",
+  "range": [
+    10,
+    14
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 2
+    },
+    "end": {
+      "line": 2,
+      "column": 6
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do empty parent and child names publish a deterministic underscore id and resolve a link to it?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "",
+        "label": "",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "_",
+        "label": "",
+        "x": 30,
+        "y": 10,
+        "className": "pipeline-component"
+      }
+    ],
+    "links": [
+      {
+        "source": "",
+        "target": "_",
+        "dashed": false
+      }
+    ],
+    "trends": [],
+    "pipelines": [
+      {
+        "nodeId": "",
+        "componentIds": [
+          "_"
+        ]
+      }
+    ],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

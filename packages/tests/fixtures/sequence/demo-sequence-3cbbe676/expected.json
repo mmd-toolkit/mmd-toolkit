@@ -1,0 +1,128 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/sequence.html",
+    "line": 126
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "1",
+        "description": "multiline<br>using ﬂ°lt¶ßbrﬂ°gt¶ß",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "2"
+      },
+      {
+        "name": "2",
+        "description": "multiline<br />using ﬂ°lt¶ßbr/ﬂ°gt¶ß",
+        "wrap": false,
+        "prevActor": "1",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "3"
+      },
+      {
+        "name": "3",
+        "description": "multiline<br />using ﬂ°lt¶ßbr /ﬂ°gt¶ß",
+        "wrap": false,
+        "prevActor": "2",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "4"
+      },
+      {
+        "name": "4",
+        "description": "multiline<br />using ﬂ°lt¶ßbr /ﬂ°gt¶ß",
+        "wrap": false,
+        "prevActor": "3",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "1",
+        "to": "2",
+        "message": "multiline<br>using ﬂ°lt¶ßbrﬂ°gt¶ß",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "2",
+        "to": "2",
+        "message": "multiline<br>using ﬂ°lt¶ßbrﬂ°gt¶ß",
+        "wrap": false,
+        "type": 2,
+        "placement": 1
+      },
+      {
+        "from": "2",
+        "to": "3",
+        "message": "multiline<br />using ﬂ°lt¶ßbr/ﬂ°gt¶ß",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "3",
+        "to": "3",
+        "message": "multiline<br />using ﬂ°lt¶ßbr/ﬂ°gt¶ß",
+        "wrap": false,
+        "type": 2,
+        "placement": 1
+      },
+      {
+        "from": "3",
+        "to": "4",
+        "message": "multiline<br />using ﬂ°lt¶ßbr /ﬂ°gt¶ß",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "4",
+        "to": "4",
+        "message": "multiline<br />using ﬂ°lt¶ßbr /ﬂ°gt¶ß",
+        "wrap": false,
+        "type": 2,
+        "placement": 1
+      },
+      {
+        "from": "4",
+        "to": "1",
+        "message": "multiline<br />using ﬂ°lt¶ßbr /ﬂ°gt¶ß",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "1",
+        "to": "1",
+        "message": "multiline<br />using ﬂ°lt¶ßbr /ﬂ°gt¶ß",
+        "wrap": false,
+        "type": 2,
+        "placement": 1
+      }
+    ]
+  }
+}

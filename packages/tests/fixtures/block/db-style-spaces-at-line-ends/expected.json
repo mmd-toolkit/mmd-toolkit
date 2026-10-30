@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/block.md BlockLiteral: the first style starts at its first character that is not whitespace and the last ends at its last such character, while the whitespace before a , stays in the style."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1,
+          "styles": [
+            "fill:#f00 ",
+            "stroke:#333"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

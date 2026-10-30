@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Duplicate junction IDs reject."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The junction id [j] is already in use by another node"
+  }
+}

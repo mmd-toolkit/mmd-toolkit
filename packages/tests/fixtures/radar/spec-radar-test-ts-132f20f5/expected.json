@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/radar.test.ts",
+    "line": 256,
+    "test": "radar > should handle curves > should handle multiple curves"
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "ax1"
+      },
+      {
+        "label": "ax1"
+      }
+    ],
+    "curves": [
+      {
+        "label": "c1",
+        "entries": [
+          1,
+          2
+        ]
+      },
+      {
+        "label": "c2",
+        "entries": [
+          3,
+          4
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

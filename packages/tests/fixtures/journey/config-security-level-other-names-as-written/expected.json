@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Sections, descriptions of tasks, and people are not replaced."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "a<b>c"
+    ],
+    "tasks": [
+      {
+        "section": "a<b>c",
+        "task": "A<x>",
+        "people": [
+          "p<q>"
+        ],
+        "score": 3
+      }
+    ]
+  }
+}

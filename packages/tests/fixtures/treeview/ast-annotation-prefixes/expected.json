@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: icon and description annotations own distinct branch prefixes and preceding decorations."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "parent",
+        "nodeType": "file",
+        "icon": "pack:file",
+        "description": "desc",
+        "children": []
+      }
+    ]
+  }
+}

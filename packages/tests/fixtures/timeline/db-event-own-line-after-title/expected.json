@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, events: a title line between a task and its event line does not end the task."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "a",
+        "events": [
+          "e"
+        ]
+      }
+    ]
+  }
+}

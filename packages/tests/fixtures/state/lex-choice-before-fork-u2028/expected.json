@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The state context, rule 4: A higher-priority fork beyond U+2028 cannot replace a choice before it."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "a",
+        "shape": "choice",
+        "label": "a",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "b",
+        "shape": "fork",
+        "label": "b",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

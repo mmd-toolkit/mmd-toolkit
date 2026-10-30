@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Common boundaries in authored components: A semicolon actually selected by the common line rule may separate complete coordinate components."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [
+      {
+        "text": "style:#x",
+        "x": 20,
+        "y": 10
+      }
+    ],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

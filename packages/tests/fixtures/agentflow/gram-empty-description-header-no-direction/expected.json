@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md: Closed empty description block in a header without direction."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nagentflow-beta accDescr {}A\n--------------^"
+  }
+}

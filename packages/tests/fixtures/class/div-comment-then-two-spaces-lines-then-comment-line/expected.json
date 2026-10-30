@@ -1,0 +1,58 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences/comment-takes-line-break.md: mermaid.js removes the comment line %% x together with the two lines of spaces before it, and then takes the line feed after the comment after the relation, so it reads one relation from A to BA with the label +int age. This specification reads the relation and the member age of A."
+  },
+  "knownDivergence": "comment-takes-line-break",
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "BA",
+        "type": "",
+        "label": "BA",
+        "text": "BA",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [
+      {
+        "id1": "A",
+        "id2": "BA",
+        "relation": {
+          "type1": "none",
+          "type2": 3,
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none",
+        "title": "+int age"
+      }
+    ],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

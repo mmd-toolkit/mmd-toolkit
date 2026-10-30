@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "diagrams/eventmodeling.md, Native hidden forms and comments: the comment line %% gap lies inside the hidden directive that spans lines before the header; it is not removed before the eventmodeling lexer reads the text, so it is part of the text of that EventmodelingIgnoredText, while %% c before it is a comment."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": []
+  }
+}

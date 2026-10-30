@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A bare percent line inside an enclosing block stays block text."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A semicolon before the style/hash trigger is not selected and the split atom is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: event;modeling title style:#x\n"
+  }
+}

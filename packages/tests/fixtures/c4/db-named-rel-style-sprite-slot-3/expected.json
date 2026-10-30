@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A named $sprite in UpdateRelStyle argument 3 is accepted; rels[0].sprite is \"V\"."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [
+      {
+        "type": "rel",
+        "from": "a",
+        "to": "b",
+        "label": {
+          "text": "Uses"
+        },
+        "techn": {
+          "text": ""
+        },
+        "descr": {
+          "text": ""
+        },
+        "sprite": "V",
+        "lineColor": "blue",
+        "offsetX": -4,
+        "offsetY": 5
+      }
+    ],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

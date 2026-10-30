@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Site bitsPerRow changes published row boundaries."
+  },
+  "config": {
+    "packet": {
+      "bitsPerRow": 8
+    }
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 7,
+          "label": "A"
+        }
+      ],
+      [
+        {
+          "start": 8,
+          "end": 15,
+          "label": "A"
+        }
+      ]
+    ]
+  }
+}

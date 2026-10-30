@@ -1,0 +1,196 @@
+{
+  "type": "Root",
+  "diagramType": "cynefin",
+  "body": {
+    "type": "CynefinDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "CynefinDomainStatement",
+        "name": "complex",
+        "textAfterName": [],
+        "items": [
+          {
+            "type": "CynefinDomainItem",
+            "textBefore": [],
+            "label": {
+              "type": "StringLiteral",
+              "value": "Item",
+              "raw": "\"Item\"",
+              "closed": true,
+              "range": [
+                50,
+                56
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 4
+                },
+                "end": {
+                  "line": 4,
+                  "column": 10
+                }
+              }
+            },
+            "textAfter": [],
+            "range": [
+              50,
+              56
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 4
+              },
+              "end": {
+                "line": 4,
+                "column": 10
+              }
+            }
+          }
+        ],
+        "range": [
+          38,
+          56
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 2
+          },
+          "end": {
+            "line": 4,
+            "column": 10
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      56
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 4,
+        "column": 10
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [
+    {
+      "type": "Comment",
+      "mark": "%%",
+      "value": " This is a comment",
+      "range": [
+        15,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Comment",
+      "mark": "%%",
+      "value": " Another comment",
+      "range": [
+        59,
+        77
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 2
+        },
+        "end": {
+          "line": 5,
+          "column": 20
+        }
+      }
+    }
+  ],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "cynefin-beta",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "complex",
+      "range": [
+        38,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Item\"",
+      "range": [
+        50,
+        56
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 4
+        },
+        "end": {
+          "line": 4,
+          "column": 10
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    78
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 6,
+      "column": 0
+    }
+  }
+}

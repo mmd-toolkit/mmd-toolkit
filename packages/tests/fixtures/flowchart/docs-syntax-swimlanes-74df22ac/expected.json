@@ -1,0 +1,140 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/swimlanes.md",
+    "line": 357
+  },
+  "accepted": true,
+  "diagramType": "swimlane",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "classify",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Can support solve it?",
+        "type": "diamond",
+        "props": {}
+      },
+      {
+        "id": "respond",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Respond to customer",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "prioritize",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Prioritize fix",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "implement",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Implement fix",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "classify",
+        "end": "respond",
+        "type": "arrow_point",
+        "text": "Yes",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_classify_respond_0"
+      },
+      {
+        "start": "classify",
+        "end": "prioritize",
+        "type": "arrow_point",
+        "text": "No",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_classify_prioritize_0"
+      },
+      {
+        "start": "prioritize",
+        "end": "implement",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_prioritize_implement_0"
+      },
+      {
+        "start": "implement",
+        "end": "respond",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_implement_respond_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "Support",
+        "nodes": [
+          "classify",
+          "respond"
+        ],
+        "title": "Support",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "Product",
+        "nodes": [
+          "prioritize"
+        ],
+        "title": "Product",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "Engineering",
+        "nodes": [
+          "implement"
+        ],
+        "title": "Engineering",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

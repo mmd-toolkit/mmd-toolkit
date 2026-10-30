@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, edges: a chain with labels: the last label stays."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {},
+        {
+          "id": "C",
+          "label": "C",
+          "type": "na"
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [
+      {
+        "end": "C",
+        "label": "y",
+        "thickness": "normal",
+        "pattern": "solid",
+        "arrowTypeStart": "arrow_open",
+        "arrowTypeEnd": "arrow_point"
+      }
+    ],
+    "classes": []
+  }
+}

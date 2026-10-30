@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, text grid: a character outside ASCII (`é`) in a category without quotes."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...chart-beta x-axis [é, b]\n----------------------^"
+  }
+}

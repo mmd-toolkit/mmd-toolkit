@@ -1,0 +1,452 @@
+{
+  "type": "Root",
+  "diagramType": "c4",
+  "body": {
+    "type": "C4Diagram",
+    "kind": "context",
+    "beforeBody": [],
+    "body": [
+      {
+        "type": "C4ElementStatement",
+        "keyword": "Person",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "a",
+            "range": [
+              17,
+              18
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 8
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "",
+            "raw": "\"\"",
+            "closed": true,
+            "range": [
+              20,
+              22
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 10
+              },
+              "end": {
+                "line": 2,
+                "column": 12
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "D",
+            "raw": "\"D\"",
+            "closed": true,
+            "range": [
+              24,
+              27
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 14
+              },
+              "end": {
+                "line": 2,
+                "column": 17
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "S",
+            "raw": "\"S\"",
+            "closed": true,
+            "range": [
+              29,
+              32
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 19
+              },
+              "end": {
+                "line": 2,
+                "column": 22
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "T",
+            "raw": "\"T\"",
+            "closed": true,
+            "range": [
+              34,
+              37
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 24
+              },
+              "end": {
+                "line": 2,
+                "column": 27
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "L",
+            "raw": "\"L\"",
+            "closed": true,
+            "range": [
+              39,
+              42
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 29
+              },
+              "end": {
+                "line": 2,
+                "column": 32
+              }
+            }
+          }
+        ],
+        "range": [
+          10,
+          43
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 33
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      43
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 33
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "C4Context",
+      "range": [
+        0,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Person",
+      "range": [
+        10,
+        16
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        16,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "a",
+      "range": [
+        17,
+        18
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 7
+        },
+        "end": {
+          "line": 2,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        18,
+        19
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"\"",
+      "range": [
+        20,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        22,
+        23
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"D\"",
+      "range": [
+        24,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 14
+        },
+        "end": {
+          "line": 2,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        27,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 17
+        },
+        "end": {
+          "line": 2,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"S\"",
+      "range": [
+        29,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 19
+        },
+        "end": {
+          "line": 2,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        32,
+        33
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 22
+        },
+        "end": {
+          "line": 2,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"T\"",
+      "range": [
+        34,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 24
+        },
+        "end": {
+          "line": 2,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        37,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 27
+        },
+        "end": {
+          "line": 2,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"L\"",
+      "range": [
+        39,
+        42
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 29
+        },
+        "end": {
+          "line": 2,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        42,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 32
+        },
+        "end": {
+          "line": 2,
+          "column": 33
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    44
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 0
+    }
+  }
+}

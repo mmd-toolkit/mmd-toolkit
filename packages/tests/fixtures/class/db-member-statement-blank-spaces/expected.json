@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/class.md ClassMemberStatement: a label of only whitespace adds the class A and no member, whatever the amount of whitespace; mermaid.js does not read it, so it has no token."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

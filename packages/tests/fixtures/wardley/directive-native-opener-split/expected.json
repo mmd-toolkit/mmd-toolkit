@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Common boundaries in authored components: A global directive may join native hidden YAML opener punctuation without an atomic-word divergence."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

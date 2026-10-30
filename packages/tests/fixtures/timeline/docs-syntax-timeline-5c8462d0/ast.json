@@ -1,0 +1,818 @@
+{
+  "type": "Root",
+  "diagramType": "timeline",
+  "body": {
+    "type": "TimelineDiagram",
+    "direction": null,
+    "body": [
+      {
+        "type": "TimelineTitleStatement",
+        "value": {
+          "type": "TimelineLiteral",
+          "value": "England's History Timeline",
+          "range": [
+            23,
+            49
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 14
+            },
+            "end": {
+              "line": 2,
+              "column": 40
+            }
+          }
+        },
+        "range": [
+          17,
+          49
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 8
+          },
+          "end": {
+            "line": 2,
+            "column": 40
+          }
+        }
+      },
+      {
+        "type": "TimelineSectionStatement",
+        "name": {
+          "type": "TimelineLiteral",
+          "value": "Stone Age",
+          "range": [
+            66,
+            75
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 16
+            },
+            "end": {
+              "line": 3,
+              "column": 25
+            }
+          }
+        },
+        "range": [
+          58,
+          75
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 8
+          },
+          "end": {
+            "line": 3,
+            "column": 25
+          }
+        }
+      },
+      {
+        "type": "TimelinePeriodStatement",
+        "period": {
+          "type": "TimelineLiteral",
+          "value": "7600 BC ",
+          "range": [
+            86,
+            94
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 10
+            },
+            "end": {
+              "line": 4,
+              "column": 18
+            }
+          }
+        },
+        "events": [
+          {
+            "type": "TimelineLiteral",
+            "value": "Britain's oldest known house was built in Orkney, Scotland",
+            "range": [
+              96,
+              154
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 20
+              },
+              "end": {
+                "line": 4,
+                "column": 78
+              }
+            }
+          }
+        ],
+        "range": [
+          86,
+          154
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 10
+          },
+          "end": {
+            "line": 4,
+            "column": 78
+          }
+        }
+      },
+      {
+        "type": "TimelinePeriodStatement",
+        "period": {
+          "type": "TimelineLiteral",
+          "value": "6000 BC ",
+          "range": [
+            165,
+            173
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 10
+            },
+            "end": {
+              "line": 5,
+              "column": 18
+            }
+          }
+        },
+        "events": [
+          {
+            "type": "TimelineLiteral",
+            "value": "Sea levels rise and Britain becomes an island.<br> The people who live here are hunter-gatherers.",
+            "range": [
+              175,
+              272
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 20
+              },
+              "end": {
+                "line": 5,
+                "column": 117
+              }
+            }
+          }
+        ],
+        "range": [
+          165,
+          272
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 10
+          },
+          "end": {
+            "line": 5,
+            "column": 117
+          }
+        }
+      },
+      {
+        "type": "TimelineSectionStatement",
+        "name": {
+          "type": "TimelineLiteral",
+          "value": "Bronze Age",
+          "range": [
+            289,
+            299
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 16
+            },
+            "end": {
+              "line": 6,
+              "column": 26
+            }
+          }
+        },
+        "range": [
+          281,
+          299
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 8
+          },
+          "end": {
+            "line": 6,
+            "column": 26
+          }
+        }
+      },
+      {
+        "type": "TimelinePeriodStatement",
+        "period": {
+          "type": "TimelineLiteral",
+          "value": "2300 BC ",
+          "range": [
+            310,
+            318
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 10
+            },
+            "end": {
+              "line": 7,
+              "column": 18
+            }
+          }
+        },
+        "events": [
+          {
+            "type": "TimelineLiteral",
+            "value": "People arrive from Europe and settle in Britain. <br>They bring farming and metalworking.",
+            "range": [
+              320,
+              409
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 20
+              },
+              "end": {
+                "line": 7,
+                "column": 109
+              }
+            }
+          },
+          {
+            "type": "TimelineLiteral",
+            "value": "New styles of pottery and ways of burying the dead appear.",
+            "range": [
+              430,
+              488
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 20
+              },
+              "end": {
+                "line": 8,
+                "column": 78
+              }
+            }
+          }
+        ],
+        "range": [
+          310,
+          488
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 10
+          },
+          "end": {
+            "line": 8,
+            "column": 78
+          }
+        }
+      },
+      {
+        "type": "TimelinePeriodStatement",
+        "period": {
+          "type": "TimelineLiteral",
+          "value": "2200 BC ",
+          "range": [
+            499,
+            507
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 10
+            },
+            "end": {
+              "line": 9,
+              "column": 18
+            }
+          }
+        },
+        "events": [
+          {
+            "type": "TimelineLiteral",
+            "value": "The last major building works are completed at Stonehenge.<br> People now bury their dead in stone circles.",
+            "range": [
+              509,
+              616
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 20
+              },
+              "end": {
+                "line": 9,
+                "column": 127
+              }
+            }
+          },
+          {
+            "type": "TimelineLiteral",
+            "value": "The first metal objects are made in Britain.Some other nice things happen. it is a good time to be alive.",
+            "range": [
+              637,
+              742
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 20
+              },
+              "end": {
+                "line": 10,
+                "column": 125
+              }
+            }
+          }
+        ],
+        "range": [
+          499,
+          742
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 10
+          },
+          "end": {
+            "line": 10,
+            "column": 125
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      742
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 10,
+        "column": 125
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "timeline",
+      "range": [
+        0,
+        8
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        17,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "England's History Timeline",
+      "range": [
+        23,
+        49
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 14
+        },
+        "end": {
+          "line": 2,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "section",
+      "range": [
+        58,
+        65
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Stone Age",
+      "range": [
+        66,
+        75
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 16
+        },
+        "end": {
+          "line": 3,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "7600 BC ",
+      "range": [
+        86,
+        94
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 10
+        },
+        "end": {
+          "line": 4,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        94,
+        95
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 18
+        },
+        "end": {
+          "line": 4,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Britain's oldest known house was built in Orkney, Scotland",
+      "range": [
+        96,
+        154
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 20
+        },
+        "end": {
+          "line": 4,
+          "column": 78
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "6000 BC ",
+      "range": [
+        165,
+        173
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 10
+        },
+        "end": {
+          "line": 5,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        173,
+        174
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 18
+        },
+        "end": {
+          "line": 5,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Sea levels rise and Britain becomes an island.<br> The people who live here are hunter-gatherers.",
+      "range": [
+        175,
+        272
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 20
+        },
+        "end": {
+          "line": 5,
+          "column": 117
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "section",
+      "range": [
+        281,
+        288
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 8
+        },
+        "end": {
+          "line": 6,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Bronze Age",
+      "range": [
+        289,
+        299
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 16
+        },
+        "end": {
+          "line": 6,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "2300 BC ",
+      "range": [
+        310,
+        318
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 10
+        },
+        "end": {
+          "line": 7,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        318,
+        319
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 18
+        },
+        "end": {
+          "line": 7,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "People arrive from Europe and settle in Britain. <br>They bring farming and metalworking.",
+      "range": [
+        320,
+        409
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 20
+        },
+        "end": {
+          "line": 7,
+          "column": 109
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        428,
+        429
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 18
+        },
+        "end": {
+          "line": 8,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "New styles of pottery and ways of burying the dead appear.",
+      "range": [
+        430,
+        488
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 20
+        },
+        "end": {
+          "line": 8,
+          "column": 78
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "2200 BC ",
+      "range": [
+        499,
+        507
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 10
+        },
+        "end": {
+          "line": 9,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        507,
+        508
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 18
+        },
+        "end": {
+          "line": 9,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "The last major building works are completed at Stonehenge.<br> People now bury their dead in stone circles.",
+      "range": [
+        509,
+        616
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 20
+        },
+        "end": {
+          "line": 9,
+          "column": 127
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        635,
+        636
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 18
+        },
+        "end": {
+          "line": 10,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "The first metal objects are made in Britain.Some other nice things happen. it is a good time to be alive.",
+      "range": [
+        637,
+        742
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 20
+        },
+        "end": {
+          "line": 10,
+          "column": 125
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    744
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 12,
+      "column": 0
+    }
+  }
+}

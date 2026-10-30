@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Integer values are converted with JavaScript number rounding."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 9007199254740992
+      }
+    ]
+  }
+}

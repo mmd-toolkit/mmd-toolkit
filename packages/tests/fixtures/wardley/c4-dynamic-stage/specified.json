@@ -1,0 +1,24 @@
+{
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {
+      "stages": [
+        "C4Dynamic",
+        "P"
+      ],
+      "stageBoundaries": []
+    }
+  }
+}

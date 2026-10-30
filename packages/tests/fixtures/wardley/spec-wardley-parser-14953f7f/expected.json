@@ -1,0 +1,48 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/wardley/wardleyParser.spec.ts",
+    "line": 272,
+    "test": "wardley parser > still tokenises A->B as an arrow (no-space regression)"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "A",
+        "label": "A",
+        "x": 10,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "B",
+        "label": "B",
+        "x": 20,
+        "y": 20,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [
+      {
+        "source": "A",
+        "target": "B",
+        "dashed": false
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Directives inside units: a directive inside `high`; mermaid.js reads the risk."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "High",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

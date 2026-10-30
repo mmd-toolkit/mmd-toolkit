@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Common statements: Does an unselected semicolon remain unreadable inside otherwise claimable metadata padding?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 5, column 2: unexpected character: ->;<- at offset: 28, skipped 1 characters. "
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Grammar: Required GWT source/clause/item gaps independently own native YAML forms. Accepted by Mermaid."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": []
+  }
+}

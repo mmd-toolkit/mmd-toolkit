@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Common line values absorb a YAML opener."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "accTitle: ---",
+    "accDescr": " accDescr: ---",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

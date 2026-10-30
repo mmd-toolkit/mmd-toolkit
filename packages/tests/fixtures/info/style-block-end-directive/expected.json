@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Global removal recreates the style trigger that removes a block suffix."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {},
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

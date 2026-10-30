@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The header mixed form is rejected by diagram detection."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: venn-BETA\n"
+  }
+}

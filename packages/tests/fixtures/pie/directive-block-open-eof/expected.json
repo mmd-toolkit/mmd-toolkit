@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed directive may follow a complete description block at EOF."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A",
+    "showData": false,
+    "sections": []
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P1: directive preprocessing] Does directive removal also run within literal child quotes?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "\"Cause\"",
+          "children": []
+        }
+      ]
+    }
+  }
+}

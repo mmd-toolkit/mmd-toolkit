@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do percent pairs after CSS remain valid style components?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [
+      {
+        "id": "A",
+        "label": "A",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": [
+          "color:red %% inline"
+        ]
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

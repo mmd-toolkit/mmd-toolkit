@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed free-text directive leaves accessibility title text and removes the later commit."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "A",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

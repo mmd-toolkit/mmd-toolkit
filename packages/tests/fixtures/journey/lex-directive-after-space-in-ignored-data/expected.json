@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Directives inside units: the whitespace before a directive inside the ignored data is part of the text before the directive."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A",
+        "people": [
+          "Me"
+        ],
+        "score": 5
+      }
+    ]
+  }
+}

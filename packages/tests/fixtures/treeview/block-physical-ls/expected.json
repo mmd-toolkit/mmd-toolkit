@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: U+2028 does not end a physical line inside an accessibility block."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "one\nx\t│ two",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

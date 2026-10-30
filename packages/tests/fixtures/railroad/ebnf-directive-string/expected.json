@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Global directives cut both EBNF string and special text."
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "terminal",
+              "value": "ab"
+            },
+            {
+              "type": "special",
+              "text": "ab"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/treeView/boxDrawingPreprocessor.spec.ts",
+    "line": 85,
+    "test": "boxDrawingPreprocessor > preprocessBoxDrawing > standard tree output > should handle a deeply nested tree"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "a",
+            "nodeType": "directory",
+            "children": [
+              {
+                "name": "b",
+                "nodeType": "directory",
+                "children": [
+                  {
+                    "name": "c",
+                    "nodeType": "directory",
+                    "children": [
+                      {
+                        "name": "deep.txt",
+                        "nodeType": "file",
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "name": "d.txt",
+                    "nodeType": "file",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "name": "e.txt",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "f.txt",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

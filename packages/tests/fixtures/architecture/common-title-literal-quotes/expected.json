@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Quotes in common line terminals are ordinary characters and need not close."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "'unclosed",
+    "accDescr": "\"unclosed",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

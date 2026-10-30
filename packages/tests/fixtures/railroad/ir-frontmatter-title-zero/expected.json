@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A numeric zero frontmatter title is not a published body title."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": []
+  }
+}

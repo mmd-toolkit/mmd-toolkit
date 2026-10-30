@@ -1,0 +1,1594 @@
+{
+  "type": "Root",
+  "diagramType": "flowchart-v2",
+  "body": {
+    "type": "FlowchartDiagram",
+    "direction": "LR",
+    "body": [
+      {
+        "type": "FlowchartVertexStatement",
+        "first": {
+          "type": "FlowchartVertexGroup",
+          "vertices": [
+            {
+              "type": "FlowchartVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "A",
+                "range": [
+                  9,
+                  10
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 0
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 1
+                  }
+                }
+              },
+              "shape": {
+                "type": "FlowchartShape",
+                "name": "rectangle",
+                "property": null,
+                "label": {
+                  "type": "FlowchartLabel",
+                  "kind": "string",
+                  "value": "$$f(\\relax{x}) = \\int_{-\\infty}^\\infty \\hat{f}(\\xi)\\,e^{2 \\pi i \\xi x}\\,d\\xi$$",
+                  "range": [
+                    11,
+                    91
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 2,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 2,
+                      "column": 82
+                    }
+                  }
+                },
+                "range": [
+                  10,
+                  92
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 1
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 83
+                  }
+                }
+              },
+              "cssClass": null,
+              "data": [],
+              "range": [
+                9,
+                92
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 0
+                },
+                "end": {
+                  "line": 2,
+                  "column": 83
+                }
+              }
+            }
+          ],
+          "range": [
+            9,
+            92
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 83
+            }
+          }
+        },
+        "links": [
+          {
+            "type": "FlowchartLink",
+            "id": null,
+            "opening": null,
+            "arrow": {
+              "type": "FlowchartArrow",
+              "value": "-->",
+              "startMarker": "none",
+              "line": "solid",
+              "length": 2,
+              "endMarker": "arrow",
+              "range": [
+                93,
+                96
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 84
+                },
+                "end": {
+                  "line": 2,
+                  "column": 87
+                }
+              }
+            },
+            "label": {
+              "type": "FlowchartLabel",
+              "kind": "string",
+              "value": "$$\\Bigg(\\bigg(\\Big(\\big((\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a})\\big)\\Big)\\bigg)\\Bigg)$$",
+              "range": [
+                97,
+                179
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 88
+                },
+                "end": {
+                  "line": 2,
+                  "column": 170
+                }
+              }
+            },
+            "target": {
+              "type": "FlowchartVertexGroup",
+              "vertices": [
+                {
+                  "type": "FlowchartVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "B",
+                    "range": [
+                      181,
+                      182
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 2,
+                        "column": 172
+                      },
+                      "end": {
+                        "line": 2,
+                        "column": 173
+                      }
+                    }
+                  },
+                  "shape": {
+                    "type": "FlowchartShape",
+                    "name": "rounded",
+                    "property": null,
+                    "label": {
+                      "type": "FlowchartLabel",
+                      "kind": "string",
+                      "value": "$$1+\\frac{e^{-2\\pi}} {1+\\frac{e^{-4\\pi}} {1+\\frac{e^{-6\\pi}} {1+\\frac{e^{-8\\pi}} {1+\\cdots}}}}$$",
+                      "range": [
+                        183,
+                        281
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 2,
+                          "column": 174
+                        },
+                        "end": {
+                          "line": 2,
+                          "column": 272
+                        }
+                      }
+                    },
+                    "range": [
+                      182,
+                      282
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 2,
+                        "column": 173
+                      },
+                      "end": {
+                        "line": 2,
+                        "column": 273
+                      }
+                    }
+                  },
+                  "cssClass": null,
+                  "data": [],
+                  "range": [
+                    181,
+                    282
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 2,
+                      "column": 172
+                    },
+                    "end": {
+                      "line": 2,
+                      "column": 273
+                    }
+                  }
+                }
+              ],
+              "range": [
+                181,
+                282
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 172
+                },
+                "end": {
+                  "line": 2,
+                  "column": 273
+                }
+              }
+            },
+            "range": [
+              93,
+              282
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 84
+              },
+              "end": {
+                "line": 2,
+                "column": 273
+              }
+            }
+          }
+        ],
+        "range": [
+          9,
+          282
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 273
+          }
+        }
+      },
+      {
+        "type": "FlowchartVertexStatement",
+        "first": {
+          "type": "FlowchartVertexGroup",
+          "vertices": [
+            {
+              "type": "FlowchartVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "A",
+                "range": [
+                  283,
+                  284
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 0
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 1
+                  }
+                }
+              },
+              "shape": null,
+              "cssClass": null,
+              "data": [],
+              "range": [
+                283,
+                284
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 0
+                },
+                "end": {
+                  "line": 3,
+                  "column": 1
+                }
+              }
+            }
+          ],
+          "range": [
+            283,
+            284
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 3,
+              "column": 1
+            }
+          }
+        },
+        "links": [
+          {
+            "type": "FlowchartLink",
+            "id": null,
+            "opening": null,
+            "arrow": {
+              "type": "FlowchartArrow",
+              "value": "-->",
+              "startMarker": "none",
+              "line": "solid",
+              "length": 2,
+              "endMarker": "arrow",
+              "range": [
+                285,
+                288
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 2
+                },
+                "end": {
+                  "line": 3,
+                  "column": 5
+                }
+              }
+            },
+            "label": {
+              "type": "FlowchartLabel",
+              "kind": "string",
+              "value": "$$\\overbrace{a+b+c}^{\\text{note}}$$",
+              "range": [
+                289,
+                326
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 6
+                },
+                "end": {
+                  "line": 3,
+                  "column": 43
+                }
+              }
+            },
+            "target": {
+              "type": "FlowchartVertexGroup",
+              "vertices": [
+                {
+                  "type": "FlowchartVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "C",
+                    "range": [
+                      328,
+                      329
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 3,
+                        "column": 45
+                      },
+                      "end": {
+                        "line": 3,
+                        "column": 46
+                      }
+                    }
+                  },
+                  "shape": {
+                    "type": "FlowchartShape",
+                    "name": "rounded",
+                    "property": null,
+                    "label": {
+                      "type": "FlowchartLabel",
+                      "kind": "string",
+                      "value": "$$\\phase{-78^\\circ}$$",
+                      "range": [
+                        330,
+                        353
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 3,
+                          "column": 47
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 70
+                        }
+                      }
+                    },
+                    "range": [
+                      329,
+                      354
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 3,
+                        "column": 46
+                      },
+                      "end": {
+                        "line": 3,
+                        "column": 71
+                      }
+                    }
+                  },
+                  "cssClass": null,
+                  "data": [],
+                  "range": [
+                    328,
+                    354
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 45
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 71
+                    }
+                  }
+                }
+              ],
+              "range": [
+                328,
+                354
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 45
+                },
+                "end": {
+                  "line": 3,
+                  "column": 71
+                }
+              }
+            },
+            "range": [
+              285,
+              354
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 2
+              },
+              "end": {
+                "line": 3,
+                "column": 71
+              }
+            }
+          }
+        ],
+        "range": [
+          283,
+          354
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 71
+          }
+        }
+      },
+      {
+        "type": "FlowchartVertexStatement",
+        "first": {
+          "type": "FlowchartVertexGroup",
+          "vertices": [
+            {
+              "type": "FlowchartVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "B",
+                "range": [
+                  355,
+                  356
+                ],
+                "loc": {
+                  "start": {
+                    "line": 4,
+                    "column": 0
+                  },
+                  "end": {
+                    "line": 4,
+                    "column": 1
+                  }
+                }
+              },
+              "shape": null,
+              "cssClass": null,
+              "data": [],
+              "range": [
+                355,
+                356
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 0
+                },
+                "end": {
+                  "line": 4,
+                  "column": 1
+                }
+              }
+            }
+          ],
+          "range": [
+            355,
+            356
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 4,
+              "column": 1
+            }
+          }
+        },
+        "links": [
+          {
+            "type": "FlowchartLink",
+            "id": null,
+            "opening": null,
+            "arrow": {
+              "type": "FlowchartArrow",
+              "value": "-->",
+              "startMarker": "none",
+              "line": "solid",
+              "length": 2,
+              "endMarker": "arrow",
+              "range": [
+                357,
+                360
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 2
+                },
+                "end": {
+                  "line": 4,
+                  "column": 5
+                }
+              }
+            },
+            "label": null,
+            "target": {
+              "type": "FlowchartVertexGroup",
+              "vertices": [
+                {
+                  "type": "FlowchartVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "D",
+                    "range": [
+                      361,
+                      362
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 4,
+                        "column": 6
+                      },
+                      "end": {
+                        "line": 4,
+                        "column": 7
+                      }
+                    }
+                  },
+                  "shape": {
+                    "type": "FlowchartShape",
+                    "name": "rounded",
+                    "property": null,
+                    "label": {
+                      "type": "FlowchartLabel",
+                      "kind": "string",
+                      "value": "$$x = \\begin{cases} a &\\text{if } b \\\\ c &\\text{if } d \\end{cases}$$",
+                      "range": [
+                        363,
+                        433
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 4,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 4,
+                          "column": 78
+                        }
+                      }
+                    },
+                    "range": [
+                      362,
+                      434
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 4,
+                        "column": 7
+                      },
+                      "end": {
+                        "line": 4,
+                        "column": 79
+                      }
+                    }
+                  },
+                  "cssClass": null,
+                  "data": [],
+                  "range": [
+                    361,
+                    434
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 4,
+                      "column": 6
+                    },
+                    "end": {
+                      "line": 4,
+                      "column": 79
+                    }
+                  }
+                }
+              ],
+              "range": [
+                361,
+                434
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 6
+                },
+                "end": {
+                  "line": 4,
+                  "column": 79
+                }
+              }
+            },
+            "range": [
+              357,
+              434
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 2
+              },
+              "end": {
+                "line": 4,
+                "column": 79
+              }
+            }
+          }
+        ],
+        "range": [
+          355,
+          434
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 79
+          }
+        }
+      },
+      {
+        "type": "FlowchartVertexStatement",
+        "first": {
+          "type": "FlowchartVertexGroup",
+          "vertices": [
+            {
+              "type": "FlowchartVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "C",
+                "range": [
+                  435,
+                  436
+                ],
+                "loc": {
+                  "start": {
+                    "line": 5,
+                    "column": 0
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 1
+                  }
+                }
+              },
+              "shape": null,
+              "cssClass": null,
+              "data": [],
+              "range": [
+                435,
+                436
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 0
+                },
+                "end": {
+                  "line": 5,
+                  "column": 1
+                }
+              }
+            }
+          ],
+          "range": [
+            435,
+            436
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 5,
+              "column": 1
+            }
+          }
+        },
+        "links": [
+          {
+            "type": "FlowchartLink",
+            "id": null,
+            "opening": null,
+            "arrow": {
+              "type": "FlowchartArrow",
+              "value": "-->",
+              "startMarker": "none",
+              "line": "solid",
+              "length": 2,
+              "endMarker": "arrow",
+              "range": [
+                437,
+                440
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 2
+                },
+                "end": {
+                  "line": 5,
+                  "column": 5
+                }
+              }
+            },
+            "label": null,
+            "target": {
+              "type": "FlowchartVertexGroup",
+              "vertices": [
+                {
+                  "type": "FlowchartVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "E",
+                    "range": [
+                      441,
+                      442
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 5,
+                        "column": 6
+                      },
+                      "end": {
+                        "line": 5,
+                        "column": 7
+                      }
+                    }
+                  },
+                  "shape": {
+                    "type": "FlowchartShape",
+                    "name": "rounded",
+                    "property": null,
+                    "label": {
+                      "type": "FlowchartLabel",
+                      "kind": "string",
+                      "value": "$$x(t)=c_1\\begin{bmatrix}-\\cos{t}+\\sin{t}\\\\ 2\\cos{t} \\end{bmatrix}e^{2t}$$",
+                      "range": [
+                        443,
+                        519
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 5,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 5,
+                          "column": 84
+                        }
+                      }
+                    },
+                    "range": [
+                      442,
+                      520
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 5,
+                        "column": 7
+                      },
+                      "end": {
+                        "line": 5,
+                        "column": 85
+                      }
+                    }
+                  },
+                  "cssClass": null,
+                  "data": [],
+                  "range": [
+                    441,
+                    520
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 5,
+                      "column": 6
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 85
+                    }
+                  }
+                }
+              ],
+              "range": [
+                441,
+                520
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 6
+                },
+                "end": {
+                  "line": 5,
+                  "column": 85
+                }
+              }
+            },
+            "range": [
+              437,
+              520
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 2
+              },
+              "end": {
+                "line": 5,
+                "column": 85
+              }
+            }
+          }
+        ],
+        "range": [
+          435,
+          520
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 85
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      520
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 5,
+        "column": 85
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "graph",
+      "range": [
+        0,
+        5
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "LR",
+      "range": [
+        6,
+        8
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 6
+        },
+        "end": {
+          "line": 1,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        9,
+        10
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        10,
+        11
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 1
+        },
+        "end": {
+          "line": 2,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"$$f(\\relax{x}) = \\int_{-\\infty}^\\infty \\hat{f}(\\xi)\\,e^{2 \\pi i \\xi x}\\,d\\xi$$\"",
+      "range": [
+        11,
+        91
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 82
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        91,
+        92
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 82
+        },
+        "end": {
+          "line": 2,
+          "column": 83
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        93,
+        96
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 84
+        },
+        "end": {
+          "line": 2,
+          "column": 87
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "|",
+      "range": [
+        96,
+        97
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 87
+        },
+        "end": {
+          "line": 2,
+          "column": 88
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"$$\\Bigg(\\bigg(\\Big(\\big((\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a})\\big)\\Big)\\bigg)\\Bigg)$$\"",
+      "range": [
+        97,
+        179
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 88
+        },
+        "end": {
+          "line": 2,
+          "column": 170
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "|",
+      "range": [
+        179,
+        180
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 170
+        },
+        "end": {
+          "line": 2,
+          "column": 171
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "B",
+      "range": [
+        181,
+        182
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 172
+        },
+        "end": {
+          "line": 2,
+          "column": 173
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        182,
+        183
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 173
+        },
+        "end": {
+          "line": 2,
+          "column": 174
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"$$1+\\frac{e^{-2\\pi}} {1+\\frac{e^{-4\\pi}} {1+\\frac{e^{-6\\pi}} {1+\\frac{e^{-8\\pi}} {1+\\cdots}}}}$$\"",
+      "range": [
+        183,
+        281
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 174
+        },
+        "end": {
+          "line": 2,
+          "column": 272
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        281,
+        282
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 272
+        },
+        "end": {
+          "line": 2,
+          "column": 273
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        283,
+        284
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        285,
+        288
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 3,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "|",
+      "range": [
+        288,
+        289
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 5
+        },
+        "end": {
+          "line": 3,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"$$\\overbrace{a+b+c}^{\\text{note}}$$\"",
+      "range": [
+        289,
+        326
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 6
+        },
+        "end": {
+          "line": 3,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "|",
+      "range": [
+        326,
+        327
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 43
+        },
+        "end": {
+          "line": 3,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "C",
+      "range": [
+        328,
+        329
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 45
+        },
+        "end": {
+          "line": 3,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        329,
+        330
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 46
+        },
+        "end": {
+          "line": 3,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"$$\\phase{-78^\\circ}$$\"",
+      "range": [
+        330,
+        353
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 47
+        },
+        "end": {
+          "line": 3,
+          "column": 70
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        353,
+        354
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 70
+        },
+        "end": {
+          "line": 3,
+          "column": 71
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "B",
+      "range": [
+        355,
+        356
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        357,
+        360
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 2
+        },
+        "end": {
+          "line": 4,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "D",
+      "range": [
+        361,
+        362
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 6
+        },
+        "end": {
+          "line": 4,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        362,
+        363
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 7
+        },
+        "end": {
+          "line": 4,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"$$x = \\begin{cases} a &\\text{if } b \\\\ c &\\text{if } d \\end{cases}$$\"",
+      "range": [
+        363,
+        433
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 8
+        },
+        "end": {
+          "line": 4,
+          "column": 78
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        433,
+        434
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 78
+        },
+        "end": {
+          "line": 4,
+          "column": 79
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "C",
+      "range": [
+        435,
+        436
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        437,
+        440
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 2
+        },
+        "end": {
+          "line": 5,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "E",
+      "range": [
+        441,
+        442
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 6
+        },
+        "end": {
+          "line": 5,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        442,
+        443
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 7
+        },
+        "end": {
+          "line": 5,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"$$x(t)=c_1\\begin{bmatrix}-\\cos{t}+\\sin{t}\\\\ 2\\cos{t} \\end{bmatrix}e^{2t}$$\"",
+      "range": [
+        443,
+        519
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 8
+        },
+        "end": {
+          "line": 5,
+          "column": 84
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        519,
+        520
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 84
+        },
+        "end": {
+          "line": 5,
+          "column": 85
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    520
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 85
+    }
+  }
+}

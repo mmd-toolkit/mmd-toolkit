@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, directives: a directive after the text of a node is not part of the text."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "child",
+          "level": 2,
+          "descr": "child",
+          "type": 0,
+          "children": []
+        }
+      ]
+    }
+  }
+}

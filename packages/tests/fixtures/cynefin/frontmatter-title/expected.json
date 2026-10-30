@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The frontmatter title is published before body metadata."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "Front",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "A"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  },
+  "embedded": {
+    "title": "Front"
+  }
+}

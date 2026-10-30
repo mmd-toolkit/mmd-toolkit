@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/architecture.test.ts",
+    "line": 16,
+    "test": "architecture > should handle architecture definition > should handle regular architecture"
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

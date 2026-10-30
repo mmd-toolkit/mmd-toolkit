@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md F1: Inline percent text with C4 at EOF has no physical line terminator."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nishikawaR %% C4Cont\n^"
+  }
+}

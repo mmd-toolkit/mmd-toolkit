@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, header: a section after the header on its line is a section."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "S"
+    ],
+    "tasks": [
+      {
+        "section": "S",
+        "task": "a",
+        "events": []
+      }
+    ]
+  }
+}

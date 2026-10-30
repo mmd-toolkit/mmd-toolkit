@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md (Id runs): step 1 reads `Alice` and no continuation can start before `()`, so the run is `Alice`; `()` is the central connection of the arrow, and the participants are Alice and John."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Alice",
+        "description": "Alice",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "John"
+      },
+      {
+        "name": "John",
+        "description": "John",
+        "wrap": false,
+        "prevActor": "Alice",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "Alice",
+        "to": "John",
+        "message": "x",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 60
+      },
+      {
+        "from": "Alice",
+        "message": "",
+        "wrap": false,
+        "type": 60,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

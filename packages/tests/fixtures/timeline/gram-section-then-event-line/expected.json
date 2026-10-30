@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, sections: an event line right after a section has no task and is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot read properties of undefined (reading 'events')"
+  }
+}

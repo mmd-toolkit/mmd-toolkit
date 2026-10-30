@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P1] Can an unclosed directive discard all causes while keeping the root?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": []
+    }
+  }
+}

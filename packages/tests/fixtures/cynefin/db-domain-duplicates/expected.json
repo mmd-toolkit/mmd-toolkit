@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A third definition replaces the entire domain list independently of intervening domains."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "Partner"
+          }
+        ]
+      },
+      {
+        "name": "chaotic",
+        "items": [
+          {
+            "label": "Other"
+          }
+        ]
+      },
+      {
+        "name": "clear",
+        "items": [
+          {
+            "label": "Third"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A non-ASCII suffix after click remains part of an id."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "click猫",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "click猫",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: comment region cuts native comment after LS"
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

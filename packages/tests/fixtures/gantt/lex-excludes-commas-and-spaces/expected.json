@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md The statement context: the items of an exclusion list are separated by commas and whitespace; the tokens a, b, c."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [
+      "a",
+      "b",
+      "c"
+    ],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [],
+    "links": []
+  }
+}

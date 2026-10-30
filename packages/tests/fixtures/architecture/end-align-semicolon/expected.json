@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An alignment must end in EOL rather than a spaced semicolon."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 18: unexpected character: ->;<- at offset: 58, skipped 1 characters. "
+  }
+}

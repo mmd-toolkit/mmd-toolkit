@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The plain keyword requires a boundary before a block."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 1: unexpected character: ->p<- at offset: 0, skipped 6 characters. Parse error on line 1, column 7: Expecting: one of these possible Token sequences:\n  1. [packet]\n  2. [packet-beta]\nbut found: '0'"
+  }
+}

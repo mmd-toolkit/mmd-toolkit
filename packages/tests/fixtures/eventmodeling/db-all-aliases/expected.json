@@ -1,0 +1,86 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Both frame forms and every entity type are reachable."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "ui",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "cmd",
+        "entityIdentifier": "B",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "03",
+        "modelEntityType": "command",
+        "entityIdentifier": "C",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "reset",
+        "name": "04",
+        "modelEntityType": "evt",
+        "entityIdentifier": "D",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "reset",
+        "name": "05",
+        "modelEntityType": "event",
+        "entityIdentifier": "E",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "06",
+        "modelEntityType": "rmo",
+        "entityIdentifier": "F",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "07",
+        "modelEntityType": "readmodel",
+        "entityIdentifier": "G",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "08",
+        "modelEntityType": "pcr",
+        "entityIdentifier": "H",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "09",
+        "modelEntityType": "processor",
+        "entityIdentifier": "I",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

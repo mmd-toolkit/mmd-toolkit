@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Grammar: a global-directive-only line does not end a domain item sequence."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "A"
+          },
+          {
+            "label": "B"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

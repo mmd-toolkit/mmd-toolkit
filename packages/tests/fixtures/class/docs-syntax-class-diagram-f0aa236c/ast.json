@@ -1,0 +1,703 @@
+{
+  "type": "Root",
+  "diagramType": "classDiagram",
+  "body": {
+    "type": "ClassDiagram",
+    "body": [
+      {
+        "type": "ClassDeclaration",
+        "name": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "BankAccount",
+            "range": [
+              19,
+              30
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 6
+              },
+              "end": {
+                "line": 2,
+                "column": 17
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            19,
+            30
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 6
+            },
+            "end": {
+              "line": 2,
+              "column": 17
+            }
+          }
+        },
+        "label": null,
+        "cssClass": null,
+        "annotation": null,
+        "members": [
+          {
+            "type": "ClassAttribute",
+            "visibility": "public",
+            "name": {
+              "type": "ClassLiteral",
+              "value": "String owner",
+              "range": [
+                37,
+                49
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 5
+                },
+                "end": {
+                  "line": 3,
+                  "column": 17
+                }
+              }
+            },
+            "classifier": "none",
+            "range": [
+              36,
+              49
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 4
+              },
+              "end": {
+                "line": 3,
+                "column": 17
+              }
+            }
+          },
+          {
+            "type": "ClassAttribute",
+            "visibility": "public",
+            "name": {
+              "type": "ClassLiteral",
+              "value": "BigDecimal balance",
+              "range": [
+                55,
+                73
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 5
+                },
+                "end": {
+                  "line": 4,
+                  "column": 23
+                }
+              }
+            },
+            "classifier": "none",
+            "range": [
+              54,
+              73
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 4
+              },
+              "end": {
+                "line": 4,
+                "column": 23
+              }
+            }
+          },
+          {
+            "type": "ClassMethod",
+            "visibility": "public",
+            "name": {
+              "type": "ClassLiteral",
+              "value": "deposit",
+              "range": [
+                79,
+                86
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 5
+                },
+                "end": {
+                  "line": 5,
+                  "column": 12
+                }
+              }
+            },
+            "parameters": {
+              "type": "ClassLiteral",
+              "value": "amount",
+              "range": [
+                87,
+                93
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 13
+                },
+                "end": {
+                  "line": 5,
+                  "column": 19
+                }
+              }
+            },
+            "returnType": {
+              "type": "ClassLiteral",
+              "value": "bool",
+              "range": [
+                95,
+                99
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 21
+                },
+                "end": {
+                  "line": 5,
+                  "column": 25
+                }
+              }
+            },
+            "classifier": "none",
+            "textBefore": null,
+            "textAfter": null,
+            "range": [
+              78,
+              99
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 4
+              },
+              "end": {
+                "line": 5,
+                "column": 25
+              }
+            }
+          },
+          {
+            "type": "ClassMethod",
+            "visibility": "public",
+            "name": {
+              "type": "ClassLiteral",
+              "value": "withdrawal",
+              "range": [
+                105,
+                115
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 5
+                },
+                "end": {
+                  "line": 6,
+                  "column": 15
+                }
+              }
+            },
+            "parameters": {
+              "type": "ClassLiteral",
+              "value": "amount",
+              "range": [
+                116,
+                122
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 16
+                },
+                "end": {
+                  "line": 6,
+                  "column": 22
+                }
+              }
+            },
+            "returnType": {
+              "type": "ClassLiteral",
+              "value": "int",
+              "range": [
+                124,
+                127
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 24
+                },
+                "end": {
+                  "line": 6,
+                  "column": 27
+                }
+              }
+            },
+            "classifier": "none",
+            "textBefore": null,
+            "textAfter": null,
+            "range": [
+              104,
+              127
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 4
+              },
+              "end": {
+                "line": 6,
+                "column": 27
+              }
+            }
+          }
+        ],
+        "range": [
+          13,
+          129
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 1
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      129
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 7,
+        "column": 1
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "classDiagram",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "class",
+      "range": [
+        13,
+        18
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "BankAccount",
+      "range": [
+        19,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        30,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 17
+        },
+        "end": {
+          "line": 2,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "+",
+      "range": [
+        36,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 4
+        },
+        "end": {
+          "line": 3,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "String owner",
+      "range": [
+        37,
+        49
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 5
+        },
+        "end": {
+          "line": 3,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "+",
+      "range": [
+        54,
+        55
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 4
+        },
+        "end": {
+          "line": 4,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "BigDecimal balance",
+      "range": [
+        55,
+        73
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 5
+        },
+        "end": {
+          "line": 4,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "+",
+      "range": [
+        78,
+        79
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 4
+        },
+        "end": {
+          "line": 5,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "deposit",
+      "range": [
+        79,
+        86
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 5
+        },
+        "end": {
+          "line": 5,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        86,
+        87
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 12
+        },
+        "end": {
+          "line": 5,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "amount",
+      "range": [
+        87,
+        93
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 13
+        },
+        "end": {
+          "line": 5,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        93,
+        94
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 19
+        },
+        "end": {
+          "line": 5,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "bool",
+      "range": [
+        95,
+        99
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 21
+        },
+        "end": {
+          "line": 5,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "+",
+      "range": [
+        104,
+        105
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 4
+        },
+        "end": {
+          "line": 6,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "withdrawal",
+      "range": [
+        105,
+        115
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 5
+        },
+        "end": {
+          "line": 6,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        115,
+        116
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 15
+        },
+        "end": {
+          "line": 6,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "amount",
+      "range": [
+        116,
+        122
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 16
+        },
+        "end": {
+          "line": 6,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        122,
+        123
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 22
+        },
+        "end": {
+          "line": 6,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "int",
+      "range": [
+        124,
+        127
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 24
+        },
+        "end": {
+          "line": 6,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        128,
+        129
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 1
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    130
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 8,
+      "column": 0
+    }
+  }
+}

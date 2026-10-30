@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: The longer CSS token is tried after earlier keywords."
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [
+      {
+        "id": "A",
+        "label": "A",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": [
+          "my-actor:red"
+        ]
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

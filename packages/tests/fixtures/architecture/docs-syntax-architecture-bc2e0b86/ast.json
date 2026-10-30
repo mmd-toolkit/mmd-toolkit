@@ -1,0 +1,2042 @@
+{
+  "type": "Root",
+  "diagramType": "architecture",
+  "body": {
+    "type": "ArchitectureDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "ArchitectureGroupStatement",
+        "textBeforeId": [],
+        "id": {
+          "type": "Identifier",
+          "name": "api",
+          "range": [
+            28,
+            31
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 10
+            },
+            "end": {
+              "line": 2,
+              "column": 13
+            }
+          }
+        },
+        "textBeforeIcon": [],
+        "icon": {
+          "type": "Identifier",
+          "name": "cloud",
+          "range": [
+            32,
+            37
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 14
+            },
+            "end": {
+              "line": 2,
+              "column": 19
+            }
+          }
+        },
+        "textBeforeTitle": [],
+        "title": {
+          "type": "ArchitectureLabel",
+          "kind": "text",
+          "value": "API",
+          "range": [
+            38,
+            43
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 20
+            },
+            "end": {
+              "line": 2,
+              "column": 25
+            }
+          }
+        },
+        "textBeforeIn": [],
+        "textBeforeParent": [],
+        "in": null,
+        "textAfter": [],
+        "range": [
+          22,
+          43
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 4
+          },
+          "end": {
+            "line": 2,
+            "column": 25
+          }
+        }
+      },
+      {
+        "type": "ArchitectureServiceStatement",
+        "textBeforeId": [],
+        "id": {
+          "type": "Identifier",
+          "name": "db",
+          "range": [
+            57,
+            59
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 12
+            },
+            "end": {
+              "line": 4,
+              "column": 14
+            }
+          }
+        },
+        "textBeforeIcon": [],
+        "icon": {
+          "type": "Identifier",
+          "name": "database",
+          "range": [
+            60,
+            68
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 15
+            },
+            "end": {
+              "line": 4,
+              "column": 23
+            }
+          }
+        },
+        "textBeforeTitle": [],
+        "title": {
+          "type": "ArchitectureLabel",
+          "kind": "text",
+          "value": "Database",
+          "range": [
+            69,
+            79
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 24
+            },
+            "end": {
+              "line": 4,
+              "column": 34
+            }
+          }
+        },
+        "textBeforeIn": [],
+        "textBeforeParent": [],
+        "in": {
+          "type": "Identifier",
+          "name": "api",
+          "range": [
+            83,
+            86
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 38
+            },
+            "end": {
+              "line": 4,
+              "column": 41
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          49,
+          86
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 4
+          },
+          "end": {
+            "line": 4,
+            "column": 41
+          }
+        }
+      },
+      {
+        "type": "ArchitectureServiceStatement",
+        "textBeforeId": [],
+        "id": {
+          "type": "Identifier",
+          "name": "disk1",
+          "range": [
+            99,
+            104
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 12
+            },
+            "end": {
+              "line": 5,
+              "column": 17
+            }
+          }
+        },
+        "textBeforeIcon": [],
+        "icon": {
+          "type": "Identifier",
+          "name": "disk",
+          "range": [
+            105,
+            109
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 18
+            },
+            "end": {
+              "line": 5,
+              "column": 22
+            }
+          }
+        },
+        "textBeforeTitle": [],
+        "title": {
+          "type": "ArchitectureLabel",
+          "kind": "text",
+          "value": "Storage",
+          "range": [
+            110,
+            119
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 23
+            },
+            "end": {
+              "line": 5,
+              "column": 32
+            }
+          }
+        },
+        "textBeforeIn": [],
+        "textBeforeParent": [],
+        "in": {
+          "type": "Identifier",
+          "name": "api",
+          "range": [
+            123,
+            126
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 36
+            },
+            "end": {
+              "line": 5,
+              "column": 39
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          91,
+          126
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 4
+          },
+          "end": {
+            "line": 5,
+            "column": 39
+          }
+        }
+      },
+      {
+        "type": "ArchitectureServiceStatement",
+        "textBeforeId": [],
+        "id": {
+          "type": "Identifier",
+          "name": "disk2",
+          "range": [
+            139,
+            144
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 12
+            },
+            "end": {
+              "line": 6,
+              "column": 17
+            }
+          }
+        },
+        "textBeforeIcon": [],
+        "icon": {
+          "type": "Identifier",
+          "name": "disk",
+          "range": [
+            145,
+            149
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 18
+            },
+            "end": {
+              "line": 6,
+              "column": 22
+            }
+          }
+        },
+        "textBeforeTitle": [],
+        "title": {
+          "type": "ArchitectureLabel",
+          "kind": "text",
+          "value": "Storage",
+          "range": [
+            150,
+            159
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 23
+            },
+            "end": {
+              "line": 6,
+              "column": 32
+            }
+          }
+        },
+        "textBeforeIn": [],
+        "textBeforeParent": [],
+        "in": {
+          "type": "Identifier",
+          "name": "api",
+          "range": [
+            163,
+            166
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 36
+            },
+            "end": {
+              "line": 6,
+              "column": 39
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          131,
+          166
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 4
+          },
+          "end": {
+            "line": 6,
+            "column": 39
+          }
+        }
+      },
+      {
+        "type": "ArchitectureServiceStatement",
+        "textBeforeId": [],
+        "id": {
+          "type": "Identifier",
+          "name": "server",
+          "range": [
+            179,
+            185
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 12
+            },
+            "end": {
+              "line": 7,
+              "column": 18
+            }
+          }
+        },
+        "textBeforeIcon": [],
+        "icon": {
+          "type": "Identifier",
+          "name": "server",
+          "range": [
+            186,
+            192
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 19
+            },
+            "end": {
+              "line": 7,
+              "column": 25
+            }
+          }
+        },
+        "textBeforeTitle": [],
+        "title": {
+          "type": "ArchitectureLabel",
+          "kind": "text",
+          "value": "Server",
+          "range": [
+            193,
+            201
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 26
+            },
+            "end": {
+              "line": 7,
+              "column": 34
+            }
+          }
+        },
+        "textBeforeIn": [],
+        "textBeforeParent": [],
+        "in": {
+          "type": "Identifier",
+          "name": "api",
+          "range": [
+            205,
+            208
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 38
+            },
+            "end": {
+              "line": 7,
+              "column": 41
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          171,
+          208
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 4
+          },
+          "end": {
+            "line": 7,
+            "column": 41
+          }
+        }
+      },
+      {
+        "type": "ArchitectureEdgeStatement",
+        "lhsId": {
+          "type": "Identifier",
+          "name": "db",
+          "range": [
+            214,
+            216
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 4
+            },
+            "end": {
+              "line": 9,
+              "column": 6
+            }
+          }
+        },
+        "textBeforeLhsGroup": [],
+        "lhsGroup": false,
+        "textBeforeArrow": [],
+        "arrow": {
+          "type": "ArchitectureArrow",
+          "value": ":L -- R:",
+          "textBeforeStartDirection": [],
+          "startDirection": "L",
+          "textBeforeStartMarker": [],
+          "startMarker": "none",
+          "textBeforeLine": [],
+          "line": "solid",
+          "textBeforeTitle": [],
+          "title": null,
+          "textBeforeEndDash": [],
+          "textBeforeEndMarker": [],
+          "endMarker": "none",
+          "textBeforeEndDirection": [],
+          "endDirection": "R",
+          "textBeforeEndColon": [],
+          "range": [
+            216,
+            224
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 6
+            },
+            "end": {
+              "line": 9,
+              "column": 14
+            }
+          }
+        },
+        "textBeforeRhsId": [],
+        "rhsId": {
+          "type": "Identifier",
+          "name": "server",
+          "range": [
+            224,
+            230
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 14
+            },
+            "end": {
+              "line": 9,
+              "column": 20
+            }
+          }
+        },
+        "textBeforeRhsGroup": [],
+        "rhsGroup": false,
+        "textAfter": [],
+        "range": [
+          214,
+          230
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 4
+          },
+          "end": {
+            "line": 9,
+            "column": 20
+          }
+        }
+      },
+      {
+        "type": "ArchitectureEdgeStatement",
+        "lhsId": {
+          "type": "Identifier",
+          "name": "disk1",
+          "range": [
+            235,
+            240
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 4
+            },
+            "end": {
+              "line": 10,
+              "column": 9
+            }
+          }
+        },
+        "textBeforeLhsGroup": [],
+        "lhsGroup": false,
+        "textBeforeArrow": [],
+        "arrow": {
+          "type": "ArchitectureArrow",
+          "value": ":T -- B:",
+          "textBeforeStartDirection": [],
+          "startDirection": "T",
+          "textBeforeStartMarker": [],
+          "startMarker": "none",
+          "textBeforeLine": [],
+          "line": "solid",
+          "textBeforeTitle": [],
+          "title": null,
+          "textBeforeEndDash": [],
+          "textBeforeEndMarker": [],
+          "endMarker": "none",
+          "textBeforeEndDirection": [],
+          "endDirection": "B",
+          "textBeforeEndColon": [],
+          "range": [
+            240,
+            248
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 9
+            },
+            "end": {
+              "line": 10,
+              "column": 17
+            }
+          }
+        },
+        "textBeforeRhsId": [],
+        "rhsId": {
+          "type": "Identifier",
+          "name": "server",
+          "range": [
+            248,
+            254
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 17
+            },
+            "end": {
+              "line": 10,
+              "column": 23
+            }
+          }
+        },
+        "textBeforeRhsGroup": [],
+        "rhsGroup": false,
+        "textAfter": [],
+        "range": [
+          235,
+          254
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 4
+          },
+          "end": {
+            "line": 10,
+            "column": 23
+          }
+        }
+      },
+      {
+        "type": "ArchitectureEdgeStatement",
+        "lhsId": {
+          "type": "Identifier",
+          "name": "disk2",
+          "range": [
+            259,
+            264
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 4
+            },
+            "end": {
+              "line": 11,
+              "column": 9
+            }
+          }
+        },
+        "textBeforeLhsGroup": [],
+        "lhsGroup": false,
+        "textBeforeArrow": [],
+        "arrow": {
+          "type": "ArchitectureArrow",
+          "value": ":T -- B:",
+          "textBeforeStartDirection": [],
+          "startDirection": "T",
+          "textBeforeStartMarker": [],
+          "startMarker": "none",
+          "textBeforeLine": [],
+          "line": "solid",
+          "textBeforeTitle": [],
+          "title": null,
+          "textBeforeEndDash": [],
+          "textBeforeEndMarker": [],
+          "endMarker": "none",
+          "textBeforeEndDirection": [],
+          "endDirection": "B",
+          "textBeforeEndColon": [],
+          "range": [
+            264,
+            272
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 9
+            },
+            "end": {
+              "line": 11,
+              "column": 17
+            }
+          }
+        },
+        "textBeforeRhsId": [],
+        "rhsId": {
+          "type": "Identifier",
+          "name": "db",
+          "range": [
+            272,
+            274
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 17
+            },
+            "end": {
+              "line": 11,
+              "column": 19
+            }
+          }
+        },
+        "textBeforeRhsGroup": [],
+        "rhsGroup": false,
+        "textAfter": [],
+        "range": [
+          259,
+          274
+        ],
+        "loc": {
+          "start": {
+            "line": 11,
+            "column": 4
+          },
+          "end": {
+            "line": 11,
+            "column": 19
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      274
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 11,
+        "column": 19
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "architecture-beta",
+      "range": [
+        0,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "group",
+      "range": [
+        22,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "api",
+      "range": [
+        28,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        31,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 13
+        },
+        "end": {
+          "line": 2,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "cloud",
+      "range": [
+        32,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 14
+        },
+        "end": {
+          "line": 2,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        37,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 19
+        },
+        "end": {
+          "line": 2,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        38,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 20
+        },
+        "end": {
+          "line": 2,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "API",
+      "range": [
+        39,
+        42
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 21
+        },
+        "end": {
+          "line": 2,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        42,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 24
+        },
+        "end": {
+          "line": 2,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "service",
+      "range": [
+        49,
+        56
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 4
+        },
+        "end": {
+          "line": 4,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "db",
+      "range": [
+        57,
+        59
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 12
+        },
+        "end": {
+          "line": 4,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        59,
+        60
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 14
+        },
+        "end": {
+          "line": 4,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "database",
+      "range": [
+        60,
+        68
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 15
+        },
+        "end": {
+          "line": 4,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        68,
+        69
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 23
+        },
+        "end": {
+          "line": 4,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        69,
+        70
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 24
+        },
+        "end": {
+          "line": 4,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Database",
+      "range": [
+        70,
+        78
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 25
+        },
+        "end": {
+          "line": 4,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        78,
+        79
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 33
+        },
+        "end": {
+          "line": 4,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "in",
+      "range": [
+        80,
+        82
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 35
+        },
+        "end": {
+          "line": 4,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "api",
+      "range": [
+        83,
+        86
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 38
+        },
+        "end": {
+          "line": 4,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "service",
+      "range": [
+        91,
+        98
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 4
+        },
+        "end": {
+          "line": 5,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "disk1",
+      "range": [
+        99,
+        104
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 12
+        },
+        "end": {
+          "line": 5,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        104,
+        105
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 17
+        },
+        "end": {
+          "line": 5,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "disk",
+      "range": [
+        105,
+        109
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 18
+        },
+        "end": {
+          "line": 5,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        109,
+        110
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 22
+        },
+        "end": {
+          "line": 5,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        110,
+        111
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 23
+        },
+        "end": {
+          "line": 5,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Storage",
+      "range": [
+        111,
+        118
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 24
+        },
+        "end": {
+          "line": 5,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        118,
+        119
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 31
+        },
+        "end": {
+          "line": 5,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "in",
+      "range": [
+        120,
+        122
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 33
+        },
+        "end": {
+          "line": 5,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "api",
+      "range": [
+        123,
+        126
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 36
+        },
+        "end": {
+          "line": 5,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "service",
+      "range": [
+        131,
+        138
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 4
+        },
+        "end": {
+          "line": 6,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "disk2",
+      "range": [
+        139,
+        144
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 12
+        },
+        "end": {
+          "line": 6,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        144,
+        145
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 17
+        },
+        "end": {
+          "line": 6,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "disk",
+      "range": [
+        145,
+        149
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 18
+        },
+        "end": {
+          "line": 6,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        149,
+        150
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 22
+        },
+        "end": {
+          "line": 6,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        150,
+        151
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 23
+        },
+        "end": {
+          "line": 6,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Storage",
+      "range": [
+        151,
+        158
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 24
+        },
+        "end": {
+          "line": 6,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        158,
+        159
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 31
+        },
+        "end": {
+          "line": 6,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "in",
+      "range": [
+        160,
+        162
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 33
+        },
+        "end": {
+          "line": 6,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "api",
+      "range": [
+        163,
+        166
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 36
+        },
+        "end": {
+          "line": 6,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "service",
+      "range": [
+        171,
+        178
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 4
+        },
+        "end": {
+          "line": 7,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "server",
+      "range": [
+        179,
+        185
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 12
+        },
+        "end": {
+          "line": 7,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        185,
+        186
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 18
+        },
+        "end": {
+          "line": 7,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "server",
+      "range": [
+        186,
+        192
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 19
+        },
+        "end": {
+          "line": 7,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        192,
+        193
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 25
+        },
+        "end": {
+          "line": 7,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        193,
+        194
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 26
+        },
+        "end": {
+          "line": 7,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Server",
+      "range": [
+        194,
+        200
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 27
+        },
+        "end": {
+          "line": 7,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        200,
+        201
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 33
+        },
+        "end": {
+          "line": 7,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "in",
+      "range": [
+        202,
+        204
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 35
+        },
+        "end": {
+          "line": 7,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "api",
+      "range": [
+        205,
+        208
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 38
+        },
+        "end": {
+          "line": 7,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "db",
+      "range": [
+        214,
+        216
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 4
+        },
+        "end": {
+          "line": 9,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        216,
+        217
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 6
+        },
+        "end": {
+          "line": 9,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "L",
+      "range": [
+        217,
+        218
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 7
+        },
+        "end": {
+          "line": 9,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        219,
+        221
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 9
+        },
+        "end": {
+          "line": 9,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "R",
+      "range": [
+        222,
+        223
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 12
+        },
+        "end": {
+          "line": 9,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        223,
+        224
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 13
+        },
+        "end": {
+          "line": 9,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "server",
+      "range": [
+        224,
+        230
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 14
+        },
+        "end": {
+          "line": 9,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "disk1",
+      "range": [
+        235,
+        240
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 4
+        },
+        "end": {
+          "line": 10,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        240,
+        241
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 9
+        },
+        "end": {
+          "line": 10,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "T",
+      "range": [
+        241,
+        242
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 10
+        },
+        "end": {
+          "line": 10,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        243,
+        245
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 12
+        },
+        "end": {
+          "line": 10,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "B",
+      "range": [
+        246,
+        247
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 15
+        },
+        "end": {
+          "line": 10,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        247,
+        248
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 16
+        },
+        "end": {
+          "line": 10,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "server",
+      "range": [
+        248,
+        254
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 17
+        },
+        "end": {
+          "line": 10,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "disk2",
+      "range": [
+        259,
+        264
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 4
+        },
+        "end": {
+          "line": 11,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        264,
+        265
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 9
+        },
+        "end": {
+          "line": 11,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "T",
+      "range": [
+        265,
+        266
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 10
+        },
+        "end": {
+          "line": 11,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        267,
+        269
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 12
+        },
+        "end": {
+          "line": 11,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "B",
+      "range": [
+        270,
+        271
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 15
+        },
+        "end": {
+          "line": 11,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        271,
+        272
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 16
+        },
+        "end": {
+          "line": 11,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "db",
+      "range": [
+        272,
+        274
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 17
+        },
+        "end": {
+          "line": 11,
+          "column": 19
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    275
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 12,
+      "column": 0
+    }
+  }
+}

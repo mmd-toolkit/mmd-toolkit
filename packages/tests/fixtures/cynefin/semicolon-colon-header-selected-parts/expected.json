@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can a retained directive prefix select a semicolon between the colon header and its body?"
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "A"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

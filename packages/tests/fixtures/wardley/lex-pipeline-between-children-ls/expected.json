@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Grammar: Is U+2028 between two pipeline children rejected rather than treated as native padding?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 5, column 1: unexpected character: -> <- at offset: 66, skipped 1 characters. "
+  }
+}

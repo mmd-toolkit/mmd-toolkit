@@ -1,0 +1,122 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/block.md",
+    "line": 442
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": 3,
+      "children": [
+        {
+          "id": "Start",
+          "label": "Start",
+          "type": "circle",
+          "widthInColumns": 1,
+          "styles": [
+            "fill:#969"
+          ]
+        },
+        {
+          "type": "space",
+          "width": 2
+        },
+        {
+          "type": "space",
+          "width": 2
+        },
+        {
+          "id": "down",
+          "label": " ",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "down"
+          ]
+        },
+        {
+          "type": "space",
+          "width": 2
+        },
+        {
+          "type": "space",
+          "width": 2
+        },
+        {
+          "id": "Decision",
+          "label": "Make Decision",
+          "type": "hexagon",
+          "widthInColumns": 1
+        },
+        {
+          "id": "right",
+          "label": "Yes",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "right"
+          ]
+        },
+        {
+          "id": "Process1",
+          "label": "Process A",
+          "type": "square",
+          "widthInColumns": 1
+        },
+        {
+          "id": "downAgain",
+          "label": "No",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "down"
+          ]
+        },
+        {
+          "type": "space",
+          "width": 1
+        },
+        {
+          "id": "r3",
+          "label": "Done",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "down"
+          ]
+        },
+        {
+          "id": "Process2",
+          "label": "Process B",
+          "type": "square",
+          "widthInColumns": 1
+        },
+        {
+          "id": "r2",
+          "label": "Done",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "right"
+          ]
+        },
+        {
+          "id": "End",
+          "label": "End",
+          "type": "circle",
+          "widthInColumns": 1,
+          "styles": [
+            "fill:#696"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

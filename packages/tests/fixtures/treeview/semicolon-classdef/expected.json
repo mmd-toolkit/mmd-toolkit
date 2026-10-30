@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check the shared selected-semicolon line rule: classdef."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "classDef x fill:#fff",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "next",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

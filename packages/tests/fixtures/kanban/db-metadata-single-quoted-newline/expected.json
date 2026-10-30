@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Single-quoted multiline YAML tests folding without shapeDataStr rewriting."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "first second",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "label": "first second"
+        }
+      }
+    ]
+  }
+}

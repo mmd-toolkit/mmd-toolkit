@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The statement context, Keywords and what follows them: `classDefé fill:red` defines the class `é`; accepted."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "é",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ],
+    "subGraphs": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does common a11y title receive preprocessed placeholders?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "style fill:ﬂ°abc¶ß;",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

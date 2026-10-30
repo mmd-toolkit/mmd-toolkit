@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Spaced cherry-pick semicolons are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 6, column 19: unexpected character: ->;<- at offset: 78, skipped 1 characters.\nLexer error on line 6, column 21: unexpected character: ->;<- at offset: 80, skipped 1 characters. "
+  }
+}

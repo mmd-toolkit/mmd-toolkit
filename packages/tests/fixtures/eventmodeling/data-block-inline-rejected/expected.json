@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A data declaration requires a multiline block."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 8: Expecting token of type 'EM_DATA_BLOCK' but found `{ value }`."
+  }
+}

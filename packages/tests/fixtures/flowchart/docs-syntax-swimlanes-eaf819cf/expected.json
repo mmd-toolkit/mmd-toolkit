@@ -1,0 +1,184 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/swimlanes.md",
+    "line": 283
+  },
+  "accepted": true,
+  "diagramType": "swimlane",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "apply",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Submit application",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "sign",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Sign agreement",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "screen",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Screen application",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "decide",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Approved?",
+        "type": "diamond",
+        "props": {}
+      },
+      {
+        "id": "create",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Create account",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "notify",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Send welcome email",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "apply",
+        "end": "screen",
+        "type": "arrow_point",
+        "text": "Application received",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_apply_screen_0"
+      },
+      {
+        "start": "screen",
+        "end": "decide",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_screen_decide_0"
+      },
+      {
+        "start": "decide",
+        "end": "create",
+        "type": "arrow_point",
+        "text": "Approved",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_decide_create_0"
+      },
+      {
+        "start": "create",
+        "end": "notify",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_create_notify_0"
+      },
+      {
+        "start": "notify",
+        "end": "sign",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_notify_sign_0"
+      },
+      {
+        "start": "decide",
+        "end": "apply",
+        "type": "arrow_point",
+        "text": "Needs changes",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_decide_apply_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "Applicant",
+        "nodes": [
+          "apply",
+          "sign"
+        ],
+        "title": "Applicant",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "Reviewer",
+        "nodes": [
+          "screen",
+          "decide"
+        ],
+        "title": "Reviewer",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "System",
+        "nodes": [
+          "create",
+          "notify"
+        ],
+        "title": "System",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

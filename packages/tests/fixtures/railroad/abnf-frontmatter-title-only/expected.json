@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The ABNF adapter clears the title supplied from frontmatter."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  },
+  "embedded": {
+    "title": "Front"
+  }
+}

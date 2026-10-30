@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does JSON property order use the post-directive key?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "J",
+        "value": {
+          "field": true
+        },
+        "propertyOrder": {
+          "": [
+            "field"
+          ]
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "J",
+        "set": {
+          "value": {
+            "field": true
+          },
+          "propertyOrder": {
+            "": [
+              "field"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a prototype-shaped native metadata property fail validation?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Metadata property '__proto__' is invalid for actor 'A' at line 2, column 12 [24,33)"
+  }
+}

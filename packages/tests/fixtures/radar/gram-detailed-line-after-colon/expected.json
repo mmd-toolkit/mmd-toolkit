@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md: Can a named entry value follow its colon on another visible line?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 3, column 11: Expecting token of type 'NUMBER' but found `\n`.\nParse error on line 4, column 1: Expecting token of type '}' but found `1`."
+  }
+}

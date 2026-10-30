@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Trailing Unicode whitespace belongs to source text before Db trim."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "A",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "A",
+      "children": []
+    }
+  }
+}

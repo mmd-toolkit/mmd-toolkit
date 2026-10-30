@@ -1,0 +1,235 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: quadrant-no-empty-description-block >> invalid >>> docs/rules/quadrant-no-empty-description-block.md incorrect 1
+Filename: quadrant-no-empty-description-block-incorrect-1.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   A: [0.3, 0.6]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6]
+          3 |
+---
+
+
+Test: quadrant-no-empty-description-block >> invalid >>> docs/rules/quadrant-no-empty-description-block.md incorrect 2
+Filename: quadrant-no-empty-description-block-incorrect-2.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accDescr { }
+    |   ^~~~~~~~~~~~ [1]
+  3 |   A: [0.3, 0.6]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6]
+          3 |
+---
+
+
+Test: quadrant-no-empty-description-block >> invalid >>> invalid/quadrant/directive-only-block
+Filename: tests/fixtures/rules/quadrant-no-empty-description-block/invalid/quadrant/directive-only-block-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  3 |     %%{init: {}}%%
+    | ~~~~~~~~~~~~~~~~~~\ [1]
+  4 |   }
+    | ~~~ [1]
+  5 |   A: [0.3, 0.6]
+  6 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: quadrant-no-empty-description-block >> invalid >>> invalid/quadrant/empty-after-description
+Filename: tests/fixtures/rules/quadrant-no-empty-description-block/invalid/quadrant/empty-after-description-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accDescr: d
+  3 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | quadrantChart
+          2 |   accDescr: d
+          3 |   A: [0.3, 0.6]
+          4 |
+---
+
+
+Test: quadrant-no-empty-description-block >> invalid >>> invalid/quadrant/empty-after-point
+Filename: tests/fixtures/rules/quadrant-no-empty-description-block/invalid/quadrant/empty-after-point-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   A: [0.3, 0.6] accDescr {}
+    |                 ^~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: quadrant-no-empty-description-block >> invalid >>> invalid/quadrant/empty-before-point
+Filename: tests/fixtures/rules/quadrant-no-empty-description-block/invalid/quadrant/empty-before-point-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accDescr {} A: [0.3, 0.6]
+    |   ^~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: quadrant-no-empty-description-block >> invalid >>> invalid/quadrant/empty-blank-lines
+Filename: tests/fixtures/rules/quadrant-no-empty-description-block/invalid/quadrant/empty-blank-lines-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  3 |
+    | ~\ [1]
+  4 |
+    | ~\ [1]
+  5 |   }
+    | ~~~ [1]
+  6 |   A: [0.3, 0.6]
+  7 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6]
+          3 |
+---
+
+
+Test: quadrant-no-empty-description-block >> invalid >>> invalid/quadrant/empty-braces
+Filename: tests/fixtures/rules/quadrant-no-empty-description-block/invalid/quadrant/empty-braces-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   A: [0.3, 0.6]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6]
+          3 |
+---
+
+
+Test: quadrant-no-empty-description-block >> invalid >>> invalid/quadrant/empty-space
+Filename: tests/fixtures/rules/quadrant-no-empty-description-block/invalid/quadrant/empty-space-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accDescr { }
+    |   ^~~~~~~~~~~~ [1]
+  3 |   A: [0.3, 0.6]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6]
+          3 |
+---
+
+
+Test: quadrant-no-empty-description-block >> invalid >>> invalid/quadrant/empty-tab
+Filename: tests/fixtures/rules/quadrant-no-empty-description-block/invalid/quadrant/empty-tab-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accDescr {	}
+    |   ^~~~~~~~~~~~ [1]
+  3 |   A: [0.3, 0.6]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6]
+          3 |
+---
+
+
+Test: quadrant-no-empty-description-block >> invalid >>> invalid/quadrant/empty-two-lines
+Filename: tests/fixtures/rules/quadrant-no-empty-description-block/invalid/quadrant/empty-two-lines-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  3 |   }
+    | ~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6]
+          3 |
+---
+
+
+Test: quadrant-no-empty-description-block >> invalid >>> invalid/quadrant/empty-upper-case
+Filename: tests/fixtures/rules/quadrant-no-empty-description-block/invalid/quadrant/empty-upper-case-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   ACCDESCR {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   A: [0.3, 0.6]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6]
+          3 |
+---

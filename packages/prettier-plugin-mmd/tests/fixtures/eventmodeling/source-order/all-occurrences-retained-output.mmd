@@ -1,0 +1,21 @@
+eventmodeling
+  entity Shop.Alpha
+  entity Shop.Alpha
+  note 99 {
+unused
+}
+  gwt 99
+    given
+      evt Alpha
+    then
+      cmd Beta
+  tf 01 evt Alpha ->> 02 ->> 02 [[D]] {unused}
+  data D {
+first
+}
+  data D {
+second
+}
+  data Unused {
+x
+}

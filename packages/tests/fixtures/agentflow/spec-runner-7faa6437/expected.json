@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/conformance/runner.spec.ts",
+    "line": 86,
+    "test": "runFixture > reports parse-error and no semantic model when the parser throws"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...an\"]    a[\"Alpha\"]\n---------------------^\nExpecting 'COMMENT', 'SEMI', 'NEWLINE', 'SPACE', 'EOF', 'flow', 'end', 'global', 'connector', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'AMP', 'COLON', 'STYLE', 'LINKSTYLE', 'CLASSDEF', 'CLASS', 'CLICK', 'DOWN', 'DEFAULT', 'NUM', 'COMMA', 'NODE_STRING', 'BRKT', 'MINUS', 'MULT', 'UNICODE_TEXT', 'direction_tb', 'direction_bt', 'direction_rl', 'direction_lr', 'direction_td', got '1'"
+  }
+}

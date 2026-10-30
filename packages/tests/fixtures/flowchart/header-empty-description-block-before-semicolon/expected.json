@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Empty description blocks before a separator: the space before the block is whitespace after the direction, which a ; may not follow, as in flowchart LR ;A; rejected by both."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n...chart LR accDescr {};A\n-----------------------^\nExpecting 'NEWLINE', got 'SEMI'"
+  }
+}

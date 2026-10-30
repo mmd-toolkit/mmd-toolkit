@@ -1,0 +1,17 @@
+{
+  "message": "Unexpected token",
+  "range": [
+    74,
+    75
+  ],
+  "loc": {
+    "start": {
+      "line": 7,
+      "column": 8
+    },
+    "end": {
+      "line": 7,
+      "column": 9
+    }
+  }
+}

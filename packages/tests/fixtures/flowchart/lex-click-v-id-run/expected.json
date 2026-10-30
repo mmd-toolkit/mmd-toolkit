@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md The statement context: `v` followed by a word character is not a `v` unit, so `vclick` is one id run, the vertex `vclick`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "vclick",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "vclick",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "C",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "vclick",
+        "end": "C",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_vclick_C_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

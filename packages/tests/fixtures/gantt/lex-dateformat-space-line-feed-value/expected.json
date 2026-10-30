@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Keywords and what follows them: after `dateFormat` and a space, a line feed cannot start the setting text, so `dateFormat ` is a task text; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nganttdateFormat X\n----------------^\nExpecting 'taskData', got 'NL'"
+  }
+}

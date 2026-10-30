@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Grammar: `/` alone on a line is an `invalid` unit, a line that changes nothing."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

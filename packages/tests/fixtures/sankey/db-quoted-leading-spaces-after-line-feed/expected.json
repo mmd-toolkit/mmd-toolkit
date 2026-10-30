@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, quotes: the spaces after a line feed inside quotes stay."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a\n  b",
+      "c"
+    ],
+    "links": [
+      {
+        "source": "a\n  b",
+        "target": "c",
+        "value": 1
+      }
+    ]
+  }
+}

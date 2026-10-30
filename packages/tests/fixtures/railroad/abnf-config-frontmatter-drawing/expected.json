@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ABNF publication does not read railroad configuration."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "repetition",
+          "element": {
+            "type": "terminal",
+            "value": "a"
+          },
+          "min": 2,
+          "max": 4
+        }
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "railroad": {
+        "padding": 2
+      }
+    }
+  }
+}

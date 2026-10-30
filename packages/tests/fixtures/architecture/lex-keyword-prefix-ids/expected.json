@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Keyword longer-ID alternatives preserve glued ASCII suffixes as identifiers."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "serviceX",
+        "type": "service"
+      },
+      {
+        "id": "group1",
+        "type": "service"
+      },
+      {
+        "id": "junction_",
+        "type": "service"
+      },
+      {
+        "id": "align-x",
+        "type": "service"
+      },
+      {
+        "id": "rowboat",
+        "type": "service"
+      },
+      {
+        "id": "columnar",
+        "type": "service"
+      },
+      {
+        "id": "inside",
+        "type": "service"
+      },
+      {
+        "id": "architecture-betaX",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

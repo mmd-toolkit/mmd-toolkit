@@ -1,0 +1,59 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Input with Person aliases a and A is accepted; shapes is [{\"alias\":\"a\",\"label\":{\"text\":\"Lower\"},\"descr\":{\"text\":\"\"},\"typeC4Shape\":{\"text\":\"person\"},\"parentBoundary\":\"global\"},{\"alias\":\"A\",\"label\":{\"text\":\"Upper\"},\"descr\":{\"text\":\"\"},\"typeC4Shape\":{\"text\":\"person\"},\"parentBoundary\":\"global\"}]."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "Lower"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "global"
+      },
+      {
+        "alias": "A",
+        "label": {
+          "text": "Upper"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

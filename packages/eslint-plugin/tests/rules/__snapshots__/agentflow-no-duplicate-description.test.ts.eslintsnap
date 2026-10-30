@@ -1,0 +1,611 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: agentflow-no-duplicate-description >> invalid >>> docs/rules/agentflow-no-duplicate-description.md incorrect 1
+Filename: agentflow-no-duplicate-description-incorrect-1.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   accDescr: first
+  3 |   accDescr: second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 |   accDescr: first
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 |   accDescr: second
+          3 |
+---
+
+
+Test: agentflow-no-duplicate-description >> invalid >>> docs/rules/agentflow-no-duplicate-description.md incorrect 2
+Filename: agentflow-no-duplicate-description-incorrect-2.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   accDescr: short
+  3 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  4 |     A longer
+    | ~~~~~~~~~~~~\ [1]
+  5 |     description
+    | ~~~~~~~~~~~~~~~\ [1]
+  6 |   }
+    | ~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 |   accDescr: short
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 |   accDescr {
+          3 |     A longer
+          4 |     description
+          5 |   }
+          6 |
+---
+
+
+Test: agentflow-no-duplicate-description >> invalid >>> invalid/agentflow/description-comment-block-between
+Filename: tests/fixtures/rules/agentflow-no-duplicate-description/invalid/agentflow/description-comment-block-between-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr: First
+  3 | accDescr {
+    | ^~~~~~~~~~\ [1]
+  4 | %% TODO
+    | ~~~~~~~\ [1]
+  5 | }
+    | ~ [1]
+  6 | accDescr: Second
+    | ^~~~~~~~~~~~~~~~ [2]
+  7 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | accDescr: Second
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr {
+          3 | %% TODO
+          4 | }
+          5 | accDescr: Second
+          6 |
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | accDescr {
+          4 | %% TODO
+          5 | }
+          6 |
+---
+
+
+Test: agentflow-no-duplicate-description >> invalid >>> invalid/agentflow/description-comment-is-description
+Filename: tests/fixtures/rules/agentflow-no-duplicate-description/invalid/agentflow/description-comment-is-description-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr: First
+  3 | accDescr {
+    | ^~~~~~~~~~\ [1]
+  4 | %% TODO
+    | ~~~~~~~\ [1]
+  5 | }
+    | ~ [1]
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr {
+          3 | %% TODO
+          4 | }
+          5 |
+---
+
+
+Test: agentflow-no-duplicate-description >> invalid >>> invalid/agentflow/description-directive-block-between
+Filename: tests/fixtures/rules/agentflow-no-duplicate-description/invalid/agentflow/description-directive-block-between-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr: First
+  3 | accDescr {%%{init: {}}%%}
+  4 | accDescr: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | accDescr {%%{init: {}}%%}
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr {%%{init: {}}%%}
+          3 | accDescr: Second
+          4 |
+---
+
+
+Test: agentflow-no-duplicate-description >> invalid >>> invalid/agentflow/description-empty-block-between
+Filename: tests/fixtures/rules/agentflow-no-duplicate-description/invalid/agentflow/description-empty-block-between-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr: First
+  3 | accDescr {}
+  4 | accDescr: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | accDescr {}
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr {}
+          3 | accDescr: Second
+          4 |
+---
+
+
+Test: agentflow-no-duplicate-description >> invalid >>> invalid/agentflow/description-empty-eof
+Filename: tests/fixtures/rules/agentflow-no-duplicate-description/invalid/agentflow/description-empty-eof-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A
+  3 | accDescr: First
+  4 | accDescr:
+    | ^~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | A
+          3 | accDescr: First
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | A
+          3 | accDescr:
+---
+
+
+Test: agentflow-no-duplicate-description >> invalid >>> invalid/agentflow/description-empty-lines
+Filename: tests/fixtures/rules/agentflow-no-duplicate-description/invalid/agentflow/description-empty-lines-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr {
+  3 |   a
+  4 |
+  5 |   b
+  6 | }
+  7 | accDescr: a
+    | ^~~~~~~~~~~ [1]
+  8 | b
+  9 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr {
+          3 |   a
+          4 |
+          5 |   b
+          6 | }
+          7 | b
+          8 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: a
+          3 | b
+          4 |
+---
+
+
+Test: agentflow-no-duplicate-description >> invalid >>> invalid/agentflow/description-entity-written-limit
+Filename: tests/fixtures/rules/agentflow-no-duplicate-description/invalid/agentflow/description-entity-written-limit-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr: #35;
+  3 | accDescr: #
+    | ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: #35;
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: #
+          3 |
+---
+
+
+Test: agentflow-no-duplicate-description >> invalid >>> invalid/agentflow/description-equal-predecessor
+Filename: tests/fixtures/rules/agentflow-no-duplicate-description/invalid/agentflow/description-equal-predecessor-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr: A
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
+---
+
+
+Test: agentflow-no-duplicate-description >> invalid >>> invalid/agentflow/description-global
+Filename: tests/fixtures/rules/agentflow-no-duplicate-description/invalid/agentflow/description-global-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr: first
+  3 | global
+  4 | accDescr: second
+    | ^~~~~~~~~~~~~~~~ [1]
+  5 | end
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: first
+          3 | global
+          4 | end
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | global
+          3 | accDescr: second
+          4 | end
+          5 |
+---
+
+
+Test: agentflow-no-duplicate-description >> invalid >>> invalid/agentflow/description-html-written-limit
+Filename: tests/fixtures/rules/agentflow-no-duplicate-description/invalid/agentflow/description-html-written-limit-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr: <b x="a">t</b>
+  3 | accDescr: <b x='a'>t</b>
+    | ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: <b x="a">t</b>
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: <b x='a'>t</b>
+          3 |
+---
+
+
+Test: agentflow-no-duplicate-description >> invalid >>> invalid/agentflow/description-nested
+Filename: tests/fixtures/rules/agentflow-no-duplicate-description/invalid/agentflow/description-nested-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr: First
+  3 | flow F
+  4 | accDescr: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  5 | A
+  6 | end
+  7 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | flow F
+          4 | A
+          5 | end
+          6 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F
+          3 | accDescr: Second
+          4 | A
+          5 | end
+          6 |
+---
+
+
+Test: agentflow-no-duplicate-description >> invalid >>> invalid/agentflow/description-next-blank
+Filename: tests/fixtures/rules/agentflow-no-duplicate-description/invalid/agentflow/description-next-blank-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr: First
+  3 | accDescr:
+    | ^~~~~~~~~\ [1]
+  4 |
+    | ~\ [1]
+  5 | Second
+    | ~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr:
+          3 |
+          4 | Second
+          5 |
+---
+
+
+Test: agentflow-no-duplicate-description >> invalid >>> invalid/agentflow/description-next-comment
+Filename: tests/fixtures/rules/agentflow-no-duplicate-description/invalid/agentflow/description-next-comment-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr: First
+  3 | accDescr:
+    | ^~~~~~~~~\ [1]
+  4 | %% note
+    | ~~~~~~~ [1]
+  5 | Second
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | Second
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr:
+          3 | %% note
+          4 | Second
+          5 |
+---
+
+
+Test: agentflow-no-duplicate-description >> invalid >>> invalid/agentflow/description-next-directive
+Filename: tests/fixtures/rules/agentflow-no-duplicate-description/invalid/agentflow/description-next-directive-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr: First
+  3 | accDescr:
+    | ^~~~~~~~~\ [1]
+  4 | %%{init: {}}%%
+    | ~~~~~~~~~~~~~~\ [1]
+  5 | Second
+    | ~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr:
+          3 | %%{init: {}}%%
+          4 | Second
+          5 |
+---
+
+
+Test: agentflow-no-duplicate-description >> invalid >>> invalid/agentflow/description-same-line-blocks
+Filename: tests/fixtures/rules/agentflow-no-duplicate-description/invalid/agentflow/description-same-line-blocks-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr { First } accDescr { Second }
+    |                    ^~~~~~~~~~~~~~~~~~~ [1]
+  3 | A
+  4 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+---
+
+
+Test: agentflow-no-duplicate-description >> invalid >>> invalid/agentflow/description-three
+Filename: tests/fixtures/rules/agentflow-no-duplicate-description/invalid/agentflow/description-three-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr: First
+  3 | accDescr { Second }
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  4 | accDescr: First
+    | ^~~~~~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | accDescr: First
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr { Second }
+          3 | accDescr: First
+          4 |
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | accDescr { Second }
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | accDescr: First
+          4 |
+---
+
+
+Test: agentflow-no-duplicate-description >> invalid >>> invalid/agentflow/description-triple-empty-directive
+Filename: tests/fixtures/rules/agentflow-no-duplicate-description/invalid/agentflow/description-triple-empty-directive-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr: First
+  3 | accDescr {%%{init: {}}%%}
+  4 | accDescr { Second }
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  5 | accDescr: First
+    | ^~~~~~~~~~~~~~~ [2]
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | accDescr {%%{init: {}}%%}
+          4 | accDescr: First
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr {%%{init: {}}%%}
+          3 | accDescr { Second }
+          4 | accDescr: First
+          5 |
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | accDescr {%%{init: {}}%%}
+          4 | accDescr { Second }
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | accDescr {%%{init: {}}%%}
+          4 | accDescr: First
+          5 |
+---
+
+
+Test: agentflow-no-duplicate-description >> invalid >>> invalid/agentflow/description-two
+Filename: tests/fixtures/rules/agentflow-no-duplicate-description/invalid/agentflow/description-two-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr: First
+  3 | accDescr: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | A
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: First
+          3 | A
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | agentflow-beta TB
+          2 | accDescr: Second
+          3 | A
+          4 |
+---

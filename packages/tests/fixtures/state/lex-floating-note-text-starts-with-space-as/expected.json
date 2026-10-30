@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The note contexts, floating note context: rule 1 reads the whitespace before `as` too, so ` as` at the start of the text is an `as` unit, and the input is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ateDiagram-v2note \" as x\" as NA\n----------------------^\nExpecting 'NOTE_TEXT', 'left_of', 'right_of', got 'AS'"
+  }
+}

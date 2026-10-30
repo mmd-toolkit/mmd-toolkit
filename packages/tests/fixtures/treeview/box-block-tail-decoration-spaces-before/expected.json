@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Common forms and Box-drawing reading; ast/treeview.md TreeviewAccDescrBlockStatement: Indentation before the final decoration is preserved in the authored payload. Mermaid accepts with accDescr \"a\"."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "a",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed directive word-argument leaves the style closing delimiter available."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "color": "a"
+        }
+      }
+    ]
+  }
+}

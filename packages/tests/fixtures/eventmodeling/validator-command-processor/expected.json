@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Command aliases accept processor sources."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "processor",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "command",
+        "entityIdentifier": "B",
+        "sourceFrames": [
+          "01"
+        ],
+        "data": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, settings: the settings of the chart, the theme, and the theme variables change nothing in the Db."
+  },
+  "config": {
+    "theme": "dark",
+    "themeVariables": {
+      "quadrant1Fill": "#ff0000",
+      "quadrantPointFill": "#00ff00",
+      "quadrantTitleFill": "#0000ff"
+    },
+    "quadrantChart": {
+      "chartWidth": 100,
+      "chartHeight": 50,
+      "titleFontSize": 30,
+      "titlePadding": 9,
+      "quadrantPadding": 8,
+      "xAxisLabelPadding": 7,
+      "yAxisLabelPadding": 6,
+      "xAxisLabelFontSize": 20,
+      "yAxisLabelFontSize": 19,
+      "quadrantLabelFontSize": 18,
+      "quadrantTextTopPadding": 17,
+      "pointTextPadding": 16,
+      "pointLabelFontSize": 15,
+      "pointRadius": 14,
+      "xAxisPosition": "top",
+      "yAxisPosition": "right",
+      "quadrantInternalBorderStrokeWidth": 3,
+      "quadrantExternalBorderStrokeWidth": 4
+    }
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "xAxis": {
+      "left": "L",
+      "right": "R"
+    },
+    "yAxis": {
+      "bottom": "B",
+      "top": "T"
+    },
+    "points": [
+      {
+        "text": "A",
+        "className": "",
+        "x": "0.3",
+        "y": "0.6",
+        "radius": 5,
+        "color": "#f00"
+      }
+    ],
+    "classes": []
+  }
+}

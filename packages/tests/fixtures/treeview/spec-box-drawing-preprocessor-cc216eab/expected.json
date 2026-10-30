@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/treeView/boxDrawingPreprocessor.spec.ts",
+    "line": 233,
+    "test": "boxDrawingPreprocessor > preprocessBoxDrawing > annotations > should preserve icon() annotation"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "data.bin",
+        "nodeType": "file",
+        "icon": "database",
+        "children": []
+      }
+    ]
+  }
+}

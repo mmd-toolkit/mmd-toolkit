@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Inline data cannot cross LF."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 13: unexpected character: ->\"<- at offset: 26, skipped 1 characters.\nLexer error on line 3, column 4: unexpected character: ->\"<- at offset: 34, skipped 1 characters. Parse error on line 2, column 14: Expecting token of type 'EOF' but found `one`."
+  }
+}

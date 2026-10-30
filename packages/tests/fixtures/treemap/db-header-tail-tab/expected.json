@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a trailing header tab indent only the first row and leave the following unindented row outside it?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "children": []
+      },
+      {
+        "name": "b",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  }
+}

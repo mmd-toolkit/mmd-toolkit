@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md (c4-keyword-anywhere): `C4Component` in a label makes the C4 detector of mermaid.js claim the text, and the C4 parser rejects it; here the text is a flowchart with the vertex A labelled `C4Component`."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nflowchart LRA[C4Com\n^"
+  }
+}

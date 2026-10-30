@@ -1,0 +1,342 @@
+{
+  "type": "Root",
+  "diagramType": "wardley",
+  "body": {
+    "type": "WardleyDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "WardleyComponentStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "WardleyIdentifier",
+          "name": "Alpha Beta",
+          "range": [
+            23,
+            46
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 10
+            },
+            "end": {
+              "line": 2,
+              "column": 33
+            }
+          }
+        },
+        "textBeforeCoordinates": [],
+        "coordinates": {
+          "type": "WardleyCoordinates",
+          "textBeforeVisibility": [],
+          "visibility": {
+            "type": "NumericLiteral",
+            "value": 0.1,
+            "raw": "0.1",
+            "range": [
+              47,
+              50
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 34
+              },
+              "end": {
+                "line": 2,
+                "column": 37
+              }
+            }
+          },
+          "textBeforeComma": [],
+          "textBeforeEvolution": [],
+          "evolution": {
+            "type": "NumericLiteral",
+            "value": 0.2,
+            "raw": "0.2",
+            "range": [
+              51,
+              54
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 38
+              },
+              "end": {
+                "line": 2,
+                "column": 41
+              }
+            }
+          },
+          "textBeforeClose": [],
+          "range": [
+            46,
+            55
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 33
+            },
+            "end": {
+              "line": 2,
+              "column": 42
+            }
+          }
+        },
+        "decorations": [],
+        "textAfter": [],
+        "range": [
+          13,
+          55
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 42
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      55
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 42
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [
+    {
+      "type": "Directive",
+      "name": "init",
+      "value": "init:{}",
+      "closed": true,
+      "range": [
+        25,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 25
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "wardley-beta",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "component",
+      "range": [
+        13,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Al",
+      "range": [
+        23,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Directive",
+      "value": "%%{init:{}}%%",
+      "range": [
+        25,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "pha Beta",
+      "range": [
+        38,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 25
+        },
+        "end": {
+          "line": 2,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        46,
+        47
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 33
+        },
+        "end": {
+          "line": 2,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.1",
+      "range": [
+        47,
+        50
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 34
+        },
+        "end": {
+          "line": 2,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        50,
+        51
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 37
+        },
+        "end": {
+          "line": 2,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.2",
+      "range": [
+        51,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 38
+        },
+        "end": {
+          "line": 2,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        54,
+        55
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 41
+        },
+        "end": {
+          "line": 2,
+          "column": 42
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    55
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 42
+    }
+  }
+}

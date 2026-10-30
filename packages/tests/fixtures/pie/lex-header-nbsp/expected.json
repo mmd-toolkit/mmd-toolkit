@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The header lookahead accepts Unicode whitespace that the lexer cannot skip."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 4: unexpected character: -> <- at offset: 3, skipped 1 characters. "
+  }
+}

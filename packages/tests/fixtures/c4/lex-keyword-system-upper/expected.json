@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The statement keyword spelling `SYSTEM` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nC4ContextSYSTEM(a, \"A\", \"D\", \n---------^"
+  }
+}

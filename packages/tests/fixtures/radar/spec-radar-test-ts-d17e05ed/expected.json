@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/radar.test.ts",
+    "line": 370,
+    "test": "radar > error messages with line and column numbers > should include line and column numbers for missing curve entries"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 3, column 17: Expecting token of type '{' but found `\n`.\nParse error on line 3, column 17: Expecting: one of these possible Token sequences:\n  1. [NUMBER]\n  2. [NEWLINE, NUMBER]\n  3. [NEWLINE, NEWLINE, NEWLINE]\n  4. [NEWLINE, NEWLINE, NUMBER]\n  5. [ID]\n  6. [NEWLINE, ID]\n  7. [NEWLINE, NEWLINE, NEWLINE]\n  8. [NEWLINE, NEWLINE, ID]\nbut found: '\n'"
+  }
+}

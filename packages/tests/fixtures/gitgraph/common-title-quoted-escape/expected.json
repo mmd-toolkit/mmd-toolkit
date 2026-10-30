@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "TITLE retains its quotes and written backslash-n; it does not use STRING escape decoding."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "\"A\\nB\"",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a later classDef apply to an earlier node?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "value": 1,
+        "classSelector": "later"
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "later",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

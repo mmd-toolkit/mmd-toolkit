@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/sankey.md",
+    "line": 134
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "Pumped heat",
+      "Heating and cooling, homes",
+      "Heating and cooling, commercial"
+    ],
+    "links": [
+      {
+        "source": "Pumped heat",
+        "target": "Heating and cooling, homes",
+        "value": 193.026
+      },
+      {
+        "source": "Pumped heat",
+        "target": "Heating and cooling, commercial",
+        "value": 70.672
+      }
+    ]
+  }
+}

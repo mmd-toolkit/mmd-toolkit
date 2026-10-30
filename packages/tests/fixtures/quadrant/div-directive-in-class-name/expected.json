@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Known divergences: directives: a directive inside the name of a class is removed."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": [
+      {
+        "name": "c1",
+        "color": "#f00"
+      }
+    ]
+  }
+}

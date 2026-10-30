@@ -1,0 +1,333 @@
+{
+  "type": "Root",
+  "diagramType": "block",
+  "body": {
+    "type": "BlockDiagram",
+    "body": [
+      {
+        "type": "BlockNodeStatement",
+        "node": {
+          "type": "BlockNode",
+          "id": {
+            "type": "Identifier",
+            "name": "A",
+            "range": [
+              13,
+              14
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 2
+              },
+              "end": {
+                "line": 2,
+                "column": 3
+              }
+            }
+          },
+          "shape": {
+            "type": "BlockArrowShape",
+            "label": {
+              "type": "StringLiteral",
+              "value": "astyle:#xyb",
+              "raw": "\"astyle:#x;yb\"",
+              "closed": true,
+              "range": [
+                16,
+                30
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 5
+                },
+                "end": {
+                  "line": 2,
+                  "column": 19
+                }
+              }
+            },
+            "directions": [
+              {
+                "type": "BlockLiteral",
+                "value": "right",
+                "range": [
+                  33,
+                  38
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 22
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 27
+                  }
+                }
+              }
+            ],
+            "range": [
+              14,
+              39
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 3
+              },
+              "end": {
+                "line": 2,
+                "column": 28
+              }
+            }
+          },
+          "range": [
+            13,
+            39
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 2
+            },
+            "end": {
+              "line": 2,
+              "column": 28
+            }
+          }
+        },
+        "width": null,
+        "links": [],
+        "range": [
+          13,
+          39
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 2
+          },
+          "end": {
+            "line": 2,
+            "column": 28
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      39
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 28
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "block-beta",
+      "range": [
+        0,
+        10
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        13,
+        14
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "<[",
+      "range": [
+        14,
+        16
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 3
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "StringFragment",
+      "value": "\"astyle:#x",
+      "range": [
+        16,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 5
+        },
+        "end": {
+          "line": 2,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "IgnoredSemicolon",
+      "value": ";",
+      "range": [
+        26,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 15
+        },
+        "end": {
+          "line": 2,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "StringFragment",
+      "value": "yb\"",
+      "range": [
+        27,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 16
+        },
+        "end": {
+          "line": 2,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]>",
+      "range": [
+        30,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 19
+        },
+        "end": {
+          "line": 2,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        32,
+        33
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 21
+        },
+        "end": {
+          "line": 2,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "right",
+      "range": [
+        33,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 22
+        },
+        "end": {
+          "line": 2,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        38,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 27
+        },
+        "end": {
+          "line": 2,
+          "column": 28
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    40
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 0
+    }
+  }
+}

@@ -1,0 +1,490 @@
+{
+  "type": "Root",
+  "diagramType": "flowchart-v2",
+  "body": {
+    "type": "FlowchartDiagram",
+    "direction": "LR",
+    "body": [
+      {
+        "type": "FlowchartVertexStatement",
+        "first": {
+          "type": "FlowchartVertexGroup",
+          "vertices": [
+            {
+              "type": "FlowchartVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "A",
+                "range": [
+                  9,
+                  10
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 0
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 1
+                  }
+                }
+              },
+              "shape": {
+                "type": "FlowchartShape",
+                "name": "rectangle",
+                "property": null,
+                "label": {
+                  "type": "FlowchartLabel",
+                  "kind": "string",
+                  "value": "$$\\forall\\complement\\therefore\\emptyset\\exists\\subset\\because\\empty\\exist\\supset\\mapsto\\varnothing\\nexists\\mid\\to\\implies\\in\\land\\gets\\impliedby\\isin\\lor\\leftrightarrow\\iff\\notin\\ni\\notni\\lnot$$",
+                  "range": [
+                    11,
+                    207
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 2,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 2,
+                      "column": 198
+                    }
+                  }
+                },
+                "range": [
+                  10,
+                  208
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 1
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 199
+                  }
+                }
+              },
+              "cssClass": null,
+              "data": [],
+              "range": [
+                9,
+                208
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 0
+                },
+                "end": {
+                  "line": 2,
+                  "column": 199
+                }
+              }
+            }
+          ],
+          "range": [
+            9,
+            208
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 199
+            }
+          }
+        },
+        "links": [
+          {
+            "type": "FlowchartLink",
+            "id": null,
+            "opening": null,
+            "arrow": {
+              "type": "FlowchartArrow",
+              "value": "-->",
+              "startMarker": "none",
+              "line": "solid",
+              "length": 2,
+              "endMarker": "arrow",
+              "range": [
+                209,
+                212
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 200
+                },
+                "end": {
+                  "line": 2,
+                  "column": 203
+                }
+              }
+            },
+            "label": null,
+            "target": {
+              "type": "FlowchartVertexGroup",
+              "vertices": [
+                {
+                  "type": "FlowchartVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "B",
+                    "range": [
+                      213,
+                      214
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 2,
+                        "column": 204
+                      },
+                      "end": {
+                        "line": 2,
+                        "column": 205
+                      }
+                    }
+                  },
+                  "shape": {
+                    "type": "FlowchartShape",
+                    "name": "rectangle",
+                    "property": null,
+                    "label": {
+                      "type": "FlowchartLabel",
+                      "kind": "string",
+                      "value": "$$\\nabla\\Im\\Reals\\jmath\\partial\\image\\wp\\aleph\\Game\\weierp\\alef\\Finv\\N\\Z\\alefsym\\cnums\\natnums\\beth\\Complex\\R\\gimel\\ell\\Re\\daleth\\hbar\\real\\eth\\hslash\\reals$$",
+                      "range": [
+                        215,
+                        375
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 2,
+                          "column": 206
+                        },
+                        "end": {
+                          "line": 2,
+                          "column": 366
+                        }
+                      }
+                    },
+                    "range": [
+                      214,
+                      376
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 2,
+                        "column": 205
+                      },
+                      "end": {
+                        "line": 2,
+                        "column": 367
+                      }
+                    }
+                  },
+                  "cssClass": null,
+                  "data": [],
+                  "range": [
+                    213,
+                    376
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 2,
+                      "column": 204
+                    },
+                    "end": {
+                      "line": 2,
+                      "column": 367
+                    }
+                  }
+                }
+              ],
+              "range": [
+                213,
+                376
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 204
+                },
+                "end": {
+                  "line": 2,
+                  "column": 367
+                }
+              }
+            },
+            "range": [
+              209,
+              376
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 200
+              },
+              "end": {
+                "line": 2,
+                "column": 367
+              }
+            }
+          }
+        ],
+        "range": [
+          9,
+          376
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 367
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      376
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 367
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "graph",
+      "range": [
+        0,
+        5
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "LR",
+      "range": [
+        6,
+        8
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 6
+        },
+        "end": {
+          "line": 1,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        9,
+        10
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        10,
+        11
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 1
+        },
+        "end": {
+          "line": 2,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"$$\\forall\\complement\\therefore\\emptyset\\exists\\subset\\because\\empty\\exist\\supset\\mapsto\\varnothing\\nexists\\mid\\to\\implies\\in\\land\\gets\\impliedby\\isin\\lor\\leftrightarrow\\iff\\notin\\ni\\notni\\lnot$$\"",
+      "range": [
+        11,
+        207
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 198
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        207,
+        208
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 198
+        },
+        "end": {
+          "line": 2,
+          "column": 199
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        209,
+        212
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 200
+        },
+        "end": {
+          "line": 2,
+          "column": 203
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "B",
+      "range": [
+        213,
+        214
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 204
+        },
+        "end": {
+          "line": 2,
+          "column": 205
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        214,
+        215
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 205
+        },
+        "end": {
+          "line": 2,
+          "column": 206
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"$$\\nabla\\Im\\Reals\\jmath\\partial\\image\\wp\\aleph\\Game\\weierp\\alef\\Finv\\N\\Z\\alefsym\\cnums\\natnums\\beth\\Complex\\R\\gimel\\ell\\Re\\daleth\\hbar\\real\\eth\\hslash\\reals$$\"",
+      "range": [
+        215,
+        375
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 206
+        },
+        "end": {
+          "line": 2,
+          "column": 366
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        375,
+        376
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 366
+        },
+        "end": {
+          "line": 2,
+          "column": 367
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    376
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 367
+    }
+  }
+}

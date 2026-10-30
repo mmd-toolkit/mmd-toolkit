@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An item must be a STRING."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 9: unexpected character: ->A<- at offset: 21, skipped 1 characters. "
+  }
+}

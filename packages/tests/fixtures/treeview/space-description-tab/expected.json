@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check leading, internal, value-tail and file-tail tab in description."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "description": "a\tb",
+        "children": []
+      }
+    ]
+  }
+}

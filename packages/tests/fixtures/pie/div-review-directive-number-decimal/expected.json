@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does removal join the decimal point and fractional digits?"
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1.25
+      }
+    ]
+  }
+}

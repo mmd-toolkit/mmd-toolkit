@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Grammar and Db normalization, style statements: the styles of the tree are `fill:#f00` and `stroke:#333`; their Db texts, read between the commas, are `fill:#f00` and a space and a space, `stroke:#333`, and a space, and the summary drops the whitespace at the end of each, so it records `fill:#f00` and ` stroke:#333`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [
+          "fill:#f00",
+          " stroke:#333"
+        ],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

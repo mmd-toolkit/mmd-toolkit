@@ -1,0 +1,119 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/flowchart.html",
+    "line": 1594
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "Subgraph nodeSpacing and rankSpacing example",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "X",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "X",
+        "props": {}
+      },
+      {
+        "id": "Y",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Y",
+        "props": {}
+      },
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "C",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      },
+      {
+        "id": "D",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "D",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "X",
+        "end": "Y",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_X_Y_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "X",
+        "nodes": [
+          "A",
+          "C"
+        ],
+        "title": "X",
+        "classes": [],
+        "dir": "LR",
+        "labelType": "text"
+      },
+      {
+        "id": "Y",
+        "nodes": [
+          "B",
+          "D"
+        ],
+        "title": "Y",
+        "classes": [],
+        "dir": "LR",
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "config": {
+      "flowchart": {
+        "nodeSpacing": 1,
+        "rankSpacing": 1
+      }
+    },
+    "title": "Subgraph nodeSpacing and rankSpacing example"
+  }
+}

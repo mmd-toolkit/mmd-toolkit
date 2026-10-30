@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Known divergences, name-start-reads-unit: a generic type may start with `\"`; here the type is `\"x\"`. mermaid.js reads a string after the `~` and rejects the input."
+  },
+  "knownDivergence": "name-start-reads-unit",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...assDiagramclass A~\"x\"~\n----------------------^\nExpecting 'NEWLINE', 'EOF', 'SQS', 'STRUCT_START', 'STRUCT_STOP', 'STYLE_SEPARATOR', 'ANNOTATION_START', got 'STR'"
+  }
+}

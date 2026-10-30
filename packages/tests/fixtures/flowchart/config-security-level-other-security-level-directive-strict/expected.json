@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The input of config-security-level-other-label-characters with a directive that sets securityLevel strict: securityLevel is a secure key that only the site configuration sets, so the site value `other` stays and the label is changed."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a&lt;b&gt;&equals;c",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

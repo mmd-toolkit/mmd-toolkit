@@ -1,0 +1,566 @@
+{
+  "type": "Root",
+  "diagramType": "er",
+  "body": {
+    "type": "ErDiagram",
+    "body": [
+      {
+        "type": "ErRelationshipStatement",
+        "left": {
+          "type": "ErEntityReference",
+          "name": {
+            "type": "ErIdentifier",
+            "name": "A",
+            "range": [
+              12,
+              13
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 2
+              },
+              "end": {
+                "line": 2,
+                "column": 3
+              }
+            }
+          },
+          "cssClasses": [],
+          "range": [
+            12,
+            13
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 2
+            },
+            "end": {
+              "line": 2,
+              "column": 3
+            }
+          }
+        },
+        "relationship": {
+          "type": "ErRelationship",
+          "leftCardinality": "only-one",
+          "line": "identifying",
+          "rightCardinality": "only-one",
+          "range": [
+            14,
+            24
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 4
+            },
+            "end": {
+              "line": 2,
+              "column": 14
+            }
+          }
+        },
+        "right": {
+          "type": "ErEntityReference",
+          "name": {
+            "type": "ErIdentifier",
+            "name": "B",
+            "range": [
+              25,
+              26
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 15
+              },
+              "end": {
+                "line": 2,
+                "column": 16
+              }
+            }
+          },
+          "cssClasses": [],
+          "range": [
+            25,
+            26
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 15
+            },
+            "end": {
+              "line": 2,
+              "column": 16
+            }
+          }
+        },
+        "role": {
+          "type": "ErIdentifier",
+          "name": "r",
+          "range": [
+            29,
+            30
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 19
+            },
+            "end": {
+              "line": 2,
+              "column": 20
+            }
+          }
+        },
+        "range": [
+          12,
+          30
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 2
+          },
+          "end": {
+            "line": 2,
+            "column": 20
+          }
+        }
+      },
+      {
+        "type": "ErRelationshipStatement",
+        "left": {
+          "type": "ErEntityReference",
+          "name": {
+            "type": "ErIdentifier",
+            "name": "C",
+            "range": [
+              33,
+              34
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 2
+              },
+              "end": {
+                "line": 3,
+                "column": 3
+              }
+            }
+          },
+          "cssClasses": [],
+          "range": [
+            33,
+            34
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 2
+            },
+            "end": {
+              "line": 3,
+              "column": 3
+            }
+          }
+        },
+        "relationship": {
+          "type": "ErRelationship",
+          "leftCardinality": "only-one",
+          "line": "identifying",
+          "rightCardinality": "only-one",
+          "range": [
+            35,
+            41
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 4
+            },
+            "end": {
+              "line": 3,
+              "column": 10
+            }
+          }
+        },
+        "right": {
+          "type": "ErEntityReference",
+          "name": {
+            "type": "ErIdentifier",
+            "name": "D",
+            "range": [
+              42,
+              43
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 11
+              },
+              "end": {
+                "line": 3,
+                "column": 12
+              }
+            }
+          },
+          "cssClasses": [],
+          "range": [
+            42,
+            43
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 11
+            },
+            "end": {
+              "line": 3,
+              "column": 12
+            }
+          }
+        },
+        "role": {
+          "type": "ErIdentifier",
+          "name": "r",
+          "range": [
+            46,
+            47
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 15
+            },
+            "end": {
+              "line": 3,
+              "column": 16
+            }
+          }
+        },
+        "range": [
+          33,
+          47
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 2
+          },
+          "end": {
+            "line": 3,
+            "column": 16
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      47
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 16
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "erDiagram",
+      "range": [
+        0,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        12,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "one",
+      "range": [
+        14,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "to",
+      "range": [
+        18,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "one",
+      "range": [
+        21,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 11
+        },
+        "end": {
+          "line": 2,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "B",
+      "range": [
+        25,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 15
+        },
+        "end": {
+          "line": 2,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        27,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 17
+        },
+        "end": {
+          "line": 2,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "r",
+      "range": [
+        29,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 19
+        },
+        "end": {
+          "line": 2,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "C",
+      "range": [
+        33,
+        34
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 3,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "||",
+      "range": [
+        35,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 4
+        },
+        "end": {
+          "line": 3,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "to",
+      "range": [
+        37,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 6
+        },
+        "end": {
+          "line": 3,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "||",
+      "range": [
+        39,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "D",
+      "range": [
+        42,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 11
+        },
+        "end": {
+          "line": 3,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        44,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 13
+        },
+        "end": {
+          "line": 3,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "r",
+      "range": [
+        46,
+        47
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 15
+        },
+        "end": {
+          "line": 3,
+          "column": 16
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    48
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 0
+    }
+  }
+}

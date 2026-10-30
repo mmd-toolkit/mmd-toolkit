@@ -1,0 +1,225 @@
+{
+  "type": "Root",
+  "diagramType": "ishikawa",
+  "body": {
+    "type": "IshikawaDiagram",
+    "root": {
+      "type": "IshikawaNode",
+      "indent": 0,
+      "text": {
+        "type": "IshikawaLiteral",
+        "value": "-betaX",
+        "range": [
+          8,
+          14
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 8
+          },
+          "end": {
+            "line": 1,
+            "column": 14
+          }
+        }
+      },
+      "children": [
+        {
+          "type": "IshikawaNode",
+          "indent": 0,
+          "text": {
+            "type": "IshikawaLiteral",
+            "value": "Problem",
+            "range": [
+              15,
+              22
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 2,
+                "column": 7
+              }
+            }
+          },
+          "children": [
+            {
+              "type": "IshikawaNode",
+              "indent": 2,
+              "text": {
+                "type": "IshikawaLiteral",
+                "value": "Cause",
+                "range": [
+                  25,
+                  30
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 7
+                  }
+                }
+              },
+              "children": [],
+              "range": [
+                25,
+                30
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 2
+                },
+                "end": {
+                  "line": 3,
+                  "column": 7
+                }
+              }
+            }
+          ],
+          "range": [
+            15,
+            30
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 3,
+              "column": 7
+            }
+          }
+        }
+      ],
+      "range": [
+        8,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 7
+        }
+      }
+    },
+    "range": [
+      0,
+      30
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 7
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "ishikawa",
+      "range": [
+        0,
+        8
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "-betaX",
+      "range": [
+        8,
+        14
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 8
+        },
+        "end": {
+          "line": 1,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Problem",
+      "range": [
+        15,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Cause",
+      "range": [
+        25,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 3,
+          "column": 7
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    30
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 7
+    }
+  }
+}

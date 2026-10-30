@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/er/parser/erDiagram.spec.js",
+    "line": 912,
+    "test": "when parsing ER diagram it... > should represent non-identifying relationships properly"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-PERSON-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "PERSON",
+        "classes": []
+      },
+      {
+        "id": "entity-POSSESSION-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "POSSESSION",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-PERSON-0",
+        "roleA": "owns",
+        "entityB": "entity-POSSESSION-1",
+        "cardA": "ZERO_OR_MORE",
+        "cardB": "ONLY_ONE",
+        "relType": "NON_IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": []
+  }
+}

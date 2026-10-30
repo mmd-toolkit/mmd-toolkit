@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Units and contexts, Names: the placeholder holds `°`, no character of a word in a block; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...agramA { string aﬂ°amp¶ßb c}\n---------------------^\nExpecting 'BLOCK_STOP', 'ATTRIBUTE_WORD', 'ATTRIBUTE_KEY', 'COMMENT', got '°'"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The lex after title comment glued form stores {\"title\":\"T%% c\"}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "T%% c",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": []
+  }
+}

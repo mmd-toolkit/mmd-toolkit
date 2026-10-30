@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Keywords and what follows them: `title2 T` holds no keyword, because no whitespace follows `title`; a task text without data, rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\ngantttitle2 T\n-------------^\nExpecting 'taskData', got 'NL'"
+  }
+}

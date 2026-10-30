@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/radar.test.ts",
+    "line": 58,
+    "test": "radar > should handle title, accDescr, and accTitle > should handle accTitle"
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "My Accessible Title",
+    "accDescr": "",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

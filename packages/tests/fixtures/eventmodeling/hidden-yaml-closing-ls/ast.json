@@ -1,0 +1,248 @@
+{
+  "type": "Root",
+  "diagramType": "eventmodeling",
+  "body": {
+    "type": "EventmodelingDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "EventmodelingIgnoredText",
+        "kind": "yaml-block",
+        "value": "---\nx\n---",
+        "range": [
+          14,
+          23
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "EventmodelingTimeFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "01",
+          "range": [
+            27,
+            29
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 7
+            },
+            "end": {
+              "line": 4,
+              "column": 9
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "evt",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "A",
+            "range": [
+              34,
+              35
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 14
+              },
+              "end": {
+                "line": 4,
+                "column": 15
+              }
+            }
+          },
+          "tail": [],
+          "range": [
+            34,
+            35
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 14
+            },
+            "end": {
+              "line": 4,
+              "column": 15
+            }
+          }
+        },
+        "sourceFrames": [],
+        "dataReference": null,
+        "data": null,
+        "range": [
+          24,
+          35
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 4
+          },
+          "end": {
+            "line": 4,
+            "column": 15
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      35
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 4,
+        "column": 15
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "eventmodeling",
+      "range": [
+        0,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "---\nx\n---",
+      "range": [
+        14,
+        23
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "tf",
+      "range": [
+        24,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 4
+        },
+        "end": {
+          "line": 4,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "01",
+      "range": [
+        27,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 7
+        },
+        "end": {
+          "line": 4,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "evt",
+      "range": [
+        30,
+        33
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 10
+        },
+        "end": {
+          "line": 4,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        34,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 14
+        },
+        "end": {
+          "line": 4,
+          "column": 15
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    35
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 15
+    }
+  }
+}

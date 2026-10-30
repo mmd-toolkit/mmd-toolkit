@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Known divergences: an ignored `;` inside the keyword `dateFormat`; rejected here (ignored-semicolon-as-token-boundary)."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "X",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "style:#x",
+    "sections": [],
+    "tasks": [],
+    "links": []
+  }
+}

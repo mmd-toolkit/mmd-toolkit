@@ -1,0 +1,255 @@
+{
+  "type": "Root",
+  "diagramType": "treeView",
+  "body": {
+    "type": "TreeviewDiagram",
+    "body": [
+      {
+        "type": "TreeviewTitleStatement",
+        "prefix": null,
+        "value": {
+          "type": "TreeviewLiteral",
+          "value": "My TreeView Diagram",
+          "range": [
+            20,
+            39
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 6
+            },
+            "end": {
+              "line": 2,
+              "column": 25
+            }
+          }
+        },
+        "range": [
+          14,
+          39
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 25
+          }
+        }
+      },
+      {
+        "type": "TreeviewNode",
+        "indent": 0,
+        "textBefore": [],
+        "prefix": null,
+        "textBeforeName": [],
+        "name": {
+          "type": "StringLiteral",
+          "value": "Root",
+          "raw": "\"Root\"",
+          "closed": true,
+          "range": [
+            40,
+            46
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 3,
+              "column": 6
+            }
+          }
+        },
+        "annotations": [],
+        "range": [
+          40,
+          56
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 9
+          }
+        },
+        "children": [
+          {
+            "type": "TreeviewNode",
+            "indent": 2,
+            "textBefore": [],
+            "prefix": null,
+            "textBeforeName": [],
+            "name": {
+              "type": "StringLiteral",
+              "value": "Child",
+              "raw": "\"Child\"",
+              "closed": true,
+              "range": [
+                49,
+                56
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 2
+                },
+                "end": {
+                  "line": 4,
+                  "column": 9
+                }
+              }
+            },
+            "annotations": [],
+            "range": [
+              49,
+              56
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 2
+              },
+              "end": {
+                "line": 4,
+                "column": 9
+              }
+            },
+            "children": []
+          }
+        ]
+      }
+    ],
+    "range": [
+      0,
+      56
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 4,
+        "column": 9
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "treeView-beta",
+      "range": [
+        0,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        14,
+        19
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "My TreeView Diagram",
+      "range": [
+        20,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Root\"",
+      "range": [
+        40,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Child\"",
+      "range": [
+        49,
+        56
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 2
+        },
+        "end": {
+          "line": 4,
+          "column": 9
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    56
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 9
+    }
+  }
+}

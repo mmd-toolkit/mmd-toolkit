@@ -1,0 +1,133 @@
+{
+  "type": "Root",
+  "diagramType": "packet",
+  "body": {
+    "type": "PacketDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "PacketTitleStatement",
+        "value": {
+          "type": "PacketLiteral",
+          "value": "T",
+          "range": [
+            17,
+            18
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 17
+            },
+            "end": {
+              "line": 1,
+              "column": 18
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          11,
+          18
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 11
+          },
+          "end": {
+            "line": 1,
+            "column": 18
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      18
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 1,
+        "column": 18
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "packet-beta",
+      "range": [
+        0,
+        11
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        11,
+        16
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 11
+        },
+        "end": {
+          "line": 1,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "T",
+      "range": [
+        17,
+        18
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 17
+        },
+        "end": {
+          "line": 1,
+          "column": 18
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    18
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 1,
+      "column": 18
+    }
+  }
+}

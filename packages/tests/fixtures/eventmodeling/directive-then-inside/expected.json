@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A global directive splits then."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": []
+  }
+}

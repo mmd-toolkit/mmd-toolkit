@@ -1,0 +1,18 @@
+{
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A",
+        "people": [],
+        "score": "NaN"
+      }
+    ]
+  }
+}

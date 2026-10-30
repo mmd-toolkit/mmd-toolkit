@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do two identical generated ids count as a collision instead of merge?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Generated ID 'Same_name' collides with another declaration at line 3, column 2 [26,35) (label \"Same name\"); previous declaration at line 2, column 2 [14,23) (label \"Same name\")"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An enclosing description terminal keeps YAML-looking text."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "---\nx\n---",
+    "rules": []
+  }
+}

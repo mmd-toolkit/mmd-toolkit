@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Does a directive inside the class marker violate the atomic delimiter?"
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "classSelector": "aa",
+        "children": []
+      }
+    ],
+    "classDefs": []
+  }
+}

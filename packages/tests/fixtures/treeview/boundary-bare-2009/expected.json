@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check the complete whitespace boundary set at bare: 2009."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node ",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "next",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

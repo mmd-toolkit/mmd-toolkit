@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The block carryover kind close-round in header-line tests the kanban reading at this text position."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\nkanban) S\n---------^\nExpecting 'NODE_DEND', got '1'"
+  }
+}

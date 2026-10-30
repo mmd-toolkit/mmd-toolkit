@@ -1,0 +1,317 @@
+{
+  "type": "Root",
+  "diagramType": "c4",
+  "body": {
+    "type": "C4Diagram",
+    "kind": "context",
+    "beforeBody": [],
+    "body": [
+      {
+        "type": "C4ElementStatement",
+        "keyword": "ContainerDb",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "ContainerAA",
+            "range": [
+              22,
+              33
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 12
+              },
+              "end": {
+                "line": 2,
+                "column": 23
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "tags",
+              "range": [
+                36,
+                40
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 26
+                },
+                "end": {
+                  "line": 2,
+                  "column": 30
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "tag1,tag2",
+              "raw": "\"tag1,tag2\"",
+              "closed": true,
+              "range": [
+                41,
+                52
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 31
+                },
+                "end": {
+                  "line": 2,
+                  "column": 42
+                }
+              }
+            },
+            "range": [
+              35,
+              52
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 25
+              },
+              "end": {
+                "line": 2,
+                "column": 42
+              }
+            }
+          }
+        ],
+        "range": [
+          10,
+          53
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 43
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      53
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 43
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "C4Context",
+      "range": [
+        0,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "ContainerDb",
+      "range": [
+        10,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        21,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 11
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "ContainerAA",
+      "range": [
+        22,
+        33
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        33,
+        34
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 23
+        },
+        "end": {
+          "line": 2,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        35,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 25
+        },
+        "end": {
+          "line": 2,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "tags",
+      "range": [
+        36,
+        40
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 26
+        },
+        "end": {
+          "line": 2,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        40,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 30
+        },
+        "end": {
+          "line": 2,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"tag1,tag2\"",
+      "range": [
+        41,
+        52
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 31
+        },
+        "end": {
+          "line": 2,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        52,
+        53
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 42
+        },
+        "end": {
+          "line": 2,
+          "column": 43
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    53
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 43
+    }
+  }
+}

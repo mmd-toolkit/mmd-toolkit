@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/treeView.md",
+    "line": 236
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "packages",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "mermaid",
+            "nodeType": "file",
+            "children": [
+              {
+                "name": "src",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "parser",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "treeView": {
+        "rowIndent": 80,
+        "lineThickness": 3
+      },
+      "themeVariables": {
+        "treeView": {
+          "labelFontSize": "20px",
+          "labelColor": "#FF0000",
+          "lineColor": "#00FF00"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The comparison reading inspects whether a title in rejected frontmatter can be preserved."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "str is not iterable"
+  }
+}

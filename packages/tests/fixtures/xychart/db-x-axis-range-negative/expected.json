@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, x-axis: negative numbers; the first can be greater than the second."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "linear",
+      "title": "",
+      "min": -1,
+      "max": -5
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}

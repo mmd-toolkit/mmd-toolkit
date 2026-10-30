@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a lone CR after a hidden DIRECTIVE provide its consumed LF? It accepts with section A = 1."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      }
+    ]
+  }
+}

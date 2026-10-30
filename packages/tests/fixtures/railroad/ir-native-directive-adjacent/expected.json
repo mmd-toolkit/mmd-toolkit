@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: A native directive passes a closer without its required boundary and ends at the next qualifying closer."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

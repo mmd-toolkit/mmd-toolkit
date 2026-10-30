@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does underscore glued after deaccelerator become its name?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [
+      {
+        "name": "_A",
+        "x": 20,
+        "y": 10
+      }
+    ],
+    "axes": {}
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Semicolons on an accessibility-title line stay inside the value."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "A ;;",
+    "accDescr": "",
+    "rules": []
+  }
+}

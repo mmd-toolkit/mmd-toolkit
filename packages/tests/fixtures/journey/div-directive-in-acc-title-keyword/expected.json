@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Directives inside units: a directive inside `accTitle` makes the input rejected here; mermaid.js reads the accessibility title `T`."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "T",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

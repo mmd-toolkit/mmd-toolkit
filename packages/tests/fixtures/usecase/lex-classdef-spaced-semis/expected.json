@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does classDef admit separated semicolons in a non-hash value?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting: one of these possible Token sequences:\n  1. [NEWLINE]\n  2. [EOF]\nbut found: ';' at line 2, column 24 [36,37)"
+  }
+}

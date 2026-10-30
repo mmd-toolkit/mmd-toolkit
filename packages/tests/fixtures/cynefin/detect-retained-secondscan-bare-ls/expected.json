@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Detection: U+2028 after a passed bare line between retained forms is shared trivia."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 5, column 1: unexpected character: -> <- at offset: 13, skipped 1 characters. "
+  }
+}

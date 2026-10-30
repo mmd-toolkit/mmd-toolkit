@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The lex reserved union quoted identifier form stores {\"subsets\":[{\"sets\":[\"union\"],\"size\":10}]}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "union"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

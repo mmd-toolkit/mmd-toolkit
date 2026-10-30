@@ -1,0 +1,154 @@
+{
+  "type": "Root",
+  "diagramType": "timeline",
+  "body": {
+    "type": "TimelineDiagram",
+    "direction": null,
+    "body": [
+      {
+        "type": "TimelinePeriodStatement",
+        "period": {
+          "type": "TimelineLiteral",
+          "value": "a ",
+          "range": [
+            11,
+            13
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 2
+            },
+            "end": {
+              "line": 2,
+              "column": 4
+            }
+          }
+        },
+        "events": [],
+        "range": [
+          11,
+          13
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 2
+          },
+          "end": {
+            "line": 2,
+            "column": 4
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      13
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 4
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [
+    {
+      "type": "Directive",
+      "name": "init",
+      "value": "init: {}\n  b",
+      "closed": false,
+      "range": [
+        13,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 3,
+          "column": 3
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "timeline",
+      "range": [
+        0,
+        8
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "a ",
+      "range": [
+        11,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Directive",
+      "value": "%%{init: {}\n  b",
+      "range": [
+        13,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 3,
+          "column": 3
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    29
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 0
+    }
+  }
+}

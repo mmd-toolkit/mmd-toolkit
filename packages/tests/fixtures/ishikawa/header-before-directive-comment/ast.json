@@ -1,0 +1,172 @@
+{
+  "type": "Root",
+  "diagramType": "ishikawa",
+  "body": {
+    "type": "IshikawaDiagram",
+    "root": {
+      "type": "IshikawaNode",
+      "indent": 0,
+      "text": {
+        "type": "IshikawaLiteral",
+        "value": "R",
+        "range": [
+          36,
+          37
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 1
+          }
+        }
+      },
+      "children": [],
+      "range": [
+        36,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 1
+        }
+      }
+    },
+    "range": [
+      27,
+      37
+    ],
+    "loc": {
+      "start": {
+        "line": 4,
+        "column": 0
+      },
+      "end": {
+        "line": 5,
+        "column": 1
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [
+    {
+      "type": "Comment",
+      "mark": "%%",
+      "value": " comment",
+      "range": [
+        15,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    }
+  ],
+  "directives": [
+    {
+      "type": "Directive",
+      "name": "init",
+      "value": "init: {}",
+      "closed": true,
+      "range": [
+        0,
+        14
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 14
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "Directive",
+      "value": "%%{init: {}}%%",
+      "range": [
+        0,
+        14
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "ishikawa",
+      "range": [
+        27,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "R",
+      "range": [
+        36,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 1
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    38
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 6,
+      "column": 0
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An invalid early native closer can be skipped for a later boundary-qualified closer."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "chaotic",
+        "items": [
+          {
+            "label": "B"
+          }
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear"
+      }
+    ]
+  }
+}

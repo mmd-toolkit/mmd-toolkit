@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A global removal splits the class atom."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "style:#x",
+        "nodeType": "file",
+        "cssClass": "highlight",
+        "children": []
+      },
+      {
+        "name": "root",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: Without the frontmatter tag, the body label is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> RPAREN <-- but found --> 'c' <-- at line 2, column 7 [19,20)"
+  }
+}

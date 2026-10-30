@@ -1,0 +1,139 @@
+{
+  "type": "Root",
+  "diagramType": "gitGraph",
+  "body": {
+    "type": "GitgraphDiagram",
+    "direction": null,
+    "textBeforeHeader": [],
+    "textBeforeDirection": [],
+    "textBeforeColon": [],
+    "body": [
+      {
+        "type": "GitgraphTitleStatement",
+        "value": null,
+        "textAfter": [
+          {
+            "type": "GitgraphIgnoredText",
+            "kind": "directive",
+            "value": "%%{}%%",
+            "range": [
+              15,
+              21
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 6
+              },
+              "end": {
+                "line": 2,
+                "column": 12
+              }
+            }
+          }
+        ],
+        "range": [
+          9,
+          21
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 12
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      21
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 12
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "gitGraph",
+      "range": [
+        0,
+        8
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        9,
+        14
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "%%{}%%",
+      "range": [
+        15,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    21
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 12
+    }
+  }
+}

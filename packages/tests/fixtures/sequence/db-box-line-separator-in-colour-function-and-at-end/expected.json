@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "One U+2028 lies in the whitespace before the `(`, where the pattern reads it, and one at the end, where it does not: the split does not match, and the box has no name and the fill `transparent`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "box": 0
+      }
+    ],
+    "boxes": [
+      {
+        "wrap": false,
+        "fill": "transparent",
+        "actorKeys": [
+          "A"
+        ]
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, text grid: an HTML tag with attribute quotes (`<a b=\"c\">d`) in a title without quotes."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nxychart-beta title <a b='c'>d\n-------------------^"
+  }
+}

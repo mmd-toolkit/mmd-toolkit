@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P3: HTML, entities and semicolon preprocessing] Are HTML attribute double quotes rewritten in root text?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "<a href='x'>R</a>",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "<a href='x'>R</a>",
+      "children": []
+    }
+  }
+}

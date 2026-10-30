@@ -1,0 +1,130 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/entityRelationshipDiagram.md",
+    "line": 595
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-CAR-0",
+        "attributes": [
+          {
+            "type": "string",
+            "name": "registrationNumber",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "string",
+            "name": "make",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "string",
+            "name": "model",
+            "keys": [],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "CAR",
+        "classes": []
+      },
+      {
+        "id": "entity-PERSON-1",
+        "attributes": [
+          {
+            "type": "string",
+            "name": "firstName",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "string",
+            "name": "lastName",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "int",
+            "name": "age",
+            "keys": [],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "PERSON",
+        "classes": [
+          "foo"
+        ]
+      },
+      {
+        "id": "entity-HOUSE-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "HOUSE",
+        "classes": [
+          "bar"
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-PERSON-1",
+        "roleA": "owns",
+        "entityB": "entity-CAR-0",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      },
+      {
+        "entityA": "entity-PERSON-1",
+        "roleA": "has",
+        "entityB": "entity-HOUSE-2",
+        "cardA": "ONLY_ONE",
+        "cardB": "ZERO_OR_MORE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [
+      {
+        "id": "default",
+        "styles": [
+          "fill:#f9f",
+          "stroke-width:4px"
+        ]
+      },
+      {
+        "id": "foo",
+        "styles": [
+          "stroke:#f00"
+        ]
+      },
+      {
+        "id": "bar",
+        "styles": [
+          "stroke:#0f0"
+        ]
+      },
+      {
+        "id": "foobar",
+        "styles": [
+          "stroke:#00f"
+        ]
+      }
+    ],
+    "subGraphs": []
+  }
+}

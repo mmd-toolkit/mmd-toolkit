@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Rejections outside the grammar: in a body that is not divided, the divider statement is a state without a body, so two descriptions for it are accepted."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "X",
+        "shape": "roundedWithTitle",
+        "label": "X",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": [],
+        "parentId": "X"
+      },
+      {
+        "id": "divider-id-1",
+        "shape": "rectWithTitle",
+        "label": "a",
+        "description": [
+          "b"
+        ],
+        "classes": [],
+        "styles": [],
+        "parentId": "X"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

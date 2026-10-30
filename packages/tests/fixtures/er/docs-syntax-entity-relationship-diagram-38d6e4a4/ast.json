@@ -1,0 +1,1304 @@
+{
+  "type": "Root",
+  "diagramType": "er",
+  "body": {
+    "type": "ErDiagram",
+    "body": [
+      {
+        "type": "ErRelationshipStatement",
+        "left": {
+          "type": "ErEntityReference",
+          "name": {
+            "type": "ErIdentifier",
+            "name": "CAR",
+            "range": [
+              14,
+              17
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 4
+              },
+              "end": {
+                "line": 2,
+                "column": 7
+              }
+            }
+          },
+          "cssClasses": [],
+          "range": [
+            14,
+            17
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 4
+            },
+            "end": {
+              "line": 2,
+              "column": 7
+            }
+          }
+        },
+        "relationship": {
+          "type": "ErRelationship",
+          "leftCardinality": "only-one",
+          "line": "identifying",
+          "rightCardinality": "zero-or-more",
+          "range": [
+            18,
+            24
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 8
+            },
+            "end": {
+              "line": 2,
+              "column": 14
+            }
+          }
+        },
+        "right": {
+          "type": "ErEntityReference",
+          "name": {
+            "type": "ErIdentifier",
+            "name": "NAMED-DRIVER",
+            "range": [
+              25,
+              37
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 15
+              },
+              "end": {
+                "line": 2,
+                "column": 27
+              }
+            }
+          },
+          "cssClasses": [],
+          "range": [
+            25,
+            37
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 15
+            },
+            "end": {
+              "line": 2,
+              "column": 27
+            }
+          }
+        },
+        "role": {
+          "type": "ErIdentifier",
+          "name": "allows",
+          "range": [
+            40,
+            46
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 30
+            },
+            "end": {
+              "line": 2,
+              "column": 36
+            }
+          }
+        },
+        "range": [
+          14,
+          46
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 4
+          },
+          "end": {
+            "line": 2,
+            "column": 36
+          }
+        }
+      },
+      {
+        "type": "ErEntityStatement",
+        "name": {
+          "type": "ErIdentifier",
+          "name": "CAR",
+          "range": [
+            51,
+            54
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 4
+            },
+            "end": {
+              "line": 3,
+              "column": 7
+            }
+          }
+        },
+        "alias": null,
+        "cssClasses": [],
+        "attributes": [
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "ErIdentifier",
+              "name": "string",
+              "range": [
+                65,
+                71
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 8
+                },
+                "end": {
+                  "line": 4,
+                  "column": 14
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "ErIdentifier",
+              "name": "registrationNumber",
+              "range": [
+                72,
+                90
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 15
+                },
+                "end": {
+                  "line": 4,
+                  "column": 33
+                }
+              }
+            },
+            "keys": [],
+            "comment": null,
+            "range": [
+              65,
+              90
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 8
+              },
+              "end": {
+                "line": 4,
+                "column": 33
+              }
+            }
+          },
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "ErIdentifier",
+              "name": "string",
+              "range": [
+                99,
+                105
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 8
+                },
+                "end": {
+                  "line": 5,
+                  "column": 14
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "ErIdentifier",
+              "name": "make",
+              "range": [
+                106,
+                110
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 15
+                },
+                "end": {
+                  "line": 5,
+                  "column": 19
+                }
+              }
+            },
+            "keys": [],
+            "comment": null,
+            "range": [
+              99,
+              110
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 8
+              },
+              "end": {
+                "line": 5,
+                "column": 19
+              }
+            }
+          },
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "ErIdentifier",
+              "name": "string",
+              "range": [
+                119,
+                125
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 8
+                },
+                "end": {
+                  "line": 6,
+                  "column": 14
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "ErIdentifier",
+              "name": "model",
+              "range": [
+                126,
+                131
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 15
+                },
+                "end": {
+                  "line": 6,
+                  "column": 20
+                }
+              }
+            },
+            "keys": [],
+            "comment": null,
+            "range": [
+              119,
+              131
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 8
+              },
+              "end": {
+                "line": 6,
+                "column": 20
+              }
+            }
+          }
+        ],
+        "range": [
+          51,
+          137
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 4
+          },
+          "end": {
+            "line": 7,
+            "column": 5
+          }
+        }
+      },
+      {
+        "type": "ErRelationshipStatement",
+        "left": {
+          "type": "ErEntityReference",
+          "name": {
+            "type": "ErIdentifier",
+            "name": "PERSON",
+            "range": [
+              142,
+              148
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 4
+              },
+              "end": {
+                "line": 8,
+                "column": 10
+              }
+            }
+          },
+          "cssClasses": [],
+          "range": [
+            142,
+            148
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 4
+            },
+            "end": {
+              "line": 8,
+              "column": 10
+            }
+          }
+        },
+        "relationship": {
+          "type": "ErRelationship",
+          "leftCardinality": "only-one",
+          "line": "identifying",
+          "rightCardinality": "zero-or-more",
+          "range": [
+            149,
+            155
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 11
+            },
+            "end": {
+              "line": 8,
+              "column": 17
+            }
+          }
+        },
+        "right": {
+          "type": "ErEntityReference",
+          "name": {
+            "type": "ErIdentifier",
+            "name": "NAMED-DRIVER",
+            "range": [
+              156,
+              168
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 18
+              },
+              "end": {
+                "line": 8,
+                "column": 30
+              }
+            }
+          },
+          "cssClasses": [],
+          "range": [
+            156,
+            168
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 18
+            },
+            "end": {
+              "line": 8,
+              "column": 30
+            }
+          }
+        },
+        "role": {
+          "type": "ErIdentifier",
+          "name": "is",
+          "range": [
+            171,
+            173
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 33
+            },
+            "end": {
+              "line": 8,
+              "column": 35
+            }
+          }
+        },
+        "range": [
+          142,
+          173
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 4
+          },
+          "end": {
+            "line": 8,
+            "column": 35
+          }
+        }
+      },
+      {
+        "type": "ErEntityStatement",
+        "name": {
+          "type": "ErIdentifier",
+          "name": "PERSON",
+          "range": [
+            178,
+            184
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 4
+            },
+            "end": {
+              "line": 9,
+              "column": 10
+            }
+          }
+        },
+        "alias": null,
+        "cssClasses": [],
+        "attributes": [
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "ErIdentifier",
+              "name": "string",
+              "range": [
+                195,
+                201
+              ],
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 8
+                },
+                "end": {
+                  "line": 10,
+                  "column": 14
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "ErIdentifier",
+              "name": "firstName",
+              "range": [
+                202,
+                211
+              ],
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 15
+                },
+                "end": {
+                  "line": 10,
+                  "column": 24
+                }
+              }
+            },
+            "keys": [],
+            "comment": null,
+            "range": [
+              195,
+              211
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 8
+              },
+              "end": {
+                "line": 10,
+                "column": 24
+              }
+            }
+          },
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "ErIdentifier",
+              "name": "string",
+              "range": [
+                220,
+                226
+              ],
+              "loc": {
+                "start": {
+                  "line": 11,
+                  "column": 8
+                },
+                "end": {
+                  "line": 11,
+                  "column": 14
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "ErIdentifier",
+              "name": "lastName",
+              "range": [
+                227,
+                235
+              ],
+              "loc": {
+                "start": {
+                  "line": 11,
+                  "column": 15
+                },
+                "end": {
+                  "line": 11,
+                  "column": 23
+                }
+              }
+            },
+            "keys": [],
+            "comment": null,
+            "range": [
+              220,
+              235
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 8
+              },
+              "end": {
+                "line": 11,
+                "column": 23
+              }
+            }
+          },
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "ErIdentifier",
+              "name": "int",
+              "range": [
+                244,
+                247
+              ],
+              "loc": {
+                "start": {
+                  "line": 12,
+                  "column": 8
+                },
+                "end": {
+                  "line": 12,
+                  "column": 11
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "ErIdentifier",
+              "name": "age",
+              "range": [
+                248,
+                251
+              ],
+              "loc": {
+                "start": {
+                  "line": 12,
+                  "column": 12
+                },
+                "end": {
+                  "line": 12,
+                  "column": 15
+                }
+              }
+            },
+            "keys": [],
+            "comment": null,
+            "range": [
+              244,
+              251
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 8
+              },
+              "end": {
+                "line": 12,
+                "column": 15
+              }
+            }
+          }
+        ],
+        "range": [
+          178,
+          257
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 4
+          },
+          "end": {
+            "line": 13,
+            "column": 5
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      257
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 13,
+        "column": 5
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "erDiagram",
+      "range": [
+        0,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "CAR",
+      "range": [
+        14,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "||",
+      "range": [
+        18,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        20,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "o{",
+      "range": [
+        22,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NAMED-DRIVER",
+      "range": [
+        25,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 15
+        },
+        "end": {
+          "line": 2,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        38,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 28
+        },
+        "end": {
+          "line": 2,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "allows",
+      "range": [
+        40,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 30
+        },
+        "end": {
+          "line": 2,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "CAR",
+      "range": [
+        51,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 4
+        },
+        "end": {
+          "line": 3,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        55,
+        56
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "string",
+      "range": [
+        65,
+        71
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 8
+        },
+        "end": {
+          "line": 4,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "registrationNumber",
+      "range": [
+        72,
+        90
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 15
+        },
+        "end": {
+          "line": 4,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "string",
+      "range": [
+        99,
+        105
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 8
+        },
+        "end": {
+          "line": 5,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "make",
+      "range": [
+        106,
+        110
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 15
+        },
+        "end": {
+          "line": 5,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "string",
+      "range": [
+        119,
+        125
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 8
+        },
+        "end": {
+          "line": 6,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "model",
+      "range": [
+        126,
+        131
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 15
+        },
+        "end": {
+          "line": 6,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        136,
+        137
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 4
+        },
+        "end": {
+          "line": 7,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "PERSON",
+      "range": [
+        142,
+        148
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 4
+        },
+        "end": {
+          "line": 8,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "||",
+      "range": [
+        149,
+        151
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 11
+        },
+        "end": {
+          "line": 8,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        151,
+        153
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 13
+        },
+        "end": {
+          "line": 8,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "o{",
+      "range": [
+        153,
+        155
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 15
+        },
+        "end": {
+          "line": 8,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NAMED-DRIVER",
+      "range": [
+        156,
+        168
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 18
+        },
+        "end": {
+          "line": 8,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        169,
+        170
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 31
+        },
+        "end": {
+          "line": 8,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "is",
+      "range": [
+        171,
+        173
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 33
+        },
+        "end": {
+          "line": 8,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "PERSON",
+      "range": [
+        178,
+        184
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 4
+        },
+        "end": {
+          "line": 9,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        185,
+        186
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 11
+        },
+        "end": {
+          "line": 9,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "string",
+      "range": [
+        195,
+        201
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 8
+        },
+        "end": {
+          "line": 10,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "firstName",
+      "range": [
+        202,
+        211
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 15
+        },
+        "end": {
+          "line": 10,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "string",
+      "range": [
+        220,
+        226
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 8
+        },
+        "end": {
+          "line": 11,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "lastName",
+      "range": [
+        227,
+        235
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 15
+        },
+        "end": {
+          "line": 11,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "int",
+      "range": [
+        244,
+        247
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 8
+        },
+        "end": {
+          "line": 12,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "age",
+      "range": [
+        248,
+        251
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 12
+        },
+        "end": {
+          "line": 12,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        256,
+        257
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 4
+        },
+        "end": {
+          "line": 13,
+          "column": 5
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    258
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 14,
+      "column": 0
+    }
+  }
+}

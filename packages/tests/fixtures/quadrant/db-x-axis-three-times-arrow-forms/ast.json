@@ -1,0 +1,357 @@
+{
+  "type": "Root",
+  "diagramType": "quadrantChart",
+  "body": {
+    "type": "QuadrantDiagram",
+    "body": [
+      {
+        "type": "QuadrantAxisStatement",
+        "axis": "x",
+        "start": {
+          "type": "QuadrantLabel",
+          "kind": "text",
+          "value": "L",
+          "range": [
+            21,
+            22
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 8
+            }
+          }
+        },
+        "arrow": true,
+        "end": {
+          "type": "QuadrantLabel",
+          "kind": "text",
+          "value": "R",
+          "range": [
+            27,
+            28
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 13
+            },
+            "end": {
+              "line": 2,
+              "column": 14
+            }
+          }
+        },
+        "range": [
+          14,
+          28
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 14
+          }
+        }
+      },
+      {
+        "type": "QuadrantAxisStatement",
+        "axis": "x",
+        "start": {
+          "type": "QuadrantLabel",
+          "kind": "text",
+          "value": "M",
+          "range": [
+            36,
+            37
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 7
+            },
+            "end": {
+              "line": 3,
+              "column": 8
+            }
+          }
+        },
+        "arrow": true,
+        "end": null,
+        "range": [
+          29,
+          41
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 12
+          }
+        }
+      },
+      {
+        "type": "QuadrantAxisStatement",
+        "axis": "x",
+        "start": {
+          "type": "QuadrantLabel",
+          "kind": "text",
+          "value": "N",
+          "range": [
+            49,
+            50
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 7
+            },
+            "end": {
+              "line": 4,
+              "column": 8
+            }
+          }
+        },
+        "arrow": false,
+        "end": null,
+        "range": [
+          42,
+          50
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 8
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      50
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 4,
+        "column": 8
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "quadrantChart",
+      "range": [
+        0,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "x-axis",
+      "range": [
+        14,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "L",
+      "range": [
+        21,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 7
+        },
+        "end": {
+          "line": 2,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        23,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 9
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "R",
+      "range": [
+        27,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 13
+        },
+        "end": {
+          "line": 2,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "x-axis",
+      "range": [
+        29,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "M",
+      "range": [
+        36,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 7
+        },
+        "end": {
+          "line": 3,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        38,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 9
+        },
+        "end": {
+          "line": 3,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "x-axis",
+      "range": [
+        42,
+        48
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "N",
+      "range": [
+        49,
+        50
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 7
+        },
+        "end": {
+          "line": 4,
+          "column": 8
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    51
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 0
+    }
+  }
+}

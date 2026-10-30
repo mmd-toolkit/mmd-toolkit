@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The quoted shapeData state accepts a caret."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "a^b",
+        "props": {},
+        "metadata": {
+          "label": "a^b"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "labelType": "markdown",
+          "text": "a^b",
+          "metadata": {
+            "label": "a^b"
+          }
+        }
+      }
+    ]
+  }
+}

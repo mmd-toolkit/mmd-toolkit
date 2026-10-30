@@ -1,0 +1,206 @@
+{
+  "type": "Root",
+  "diagramType": "block",
+  "body": {
+    "type": "BlockDiagram",
+    "body": [
+      {
+        "type": "BlockNodeStatement",
+        "node": {
+          "type": "BlockNode",
+          "id": {
+            "type": "Identifier",
+            "name": "%%",
+            "range": [
+              10,
+              12
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 10
+              },
+              "end": {
+                "line": 1,
+                "column": 12
+              }
+            }
+          },
+          "shape": null,
+          "range": [
+            10,
+            12
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 10
+            },
+            "end": {
+              "line": 1,
+              "column": 12
+            }
+          }
+        },
+        "width": null,
+        "links": [],
+        "range": [
+          10,
+          12
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 10
+          },
+          "end": {
+            "line": 1,
+            "column": 12
+          }
+        }
+      },
+      {
+        "type": "BlockNodeStatement",
+        "node": {
+          "type": "BlockNode",
+          "id": {
+            "type": "Identifier",
+            "name": "cA",
+            "range": [
+              13,
+              15
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 13
+              },
+              "end": {
+                "line": 1,
+                "column": 15
+              }
+            }
+          },
+          "shape": null,
+          "range": [
+            13,
+            15
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 13
+            },
+            "end": {
+              "line": 1,
+              "column": 15
+            }
+          }
+        },
+        "width": null,
+        "links": [],
+        "range": [
+          13,
+          15
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 13
+          },
+          "end": {
+            "line": 1,
+            "column": 15
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      15
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 1,
+        "column": 15
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "block-beta",
+      "range": [
+        0,
+        10
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "%%",
+      "range": [
+        10,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 10
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "cA",
+      "range": [
+        13,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 13
+        },
+        "end": {
+          "line": 1,
+          "column": 15
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    16
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 0
+    }
+  }
+}

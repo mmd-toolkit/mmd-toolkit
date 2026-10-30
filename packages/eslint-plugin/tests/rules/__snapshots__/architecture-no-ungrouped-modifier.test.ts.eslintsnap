@@ -1,0 +1,259 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: architecture-no-ungrouped-modifier >> invalid >>> docs/rules/architecture-no-ungrouped-modifier.md incorrect 1
+Filename: architecture-no-ungrouped-modifier-incorrect-1.mmd
+
+Code:
+  1 | architecture-beta
+  2 |   service api(server)[API]
+  3 |   service db(database)[Database]
+  4 |   api{group}:R --> L:db
+    |      ^~~~~~~ [1]
+  5 |
+
+[1] mermaid.js moves this end away from `api` as if it had a group, although it is declared without `in`.
+    Suggestions:
+      - Remove this `{group}` modifier.
+        Output:
+          1 | architecture-beta
+          2 |   service api(server)[API]
+          3 |   service db(database)[Database]
+          4 |   api:R --> L:db
+          5 |
+---
+
+
+Test: architecture-no-ungrouped-modifier >> invalid >>> invalid/architecture/corpus-db-group-modifier-other-parent
+Filename: tests/fixtures/rules/architecture-no-ungrouped-modifier/invalid/architecture/corpus-db-group-modifier-other-parent-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | group g
+  3 | service a
+  4 | service b in g
+  5 | a{group}:R -- L:b
+    |  ^~~~~~~ [1]
+  6 |
+
+[1] mermaid.js moves this end away from `a` as if it had a group, although it is declared without `in`.
+    Suggestions:
+      - Remove this `{group}` modifier.
+        Output:
+          1 | architecture-beta
+          2 | group g
+          3 | service a
+          4 | service b in g
+          5 | a:R -- L:b
+          6 |
+---
+
+
+Test: architecture-no-ungrouped-modifier >> invalid >>> invalid/architecture/docs-incorrect-1
+Filename: tests/fixtures/rules/architecture-no-ungrouped-modifier/invalid/architecture/docs-incorrect-1-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 |   service api(server)[API]
+  3 |   service db(database)[Database]
+  4 |   api{group}:R --> L:db
+    |      ^~~~~~~ [1]
+  5 |
+
+[1] mermaid.js moves this end away from `api` as if it had a group, although it is declared without `in`.
+    Suggestions:
+      - Remove this `{group}` modifier.
+        Output:
+          1 | architecture-beta
+          2 |   service api(server)[API]
+          3 |   service db(database)[Database]
+          4 |   api:R --> L:db
+          5 |
+---
+
+
+Test: architecture-no-ungrouped-modifier >> invalid >>> invalid/architecture/group-global-directives-inside-modifier
+Filename: tests/fixtures/rules/architecture-no-ungrouped-modifier/invalid/architecture/group-global-directives-inside-modifier-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | service a
+  3 | service b
+  4 | a{%%{init: {}}%%group%%{init: {}}%%}:R -- L:b
+    |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js moves this end away from `a` as if it had a group, although it is declared without `in`.
+---
+
+
+Test: architecture-no-ungrouped-modifier >> invalid >>> invalid/architecture/group-junction-ungrouped
+Filename: tests/fixtures/rules/architecture-no-ungrouped-modifier/invalid/architecture/group-junction-ungrouped-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | junction j
+  3 | service db
+  4 | j{group}:R -- L:db
+    |  ^~~~~~~ [1]
+  5 |
+
+[1] mermaid.js moves this end away from `j` as if it had a group, although it is declared without `in`.
+    Suggestions:
+      - Remove this `{group}` modifier.
+        Output:
+          1 | architecture-beta
+          2 | junction j
+          3 | service db
+          4 | j:R -- L:db
+          5 |
+---
+
+
+Test: architecture-no-ungrouped-modifier >> invalid >>> invalid/architecture/group-mixed-both-modifiers
+Filename: tests/fixtures/rules/architecture-no-ungrouped-modifier/invalid/architecture/group-mixed-both-modifiers-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | group g
+  3 | service a in g
+  4 | service b
+  5 | a{group}:R -- L:b{group}
+    |                  ^~~~~~~ [1]
+  6 |
+
+[1] mermaid.js moves this end away from `b` as if it had a group, although it is declared without `in`.
+    Suggestions:
+      - Remove this `{group}` modifier.
+        Output:
+          1 | architecture-beta
+          2 | group g
+          3 | service a in g
+          4 | service b
+          5 | a{group}:R -- L:b
+          6 |
+---
+
+
+Test: architecture-no-ungrouped-modifier >> invalid >>> invalid/architecture/group-ordinary-invalid
+Filename: tests/fixtures/rules/architecture-no-ungrouped-modifier/invalid/architecture/group-ordinary-invalid-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | service api(server)[API]
+  3 | service db(database)[Database]
+  4 | api{group}:R --> L:db
+    |    ^~~~~~~ [1]
+  5 |
+
+[1] mermaid.js moves this end away from `api` as if it had a group, although it is declared without `in`.
+    Suggestions:
+      - Remove this `{group}` modifier.
+        Output:
+          1 | architecture-beta
+          2 | service api(server)[API]
+          3 | service db(database)[Database]
+          4 | api:R --> L:db
+          5 |
+---
+
+
+Test: architecture-no-ungrouped-modifier >> invalid >>> invalid/architecture/group-ungrouped-both
+Filename: tests/fixtures/rules/architecture-no-ungrouped-modifier/invalid/architecture/group-ungrouped-both-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | service api
+  3 | service db
+  4 | api{group}:R -- L:db{group}
+    |    ^~~~~~~ [1]      ^~~~~~~ [2]
+  5 |
+
+[1] mermaid.js moves this end away from `api` as if it had a group, although it is declared without `in`.
+    Suggestions:
+      - Remove this `{group}` modifier.
+        Output:
+          1 | architecture-beta
+          2 | service api
+          3 | service db
+          4 | api:R -- L:db{group}
+          5 |
+[2] mermaid.js moves this end away from `db` as if it had a group, although it is declared without `in`.
+    Suggestions:
+      - Remove this `{group}` modifier.
+        Output:
+          1 | architecture-beta
+          2 | service api
+          3 | service db
+          4 | api{group}:R -- L:db
+          5 |
+---
+
+
+Test: architecture-no-ungrouped-modifier >> invalid >>> invalid/architecture/group-ungrouped-forward
+Filename: tests/fixtures/rules/architecture-no-ungrouped-modifier/invalid/architecture/group-ungrouped-forward-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | api{group}:R -- L:db
+    |    ^~~~~~~ [1]
+  3 | service api
+  4 | service db
+  5 |
+
+[1] mermaid.js moves this end away from `api` as if it had a group, although it is declared without `in`.
+    Suggestions:
+      - Remove this `{group}` modifier.
+        Output:
+          1 | architecture-beta
+          2 | api:R -- L:db
+          3 | service api
+          4 | service db
+          5 |
+---
+
+
+Test: architecture-no-ungrouped-modifier >> invalid >>> invalid/architecture/group-ungrouped-left
+Filename: tests/fixtures/rules/architecture-no-ungrouped-modifier/invalid/architecture/group-ungrouped-left-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | service api
+  3 | service db
+  4 | api{group}:R -- L:db
+    |    ^~~~~~~ [1]
+  5 |
+
+[1] mermaid.js moves this end away from `api` as if it had a group, although it is declared without `in`.
+    Suggestions:
+      - Remove this `{group}` modifier.
+        Output:
+          1 | architecture-beta
+          2 | service api
+          3 | service db
+          4 | api:R -- L:db
+          5 |
+---
+
+
+Test: architecture-no-ungrouped-modifier >> invalid >>> invalid/architecture/group-ungrouped-right
+Filename: tests/fixtures/rules/architecture-no-ungrouped-modifier/invalid/architecture/group-ungrouped-right-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | service api
+  3 | service db
+  4 | api:R -- L:db{group}
+    |              ^~~~~~~ [1]
+  5 |
+
+[1] mermaid.js moves this end away from `db` as if it had a group, although it is declared without `in`.
+    Suggestions:
+      - Remove this `{group}` modifier.
+        Output:
+          1 | architecture-beta
+          2 | service api
+          3 | service db
+          4 | api:R -- L:db
+          5 |
+---

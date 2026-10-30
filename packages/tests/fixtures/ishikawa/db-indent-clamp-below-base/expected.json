@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D] Does a later level below the first cause's base clamp to a root child?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "A",
+          "children": []
+        },
+        {
+          "text": "B",
+          "children": []
+        },
+        {
+          "text": "C",
+          "children": []
+        }
+      ]
+    }
+  }
+}

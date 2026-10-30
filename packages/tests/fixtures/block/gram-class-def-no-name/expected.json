@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, classes: a `classDef` with no name is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...ck-beta  classDef\n--------------------^\nExpecting 'CLASSDEF_ID', 'DEFAULT', got '1'"
+  }
+}

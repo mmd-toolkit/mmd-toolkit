@@ -1,0 +1,919 @@
+{
+  "type": "Root",
+  "diagramType": "pie",
+  "body": {
+    "type": "PieDiagram",
+    "showData": false,
+    "textBeforeHeader": [],
+    "textBeforeShowData": [],
+    "body": [
+      {
+        "type": "PieTitleStatement",
+        "value": {
+          "type": "PieLiteral",
+          "value": "Centralized labels: Languages",
+          "range": [
+            106,
+            135
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 8
+            },
+            "end": {
+              "line": 3,
+              "column": 37
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          100,
+          135
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 2
+          },
+          "end": {
+            "line": 3,
+            "column": 37
+          }
+        }
+      },
+      {
+        "type": "PieAccTitleStatement",
+        "value": {
+          "type": "PieLiteral",
+          "value": " Key elements in Product X",
+          "range": [
+            147,
+            173
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 11
+            },
+            "end": {
+              "line": 4,
+              "column": 37
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          138,
+          173
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 2
+          },
+          "end": {
+            "line": 4,
+            "column": 37
+          }
+        }
+      },
+      {
+        "type": "PieAccDescrStatement",
+        "value": {
+          "type": "PieLiteral",
+          "value": " This is a pie chart showing the key elements in Product X.",
+          "range": [
+            185,
+            244
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 11
+            },
+            "end": {
+              "line": 5,
+              "column": 70
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          176,
+          244
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 2
+          },
+          "end": {
+            "line": 5,
+            "column": 70
+          }
+        }
+      },
+      {
+        "type": "PieSectionStatement",
+        "label": {
+          "type": "StringLiteral",
+          "value": "JavaScript",
+          "raw": "\"JavaScript\"",
+          "closed": true,
+          "range": [
+            247,
+            259
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 2
+            },
+            "end": {
+              "line": 6,
+              "column": 14
+            }
+          }
+        },
+        "textBeforeColon": [],
+        "textBeforeValue": [],
+        "value": {
+          "type": "NumericLiteral",
+          "value": 30,
+          "raw": "30",
+          "range": [
+            261,
+            263
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 16
+            },
+            "end": {
+              "line": 6,
+              "column": 18
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          247,
+          263
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 2
+          },
+          "end": {
+            "line": 6,
+            "column": 18
+          }
+        }
+      },
+      {
+        "type": "PieSectionStatement",
+        "label": {
+          "type": "StringLiteral",
+          "value": "Python",
+          "raw": "\"Python\"",
+          "closed": true,
+          "range": [
+            266,
+            274
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 2
+            },
+            "end": {
+              "line": 7,
+              "column": 10
+            }
+          }
+        },
+        "textBeforeColon": [],
+        "textBeforeValue": [],
+        "value": {
+          "type": "NumericLiteral",
+          "value": 25,
+          "raw": "25",
+          "range": [
+            276,
+            278
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 12
+            },
+            "end": {
+              "line": 7,
+              "column": 14
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          266,
+          278
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 2
+          },
+          "end": {
+            "line": 7,
+            "column": 14
+          }
+        }
+      },
+      {
+        "type": "PieSectionStatement",
+        "label": {
+          "type": "StringLiteral",
+          "value": "Java",
+          "raw": "\"Java\"",
+          "closed": true,
+          "range": [
+            281,
+            287
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 2
+            },
+            "end": {
+              "line": 8,
+              "column": 8
+            }
+          }
+        },
+        "textBeforeColon": [],
+        "textBeforeValue": [],
+        "value": {
+          "type": "NumericLiteral",
+          "value": 20,
+          "raw": "20",
+          "range": [
+            289,
+            291
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 10
+            },
+            "end": {
+              "line": 8,
+              "column": 12
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          281,
+          291
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 2
+          },
+          "end": {
+            "line": 8,
+            "column": 12
+          }
+        }
+      },
+      {
+        "type": "PieSectionStatement",
+        "label": {
+          "type": "StringLiteral",
+          "value": "C#",
+          "raw": "\"C#\"",
+          "closed": true,
+          "range": [
+            294,
+            298
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 2
+            },
+            "end": {
+              "line": 9,
+              "column": 6
+            }
+          }
+        },
+        "textBeforeColon": [],
+        "textBeforeValue": [],
+        "value": {
+          "type": "NumericLiteral",
+          "value": 15,
+          "raw": "15",
+          "range": [
+            300,
+            302
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 8
+            },
+            "end": {
+              "line": 9,
+              "column": 10
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          294,
+          302
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 2
+          },
+          "end": {
+            "line": 9,
+            "column": 10
+          }
+        }
+      },
+      {
+        "type": "PieSectionStatement",
+        "label": {
+          "type": "StringLiteral",
+          "value": "Others",
+          "raw": "\"Others\"",
+          "closed": true,
+          "range": [
+            305,
+            313
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 2
+            },
+            "end": {
+              "line": 10,
+              "column": 10
+            }
+          }
+        },
+        "textBeforeColon": [],
+        "textBeforeValue": [],
+        "value": {
+          "type": "NumericLiteral",
+          "value": 10,
+          "raw": "10",
+          "range": [
+            315,
+            317
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 12
+            },
+            "end": {
+              "line": 10,
+              "column": 14
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          305,
+          317
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 2
+          },
+          "end": {
+            "line": 10,
+            "column": 14
+          }
+        }
+      }
+    ],
+    "range": [
+      94,
+      317
+    ],
+    "loc": {
+      "start": {
+        "line": 2,
+        "column": 0
+      },
+      "end": {
+        "line": 10,
+        "column": 14
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [
+    {
+      "type": "Directive",
+      "name": "init",
+      "value": "init: {\"pie\": {\"textPosition\": 0.45}, \"themeVariables\": {\"pieOuterStrokeWidth\": \"5px\"}}",
+      "closed": true,
+      "range": [
+        0,
+        93
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 93
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "Directive",
+      "value": "%%{init: {\"pie\": {\"textPosition\": 0.45}, \"themeVariables\": {\"pieOuterStrokeWidth\": \"5px\"}}}%%",
+      "range": [
+        0,
+        93
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 93
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "pie",
+      "range": [
+        94,
+        97
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        100,
+        105
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 3,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Centralized labels: Languages",
+      "range": [
+        106,
+        135
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accTitle",
+      "range": [
+        138,
+        146
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 2
+        },
+        "end": {
+          "line": 4,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        146,
+        147
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 10
+        },
+        "end": {
+          "line": 4,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " Key elements in Product X",
+      "range": [
+        147,
+        173
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 11
+        },
+        "end": {
+          "line": 4,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accDescr",
+      "range": [
+        176,
+        184
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 2
+        },
+        "end": {
+          "line": 5,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        184,
+        185
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 10
+        },
+        "end": {
+          "line": 5,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " This is a pie chart showing the key elements in Product X.",
+      "range": [
+        185,
+        244
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 11
+        },
+        "end": {
+          "line": 5,
+          "column": 70
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"JavaScript\"",
+      "range": [
+        247,
+        259
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 2
+        },
+        "end": {
+          "line": 6,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        259,
+        260
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 14
+        },
+        "end": {
+          "line": 6,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "30",
+      "range": [
+        261,
+        263
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 16
+        },
+        "end": {
+          "line": 6,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Python\"",
+      "range": [
+        266,
+        274
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 2
+        },
+        "end": {
+          "line": 7,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        274,
+        275
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 10
+        },
+        "end": {
+          "line": 7,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "25",
+      "range": [
+        276,
+        278
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 12
+        },
+        "end": {
+          "line": 7,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Java\"",
+      "range": [
+        281,
+        287
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 2
+        },
+        "end": {
+          "line": 8,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        287,
+        288
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 8
+        },
+        "end": {
+          "line": 8,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "20",
+      "range": [
+        289,
+        291
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 10
+        },
+        "end": {
+          "line": 8,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"C#\"",
+      "range": [
+        294,
+        298
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 2
+        },
+        "end": {
+          "line": 9,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        298,
+        299
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 6
+        },
+        "end": {
+          "line": 9,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "15",
+      "range": [
+        300,
+        302
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 8
+        },
+        "end": {
+          "line": 9,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Others\"",
+      "range": [
+        305,
+        313
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 2
+        },
+        "end": {
+          "line": 10,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        313,
+        314
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 10
+        },
+        "end": {
+          "line": 10,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "10",
+      "range": [
+        315,
+        317
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 12
+        },
+        "end": {
+          "line": 10,
+          "column": 14
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    317
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 10,
+      "column": 14
+    }
+  }
+}

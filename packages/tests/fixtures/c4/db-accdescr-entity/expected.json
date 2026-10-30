@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`accDescr:` with a character reference is accepted; accDescr is \"T \\ufb02\\u00b0\\u00b035\\u00b6\\u00df U\"."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "T ﬂ°°35¶ß U",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "A"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

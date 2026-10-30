@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/architecture/architecture.spec.ts",
+    "line": 251,
+    "test": "architecture diagrams > align directive > should parse a row alignment and expose it via getLayoutHints"
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "db1",
+        "type": "service",
+        "in": "api",
+        "icon": "database",
+        "title": "DB1"
+      },
+      {
+        "id": "db2",
+        "type": "service",
+        "in": "api",
+        "icon": "database",
+        "title": "DB2"
+      },
+      {
+        "id": "db3",
+        "type": "service",
+        "in": "api",
+        "icon": "database",
+        "title": "DB3"
+      }
+    ],
+    "groups": [
+      {
+        "id": "api",
+        "icon": "cloud",
+        "title": "API"
+      }
+    ],
+    "edges": [],
+    "layoutHints": [
+      {
+        "direction": "row",
+        "members": [
+          "db1",
+          "db2",
+          "db3"
+        ]
+      }
+    ]
+  }
+}

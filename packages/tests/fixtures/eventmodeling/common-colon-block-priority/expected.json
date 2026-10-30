@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The colon branch treats braces as line text."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": " accDescr: { D }",
+    "frames": []
+  }
+}

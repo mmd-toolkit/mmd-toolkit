@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Separated semicolons are not header grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 10: unexpected character: ->;<- at offset: 9, skipped 2 characters. "
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ssDiagram`note` \"x\"\n----------------------^\nExpecting 'AGGREGATION', 'EXTENSION', 'COMPOSITION', 'DEPENDENCY', 'LOLLIPOP', 'LINE', 'DOTTED_LINE', got 'NEWLINE'"
+  }
+}

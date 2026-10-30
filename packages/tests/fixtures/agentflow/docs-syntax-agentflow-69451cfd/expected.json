@@ -1,0 +1,103 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/agentflow.md",
+    "line": 353
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a",
+        "type": "subroutine",
+        "props": {},
+        "metadata": {
+          "shape": "subroutine"
+        }
+      },
+      {
+        "id": "b",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "b",
+        "type": "subroutine",
+        "props": {},
+        "metadata": {
+          "shape": "subroutine"
+        }
+      },
+      {
+        "id": "tools",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "tools",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "tools",
+        "nodes": [
+          "a",
+          "b"
+        ],
+        "title": "Tools",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow",
+        "metadata": {
+          "algorithm": "elk.rectpacking"
+        }
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "a",
+        "set": {
+          "type": "subroutine",
+          "metadata": {
+            "shape": "subroutine"
+          }
+        }
+      },
+      {
+        "id": "b",
+        "set": {
+          "type": "subroutine",
+          "metadata": {
+            "shape": "subroutine"
+          }
+        }
+      },
+      {
+        "id": "tools",
+        "set": {
+          "metadata": {
+            "algorithm": "elk.rectpacking"
+          }
+        }
+      }
+    ]
+  }
+}

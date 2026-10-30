@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The label, techn, descr and type named keys use text wrappers even in later slots."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "Label"
+        },
+        "techn": {
+          "text": "Tech"
+        },
+        "descr": {
+          "text": "Description"
+        },
+        "type": {
+          "text": "Kind"
+        },
+        "tags": "Tag",
+        "typeC4Shape": {
+          "text": "container"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

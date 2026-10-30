@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Which valid unquoted names retain spaces, parentheses, ampersand and hyphen?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "real-time processing (BPE)&cache",
+        "label": "real-time processing (BPE)&cache",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "end-user",
+        "label": "end-user",
+        "x": 30,
+        "y": 20,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [
+      {
+        "source": "end-user",
+        "target": "real-time processing (BPE)&cache",
+        "dashed": false
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/entityRelationshipDiagram.md",
+    "line": 489
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-id1-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [
+          "fill:#f9f",
+          "stroke:#333",
+          "stroke-width:4px"
+        ],
+        "name": "id1",
+        "classes": []
+      },
+      {
+        "id": "entity-id2-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [
+          "fill:#bbf",
+          "stroke:#f66",
+          "stroke-width:2px",
+          "color:#fff",
+          "stroke-dasharray:55"
+        ],
+        "name": "id2",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-id1-0",
+        "roleA": "label",
+        "entityB": "entity-id2-1",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": []
+  }
+}

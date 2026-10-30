@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A non-ASCII suffix after the stable header word at child start still exposes a reserved header token."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\nishikawaR ishikawa界\n----------^\nExpecting 'SPACELINE', 'NL', 'EOF', 'TEXT', got 'ISHIKAWA'"
+  }
+}

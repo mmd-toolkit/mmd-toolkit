@@ -1,0 +1,265 @@
+{
+  "type": "Root",
+  "diagramType": "railroad",
+  "body": {
+    "type": "RailroadDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "RailroadRule",
+        "name": {
+          "type": "Identifier",
+          "name": "r",
+          "range": [
+            14,
+            15
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 1
+            }
+          }
+        },
+        "textBeforeOperator": [],
+        "textBeforeDefinition": [],
+        "definition": {
+          "type": "RailroadNonterminalCall",
+          "textBeforeOpen": [],
+          "textBeforeName": [],
+          "name": {
+            "type": "StringLiteral",
+            "value": "C4Component",
+            "raw": "\"C4Component\"",
+            "closed": true,
+            "range": [
+              30,
+              43
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 16
+              },
+              "end": {
+                "line": 2,
+                "column": 29
+              }
+            }
+          },
+          "textBeforeClose": [],
+          "range": [
+            18,
+            44
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 4
+            },
+            "end": {
+              "line": 2,
+              "column": 30
+            }
+          }
+        },
+        "textBeforeTerminator": [],
+        "range": [
+          14,
+          45
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 31
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      45
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 31
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "railroad-beta",
+      "range": [
+        0,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "r",
+      "range": [
+        14,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        16,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "nonterminal",
+      "range": [
+        18,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        29,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 15
+        },
+        "end": {
+          "line": 2,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"C4Component\"",
+      "range": [
+        30,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 16
+        },
+        "end": {
+          "line": 2,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        43,
+        44
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 29
+        },
+        "end": {
+          "line": 2,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ";",
+      "range": [
+        44,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 30
+        },
+        "end": {
+          "line": 2,
+          "column": 31
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    45
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 31
+    }
+  }
+}

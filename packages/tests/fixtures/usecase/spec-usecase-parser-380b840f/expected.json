@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/usecase.parser.spec.ts",
+    "line": 872,
+    "test": "usecase parser publication and normalized AST > accepts a parenthesized plain string boundary label"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [
+      {
+        "id": "Authorize",
+        "label": "Authorize payment",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "sb1",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [
+      {
+        "id": "sb1",
+        "label": "Payment service",
+        "labelType": "text",
+        "type": "rect",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

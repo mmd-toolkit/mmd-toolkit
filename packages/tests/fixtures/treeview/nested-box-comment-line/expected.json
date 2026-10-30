@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: A common comment line between a branch parent and child does not change the tree."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "parent",
+            "nodeType": "file",
+            "children": [
+              {
+                "name": "child",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

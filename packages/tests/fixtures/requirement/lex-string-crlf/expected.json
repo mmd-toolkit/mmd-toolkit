@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-from-tree/requirement.md, converted form: a CRLF inside a string is a line feed."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "a\nb",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

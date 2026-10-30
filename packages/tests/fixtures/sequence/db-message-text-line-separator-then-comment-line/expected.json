@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The line of the text goes on past the comment line, so the next line is part of the text: the message is `x`, the U+2028, and `C->>D: y`, and there is no second message."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "B"
+      },
+      {
+        "name": "B",
+        "description": "B",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "A",
+        "to": "B",
+        "message": "x C->>D: y",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

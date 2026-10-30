@@ -1,0 +1,173 @@
+{
+  "type": "Root",
+  "diagramType": "treemap",
+  "body": {
+    "type": "TreemapDiagram",
+    "body": [
+      {
+        "type": "TreemapLeaf",
+        "indent": 0,
+        "statementsBefore": [],
+        "name": {
+          "type": "StringLiteral",
+          "value": "C4Dynamic",
+          "raw": "\"C4Dynamic\"",
+          "closed": true,
+          "range": [
+            8,
+            19
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 11
+            }
+          }
+        },
+        "value": {
+          "type": "NumericLiteral",
+          "value": 1,
+          "raw": "1",
+          "range": [
+            20,
+            21
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 12
+            },
+            "end": {
+              "line": 2,
+              "column": 13
+            }
+          }
+        },
+        "classSelector": null,
+        "range": [
+          8,
+          21
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 13
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      21
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 13
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "treemap",
+      "range": [
+        0,
+        7
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"C4Dynamic\"",
+      "range": [
+        8,
+        19
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        19,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 11
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "1",
+      "range": [
+        20,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 13
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    21
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 13
+    }
+  }
+}

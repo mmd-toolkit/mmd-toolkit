@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Tasks: a comma at the end of the people part: the people `Me` and an empty one."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A",
+        "people": [
+          "Me",
+          ""
+        ],
+        "score": 5
+      }
+    ]
+  }
+}

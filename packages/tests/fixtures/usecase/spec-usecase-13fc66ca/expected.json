@@ -1,0 +1,83 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/usecase.spec.ts",
+    "line": 166,
+    "test": "UseCase diagram with Chevrotain parser > when parsing use cases > should parse use cases with quoted names"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "Customer_Service",
+        "label": "Customer Service",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "System_Administrator",
+        "label": "System Administrator",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "Handle_Tickets",
+        "label": "Handle Tickets",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Manage_System",
+        "label": "Manage System",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [
+      {
+        "source": "Customer_Service",
+        "target": "Handle_Tickets",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "System_Administrator",
+        "target": "Manage_System",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

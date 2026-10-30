@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md Specific characters after the keyword: entry 38 accepts : after cynefin-beta."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  }
+}

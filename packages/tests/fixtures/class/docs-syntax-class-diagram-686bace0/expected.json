@@ -1,0 +1,165 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/classDiagram.md",
+    "line": 79
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Customer",
+        "type": "",
+        "label": "Customer",
+        "text": "Customer",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "String name"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "String email"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "Order",
+        "type": "",
+        "label": "Order",
+        "text": "Order",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "total",
+            "parameters": "",
+            "returnType": "Money"
+          }
+        ],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "String id"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "Date placedAt"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "LineItem",
+        "type": "",
+        "label": "LineItem",
+        "text": "LineItem",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "int quantity"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "Payment",
+        "type": "",
+        "label": "Payment",
+        "text": "Payment",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "authorise",
+            "parameters": "",
+            "returnType": "bool"
+          }
+        ],
+        "members": [],
+        "annotations": [
+          "interface"
+        ],
+        "styles": []
+      }
+    ],
+    "relations": [
+      {
+        "id1": "Customer",
+        "id2": "Order",
+        "relation": {
+          "type1": "none",
+          "type2": 3,
+          "lineType": 0
+        },
+        "relationTitle1": "1",
+        "relationTitle2": "*",
+        "title": "places"
+      },
+      {
+        "id1": "Order",
+        "id2": "LineItem",
+        "relation": {
+          "type1": 2,
+          "type2": "none",
+          "lineType": 0
+        },
+        "relationTitle1": "1",
+        "relationTitle2": "*",
+        "title": "contains"
+      },
+      {
+        "id1": "Order",
+        "id2": "Payment",
+        "relation": {
+          "type1": "none",
+          "type2": 3,
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none",
+        "title": "settled by"
+      }
+    ],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  },
+  "embedded": {
+    "config": {
+      "layout": "dagre"
+    }
+  }
+}

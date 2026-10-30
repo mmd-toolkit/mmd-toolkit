@@ -1,0 +1,2612 @@
+{
+  "type": "Root",
+  "diagramType": "radar",
+  "body": {
+    "type": "RadarDiagram",
+    "textBeforeHeader": [],
+    "textBeforeColon": [],
+    "body": [
+      {
+        "type": "RadarTitleStatement",
+        "value": {
+          "type": "RadarLiteral",
+          "value": "Dark theme",
+          "range": [
+            51,
+            61
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 8
+            },
+            "end": {
+              "line": 3,
+              "column": 18
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          45,
+          61
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 2
+          },
+          "end": {
+            "line": 3,
+            "column": 18
+          }
+        }
+      },
+      {
+        "type": "RadarAxisStatement",
+        "axes": [
+          {
+            "type": "RadarAxis",
+            "textBefore": [],
+            "name": {
+              "type": "Identifier",
+              "name": "Agility",
+              "range": [
+                69,
+                76
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 7
+                },
+                "end": {
+                  "line": 4,
+                  "column": 14
+                }
+              }
+            },
+            "textBeforeLabel": [],
+            "textBeforeLabelValue": [],
+            "label": null,
+            "textBeforeLabelClose": [],
+            "textAfter": [],
+            "range": [
+              69,
+              76
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 7
+              },
+              "end": {
+                "line": 4,
+                "column": 14
+              }
+            }
+          },
+          {
+            "type": "RadarAxis",
+            "textBefore": [],
+            "name": {
+              "type": "Identifier",
+              "name": "Speed",
+              "range": [
+                78,
+                83
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 16
+                },
+                "end": {
+                  "line": 4,
+                  "column": 21
+                }
+              }
+            },
+            "textBeforeLabel": [],
+            "textBeforeLabelValue": [],
+            "label": null,
+            "textBeforeLabelClose": [],
+            "textAfter": [],
+            "range": [
+              78,
+              83
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 16
+              },
+              "end": {
+                "line": 4,
+                "column": 21
+              }
+            }
+          },
+          {
+            "type": "RadarAxis",
+            "textBefore": [],
+            "name": {
+              "type": "Identifier",
+              "name": "Strength",
+              "range": [
+                85,
+                93
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 23
+                },
+                "end": {
+                  "line": 4,
+                  "column": 31
+                }
+              }
+            },
+            "textBeforeLabel": [],
+            "textBeforeLabelValue": [],
+            "label": null,
+            "textBeforeLabelClose": [],
+            "textAfter": [],
+            "range": [
+              85,
+              93
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 23
+              },
+              "end": {
+                "line": 4,
+                "column": 31
+              }
+            }
+          }
+        ],
+        "range": [
+          64,
+          93
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 2
+          },
+          "end": {
+            "line": 4,
+            "column": 31
+          }
+        }
+      },
+      {
+        "type": "RadarAxisStatement",
+        "axes": [
+          {
+            "type": "RadarAxis",
+            "textBefore": [],
+            "name": {
+              "type": "Identifier",
+              "name": "Stam",
+              "range": [
+                101,
+                105
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 7
+                },
+                "end": {
+                  "line": 5,
+                  "column": 11
+                }
+              }
+            },
+            "textBeforeLabel": [],
+            "textBeforeLabelValue": [],
+            "label": {
+              "type": "StringLiteral",
+              "value": "Stamina",
+              "raw": "\"Stamina\"",
+              "closed": true,
+              "range": [
+                106,
+                115
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 12
+                },
+                "end": {
+                  "line": 5,
+                  "column": 21
+                }
+              }
+            },
+            "textBeforeLabelClose": [],
+            "textAfter": [],
+            "range": [
+              101,
+              116
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 7
+              },
+              "end": {
+                "line": 5,
+                "column": 22
+              }
+            }
+          },
+          {
+            "type": "RadarAxis",
+            "textBefore": [],
+            "name": {
+              "type": "Identifier",
+              "name": "Intel",
+              "range": [
+                119,
+                124
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 25
+                },
+                "end": {
+                  "line": 5,
+                  "column": 30
+                }
+              }
+            },
+            "textBeforeLabel": [],
+            "textBeforeLabelValue": [],
+            "label": {
+              "type": "StringLiteral",
+              "value": "Intelligence",
+              "raw": "\"Intelligence\"",
+              "closed": true,
+              "range": [
+                125,
+                139
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 31
+                },
+                "end": {
+                  "line": 5,
+                  "column": 45
+                }
+              }
+            },
+            "textBeforeLabelClose": [],
+            "textAfter": [],
+            "range": [
+              119,
+              140
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 25
+              },
+              "end": {
+                "line": 5,
+                "column": 46
+              }
+            }
+          }
+        ],
+        "range": [
+          96,
+          140
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 2
+          },
+          "end": {
+            "line": 5,
+            "column": 46
+          }
+        }
+      },
+      {
+        "type": "RadarCurveStatement",
+        "curves": [
+          {
+            "type": "RadarCurve",
+            "textBefore": [],
+            "name": {
+              "type": "Identifier",
+              "name": "Ninja1",
+              "range": [
+                150,
+                156
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 8
+                },
+                "end": {
+                  "line": 7,
+                  "column": 14
+                }
+              }
+            },
+            "textBeforeLabel": [],
+            "textBeforeLabelValue": [],
+            "label": {
+              "type": "StringLiteral",
+              "value": "Naruto",
+              "raw": "\"Naruto\"",
+              "closed": true,
+              "range": [
+                157,
+                165
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 15
+                },
+                "end": {
+                  "line": 7,
+                  "column": 23
+                }
+              }
+            },
+            "textBeforeLabelClose": [],
+            "textBeforeEntries": [],
+            "entries": [
+              {
+                "type": "RadarNamedEntry",
+                "textBefore": [],
+                "axis": {
+                  "type": "Identifier",
+                  "name": "Agility",
+                  "range": [
+                    174,
+                    181
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 8,
+                      "column": 6
+                    },
+                    "end": {
+                      "line": 8,
+                      "column": 13
+                    }
+                  }
+                },
+                "textBeforeColon": [],
+                "textBeforeValue": [],
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 2,
+                  "raw": "2",
+                  "range": [
+                    182,
+                    183
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 8,
+                      "column": 14
+                    },
+                    "end": {
+                      "line": 8,
+                      "column": 15
+                    }
+                  }
+                },
+                "textAfter": [],
+                "range": [
+                  174,
+                  183
+                ],
+                "loc": {
+                  "start": {
+                    "line": 8,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 8,
+                    "column": 15
+                  }
+                }
+              },
+              {
+                "type": "RadarNamedEntry",
+                "textBefore": [],
+                "axis": {
+                  "type": "Identifier",
+                  "name": "Speed",
+                  "range": [
+                    185,
+                    190
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 8,
+                      "column": 17
+                    },
+                    "end": {
+                      "line": 8,
+                      "column": 22
+                    }
+                  }
+                },
+                "textBeforeColon": [],
+                "textBeforeValue": [],
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 2,
+                  "raw": "2",
+                  "range": [
+                    191,
+                    192
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 8,
+                      "column": 23
+                    },
+                    "end": {
+                      "line": 8,
+                      "column": 24
+                    }
+                  }
+                },
+                "textAfter": [],
+                "range": [
+                  185,
+                  192
+                ],
+                "loc": {
+                  "start": {
+                    "line": 8,
+                    "column": 17
+                  },
+                  "end": {
+                    "line": 8,
+                    "column": 24
+                  }
+                }
+              },
+              {
+                "type": "RadarNamedEntry",
+                "textBefore": [],
+                "axis": {
+                  "type": "Identifier",
+                  "name": "Strength",
+                  "range": [
+                    200,
+                    208
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 9,
+                      "column": 6
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 14
+                    }
+                  }
+                },
+                "textBeforeColon": [],
+                "textBeforeValue": [],
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 3,
+                  "raw": "3",
+                  "range": [
+                    209,
+                    210
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 9,
+                      "column": 15
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 16
+                    }
+                  }
+                },
+                "textAfter": [],
+                "range": [
+                  200,
+                  210
+                ],
+                "loc": {
+                  "start": {
+                    "line": 9,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 9,
+                    "column": 16
+                  }
+                }
+              },
+              {
+                "type": "RadarNamedEntry",
+                "textBefore": [],
+                "axis": {
+                  "type": "Identifier",
+                  "name": "Stam",
+                  "range": [
+                    212,
+                    216
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 9,
+                      "column": 18
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 22
+                    }
+                  }
+                },
+                "textBeforeColon": [],
+                "textBeforeValue": [],
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 5,
+                  "raw": "5",
+                  "range": [
+                    217,
+                    218
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 9,
+                      "column": 23
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 24
+                    }
+                  }
+                },
+                "textAfter": [],
+                "range": [
+                  212,
+                  218
+                ],
+                "loc": {
+                  "start": {
+                    "line": 9,
+                    "column": 18
+                  },
+                  "end": {
+                    "line": 9,
+                    "column": 24
+                  }
+                }
+              },
+              {
+                "type": "RadarNamedEntry",
+                "textBefore": [],
+                "axis": {
+                  "type": "Identifier",
+                  "name": "Intel",
+                  "range": [
+                    226,
+                    231
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 10,
+                      "column": 6
+                    },
+                    "end": {
+                      "line": 10,
+                      "column": 11
+                    }
+                  }
+                },
+                "textBeforeColon": [],
+                "textBeforeValue": [],
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 0,
+                  "raw": "0",
+                  "range": [
+                    232,
+                    233
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 10,
+                      "column": 12
+                    },
+                    "end": {
+                      "line": 10,
+                      "column": 13
+                    }
+                  }
+                },
+                "textAfter": [],
+                "range": [
+                  226,
+                  233
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 13
+                  }
+                }
+              }
+            ],
+            "textAfter": [],
+            "range": [
+              150,
+              237
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 8
+              },
+              "end": {
+                "line": 11,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "range": [
+          144,
+          237
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 2
+          },
+          "end": {
+            "line": 11,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "RadarCurveStatement",
+        "curves": [
+          {
+            "type": "RadarCurve",
+            "textBefore": [],
+            "name": {
+              "type": "Identifier",
+              "name": "Ninja2",
+              "range": [
+                246,
+                252
+              ],
+              "loc": {
+                "start": {
+                  "line": 12,
+                  "column": 8
+                },
+                "end": {
+                  "line": 12,
+                  "column": 14
+                }
+              }
+            },
+            "textBeforeLabel": [],
+            "textBeforeLabelValue": [],
+            "label": {
+              "type": "StringLiteral",
+              "value": "Sasuke",
+              "raw": "\"Sasuke\"",
+              "closed": true,
+              "range": [
+                253,
+                261
+              ],
+              "loc": {
+                "start": {
+                  "line": 12,
+                  "column": 15
+                },
+                "end": {
+                  "line": 12,
+                  "column": 23
+                }
+              }
+            },
+            "textBeforeLabelClose": [],
+            "textBeforeEntries": [],
+            "entries": [
+              {
+                "type": "RadarNumberEntry",
+                "textBefore": [],
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 2,
+                  "raw": "2",
+                  "range": [
+                    263,
+                    264
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 12,
+                      "column": 25
+                    },
+                    "end": {
+                      "line": 12,
+                      "column": 26
+                    }
+                  }
+                },
+                "textAfter": [],
+                "range": [
+                  263,
+                  264
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 25
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 26
+                  }
+                }
+              },
+              {
+                "type": "RadarNumberEntry",
+                "textBefore": [],
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 3,
+                  "raw": "3",
+                  "range": [
+                    266,
+                    267
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 12,
+                      "column": 28
+                    },
+                    "end": {
+                      "line": 12,
+                      "column": 29
+                    }
+                  }
+                },
+                "textAfter": [],
+                "range": [
+                  266,
+                  267
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 28
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 29
+                  }
+                }
+              },
+              {
+                "type": "RadarNumberEntry",
+                "textBefore": [],
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 4,
+                  "raw": "4",
+                  "range": [
+                    269,
+                    270
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 12,
+                      "column": 31
+                    },
+                    "end": {
+                      "line": 12,
+                      "column": 32
+                    }
+                  }
+                },
+                "textAfter": [],
+                "range": [
+                  269,
+                  270
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 31
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 32
+                  }
+                }
+              },
+              {
+                "type": "RadarNumberEntry",
+                "textBefore": [],
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 1,
+                  "raw": "1",
+                  "range": [
+                    272,
+                    273
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 12,
+                      "column": 34
+                    },
+                    "end": {
+                      "line": 12,
+                      "column": 35
+                    }
+                  }
+                },
+                "textAfter": [],
+                "range": [
+                  272,
+                  273
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 34
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 35
+                  }
+                }
+              },
+              {
+                "type": "RadarNumberEntry",
+                "textBefore": [],
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 5,
+                  "raw": "5",
+                  "range": [
+                    275,
+                    276
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 12,
+                      "column": 37
+                    },
+                    "end": {
+                      "line": 12,
+                      "column": 38
+                    }
+                  }
+                },
+                "textAfter": [],
+                "range": [
+                  275,
+                  276
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 37
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 38
+                  }
+                }
+              }
+            ],
+            "textAfter": [],
+            "range": [
+              246,
+              277
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 8
+              },
+              "end": {
+                "line": 12,
+                "column": 39
+              }
+            }
+          }
+        ],
+        "range": [
+          240,
+          277
+        ],
+        "loc": {
+          "start": {
+            "line": 12,
+            "column": 2
+          },
+          "end": {
+            "line": 12,
+            "column": 39
+          }
+        }
+      },
+      {
+        "type": "RadarCurveStatement",
+        "curves": [
+          {
+            "type": "RadarCurve",
+            "textBefore": [],
+            "name": {
+              "type": "Identifier",
+              "name": "Ninja3",
+              "range": [
+                286,
+                292
+              ],
+              "loc": {
+                "start": {
+                  "line": 13,
+                  "column": 8
+                },
+                "end": {
+                  "line": 13,
+                  "column": 14
+                }
+              }
+            },
+            "textBeforeLabel": [],
+            "textBeforeLabelValue": [],
+            "label": {
+              "type": "StringLiteral",
+              "value": "Ninja",
+              "raw": "\"Ninja\"",
+              "closed": true,
+              "range": [
+                293,
+                300
+              ],
+              "loc": {
+                "start": {
+                  "line": 13,
+                  "column": 15
+                },
+                "end": {
+                  "line": 13,
+                  "column": 22
+                }
+              }
+            },
+            "textBeforeLabelClose": [],
+            "textBeforeEntries": [],
+            "entries": [
+              {
+                "type": "RadarNumberEntry",
+                "textBefore": [],
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 3,
+                  "raw": "3",
+                  "range": [
+                    303,
+                    304
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 13,
+                      "column": 25
+                    },
+                    "end": {
+                      "line": 13,
+                      "column": 26
+                    }
+                  }
+                },
+                "textAfter": [],
+                "range": [
+                  303,
+                  304
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 25
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 26
+                  }
+                }
+              },
+              {
+                "type": "RadarNumberEntry",
+                "textBefore": [],
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 2,
+                  "raw": "2",
+                  "range": [
+                    306,
+                    307
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 13,
+                      "column": 28
+                    },
+                    "end": {
+                      "line": 13,
+                      "column": 29
+                    }
+                  }
+                },
+                "textAfter": [],
+                "range": [
+                  306,
+                  307
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 28
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 29
+                  }
+                }
+              },
+              {
+                "type": "RadarNumberEntry",
+                "textBefore": [],
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 1,
+                  "raw": "1",
+                  "range": [
+                    309,
+                    310
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 13,
+                      "column": 31
+                    },
+                    "end": {
+                      "line": 13,
+                      "column": 32
+                    }
+                  }
+                },
+                "textAfter": [],
+                "range": [
+                  309,
+                  310
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 31
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 32
+                  }
+                }
+              },
+              {
+                "type": "RadarNumberEntry",
+                "textBefore": [],
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 5,
+                  "raw": "5",
+                  "range": [
+                    312,
+                    313
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 13,
+                      "column": 34
+                    },
+                    "end": {
+                      "line": 13,
+                      "column": 35
+                    }
+                  }
+                },
+                "textAfter": [],
+                "range": [
+                  312,
+                  313
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 34
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 35
+                  }
+                }
+              },
+              {
+                "type": "RadarNumberEntry",
+                "textBefore": [],
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 4,
+                  "raw": "4",
+                  "range": [
+                    315,
+                    316
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 13,
+                      "column": 37
+                    },
+                    "end": {
+                      "line": 13,
+                      "column": 38
+                    }
+                  }
+                },
+                "textAfter": [],
+                "range": [
+                  315,
+                  316
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 37
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 38
+                  }
+                }
+              }
+            ],
+            "textAfter": [],
+            "range": [
+              286,
+              317
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 8
+              },
+              "end": {
+                "line": 13,
+                "column": 39
+              }
+            }
+          }
+        ],
+        "range": [
+          280,
+          317
+        ],
+        "loc": {
+          "start": {
+            "line": 13,
+            "column": 2
+          },
+          "end": {
+            "line": 13,
+            "column": 39
+          }
+        }
+      }
+    ],
+    "range": [
+      31,
+      317
+    ],
+    "loc": {
+      "start": {
+        "line": 2,
+        "column": 0
+      },
+      "end": {
+        "line": 13,
+        "column": 39
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [
+    {
+      "type": "Directive",
+      "name": "init",
+      "value": "init: {'theme': 'dark'} ",
+      "closed": true,
+      "range": [
+        0,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 30
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "Directive",
+      "value": "%%{init: {'theme': 'dark'} }%%",
+      "range": [
+        0,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "radar-beta",
+      "range": [
+        31,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        45,
+        50
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 3,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Dark theme",
+      "range": [
+        51,
+        61
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "axis",
+      "range": [
+        64,
+        68
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 2
+        },
+        "end": {
+          "line": 4,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Agility",
+      "range": [
+        69,
+        76
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 7
+        },
+        "end": {
+          "line": 4,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        76,
+        77
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 14
+        },
+        "end": {
+          "line": 4,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Speed",
+      "range": [
+        78,
+        83
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 16
+        },
+        "end": {
+          "line": 4,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        83,
+        84
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 21
+        },
+        "end": {
+          "line": 4,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Strength",
+      "range": [
+        85,
+        93
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 23
+        },
+        "end": {
+          "line": 4,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "axis",
+      "range": [
+        96,
+        100
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 2
+        },
+        "end": {
+          "line": 5,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Stam",
+      "range": [
+        101,
+        105
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 7
+        },
+        "end": {
+          "line": 5,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        105,
+        106
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 11
+        },
+        "end": {
+          "line": 5,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Stamina\"",
+      "range": [
+        106,
+        115
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 12
+        },
+        "end": {
+          "line": 5,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        115,
+        116
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 21
+        },
+        "end": {
+          "line": 5,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        117,
+        118
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 23
+        },
+        "end": {
+          "line": 5,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Intel",
+      "range": [
+        119,
+        124
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 25
+        },
+        "end": {
+          "line": 5,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        124,
+        125
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 30
+        },
+        "end": {
+          "line": 5,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Intelligence\"",
+      "range": [
+        125,
+        139
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 31
+        },
+        "end": {
+          "line": 5,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        139,
+        140
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 45
+        },
+        "end": {
+          "line": 5,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "curve",
+      "range": [
+        144,
+        149
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 2
+        },
+        "end": {
+          "line": 7,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Ninja1",
+      "range": [
+        150,
+        156
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 8
+        },
+        "end": {
+          "line": 7,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        156,
+        157
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 14
+        },
+        "end": {
+          "line": 7,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Naruto\"",
+      "range": [
+        157,
+        165
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 15
+        },
+        "end": {
+          "line": 7,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        165,
+        166
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 23
+        },
+        "end": {
+          "line": 7,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        166,
+        167
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 24
+        },
+        "end": {
+          "line": 7,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Agility",
+      "range": [
+        174,
+        181
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 6
+        },
+        "end": {
+          "line": 8,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "2",
+      "range": [
+        182,
+        183
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 14
+        },
+        "end": {
+          "line": 8,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        183,
+        184
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 15
+        },
+        "end": {
+          "line": 8,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Speed",
+      "range": [
+        185,
+        190
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 17
+        },
+        "end": {
+          "line": 8,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "2",
+      "range": [
+        191,
+        192
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 23
+        },
+        "end": {
+          "line": 8,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        192,
+        193
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 24
+        },
+        "end": {
+          "line": 8,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Strength",
+      "range": [
+        200,
+        208
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 6
+        },
+        "end": {
+          "line": 9,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "3",
+      "range": [
+        209,
+        210
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 15
+        },
+        "end": {
+          "line": 9,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        210,
+        211
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 16
+        },
+        "end": {
+          "line": 9,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Stam",
+      "range": [
+        212,
+        216
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 18
+        },
+        "end": {
+          "line": 9,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "5",
+      "range": [
+        217,
+        218
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 23
+        },
+        "end": {
+          "line": 9,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        218,
+        219
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 24
+        },
+        "end": {
+          "line": 9,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Intel",
+      "range": [
+        226,
+        231
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 6
+        },
+        "end": {
+          "line": 10,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0",
+      "range": [
+        232,
+        233
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 12
+        },
+        "end": {
+          "line": 10,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        236,
+        237
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 2
+        },
+        "end": {
+          "line": 11,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "curve",
+      "range": [
+        240,
+        245
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 2
+        },
+        "end": {
+          "line": 12,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Ninja2",
+      "range": [
+        246,
+        252
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 8
+        },
+        "end": {
+          "line": 12,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        252,
+        253
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 14
+        },
+        "end": {
+          "line": 12,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Sasuke\"",
+      "range": [
+        253,
+        261
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 15
+        },
+        "end": {
+          "line": 12,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        261,
+        262
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 23
+        },
+        "end": {
+          "line": 12,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        262,
+        263
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 24
+        },
+        "end": {
+          "line": 12,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "2",
+      "range": [
+        263,
+        264
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 25
+        },
+        "end": {
+          "line": 12,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        264,
+        265
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 26
+        },
+        "end": {
+          "line": 12,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "3",
+      "range": [
+        266,
+        267
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 28
+        },
+        "end": {
+          "line": 12,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        267,
+        268
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 29
+        },
+        "end": {
+          "line": 12,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "4",
+      "range": [
+        269,
+        270
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 31
+        },
+        "end": {
+          "line": 12,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        270,
+        271
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 32
+        },
+        "end": {
+          "line": 12,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "1",
+      "range": [
+        272,
+        273
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 34
+        },
+        "end": {
+          "line": 12,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        273,
+        274
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 35
+        },
+        "end": {
+          "line": 12,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "5",
+      "range": [
+        275,
+        276
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 37
+        },
+        "end": {
+          "line": 12,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        276,
+        277
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 38
+        },
+        "end": {
+          "line": 12,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "curve",
+      "range": [
+        280,
+        285
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 2
+        },
+        "end": {
+          "line": 13,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Ninja3",
+      "range": [
+        286,
+        292
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 8
+        },
+        "end": {
+          "line": 13,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        292,
+        293
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 14
+        },
+        "end": {
+          "line": 13,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Ninja\"",
+      "range": [
+        293,
+        300
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 15
+        },
+        "end": {
+          "line": 13,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        300,
+        301
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 22
+        },
+        "end": {
+          "line": 13,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        302,
+        303
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 24
+        },
+        "end": {
+          "line": 13,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "3",
+      "range": [
+        303,
+        304
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 25
+        },
+        "end": {
+          "line": 13,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        304,
+        305
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 26
+        },
+        "end": {
+          "line": 13,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "2",
+      "range": [
+        306,
+        307
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 28
+        },
+        "end": {
+          "line": 13,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        307,
+        308
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 29
+        },
+        "end": {
+          "line": 13,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "1",
+      "range": [
+        309,
+        310
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 31
+        },
+        "end": {
+          "line": 13,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        310,
+        311
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 32
+        },
+        "end": {
+          "line": 13,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "5",
+      "range": [
+        312,
+        313
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 34
+        },
+        "end": {
+          "line": 13,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        313,
+        314
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 35
+        },
+        "end": {
+          "line": 13,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "4",
+      "range": [
+        315,
+        316
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 37
+        },
+        "end": {
+          "line": 13,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        316,
+        317
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 38
+        },
+        "end": {
+          "line": 13,
+          "column": 39
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    317
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 13,
+      "column": 39
+    }
+  }
+}

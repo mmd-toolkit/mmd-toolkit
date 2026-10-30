@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Known divergences: comments: a comment glued to a one-character word in a bare text of a quadrant."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...hartquadrant-2 a%%b\n----------------------^\nExpecting 'ALPHA', 'NUM', 'COMMA', 'AMP', 'BRKT', 'MULT', 'UNICODE_TEXT', 'STR', 'MD_STR', 'PUNCTUATION', 'PLUS', 'EQUALS', 'DOT', 'UNDERSCORE', got 'NEWLINE'"
+  }
+}

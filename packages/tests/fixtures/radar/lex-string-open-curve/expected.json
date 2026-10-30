@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unterminated curve string rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 9: unexpected character: ->'<- at offset: 19, skipped 1 characters. Parse error on line 2, column 10: Expecting token of type 'STRING' but found `open`."
+  }
+}

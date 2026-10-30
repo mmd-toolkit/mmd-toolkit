@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A link statement without `@` whose text ends with a U+2028: the label is the text without its last two characters, and the URL the whole text."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {
+          "Dash https:/": "Dash https://x"
+        },
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "EBNF native YAML prioritizes its body-present alternative."
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "visible"
+        }
+      }
+    ]
+  }
+}

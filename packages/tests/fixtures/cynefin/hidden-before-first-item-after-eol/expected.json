@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md AST gap ownership: a visible LF separates textAfterName from the first item textBefore."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "A"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

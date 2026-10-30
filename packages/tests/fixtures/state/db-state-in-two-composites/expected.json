@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Building the summary: a state written in two composite states is one state, in the later one, at the place of its first visit."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "roundedWithTitle",
+        "label": "A",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "C",
+        "shape": "rect",
+        "label": "C",
+        "classes": [],
+        "styles": [],
+        "parentId": "B"
+      },
+      {
+        "id": "B",
+        "shape": "roundedWithTitle",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

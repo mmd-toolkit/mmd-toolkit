@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The name f ends with the CRLF before the parenthesis, and the arguments hold a CRLF; in the Db both are one line feed."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "f\n",
+        "args": "a\nb"
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, accessibility: a block needs no whitespace and no line feed."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "D",
+    "sections": [],
+    "tasks": []
+  }
+}

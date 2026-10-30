@@ -1,0 +1,325 @@
+{
+  "type": "Root",
+  "diagramType": "treemap",
+  "body": {
+    "type": "TreemapDiagram",
+    "body": [
+      {
+        "type": "TreemapSection",
+        "indent": 0,
+        "statementsBefore": [],
+        "name": {
+          "type": "StringLiteral",
+          "value": "A",
+          "raw": "\"A\"",
+          "closed": true,
+          "range": [
+            8,
+            11
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 3
+            }
+          }
+        },
+        "classSelector": null,
+        "children": [
+          {
+            "type": "TreemapLeaf",
+            "indent": 2,
+            "statementsBefore": [
+              {
+                "type": "TreemapClassDefStatement",
+                "indent": 0,
+                "name": {
+                  "type": "Identifier",
+                  "name": "xx",
+                  "range": [
+                    21,
+                    23
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 9
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 11
+                    }
+                  }
+                },
+                "style": null,
+                "range": [
+                  12,
+                  24
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 0
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 12
+                  }
+                }
+              }
+            ],
+            "name": {
+              "type": "StringLiteral",
+              "value": "B",
+              "raw": "\"B\"",
+              "closed": true,
+              "range": [
+                26,
+                29
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 14
+                },
+                "end": {
+                  "line": 3,
+                  "column": 17
+                }
+              }
+            },
+            "value": {
+              "type": "NumericLiteral",
+              "value": 1,
+              "raw": "1",
+              "range": [
+                30,
+                31
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 18
+                },
+                "end": {
+                  "line": 3,
+                  "column": 19
+                }
+              }
+            },
+            "classSelector": null,
+            "range": [
+              12,
+              31
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 19
+              }
+            }
+          }
+        ],
+        "range": [
+          8,
+          31
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 19
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      31
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 19
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "treemap",
+      "range": [
+        0,
+        7
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"A\"",
+      "range": [
+        8,
+        11
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "classDef",
+      "range": [
+        12,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "xx",
+      "range": [
+        21,
+        23
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 9
+        },
+        "end": {
+          "line": 3,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ";",
+      "range": [
+        23,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 11
+        },
+        "end": {
+          "line": 3,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"B\"",
+      "range": [
+        26,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 14
+        },
+        "end": {
+          "line": 3,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        29,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 17
+        },
+        "end": {
+          "line": 3,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "1",
+      "range": [
+        30,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 18
+        },
+        "end": {
+          "line": 3,
+          "column": 19
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    32
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 0
+    }
+  }
+}

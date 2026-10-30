@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md The id context, rule 2: a `#` and the rest of the line are a diagram comment, after which no rule of the id context reads the line feed, so the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...agramparticipant #cA->>B: x\n----------------------^"
+  }
+}

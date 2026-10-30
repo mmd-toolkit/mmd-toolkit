@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does an unclosed directive affect annotations EOL?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "annotationsBox": {
+      "x": 2,
+      "y": 100
+    },
+    "axes": {}
+  }
+}

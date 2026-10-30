@@ -1,0 +1,263 @@
+{
+  "type": "Root",
+  "diagramType": "flowchart-v2",
+  "body": {
+    "type": "FlowchartDiagram",
+    "direction": "LR",
+    "body": [
+      {
+        "type": "FlowchartVertexStatement",
+        "first": {
+          "type": "FlowchartVertexGroup",
+          "vertices": [
+            {
+              "type": "FlowchartVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "id1",
+                "range": [
+                  17,
+                  20
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 7
+                  }
+                }
+              },
+              "shape": {
+                "type": "FlowchartShape",
+                "name": "cylinder",
+                "property": null,
+                "label": {
+                  "type": "FlowchartLabel",
+                  "kind": "text",
+                  "value": "Database",
+                  "range": [
+                    22,
+                    30
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 2,
+                      "column": 9
+                    },
+                    "end": {
+                      "line": 2,
+                      "column": 17
+                    }
+                  }
+                },
+                "range": [
+                  20,
+                  32
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 7
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 19
+                  }
+                }
+              },
+              "cssClass": null,
+              "data": [],
+              "range": [
+                17,
+                32
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 4
+                },
+                "end": {
+                  "line": 2,
+                  "column": 19
+                }
+              }
+            }
+          ],
+          "range": [
+            17,
+            32
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 4
+            },
+            "end": {
+              "line": 2,
+              "column": 19
+            }
+          }
+        },
+        "links": [],
+        "range": [
+          17,
+          32
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 4
+          },
+          "end": {
+            "line": 2,
+            "column": 19
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      32
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 19
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "flowchart",
+      "range": [
+        0,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "LR",
+      "range": [
+        10,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 10
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "id1",
+      "range": [
+        17,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[(",
+      "range": [
+        20,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 7
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Database",
+      "range": [
+        22,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 9
+        },
+        "end": {
+          "line": 2,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")]",
+      "range": [
+        30,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 17
+        },
+        "end": {
+          "line": 2,
+          "column": 19
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    33
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 0
+    }
+  }
+}

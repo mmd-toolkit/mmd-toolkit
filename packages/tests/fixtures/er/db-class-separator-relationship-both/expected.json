@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`:::` on both entities of a relationship: E has `e1`, F has `f1` and `f2`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-E-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "E",
+        "classes": [
+          "e1"
+        ]
+      },
+      {
+        "id": "entity-F-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "F",
+        "classes": [
+          "f1",
+          "f2"
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-E-0",
+        "roleA": "r",
+        "entityB": "entity-F-1",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": []
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Init directives: the argument has a comma before `}`, which is not valid JSON, so there is no init configuration, and the subgraph does not inherit the direction."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A"
+        ],
+        "title": "S",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

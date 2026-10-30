@@ -1,0 +1,250 @@
+{
+  "type": "Root",
+  "diagramType": "eventmodeling",
+  "body": {
+    "type": "EventmodelingDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "EventmodelingTimeFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "01",
+          "range": [
+            21,
+            23
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 21
+            },
+            "end": {
+              "line": 1,
+              "column": 23
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "evt",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "A",
+            "range": [
+              32,
+              33
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 32
+              },
+              "end": {
+                "line": 1,
+                "column": 33
+              }
+            }
+          },
+          "tail": [],
+          "range": [
+            32,
+            33
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 32
+            },
+            "end": {
+              "line": 1,
+              "column": 33
+            }
+          }
+        },
+        "sourceFrames": [],
+        "dataReference": null,
+        "data": null,
+        "range": [
+          14,
+          33
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 14
+          },
+          "end": {
+            "line": 1,
+            "column": 33
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      33
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 1,
+        "column": 33
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [
+    {
+      "type": "Comment",
+      "mark": "/*",
+      "value": "a",
+      "range": [
+        16,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 16
+        },
+        "end": {
+          "line": 1,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Comment",
+      "mark": "/*",
+      "value": "b",
+      "range": [
+        23,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 23
+        },
+        "end": {
+          "line": 1,
+          "column": 28
+        }
+      }
+    }
+  ],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "eventmodeling",
+      "range": [
+        0,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "tf",
+      "range": [
+        14,
+        16
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 14
+        },
+        "end": {
+          "line": 1,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "01",
+      "range": [
+        21,
+        23
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 21
+        },
+        "end": {
+          "line": 1,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "evt",
+      "range": [
+        28,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 28
+        },
+        "end": {
+          "line": 1,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        32,
+        33
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 32
+        },
+        "end": {
+          "line": 1,
+          "column": 33
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    33
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 1,
+      "column": 33
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A label whose text is enclosed in double quotes under a securityLevel that is not one of mermaid.js's values: the characters are replaced and the quotes are removed."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "a&equals;b",
+        "type": "lean_right",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

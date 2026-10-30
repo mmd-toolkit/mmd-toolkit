@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A glued word tests the longest node-id rule."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nkanbanx S\n^\nExpecting 'SPACELINE', 'KANBAN', got 'NODE_ID'"
+  }
+}

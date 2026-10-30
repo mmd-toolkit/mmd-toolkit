@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A hash inside an enclosing string is text."
+  },
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "# comment"
+        }
+      }
+    ]
+  }
+}

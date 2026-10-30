@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Comments: %% in the styles of classDef is part of them."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [
+      {
+        "id": "a",
+        "styles": [
+          "fill:red %% c"
+        ]
+      }
+    ],
+    "links": []
+  }
+}

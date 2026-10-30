@@ -1,0 +1,734 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: treeview-no-duplicate-title >> invalid >>> docs/rules/treeview-no-duplicate-title.md incorrect 1
+Filename: treeview-no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | treeView-beta
+  2 |   accTitle: First
+  3 |   accTitle: Second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   root/
+  5 |     file
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle: First
+          3 |   root/
+          4 |     file
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle: Second
+          3 |   root/
+          4 |     file
+          5 |
+---
+
+
+Test: treeview-no-duplicate-title >> invalid >>> invalid/treeview/acc-title-box
+Filename: tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/acc-title-box-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | accTitle: First
+  3 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | root/
+  5 | └── file
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 | accTitle: First
+          3 | root/
+          4 | └── file
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 | accTitle: Second
+          3 | root/
+          4 | └── file
+          5 |
+---
+
+
+Test: treeview-no-duplicate-title >> invalid >>> invalid/treeview/acc-title-box-reverse
+Filename: tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/acc-title-box-reverse-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | accTitle: Second
+  3 | accTitle: First
+    | ^~~~~~~~~~~~~~~ [1]
+  4 | root/
+  5 | └── file
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 | accTitle: Second
+          3 | root/
+          4 | └── file
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 | accTitle: First
+          3 | root/
+          4 | └── file
+          5 |
+---
+
+
+Test: treeview-no-duplicate-title >> invalid >>> invalid/treeview/acc-title-comment-between
+Filename: tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/acc-title-comment-between-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | accTitle: First
+  3 | %% old copy
+  4 |
+  5 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  6 | root/
+  7 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 | accTitle: First
+          3 | %% old copy
+          4 |
+          5 | root/
+          6 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 | %% old copy
+          3 |
+          4 | accTitle: Second
+          5 | root/
+          6 |
+---
+
+
+Test: treeview-no-duplicate-title >> invalid >>> invalid/treeview/acc-title-directive
+Filename: tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/acc-title-directive-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 |   accTitle: First
+  3 | %%{init: {}}%%
+  4 |   accTitle: Second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  5 |   root/
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle: First
+          3 | %%{init: {}}%%
+          4 |   root/
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 | %%{init: {}}%%
+          3 |   accTitle: Second
+          4 |   root/
+          5 |
+---
+
+
+Test: treeview-no-duplicate-title >> invalid >>> invalid/treeview/acc-title-empty-last
+Filename: tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/acc-title-empty-last-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 |   accTitle: First
+  3 |   accTitle:
+    |   ^~~~~~~~~ [1]
+  4 |   root/
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle: First
+          3 |   root/
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle:
+          3 |   root/
+          4 |
+---
+
+
+Test: treeview-no-duplicate-title >> invalid >>> invalid/treeview/acc-title-empty-middle
+Filename: tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/acc-title-empty-middle-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 |   accTitle: First
+  3 |   accTitle:
+    |   ^~~~~~~~~ [1]
+  4 |   accTitle: Third
+  5 |   root/
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle: First
+          3 |   accTitle: Third
+          4 |   root/
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle:
+          3 |   accTitle: Third
+          4 |   root/
+          5 |
+---
+
+
+Test: treeview-no-duplicate-title >> invalid >>> invalid/treeview/acc-title-entity-equal
+Filename: tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/acc-title-entity-equal-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 |   accTitle: #35;
+  3 |   accTitle: #
+    |   ^~~~~~~~~~~ [1]
+  4 |   root/
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle: #35;
+          3 |   root/
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle: #
+          3 |   root/
+          4 |
+---
+
+
+Test: treeview-no-duplicate-title >> invalid >>> invalid/treeview/acc-title-entity-equal-reverse
+Filename: tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/acc-title-entity-equal-reverse-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | accTitle: #
+  3 | accTitle: #35;
+    | ^~~~~~~~~~~~~~ [1]
+  4 | root/
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 | accTitle: #
+          3 | root/
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 | accTitle: #35;
+          3 | root/
+          4 |
+---
+
+
+Test: treeview-no-duplicate-title >> invalid >>> invalid/treeview/acc-title-forward
+Filename: tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/acc-title-forward-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 |   accTitle: First
+  3 |   accTitle: Second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   root/
+  5 |     file
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle: First
+          3 |   root/
+          4 |     file
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle: Second
+          3 |   root/
+          4 |     file
+          5 |
+---
+
+
+Test: treeview-no-duplicate-title >> invalid >>> invalid/treeview/acc-title-frontmatter-directive-comment
+Filename: tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/acc-title-frontmatter-directive-comment-input.mmd
+
+Code:
+  1 | ---
+  2 | title: Frontmatter
+  3 | ---
+  4 | %%{init: {}}%%
+  5 | treeView-beta
+  6 | accTitle: First
+  7 | %% previous value
+  8 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  9 | root/
+ 10 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | ---
+          2 | title: Frontmatter
+          3 | ---
+          4 | %%{init: {}}%%
+          5 | treeView-beta
+          6 | accTitle: First
+          7 | %% previous value
+          8 | root/
+          9 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | ---
+          2 | title: Frontmatter
+          3 | ---
+          4 | %%{init: {}}%%
+          5 | treeView-beta
+          6 | %% previous value
+          7 | accTitle: Second
+          8 | root/
+          9 |
+---
+
+
+Test: treeview-no-duplicate-title >> invalid >>> invalid/treeview/acc-title-html-equal
+Filename: tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/acc-title-html-equal-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 |   accTitle: <b title="x">Hi</b>
+  3 |   accTitle: <b title='x'>Hi</b>
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |   root/
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle: <b title="x">Hi</b>
+          3 |   root/
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle: <b title='x'>Hi</b>
+          3 |   root/
+          4 |
+---
+
+
+Test: treeview-no-duplicate-title >> invalid >>> invalid/treeview/acc-title-next-comment
+Filename: tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/acc-title-next-comment-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 |   accTitle: First
+  3 |   accTitle:
+    |   ^~~~~~~~~ [1]
+  4 | %% comment
+  5 |   root/
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle: First
+          3 | %% comment
+          4 |   root/
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle:
+          3 | %% comment
+          4 |   root/
+          5 |
+---
+
+
+Test: treeview-no-duplicate-title >> invalid >>> invalid/treeview/acc-title-reverse
+Filename: tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/acc-title-reverse-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 |   accTitle: Second
+  3 |   accTitle: First
+    |   ^~~~~~~~~~~~~~~ [1]
+  4 |   root/
+  5 |     file
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle: Second
+          3 |   root/
+          4 |     file
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle: First
+          3 |   root/
+          4 |     file
+          5 |
+---
+
+
+Test: treeview-no-duplicate-title >> invalid >>> invalid/treeview/acc-title-three
+Filename: tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/acc-title-three-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 |   accTitle: First
+  3 |   accTitle: Second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   accTitle: First
+    |   ^~~~~~~~~~~~~~~ [2]
+  5 |   root/
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle: First
+          3 |   accTitle: First
+          4 |   root/
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle: Second
+          3 |   accTitle: First
+          4 |   root/
+          5 |
+[2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle: First
+          3 |   accTitle: Second
+          4 |   root/
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle: First
+          3 |   accTitle: First
+          4 |   root/
+          5 |
+---
+
+
+Test: treeview-no-duplicate-title >> invalid >>> invalid/treeview/common-kind-interleave
+Filename: tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/common-kind-interleave-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | accTitle: First
+  3 | accDescr: Description
+  4 | title Hidden
+  5 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  6 | accDescr { Changed }
+  7 | root/
+  8 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 | accTitle: First
+          3 | accDescr: Description
+          4 | title Hidden
+          5 | accDescr { Changed }
+          6 | root/
+          7 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 | accDescr: Description
+          3 | title Hidden
+          4 | accTitle: Second
+          5 | accDescr { Changed }
+          6 | root/
+          7 |
+---
+
+
+Test: treeview-no-duplicate-title >> invalid >>> invalid/treeview/common-unknown-middle
+Filename: tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/common-unknown-middle-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | accTitle: First
+  3 | accTitle: #35;
+    | ^~~~~~~~~~~~~~ [1]
+  4 | accTitle: Third
+    | ^~~~~~~~~~~~~~~ [2]
+  5 | accDescr: Before
+  6 | accDescr { #35; }
+  7 | accDescr: After
+  8 | root/
+  9 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 | accTitle: First
+          3 | accTitle: Third
+          4 | accDescr: Before
+          5 | accDescr { #35; }
+          6 | accDescr: After
+          7 | root/
+          8 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 | accTitle: #35;
+          3 | accTitle: Third
+          4 | accDescr: Before
+          5 | accDescr { #35; }
+          6 | accDescr: After
+          7 | root/
+          8 |
+[2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 | accTitle: First
+          3 | accTitle: #35;
+          4 | accDescr: Before
+          5 | accDescr { #35; }
+          6 | accDescr: After
+          7 | root/
+          8 |
+---
+
+
+Test: treeview-no-duplicate-title >> invalid >>> invalid/treeview/corpus-common-repeat-empty
+Filename: tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/corpus-common-repeat-empty-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | title first
+  3 | accTitle: first
+  4 | accDescr: first
+  5 | title
+  6 | accTitle:
+    | ^~~~~~~~~ [1]
+  7 | accDescr {}
+  8 | root
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 | title first
+          3 | accTitle: first
+          4 | accDescr: first
+          5 | title
+          6 | accDescr {}
+          7 | root
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 | title first
+          3 | accDescr: first
+          4 | title
+          5 | accTitle:
+          6 | accDescr {}
+          7 | root
+---
+
+
+Test: treeview-no-duplicate-title >> invalid >>> invalid/treeview/corpus-common-repeat
+Filename: tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/corpus-common-repeat-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | title first
+  3 | accTitle: first
+  4 | accDescr: first
+  5 | title second
+  6 | accTitle: second
+    | ^~~~~~~~~~~~~~~~ [1]
+  7 | accDescr { third }
+  8 | root
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 | title first
+          3 | accTitle: first
+          4 | accDescr: first
+          5 | title second
+          6 | accDescr { third }
+          7 | root
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 | title first
+          3 | accDescr: first
+          4 | title second
+          5 | accTitle: second
+          6 | accDescr { third }
+          7 | root
+---
+
+
+Test: treeview-no-duplicate-title >> invalid >>> invalid/treeview/docs-incorrect-1
+Filename: tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/docs-incorrect-1-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 |   accTitle: First
+  3 |   accTitle: Second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   root/
+  5 |     file
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle: First
+          3 |   root/
+          4 |     file
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 |   accTitle: Second
+          3 |   root/
+          4 |     file
+          5 |
+---
+
+
+Test: treeview-no-duplicate-title >> invalid >>> invalid/treeview/title-equal-predecessor
+Filename: tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/title-equal-predecessor-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | accTitle: A
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 | accTitle: A
+          3 | accTitle: A
+          4 |
+---
+
+
+Test: treeview-no-duplicate-title >> invalid >>> invalid/treeview/title-removal-empty-predecessor
+Filename: tests/fixtures/rules/treeview-no-duplicate-title/invalid/treeview/title-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | accTitle:
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 | root/
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 | accTitle:
+          3 | accTitle: A
+          4 | root/
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treeView-beta
+          2 | accTitle:
+          3 | accTitle: B
+          4 | root/
+          5 |
+---

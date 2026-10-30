@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`ContainerDb_Ext` followed by a space before `(` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...textContainerDb_Ext (a, \"A\", \"Java\", \"D\n----------------------^"
+  }
+}

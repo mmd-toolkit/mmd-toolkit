@@ -1,0 +1,213 @@
+{
+  "type": "Root",
+  "diagramType": "gitGraph",
+  "body": {
+    "type": "GitgraphDiagram",
+    "direction": null,
+    "textBeforeHeader": [
+      {
+        "type": "GitgraphIgnoredText",
+        "kind": "directive",
+        "value": "%%{\nwrap}%%",
+        "range": [
+          0,
+          16
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 7
+          }
+        }
+      },
+      {
+        "type": "GitgraphIgnoredText",
+        "kind": "directive",
+        "value": "%%{\nwrap}%%",
+        "range": [
+          17,
+          33
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 7
+          }
+        }
+      }
+    ],
+    "textBeforeDirection": [],
+    "textBeforeColon": [],
+    "body": [],
+    "range": [
+      0,
+      42
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 7,
+        "column": 8
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [
+    {
+      "type": "Comment",
+      "mark": "%%",
+      "value": " c",
+      "range": [
+        4,
+        8
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Comment",
+      "mark": "%%",
+      "value": " c",
+      "range": [
+        21,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 4
+        }
+      }
+    }
+  ],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "RawText",
+      "value": "%%{\n",
+      "range": [
+        0,
+        4
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 0
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "wrap}%%",
+      "range": [
+        9,
+        16
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "%%{\n",
+      "range": [
+        17,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 0
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "wrap}%%",
+      "range": [
+        26,
+        33
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "gitGraph",
+      "range": [
+        34,
+        42
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 8
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    43
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 8,
+      "column": 0
+    }
+  }
+}

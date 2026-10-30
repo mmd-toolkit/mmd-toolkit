@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a semicolon remain after a three-semicolon style accDescr?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "style:ﬂ°x¶ß;",
+    "showData": false,
+    "sections": []
+  }
+}

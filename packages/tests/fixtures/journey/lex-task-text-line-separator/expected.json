@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md The statement context: rule 11: U+2028 inside a task text is a character of it."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A B",
+        "people": [],
+        "score": 5
+      }
+    ]
+  }
+}

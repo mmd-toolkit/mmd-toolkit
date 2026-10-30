@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: ASCII closing lookahead is not consumed"
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

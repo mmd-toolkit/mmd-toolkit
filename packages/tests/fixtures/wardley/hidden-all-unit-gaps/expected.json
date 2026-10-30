@@ -1,0 +1,115 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can native hidden directive forms occupy every non-composite unit gap?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "U",
+        "label": "U",
+        "x": 20,
+        "y": 10,
+        "className": "anchor"
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "labelOffsetX": -1,
+        "labelOffsetY": 2,
+        "inertia": true,
+        "sourceStrategy": "build"
+      },
+      {
+        "id": "A_X",
+        "label": "X",
+        "x": 30,
+        "y": 10,
+        "className": "pipeline-component",
+        "labelOffsetX": 1,
+        "labelOffsetY": -2
+      }
+    ],
+    "links": [
+      {
+        "source": "A",
+        "target": "U",
+        "dashed": false,
+        "label": "L",
+        "flow": "forward"
+      }
+    ],
+    "trends": [
+      {
+        "nodeId": "A",
+        "targetX": 80
+      }
+    ],
+    "pipelines": [
+      {
+        "nodeId": "A",
+        "componentIds": [
+          "A_X"
+        ]
+      }
+    ],
+    "annotations": [
+      {
+        "number": 1,
+        "coordinates": [
+          {
+            "x": 2,
+            "y": 100
+          }
+        ],
+        "text": "N"
+      }
+    ],
+    "notes": [
+      {
+        "text": "N",
+        "x": 20,
+        "y": 10
+      }
+    ],
+    "accelerators": [
+      {
+        "name": "X",
+        "x": 20,
+        "y": 10
+      }
+    ],
+    "deaccelerators": [
+      {
+        "name": "Y",
+        "x": 20,
+        "y": 10
+      }
+    ],
+    "annotationsBox": {
+      "x": 2,
+      "y": 100
+    },
+    "axes": {
+      "stages": [
+        "G / C",
+        "P"
+      ],
+      "stageBoundaries": [
+        0.2
+      ]
+    },
+    "size": {
+      "width": 1,
+      "height": 2
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Grammar: An empty-description-looking line inside data is literal content, not a nested statement. Accepted by Mermaid."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": {
+          "kind": "block",
+          "value": "{\naccDescr {}\n}\n"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Site treeView settings affect drawing only."
+  },
+  "config": {
+    "treeView": {
+      "showIcons": true,
+      "defaultIconPack": "custom",
+      "filenameIcons": {
+        "a.ts": "logos:typescript"
+      },
+      "extensionIcons": {
+        "ts": "none"
+      },
+      "rowIndent": 3,
+      "paddingX": 2,
+      "paddingY": 1,
+      "lineThickness": 4,
+      "useMaxWidth": false
+    }
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a.ts",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "child",
+            "nodeType": "file",
+            "icon": "folder",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

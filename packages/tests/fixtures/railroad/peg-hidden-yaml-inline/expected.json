@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md Native hidden forms: Can hidden YAML open partway through a physical line after a PEG expression?"
+  },
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

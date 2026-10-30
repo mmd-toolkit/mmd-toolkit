@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Does STRING2 keep a backslash followed by a physical line feed?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A\\\nB",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  }
+}

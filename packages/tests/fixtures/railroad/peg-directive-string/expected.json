@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Global directive removal occurs before PEG predicate labels are formed."
+  },
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "special",
+          "text": "&\"ab\""
+        }
+      }
+    ]
+  }
+}

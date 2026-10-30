@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: Single percent, colon, quotes, backslash and braces remain ordinary line-value text."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "A%B: \"C\" \\n {D}",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  }
+}

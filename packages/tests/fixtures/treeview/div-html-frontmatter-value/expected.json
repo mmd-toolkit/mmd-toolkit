@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check a tag crossing frontmatter into tree text: value."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "b='c'>d",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

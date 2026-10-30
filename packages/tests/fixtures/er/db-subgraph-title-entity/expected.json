@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An entity in the title of a subgraph is its placeholder."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A"
+        ],
+        "title": "Tﬂ°amp¶ß",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

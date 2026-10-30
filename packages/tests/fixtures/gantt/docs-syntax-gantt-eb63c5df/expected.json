@@ -1,0 +1,113 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/gantt.md",
+    "line": 501
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "X",
+    "axisFormat": "%s",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "Git Issues - days since last update",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "Issue19062",
+      "Issue19401",
+      "Issue193",
+      "Issue7441",
+      "Issue1300"
+    ],
+    "tasks": [
+      {
+        "section": "Issue19062",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "0"
+          },
+          "endTime": {
+            "data": "71"
+          }
+        },
+        "task": "71   ",
+        "classes": [],
+        "id": "task1",
+        "order": 0
+      },
+      {
+        "section": "Issue19401",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "0"
+          },
+          "endTime": {
+            "data": "36"
+          }
+        },
+        "task": "36   ",
+        "classes": [],
+        "id": "task2",
+        "order": 1
+      },
+      {
+        "section": "Issue193",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "0"
+          },
+          "endTime": {
+            "data": "34"
+          }
+        },
+        "task": "34   ",
+        "classes": [],
+        "id": "task3",
+        "order": 2
+      },
+      {
+        "section": "Issue7441",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "0"
+          },
+          "endTime": {
+            "data": "9"
+          }
+        },
+        "task": "9    ",
+        "classes": [],
+        "id": "task4",
+        "order": 3
+      },
+      {
+        "section": "Issue1300",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "0"
+          },
+          "endTime": {
+            "data": "5"
+          }
+        },
+        "task": "5    ",
+        "classes": [],
+        "id": "task5",
+        "order": 4
+      }
+    ],
+    "links": []
+  }
+}

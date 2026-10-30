@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, prototype names: `__proto__` with a shape."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "__proto__",
+          "label": "x",
+          "type": "square",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

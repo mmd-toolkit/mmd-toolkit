@@ -1,0 +1,230 @@
+import { EVENTMODELING_PUNCTUATORS } from "./eventmodeling.ts"
+import { WARDLEY_PUNCTUATORS } from "./wardley.ts"
+import { RAILROAD_PUNCTUATORS } from "./railroad.ts"
+import { ARCHITECTURE_PUNCTUATORS } from "./architecture.ts"
+import { PIE_PUNCTUATORS } from "./pie.ts"
+import { USECASE_PUNCTUATORS } from "./usecase.ts"
+import { VENN_PUNCTUATORS } from "./venn.ts"
+import { BLOCK_PUNCTUATORS } from "./block.ts"
+import { C4_PUNCTUATORS, c4PunctuatorText } from "./c4.ts"
+import { CLASS_CLASSIFIER_MARKS, CLASS_VISIBILITY_MARKS } from "./class.ts"
+import { GRAPH_SHAPES } from "./graph-shapes.ts"
+import { KANBAN_PUNCTUATORS } from "./kanban.ts"
+import { MINDMAP_PUNCTUATORS } from "./mindmap.ts"
+import { label } from "./problems.ts"
+import type { Problems } from "./problems.ts"
+import { RangeIndex } from "../range-index.ts"
+import { diagramTokensOf } from "./invariants.ts"
+import type { CheckedRoot } from "./types.ts"
+import { TIMELINE_PUNCTUATORS } from "./timeline.ts"
+import { QUADRANT_PUNCTUATORS, isArrowText } from "./quadrant.ts"
+import { XYCHART_PUNCTUATORS } from "./xychart.ts"
+import { reportCutEntries } from "./tokens.ts"
+import { nodesOf } from "./walk.ts"
+
+// parser/docs/tokens/<diagram>.md, Tokens: the `Punctuator` tokens of a
+// diagram, by their text. A unit of a diagram that is a delimiter, a
+// separator, or an operator is one token, and a directive or an ignored `;`
+// does not cut it (parser/docs/tokens.md, A token that a directive cuts: only
+// a `String` and a `RawText` token can be cut). A tree that cuts one into two
+// tokens has two tokens whose texts the table lacks, or a token of a text
+// that is the whole of another entry glued to the next by the cut.
+
+/** The text of each opening and closing of a shape (ast/flowchart.md, FlowchartShape; diagrams/flowchart.md, Shapes). */
+const FLOWCHART_SHAPE_DELIMITERS: readonly string[] = GRAPH_SHAPES.flatMap(
+  (shape) => [shape.opening, ...shape.closings],
+)
+
+/**
+ * The texts of the `Punctuator` tokens that no arrow node holds, by the type
+ * of the body of the diagram: the row `Punctuator` of the table of Tokens of
+ * parser/docs/tokens/<diagram>.md, one entry for each text. The arrows are
+ * checked with their nodes (an arrow of a flowchart or a sequence is one
+ * token, a relation end and the line of a class arrow are one token each).
+ * `tests/check-tree-punctuators.test.ts` requires the table to agree with
+ * that row.
+ */
+export const PUNCTUATOR_TEXTS: Readonly<Record<string, readonly string[]>> = {
+  TreeviewDiagram: [":::", "##", "(", ")", ":", "{", "}"],
+  EventmodelingDiagram: EVENTMODELING_PUNCTUATORS,
+  CynefinDiagram: ["-->", ":", "{", "}"],
+  WardleyDiagram: WARDLEY_PUNCTUATORS,
+  RailroadDiagram: RAILROAD_PUNCTUATORS,
+  TreemapDiagram: [":", ",", ":::", ";", "{", "}"],
+  RadarDiagram: [":", ",", "[", "]", "{", "}"],
+  ArchitectureDiagram: ARCHITECTURE_PUNCTUATORS,
+  GitgraphDiagram: [":", "{", "}"],
+  InfoDiagram: [":", "{", "}"],
+  PacketDiagram: ["-", "+", ":", "{", "}"],
+  PieDiagram: PIE_PUNCTUATORS,
+  UsecaseDiagram: USECASE_PUNCTUATORS,
+  AgentflowDiagram: [
+    ...FLOWCHART_SHAPE_DELIMITERS,
+    "|",
+    ":",
+    "&",
+    ":::",
+    ",",
+    ";",
+    "@",
+    "@{",
+    "}",
+    "{",
+    "(",
+    ")",
+  ],
+  FlowchartDiagram: [
+    ...FLOWCHART_SHAPE_DELIMITERS,
+    "|",
+    ":",
+    "&",
+    ":::",
+    ",",
+    ";",
+    "@",
+    "@{",
+    "}",
+    "{",
+    "(",
+    ")",
+  ],
+  SequenceDiagram: ["()", "+", "-", ",", ":", ";", "@{", "{", "}"],
+  ClassDiagram: [
+    ":",
+    "{",
+    "}",
+    "[",
+    "]",
+    ":::",
+    "<<",
+    ">>",
+    "~",
+    "(",
+    ")",
+    ",",
+    ...CLASS_VISIBILITY_MARKS.keys(),
+    ...CLASS_CLASSIFIER_MARKS.keys(),
+  ],
+  StateDiagram: ['"', ",", "--", "-->", ":", ":::", "[*]", "{", "}"],
+  ErDiagram: [
+    "{",
+    "}",
+    "[",
+    "]",
+    ":::",
+    ":",
+    ",",
+    "?",
+    ";",
+    // The cardinalities and the relationship lines written with symbols.
+    "|o",
+    "}o",
+    "}|",
+    "||",
+    "o|",
+    "o{",
+    "|{",
+    "1+",
+    "0+",
+    "1",
+    "..",
+    "--",
+    ".-",
+    "-.",
+  ],
+  GanttDiagram: [":", ",", "{", "}", "(", ")"],
+  JourneyDiagram: [":", ",", "{", "}"],
+  // The row `Punctuator` of parser/docs/tokens/requirement.md.
+  RequirementDiagram: [":", ",", "{", "}", ":::", "-", "->", "<-"],
+  // The row `Punctuator` of parser/docs/tokens/kanban.md.
+  KanbanDiagram: KANBAN_PUNCTUATORS,
+  // The row `Punctuator` of parser/docs/tokens/mindmap.md.
+  MindmapDiagram: MINDMAP_PUNCTUATORS,
+  IshikawaDiagram: [],
+  // The row `Punctuator` of parser/docs/tokens/timeline.md.
+  TimelineDiagram: TIMELINE_PUNCTUATORS,
+  // The row `Punctuator` of parser/docs/tokens/sankey.md.
+  SankeyDiagram: [","],
+  // The row `Punctuator` of parser/docs/tokens/xychart.md.
+  XychartDiagram: XYCHART_PUNCTUATORS,
+  // The row `Punctuator` of parser/docs/tokens/quadrant.md; the arrow is listed
+  // as `-->` and is checked with the other arrows of two dashes or more.
+  QuadrantDiagram: QUADRANT_PUNCTUATORS,
+  BlockDiagram: BLOCK_PUNCTUATORS,
+  // parser/docs/tokens/c4.md, including the opening empty-entry unit.
+  C4Diagram: C4_PUNCTUATORS,
+  VennDiagram: VENN_PUNCTUATORS,
+  ErrorDiagram: [],
+}
+
+/** The node types whose range holds the tokens of an arrow, which the check of the node reads. */
+const ARROW_NODE_TYPES: ReadonlySet<string> = new Set([
+  "UsecaseArrow",
+  "UsecaseOpeningArrow",
+  "BlockArrow",
+  "BlockOpeningArrow",
+  "AgentflowArrow",
+  "AgentflowOpeningArrow",
+  "FlowchartArrow",
+  "FlowchartOpeningArrow",
+  "SequenceArrow",
+  "ClassArrow",
+])
+
+/**
+ * Checks that a directive or an ignored `;` cuts no `Punctuator` token: the
+ * text of each `Punctuator` token outside the arrows is one that its diagram
+ * has, and no run of two tokens or more that cuts glue together is the
+ * fragments of an entry (`:`, `::`, and `:` for `:::`, `@` and `{` for `@{`),
+ * whatever token the cut attaches to the run (`)` and `:::` in
+ * `A(x)%%{init: {}}%%:::c`). A shape's opening and closing are checked with
+ * the shape.
+ */
+export function checkPunctuatorsAreWhole(
+  root: CheckedRoot,
+  problems: Problems,
+): void {
+  const texts = PUNCTUATOR_TEXTS[root.body.type] ?? []
+  const textOfPunctuator =
+    root.body.type === "C4Diagram"
+      ? c4PunctuatorText
+      : root.body.type === "UsecaseDiagram"
+        ? (text: string) => (/^-{2,}$/u.test(text) ? "--" : text)
+        : (text: string) => text
+  const nodes = nodesOf(root)
+  const arrows = new RangeIndex(
+    nodes.filter((node) => ARROW_NODE_TYPES.has(node.type)),
+  )
+  const identifiers = new RangeIndex(
+    nodes.filter((node) => node.type === "UsecaseIdentifier"),
+  )
+  const punctuators = diagramTokensOf(root).filter(
+    (token) =>
+      token.type === "Punctuator" &&
+      !(root.body.type === "QuadrantDiagram" && isArrowText(token.value)) &&
+      !arrows.hasContaining(token.range),
+  )
+  for (const token of punctuators) {
+    problems.expect(
+      texts.includes(textOfPunctuator(token.value)) &&
+        !(
+          root.body.type === "UsecaseDiagram" &&
+          /^-{2,}$/u.test(token.value) &&
+          !identifiers.hasContaining(token.range)
+        ),
+      label(token),
+      `the Punctuator text ${JSON.stringify(token.value)} is none of those of a ${root.body.type}`,
+    )
+  }
+  const jsonBlocks = new RangeIndex(
+    root.body.type === "UsecaseDiagram"
+      ? nodes.filter((node) => node.type === "UsecaseJsonDataBlock")
+      : [],
+  )
+  reportCutEntries(
+    root,
+    punctuators.filter((token) => !jsonBlocks.hasContaining(token.range)),
+    (joined) => texts.includes(textOfPunctuator(joined)),
+    problems,
+  )
+}

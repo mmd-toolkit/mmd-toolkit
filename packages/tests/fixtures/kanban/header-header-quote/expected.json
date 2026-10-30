@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md D04 (Detection): Quote after header starts bare node text."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "\"x\"",
+        "label": "\"x\"",
+        "isGroup": true
+      },
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": false,
+        "parentId": "\"x\""
+      }
+    ]
+  }
+}

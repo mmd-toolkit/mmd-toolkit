@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A closed directive inside the set keyword is removed before lexing."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

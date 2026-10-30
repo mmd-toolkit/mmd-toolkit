@@ -1,0 +1,9 @@
+railroad-peg-beta
+  r <- & %%{!pred}%%
+( %%{!start}%%
+"owned" %%{!after}%%
+/ %%{!next}%%
+. %%{!close}%%
+) %%{!post}%%
++ %%{!tail}%%
+!ref;

@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Common forms and Box-drawing reading; ast/treeview.md TreeviewAccDescrBlockStatement: LS inside a comment line does not end its physical LF line; the comment retains the bar and leaves no decoration payload. Mermaid accepts with accDescr \"a\"."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "a",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

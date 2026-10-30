@@ -1,0 +1,12 @@
+{
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "C4Dynamic",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

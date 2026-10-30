@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: Without a passed bare line, Unicode after a retained block stays native diagram text and rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 1: unexpected character: -> <- at offset: 10, skipped 1 characters. "
+  }
+}

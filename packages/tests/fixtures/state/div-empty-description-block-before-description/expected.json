@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Known divergences, tokenless-empty-forms: the description after the block continues the statement `A`, so the block lies inside it; mermaid.js reads no token for it and gives A the description x; here it is rejected."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "x",
+        "description": [],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

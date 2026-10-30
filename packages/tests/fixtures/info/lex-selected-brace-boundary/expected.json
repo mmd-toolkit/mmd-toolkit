@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: A selected semicolon at the complete description keyword/brace boundary is trivia."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

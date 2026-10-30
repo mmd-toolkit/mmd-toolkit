@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The block carryover kind quote in section-label-quoted tests the kanban reading at this text position."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nkanban S[\"a\"b\"]   I\n------------^\nExpecting 'NODE_DEND', got 'NODE_DESCR'"
+  }
+}

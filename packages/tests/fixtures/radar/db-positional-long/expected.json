@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A positional curve with excess entries is retained."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "A"
+      }
+    ],
+    "curves": [
+      {
+        "label": "c",
+        "entries": [
+          1,
+          2
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

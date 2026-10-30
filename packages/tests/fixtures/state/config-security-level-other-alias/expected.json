@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The descriptions of an alias, with and without a second description under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): each is recorded with the characters replaced."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "a&lt;b&gt;&equals;c<br/>d",
+        "description": [],
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "shape": "rectWithTitle",
+        "label": "a&lt;b&gt;&equals;c<br/>d",
+        "description": [
+          " e&lt;f"
+        ],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

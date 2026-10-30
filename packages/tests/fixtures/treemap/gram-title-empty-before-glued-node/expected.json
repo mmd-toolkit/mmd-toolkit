@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Does a bare title before a quoted node stay an empty statement?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  }
+}

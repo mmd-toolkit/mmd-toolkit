@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Icons, strings and bracketed labels: global directives after in and between alignment components preserve the parent and member order."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "in": "g"
+      },
+      {
+        "id": "db",
+        "type": "service",
+        "in": "g"
+      }
+    ],
+    "groups": [
+      {
+        "id": "g"
+      }
+    ],
+    "edges": [],
+    "layoutHints": [
+      {
+        "direction": "row",
+        "members": [
+          "api",
+          "db"
+        ]
+      }
+    ]
+  }
+}

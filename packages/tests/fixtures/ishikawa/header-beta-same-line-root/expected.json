@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[H: detection and ISHIKAWA] Can a root follow the beta header on its line?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "A",
+          "children": []
+        }
+      ]
+    }
+  }
+}

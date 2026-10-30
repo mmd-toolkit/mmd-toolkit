@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A string assignment to __proto__ adds no own style property; other prototype names are own properties."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "constructor": "blue",
+          "hasOwnProperty": "green",
+          "toString": "yellow"
+        }
+      }
+    ]
+  }
+}

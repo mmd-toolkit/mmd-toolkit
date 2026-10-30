@@ -1,0 +1,20 @@
+{
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "x=\"y\">"
+        }
+      }
+    ]
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

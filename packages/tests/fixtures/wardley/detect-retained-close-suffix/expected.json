@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Detection: Text after a closing fence prevents the retained-block detection skip."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Diagrams beginning with --- are not valid. If you were trying to use a YAML front-matter, please ensure that you've correctly opened and closed the YAML front-matter with un-indented `---` blocks"
+  }
+}

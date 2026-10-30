@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Groups publish before services, so the written service parent is not available."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The group [g]'s parent does not exist. Please make sure the parent is created before this group"
+  }
+}

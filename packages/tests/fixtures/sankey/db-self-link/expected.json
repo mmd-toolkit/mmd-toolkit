@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, nodes: a link from a node to itself has one node."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a"
+    ],
+    "links": [
+      {
+        "source": "a",
+        "target": "a",
+        "value": 1
+      }
+    ]
+  }
+}

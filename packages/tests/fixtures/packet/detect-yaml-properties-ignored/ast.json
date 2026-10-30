@@ -1,0 +1,364 @@
+{
+  "type": "Root",
+  "diagramType": "packet",
+  "body": {
+    "type": "PacketDiagram",
+    "textBeforeHeader": [
+      {
+        "type": "PacketIgnoredText",
+        "kind": "yaml-block",
+        "value": "---\ntitle: Hidden\nconfig:\n  packet:\n    bitsPerRow: 1.5\n---",
+        "range": [
+          5,
+          64
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 3
+          }
+        }
+      }
+    ],
+    "body": [
+      {
+        "type": "PacketRelativeBlockStatement",
+        "textBeforeCount": [],
+        "count": {
+          "type": "NumericLiteral",
+          "value": 2,
+          "raw": "2",
+          "range": [
+            73,
+            74
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 1
+            },
+            "end": {
+              "line": 9,
+              "column": 2
+            }
+          }
+        },
+        "textBeforeColon": [],
+        "textBeforeLabel": [],
+        "label": {
+          "type": "StringLiteral",
+          "value": "A",
+          "raw": "\"A\"",
+          "closed": true,
+          "range": [
+            75,
+            78
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 3
+            },
+            "end": {
+              "line": 9,
+              "column": 6
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          72,
+          78
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 0
+          },
+          "end": {
+            "line": 9,
+            "column": 6
+          }
+        }
+      },
+      {
+        "type": "PacketSingleBlockStatement",
+        "start": {
+          "type": "NumericLiteral",
+          "value": 2,
+          "raw": "2",
+          "range": [
+            79,
+            80
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 0
+            },
+            "end": {
+              "line": 10,
+              "column": 1
+            }
+          }
+        },
+        "textBeforeColon": [],
+        "textBeforeLabel": [],
+        "label": {
+          "type": "StringLiteral",
+          "value": "B",
+          "raw": "\"B\"",
+          "closed": true,
+          "range": [
+            81,
+            84
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 2
+            },
+            "end": {
+              "line": 10,
+              "column": 5
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          79,
+          84
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 0
+          },
+          "end": {
+            "line": 10,
+            "column": 5
+          }
+        }
+      }
+    ],
+    "range": [
+      5,
+      84
+    ],
+    "loc": {
+      "start": {
+        "line": 2,
+        "column": 0
+      },
+      "end": {
+        "line": 10,
+        "column": 5
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [
+    {
+      "type": "Comment",
+      "mark": "%%",
+      "value": " c",
+      "range": [
+        0,
+        4
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 4
+        }
+      }
+    }
+  ],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "RawText",
+      "value": "---\ntitle: Hidden\nconfig:\n  packet:\n    bitsPerRow: 1.5\n---",
+      "range": [
+        5,
+        64
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "packet",
+      "range": [
+        65,
+        71
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "+",
+      "range": [
+        72,
+        73
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "2",
+      "range": [
+        73,
+        74
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 1
+        },
+        "end": {
+          "line": 9,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        74,
+        75
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 2
+        },
+        "end": {
+          "line": 9,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"A\"",
+      "range": [
+        75,
+        78
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 3
+        },
+        "end": {
+          "line": 9,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "2",
+      "range": [
+        79,
+        80
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 0
+        },
+        "end": {
+          "line": 10,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        80,
+        81
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 1
+        },
+        "end": {
+          "line": 10,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"B\"",
+      "range": [
+        81,
+        84
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 2
+        },
+        "end": {
+          "line": 10,
+          "column": 5
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    85
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 11,
+      "column": 0
+    }
+  }
+}

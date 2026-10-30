@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Composite common forms: a colon selects the line description even when its content looks like a brace block."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "{A}",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

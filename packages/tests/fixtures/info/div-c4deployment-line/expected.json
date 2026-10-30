@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4Deployment in description line text."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\ninfoaccDescr: C4Dep\n^"
+  }
+}

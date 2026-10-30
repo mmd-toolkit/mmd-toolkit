@@ -1,0 +1,94 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/wardley.html",
+    "line": 157
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Custom Size Map",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "User",
+        "label": "User",
+        "x": 90,
+        "y": 95,
+        "className": "anchor"
+      },
+      {
+        "id": "App",
+        "label": "App",
+        "x": 85,
+        "y": 75,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "API",
+        "label": "API",
+        "x": 70,
+        "y": 50,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Database",
+        "label": "Database",
+        "x": 50,
+        "y": 30,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Cloud",
+        "label": "Cloud",
+        "x": 30,
+        "y": 15,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [
+      {
+        "source": "User",
+        "target": "App",
+        "dashed": false
+      },
+      {
+        "source": "App",
+        "target": "API",
+        "dashed": false
+      },
+      {
+        "source": "API",
+        "target": "Database",
+        "dashed": false
+      },
+      {
+        "source": "Database",
+        "target": "Cloud",
+        "dashed": false
+      }
+    ],
+    "trends": [
+      {
+        "nodeId": "Database",
+        "targetX": 60
+      }
+    ],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {},
+    "size": {
+      "width": 600,
+      "height": 800
+    }
+  }
+}

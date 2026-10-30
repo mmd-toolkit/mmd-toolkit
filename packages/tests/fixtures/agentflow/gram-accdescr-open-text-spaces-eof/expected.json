@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Description blocks: control with written text and two trailing content spaces; the unclosed block reaches source EOF."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

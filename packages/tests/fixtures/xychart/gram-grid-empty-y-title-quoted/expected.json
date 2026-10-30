@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, text grid: an empty text in the title of the y axis in quotes."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...hart-beta y-axis \"\"\n----------------------^\nExpecting 'NUMBER_WITH_DECIMAL', 'STR', 'MD_STR', 'AMP', 'NUM', 'ALPHA', 'PLUS', 'EQUALS', 'MULT', 'DOT', 'BRKT', 'MINUS', 'UNDERSCORE', got 'NEWLINE'"
+  }
+}

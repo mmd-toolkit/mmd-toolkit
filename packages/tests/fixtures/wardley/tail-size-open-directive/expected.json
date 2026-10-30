@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does an unclosed directive affect size EOL?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {},
+    "size": {
+      "width": 1,
+      "height": 2
+    }
+  }
+}

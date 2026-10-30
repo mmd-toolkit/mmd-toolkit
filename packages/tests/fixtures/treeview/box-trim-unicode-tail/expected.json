@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: The branch content's trailing whitespace includes NBSP and U+2028/U+2029."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "x",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

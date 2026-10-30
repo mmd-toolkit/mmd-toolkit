@@ -1,0 +1,121 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/architecture.html",
+    "line": 123
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "left_disk",
+        "type": "service",
+        "in": "left_group",
+        "icon": "disk",
+        "title": "Disk"
+      },
+      {
+        "id": "right_disk",
+        "type": "service",
+        "in": "right_group",
+        "icon": "disk",
+        "title": "Disk"
+      },
+      {
+        "id": "top_disk",
+        "type": "service",
+        "in": "top_group",
+        "icon": "disk",
+        "title": "Disk"
+      },
+      {
+        "id": "bottom_disk",
+        "type": "service",
+        "in": "bottom_group",
+        "icon": "disk",
+        "title": "Disk"
+      },
+      {
+        "id": "center_disk",
+        "type": "service",
+        "in": "center_group",
+        "icon": "disk",
+        "title": "Disk"
+      }
+    ],
+    "groups": [
+      {
+        "id": "left_group",
+        "icon": "cloud",
+        "title": "Left"
+      },
+      {
+        "id": "right_group",
+        "icon": "cloud",
+        "title": "Right"
+      },
+      {
+        "id": "top_group",
+        "icon": "cloud",
+        "title": "Top"
+      },
+      {
+        "id": "bottom_group",
+        "icon": "cloud",
+        "title": "Bottom"
+      },
+      {
+        "id": "center_group",
+        "icon": "cloud",
+        "title": "Center"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "left_disk",
+        "lhsDir": "R",
+        "lhsInto": true,
+        "lhsGroup": true,
+        "rhsId": "center_disk",
+        "rhsDir": "L",
+        "rhsInto": true,
+        "rhsGroup": true
+      },
+      {
+        "lhsId": "right_disk",
+        "lhsDir": "L",
+        "lhsInto": true,
+        "lhsGroup": true,
+        "rhsId": "center_disk",
+        "rhsDir": "R",
+        "rhsInto": true,
+        "rhsGroup": true
+      },
+      {
+        "lhsId": "top_disk",
+        "lhsDir": "B",
+        "lhsInto": true,
+        "lhsGroup": true,
+        "rhsId": "center_disk",
+        "rhsDir": "T",
+        "rhsInto": true,
+        "rhsGroup": true
+      },
+      {
+        "lhsId": "bottom_disk",
+        "lhsDir": "T",
+        "lhsInto": true,
+        "lhsGroup": true,
+        "rhsId": "center_disk",
+        "rhsDir": "B",
+        "rhsInto": true,
+        "rhsGroup": true
+      }
+    ],
+    "layoutHints": []
+  }
+}

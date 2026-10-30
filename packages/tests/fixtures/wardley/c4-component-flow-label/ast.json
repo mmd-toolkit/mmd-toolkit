@@ -1,0 +1,255 @@
+{
+  "type": "Root",
+  "diagramType": "wardley",
+  "body": {
+    "type": "WardleyDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "WardleyLinkStatement",
+        "from": {
+          "type": "WardleyIdentifier",
+          "name": "A",
+          "range": [
+            13,
+            14
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 1
+            }
+          }
+        },
+        "textBeforeFromPort": [],
+        "fromPort": null,
+        "textBeforeArrow": [],
+        "arrow": {
+          "type": "WardleyArrow",
+          "value": "+'C4Component'>",
+          "kind": "flow",
+          "line": "solid",
+          "startMarker": "none",
+          "label": {
+            "type": "StringLiteral",
+            "value": "C4Component",
+            "raw": "'C4Component'",
+            "closed": true,
+            "range": [
+              16,
+              29
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 3
+              },
+              "end": {
+                "line": 2,
+                "column": 16
+              }
+            }
+          },
+          "endMarker": "arrow",
+          "range": [
+            15,
+            30
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 2
+            },
+            "end": {
+              "line": 2,
+              "column": 17
+            }
+          }
+        },
+        "textBeforeTo": [],
+        "to": {
+          "type": "WardleyIdentifier",
+          "name": "B",
+          "range": [
+            31,
+            32
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 18
+            },
+            "end": {
+              "line": 2,
+              "column": 19
+            }
+          }
+        },
+        "textBeforeToPort": [],
+        "toPort": null,
+        "textBeforeLabel": [],
+        "label": null,
+        "textAfter": [],
+        "range": [
+          13,
+          32
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 19
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      32
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 19
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "wardley-beta",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "A",
+      "range": [
+        13,
+        14
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "+",
+      "range": [
+        15,
+        16
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "'C4Component'",
+      "range": [
+        16,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 3
+        },
+        "end": {
+          "line": 2,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ">",
+      "range": [
+        29,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 16
+        },
+        "end": {
+          "line": 2,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "B",
+      "range": [
+        31,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 18
+        },
+        "end": {
+          "line": 2,
+          "column": 19
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    32
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 19
+    }
+  }
+}

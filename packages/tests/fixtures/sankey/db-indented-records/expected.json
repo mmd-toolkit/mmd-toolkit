@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, lines: spaces before a record are no part of its first field."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a",
+      "b",
+      "c",
+      "d"
+    ],
+    "links": [
+      {
+        "source": "a",
+        "target": "b",
+        "value": 1
+      },
+      {
+        "source": "c",
+        "target": "d",
+        "value": 2
+      }
+    ]
+  }
+}

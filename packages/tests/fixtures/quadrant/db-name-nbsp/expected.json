@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, names: a no-break space inside a name is part of it."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [
+      {
+        "text": "A B",
+        "className": "",
+        "x": "0.3",
+        "y": "0.6"
+      }
+    ],
+    "classes": []
+  }
+}

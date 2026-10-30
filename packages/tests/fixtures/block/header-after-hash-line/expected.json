@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, header: a line that starts with `#` before the header is not a comment, so no detector reads the text: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: # c\nblock-beta\n  A\n"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Frontmatter title and body title are published but neither is drawn by the architecture renderer."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  },
+  "embedded": {
+    "title": "Front"
+  }
+}

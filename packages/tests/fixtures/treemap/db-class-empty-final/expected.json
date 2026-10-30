@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an empty redefinition append an empty style?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": [
+      {
+        "id": "same",
+        "styles": [
+          "fill:red",
+          ""
+        ]
+      }
+    ]
+  }
+}

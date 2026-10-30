@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow.spec.ts",
+    "line": 187,
+    "test": "parsing an agentflow diagram > edge types (v0.8.1) > parses `-.-` as a dotted reference edge"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "a",
+        "props": {}
+      },
+      {
+        "id": "b",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "b",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "a",
+        "end": "b",
+        "type": "arrow_open",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "dotted",
+        "length": 1,
+        "id": "L_a_b_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Does Unicode on its own line after a retained comment reject without a passed bare line?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: -> <- at offset: 11, skipped 1 characters. "
+  }
+}

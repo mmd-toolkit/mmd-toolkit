@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: An empty explicit actor label is retained."
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "A",
+        "label": "",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Directive removal can reconstruct a percent comment marker."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      }
+    ]
+  }
+}

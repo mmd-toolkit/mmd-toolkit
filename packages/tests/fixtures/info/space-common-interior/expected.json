@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Unicode blanks inside terminal values do not become lexer gaps."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

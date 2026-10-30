@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Building the summary, link: the label `Dash` and the URL `https://x.example`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {
+          "Dash": "https://x.example"
+        },
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

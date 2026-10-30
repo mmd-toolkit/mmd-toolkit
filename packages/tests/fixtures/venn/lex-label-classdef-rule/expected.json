@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The lex label classdef rule form stores {\"subsets\":[{\"sets\":[\"A\"],\"size\":10,\"label\":\"aclassDef:#f00b\"}]}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10,
+        "label": "aclassDef:#f00b"
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

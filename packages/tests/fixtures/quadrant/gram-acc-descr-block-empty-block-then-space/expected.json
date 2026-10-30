@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Titles and accessibility statements: whitespace after an empty block that follows a block with text."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...Descr {x}accDescr {} \n-----------------------^\nExpecting 'NEWLINE', 'SEMI', 'EOF', got 'SPACE'"
+  }
+}

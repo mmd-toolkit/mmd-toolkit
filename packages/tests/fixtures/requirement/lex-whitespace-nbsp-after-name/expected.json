@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Units and contexts: U+00A0 at the end of a name is whitespace and not part of it."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "a",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The name of a subgraph without a title, or its empty description blocks, followed by comment lines after U+2028 or U+2029: the line goes on after them, so a `;` or an empty line there has to stay on that line"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "subGraph0",
+        "nodes": [
+          "A"
+        ],
+        "title": "S",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

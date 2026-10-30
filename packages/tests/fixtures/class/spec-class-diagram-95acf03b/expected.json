@@ -1,0 +1,58 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/class/classDiagram.spec.ts",
+    "line": 236,
+    "test": "given a basic class diagram,  > when parsing class definition > defaults to hierarchical rendering when hierarchicalNamespaces is unset"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Foo",
+        "type": "",
+        "label": "Foo",
+        "text": "Foo",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "A.B"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "A",
+        "label": "A",
+        "classes": [],
+        "notes": [],
+        "children": [
+          "A.B"
+        ],
+        "explicit": false
+      },
+      {
+        "id": "A.B",
+        "label": "B",
+        "classes": [
+          "Foo"
+        ],
+        "notes": [],
+        "children": [],
+        "parent": "A",
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

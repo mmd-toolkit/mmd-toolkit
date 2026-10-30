@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a note retain non-ASCII whitespace at both edges?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [
+      {
+        "id": "A",
+        "label": "A",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [
+      {
+        "target": "A",
+        "label": " note ",
+        "labelType": "text"
+      }
+    ],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

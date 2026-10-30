@@ -1,0 +1,17 @@
+{
+  "message": "A Wardley pipeline parent must exist",
+  "range": [
+    56,
+    67
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 9
+    },
+    "end": {
+      "line": 3,
+      "column": 20
+    }
+  }
+}

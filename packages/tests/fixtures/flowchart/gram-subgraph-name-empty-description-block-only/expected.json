@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Subgraphs: the grammar reads no unit of the name, which has no name piece, so the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...subgraph accDescr {}Aend\n-----------------------^\nExpecting 'SPACE', 'GRAPH', 'DIR', 'subgraph', 'end', 'AMP', 'COLON', 'START_LINK', 'STR', 'MD_STR', 'STYLE', 'LINKSTYLE', 'CLASSDEF', 'CLASS', 'CLICK', 'DOWN', 'UP', 'NUM', 'NODE_STRING', 'BRKT', 'MINUS', 'MULT', 'UNICODE_TEXT', got 'NEWLINE'"
+  }
+}

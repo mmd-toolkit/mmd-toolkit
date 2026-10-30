@@ -1,0 +1,82 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, settings: `maxTextSize` smaller than the text changes nothing in the summary."
+  },
+  "config": {
+    "maxTextSize": 10
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "E",
+          "label": "E",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "F",
+          "label": "F",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "G",
+          "label": "G",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "H",
+          "label": "H",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "I",
+          "label": "I",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "J",
+          "label": "J",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

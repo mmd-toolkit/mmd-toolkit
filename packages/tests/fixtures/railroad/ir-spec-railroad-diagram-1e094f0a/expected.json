@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/railroad/parser/railroadDiagram.spec.ts",
+    "line": 320,
+    "test": "Railroad Parser > Edge Cases > should parse zeroOrMore with choice"
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "rule",
+        "definition": {
+          "type": "repetition",
+          "element": {
+            "type": "choice",
+            "alternatives": [
+              {
+                "type": "terminal",
+                "value": "a"
+              },
+              {
+                "type": "terminal",
+                "value": "b"
+              }
+            ]
+          },
+          "min": 0,
+          "max": "Infinity"
+        }
+      }
+    ]
+  }
+}

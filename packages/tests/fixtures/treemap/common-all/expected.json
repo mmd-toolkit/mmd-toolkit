@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How are all common values published without nodes?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "Text",
+    "accTitle": "Accessible",
+    "accDescr": "First\nSecond",
+    "nodes": [],
+    "classDefs": []
+  }
+}

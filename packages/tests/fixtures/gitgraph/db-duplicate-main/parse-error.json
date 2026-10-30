@@ -1,0 +1,17 @@
+{
+  "message": "A branch name must not already exist",
+  "range": [
+    16,
+    20
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 7
+    },
+    "end": {
+      "line": 2,
+      "column": 11
+    }
+  }
+}

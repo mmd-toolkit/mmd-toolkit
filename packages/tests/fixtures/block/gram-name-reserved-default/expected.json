@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, node ids: `default` is a word of the lexer that no statement accepts as an id: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nblock-beta  default\n------------^\nExpecting 'BLOCK_DIAGRAM_KEY', 'SPACE_BLOCK', 'COLUMNS', 'id-block', 'NODE_ID', 'classDef', 'class', 'style', got 'DEFAULT'"
+  }
+}

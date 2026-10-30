@@ -1,0 +1,16 @@
+sequenceDiagram
+participant A
+loop every minute
+A->>B: ping
+alt ok
+B-->>A: pong
+else failed
+B-->>A: error
+end
+end
+box aqua Team
+participant C
+end
+rect rgb(0, 0, 255)
+A->>C: x
+end

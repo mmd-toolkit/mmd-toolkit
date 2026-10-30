@@ -1,0 +1,514 @@
+{
+  "type": "Root",
+  "diagramType": "block",
+  "body": {
+    "type": "BlockDiagram",
+    "body": [
+      {
+        "type": "BlockColumnsStatement",
+        "count": {
+          "type": "NumericLiteral",
+          "value": 1,
+          "raw": "1",
+          "range": [
+            14,
+            15
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 8
+            },
+            "end": {
+              "line": 2,
+              "column": 9
+            }
+          }
+        },
+        "range": [
+          6,
+          15
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 9
+          }
+        }
+      },
+      {
+        "type": "BlockNodeStatement",
+        "node": {
+          "type": "BlockNode",
+          "id": {
+            "type": "Identifier",
+            "name": "B",
+            "range": [
+              20,
+              21
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 4
+              },
+              "end": {
+                "line": 3,
+                "column": 5
+              }
+            }
+          },
+          "shape": {
+            "type": "BlockShape",
+            "open": "[",
+            "close": "]",
+            "label": {
+              "type": "StringLiteral",
+              "value": "A wide one in the middle",
+              "raw": "\"A wide one in the middle\"",
+              "closed": true,
+              "range": [
+                22,
+                48
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 6
+                },
+                "end": {
+                  "line": 3,
+                  "column": 32
+                }
+              }
+            },
+            "range": [
+              21,
+              49
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 5
+              },
+              "end": {
+                "line": 3,
+                "column": 33
+              }
+            }
+          },
+          "range": [
+            20,
+            49
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 4
+            },
+            "end": {
+              "line": 3,
+              "column": 33
+            }
+          }
+        },
+        "width": null,
+        "links": [],
+        "range": [
+          20,
+          49
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 4
+          },
+          "end": {
+            "line": 3,
+            "column": 33
+          }
+        }
+      },
+      {
+        "type": "BlockStyleStatement",
+        "id": {
+          "type": "Identifier",
+          "name": "B",
+          "range": [
+            58,
+            59
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 8
+            },
+            "end": {
+              "line": 4,
+              "column": 9
+            }
+          }
+        },
+        "styles": [
+          {
+            "type": "BlockLiteral",
+            "value": "fill:#f9F",
+            "range": [
+              60,
+              69
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 10
+              },
+              "end": {
+                "line": 4,
+                "column": 19
+              }
+            }
+          },
+          {
+            "type": "BlockLiteral",
+            "value": "stroke:#333",
+            "range": [
+              70,
+              81
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 20
+              },
+              "end": {
+                "line": 4,
+                "column": 31
+              }
+            }
+          },
+          {
+            "type": "BlockLiteral",
+            "value": "stroke-width:4px",
+            "range": [
+              82,
+              98
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 32
+              },
+              "end": {
+                "line": 4,
+                "column": 48
+              }
+            }
+          }
+        ],
+        "range": [
+          52,
+          98
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 2
+          },
+          "end": {
+            "line": 4,
+            "column": 48
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      98
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 4,
+        "column": 48
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "block",
+      "range": [
+        0,
+        5
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "columns",
+      "range": [
+        6,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "1",
+      "range": [
+        14,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "B",
+      "range": [
+        20,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 4
+        },
+        "end": {
+          "line": 3,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        21,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 5
+        },
+        "end": {
+          "line": 3,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"A wide one in the middle\"",
+      "range": [
+        22,
+        48
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 6
+        },
+        "end": {
+          "line": 3,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        48,
+        49
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 32
+        },
+        "end": {
+          "line": 3,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "style",
+      "range": [
+        52,
+        57
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 2
+        },
+        "end": {
+          "line": 4,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "B",
+      "range": [
+        58,
+        59
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 8
+        },
+        "end": {
+          "line": 4,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "fill:#f9F",
+      "range": [
+        60,
+        69
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 10
+        },
+        "end": {
+          "line": 4,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        69,
+        70
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 19
+        },
+        "end": {
+          "line": 4,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "stroke:#333",
+      "range": [
+        70,
+        81
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 20
+        },
+        "end": {
+          "line": 4,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        81,
+        82
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 31
+        },
+        "end": {
+          "line": 4,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "stroke-width:4px",
+      "range": [
+        82,
+        98
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 32
+        },
+        "end": {
+          "line": 4,
+          "column": 48
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    107
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 8
+    }
+  }
+}

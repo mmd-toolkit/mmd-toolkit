@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Common statements: After native YAML consumes its closing LF, does an indented accTitle form win before whitespace?"
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "accTitle: A",
+    "accDescr": "",
+    "frames": []
+  }
+}

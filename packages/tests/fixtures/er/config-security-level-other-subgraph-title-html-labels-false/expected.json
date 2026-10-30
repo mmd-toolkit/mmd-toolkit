@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "With htmlLabels false the title of a subgraph is recorded as written, also under a securityLevel that is not one of mermaid.js's values."
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": false
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A"
+        ],
+        "title": "a<b>=c<br>d",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

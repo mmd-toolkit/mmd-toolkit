@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A selected ignored semicolon inside the PEG assignment splits its delimiter."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "",
+    "accDescr": "style:#x",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

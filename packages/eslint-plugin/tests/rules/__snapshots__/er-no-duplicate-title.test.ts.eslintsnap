@@ -1,0 +1,209 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: er-no-duplicate-title >> invalid >>> docs/rules/er-no-duplicate-title.md incorrect 1
+Filename: er-no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | erDiagram
+  2 |   accTitle: first
+  3 |   accTitle: second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   A
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 |   accTitle: first
+          3 |   A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 |   accTitle: second
+          3 |   A
+          4 |
+---
+
+
+Test: er-no-duplicate-title >> invalid >>> invalid/er/acc-title-back-to-first
+Filename: tests/fixtures/rules/er-no-duplicate-title/invalid/er/acc-title-back-to-first-input.mmd
+
+Code:
+  1 | erDiagram
+  2 |   accTitle: a
+  3 |   accTitle: b
+    |   ^~~~~~~~~~~ [1]
+  4 |   accTitle: a
+    |   ^~~~~~~~~~~ [2]
+  5 |   A
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 |   accTitle: a
+          3 |   accTitle: a
+          4 |   A
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 |   accTitle: b
+          3 |   accTitle: a
+          4 |   A
+          5 |
+[2] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 |   accTitle: a
+          3 |   accTitle: b
+          4 |   A
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 |   accTitle: a
+          3 |   accTitle: a
+          4 |   A
+          5 |
+---
+
+
+Test: er-no-duplicate-title >> invalid >>> invalid/er/db-acc-title-twice
+Filename: tests/fixtures/rules/er-no-duplicate-title/invalid/er/db-acc-title-twice-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | accTitle: a
+  3 | accTitle: b
+    | ^~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 | accTitle: a
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 | accTitle: b
+---
+
+
+Test: er-no-duplicate-title >> invalid >>> invalid/er/empty-title-takes-line-after-comment
+Filename: tests/fixtures/rules/er-no-duplicate-title/invalid/er/empty-title-takes-line-after-comment-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | accTitle: t
+  3 | accTitle:
+    | ^~~~~~~~~\ [1]
+  4 | %% c
+    | ~~~~\ [1]
+  5 | A
+    | ~ [1]
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 | accTitle: t
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 | accTitle:
+          3 | %% c
+          4 | A
+          5 |
+---
+
+
+Test: er-no-duplicate-title >> invalid >>> invalid/er/empty-title-takes-line-after-directive
+Filename: tests/fixtures/rules/er-no-duplicate-title/invalid/er/empty-title-takes-line-after-directive-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | accTitle: t
+  3 | accTitle:
+    | ^~~~~~~~~\ [1]
+  4 | %%{init: {}}%%
+    | ~~~~~~~~~~~~~~\ [1]
+  5 | A
+    | ~ [1]
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 | accTitle:
+          3 | %%{init: {}}%%
+          4 | A
+          5 |
+---
+
+
+Test: er-no-duplicate-title >> invalid >>> invalid/er/empty-title-takes-line-after-empty-line
+Filename: tests/fixtures/rules/er-no-duplicate-title/invalid/er/empty-title-takes-line-after-empty-line-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | accTitle: t
+  3 | accTitle:
+    | ^~~~~~~~~\ [1]
+  4 |
+    | ~\ [1]
+  5 | A
+    | ~ [1]
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 | accTitle: t
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 | accTitle:
+          3 |
+          4 | A
+          5 |
+---
+
+
+Test: er-no-duplicate-title >> invalid >>> invalid/er/title-equal-predecessor
+Filename: tests/fixtures/rules/er-no-duplicate-title/invalid/er/title-equal-predecessor-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | accTitle: A
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | erDiagram
+          2 | accTitle: A
+          3 | accTitle: A
+          4 |
+---

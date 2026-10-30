@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A terminated C4Dynamic header comment is removed before detection."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  }
+}

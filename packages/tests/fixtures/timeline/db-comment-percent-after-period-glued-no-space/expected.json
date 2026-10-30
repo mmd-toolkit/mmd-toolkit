@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, comments: `%%` after a space is part of the period, whatever follows it."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "a %%c",
+        "events": []
+      }
+    ]
+  }
+}

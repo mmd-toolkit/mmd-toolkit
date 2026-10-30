@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md ErrorDiagram: `%%`, a line break, and `error` is accepted as the error pseudo-diagram; its `RawText` tokens are `%%` and `error`."
+  },
+  "accepted": true,
+  "diagramType": "error",
+  "db": {}
+}

@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A branchless line containing a box character bypasses mixed-indent rejection."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "child",
+            "nodeType": "file",
+            "children": []
+          },
+          {
+            "name": "A─B",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "message": "The point has no ] before the end of the text",
+  "range": [
+    17,
+    18
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 3
+    },
+    "end": {
+      "line": 2,
+      "column": 4
+    }
+  }
+}

@@ -1,0 +1,882 @@
+{
+  "type": "Root",
+  "diagramType": "agentflow",
+  "body": {
+    "type": "AgentflowDiagram",
+    "direction": "TB",
+    "body": [
+      {
+        "type": "AgentflowFlowStatement",
+        "name": {
+          "type": "AgentflowName",
+          "parts": [
+            {
+              "type": "AgentflowLabel",
+              "kind": "text",
+              "value": "F",
+              "range": [
+                23,
+                24
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 5
+                },
+                "end": {
+                  "line": 2,
+                  "column": 6
+                }
+              }
+            }
+          ],
+          "range": [
+            23,
+            24
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 5
+            },
+            "end": {
+              "line": 2,
+              "column": 6
+            }
+          }
+        },
+        "title": null,
+        "data": [],
+        "body": [],
+        "range": [
+          18,
+          28
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "AgentflowFlowStatement",
+        "name": {
+          "type": "AgentflowName",
+          "parts": [
+            {
+              "type": "AgentflowLabel",
+              "kind": "text",
+              "value": "F",
+              "range": [
+                34,
+                35
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 5
+                },
+                "end": {
+                  "line": 4,
+                  "column": 6
+                }
+              }
+            }
+          ],
+          "range": [
+            34,
+            35
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 5
+            },
+            "end": {
+              "line": 4,
+              "column": 6
+            }
+          }
+        },
+        "title": null,
+        "data": [],
+        "body": [
+          {
+            "type": "AgentflowVertexStatement",
+            "first": {
+              "type": "AgentflowVertexGroup",
+              "vertices": [
+                {
+                  "type": "AgentflowVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "A",
+                    "range": [
+                      36,
+                      37
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 5,
+                        "column": 0
+                      },
+                      "end": {
+                        "line": 5,
+                        "column": 1
+                      }
+                    }
+                  },
+                  "shape": null,
+                  "cssClass": null,
+                  "data": [],
+                  "range": [
+                    36,
+                    37
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 5,
+                      "column": 0
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 1
+                    }
+                  }
+                }
+              ],
+              "range": [
+                36,
+                37
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 0
+                },
+                "end": {
+                  "line": 5,
+                  "column": 1
+                }
+              }
+            },
+            "links": [],
+            "range": [
+              36,
+              37
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 0
+              },
+              "end": {
+                "line": 5,
+                "column": 1
+              }
+            }
+          }
+        ],
+        "range": [
+          29,
+          41
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "AgentflowFlowStatement",
+        "name": {
+          "type": "AgentflowName",
+          "parts": [
+            {
+              "type": "AgentflowLabel",
+              "kind": "text",
+              "value": "F",
+              "range": [
+                47,
+                48
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 5
+                },
+                "end": {
+                  "line": 7,
+                  "column": 6
+                }
+              }
+            }
+          ],
+          "range": [
+            47,
+            48
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 5
+            },
+            "end": {
+              "line": 7,
+              "column": 6
+            }
+          }
+        },
+        "title": null,
+        "data": [],
+        "body": [
+          {
+            "type": "AgentflowVertexStatement",
+            "first": {
+              "type": "AgentflowVertexGroup",
+              "vertices": [
+                {
+                  "type": "AgentflowVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "__proto__",
+                    "range": [
+                      49,
+                      58
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 8,
+                        "column": 0
+                      },
+                      "end": {
+                        "line": 8,
+                        "column": 9
+                      }
+                    }
+                  },
+                  "shape": null,
+                  "cssClass": null,
+                  "data": [],
+                  "range": [
+                    49,
+                    58
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 8,
+                      "column": 0
+                    },
+                    "end": {
+                      "line": 8,
+                      "column": 9
+                    }
+                  }
+                }
+              ],
+              "range": [
+                49,
+                58
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 0
+                },
+                "end": {
+                  "line": 8,
+                  "column": 9
+                }
+              }
+            },
+            "links": [],
+            "range": [
+              49,
+              58
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 0
+              },
+              "end": {
+                "line": 8,
+                "column": 9
+              }
+            }
+          },
+          {
+            "type": "AgentflowVertexStatement",
+            "first": {
+              "type": "AgentflowVertexGroup",
+              "vertices": [
+                {
+                  "type": "AgentflowVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "__proto__",
+                    "range": [
+                      59,
+                      68
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 9,
+                        "column": 0
+                      },
+                      "end": {
+                        "line": 9,
+                        "column": 9
+                      }
+                    }
+                  },
+                  "shape": null,
+                  "cssClass": null,
+                  "data": [],
+                  "range": [
+                    59,
+                    68
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 9,
+                      "column": 0
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 9
+                    }
+                  }
+                }
+              ],
+              "range": [
+                59,
+                68
+              ],
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 0
+                },
+                "end": {
+                  "line": 9,
+                  "column": 9
+                }
+              }
+            },
+            "links": [],
+            "range": [
+              59,
+              68
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 0
+              },
+              "end": {
+                "line": 9,
+                "column": 9
+              }
+            }
+          },
+          {
+            "type": "AgentflowVertexStatement",
+            "first": {
+              "type": "AgentflowVertexGroup",
+              "vertices": [
+                {
+                  "type": "AgentflowVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "__proto__",
+                    "range": [
+                      69,
+                      78
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 10,
+                        "column": 0
+                      },
+                      "end": {
+                        "line": 10,
+                        "column": 9
+                      }
+                    }
+                  },
+                  "shape": null,
+                  "cssClass": null,
+                  "data": [],
+                  "range": [
+                    69,
+                    78
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 10,
+                      "column": 0
+                    },
+                    "end": {
+                      "line": 10,
+                      "column": 9
+                    }
+                  }
+                }
+              ],
+              "range": [
+                69,
+                78
+              ],
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 0
+                },
+                "end": {
+                  "line": 10,
+                  "column": 9
+                }
+              }
+            },
+            "links": [],
+            "range": [
+              69,
+              78
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 0
+              },
+              "end": {
+                "line": 10,
+                "column": 9
+              }
+            }
+          },
+          {
+            "type": "AgentflowVertexStatement",
+            "first": {
+              "type": "AgentflowVertexGroup",
+              "vertices": [
+                {
+                  "type": "AgentflowVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "B",
+                    "range": [
+                      79,
+                      80
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 11,
+                        "column": 0
+                      },
+                      "end": {
+                        "line": 11,
+                        "column": 1
+                      }
+                    }
+                  },
+                  "shape": null,
+                  "cssClass": null,
+                  "data": [],
+                  "range": [
+                    79,
+                    80
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 11,
+                      "column": 0
+                    },
+                    "end": {
+                      "line": 11,
+                      "column": 1
+                    }
+                  }
+                }
+              ],
+              "range": [
+                79,
+                80
+              ],
+              "loc": {
+                "start": {
+                  "line": 11,
+                  "column": 0
+                },
+                "end": {
+                  "line": 11,
+                  "column": 1
+                }
+              }
+            },
+            "links": [],
+            "range": [
+              79,
+              80
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 0
+              },
+              "end": {
+                "line": 11,
+                "column": 1
+              }
+            }
+          }
+        ],
+        "range": [
+          42,
+          84
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 0
+          },
+          "end": {
+            "line": 12,
+            "column": 3
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      84
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 12,
+        "column": 3
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "agentflow-beta",
+      "range": [
+        0,
+        14
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "TB",
+      "range": [
+        15,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 15
+        },
+        "end": {
+          "line": 1,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "flow",
+      "range": [
+        18,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "F",
+      "range": [
+        23,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 5
+        },
+        "end": {
+          "line": 2,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "end",
+      "range": [
+        25,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "flow",
+      "range": [
+        29,
+        33
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "F",
+      "range": [
+        34,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 5
+        },
+        "end": {
+          "line": 4,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        36,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "end",
+      "range": [
+        38,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "flow",
+      "range": [
+        42,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "F",
+      "range": [
+        47,
+        48
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 5
+        },
+        "end": {
+          "line": 7,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "__proto__",
+      "range": [
+        49,
+        58
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "__proto__",
+      "range": [
+        59,
+        68
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "__proto__",
+      "range": [
+        69,
+        78
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 0
+        },
+        "end": {
+          "line": 10,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "B",
+      "range": [
+        79,
+        80
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 0
+        },
+        "end": {
+          "line": 11,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "end",
+      "range": [
+        81,
+        84
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 0
+        },
+        "end": {
+          "line": 12,
+          "column": 3
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    85
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 13,
+      "column": 0
+    }
+  }
+}

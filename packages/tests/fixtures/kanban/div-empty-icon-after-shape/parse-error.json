@@ -1,0 +1,17 @@
+{
+  "message": "An empty icon cannot be written here",
+  "range": [
+    12,
+    20
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 5
+    },
+    "end": {
+      "line": 2,
+      "column": 13
+    }
+  }
+}

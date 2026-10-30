@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md The statement context: every keyword is read case-insensitively; all settings set, the day names in lower case in the Db."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "YYYY",
+    "axisFormat": "%d",
+    "tickInterval": "1week",
+    "todayMarker": "off",
+    "includes": [
+      "friday"
+    ],
+    "excludes": [
+      "weekends"
+    ],
+    "inclusiveEndDates": true,
+    "weekday": "monday",
+    "weekend": "friday",
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "S"
+    ],
+    "tasks": [],
+    "links": []
+  }
+}

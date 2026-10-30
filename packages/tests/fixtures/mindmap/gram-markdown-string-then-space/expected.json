@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Nodes and shapes: after a markdown string only a closer may follow."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...ndmaproot  a[\"`x`\" ]\n---------------------^\nExpecting 'NODE_DEND', got 'NODE_DESCR'"
+  }
+}

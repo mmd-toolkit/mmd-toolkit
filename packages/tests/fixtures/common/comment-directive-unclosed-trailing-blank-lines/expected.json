@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md Comment: the unclosed directive in the comment line takes the whitespace to the end of the text; the comment ends where the directive ends, and the space and the lines after it are whitespace."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

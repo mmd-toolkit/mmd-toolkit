@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, edges: `== \"text\" ==>` is a thick edge with a label."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "type": "na"
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "label": "text",
+        "thickness": "thick",
+        "pattern": "solid",
+        "arrowTypeStart": "arrow_open",
+        "arrowTypeEnd": "arrow_point"
+      }
+    ],
+    "classes": []
+  }
+}

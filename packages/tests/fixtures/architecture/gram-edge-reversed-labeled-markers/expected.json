@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Edges: either arrow-marker spelling is accepted at either end of a labelled edge. Case: edge-markers-inside-labeled."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service"
+      },
+      {
+        "id": "b",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [
+      {
+        "lhsId": "a",
+        "lhsDir": "R",
+        "lhsInto": true,
+        "lhsGroup": false,
+        "rhsId": "b",
+        "rhsDir": "L",
+        "rhsInto": true,
+        "rhsGroup": false,
+        "title": "X"
+      }
+    ],
+    "layoutHints": []
+  }
+}

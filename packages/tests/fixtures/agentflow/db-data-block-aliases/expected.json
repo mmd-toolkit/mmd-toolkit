@@ -1,0 +1,154 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "All six domain aliases resolve before raw metadata and node type are stored."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {},
+        "metadata": {
+          "shape": "roundedRect"
+        },
+        "type": "roundedRect"
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {},
+        "metadata": {
+          "shape": "subroutine"
+        },
+        "type": "subroutine"
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "C",
+        "props": {},
+        "metadata": {
+          "shape": "lean-right"
+        },
+        "type": "lean-right"
+      },
+      {
+        "id": "D",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "D",
+        "props": {},
+        "metadata": {
+          "shape": "diamond"
+        },
+        "type": "diamond"
+      },
+      {
+        "id": "E",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "E",
+        "props": {},
+        "metadata": {
+          "shape": "lin-doc"
+        },
+        "type": "lin-doc"
+      },
+      {
+        "id": "F",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "F",
+        "props": {},
+        "metadata": {
+          "shape": "hexagon"
+        },
+        "type": "hexagon"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "metadata": {
+            "shape": "roundedRect"
+          },
+          "type": "roundedRect"
+        }
+      },
+      {
+        "id": "B",
+        "set": {
+          "metadata": {
+            "shape": "subroutine"
+          },
+          "type": "subroutine"
+        }
+      },
+      {
+        "id": "C",
+        "set": {
+          "metadata": {
+            "shape": "lean-right"
+          },
+          "type": "lean-right"
+        }
+      },
+      {
+        "id": "D",
+        "set": {
+          "metadata": {
+            "shape": "diamond"
+          },
+          "type": "diamond"
+        }
+      },
+      {
+        "id": "E",
+        "set": {
+          "metadata": {
+            "shape": "lin-doc"
+          },
+          "type": "lin-doc"
+        }
+      },
+      {
+        "id": "F",
+        "set": {
+          "metadata": {
+            "shape": "hexagon"
+          },
+          "type": "hexagon"
+        }
+      }
+    ]
+  }
+}

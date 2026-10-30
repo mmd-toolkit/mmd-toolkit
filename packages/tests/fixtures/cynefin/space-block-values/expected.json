@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Block conversion trims each line and preserves interior Unicode whitespace."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A﻿B C\nD﻿E F",
+    "domains": [],
+    "transitions": []
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Directive removal preserves the optional showData position."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": true,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-inline-metadata-mapping.spec.ts",
+    "line": 15,
+    "test": "issue #60: inline metadata block mapping > inline id[\"...\"]@{ ... } spans the block, so cursors inside resolve to the node"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Alpha",
+        "type": "square",
+        "props": {},
+        "metadata": {
+          "instruction": "do the thing"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "f",
+        "nodes": [
+          "a"
+        ],
+        "title": "F",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "a",
+        "set": {
+          "metadata": {
+            "instruction": "do the thing"
+          }
+        }
+      }
+    ]
+  }
+}

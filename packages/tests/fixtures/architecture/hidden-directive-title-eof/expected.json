@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A title followed by a retained directive can finish at EOF."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

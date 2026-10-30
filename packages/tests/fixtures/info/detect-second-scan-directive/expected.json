@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A directive recreated by comment removal stays a hidden prefix."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Repeated axes remain and each uses the first matching detailed entry."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "First"
+      },
+      {
+        "label": "B"
+      },
+      {
+        "label": "Third"
+      }
+    ],
+    "curves": [
+      {
+        "label": "c",
+        "entries": [
+          1,
+          2,
+          1
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

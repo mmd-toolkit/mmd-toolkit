@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A nonempty inheritDir string is truthy even when it spells false."
+  },
+  "config": {
+    "flowchart": {
+      "inheritDir": "false"
+    }
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "F",
+        "nodes": [
+          "A"
+        ],
+        "title": "",
+        "classes": [],
+        "dir": "LR",
+        "labelType": "text",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Common boundaries in authored components: A global directive inside an accessibility keyword violates the atomic keyword rule."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "A",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

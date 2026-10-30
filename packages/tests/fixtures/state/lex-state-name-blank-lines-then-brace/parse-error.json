@@ -1,0 +1,17 @@
+{
+  "message": "A state name before { must be a single word",
+  "range": [
+    24,
+    33
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 8
+    },
+    "end": {
+      "line": 5,
+      "column": 5
+    }
+  }
+}

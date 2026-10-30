@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A quote does not hide a description closing brace."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 14: unexpected character: ->\"<- at offset: 27, skipped 1 characters.\nLexer error on line 2, column 16: unexpected character: ->}<- at offset: 29, skipped 1 characters. "
+  }
+}

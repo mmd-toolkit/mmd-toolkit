@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Lexical structure, The scale context: `width` is a keyword, so `widthx` is no `width` unit and the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...Diagram-v2  scale 3 widthx\n----------------------^"
+  }
+}

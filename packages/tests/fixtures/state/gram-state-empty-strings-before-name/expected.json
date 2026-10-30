@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The state string context: an empty string is an `empty-string` unit, which mermaid.js does not read, and the tree holds it as a StateIgnoredText: the two empty strings are one StateIgnoredText, the `textBeforeId` of the composite statement x."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

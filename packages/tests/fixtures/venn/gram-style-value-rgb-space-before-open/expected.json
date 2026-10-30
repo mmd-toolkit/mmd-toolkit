@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: 19. `rgb(` with three such runs and `)` makes an `rgb-color` unit. This input is rejected by mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...-betastyle A x:rgb (1,2,3)\n----------------------^"
+  }
+}

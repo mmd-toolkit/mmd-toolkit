@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md The direction line: at the start of the line, the `accTitle` rule applies first, so the title is `t;direction TB` and there is no direction line."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "t;direction TB",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does STRING2 enclose YAML-looking lines?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A\n---\nx: y\n---\nB",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  }
+}

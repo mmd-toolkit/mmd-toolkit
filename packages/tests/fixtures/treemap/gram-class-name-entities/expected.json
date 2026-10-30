@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can class names contain character references?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 10: unexpected character: ->&<- at offset: 17, skipped 1 characters.\nLexer error on line 2, column 14: unexpected character: ->;<- at offset: 21, skipped 1 characters.\nLexer error on line 2, column 24: unexpected character: ->;<- at offset: 31, skipped 1 characters. Parse error on line 2, column 1: Expecting token of type 'EOF' but found `classDef`.\nParse error on line 2, column 11: Expecting: one of these possible Token sequences:\n  1. [STRING2]\n  2. [CLASS_DEF]\nbut found: 'amp'\nParse error on line 2, column 16: Expecting: one of these possible Token sequences:\n  1. [STRING2]\n  2. [CLASS_DEF]\nbut found: 'fill'"
+  }
+}

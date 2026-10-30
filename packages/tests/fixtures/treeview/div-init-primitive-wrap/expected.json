@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check opaque embedded-data rejection: init-primitive-wrap."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot create property 'wrap' on string '5'"
+  }
+}

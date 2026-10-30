@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can YAML hide its consumed LF between component, coordinate, offset, decorator and inertia units?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "A",
+        "label": "A",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "labelOffsetX": -1,
+        "labelOffsetY": 2,
+        "inertia": true,
+        "sourceStrategy": "build"
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

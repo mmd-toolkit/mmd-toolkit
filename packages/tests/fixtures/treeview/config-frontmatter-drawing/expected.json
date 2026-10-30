@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Embedded treeView settings are recorded without changing Db fields."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a.ts",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "child",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "treeView": {
+        "rowIndent": 3,
+        "showIcons": true,
+        "defaultIconPack": "custom"
+      }
+    }
+  }
+}

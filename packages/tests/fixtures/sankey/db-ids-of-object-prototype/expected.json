@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, nodes: the names of properties of objects are ids like others."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "__proto__",
+      "constructor",
+      "toString",
+      "hasOwnProperty"
+    ],
+    "links": [
+      {
+        "source": "__proto__",
+        "target": "constructor",
+        "value": 1
+      },
+      {
+        "source": "toString",
+        "target": "hasOwnProperty",
+        "value": 2
+      }
+    ]
+  }
+}

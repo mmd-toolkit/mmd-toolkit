@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Common forms and Box-drawing reading; ast/treeview.md TreeviewAccDescrBlockStatement: A semicolon selected by the common style line rule is shared trivia inside the same authored block. Mermaid accepts with accDescr \"style:#x\"."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "style:#x",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

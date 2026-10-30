@@ -1,0 +1,17 @@
+{
+  "message": "Generalization requires two actors or two usecases of the same kind",
+  "range": [
+    30,
+    45
+  ],
+  "loc": {
+    "start": {
+      "line": 4,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 15
+    }
+  }
+}

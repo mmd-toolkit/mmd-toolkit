@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/class.md ClassLiteral: the value of a style is the written texts of its units joined in order, without the whitespace between two units; the `,` lies in the label `: #f00,stroke `, so the statement has one style, `fill: #f00,stroke : blue`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default c",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [
+          "fill: #f00",
+          "stroke : blue"
+        ]
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

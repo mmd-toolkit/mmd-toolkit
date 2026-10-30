@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Global removal cuts a directive from a curve string."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [],
+    "curves": [
+      {
+        "label": "ab",
+        "entries": [
+          1
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "DOMAIN_NAME units can remain glued after directive removal."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "clear",
+        "items": [
+          {
+            "label": "A"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

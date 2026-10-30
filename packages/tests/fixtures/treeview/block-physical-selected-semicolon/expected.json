@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: the selected-semicolon rule acts inside an accessibility block before decoration reading."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "style:#x\ntwo",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

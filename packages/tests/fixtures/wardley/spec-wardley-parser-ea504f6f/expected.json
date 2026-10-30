@@ -1,0 +1,58 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/wardley/wardleyParser.spec.ts",
+    "line": 300,
+    "test": "wardley parser > accepts hyphens in pipeline component names with label overrides"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "Data Store",
+        "label": "Data Store",
+        "x": 50,
+        "y": 50,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Data Store_real-time queue",
+        "label": "real-time queue",
+        "x": 30,
+        "y": 50,
+        "className": "pipeline-component",
+        "labelOffsetX": -40,
+        "labelOffsetY": 20
+      },
+      {
+        "id": "Data Store_batch-loader",
+        "label": "batch-loader",
+        "x": 70,
+        "y": 50,
+        "className": "pipeline-component"
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [
+      {
+        "nodeId": "Data Store",
+        "componentIds": [
+          "Data Store_real-time queue",
+          "Data Store_batch-loader"
+        ]
+      }
+    ],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, points: a trailing zero is kept as written."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [
+      {
+        "text": "A",
+        "className": "",
+        "x": "0.30",
+        "y": "0.60"
+      }
+    ],
+    "classes": []
+  }
+}

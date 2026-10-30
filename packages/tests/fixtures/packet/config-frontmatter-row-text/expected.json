@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A nonnumeric YAML string row width causes the numeric loop comparison to fail without rejection."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  },
+  "embedded": {
+    "config": {
+      "packet": {
+        "bitsPerRow": "abc"
+      }
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Lexical structure: `CLASSDEF`, `STYLE`, and `CLASS` are the keywords."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [
+          "fill:red",
+          "fill:blue"
+        ],
+        "classes": [
+          "c"
+        ]
+      }
+    ],
+    "elements": [],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:blue"
+        ]
+      }
+    ]
+  }
+}

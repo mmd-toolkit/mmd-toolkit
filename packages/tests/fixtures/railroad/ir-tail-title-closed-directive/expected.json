@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Removing a trailing closed directive leaves the title value."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": []
+  }
+}

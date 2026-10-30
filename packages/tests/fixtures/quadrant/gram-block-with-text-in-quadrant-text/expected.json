@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, empty block: a block with text inside a statement is a statement, which ends the line before it, so the line is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...uadrant-1 accDescr {x} A\n-----------------------^\nExpecting 'ALPHA', 'NUM', 'COMMA', 'AMP', 'BRKT', 'MULT', 'UNICODE_TEXT', 'STR', 'MD_STR', 'PUNCTUATION', 'PLUS', 'EQUALS', 'DOT', 'UNDERSCORE', got 'acc_descr_multiline_value'"
+  }
+}

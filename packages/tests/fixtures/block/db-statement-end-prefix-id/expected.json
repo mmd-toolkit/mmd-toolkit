@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, statements: an id that starts with `end` is an id."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "endless",
+          "label": "endless",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

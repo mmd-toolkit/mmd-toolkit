@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, prototype names: `constructor` as the name of a class."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": []
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": [
+      {
+        "id": "constructor",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

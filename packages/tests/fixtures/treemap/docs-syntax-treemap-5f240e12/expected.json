@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/treemap.md",
+    "line": 100
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "Main",
+        "children": [
+          {
+            "name": "A",
+            "value": 20
+          },
+          {
+            "name": "B",
+            "classSelector": "important",
+            "children": [
+              {
+                "name": "B1",
+                "value": 10
+              },
+              {
+                "name": "B2",
+                "value": 15
+              }
+            ]
+          },
+          {
+            "name": "C",
+            "value": 5
+          }
+        ]
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "important",
+        "styles": [
+          "fill:#f96",
+          "stroke:#333",
+          "stroke-width:2px"
+        ]
+      }
+    ]
+  }
+}

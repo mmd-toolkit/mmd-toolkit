@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does an unclosed directive affect note EOL?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [
+      {
+        "text": "N",
+        "x": 20,
+        "y": 10
+      }
+    ],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

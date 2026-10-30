@@ -1,0 +1,227 @@
+{
+  "type": "Root",
+  "diagramType": "er",
+  "body": {
+    "type": "ErDiagram",
+    "body": [
+      {
+        "type": "ErEntityStatement",
+        "name": {
+          "type": "ErIdentifier",
+          "name": "CUSTOMER",
+          "range": [
+            10,
+            18
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 8
+            }
+          }
+        },
+        "alias": null,
+        "cssClasses": [],
+        "attributes": null,
+        "range": [
+          10,
+          18
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 8
+          }
+        }
+      },
+      {
+        "type": "ErClassStatement",
+        "entities": [
+          {
+            "type": "ErIdentifier",
+            "name": "CUSTOMER",
+            "range": [
+              25,
+              33
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 6
+              },
+              "end": {
+                "line": 3,
+                "column": 14
+              }
+            }
+          }
+        ],
+        "cssClasses": [
+          {
+            "type": "ErIdentifier",
+            "name": "myClass",
+            "range": [
+              34,
+              41
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 15
+              },
+              "end": {
+                "line": 3,
+                "column": 22
+              }
+            }
+          }
+        ],
+        "range": [
+          19,
+          41
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 22
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      41
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 22
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "erDiagram",
+      "range": [
+        0,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "CUSTOMER",
+      "range": [
+        10,
+        18
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "class",
+      "range": [
+        19,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "CUSTOMER",
+      "range": [
+        25,
+        33
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 6
+        },
+        "end": {
+          "line": 3,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "myClass",
+      "range": [
+        34,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 15
+        },
+        "end": {
+          "line": 3,
+          "column": 22
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    41
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 22
+    }
+  }
+}

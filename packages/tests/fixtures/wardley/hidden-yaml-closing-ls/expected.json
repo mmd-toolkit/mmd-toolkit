@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does lookahead-only YAML closing whitespace still leave an invalid ordinary LS gap?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 4: unexpected character: -> <- at offset: 43, skipped 1 characters. "
+  }
+}

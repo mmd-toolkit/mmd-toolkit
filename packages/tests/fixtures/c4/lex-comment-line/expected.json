@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A comment line inside a multiline Person label is accepted; shapes[0].label.text is \"first\\nsecond\"."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "first\nsecond"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read classdef double space keyword?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ow-beta TBclassDef  hot fill:red\n----------------------^\nExpecting 'AMP', 'COLON', 'DOWN', 'DEFAULT', 'NUM', 'COMMA', 'NODE_STRING', 'BRKT', 'MINUS', 'MULT', 'UNICODE_TEXT', got 'SPACE'"
+  }
+}

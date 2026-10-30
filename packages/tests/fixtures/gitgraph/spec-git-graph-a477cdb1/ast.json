@@ -1,0 +1,432 @@
+{
+  "type": "Root",
+  "diagramType": "gitGraph",
+  "body": {
+    "type": "GitgraphDiagram",
+    "direction": null,
+    "textBeforeHeader": [],
+    "textBeforeDirection": [],
+    "textBeforeColon": [],
+    "body": [
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [],
+        "textAfter": [],
+        "range": [
+          18,
+          24
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 8
+          },
+          "end": {
+            "line": 2,
+            "column": 14
+          }
+        }
+      },
+      {
+        "type": "GitgraphBranchStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "test1",
+          "range": [
+            40,
+            45
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 15
+            },
+            "end": {
+              "line": 3,
+              "column": 20
+            }
+          }
+        },
+        "order": {
+          "type": "GitgraphOrderOption",
+          "textBefore": [],
+          "textBeforeValue": [],
+          "value": {
+            "type": "NumericLiteral",
+            "value": 1,
+            "raw": "1",
+            "range": [
+              53,
+              54
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 28
+              },
+              "end": {
+                "line": 3,
+                "column": 29
+              }
+            }
+          },
+          "range": [
+            46,
+            54
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 21
+            },
+            "end": {
+              "line": 3,
+              "column": 29
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          33,
+          54
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 8
+          },
+          "end": {
+            "line": 3,
+            "column": 29
+          }
+        }
+      },
+      {
+        "type": "GitgraphBranchStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "test2",
+          "range": [
+            70,
+            75
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 15
+            },
+            "end": {
+              "line": 4,
+              "column": 20
+            }
+          }
+        },
+        "order": null,
+        "textAfter": [],
+        "range": [
+          63,
+          75
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 8
+          },
+          "end": {
+            "line": 4,
+            "column": 20
+          }
+        }
+      },
+      {
+        "type": "GitgraphBranchStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "test3",
+          "range": [
+            91,
+            96
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 15
+            },
+            "end": {
+              "line": 5,
+              "column": 20
+            }
+          }
+        },
+        "order": null,
+        "textAfter": [],
+        "range": [
+          84,
+          96
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 8
+          },
+          "end": {
+            "line": 5,
+            "column": 20
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      96
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 5,
+        "column": 20
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "gitGraph",
+      "range": [
+        0,
+        8
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        8,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 8
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        18,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "branch",
+      "range": [
+        33,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "test1",
+      "range": [
+        40,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 15
+        },
+        "end": {
+          "line": 3,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "order",
+      "range": [
+        46,
+        51
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 21
+        },
+        "end": {
+          "line": 3,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        51,
+        52
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 26
+        },
+        "end": {
+          "line": 3,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "1",
+      "range": [
+        53,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 28
+        },
+        "end": {
+          "line": 3,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "branch",
+      "range": [
+        63,
+        69
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 8
+        },
+        "end": {
+          "line": 4,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "test2",
+      "range": [
+        70,
+        75
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 15
+        },
+        "end": {
+          "line": 4,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "branch",
+      "range": [
+        84,
+        90
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 8
+        },
+        "end": {
+          "line": 5,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "test3",
+      "range": [
+        91,
+        96
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 15
+        },
+        "end": {
+          "line": 5,
+          "column": 20
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    105
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 6,
+      "column": 8
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/radar.test.ts",
+    "line": 385,
+    "test": "radar > error messages with line and column numbers > should include line and column numbers for invalid axis syntax"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 16: Expecting token of type 'EOF' but found `my-axis2`."
+  }
+}

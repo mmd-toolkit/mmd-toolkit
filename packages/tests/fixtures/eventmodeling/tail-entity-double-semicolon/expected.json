@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does a entity double semicolon tail affect this statement?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 9: unexpected character: ->;<- at offset: 22, skipped 2 characters. "
+  }
+}

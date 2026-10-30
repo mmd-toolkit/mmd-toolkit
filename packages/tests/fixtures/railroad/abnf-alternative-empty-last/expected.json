@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: A choice cannot end with an empty alternative."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 10: Expecting: expecting at least one iteration which starts with one of these possible Token sequences::\n  <[ABNF_REPEAT] ,[ABNF_EXACT_REPEAT] ,[ABNF_STRING] ,[ABNF_NUMVAL] ,[ABNF_RULENAME] ,[(] ,[[]>\nbut found: ';'"
+  }
+}

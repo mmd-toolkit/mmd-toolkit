@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The body-present YAML alternative can select a later closer before an empty fallback."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "visible"
+        }
+      }
+    ]
+  }
+}

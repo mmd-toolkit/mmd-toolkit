@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: The JSON delimiter scanner protects double quotes only."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error lexing usecase diagram: unexpected character: ->'<- at offset: 27, skipped 1 characters. at line 2, column 15 [27,28)"
+  }
+}

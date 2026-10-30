@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Composite common forms: The block alternative reads `accDescr`, zero or more common whitespace characters, `{`, and any characters through the first `}`. Case: block-open-brace-content-single-close."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A { B",
+    "showData": false,
+    "sections": []
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, lines: a U+2028 inside quotes is part of the text."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "a b",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": []
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}

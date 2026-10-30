@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: A selected semicolon inside numeric-value text does not split a numeric count atom."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "style:#x",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "%x41"
+        }
+      }
+    ]
+  }
+}

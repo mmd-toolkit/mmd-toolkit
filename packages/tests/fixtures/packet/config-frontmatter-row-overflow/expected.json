@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An overflowing YAML exponent remains a string whose numeric row multiplication is infinite."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 9,
+          "label": "A"
+        }
+      ]
+    ]
+  },
+  "embedded": {
+    "config": {
+      "packet": {
+        "bitsPerRow": "1e400"
+      }
+    }
+  }
+}

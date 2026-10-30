@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/gantt/parser/gantt.spec.js",
+    "line": 281,
+    "test": "when parsing a gantt diagram it > should allow for a link to constructor id"
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "YYYY-MM-DD",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "Section"
+    ],
+    "tasks": [
+      {
+        "section": "Section",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-10-01"
+          },
+          "endTime": {
+            "data": "3d"
+          }
+        },
+        "task": "A task ",
+        "classes": [
+          "clickable"
+        ],
+        "id": "constructor",
+        "order": 0
+      }
+    ],
+    "links": [
+      {
+        "id": "constructor",
+        "url": "https://mermaid.js.org/"
+      }
+    ]
+  }
+}

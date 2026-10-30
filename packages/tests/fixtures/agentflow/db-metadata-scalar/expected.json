@@ -1,0 +1,57 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read metadata scalar?"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {},
+        "metadata": {
+          "0": "s",
+          "1": "c",
+          "2": "a",
+          "3": "l",
+          "4": "a",
+          "5": "r"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "metadata": {
+            "0": "s",
+            "1": "c",
+            "2": "a",
+            "3": "l",
+            "4": "a",
+            "5": "r"
+          }
+        }
+      }
+    ]
+  }
+}

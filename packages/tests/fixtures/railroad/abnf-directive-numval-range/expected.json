@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: Numeric-value text admits a common directive before a range separator."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "%x41-42"
+        }
+      }
+    ]
+  }
+}

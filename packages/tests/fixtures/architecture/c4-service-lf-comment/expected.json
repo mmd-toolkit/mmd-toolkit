@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An LF-terminated service comment is removed before global C4 detection."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

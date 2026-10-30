@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The description opener whitespace admits BOM."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "D",
+    "domains": [],
+    "transitions": []
+  }
+}

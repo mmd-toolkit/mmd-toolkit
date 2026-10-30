@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The generic type of a class, alone and with a label under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): the type is recorded with the characters replaced, in the text of the class too (`&lt;`, `&gt;` around the type, and `<` and `>` around it after a label)."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "a&equals;b",
+        "label": "A",
+        "text": "A&lt;a&equals;b&gt;",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "type": "c<br/>d",
+        "label": "e&equals;f",
+        "text": "e&equals;f<c<br/>d>",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

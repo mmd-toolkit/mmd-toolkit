@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: an empty physical line inside an accessibility block survives the box reading."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "one\ntwo",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

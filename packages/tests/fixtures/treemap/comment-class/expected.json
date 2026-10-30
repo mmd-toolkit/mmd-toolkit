@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does CLASS_DEF absorb a comment-looking suffix as style?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "classSelector": "styled",
+        "children": []
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "styled",
+        "styles": [
+          "fill:red %% in-style"
+        ]
+      }
+    ]
+  }
+}

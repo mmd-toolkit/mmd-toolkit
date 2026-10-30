@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ABNF native body YAML can separate rules with one LF."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      },
+      {
+        "name": "s",
+        "definition": {
+          "type": "terminal",
+          "value": "b"
+        }
+      }
+    ]
+  }
+}

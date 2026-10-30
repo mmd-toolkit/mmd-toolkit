@@ -1,0 +1,594 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: pie-no-duplicate-title >> invalid >>> docs/rules/pie-no-duplicate-title.md incorrect 1
+Filename: pie-no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | pie
+  2 |   title First
+  3 |   title Second
+    |   ^~~~~~~~~~~~ [1]
+  4 |   "A" : 1
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 |   title First
+          3 |   "A" : 1
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | pie
+          2 |   title Second
+          3 |   "A" : 1
+          4 |
+---
+
+
+Test: pie-no-duplicate-title >> invalid >>> invalid/pie/acctitle-comment-gap
+Filename: tests/fixtures/rules/pie-no-duplicate-title/invalid/pie/acctitle-comment-gap-input.mmd
+
+Code:
+  1 | pie
+  2 | accTitle: A
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | %% c
+  5 | "B":2
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | pie
+          2 | accTitle: A
+          3 | %% c
+          4 | "B":2
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | pie
+          2 | accTitle:
+          3 | %% c
+          4 | "B":2
+---
+
+
+Test: pie-no-duplicate-title >> invalid >>> invalid/pie/acctitle-conflict
+Filename: tests/fixtures/rules/pie-no-duplicate-title/invalid/pie/acctitle-conflict-input.mmd
+
+Code:
+  1 | pie
+  2 |   accTitle: First
+  3 |   accTitle: Second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   "A" : 1
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | pie
+          2 |   accTitle: First
+          3 |   "A" : 1
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | pie
+          2 |   accTitle: Second
+          3 |   "A" : 1
+          4 |
+---
+
+
+Test: pie-no-duplicate-title >> invalid >>> invalid/pie/acctitle-directive-value
+Filename: tests/fixtures/rules/pie-no-duplicate-title/invalid/pie/acctitle-directive-value-input.mmd
+
+Code:
+  1 | pie
+  2 | accTitle: A
+  3 | accTitle: %%{init: {}}%%B
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | pie
+          2 | accTitle: %%{init: {}}%%B
+---
+
+
+Test: pie-no-duplicate-title >> invalid >>> invalid/pie/acctitle-empty-final
+Filename: tests/fixtures/rules/pie-no-duplicate-title/invalid/pie/acctitle-empty-final-input.mmd
+
+Code:
+  1 | pie
+  2 |   accTitle: First
+  3 |   accTitle:
+    |   ^~~~~~~~~ [1]
+  4 |   "A" : 1
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | pie
+          2 |   accTitle: First
+          3 |   "A" : 1
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | pie
+          2 |   accTitle:
+          3 |   "A" : 1
+          4 |
+---
+
+
+Test: pie-no-duplicate-title >> invalid >>> invalid/pie/acctitle-empty-history-reset
+Filename: tests/fixtures/rules/pie-no-duplicate-title/invalid/pie/acctitle-empty-history-reset-input.mmd
+
+Code:
+  1 | pie
+  2 | accTitle: A
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | accTitle: B
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | pie
+          2 | accTitle: A
+          3 | accTitle: B
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | pie
+          2 | accTitle:
+          3 | accTitle: B
+---
+
+
+Test: pie-no-duplicate-title >> invalid >>> invalid/pie/acctitle-hidden-after-spare-lf
+Filename: tests/fixtures/rules/pie-no-duplicate-title/invalid/pie/acctitle-hidden-after-spare-lf-input.mmd
+
+Code:
+  1 | pie
+  2 | accTitle: A
+  3 | accTitle: B%%{}%%
+    | ^~~~~~~~~~~~~~~~~ [1]
+  4 |
+  5 | "C":2
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | pie
+          2 | accTitle: A
+          3 |
+          4 | "C":2
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | pie
+          2 | accTitle: B%%{}%%
+          3 |
+          4 | "C":2
+---
+
+
+Test: pie-no-duplicate-title >> invalid >>> invalid/pie/acctitle-whitespace-final
+Filename: tests/fixtures/rules/pie-no-duplicate-title/invalid/pie/acctitle-whitespace-final-input.mmd
+
+Code:
+  1 | pie
+  2 | accTitle: First
+  3 | accTitle: 	
+    | ^~~~~~~~~~~ [1]
+  4 | "A":1
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | pie
+          2 | accTitle: First
+          3 | "A":1
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | pie
+          2 | accTitle: 	
+          3 | "A":1
+---
+
+
+Test: pie-no-duplicate-title >> invalid >>> invalid/pie/frontmatter-empty-equals-earlier
+Filename: tests/fixtures/rules/pie-no-duplicate-title/invalid/pie/frontmatter-empty-equals-earlier-input.mmd
+
+Code:
+  1 | ---
+  2 | title: Body
+  3 | ---
+  4 | pie
+  5 | title Body
+  6 | title
+    | ^~~~~ [1]
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | ---
+          2 | title: Body
+          3 | ---
+          4 | pie
+          5 | title Body
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | ---
+          2 | title: Body
+          3 | ---
+          4 | pie
+          5 | title
+---
+
+
+Test: pie-no-duplicate-title >> invalid >>> invalid/pie/frontmatter-empty-final
+Filename: tests/fixtures/rules/pie-no-duplicate-title/invalid/pie/frontmatter-empty-final-input.mmd
+
+Code:
+  1 | ---
+  2 | title: Front
+  3 | ---
+  4 | pie
+  5 | title Body
+  6 | title
+    | ^~~~~ [1]
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | ---
+          2 | title: Front
+          3 | ---
+          4 | pie
+          5 | title Body
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | ---
+          2 | title: Front
+          3 | ---
+          4 | pie
+          5 | title
+---
+
+
+Test: pie-no-duplicate-title >> invalid >>> invalid/pie/title-blank-comment-directive-gap
+Filename: tests/fixtures/rules/pie-no-duplicate-title/invalid/pie/title-blank-comment-directive-gap-input.mmd
+
+Code:
+  1 | pie
+  2 | title A
+  3 | title
+    | ^~~~~ [1]
+  4 |
+  5 | %% c
+  6 | %%{init: {}}%%
+  7 | "B":2
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | title A
+          3 |
+          4 | %% c
+          5 | %%{init: {}}%%
+          6 | "B":2
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | pie
+          2 | title
+          3 |
+          4 | %% c
+          5 | %%{init: {}}%%
+          6 | "B":2
+---
+
+
+Test: pie-no-duplicate-title >> invalid >>> invalid/pie/title-empty-final
+Filename: tests/fixtures/rules/pie-no-duplicate-title/invalid/pie/title-empty-final-input.mmd
+
+Code:
+  1 | pie
+  2 |   title First
+  3 |   title
+    |   ^~~~~ [1]
+  4 |   "A" : 1
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 |   title First
+          3 |   "A" : 1
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | pie
+          2 |   title
+          3 |   "A" : 1
+          4 |
+---
+
+
+Test: pie-no-duplicate-title >> invalid >>> invalid/pie/title-empty-history-reset
+Filename: tests/fixtures/rules/pie-no-duplicate-title/invalid/pie/title-empty-history-reset-input.mmd
+
+Code:
+  1 | pie
+  2 | title A
+  3 | title
+    | ^~~~~ [1]
+  4 | title B
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | title A
+          3 | title B
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | pie
+          2 | title
+          3 | title B
+---
+
+
+Test: pie-no-duplicate-title >> invalid >>> invalid/pie/title-entity-spelling-guard
+Filename: tests/fixtures/rules/pie-no-duplicate-title/invalid/pie/title-entity-spelling-guard-input.mmd
+
+Code:
+  1 | pie
+  2 | title #35;
+  3 | title &#35;
+    | ^~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | title #35;
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | pie
+          2 | title &#35;
+---
+
+
+Test: pie-no-duplicate-title >> invalid >>> invalid/pie/title-excluded-history-reset
+Filename: tests/fixtures/rules/pie-no-duplicate-title/invalid/pie/title-excluded-history-reset-input.mmd
+
+Code:
+  1 | pie
+  2 | title A
+  3 | title <b>A</b>
+    | ^~~~~~~~~~~~~~ [1]
+  4 | title B
+    | ^~~~~~~ [2]
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | title A
+          3 | title B
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | pie
+          2 | title <b>A</b>
+          3 | title B
+[2] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | title A
+          3 | title <b>A</b>
+---
+
+
+Test: pie-no-duplicate-title >> invalid >>> invalid/pie/title-html-quote-equivalence
+Filename: tests/fixtures/rules/pie-no-duplicate-title/invalid/pie/title-html-quote-equivalence-input.mmd
+
+Code:
+  1 | pie
+  2 | title <b x="v">A</b>
+  3 | title <b x='v'>A</b>
+    | ^~~~~~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | title <b x="v">A</b>
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | pie
+          2 | title <b x='v'>A</b>
+---
+
+
+Test: pie-no-duplicate-title >> invalid >>> invalid/pie/title-latest-equal-partner
+Filename: tests/fixtures/rules/pie-no-duplicate-title/invalid/pie/title-latest-equal-partner-input.mmd
+
+Code:
+  1 | pie
+  2 | title A
+  3 | title A
+  4 | title B
+    | ^~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | title A
+          3 | title A
+---
+
+
+Test: pie-no-duplicate-title >> invalid >>> invalid/pie/title-padding-barrier-history
+Filename: tests/fixtures/rules/pie-no-duplicate-title/invalid/pie/title-padding-barrier-history-input.mmd
+
+Code:
+  1 | pie
+  2 | title A
+  3 | title  A
+  4 | title  B
+    | ^~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | title A
+          3 | title  A
+---
+
+
+Test: pie-no-duplicate-title >> invalid >>> invalid/pie/title-removal-empty-predecessor
+Filename: tests/fixtures/rules/pie-no-duplicate-title/invalid/pie/title-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | pie
+  2 | accTitle:
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | pie
+          2 | accTitle:
+          3 | accTitle: A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | pie
+          2 | accTitle:
+          3 | accTitle: B
+          4 |
+---
+
+
+Test: pie-no-duplicate-title >> invalid >>> invalid/pie/title-single-tab-distinct
+Filename: tests/fixtures/rules/pie-no-duplicate-title/invalid/pie/title-single-tab-distinct-input.mmd
+
+Code:
+  1 | pie
+  2 | title a	b
+  3 | title a b
+    | ^~~~~~~~~ [1]
+  4 | "A":1
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | title a	b
+          3 | "A":1
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | pie
+          2 | title a b
+          3 | "A":1
+          4 |
+---
+
+
+Test: pie-no-duplicate-title >> invalid >>> invalid/pie/title-three-alternating
+Filename: tests/fixtures/rules/pie-no-duplicate-title/invalid/pie/title-three-alternating-input.mmd
+
+Code:
+  1 | pie
+  2 | title A
+  3 | title B
+    | ^~~~~~~ [1]
+  4 | title A
+    | ^~~~~~~ [2]
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | title A
+          3 | title A
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | pie
+          2 | title B
+          3 | title A
+[2] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | title A
+          3 | title B
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | pie
+          2 | title A
+          3 | title A
+---
+
+
+Test: pie-no-duplicate-title >> invalid >>> invalid/pie/title-whitespace-final
+Filename: tests/fixtures/rules/pie-no-duplicate-title/invalid/pie/title-whitespace-final-input.mmd
+
+Code:
+  1 | pie
+  2 | title First
+  3 | title   
+    | ^~~~~~~~ [1]
+  4 | "A":1
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | pie
+          2 | title First
+          3 | "A":1
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | pie
+          2 | title   
+          3 | "A":1
+---

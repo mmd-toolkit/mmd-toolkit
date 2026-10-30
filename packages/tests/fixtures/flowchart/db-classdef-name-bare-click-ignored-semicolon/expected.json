@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences/click-reserved-word.md, The difference: this `click` does not start a click statement, so this specification rejects the input, which mermaid.js accepts; the line rule ignores the last `;`, and the reference input, without the `click`, the space after it, the empty string, and the space that leaves the click context, gives the same Db in mermaid.js."
+  },
+  "knownDivergence": "click-reserved-word",
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "a:b",
+        "styles": [
+          "fill:#f00"
+        ]
+      }
+    ],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

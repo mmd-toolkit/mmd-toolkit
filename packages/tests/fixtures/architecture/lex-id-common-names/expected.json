@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Names: common-form priority rejects a title prefix, while bare accTitle, accDescr and boolean-looking words can be IDs. Case: id-common-names-control."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "accTitle",
+        "type": "service"
+      },
+      {
+        "id": "accDescr",
+        "type": "service"
+      },
+      {
+        "id": "true",
+        "type": "service"
+      },
+      {
+        "id": "false",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

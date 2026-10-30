@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: Passed Unicode trivia before and after retained directives is not read again."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: -> <- at offset: 3, skipped 1 characters.\nLexer error on line 4, column 1: unexpected character: -> <- at offset: 18, skipped 1 characters. "
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A global directive at the start of quoted data is removed."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "\"value\""
+        }
+      }
+    ]
+  }
+}

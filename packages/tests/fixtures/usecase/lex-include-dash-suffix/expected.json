@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a dash suffix fail after include?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting: one of these possible Token sequences:\n  1. [IDENTIFIER]\n  2. [PLAIN_STRING]\n  3. [MARKDOWN_STRING]\nbut found: '-' at line 2, column 16 [28,29)"
+  }
+}

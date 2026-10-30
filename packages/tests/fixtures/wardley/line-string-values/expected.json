@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are CR, LS and PS retained inside STRING?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "A\nB C D",
+        "label": "A\nB C D",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [
+      {
+        "text": "N\nM",
+        "x": 30,
+        "y": 20
+      }
+    ],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

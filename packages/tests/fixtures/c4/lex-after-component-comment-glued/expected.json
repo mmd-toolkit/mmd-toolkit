@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A component comment glued suffix after the call or boundary body is accepted; title is \"\", and shapes[0] is {\"alias\":\"a\",\"label\":{\"text\":\"A\"},\"techn\":{\"text\":\"Java\"},\"descr\":{\"text\":\"D\"},\"sprite\":\"sprite\",\"tags\":\"tags\",\"link\":\"link\",\"typeC4Shape\":{\"text\":\"component\"},\"parentBoundary\":\"global\"}, and boundaries[1] is absent, and rels[0] is absent."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "A"
+        },
+        "techn": {
+          "text": "Java"
+        },
+        "descr": {
+          "text": "D"
+        },
+        "sprite": "sprite",
+        "tags": "tags",
+        "link": "link",
+        "typeC4Shape": {
+          "text": "component"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

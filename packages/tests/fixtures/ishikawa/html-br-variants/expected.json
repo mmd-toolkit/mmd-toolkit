@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P3: HTML, entities and semicolon preprocessing] Are line break tag variants kept before rendering?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R<br>A",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R<br>A",
+      "children": [
+        {
+          "text": "B<br/>C<br />D</br>E<BR>F#br#G",
+          "children": []
+        }
+      ]
+    }
+  }
+}

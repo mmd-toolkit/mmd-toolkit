@@ -1,0 +1,437 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: mindmap-no-mismatched-shape >> invalid >>> docs/rules/mindmap-no-mismatched-shape.md incorrect 1
+Filename: mindmap-no-mismatched-shape-incorrect-1.mmd
+
+Code:
+  1 | mindmap
+  2 |   Plans
+  3 |     Write[draft)
+    |                ^ [1]
+  4 |
+
+[1] mermaid.js draws the shape that the opener `[` writes and ignores the closer `)`; the closer of `[` is `]`.
+    Suggestions:
+      - Close with `]`.
+        Output:
+          1 | mindmap
+          2 |   Plans
+          3 |     Write[draft]
+          4 |
+      - Open with `(`.
+        Output:
+          1 | mindmap
+          2 |   Plans
+          3 |     Write(draft)
+          4 |
+---
+
+
+Test: mindmap-no-mismatched-shape >> invalid >>> docs/rules/mindmap-no-mismatched-shape.md incorrect 2
+Filename: mindmap-no-mismatched-shape-incorrect-2.mmd
+
+Code:
+  1 | mindmap
+  2 |   Plans
+  3 |     Review(notes))
+    |                 ^~ [1]
+  4 |
+
+[1] mermaid.js draws a cloud, because the closer `))` is not the `)` that closes `(`.
+    Suggestions:
+      - Close with `)`.
+        Output:
+          1 | mindmap
+          2 |   Plans
+          3 |     Review(notes)
+          4 |
+      - Open with `((`.
+        Output:
+          1 | mindmap
+          2 |   Plans
+          3 |     Review((notes))
+          4 |
+---
+
+
+Test: mindmap-no-mismatched-shape >> invalid >>> invalid/mindmap/db-shape-bang-open-rect-close
+Filename: tests/fixtures/rules/mindmap-no-mismatched-shape/invalid/mindmap/db-shape-bang-open-rect-close-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   r))text]
+    |          ^ [1]
+  3 |
+
+[1] mermaid.js draws the shape that the opener `))` writes and ignores the closer `]`; the closer of `))` is `((`.
+    Suggestions:
+      - Close with `((`.
+        Output:
+          1 | mindmap
+          2 |   r))text((
+          3 |
+      - Open with `[`.
+        Output:
+          1 | mindmap
+          2 |   r[text]
+          3 |
+---
+
+
+Test: mindmap-no-mismatched-shape >> invalid >>> invalid/mindmap/db-shape-cloud-open-rect-close
+Filename: tests/fixtures/rules/mindmap-no-mismatched-shape/invalid/mindmap/db-shape-cloud-open-rect-close-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   r)text]
+    |         ^ [1]
+  3 |
+
+[1] mermaid.js draws the shape that the opener `)` writes and ignores the closer `]`; the closer of `)` is `(`.
+    Suggestions:
+      - Close with `(`.
+        Output:
+          1 | mindmap
+          2 |   r)text(
+          3 |
+      - Open with `[`.
+        Output:
+          1 | mindmap
+          2 |   r[text]
+          3 |
+---
+
+
+Test: mindmap-no-mismatched-shape >> invalid >>> invalid/mindmap/db-shape-hexagon-open-rect-close
+Filename: tests/fixtures/rules/mindmap-no-mismatched-shape/invalid/mindmap/db-shape-hexagon-open-rect-close-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   r{{text]
+    |          ^ [1]
+  3 |
+
+[1] mermaid.js draws the shape that the opener `{{` writes and ignores the closer `]`; the closer of `{{` is `}}`.
+    Suggestions:
+      - Close with `}}`.
+        Output:
+          1 | mindmap
+          2 |   r{{text}}
+          3 |
+      - Open with `[`.
+        Output:
+          1 | mindmap
+          2 |   r[text]
+          3 |
+---
+
+
+Test: mindmap-no-mismatched-shape >> invalid >>> invalid/mindmap/db-shape-mismatched-end
+Filename: tests/fixtures/rules/mindmap-no-mismatched-shape/invalid/mindmap/db-shape-mismatched-end-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   r[text)
+    |         ^ [1]
+  3 |
+
+[1] mermaid.js draws the shape that the opener `[` writes and ignores the closer `)`; the closer of `[` is `]`.
+    Suggestions:
+      - Close with `]`.
+        Output:
+          1 | mindmap
+          2 |   r[text]
+          3 |
+      - Open with `(`.
+        Output:
+          1 | mindmap
+          2 |   r(text)
+          3 |
+---
+
+
+Test: mindmap-no-mismatched-shape >> invalid >>> invalid/mindmap/db-shape-round-open-brace-close
+Filename: tests/fixtures/rules/mindmap-no-mismatched-shape/invalid/mindmap/db-shape-round-open-brace-close-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   r(text}}
+    |         ^~ [1]
+  3 |
+
+[1] mermaid.js draws a cloud, because the closer `}}` is not the `)` that closes `(`.
+    Suggestions:
+      - Close with `)`.
+        Output:
+          1 | mindmap
+          2 |   r(text)
+          3 |
+      - Open with `{{`.
+        Output:
+          1 | mindmap
+          2 |   r{{text}}
+          3 |
+---
+
+
+Test: mindmap-no-mismatched-shape >> invalid >>> invalid/mindmap/db-shape-round-open-circle-close
+Filename: tests/fixtures/rules/mindmap-no-mismatched-shape/invalid/mindmap/db-shape-round-open-circle-close-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   r(text((
+    |         ^~ [1]
+  3 |
+
+[1] mermaid.js draws a cloud, because the closer `((` is not the `)` that closes `(`.
+    Suggestions:
+      - Close with `)`.
+        Output:
+          1 | mindmap
+          2 |   r(text)
+          3 |
+      - Open with `))`.
+        Output:
+          1 | mindmap
+          2 |   r))text((
+          3 |
+---
+
+
+Test: mindmap-no-mismatched-shape >> invalid >>> invalid/mindmap/db-shape-round-string-dash-close
+Filename: tests/fixtures/rules/mindmap-no-mismatched-shape/invalid/mindmap/db-shape-round-string-dash-close-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   r("text"-)
+    |           ^~ [1]
+  3 |
+
+[1] mermaid.js draws a cloud, because the closer `-)` is not the `)` that closes `(`.
+    Suggestions:
+      - Close with `)`.
+        Output:
+          1 | mindmap
+          2 |   r("text")
+          3 |
+---
+
+
+Test: mindmap-no-mismatched-shape >> invalid >>> invalid/mindmap/gram-shape-circle-single-closer
+Filename: tests/fixtures/rules/mindmap-no-mismatched-shape/invalid/mindmap/gram-shape-circle-single-closer-input.mmd
+
+Code:
+  1 | mindmap
+  2 | root
+  3 |   a((x)
+    |       ^ [1]
+  4 |
+
+[1] mermaid.js draws the shape that the opener `((` writes and ignores the closer `)`; the closer of `((` is `))`.
+    Suggestions:
+      - Close with `))`.
+        Output:
+          1 | mindmap
+          2 | root
+          3 |   a((x))
+          4 |
+      - Open with `(`.
+        Output:
+          1 | mindmap
+          2 | root
+          3 |   a(x)
+          4 |
+---
+
+
+Test: mindmap-no-mismatched-shape >> invalid >>> invalid/mindmap/gram-shape-round-double-closer
+Filename: tests/fixtures/rules/mindmap-no-mismatched-shape/invalid/mindmap/gram-shape-round-double-closer-input.mmd
+
+Code:
+  1 | mindmap
+  2 | root
+  3 |   a(x))
+    |      ^~ [1]
+  4 |
+
+[1] mermaid.js draws a cloud, because the closer `))` is not the `)` that closes `(`.
+    Suggestions:
+      - Close with `)`.
+        Output:
+          1 | mindmap
+          2 | root
+          3 |   a(x)
+          4 |
+      - Open with `((`.
+        Output:
+          1 | mindmap
+          2 | root
+          3 |   a((x))
+          4 |
+---
+
+
+Test: mindmap-no-mismatched-shape >> invalid >>> invalid/mindmap/gram-shape-round-other-closer
+Filename: tests/fixtures/rules/mindmap-no-mismatched-shape/invalid/mindmap/gram-shape-round-other-closer-input.mmd
+
+Code:
+  1 | mindmap
+  2 | root
+  3 |   a(x]
+    |      ^ [1]
+  4 |
+
+[1] mermaid.js draws a cloud, because the closer `]` is not the `)` that closes `(`.
+    Suggestions:
+      - Close with `)`.
+        Output:
+          1 | mindmap
+          2 | root
+          3 |   a(x)
+          4 |
+      - Open with `[`.
+        Output:
+          1 | mindmap
+          2 | root
+          3 |   a[x]
+          4 |
+---
+
+
+Test: mindmap-no-mismatched-shape >> invalid >>> invalid/mindmap/shape-bang-closed-by-cloud
+Filename: tests/fixtures/rules/mindmap-no-mismatched-shape/invalid/mindmap/shape-bang-closed-by-cloud-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   root
+  3 |     a))x(
+    |         ^ [1]
+  4 |
+
+[1] mermaid.js draws the shape that the opener `))` writes and ignores the closer `(`; the closer of `))` is `((`.
+    Suggestions:
+      - Close with `((`.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     a))x((
+          4 |
+      - Open with `)`.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     a)x(
+          4 |
+---
+
+
+Test: mindmap-no-mismatched-shape >> invalid >>> invalid/mindmap/shape-cloud-closed-by-round
+Filename: tests/fixtures/rules/mindmap-no-mismatched-shape/invalid/mindmap/shape-cloud-closed-by-round-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   root
+  3 |     a)x)
+    |        ^ [1]
+  4 |
+
+[1] mermaid.js draws the shape that the opener `)` writes and ignores the closer `)`; the closer of `)` is `(`.
+    Suggestions:
+      - Close with `(`.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     a)x(
+          4 |
+      - Open with `(`.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     a(x)
+          4 |
+---
+
+
+Test: mindmap-no-mismatched-shape >> invalid >>> invalid/mindmap/shape-multiline-mismatched
+Filename: tests/fixtures/rules/mindmap-no-mismatched-shape/invalid/mindmap/shape-multiline-mismatched-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   root
+  3 |     a[x
+  4 |     y)
+    |      ^ [1]
+  5 |
+
+[1] mermaid.js draws the shape that the opener `[` writes and ignores the closer `)`; the closer of `[` is `]`.
+    Suggestions:
+      - Close with `]`.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     a[x
+          4 |     y]
+          5 |
+      - Open with `(`.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     a(x
+          4 |     y)
+          5 |
+---
+
+
+Test: mindmap-no-mismatched-shape >> invalid >>> invalid/mindmap/shape-string-mismatched
+Filename: tests/fixtures/rules/mindmap-no-mismatched-shape/invalid/mindmap/shape-string-mismatched-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   root
+  3 |     a["x")
+    |          ^ [1]
+  4 |
+
+[1] mermaid.js draws the shape that the opener `[` writes and ignores the closer `)`; the closer of `[` is `]`.
+    Suggestions:
+      - Close with `]`.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     a["x"]
+          4 |
+      - Open with `(`.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     a("x")
+          4 |
+---
+
+
+Test: mindmap-no-mismatched-shape >> invalid >>> invalid/mindmap/shape-without-id-mismatched
+Filename: tests/fixtures/rules/mindmap-no-mismatched-shape/invalid/mindmap/shape-without-id-mismatched-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   root
+  3 |     ((x)
+    |        ^ [1]
+  4 |
+
+[1] mermaid.js draws the shape that the opener `((` writes and ignores the closer `)`; the closer of `((` is `))`.
+    Suggestions:
+      - Close with `))`.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     ((x))
+          4 |
+      - Open with `(`.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     (x)
+          4 |
+---

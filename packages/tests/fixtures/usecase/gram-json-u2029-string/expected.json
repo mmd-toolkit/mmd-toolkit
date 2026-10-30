@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can a JSON string contain U+2029 literally?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "J",
+        "value": {
+          "a": "first last"
+        },
+        "propertyOrder": {
+          "": [
+            "a"
+          ]
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "J",
+        "set": {
+          "value": {
+            "a": "first last"
+          },
+          "propertyOrder": {
+            "": [
+              "a"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

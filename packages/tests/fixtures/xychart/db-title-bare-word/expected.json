@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, title: a title without quotes is a word."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "Chart",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": []
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}

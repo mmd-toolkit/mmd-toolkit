@@ -1,0 +1,323 @@
+{
+  "type": "Root",
+  "diagramType": "railroadPeg",
+  "body": {
+    "type": "RailroadDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "RailroadRule",
+        "name": {
+          "type": "Identifier",
+          "name": "r",
+          "range": [
+            18,
+            19
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 1
+            }
+          }
+        },
+        "textBeforeOperator": [],
+        "textBeforeDefinition": [],
+        "definition": {
+          "type": "RailroadSequenceExpression",
+          "elements": [
+            {
+              "type": "RailroadExpressionMember",
+              "textBefore": [],
+              "expression": {
+                "type": "StringLiteral",
+                "value": "<b>x</b>",
+                "raw": "\"<b>x</b>\"",
+                "closed": true,
+                "range": [
+                  23,
+                  33
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 5
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 15
+                  }
+                }
+              },
+              "textAfter": [],
+              "range": [
+                23,
+                33
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 5
+                },
+                "end": {
+                  "line": 2,
+                  "column": 15
+                }
+              }
+            },
+            {
+              "type": "RailroadExpressionMember",
+              "textBefore": [],
+              "expression": {
+                "type": "RailroadPredicateExpression",
+                "operator": "&",
+                "textBeforeElement": [],
+                "element": {
+                  "type": "StringLiteral",
+                  "value": "<i>y</i>",
+                  "raw": "\"<i>y</i>\"",
+                  "closed": true,
+                  "range": [
+                    35,
+                    45
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 2,
+                      "column": 17
+                    },
+                    "end": {
+                      "line": 2,
+                      "column": 27
+                    }
+                  }
+                },
+                "range": [
+                  34,
+                  45
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 16
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 27
+                  }
+                }
+              },
+              "textAfter": [],
+              "range": [
+                34,
+                45
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 16
+                },
+                "end": {
+                  "line": 2,
+                  "column": 27
+                }
+              }
+            }
+          ],
+          "range": [
+            23,
+            45
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 5
+            },
+            "end": {
+              "line": 2,
+              "column": 27
+            }
+          }
+        },
+        "textBeforeTerminator": [],
+        "range": [
+          18,
+          46
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 28
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      46
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 28
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "railroad-peg-beta",
+      "range": [
+        0,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "r",
+      "range": [
+        18,
+        19
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "<-",
+      "range": [
+        20,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"<b>x</b>\"",
+      "range": [
+        23,
+        33
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 5
+        },
+        "end": {
+          "line": 2,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "&",
+      "range": [
+        34,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 16
+        },
+        "end": {
+          "line": 2,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"<i>y</i>\"",
+      "range": [
+        35,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 17
+        },
+        "end": {
+          "line": 2,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ";",
+      "range": [
+        45,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 27
+        },
+        "end": {
+          "line": 2,
+          "column": 28
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    46
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 28
+    }
+  }
+}

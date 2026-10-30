@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A directive between a common keyword and colon splits no atom."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "accTitle: A",
+    "accDescr": "",
+    "frames": []
+  }
+}

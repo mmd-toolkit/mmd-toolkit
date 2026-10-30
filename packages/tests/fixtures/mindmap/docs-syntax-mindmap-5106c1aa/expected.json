@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/mindmap.md",
+    "line": 158
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "Root",
+      "level": 0,
+      "descr": "Root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "A",
+          "level": 4,
+          "descr": "A",
+          "type": 0,
+          "children": [
+            {
+              "nodeId": "B",
+              "level": 8,
+              "descr": "B",
+              "type": 0,
+              "children": []
+            },
+            {
+              "nodeId": "C",
+              "level": 6,
+              "descr": "C",
+              "type": 0,
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

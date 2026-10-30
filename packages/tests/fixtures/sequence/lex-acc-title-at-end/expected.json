@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Building the summary, titles: `accTitle:` at the end of the text has no text and sets the empty accessibility title."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

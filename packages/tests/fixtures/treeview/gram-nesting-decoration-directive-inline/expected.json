@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/treeview.md Gap ownership and node ranges: complete-node decoration gap with an inline shared directive; preserve the lexical reading and assign the gap to the next hierarchy node."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "parent",
+            "nodeType": "file",
+            "children": [
+              {
+                "name": "child",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

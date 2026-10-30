@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`UpdateLayoutConfig` with no arguments is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...UpdateLayoutConfig()\n-----------------------^\nExpecting 'STR', 'STR_KEY', 'ATTRIBUTE', 'ATTRIBUTE_EMPTY', got 'NEWLINE'"
+  }
+}

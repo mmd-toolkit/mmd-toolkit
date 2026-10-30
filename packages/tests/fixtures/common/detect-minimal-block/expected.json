@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md entry 26: minimal accepted example of `block`. The header line alone is rejected, so the input has one minimal statement."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "a",
+          "label": "a",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

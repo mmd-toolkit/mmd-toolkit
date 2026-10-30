@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Is a gap after json required to enter JSON mode?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Metadata target 'jsonJ' is unresolved at line 2, column 1 [13,18)"
+  }
+}

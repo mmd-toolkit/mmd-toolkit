@@ -1,0 +1,64 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Site securityLevel replaces IR terminal, nonterminal and special text through nested lists, optional and repetition."
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": true
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "a&lt;b&gt;&equals;c",
+    "accDescr": "d<br/>e&equals;f",
+    "rules": [
+      {
+        "name": "r_1",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "terminal",
+              "value": "x<br/>y&equals;z"
+            },
+            {
+              "type": "choice",
+              "alternatives": [
+                {
+                  "type": "nonterminal",
+                  "name": "&lt;i&gt;n&lt;/i&gt;"
+                },
+                {
+                  "type": "optional",
+                  "element": {
+                    "type": "special",
+                    "text": "s&equals;1"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "repetition",
+              "element": {
+                "type": "terminal",
+                "value": "a&lt;b&gt;"
+              },
+              "min": 0,
+              "max": "Infinity"
+            },
+            {
+              "type": "repetition",
+              "element": {
+                "type": "terminal",
+                "value": "p&equals;q"
+              },
+              "min": 1,
+              "max": "Infinity"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nsankeyx b=\"c\">d,y,1\n----------^\nExpecting 'NEWLINE', 'EOF', 'COMMA', got 'DQUOTE'"
+  }
+}

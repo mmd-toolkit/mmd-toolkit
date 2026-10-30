@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, text grid: an HTML tag with attribute quotes (`<a b=\"c\">d`) in a category without quotes."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...chart-beta x-axis [<a b='c'>d, b]\n----------------------^"
+  }
+}

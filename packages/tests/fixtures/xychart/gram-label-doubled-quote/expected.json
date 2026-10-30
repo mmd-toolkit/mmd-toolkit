@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, label: two quotes inside a label end it and start another one, which is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...t-beta line [1 \"a\"\"b\"]\n----------------------^\nExpecting 'SQUARE_BRACES_END', 'COMMA', got 'STR'"
+  }
+}

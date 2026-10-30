@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`Container` with one fewer positional argument than its maximum is accepted; shapes[0] is {\"alias\":\"a\",\"label\":{\"text\":\"A\"},\"techn\":{\"text\":\"Java\"},\"descr\":{\"text\":\"D\"},\"sprite\":\"sprite\",\"tags\":\"tags\",\"typeC4Shape\":{\"text\":\"container\"},\"parentBoundary\":\"global\"}."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "A"
+        },
+        "techn": {
+          "text": "Java"
+        },
+        "descr": {
+          "text": "D"
+        },
+        "sprite": "sprite",
+        "tags": "tags",
+        "typeC4Shape": {
+          "text": "container"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

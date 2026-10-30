@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A group written after a service is available because groups publish first."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "in": "g"
+      }
+    ],
+    "groups": [
+      {
+        "id": "g"
+      }
+    ],
+    "edges": [],
+    "layoutHints": []
+  }
+}

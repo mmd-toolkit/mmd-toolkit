@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does an unclosed directive affect an unlabeled link EOL?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [
+      {
+        "source": "A",
+        "target": "B",
+        "dashed": false
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

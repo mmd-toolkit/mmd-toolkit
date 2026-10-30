@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The nested subgraph is added before the one around it, so the inner one is subGraph0 and the outer one is subGraph1, which has the member subGraph0."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "subGraph0",
+        "nodes": [
+          "A"
+        ],
+        "title": "i j",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "subGraph1",
+        "nodes": [
+          "subGraph0"
+        ],
+        "title": "o p",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

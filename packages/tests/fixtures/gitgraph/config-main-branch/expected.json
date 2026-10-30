@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Site configuration changes the initial name and order."
+  },
+  "config": {
+    "gitGraph": {
+      "mainBranchName": "trunk",
+      "mainBranchOrder": 5
+    }
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "generated-commit-1",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "trunk"
+      }
+    ],
+    "branches": [
+      {
+        "name": "b"
+      },
+      {
+        "name": "trunk"
+      }
+    ]
+  }
+}

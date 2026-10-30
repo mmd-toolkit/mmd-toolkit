@@ -1,0 +1,60 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, data: a second plot with more values than the x axis made keeps the range and spreads its values over it."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 2
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 30
+    },
+    "plots": [
+      {
+        "type": "bar",
+        "title": "",
+        "data": [
+          [
+            "1",
+            1
+          ],
+          [
+            "2",
+            2
+          ]
+        ]
+      },
+      {
+        "type": "bar",
+        "title": "",
+        "data": [
+          [
+            "1",
+            10
+          ],
+          [
+            "1.5",
+            20
+          ],
+          [
+            "2",
+            30
+          ]
+        ]
+      }
+    ]
+  }
+}

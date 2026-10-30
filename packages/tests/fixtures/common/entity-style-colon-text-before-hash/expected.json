@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md `style` and `classDef` lines: after the `:`, the characters before the `#` are not whitespace, so the line matches the rule, its last `;` is ignored, and the label is `style:a#b`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "style:a#b",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

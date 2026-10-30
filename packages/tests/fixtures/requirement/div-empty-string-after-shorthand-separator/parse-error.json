@@ -1,0 +1,17 @@
+{
+  "message": "An empty string cannot be written here",
+  "range": [
+    41,
+    43
+  ],
+  "loc": {
+    "start": {
+      "line": 4,
+      "column": 4
+    },
+    "end": {
+      "line": 4,
+      "column": 6
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A quoted ARCH_TITLE can contain a raw CR."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "groups": [
+      {
+        "id": "g",
+        "title": "A\nB"
+      }
+    ],
+    "edges": [],
+    "layoutHints": []
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Do LF-only gaps around a retained comment and bare line already accept?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": []
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

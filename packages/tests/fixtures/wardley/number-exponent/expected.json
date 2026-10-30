@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does exponent notation reject?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 14: Expecting token of type 'WARDLEY_NUMBER' but found `1`.\nParse error on line 2, column 18: Expecting: one of these possible Token sequences:\n  1. [STRING]\n  2. [ID]\n  3. [NAME_WITH_SPACES]\nbut found: ','"
+  }
+}

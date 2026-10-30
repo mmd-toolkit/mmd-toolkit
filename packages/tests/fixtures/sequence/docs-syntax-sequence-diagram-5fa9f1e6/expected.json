@@ -1,0 +1,132 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/sequenceDiagram.md",
+    "line": 251
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Alice",
+        "description": "Alice",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "Bob"
+      },
+      {
+        "name": "Bob",
+        "description": "Bob",
+        "wrap": false,
+        "prevActor": "Alice",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "Carl"
+      },
+      {
+        "name": "Carl",
+        "description": "Carl",
+        "wrap": false,
+        "prevActor": "Bob",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "D"
+      },
+      {
+        "name": "D",
+        "description": "Donald",
+        "wrap": false,
+        "prevActor": "Carl",
+        "links": {},
+        "properties": {},
+        "type": "actor"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [
+      {
+        "id": "Carl",
+        "messageIndex": 2
+      },
+      {
+        "id": "D",
+        "messageIndex": 3
+      }
+    ],
+    "destroyedActors": [
+      {
+        "id": "Carl",
+        "messageIndex": 4
+      },
+      {
+        "id": "Bob",
+        "messageIndex": 5
+      }
+    ],
+    "messages": [
+      {
+        "from": "Alice",
+        "to": "Bob",
+        "message": "Hello Bob, how are you ?",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Bob",
+        "to": "Alice",
+        "message": "Fine, thank you. And you?",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Alice",
+        "to": "Carl",
+        "message": "Hi Carl!",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Carl",
+        "to": "D",
+        "message": "Hi!",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Alice",
+        "to": "Carl",
+        "message": "We are too many",
+        "wrap": false,
+        "type": 3,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Bob",
+        "to": "Alice",
+        "message": "I agree",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

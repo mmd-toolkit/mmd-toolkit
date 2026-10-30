@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Whitespace after the closer preserves the group EOL."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service"
+      }
+    ],
+    "groups": [
+      {
+        "id": "g"
+      }
+    ],
+    "edges": [],
+    "layoutHints": []
+  }
+}

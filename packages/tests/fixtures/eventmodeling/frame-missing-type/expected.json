@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A frame needs an entity type."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 7: Expecting: one of these possible Token sequences:\n  1. [rmo]\n  2. [readmodel]\n  3. [ui]\n  4. [cmd]\n  5. [command]\n  6. [evt]\n  7. [event]\n  8. [pcr]\n  9. [processor]\nbut found: 'A'"
+  }
+}

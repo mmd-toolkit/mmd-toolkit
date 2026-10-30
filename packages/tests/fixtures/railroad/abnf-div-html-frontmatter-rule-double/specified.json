@@ -1,0 +1,33 @@
+{
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "terminal",
+              "value": "x="
+            },
+            {
+              "type": "nonterminal",
+              "name": "y"
+            },
+            {
+              "type": "terminal",
+              "value": ">"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Common statements: Does removing a common comment line and its LF leave metadata padding after a native directive?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 10: unexpected character: ->:<- at offset: 38, skipped 1 characters. Parse error on line 4, column 2: Expecting token of type 'EOF' but found `accTitle`."
+  }
+}

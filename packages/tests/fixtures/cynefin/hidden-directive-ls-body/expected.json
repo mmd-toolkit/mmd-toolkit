@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Hidden directives: body text includes U+2028 and U+2029."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "A"
+          },
+          {
+            "label": "B"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

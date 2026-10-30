@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A spaced semicolon after a group rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 9: unexpected character: ->;<- at offset: 26, skipped 1 characters. "
+  }
+}

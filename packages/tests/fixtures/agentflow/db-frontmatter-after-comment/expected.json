@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read frontmatter after comment?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n%% comment---title: Title--\n----------^\nExpecting 'COMMENT', 'NEWLINE', 'SPACE', 'GRAPH', got 'START_LINK'"
+  }
+}

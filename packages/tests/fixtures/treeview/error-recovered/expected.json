@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An invalid icon after a valid name rejects despite parser recovery."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 4: unexpected character: ->i<- at offset: 17, skipped 1 characters. "
+  }
+}

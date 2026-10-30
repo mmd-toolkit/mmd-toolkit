@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A passed bare line does not make a later BOM native whitespace."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 3, column 1: unexpected character: ->﻿<- at offset: 11, skipped 1 characters. "
+  }
+}

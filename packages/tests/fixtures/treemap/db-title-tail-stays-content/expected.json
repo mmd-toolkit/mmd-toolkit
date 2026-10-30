@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md Headers and indentation: Does TITLE absorb its trailing space without indenting the following leaf?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "children": []
+      },
+      {
+        "name": "b",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  }
+}

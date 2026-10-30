@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md entry 9: `classDiagram` is matched case-sensitively; `ClassDiagram` is no diagram type."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: ClassDiagram\nclass A\n"
+  }
+}

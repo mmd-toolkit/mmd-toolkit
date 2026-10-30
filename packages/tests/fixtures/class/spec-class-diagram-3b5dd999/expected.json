@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/class/classDiagram.spec.ts",
+    "line": 1281,
+    "test": "given a class diagram with members and methods  > when parsing members > should handle generic types"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Car",
+        "type": "",
+        "label": "Car",
+        "text": "Car",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "-",
+            "classifier": "",
+            "id": "List~Wheel~ wheels"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Vertical-only decoration does not activate box mode by itself and remains a node."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "│",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "root",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "child",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

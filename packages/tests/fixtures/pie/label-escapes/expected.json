@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The default converter reads common single-character escapes."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "back\\slash\nline\rreturn\ttab\bback\fform\u000bvertical",
+        "value": 1
+      }
+    ]
+  }
+}

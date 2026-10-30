@@ -1,0 +1,118 @@
+{
+  "type": "Root",
+  "diagramType": "info",
+  "body": {
+    "type": "InfoDiagram",
+    "showInfo": true,
+    "textBeforeHeader": [],
+    "textBeforeShowInfo": [
+      {
+        "type": "InfoIgnoredText",
+        "kind": "yaml-block",
+        "value": "---\n---\nx\n---",
+        "range": [
+          5,
+          18
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 3
+          }
+        }
+      }
+    ],
+    "body": [],
+    "range": [
+      0,
+      27
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 6,
+        "column": 8
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "info",
+      "range": [
+        0,
+        4
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "---\n---\nx\n---",
+      "range": [
+        5,
+        18
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "showInfo",
+      "range": [
+        19,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 8
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    28
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 7,
+      "column": 0
+    }
+  }
+}

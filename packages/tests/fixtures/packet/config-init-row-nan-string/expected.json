@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Quoting .nan makes it a retained JSON string whose failed numeric comparison suppresses all rows."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  },
+  "embedded": {
+    "config": {
+      "packet": {
+        "bitsPerRow": ".nan"
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A click statement after the & of a group: a statement does not follow the separator, and mermaid.js rejects it."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...wchart LRA & click B\n----------------------^\nExpecting 'SEMI', 'NEWLINE', 'SPACE', 'EOF', 'AMP', 'COLON', 'START_LINK', 'LINK', 'LINK_ID', 'DOWN', 'DEFAULT', 'NUM', 'COMMA', 'NODE_STRING', 'BRKT', 'MINUS', 'MULT', 'UNICODE_TEXT', got 'CLICK'"
+  }
+}

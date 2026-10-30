@@ -1,0 +1,75 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do every quoted field and labeled arrow retain CR, LS and PS?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "U\nV W X",
+        "label": "U\nV W X",
+        "x": 20,
+        "y": 10,
+        "className": "anchor"
+      },
+      {
+        "id": "C\nD E F",
+        "label": "C\nD E F",
+        "x": 30,
+        "y": 20,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [
+      {
+        "source": "U\nV W X",
+        "target": "C\nD E F",
+        "dashed": false,
+        "label": "L\nM N O",
+        "flow": "forward"
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [
+      {
+        "number": 1,
+        "coordinates": [
+          {
+            "x": 2,
+            "y": 100
+          }
+        ],
+        "text": "A\nB C D"
+      }
+    ],
+    "notes": [],
+    "accelerators": [
+      {
+        "name": "X\nY Z A",
+        "x": 40,
+        "y": 30
+      }
+    ],
+    "deaccelerators": [
+      {
+        "name": "Y\nZ A B",
+        "x": 50,
+        "y": 40
+      }
+    ],
+    "axes": {
+      "stages": [
+        "G\nH I J",
+        "P"
+      ],
+      "stageBoundaries": []
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The note contexts, floating note context: `a` and `b` are two texts, and the grammar takes one, so the input is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...eDiagram-v2note \"a\"b\" as NA\n----------------------^\nExpecting 'AS', got 'NOTE_TEXT'"
+  }
+}

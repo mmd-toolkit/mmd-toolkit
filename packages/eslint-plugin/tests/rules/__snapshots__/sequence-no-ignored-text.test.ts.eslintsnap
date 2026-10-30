@@ -1,0 +1,596 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: sequence-no-ignored-text >> invalid >>> docs/rules/sequence-no-ignored-text.md incorrect 1
+Filename: sequence-no-ignored-text-incorrect-1.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   A ->> B: call(x
+  3 |   )
+    |   ^ [1]
+  4 |   B -->> A: done
+  5 |
+
+Output:
+  1 | sequenceDiagram
+  2 |   A ->> B: call(x)
+  3 |   B -->> A: done
+  4 |
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/db-ignored-line-after-comment-line
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/db-ignored-line-after-comment-line-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: call(x
+  3 | %% c
+  4 | )
+    | ^ [1]
+  5 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/db-ignored-line-after-empty-line
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/db-ignored-line-after-empty-line-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: call(x
+  3 |
+  4 | )
+    | ^ [1]
+  5 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/db-ignored-line-after-wrapped-message
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/db-ignored-line-after-wrapped-message-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: call(x
+  3 | )
+    | ^ [1]
+  4 | B-->>A: done
+  5 |
+
+Output:
+  1 | sequenceDiagram
+  2 | A->>B: call(x)
+  3 | B-->>A: done
+  4 |
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/gram-empty-description-block-then-invalid
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/gram-empty-description-block-then-invalid-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr {} )
+    |             ^ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/gram-invalid-after-end-glued
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/gram-invalid-after-end-glued-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | loop x
+  3 | A->>B: y
+  4 | end)
+    |    ^ [1]
+  5 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/gram-invalid-after-end
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/gram-invalid-after-end-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | loop x
+  3 | A->>B: y
+  4 | end )
+    |     ^ [1]
+  5 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/gram-invalid-before-message-glued
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/gram-invalid-before-message-glued-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | )A->>B: x
+    | ^ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/gram-invalid-before-message
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/gram-invalid-before-message-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | ) A->>B: x
+    | ^ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/gram-invalid-before-participant
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/gram-invalid-before-participant-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | )participant A
+    | ^ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/gram-invalid-in-loop
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/gram-invalid-in-loop-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | loop x
+  3 | )
+    | ^ [1]
+  4 | end
+  5 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/gram-invalid-then-empty-description-block
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/gram-invalid-then-empty-description-block-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | ) accDescr {}
+    | ^ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/join-another-message
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/join-another-message-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: call(x
+  3 | ) B->>A: y
+    | ^ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/join-directive-on-closer-line
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/join-directive-on-closer-line-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: call(x
+  3 | )%%{init: {}}%%
+    | ^ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/join-empty-block-on-closer-line
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/join-empty-block-on-closer-line-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: call(x
+  3 | ) accDescr {}
+    | ^ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/join-excess-closers
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/join-excess-closers-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: call(x
+  3 | ))
+    | ^ [1]
+    |  ^ [2]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+[2] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/join-hash-comment
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/join-hash-comment-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: call(x # c
+  3 | )
+    | ^ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/join-nested-parentheses
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/join-nested-parentheses-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: call(f(x
+  3 | ))
+    | ^ [1]
+    |  ^ [2]
+  4 |
+
+Output:
+  1 | sequenceDiagram
+  2 | A->>B: call(f(x))
+  3 |
+
+[1] mermaid.js reads `)` as no statement and drops it.
+[2] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/join-note-text
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/join-note-text-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | Note right of A: f(x
+  3 | )
+    | ^ [1]
+  4 |
+
+Output:
+  1 | sequenceDiagram
+  2 | Note right of A: f(x)
+  3 |
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/join-semicolon
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/join-semicolon-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: call(x;
+  3 | )
+    | ^ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/join-separated-closers
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/join-separated-closers-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: call(f(x
+  3 | ) )
+    | ^ [1]
+    |   ^ [2]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+[2] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/join-text-interior
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/join-text-interior-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: call(x
+  3 | A->>B: next
+  4 | )
+    | ^ [1]
+  5 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/lex-comment-after-invalid-unit
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/lex-comment-after-invalid-unit-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: x
+  3 | )%% c
+    | ^ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/lex-directive-then-invalid-unit
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/lex-directive-then-invalid-unit-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | %%{init: {}}%%)
+    |               ^ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/lex-hash-comment-after-invalid-unit
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/lex-hash-comment-after-invalid-unit-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | ) # c
+    | ^ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/lex-invalid-line-at-end
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/lex-invalid-line-at-end-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: x
+  3 | )
+    | ^ [1]
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/lex-invalid-line-backslash
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/lex-invalid-line-backslash-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: x
+  3 | \
+    | ^ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads `\` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/lex-invalid-line-greater-than
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/lex-invalid-line-greater-than-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | >
+    | ^ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads `>` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/lex-invalid-line-less-than
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/lex-invalid-line-less-than-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | <
+    | ^ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads `<` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/lex-invalid-line-parenthesis
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/lex-invalid-line-parenthesis-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: x
+  3 | )
+    | ^ [1]
+  4 | B->>A: y
+  5 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/lex-invalid-line-slash
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/lex-invalid-line-slash-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | /
+    | ^ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads `/` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/lex-invalid-line-two-units-glued
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/lex-invalid-line-two-units-glued-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | ))
+    | ^ [1]
+    |  ^ [2]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+[2] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/lex-invalid-line-two-units
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/lex-invalid-line-two-units-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | ) )
+    | ^ [1]
+    |   ^ [2]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+[2] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/lex-invalid-unit-then-directive
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/lex-invalid-unit-then-directive-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | )%%{init: {}}%%
+    | ^ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/lex-invalid-unit-then-semicolon
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/lex-invalid-unit-then-semicolon-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | );
+    | ^ [1]
+  3 | A->>B: x
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---
+
+
+Test: sequence-no-ignored-text >> invalid >>> invalid/sequence/lex-invalid-unit-then-unclosed-directive
+Filename: tests/fixtures/rules/sequence-no-ignored-text/invalid/sequence/lex-invalid-unit-then-unclosed-directive-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | ) %%{init: {}
+    | ^ [1]
+  3 | A->>B: x
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads `)` as no statement and drops it.
+---

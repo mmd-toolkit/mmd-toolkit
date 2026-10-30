@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Is an unused class definition published?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": [
+      {
+        "id": "unused",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

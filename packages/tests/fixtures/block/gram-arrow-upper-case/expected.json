@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, block arrows: the directions are read in lower case only: `Right` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...ock-beta  A<[\"x\"]>(Right)\n----------------------^"
+  }
+}

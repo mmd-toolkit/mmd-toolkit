@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can a JSON table have an empty object body?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "J",
+        "value": {},
+        "propertyOrder": {
+          "": []
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "J",
+        "set": {
+          "value": {},
+          "propertyOrder": {
+            "": []
+          }
+        }
+      }
+    ]
+  }
+}

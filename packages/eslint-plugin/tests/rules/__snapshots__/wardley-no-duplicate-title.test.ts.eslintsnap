@@ -1,0 +1,367 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: wardley-no-duplicate-title >> invalid >>> docs/rules/wardley-no-duplicate-title.md incorrect 1
+Filename: wardley-no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | wardley-beta
+  2 |   title First
+  3 |   title Second
+    |   ^~~~~~~~~~~~ [1]
+  4 |   component API [0.6, 0.7]
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 |   title First
+          3 |   component API [0.6, 0.7]
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | wardley-beta
+          2 |   title Second
+          3 |   component API [0.6, 0.7]
+          4 |
+---
+
+
+Test: wardley-no-duplicate-title >> invalid >>> invalid/wardley/acctitle-change
+Filename: tests/fixtures/rules/wardley-no-duplicate-title/invalid/wardley/acctitle-change-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | accTitle: First
+  3 | accTitle: Last
+    | ^~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | wardley-beta
+          2 | accTitle: First
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | wardley-beta
+          2 | accTitle: Last
+---
+
+
+Test: wardley-no-duplicate-title >> invalid >>> invalid/wardley/acctitle-empty-comment
+Filename: tests/fixtures/rules/wardley-no-duplicate-title/invalid/wardley/acctitle-empty-comment-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | %% reminder
+  5 | component API [0.6,0.7]
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | wardley-beta
+          2 | accTitle: First
+          3 | %% reminder
+          4 | component API [0.6,0.7]
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | wardley-beta
+          2 | accTitle:
+          3 | %% reminder
+          4 | component API [0.6,0.7]
+---
+
+
+Test: wardley-no-duplicate-title >> invalid >>> invalid/wardley/docs-incorrect-1
+Filename: tests/fixtures/rules/wardley-no-duplicate-title/invalid/wardley/docs-incorrect-1-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 |   title First
+  3 |   title Second
+    |   ^~~~~~~~~~~~ [1]
+  4 |   component API [0.6, 0.7]
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 |   title First
+          3 |   component API [0.6, 0.7]
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | wardley-beta
+          2 |   title Second
+          3 |   component API [0.6, 0.7]
+          4 |
+---
+
+
+Test: wardley-no-duplicate-title >> invalid >>> invalid/wardley/title-change
+Filename: tests/fixtures/rules/wardley-no-duplicate-title/invalid/wardley/title-change-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | title Current strategy
+  3 | title Future strategy
+    | ^~~~~~~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | title Current strategy
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | wardley-beta
+          2 | title Future strategy
+---
+
+
+Test: wardley-no-duplicate-title >> invalid >>> invalid/wardley/title-empty-directive-gap
+Filename: tests/fixtures/rules/wardley-no-duplicate-title/invalid/wardley/title-empty-directive-gap-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | title First
+  3 | title
+    | ^~~~~ [1]
+  4 | %%{init:{}}%%
+  5 | component API [0.6,0.7]
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | title First
+          3 | %%{init:{}}%%
+          4 | component API [0.6,0.7]
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | wardley-beta
+          2 | title
+          3 | %%{init:{}}%%
+          4 | component API [0.6,0.7]
+---
+
+
+Test: wardley-no-duplicate-title >> invalid >>> invalid/wardley/title-empty
+Filename: tests/fixtures/rules/wardley-no-duplicate-title/invalid/wardley/title-empty-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | title First
+  3 | title
+    | ^~~~~ [1]
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | title First
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | wardley-beta
+          2 | title
+---
+
+
+Test: wardley-no-duplicate-title >> invalid >>> invalid/wardley/title-empty-reset
+Filename: tests/fixtures/rules/wardley-no-duplicate-title/invalid/wardley/title-empty-reset-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | title First
+  3 | title
+    | ^~~~~ [1]
+  4 | title Last
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | title First
+          3 | title Last
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | wardley-beta
+          2 | title
+          3 | title Last
+---
+
+
+Test: wardley-no-duplicate-title >> invalid >>> invalid/wardley/title-entity-same
+Filename: tests/fixtures/rules/wardley-no-duplicate-title/invalid/wardley/title-entity-same-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | title A
+  3 | title #65;
+    | ^~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | title A
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | wardley-beta
+          2 | title #65;
+---
+
+
+Test: wardley-no-duplicate-title >> invalid >>> invalid/wardley/title-equal-predecessor
+Filename: tests/fixtures/rules/wardley-no-duplicate-title/invalid/wardley/title-equal-predecessor-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | accTitle: A
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | wardley-beta
+          2 | accTitle: A
+          3 | accTitle: A
+          4 |
+---
+
+
+Test: wardley-no-duplicate-title >> invalid >>> invalid/wardley/title-frontmatter-empty
+Filename: tests/fixtures/rules/wardley-no-duplicate-title/invalid/wardley/title-frontmatter-empty-input.mmd
+
+Code:
+  1 | ---
+  2 | title: First
+  3 | ---
+  4 | wardley-beta
+  5 | title First
+  6 | title
+    | ^~~~~ [1]
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | ---
+          2 | title: First
+          3 | ---
+          4 | wardley-beta
+          5 | title First
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | ---
+          2 | title: First
+          3 | ---
+          4 | wardley-beta
+          5 | title
+---
+
+
+Test: wardley-no-duplicate-title >> invalid >>> invalid/wardley/title-html-quotes-written
+Filename: tests/fixtures/rules/wardley-no-duplicate-title/invalid/wardley/title-html-quotes-written-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | title <b x="a">T</b>
+  3 | title <b x='a'>T</b>
+    | ^~~~~~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | title <b x="a">T</b>
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | wardley-beta
+          2 | title <b x='a'>T</b>
+---
+
+
+Test: wardley-no-duplicate-title >> invalid >>> invalid/wardley/title-removal-empty-predecessor
+Filename: tests/fixtures/rules/wardley-no-duplicate-title/invalid/wardley/title-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | accTitle:
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | wardley-beta
+          2 | accTitle:
+          3 | accTitle: A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | wardley-beta
+          2 | accTitle:
+          3 | accTitle: B
+          4 |
+---
+
+
+Test: wardley-no-duplicate-title >> invalid >>> invalid/wardley/title-triple
+Filename: tests/fixtures/rules/wardley-no-duplicate-title/invalid/wardley/title-triple-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | title A
+  3 | title B
+    | ^~~~~~~ [1]
+  4 | title A
+    | ^~~~~~~ [2]
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | title A
+          3 | title A
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | wardley-beta
+          2 | title B
+          3 | title A
+[2] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | title A
+          3 | title B
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | wardley-beta
+          2 | title A
+          3 | title A
+---

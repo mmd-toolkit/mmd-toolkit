@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/git/gitGraph.spec.ts",
+    "line": 25,
+    "test": "when parsing a gitGraph > when parsing basic gitGraph > should handle set direction top to bottom"
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "generated-commit-1",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

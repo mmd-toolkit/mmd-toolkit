@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md: A name ending with end does not absorb the next line."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "Front end",
+        "nodes": [
+          "A"
+        ],
+        "title": "",
+        "classes": [],
+        "labelType": "text",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  }
+}

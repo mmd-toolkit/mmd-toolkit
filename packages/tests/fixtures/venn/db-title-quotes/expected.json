@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The common title setter keeps surrounding double quotes."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "\"  Quoted title  \"",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": []
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/radar.test.ts",
+    "line": 355,
+    "test": "radar > error messages with line and column numbers > should include line and column numbers in parser errors for radar diagrams"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 4, column 29: Expecting token of type 'ID' but found `\n`."
+  }
+}

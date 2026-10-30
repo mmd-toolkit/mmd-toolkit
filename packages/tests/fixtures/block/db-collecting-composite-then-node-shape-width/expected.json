@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, how the blocks are collected: a node with the id of a composite takes the type and the label, and the width of the composite stays."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "G",
+          "label": "x",
+          "type": "round",
+          "widthInColumns": 3,
+          "children": [
+            {
+              "id": "A",
+              "label": "A",
+              "type": "na",
+              "widthInColumns": 1
+            }
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

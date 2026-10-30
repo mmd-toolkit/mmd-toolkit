@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Building the summary: title is no keyword: title T is two states."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "title",
+        "shape": "rect",
+        "label": "title",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "T",
+        "shape": "rect",
+        "label": "T",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

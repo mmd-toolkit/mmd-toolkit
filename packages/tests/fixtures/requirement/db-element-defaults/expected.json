@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md requirement, an element: a field the body does not set is the empty text."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [
+      {
+        "name": "e",
+        "type": "",
+        "docRef": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": []
+  }
+}

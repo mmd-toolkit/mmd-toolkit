@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md The statement context: a label ends at `:`, and the second label is not taken by the grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...DiagramA --> B : x : y\n----------------------^\nExpecting 'NEWLINE', 'EOF', got 'LABEL'"
+  }
+}

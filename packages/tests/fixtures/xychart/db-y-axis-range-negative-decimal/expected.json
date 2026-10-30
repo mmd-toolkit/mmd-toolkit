@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, y-axis: negative decimal numbers."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": []
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": -2.5,
+      "max": -0.5
+    },
+    "plots": []
+  }
+}

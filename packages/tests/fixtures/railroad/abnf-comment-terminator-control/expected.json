@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: A comment that consumed an ABNF terminator can be followed by a visible terminator on another line."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

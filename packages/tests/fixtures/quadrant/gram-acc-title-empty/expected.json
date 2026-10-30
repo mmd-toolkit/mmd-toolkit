@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, accessibility: the white space after the colon includes the line feed, so an `accTitle:` with no text on its line takes the next line as its text; at the end of the text it is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...antChartaccTitle:\n--------------------^\nExpecting 'NEWLINE', 'SEMI', 'EOF', got '1'"
+  }
+}

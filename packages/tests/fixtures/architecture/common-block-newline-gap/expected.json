@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The description block opener can follow the keyword across a newline."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "A",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

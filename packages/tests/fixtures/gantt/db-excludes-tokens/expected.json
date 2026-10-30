@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The excluded tokens are in lower case, split at whitespace and commas."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [
+      "weekends",
+      "2024-01-03",
+      "monday"
+    ],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [],
+    "links": []
+  }
+}

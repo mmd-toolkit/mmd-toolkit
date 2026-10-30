@@ -1,0 +1,59 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/cynefin/cynefin.integration.spec.ts",
+    "line": 115,
+    "test": "Cynefin Parsing - Transitions > should parse multiple transitions"
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "A"
+          }
+        ]
+      },
+      {
+        "name": "complicated",
+        "items": [
+          {
+            "label": "B"
+          }
+        ]
+      },
+      {
+        "name": "clear",
+        "items": [
+          {
+            "label": "C"
+          }
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "complicated",
+        "label": "Analyzed"
+      },
+      {
+        "from": "complicated",
+        "to": "clear",
+        "label": "Codified"
+      },
+      {
+        "from": "chaotic",
+        "to": "complex",
+        "label": "Stabilized"
+      }
+    ]
+  }
+}

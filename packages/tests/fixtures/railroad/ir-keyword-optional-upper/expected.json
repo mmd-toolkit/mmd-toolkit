@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The optional constructor is case sensitive."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 5: Expecting: one of these possible Token sequences:\n  1. [sequence]\n  2. [choice]\n  3. [optional]\n  4. [oneOrMore]\n  5. [zeroOrMore]\n  6. [terminal]\n  7. [nonterminal]\n  8. [special]\nbut found: 'Optional'\nParse error on line 2, column 13: Expecting token of type '=' but found `(`."
+  }
+}

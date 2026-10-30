@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does ML_COMMENT hide lines after an unclosed opener?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "value": 1
+      },
+      {
+        "name": "B",
+        "value": 2
+      }
+    ],
+    "classDefs": []
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The attribute block context, rule 2, and Attributes: `PK, FK`; accepted."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [
+          {
+            "type": "int",
+            "name": "id",
+            "keys": [
+              "PK",
+              "FK"
+            ],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

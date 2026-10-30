@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: C4 word removed by directive is not detected."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": []
+    }
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

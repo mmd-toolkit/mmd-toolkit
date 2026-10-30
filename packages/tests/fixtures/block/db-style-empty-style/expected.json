@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, styles: a comma at the end leaves an empty style."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1,
+          "styles": [
+            "fill:#f00",
+            ""
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

@@ -1,0 +1,1610 @@
+{
+  "type": "Root",
+  "diagramType": "venn",
+  "body": {
+    "type": "VennDiagram",
+    "body": [
+      {
+        "type": "VennSubsetStatement",
+        "kind": "set",
+        "sets": [
+          {
+            "type": "Identifier",
+            "name": "A",
+            "range": [
+              16,
+              17
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 6
+              },
+              "end": {
+                "line": 2,
+                "column": 7
+              }
+            }
+          }
+        ],
+        "label": {
+          "type": "VennLabel",
+          "kind": "string",
+          "value": "Alpha",
+          "range": [
+            17,
+            26
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 16
+            }
+          }
+        },
+        "size": {
+          "type": "NumericLiteral",
+          "value": 20,
+          "raw": "20",
+          "range": [
+            27,
+            29
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 17
+            },
+            "end": {
+              "line": 2,
+              "column": 19
+            }
+          }
+        },
+        "range": [
+          12,
+          29
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 2
+          },
+          "end": {
+            "line": 2,
+            "column": 19
+          }
+        }
+      },
+      {
+        "type": "VennTextStatement",
+        "targets": null,
+        "id": {
+          "type": "Identifier",
+          "name": "A1",
+          "range": [
+            39,
+            41
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 9
+            },
+            "end": {
+              "line": 3,
+              "column": 11
+            }
+          }
+        },
+        "label": {
+          "type": "VennLabel",
+          "kind": "string",
+          "value": "React",
+          "range": [
+            41,
+            50
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 11
+            },
+            "end": {
+              "line": 3,
+              "column": 20
+            }
+          }
+        },
+        "range": [
+          34,
+          50
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 4
+          },
+          "end": {
+            "line": 3,
+            "column": 20
+          }
+        }
+      },
+      {
+        "type": "VennTextStatement",
+        "targets": null,
+        "id": {
+          "type": "Identifier",
+          "name": "A2",
+          "range": [
+            60,
+            62
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 9
+            },
+            "end": {
+              "line": 4,
+              "column": 11
+            }
+          }
+        },
+        "label": {
+          "type": "VennLabel",
+          "kind": "string",
+          "value": "Design Systems",
+          "range": [
+            62,
+            80
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 11
+            },
+            "end": {
+              "line": 4,
+              "column": 29
+            }
+          }
+        },
+        "range": [
+          55,
+          80
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 4
+          },
+          "end": {
+            "line": 4,
+            "column": 29
+          }
+        }
+      },
+      {
+        "type": "VennSubsetStatement",
+        "kind": "set",
+        "sets": [
+          {
+            "type": "Identifier",
+            "name": "B",
+            "range": [
+              87,
+              88
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 6
+              },
+              "end": {
+                "line": 5,
+                "column": 7
+              }
+            }
+          }
+        ],
+        "label": {
+          "type": "VennLabel",
+          "kind": "string",
+          "value": "Beta",
+          "range": [
+            88,
+            96
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 7
+            },
+            "end": {
+              "line": 5,
+              "column": 15
+            }
+          }
+        },
+        "size": {
+          "type": "NumericLiteral",
+          "value": 12,
+          "raw": "12",
+          "range": [
+            97,
+            99
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 16
+            },
+            "end": {
+              "line": 5,
+              "column": 18
+            }
+          }
+        },
+        "range": [
+          83,
+          99
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 2
+          },
+          "end": {
+            "line": 5,
+            "column": 18
+          }
+        }
+      },
+      {
+        "type": "VennSubsetStatement",
+        "kind": "union",
+        "sets": [
+          {
+            "type": "Identifier",
+            "name": "A",
+            "range": [
+              108,
+              109
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 8
+              },
+              "end": {
+                "line": 6,
+                "column": 9
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "B",
+            "range": [
+              110,
+              111
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 10
+              },
+              "end": {
+                "line": 6,
+                "column": 11
+              }
+            }
+          }
+        ],
+        "label": {
+          "type": "VennLabel",
+          "kind": "string",
+          "value": "AB",
+          "range": [
+            111,
+            117
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 11
+            },
+            "end": {
+              "line": 6,
+              "column": 17
+            }
+          }
+        },
+        "size": {
+          "type": "NumericLiteral",
+          "value": 3,
+          "raw": "3",
+          "range": [
+            118,
+            119
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 18
+            },
+            "end": {
+              "line": 6,
+              "column": 19
+            }
+          }
+        },
+        "range": [
+          102,
+          119
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 2
+          },
+          "end": {
+            "line": 6,
+            "column": 19
+          }
+        }
+      },
+      {
+        "type": "VennStyleStatement",
+        "targets": [
+          {
+            "type": "Identifier",
+            "name": "A",
+            "range": [
+              128,
+              129
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 8
+              },
+              "end": {
+                "line": 7,
+                "column": 9
+              }
+            }
+          }
+        ],
+        "properties": [
+          {
+            "type": "VennStyleProperty",
+            "key": {
+              "type": "Identifier",
+              "name": "fill",
+              "range": [
+                130,
+                134
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 10
+                },
+                "end": {
+                  "line": 7,
+                  "column": 14
+                }
+              }
+            },
+            "value": {
+              "type": "VennLiteral",
+              "value": "#ff6b6b",
+              "range": [
+                135,
+                142
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 15
+                },
+                "end": {
+                  "line": 7,
+                  "column": 22
+                }
+              }
+            },
+            "range": [
+              130,
+              142
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 10
+              },
+              "end": {
+                "line": 7,
+                "column": 22
+              }
+            }
+          }
+        ],
+        "range": [
+          122,
+          142
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 2
+          },
+          "end": {
+            "line": 7,
+            "column": 22
+          }
+        }
+      },
+      {
+        "type": "VennStyleStatement",
+        "targets": [
+          {
+            "type": "Identifier",
+            "name": "A",
+            "range": [
+              151,
+              152
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 8
+              },
+              "end": {
+                "line": 8,
+                "column": 9
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "B",
+            "range": [
+              153,
+              154
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 10
+              },
+              "end": {
+                "line": 8,
+                "column": 11
+              }
+            }
+          }
+        ],
+        "properties": [
+          {
+            "type": "VennStyleProperty",
+            "key": {
+              "type": "Identifier",
+              "name": "color",
+              "range": [
+                155,
+                160
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 12
+                },
+                "end": {
+                  "line": 8,
+                  "column": 17
+                }
+              }
+            },
+            "value": {
+              "type": "VennLiteral",
+              "value": "#333",
+              "range": [
+                161,
+                165
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 18
+                },
+                "end": {
+                  "line": 8,
+                  "column": 22
+                }
+              }
+            },
+            "range": [
+              155,
+              165
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 12
+              },
+              "end": {
+                "line": 8,
+                "column": 22
+              }
+            }
+          }
+        ],
+        "range": [
+          145,
+          165
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 2
+          },
+          "end": {
+            "line": 8,
+            "column": 22
+          }
+        }
+      },
+      {
+        "type": "VennStyleStatement",
+        "targets": [
+          {
+            "type": "Identifier",
+            "name": "A1",
+            "range": [
+              174,
+              176
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 8
+              },
+              "end": {
+                "line": 9,
+                "column": 10
+              }
+            }
+          }
+        ],
+        "properties": [
+          {
+            "type": "VennStyleProperty",
+            "key": {
+              "type": "Identifier",
+              "name": "color",
+              "range": [
+                177,
+                182
+              ],
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 11
+                },
+                "end": {
+                  "line": 9,
+                  "column": 16
+                }
+              }
+            },
+            "value": {
+              "type": "VennLiteral",
+              "value": "red",
+              "range": [
+                183,
+                186
+              ],
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 17
+                },
+                "end": {
+                  "line": 9,
+                  "column": 20
+                }
+              }
+            },
+            "range": [
+              177,
+              186
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 11
+              },
+              "end": {
+                "line": 9,
+                "column": 20
+              }
+            }
+          }
+        ],
+        "range": [
+          168,
+          186
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 2
+          },
+          "end": {
+            "line": 9,
+            "column": 20
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      186
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 9,
+        "column": 20
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "venn-beta",
+      "range": [
+        0,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "set",
+      "range": [
+        12,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        16,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        17,
+        18
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 7
+        },
+        "end": {
+          "line": 2,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Alpha\"",
+      "range": [
+        18,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        25,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 15
+        },
+        "end": {
+          "line": 2,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        26,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 16
+        },
+        "end": {
+          "line": 2,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "20",
+      "range": [
+        27,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 17
+        },
+        "end": {
+          "line": 2,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "text",
+      "range": [
+        34,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 4
+        },
+        "end": {
+          "line": 3,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A1",
+      "range": [
+        39,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 9
+        },
+        "end": {
+          "line": 3,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        41,
+        42
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 11
+        },
+        "end": {
+          "line": 3,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"React\"",
+      "range": [
+        42,
+        49
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 12
+        },
+        "end": {
+          "line": 3,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        49,
+        50
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 19
+        },
+        "end": {
+          "line": 3,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "text",
+      "range": [
+        55,
+        59
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 4
+        },
+        "end": {
+          "line": 4,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A2",
+      "range": [
+        60,
+        62
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 9
+        },
+        "end": {
+          "line": 4,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        62,
+        63
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 11
+        },
+        "end": {
+          "line": 4,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Design Systems\"",
+      "range": [
+        63,
+        79
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 12
+        },
+        "end": {
+          "line": 4,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        79,
+        80
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 28
+        },
+        "end": {
+          "line": 4,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "set",
+      "range": [
+        83,
+        86
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 2
+        },
+        "end": {
+          "line": 5,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "B",
+      "range": [
+        87,
+        88
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 6
+        },
+        "end": {
+          "line": 5,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        88,
+        89
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 7
+        },
+        "end": {
+          "line": 5,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Beta\"",
+      "range": [
+        89,
+        95
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 8
+        },
+        "end": {
+          "line": 5,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        95,
+        96
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 14
+        },
+        "end": {
+          "line": 5,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        96,
+        97
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 15
+        },
+        "end": {
+          "line": 5,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "12",
+      "range": [
+        97,
+        99
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 16
+        },
+        "end": {
+          "line": 5,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "union",
+      "range": [
+        102,
+        107
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 2
+        },
+        "end": {
+          "line": 6,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        108,
+        109
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 8
+        },
+        "end": {
+          "line": 6,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        109,
+        110
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 9
+        },
+        "end": {
+          "line": 6,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "B",
+      "range": [
+        110,
+        111
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 10
+        },
+        "end": {
+          "line": 6,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        111,
+        112
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 11
+        },
+        "end": {
+          "line": 6,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"AB\"",
+      "range": [
+        112,
+        116
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 12
+        },
+        "end": {
+          "line": 6,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        116,
+        117
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 16
+        },
+        "end": {
+          "line": 6,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        117,
+        118
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 17
+        },
+        "end": {
+          "line": 6,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "3",
+      "range": [
+        118,
+        119
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 18
+        },
+        "end": {
+          "line": 6,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "style",
+      "range": [
+        122,
+        127
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 2
+        },
+        "end": {
+          "line": 7,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        128,
+        129
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 8
+        },
+        "end": {
+          "line": 7,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "fill",
+      "range": [
+        130,
+        134
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 10
+        },
+        "end": {
+          "line": 7,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        134,
+        135
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 14
+        },
+        "end": {
+          "line": 7,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "#ff6b6b",
+      "range": [
+        135,
+        142
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 15
+        },
+        "end": {
+          "line": 7,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "style",
+      "range": [
+        145,
+        150
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 2
+        },
+        "end": {
+          "line": 8,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        151,
+        152
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 8
+        },
+        "end": {
+          "line": 8,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        152,
+        153
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 9
+        },
+        "end": {
+          "line": 8,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "B",
+      "range": [
+        153,
+        154
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 10
+        },
+        "end": {
+          "line": 8,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "color",
+      "range": [
+        155,
+        160
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 12
+        },
+        "end": {
+          "line": 8,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        160,
+        161
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 17
+        },
+        "end": {
+          "line": 8,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "#333",
+      "range": [
+        161,
+        165
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 18
+        },
+        "end": {
+          "line": 8,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "style",
+      "range": [
+        168,
+        173
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 2
+        },
+        "end": {
+          "line": 9,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A1",
+      "range": [
+        174,
+        176
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 8
+        },
+        "end": {
+          "line": 9,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "color",
+      "range": [
+        177,
+        182
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 11
+        },
+        "end": {
+          "line": 9,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        182,
+        183
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 16
+        },
+        "end": {
+          "line": 9,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "red",
+      "range": [
+        183,
+        186
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 17
+        },
+        "end": {
+          "line": 9,
+          "column": 20
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    187
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 10,
+      "column": 0
+    }
+  }
+}

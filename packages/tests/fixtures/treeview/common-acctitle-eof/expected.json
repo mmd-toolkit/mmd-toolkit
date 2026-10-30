@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check an empty acctitle value at EOF."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": []
+  }
+}

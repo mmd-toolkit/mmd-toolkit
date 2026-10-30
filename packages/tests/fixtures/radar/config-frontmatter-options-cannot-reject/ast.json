@@ -1,0 +1,424 @@
+{
+  "type": "Root",
+  "diagramType": "radar",
+  "body": {
+    "type": "RadarDiagram",
+    "textBeforeHeader": [],
+    "textBeforeColon": [],
+    "body": [
+      {
+        "type": "RadarAxisStatement",
+        "axes": [
+          {
+            "type": "RadarAxis",
+            "textBefore": [],
+            "name": {
+              "type": "Identifier",
+              "name": "A",
+              "range": [
+                103,
+                104
+              ],
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 5
+                },
+                "end": {
+                  "line": 10,
+                  "column": 6
+                }
+              }
+            },
+            "textBeforeLabel": [],
+            "textBeforeLabelValue": [],
+            "label": null,
+            "textBeforeLabelClose": [],
+            "textAfter": [],
+            "range": [
+              103,
+              104
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 5
+              },
+              "end": {
+                "line": 10,
+                "column": 6
+              }
+            }
+          }
+        ],
+        "range": [
+          98,
+          104
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 0
+          },
+          "end": {
+            "line": 10,
+            "column": 6
+          }
+        }
+      },
+      {
+        "type": "RadarCurveStatement",
+        "curves": [
+          {
+            "type": "RadarCurve",
+            "textBefore": [],
+            "name": {
+              "type": "Identifier",
+              "name": "c",
+              "range": [
+                111,
+                112
+              ],
+              "loc": {
+                "start": {
+                  "line": 11,
+                  "column": 6
+                },
+                "end": {
+                  "line": 11,
+                  "column": 7
+                }
+              }
+            },
+            "textBeforeLabel": [],
+            "textBeforeLabelValue": [],
+            "label": null,
+            "textBeforeLabelClose": [],
+            "textBeforeEntries": [],
+            "entries": [
+              {
+                "type": "RadarNumberEntry",
+                "textBefore": [],
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 1,
+                  "raw": "1",
+                  "range": [
+                    113,
+                    114
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 11,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 11,
+                      "column": 9
+                    }
+                  }
+                },
+                "textAfter": [],
+                "range": [
+                  113,
+                  114
+                ],
+                "loc": {
+                  "start": {
+                    "line": 11,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 11,
+                    "column": 9
+                  }
+                }
+              }
+            ],
+            "textAfter": [],
+            "range": [
+              111,
+              115
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 6
+              },
+              "end": {
+                "line": 11,
+                "column": 10
+              }
+            }
+          }
+        ],
+        "range": [
+          105,
+          115
+        ],
+        "loc": {
+          "start": {
+            "line": 11,
+            "column": 0
+          },
+          "end": {
+            "line": 11,
+            "column": 10
+          }
+        }
+      }
+    ],
+    "range": [
+      87,
+      115
+    ],
+    "loc": {
+      "start": {
+        "line": 9,
+        "column": 0
+      },
+      "end": {
+        "line": 11,
+        "column": 10
+      }
+    }
+  },
+  "frontmatter": {
+    "type": "Frontmatter",
+    "value": "config:\n  radar:\n    width: invalid\n    ticks: -1\n    max: false\n    min: .nan",
+    "valueRange": [
+      4,
+      82
+    ],
+    "range": [
+      0,
+      86
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 8,
+        "column": 3
+      }
+    }
+  },
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        0,
+        3
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "config:\n  radar:\n    width: invalid\n    ticks: -1\n    max: false\n    min: .nan",
+      "range": [
+        4,
+        82
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        83,
+        86
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "radar-beta",
+      "range": [
+        87,
+        97
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "axis",
+      "range": [
+        98,
+        102
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 0
+        },
+        "end": {
+          "line": 10,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        103,
+        104
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 5
+        },
+        "end": {
+          "line": 10,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "curve",
+      "range": [
+        105,
+        110
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 0
+        },
+        "end": {
+          "line": 11,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "c",
+      "range": [
+        111,
+        112
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 6
+        },
+        "end": {
+          "line": 11,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        112,
+        113
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 7
+        },
+        "end": {
+          "line": 11,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "1",
+      "range": [
+        113,
+        114
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 8
+        },
+        "end": {
+          "line": 11,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        114,
+        115
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 9
+        },
+        "end": {
+          "line": 11,
+          "column": 10
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    115
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 11,
+      "column": 10
+    }
+  }
+}

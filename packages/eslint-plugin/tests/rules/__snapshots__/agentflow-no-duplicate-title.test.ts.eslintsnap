@@ -1,0 +1,452 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: agentflow-no-duplicate-title >> invalid >>> docs/rules/agentflow-no-duplicate-title.md incorrect 1
+Filename: agentflow-no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   accTitle: first
+  3 |   accTitle: second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 |   accTitle: first
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 |   accTitle: second
+          3 |
+---
+
+
+Test: agentflow-no-duplicate-title >> invalid >>> docs/rules/agentflow-no-duplicate-title.md incorrect 2
+Filename: agentflow-no-duplicate-title-incorrect-2.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A
+  3 |   accTitle: x
+  4 |   accTitle:
+    |   ^~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 |   A
+          3 |   accTitle: x
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 |   A
+          3 |   accTitle:
+          4 |
+---
+
+
+Test: agentflow-no-duplicate-title >> invalid >>> docs/rules/agentflow-no-duplicate-title.md incorrect 3
+Filename: agentflow-no-duplicate-title-incorrect-3.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow F
+  3 |     A
+  4 |     accTitle: inner
+  5 |   end
+  6 |   accTitle: outer
+    |   ^~~~~~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 |   flow F
+          3 |     A
+          4 |     accTitle: inner
+          5 |   end
+          6 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 |   flow F
+          3 |     A
+          4 |   end
+          5 |   accTitle: outer
+          6 |
+---
+
+
+Test: agentflow-no-duplicate-title >> invalid >>> invalid/agentflow/title-blank-value
+Filename: tests/fixtures/rules/agentflow-no-duplicate-title/invalid/agentflow/title-blank-value-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~\ [1]
+  4 |
+    | ~\ [1]
+  5 | Second
+    | ~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: First
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle:
+          3 |
+          4 | Second
+          5 |
+---
+
+
+Test: agentflow-no-duplicate-title >> invalid >>> invalid/agentflow/title-comment-value
+Filename: tests/fixtures/rules/agentflow-no-duplicate-title/invalid/agentflow/title-comment-value-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~\ [1]
+  4 | %% next title
+    | ~~~~~~~~~~~~~ [1]
+  5 | A
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: First
+          3 | A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle:
+          3 | %% next title
+          4 | A
+          5 |
+---
+
+
+Test: agentflow-no-duplicate-title >> invalid >>> invalid/agentflow/title-directive-value
+Filename: tests/fixtures/rules/agentflow-no-duplicate-title/invalid/agentflow/title-directive-value-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~\ [1]
+  4 | %%{init: {}}%%
+    | ~~~~~~~~~~~~~~\ [1]
+  5 | Second
+    | ~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle:
+          3 | %%{init: {}}%%
+          4 | Second
+          5 |
+---
+
+
+Test: agentflow-no-duplicate-title >> invalid >>> invalid/agentflow/title-empty-eof
+Filename: tests/fixtures/rules/agentflow-no-duplicate-title/invalid/agentflow/title-empty-eof-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A
+  3 | accTitle: First
+  4 | accTitle:
+    | ^~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | A
+          3 | accTitle: First
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | A
+          3 | accTitle:
+---
+
+
+Test: agentflow-no-duplicate-title >> invalid >>> invalid/agentflow/title-entity-written-limit
+Filename: tests/fixtures/rules/agentflow-no-duplicate-title/invalid/agentflow/title-entity-written-limit-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accTitle: #35;
+  3 | accTitle: #
+    | ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: #35;
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: #
+          3 |
+---
+
+
+Test: agentflow-no-duplicate-title >> invalid >>> invalid/agentflow/title-equal-predecessor
+Filename: tests/fixtures/rules/agentflow-no-duplicate-title/invalid/agentflow/title-equal-predecessor-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accTitle: A
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: A
+          3 | accTitle: A
+          4 |
+---
+
+
+Test: agentflow-no-duplicate-title >> invalid >>> invalid/agentflow/title-html-attribute-quotes
+Filename: tests/fixtures/rules/agentflow-no-duplicate-title/invalid/agentflow/title-html-attribute-quotes-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accTitle: <b class="x">t</b>
+  3 | accTitle: <b class='x'>t</b>
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 | A
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: <b class="x">t</b>
+          3 | A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: <b class='x'>t</b>
+          3 | A
+          4 |
+---
+
+
+Test: agentflow-no-duplicate-title >> invalid >>> invalid/agentflow/title-html-barrier
+Filename: tests/fixtures/rules/agentflow-no-duplicate-title/invalid/agentflow/title-html-barrier-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accTitle: First
+  3 | accTitle: <b>x</b>
+    | ^~~~~~~~~~~~~~~~~~ [1]
+  4 | accTitle: Third
+    | ^~~~~~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: First
+          3 | accTitle: Third
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: <b>x</b>
+          3 | accTitle: Third
+          4 |
+[2] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: First
+          3 | accTitle: <b>x</b>
+          4 |
+---
+
+
+Test: agentflow-no-duplicate-title >> invalid >>> invalid/agentflow/title-in-global
+Filename: tests/fixtures/rules/agentflow-no-duplicate-title/invalid/agentflow/title-in-global-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accTitle: First
+  3 | global
+  4 |   accTitle: Second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  5 | end
+  6 | A
+  7 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: First
+          3 | global
+          4 | end
+          5 | A
+          6 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | global
+          3 |   accTitle: Second
+          4 | end
+          5 | A
+          6 |
+---
+
+
+Test: agentflow-no-duplicate-title >> invalid >>> invalid/agentflow/title-nested
+Filename: tests/fixtures/rules/agentflow-no-duplicate-title/invalid/agentflow/title-nested-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accTitle: First
+  3 | flow F
+  4 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  5 | A
+  6 | end
+  7 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: First
+          3 | flow F
+          4 | A
+          5 | end
+          6 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | flow F
+          3 | accTitle: Second
+          4 | A
+          5 | end
+          6 |
+---
+
+
+Test: agentflow-no-duplicate-title >> invalid >>> invalid/agentflow/title-three
+Filename: tests/fixtures/rules/agentflow-no-duplicate-title/invalid/agentflow/title-three-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accTitle: First
+  3 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | accTitle: First
+    | ^~~~~~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: First
+          3 | accTitle: First
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: Second
+          3 | accTitle: First
+          4 |
+[2] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: First
+          3 | accTitle: Second
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: First
+          3 | accTitle: First
+          4 |
+---
+
+
+Test: agentflow-no-duplicate-title >> invalid >>> invalid/agentflow/title-two
+Filename: tests/fixtures/rules/agentflow-no-duplicate-title/invalid/agentflow/title-two-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accTitle: First
+  3 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | A
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: First
+          3 | A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | agentflow-beta TB
+          2 | accTitle: Second
+          3 | A
+          4 |
+---

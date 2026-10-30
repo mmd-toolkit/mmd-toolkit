@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[C: configuration and sanitizeText] Does flowchart.htmlLabels false apply when root htmlLabels is absent?"
+  },
+  "config": {
+    "securityLevel": "other",
+    "flowchart": {
+      "htmlLabels": false
+    }
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "<b>Root</b> = value",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "<b>Root</b> = value",
+      "children": [
+        {
+          "text": "<i>Cause</i><BR>next",
+          "children": []
+        }
+      ]
+    }
+  }
+}

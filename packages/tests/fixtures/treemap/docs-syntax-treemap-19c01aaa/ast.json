@@ -1,0 +1,880 @@
+{
+  "type": "Root",
+  "diagramType": "treemap",
+  "body": {
+    "type": "TreemapDiagram",
+    "body": [
+      {
+        "type": "TreemapSection",
+        "indent": 0,
+        "statementsBefore": [],
+        "name": {
+          "type": "StringLiteral",
+          "value": "Budget",
+          "raw": "\"Budget\"",
+          "closed": true,
+          "range": [
+            64,
+            72
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 0
+            },
+            "end": {
+              "line": 7,
+              "column": 8
+            }
+          }
+        },
+        "classSelector": null,
+        "children": [
+          {
+            "type": "TreemapSection",
+            "indent": 4,
+            "statementsBefore": [],
+            "name": {
+              "type": "StringLiteral",
+              "value": "Operations",
+              "raw": "\"Operations\"",
+              "closed": true,
+              "range": [
+                77,
+                89
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 4
+                },
+                "end": {
+                  "line": 8,
+                  "column": 16
+                }
+              }
+            },
+            "classSelector": null,
+            "children": [
+              {
+                "type": "TreemapLeaf",
+                "indent": 8,
+                "statementsBefore": [],
+                "name": {
+                  "type": "StringLiteral",
+                  "value": "Salaries",
+                  "raw": "\"Salaries\"",
+                  "closed": true,
+                  "range": [
+                    98,
+                    108
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 9,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 18
+                    }
+                  }
+                },
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 700000,
+                  "raw": "700000",
+                  "range": [
+                    110,
+                    116
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 9,
+                      "column": 20
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 26
+                    }
+                  }
+                },
+                "classSelector": null,
+                "range": [
+                  98,
+                  116
+                ],
+                "loc": {
+                  "start": {
+                    "line": 9,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 9,
+                    "column": 26
+                  }
+                }
+              },
+              {
+                "type": "TreemapLeaf",
+                "indent": 8,
+                "statementsBefore": [],
+                "name": {
+                  "type": "StringLiteral",
+                  "value": "Equipment",
+                  "raw": "\"Equipment\"",
+                  "closed": true,
+                  "range": [
+                    125,
+                    136
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 10,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 10,
+                      "column": 19
+                    }
+                  }
+                },
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 200000,
+                  "raw": "200000",
+                  "range": [
+                    138,
+                    144
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 10,
+                      "column": 21
+                    },
+                    "end": {
+                      "line": 10,
+                      "column": 27
+                    }
+                  }
+                },
+                "classSelector": null,
+                "range": [
+                  125,
+                  144
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 27
+                  }
+                }
+              },
+              {
+                "type": "TreemapLeaf",
+                "indent": 8,
+                "statementsBefore": [],
+                "name": {
+                  "type": "StringLiteral",
+                  "value": "Supplies",
+                  "raw": "\"Supplies\"",
+                  "closed": true,
+                  "range": [
+                    153,
+                    163
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 11,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 11,
+                      "column": 18
+                    }
+                  }
+                },
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 100000,
+                  "raw": "100000",
+                  "range": [
+                    165,
+                    171
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 11,
+                      "column": 20
+                    },
+                    "end": {
+                      "line": 11,
+                      "column": 26
+                    }
+                  }
+                },
+                "classSelector": null,
+                "range": [
+                  153,
+                  171
+                ],
+                "loc": {
+                  "start": {
+                    "line": 11,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 11,
+                    "column": 26
+                  }
+                }
+              }
+            ],
+            "range": [
+              77,
+              171
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 4
+              },
+              "end": {
+                "line": 11,
+                "column": 26
+              }
+            }
+          },
+          {
+            "type": "TreemapSection",
+            "indent": 4,
+            "statementsBefore": [],
+            "name": {
+              "type": "StringLiteral",
+              "value": "Marketing",
+              "raw": "\"Marketing\"",
+              "closed": true,
+              "range": [
+                176,
+                187
+              ],
+              "loc": {
+                "start": {
+                  "line": 12,
+                  "column": 4
+                },
+                "end": {
+                  "line": 12,
+                  "column": 15
+                }
+              }
+            },
+            "classSelector": null,
+            "children": [
+              {
+                "type": "TreemapLeaf",
+                "indent": 8,
+                "statementsBefore": [],
+                "name": {
+                  "type": "StringLiteral",
+                  "value": "Advertising",
+                  "raw": "\"Advertising\"",
+                  "closed": true,
+                  "range": [
+                    196,
+                    209
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 13,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 13,
+                      "column": 21
+                    }
+                  }
+                },
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 400000,
+                  "raw": "400000",
+                  "range": [
+                    211,
+                    217
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 13,
+                      "column": 23
+                    },
+                    "end": {
+                      "line": 13,
+                      "column": 29
+                    }
+                  }
+                },
+                "classSelector": null,
+                "range": [
+                  196,
+                  217
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 29
+                  }
+                }
+              },
+              {
+                "type": "TreemapLeaf",
+                "indent": 8,
+                "statementsBefore": [],
+                "name": {
+                  "type": "StringLiteral",
+                  "value": "Events",
+                  "raw": "\"Events\"",
+                  "closed": true,
+                  "range": [
+                    226,
+                    234
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 14,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 14,
+                      "column": 16
+                    }
+                  }
+                },
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 100000,
+                  "raw": "100000",
+                  "range": [
+                    236,
+                    242
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 14,
+                      "column": 18
+                    },
+                    "end": {
+                      "line": 14,
+                      "column": 24
+                    }
+                  }
+                },
+                "classSelector": null,
+                "range": [
+                  226,
+                  242
+                ],
+                "loc": {
+                  "start": {
+                    "line": 14,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 14,
+                    "column": 24
+                  }
+                }
+              }
+            ],
+            "range": [
+              176,
+              242
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 4
+              },
+              "end": {
+                "line": 14,
+                "column": 24
+              }
+            }
+          }
+        ],
+        "range": [
+          64,
+          242
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 0
+          },
+          "end": {
+            "line": 14,
+            "column": 24
+          }
+        }
+      }
+    ],
+    "range": [
+      51,
+      242
+    ],
+    "loc": {
+      "start": {
+        "line": 6,
+        "column": 0
+      },
+      "end": {
+        "line": 14,
+        "column": 24
+      }
+    }
+  },
+  "frontmatter": {
+    "type": "Frontmatter",
+    "value": "config:\n  treemap:\n    valueFormat: '$0,0'",
+    "valueRange": [
+      4,
+      46
+    ],
+    "range": [
+      0,
+      50
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 5,
+        "column": 3
+      }
+    }
+  },
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        0,
+        3
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "config:\n  treemap:\n    valueFormat: '$0,0'",
+      "range": [
+        4,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        47,
+        50
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "treemap-beta",
+      "range": [
+        51,
+        63
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Budget\"",
+      "range": [
+        64,
+        72
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Operations\"",
+      "range": [
+        77,
+        89
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 4
+        },
+        "end": {
+          "line": 8,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Salaries\"",
+      "range": [
+        98,
+        108
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 8
+        },
+        "end": {
+          "line": 9,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        108,
+        109
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 18
+        },
+        "end": {
+          "line": 9,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "700000",
+      "range": [
+        110,
+        116
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 20
+        },
+        "end": {
+          "line": 9,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Equipment\"",
+      "range": [
+        125,
+        136
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 8
+        },
+        "end": {
+          "line": 10,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        136,
+        137
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 19
+        },
+        "end": {
+          "line": 10,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "200000",
+      "range": [
+        138,
+        144
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 21
+        },
+        "end": {
+          "line": 10,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Supplies\"",
+      "range": [
+        153,
+        163
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 8
+        },
+        "end": {
+          "line": 11,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        163,
+        164
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 18
+        },
+        "end": {
+          "line": 11,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "100000",
+      "range": [
+        165,
+        171
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 20
+        },
+        "end": {
+          "line": 11,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Marketing\"",
+      "range": [
+        176,
+        187
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 4
+        },
+        "end": {
+          "line": 12,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Advertising\"",
+      "range": [
+        196,
+        209
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 8
+        },
+        "end": {
+          "line": 13,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        209,
+        210
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 21
+        },
+        "end": {
+          "line": 13,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "400000",
+      "range": [
+        211,
+        217
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 23
+        },
+        "end": {
+          "line": 13,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Events\"",
+      "range": [
+        226,
+        234
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 8
+        },
+        "end": {
+          "line": 14,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        234,
+        235
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 16
+        },
+        "end": {
+          "line": 14,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "100000",
+      "range": [
+        236,
+        242
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 18
+        },
+        "end": {
+          "line": 14,
+          "column": 24
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    243
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 15,
+      "column": 0
+    }
+  }
+}

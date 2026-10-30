@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Whitespace at adjacent fences is tested against the first applicable YAML alternative."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "clear",
+        "items": [
+          {
+            "label": "B"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

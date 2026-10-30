@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does preprocessing rebuild the JSON mode-push token?"
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "J",
+        "value": {},
+        "propertyOrder": {
+          "": []
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "J",
+        "set": {
+          "value": {},
+          "propertyOrder": {
+            "": []
+          }
+        }
+      }
+    ]
+  }
+}

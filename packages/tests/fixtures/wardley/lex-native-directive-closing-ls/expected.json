@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Native padding, hidden forms and EOL: A Unicode separator qualifies the native directive closer but remains unreadable outside it."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 29: unexpected character: -> <- at offset: 41, skipped 1 characters. "
+  }
+}

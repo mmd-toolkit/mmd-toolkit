@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Closing whitespace after native YAML following a data block is accepted."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": {
+          "kind": "block",
+          "value": "{\nx\n}\n"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Known divergences (ignored-semicolon-as-token-boundary): the line matches the `style` rule, and mermaid.js reads it without the `;`, with the vertex `Bb`; here the ignored `;` lies inside the id, a name, and the input is rejected."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "style:#x",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "Bb",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Bb",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "C",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "C",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_C_0"
+      },
+      {
+        "start": "Bb",
+        "end": "C",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_Bb_C_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

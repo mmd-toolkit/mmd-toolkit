@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Data: An empty type tag does not supply a data-type word. Rejected by Mermaid."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 23: Expecting: one of these possible Token sequences:\n  1. [json]\n  2. [jsobj]\n  3. [figma]\n  4. [salt]\n  5. [uri]\n  6. [md]\n  7. [html]\n  8. [text]\nbut found: '`'"
+  }
+}

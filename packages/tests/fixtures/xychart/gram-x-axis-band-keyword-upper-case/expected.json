@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, x-axis: a keyword in any case as a category is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...chart-beta x-axis [LINE]\n----------------------^\nExpecting 'STR', 'MD_STR', 'AMP', 'NUM', 'ALPHA', 'PLUS', 'EQUALS', 'MULT', 'DOT', 'BRKT', 'MINUS', 'UNDERSCORE', got 'LINE'"
+  }
+}

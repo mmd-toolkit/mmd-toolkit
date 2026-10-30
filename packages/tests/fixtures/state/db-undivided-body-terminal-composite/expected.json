@@ -1,0 +1,63 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Rejections outside the grammar: a body whose last statement is the divider is not divided, so `[*]` in it is `X_start`, not `divider-id-1_start`."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "X",
+        "shape": "roundedWithTitle",
+        "label": "X",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "X_start",
+        "shape": "roundedWithTitle",
+        "label": "X_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "X",
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "X_start"
+      },
+      {
+        "id": "divider-id-1",
+        "shape": "divider",
+        "label": "",
+        "classes": [],
+        "styles": [],
+        "parentId": "X"
+      },
+      {
+        "id": "divider-id-1_start",
+        "shape": "rectWithTitle",
+        "label": "a",
+        "description": [
+          "b"
+        ],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

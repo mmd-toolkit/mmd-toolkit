@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Removal rejoins the accessibility title keyword."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "info",
+  "db": {},
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

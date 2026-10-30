@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A group can follow the header without a newline."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "groups": [
+      {
+        "id": "g"
+      }
+    ],
+    "edges": [],
+    "layoutHints": []
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Common statements: When block-data closes without consuming a following LF, can the same-line tab begin accTitle?"
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "accTitle: A",
+    "accDescr": "",
+    "frames": []
+  }
+}

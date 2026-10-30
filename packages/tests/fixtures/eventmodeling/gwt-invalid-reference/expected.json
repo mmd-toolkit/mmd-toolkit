@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Character references cannot extend GWT entity references."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 19: unexpected character: ->&<- at offset: 32, skipped 4 characters.\nLexer error on line 2, column 25: unexpected character: ->¶<- at offset: 38, skipped 2 characters. Parse error on line 2, column 23: Expecting token of type 'then' but found `35`."
+  }
+}

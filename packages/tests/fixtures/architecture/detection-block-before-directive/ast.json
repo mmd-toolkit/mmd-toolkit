@@ -1,0 +1,212 @@
+{
+  "type": "Root",
+  "diagramType": "architecture",
+  "body": {
+    "type": "ArchitectureDiagram",
+    "textBeforeHeader": [
+      {
+        "type": "ArchitectureIgnoredText",
+        "kind": "yaml-block",
+        "value": "---\nignored\n---",
+        "range": [
+          33,
+          48
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 3
+          }
+        }
+      }
+    ],
+    "body": [],
+    "range": [
+      33,
+      66
+    ],
+    "loc": {
+      "start": {
+        "line": 5,
+        "column": 0
+      },
+      "end": {
+        "line": 8,
+        "column": 17
+      }
+    }
+  },
+  "frontmatter": {
+    "type": "Frontmatter",
+    "value": "ignored",
+    "valueRange": [
+      4,
+      11
+    ],
+    "range": [
+      0,
+      15
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 3
+      }
+    }
+  },
+  "comments": [],
+  "directives": [
+    {
+      "type": "Directive",
+      "name": "unknown",
+      "value": "unknown:{}",
+      "closed": true,
+      "range": [
+        16,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 16
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        0,
+        3
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "ignored",
+      "range": [
+        4,
+        11
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        12,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Directive",
+      "value": "%%{unknown:{}}%%",
+      "range": [
+        16,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "---\nignored\n---",
+      "range": [
+        33,
+        48
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "architecture-beta",
+      "range": [
+        49,
+        66
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 17
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    67
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 9,
+      "column": 0
+    }
+  }
+}

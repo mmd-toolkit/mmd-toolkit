@@ -1,0 +1,17 @@
+{
+  "message": "A pie section value cannot be negative",
+  "range": [
+    184,
+    190
+  ],
+  "loc": {
+    "start": {
+      "line": 4,
+      "column": 18
+    },
+    "end": {
+      "line": 4,
+      "column": 24
+    }
+  }
+}

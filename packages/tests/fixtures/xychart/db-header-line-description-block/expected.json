@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Detection: a statement may follow the header on its line; a description block after the header; accepted with the description `x`."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "x",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": []
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}

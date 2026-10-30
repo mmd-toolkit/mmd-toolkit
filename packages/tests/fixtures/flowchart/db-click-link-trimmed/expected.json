@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The spaces around the URL of a flowchart click are not part of the recorded link: it is stored trimmed, without a trailing slash."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "A",
+        "props": {},
+        "link": "https://example.com"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

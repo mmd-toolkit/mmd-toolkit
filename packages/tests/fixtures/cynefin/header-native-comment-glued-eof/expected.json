@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Detection: a native comment glued to the bare header without LF fails detection."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: cynefin-beta%% comment"
+  }
+}

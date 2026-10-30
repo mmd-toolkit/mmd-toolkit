@@ -1,0 +1,2636 @@
+{
+  "type": "Root",
+  "diagramType": "architecture",
+  "body": {
+    "type": "ArchitectureDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "ArchitectureServiceStatement",
+        "textBeforeId": [],
+        "id": {
+          "type": "Identifier",
+          "name": "left_disk",
+          "range": [
+            30,
+            39
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 12
+            },
+            "end": {
+              "line": 2,
+              "column": 21
+            }
+          }
+        },
+        "textBeforeIcon": [],
+        "icon": {
+          "type": "Identifier",
+          "name": "disk",
+          "range": [
+            40,
+            44
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 22
+            },
+            "end": {
+              "line": 2,
+              "column": 26
+            }
+          }
+        },
+        "textBeforeTitle": [],
+        "title": {
+          "type": "ArchitectureLabel",
+          "kind": "text",
+          "value": "Disk",
+          "range": [
+            45,
+            51
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 27
+            },
+            "end": {
+              "line": 2,
+              "column": 33
+            }
+          }
+        },
+        "textBeforeIn": [],
+        "textBeforeParent": [],
+        "in": null,
+        "textAfter": [],
+        "range": [
+          22,
+          51
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 4
+          },
+          "end": {
+            "line": 2,
+            "column": 33
+          }
+        }
+      },
+      {
+        "type": "ArchitectureServiceStatement",
+        "textBeforeId": [],
+        "id": {
+          "type": "Identifier",
+          "name": "top_disk",
+          "range": [
+            64,
+            72
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 12
+            },
+            "end": {
+              "line": 3,
+              "column": 20
+            }
+          }
+        },
+        "textBeforeIcon": [],
+        "icon": {
+          "type": "Identifier",
+          "name": "disk",
+          "range": [
+            73,
+            77
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 21
+            },
+            "end": {
+              "line": 3,
+              "column": 25
+            }
+          }
+        },
+        "textBeforeTitle": [],
+        "title": {
+          "type": "ArchitectureLabel",
+          "kind": "text",
+          "value": "Disk",
+          "range": [
+            78,
+            84
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 26
+            },
+            "end": {
+              "line": 3,
+              "column": 32
+            }
+          }
+        },
+        "textBeforeIn": [],
+        "textBeforeParent": [],
+        "in": null,
+        "textAfter": [],
+        "range": [
+          56,
+          84
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 4
+          },
+          "end": {
+            "line": 3,
+            "column": 32
+          }
+        }
+      },
+      {
+        "type": "ArchitectureServiceStatement",
+        "textBeforeId": [],
+        "id": {
+          "type": "Identifier",
+          "name": "bottom_disk",
+          "range": [
+            97,
+            108
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 12
+            },
+            "end": {
+              "line": 4,
+              "column": 23
+            }
+          }
+        },
+        "textBeforeIcon": [],
+        "icon": {
+          "type": "Identifier",
+          "name": "disk",
+          "range": [
+            109,
+            113
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 24
+            },
+            "end": {
+              "line": 4,
+              "column": 28
+            }
+          }
+        },
+        "textBeforeTitle": [],
+        "title": {
+          "type": "ArchitectureLabel",
+          "kind": "text",
+          "value": "Disk",
+          "range": [
+            114,
+            120
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 29
+            },
+            "end": {
+              "line": 4,
+              "column": 35
+            }
+          }
+        },
+        "textBeforeIn": [],
+        "textBeforeParent": [],
+        "in": null,
+        "textAfter": [],
+        "range": [
+          89,
+          120
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 4
+          },
+          "end": {
+            "line": 4,
+            "column": 35
+          }
+        }
+      },
+      {
+        "type": "ArchitectureServiceStatement",
+        "textBeforeId": [],
+        "id": {
+          "type": "Identifier",
+          "name": "top_gateway",
+          "range": [
+            133,
+            144
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 12
+            },
+            "end": {
+              "line": 5,
+              "column": 23
+            }
+          }
+        },
+        "textBeforeIcon": [],
+        "icon": {
+          "type": "Identifier",
+          "name": "internet",
+          "range": [
+            145,
+            153
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 24
+            },
+            "end": {
+              "line": 5,
+              "column": 32
+            }
+          }
+        },
+        "textBeforeTitle": [],
+        "title": {
+          "type": "ArchitectureLabel",
+          "kind": "text",
+          "value": "Gateway",
+          "range": [
+            154,
+            163
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 33
+            },
+            "end": {
+              "line": 5,
+              "column": 42
+            }
+          }
+        },
+        "textBeforeIn": [],
+        "textBeforeParent": [],
+        "in": null,
+        "textAfter": [],
+        "range": [
+          125,
+          163
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 4
+          },
+          "end": {
+            "line": 5,
+            "column": 42
+          }
+        }
+      },
+      {
+        "type": "ArchitectureServiceStatement",
+        "textBeforeId": [],
+        "id": {
+          "type": "Identifier",
+          "name": "bottom_gateway",
+          "range": [
+            176,
+            190
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 12
+            },
+            "end": {
+              "line": 6,
+              "column": 26
+            }
+          }
+        },
+        "textBeforeIcon": [],
+        "icon": {
+          "type": "Identifier",
+          "name": "internet",
+          "range": [
+            191,
+            199
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 27
+            },
+            "end": {
+              "line": 6,
+              "column": 35
+            }
+          }
+        },
+        "textBeforeTitle": [],
+        "title": {
+          "type": "ArchitectureLabel",
+          "kind": "text",
+          "value": "Gateway",
+          "range": [
+            200,
+            209
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 36
+            },
+            "end": {
+              "line": 6,
+              "column": 45
+            }
+          }
+        },
+        "textBeforeIn": [],
+        "textBeforeParent": [],
+        "in": null,
+        "textAfter": [],
+        "range": [
+          168,
+          209
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 4
+          },
+          "end": {
+            "line": 6,
+            "column": 45
+          }
+        }
+      },
+      {
+        "type": "ArchitectureJunctionStatement",
+        "textBeforeId": [],
+        "id": {
+          "type": "Identifier",
+          "name": "junctionCenter",
+          "range": [
+            223,
+            237
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 13
+            },
+            "end": {
+              "line": 7,
+              "column": 27
+            }
+          }
+        },
+        "textBeforeIn": [],
+        "textBeforeParent": [],
+        "in": null,
+        "textAfter": [],
+        "range": [
+          214,
+          237
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 4
+          },
+          "end": {
+            "line": 7,
+            "column": 27
+          }
+        }
+      },
+      {
+        "type": "ArchitectureJunctionStatement",
+        "textBeforeId": [],
+        "id": {
+          "type": "Identifier",
+          "name": "junctionRight",
+          "range": [
+            251,
+            264
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 13
+            },
+            "end": {
+              "line": 8,
+              "column": 26
+            }
+          }
+        },
+        "textBeforeIn": [],
+        "textBeforeParent": [],
+        "in": null,
+        "textAfter": [],
+        "range": [
+          242,
+          264
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 4
+          },
+          "end": {
+            "line": 8,
+            "column": 26
+          }
+        }
+      },
+      {
+        "type": "ArchitectureEdgeStatement",
+        "lhsId": {
+          "type": "Identifier",
+          "name": "left_disk",
+          "range": [
+            270,
+            279
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 4
+            },
+            "end": {
+              "line": 10,
+              "column": 13
+            }
+          }
+        },
+        "textBeforeLhsGroup": [],
+        "lhsGroup": false,
+        "textBeforeArrow": [],
+        "arrow": {
+          "type": "ArchitectureArrow",
+          "value": ":R -- L:",
+          "textBeforeStartDirection": [],
+          "startDirection": "R",
+          "textBeforeStartMarker": [],
+          "startMarker": "none",
+          "textBeforeLine": [],
+          "line": "solid",
+          "textBeforeTitle": [],
+          "title": null,
+          "textBeforeEndDash": [],
+          "textBeforeEndMarker": [],
+          "endMarker": "none",
+          "textBeforeEndDirection": [],
+          "endDirection": "L",
+          "textBeforeEndColon": [],
+          "range": [
+            279,
+            287
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 13
+            },
+            "end": {
+              "line": 10,
+              "column": 21
+            }
+          }
+        },
+        "textBeforeRhsId": [],
+        "rhsId": {
+          "type": "Identifier",
+          "name": "junctionCenter",
+          "range": [
+            287,
+            301
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 21
+            },
+            "end": {
+              "line": 10,
+              "column": 35
+            }
+          }
+        },
+        "textBeforeRhsGroup": [],
+        "rhsGroup": false,
+        "textAfter": [],
+        "range": [
+          270,
+          301
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 4
+          },
+          "end": {
+            "line": 10,
+            "column": 35
+          }
+        }
+      },
+      {
+        "type": "ArchitectureEdgeStatement",
+        "lhsId": {
+          "type": "Identifier",
+          "name": "top_disk",
+          "range": [
+            306,
+            314
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 4
+            },
+            "end": {
+              "line": 11,
+              "column": 12
+            }
+          }
+        },
+        "textBeforeLhsGroup": [],
+        "lhsGroup": false,
+        "textBeforeArrow": [],
+        "arrow": {
+          "type": "ArchitectureArrow",
+          "value": ":B -- T:",
+          "textBeforeStartDirection": [],
+          "startDirection": "B",
+          "textBeforeStartMarker": [],
+          "startMarker": "none",
+          "textBeforeLine": [],
+          "line": "solid",
+          "textBeforeTitle": [],
+          "title": null,
+          "textBeforeEndDash": [],
+          "textBeforeEndMarker": [],
+          "endMarker": "none",
+          "textBeforeEndDirection": [],
+          "endDirection": "T",
+          "textBeforeEndColon": [],
+          "range": [
+            314,
+            322
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 12
+            },
+            "end": {
+              "line": 11,
+              "column": 20
+            }
+          }
+        },
+        "textBeforeRhsId": [],
+        "rhsId": {
+          "type": "Identifier",
+          "name": "junctionCenter",
+          "range": [
+            322,
+            336
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 20
+            },
+            "end": {
+              "line": 11,
+              "column": 34
+            }
+          }
+        },
+        "textBeforeRhsGroup": [],
+        "rhsGroup": false,
+        "textAfter": [],
+        "range": [
+          306,
+          336
+        ],
+        "loc": {
+          "start": {
+            "line": 11,
+            "column": 4
+          },
+          "end": {
+            "line": 11,
+            "column": 34
+          }
+        }
+      },
+      {
+        "type": "ArchitectureEdgeStatement",
+        "lhsId": {
+          "type": "Identifier",
+          "name": "bottom_disk",
+          "range": [
+            341,
+            352
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 4
+            },
+            "end": {
+              "line": 12,
+              "column": 15
+            }
+          }
+        },
+        "textBeforeLhsGroup": [],
+        "lhsGroup": false,
+        "textBeforeArrow": [],
+        "arrow": {
+          "type": "ArchitectureArrow",
+          "value": ":T -- B:",
+          "textBeforeStartDirection": [],
+          "startDirection": "T",
+          "textBeforeStartMarker": [],
+          "startMarker": "none",
+          "textBeforeLine": [],
+          "line": "solid",
+          "textBeforeTitle": [],
+          "title": null,
+          "textBeforeEndDash": [],
+          "textBeforeEndMarker": [],
+          "endMarker": "none",
+          "textBeforeEndDirection": [],
+          "endDirection": "B",
+          "textBeforeEndColon": [],
+          "range": [
+            352,
+            360
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 15
+            },
+            "end": {
+              "line": 12,
+              "column": 23
+            }
+          }
+        },
+        "textBeforeRhsId": [],
+        "rhsId": {
+          "type": "Identifier",
+          "name": "junctionCenter",
+          "range": [
+            360,
+            374
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 23
+            },
+            "end": {
+              "line": 12,
+              "column": 37
+            }
+          }
+        },
+        "textBeforeRhsGroup": [],
+        "rhsGroup": false,
+        "textAfter": [],
+        "range": [
+          341,
+          374
+        ],
+        "loc": {
+          "start": {
+            "line": 12,
+            "column": 4
+          },
+          "end": {
+            "line": 12,
+            "column": 37
+          }
+        }
+      },
+      {
+        "type": "ArchitectureEdgeStatement",
+        "lhsId": {
+          "type": "Identifier",
+          "name": "junctionCenter",
+          "range": [
+            379,
+            393
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 4
+            },
+            "end": {
+              "line": 13,
+              "column": 18
+            }
+          }
+        },
+        "textBeforeLhsGroup": [],
+        "lhsGroup": false,
+        "textBeforeArrow": [],
+        "arrow": {
+          "type": "ArchitectureArrow",
+          "value": ":R -- L:",
+          "textBeforeStartDirection": [],
+          "startDirection": "R",
+          "textBeforeStartMarker": [],
+          "startMarker": "none",
+          "textBeforeLine": [],
+          "line": "solid",
+          "textBeforeTitle": [],
+          "title": null,
+          "textBeforeEndDash": [],
+          "textBeforeEndMarker": [],
+          "endMarker": "none",
+          "textBeforeEndDirection": [],
+          "endDirection": "L",
+          "textBeforeEndColon": [],
+          "range": [
+            393,
+            401
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 18
+            },
+            "end": {
+              "line": 13,
+              "column": 26
+            }
+          }
+        },
+        "textBeforeRhsId": [],
+        "rhsId": {
+          "type": "Identifier",
+          "name": "junctionRight",
+          "range": [
+            401,
+            414
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 26
+            },
+            "end": {
+              "line": 13,
+              "column": 39
+            }
+          }
+        },
+        "textBeforeRhsGroup": [],
+        "rhsGroup": false,
+        "textAfter": [],
+        "range": [
+          379,
+          414
+        ],
+        "loc": {
+          "start": {
+            "line": 13,
+            "column": 4
+          },
+          "end": {
+            "line": 13,
+            "column": 39
+          }
+        }
+      },
+      {
+        "type": "ArchitectureEdgeStatement",
+        "lhsId": {
+          "type": "Identifier",
+          "name": "top_gateway",
+          "range": [
+            419,
+            430
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 4
+            },
+            "end": {
+              "line": 14,
+              "column": 15
+            }
+          }
+        },
+        "textBeforeLhsGroup": [],
+        "lhsGroup": false,
+        "textBeforeArrow": [],
+        "arrow": {
+          "type": "ArchitectureArrow",
+          "value": ":B -- T:",
+          "textBeforeStartDirection": [],
+          "startDirection": "B",
+          "textBeforeStartMarker": [],
+          "startMarker": "none",
+          "textBeforeLine": [],
+          "line": "solid",
+          "textBeforeTitle": [],
+          "title": null,
+          "textBeforeEndDash": [],
+          "textBeforeEndMarker": [],
+          "endMarker": "none",
+          "textBeforeEndDirection": [],
+          "endDirection": "T",
+          "textBeforeEndColon": [],
+          "range": [
+            430,
+            438
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 15
+            },
+            "end": {
+              "line": 14,
+              "column": 23
+            }
+          }
+        },
+        "textBeforeRhsId": [],
+        "rhsId": {
+          "type": "Identifier",
+          "name": "junctionRight",
+          "range": [
+            438,
+            451
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 23
+            },
+            "end": {
+              "line": 14,
+              "column": 36
+            }
+          }
+        },
+        "textBeforeRhsGroup": [],
+        "rhsGroup": false,
+        "textAfter": [],
+        "range": [
+          419,
+          451
+        ],
+        "loc": {
+          "start": {
+            "line": 14,
+            "column": 4
+          },
+          "end": {
+            "line": 14,
+            "column": 36
+          }
+        }
+      },
+      {
+        "type": "ArchitectureEdgeStatement",
+        "lhsId": {
+          "type": "Identifier",
+          "name": "bottom_gateway",
+          "range": [
+            456,
+            470
+          ],
+          "loc": {
+            "start": {
+              "line": 15,
+              "column": 4
+            },
+            "end": {
+              "line": 15,
+              "column": 18
+            }
+          }
+        },
+        "textBeforeLhsGroup": [],
+        "lhsGroup": false,
+        "textBeforeArrow": [],
+        "arrow": {
+          "type": "ArchitectureArrow",
+          "value": ":T -- B:",
+          "textBeforeStartDirection": [],
+          "startDirection": "T",
+          "textBeforeStartMarker": [],
+          "startMarker": "none",
+          "textBeforeLine": [],
+          "line": "solid",
+          "textBeforeTitle": [],
+          "title": null,
+          "textBeforeEndDash": [],
+          "textBeforeEndMarker": [],
+          "endMarker": "none",
+          "textBeforeEndDirection": [],
+          "endDirection": "B",
+          "textBeforeEndColon": [],
+          "range": [
+            470,
+            478
+          ],
+          "loc": {
+            "start": {
+              "line": 15,
+              "column": 18
+            },
+            "end": {
+              "line": 15,
+              "column": 26
+            }
+          }
+        },
+        "textBeforeRhsId": [],
+        "rhsId": {
+          "type": "Identifier",
+          "name": "junctionRight",
+          "range": [
+            478,
+            491
+          ],
+          "loc": {
+            "start": {
+              "line": 15,
+              "column": 26
+            },
+            "end": {
+              "line": 15,
+              "column": 39
+            }
+          }
+        },
+        "textBeforeRhsGroup": [],
+        "rhsGroup": false,
+        "textAfter": [],
+        "range": [
+          456,
+          491
+        ],
+        "loc": {
+          "start": {
+            "line": 15,
+            "column": 4
+          },
+          "end": {
+            "line": 15,
+            "column": 39
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      491
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 15,
+        "column": 39
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "architecture-beta",
+      "range": [
+        0,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "service",
+      "range": [
+        22,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "left_disk",
+      "range": [
+        30,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        39,
+        40
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 21
+        },
+        "end": {
+          "line": 2,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "disk",
+      "range": [
+        40,
+        44
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 22
+        },
+        "end": {
+          "line": 2,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        44,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 26
+        },
+        "end": {
+          "line": 2,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        45,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 27
+        },
+        "end": {
+          "line": 2,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Disk",
+      "range": [
+        46,
+        50
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 28
+        },
+        "end": {
+          "line": 2,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        50,
+        51
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 32
+        },
+        "end": {
+          "line": 2,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "service",
+      "range": [
+        56,
+        63
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 4
+        },
+        "end": {
+          "line": 3,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "top_disk",
+      "range": [
+        64,
+        72
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 12
+        },
+        "end": {
+          "line": 3,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        72,
+        73
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 20
+        },
+        "end": {
+          "line": 3,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "disk",
+      "range": [
+        73,
+        77
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 21
+        },
+        "end": {
+          "line": 3,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        77,
+        78
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 25
+        },
+        "end": {
+          "line": 3,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        78,
+        79
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 26
+        },
+        "end": {
+          "line": 3,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Disk",
+      "range": [
+        79,
+        83
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 27
+        },
+        "end": {
+          "line": 3,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        83,
+        84
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 31
+        },
+        "end": {
+          "line": 3,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "service",
+      "range": [
+        89,
+        96
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 4
+        },
+        "end": {
+          "line": 4,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "bottom_disk",
+      "range": [
+        97,
+        108
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 12
+        },
+        "end": {
+          "line": 4,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        108,
+        109
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 23
+        },
+        "end": {
+          "line": 4,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "disk",
+      "range": [
+        109,
+        113
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 24
+        },
+        "end": {
+          "line": 4,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        113,
+        114
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 28
+        },
+        "end": {
+          "line": 4,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        114,
+        115
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 29
+        },
+        "end": {
+          "line": 4,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Disk",
+      "range": [
+        115,
+        119
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 30
+        },
+        "end": {
+          "line": 4,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        119,
+        120
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 34
+        },
+        "end": {
+          "line": 4,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "service",
+      "range": [
+        125,
+        132
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 4
+        },
+        "end": {
+          "line": 5,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "top_gateway",
+      "range": [
+        133,
+        144
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 12
+        },
+        "end": {
+          "line": 5,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        144,
+        145
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 23
+        },
+        "end": {
+          "line": 5,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "internet",
+      "range": [
+        145,
+        153
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 24
+        },
+        "end": {
+          "line": 5,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        153,
+        154
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 32
+        },
+        "end": {
+          "line": 5,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        154,
+        155
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 33
+        },
+        "end": {
+          "line": 5,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Gateway",
+      "range": [
+        155,
+        162
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 34
+        },
+        "end": {
+          "line": 5,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        162,
+        163
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 41
+        },
+        "end": {
+          "line": 5,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "service",
+      "range": [
+        168,
+        175
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 4
+        },
+        "end": {
+          "line": 6,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "bottom_gateway",
+      "range": [
+        176,
+        190
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 12
+        },
+        "end": {
+          "line": 6,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        190,
+        191
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 26
+        },
+        "end": {
+          "line": 6,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "internet",
+      "range": [
+        191,
+        199
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 27
+        },
+        "end": {
+          "line": 6,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        199,
+        200
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 35
+        },
+        "end": {
+          "line": 6,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        200,
+        201
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 36
+        },
+        "end": {
+          "line": 6,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Gateway",
+      "range": [
+        201,
+        208
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 37
+        },
+        "end": {
+          "line": 6,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        208,
+        209
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 44
+        },
+        "end": {
+          "line": 6,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "junction",
+      "range": [
+        214,
+        222
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 4
+        },
+        "end": {
+          "line": 7,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "junctionCenter",
+      "range": [
+        223,
+        237
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 13
+        },
+        "end": {
+          "line": 7,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "junction",
+      "range": [
+        242,
+        250
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 4
+        },
+        "end": {
+          "line": 8,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "junctionRight",
+      "range": [
+        251,
+        264
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 13
+        },
+        "end": {
+          "line": 8,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "left_disk",
+      "range": [
+        270,
+        279
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 4
+        },
+        "end": {
+          "line": 10,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        279,
+        280
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 13
+        },
+        "end": {
+          "line": 10,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "R",
+      "range": [
+        280,
+        281
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 14
+        },
+        "end": {
+          "line": 10,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        282,
+        284
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 16
+        },
+        "end": {
+          "line": 10,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "L",
+      "range": [
+        285,
+        286
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 19
+        },
+        "end": {
+          "line": 10,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        286,
+        287
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 20
+        },
+        "end": {
+          "line": 10,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "junctionCenter",
+      "range": [
+        287,
+        301
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 21
+        },
+        "end": {
+          "line": 10,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "top_disk",
+      "range": [
+        306,
+        314
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 4
+        },
+        "end": {
+          "line": 11,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        314,
+        315
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 12
+        },
+        "end": {
+          "line": 11,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "B",
+      "range": [
+        315,
+        316
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 13
+        },
+        "end": {
+          "line": 11,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        317,
+        319
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 15
+        },
+        "end": {
+          "line": 11,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "T",
+      "range": [
+        320,
+        321
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 18
+        },
+        "end": {
+          "line": 11,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        321,
+        322
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 19
+        },
+        "end": {
+          "line": 11,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "junctionCenter",
+      "range": [
+        322,
+        336
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 20
+        },
+        "end": {
+          "line": 11,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "bottom_disk",
+      "range": [
+        341,
+        352
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 4
+        },
+        "end": {
+          "line": 12,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        352,
+        353
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 15
+        },
+        "end": {
+          "line": 12,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "T",
+      "range": [
+        353,
+        354
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 16
+        },
+        "end": {
+          "line": 12,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        355,
+        357
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 18
+        },
+        "end": {
+          "line": 12,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "B",
+      "range": [
+        358,
+        359
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 21
+        },
+        "end": {
+          "line": 12,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        359,
+        360
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 22
+        },
+        "end": {
+          "line": 12,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "junctionCenter",
+      "range": [
+        360,
+        374
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 23
+        },
+        "end": {
+          "line": 12,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "junctionCenter",
+      "range": [
+        379,
+        393
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 4
+        },
+        "end": {
+          "line": 13,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        393,
+        394
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 18
+        },
+        "end": {
+          "line": 13,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "R",
+      "range": [
+        394,
+        395
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 19
+        },
+        "end": {
+          "line": 13,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        396,
+        398
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 21
+        },
+        "end": {
+          "line": 13,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "L",
+      "range": [
+        399,
+        400
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 24
+        },
+        "end": {
+          "line": 13,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        400,
+        401
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 25
+        },
+        "end": {
+          "line": 13,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "junctionRight",
+      "range": [
+        401,
+        414
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 26
+        },
+        "end": {
+          "line": 13,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "top_gateway",
+      "range": [
+        419,
+        430
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 4
+        },
+        "end": {
+          "line": 14,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        430,
+        431
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 15
+        },
+        "end": {
+          "line": 14,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "B",
+      "range": [
+        431,
+        432
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 16
+        },
+        "end": {
+          "line": 14,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        433,
+        435
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 18
+        },
+        "end": {
+          "line": 14,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "T",
+      "range": [
+        436,
+        437
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 21
+        },
+        "end": {
+          "line": 14,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        437,
+        438
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 22
+        },
+        "end": {
+          "line": 14,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "junctionRight",
+      "range": [
+        438,
+        451
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 23
+        },
+        "end": {
+          "line": 14,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "bottom_gateway",
+      "range": [
+        456,
+        470
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 4
+        },
+        "end": {
+          "line": 15,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        470,
+        471
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 18
+        },
+        "end": {
+          "line": 15,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "T",
+      "range": [
+        471,
+        472
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 19
+        },
+        "end": {
+          "line": 15,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        473,
+        475
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 21
+        },
+        "end": {
+          "line": 15,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "B",
+      "range": [
+        476,
+        477
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 24
+        },
+        "end": {
+          "line": 15,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        477,
+        478
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 25
+        },
+        "end": {
+          "line": 15,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "junctionRight",
+      "range": [
+        478,
+        491
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 26
+        },
+        "end": {
+          "line": 15,
+          "column": 39
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    492
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 16,
+      "column": 0
+    }
+  }
+}

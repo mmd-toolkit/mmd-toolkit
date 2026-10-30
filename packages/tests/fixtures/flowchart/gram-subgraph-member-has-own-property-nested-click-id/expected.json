@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Rejections outside the grammar, subgraph members: the line feed after the click id is read with it, so the nested subgraph has the Db id `hasOwnProperty`, followed by the member `A`."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "prims[type].hasOwnProperty is not a function"
+  }
+}

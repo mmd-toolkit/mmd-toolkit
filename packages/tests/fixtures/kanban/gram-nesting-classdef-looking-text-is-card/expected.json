@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "diagrams/kanban.md Indentation and parents: classdef looking text is card; retain the authored occurrences and nesting without changing acceptance or the Db."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "classDef xx fill:red",
+        "label": "classDef xx fill:red",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

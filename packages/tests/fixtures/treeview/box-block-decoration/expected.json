@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does box mode remove a decoration-only physical line inside an accessibility block?"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "a\nb",
+    "nodes": [
+      {
+        "name": "x",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

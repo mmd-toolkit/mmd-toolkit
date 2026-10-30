@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gitgraph.md Source-origin check also rejects unequal tips."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Cannot merge branch 'b' into itself."
+  }
+}

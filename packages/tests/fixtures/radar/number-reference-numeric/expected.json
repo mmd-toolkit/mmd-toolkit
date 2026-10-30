@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A detailed axis reference must be an ID rather than NUMBER."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 3, column 10: Expecting token of type '}' but found `:`."
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: A single tab is the one title separator, not value text."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  }
+}

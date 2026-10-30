@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, sections: a directive inside a section is removed, and the spaces around it stay."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "a  b"
+    ],
+    "tasks": []
+  }
+}

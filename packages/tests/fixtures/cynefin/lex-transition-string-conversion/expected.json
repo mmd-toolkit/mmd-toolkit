@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Transition labels use the same default STRING conversion."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear",
+        "label": "a\nbqu0041"
+      }
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Known divergences: mermaid.js's comment takes the `]` of the categories before `%%`, so the input is rejected; here the comment starts at its `%%`."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...a x-axis [a, b]%% c\n----------------------^\nExpecting 'SQUARE_BRACES_END', 'COMMA', got 'NEWLINE'"
+  }
+}

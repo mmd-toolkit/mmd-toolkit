@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.spec.js",
+    "line": 63,
+    "test": "when parsing requirement diagram it... > will accept full element definition"
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [
+      {
+        "name": "test_el",
+        "type": "test_type",
+        "docRef": "test_ref",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": []
+  }
+}

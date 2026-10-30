@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The topAxis statement calls a method the Db does not have: mermaid rejects it with a TypeError."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "yy.TopAxis is not a function"
+  }
+}

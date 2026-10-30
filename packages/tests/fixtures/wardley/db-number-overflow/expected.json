@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do overflow INT and decimal values use shared Infinity text in every ungated numeric field?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "A",
+        "label": "A",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "labelOffsetX": "-Infinity",
+        "labelOffsetY": 0,
+        "inertia": false
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [
+      {
+        "number": "Infinity",
+        "coordinates": [
+          {
+            "x": 2,
+            "y": 100
+          }
+        ],
+        "text": "N"
+      }
+    ],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {
+      "stages": [
+        "A",
+        "B"
+      ],
+      "stageBoundaries": [
+        "Infinity"
+      ]
+    },
+    "size": {
+      "width": "Infinity",
+      "height": 2
+    }
+  }
+}

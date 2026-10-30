@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The public gate rejects lexer errors inside a recoverable curve."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 3, column 11: unexpected character: ->@<- at offset: 28, skipped 1 characters. "
+  }
+}

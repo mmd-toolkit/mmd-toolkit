@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Comments: `%` right after the `:` of task data is a character of the data here, the task `a ` with the end `%c`; mermaid.js reads `:%c` as a comment and rejects the task text without data (comment-takes-character)."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\ngantta :%c\n----------^\nExpecting 'taskData', got 'NL'"
+  }
+}

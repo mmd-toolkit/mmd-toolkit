@@ -1,0 +1,511 @@
+{
+  "type": "Root",
+  "diagramType": "eventmodeling",
+  "body": {
+    "type": "EventmodelingDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "EventmodelingTimeFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "03",
+          "range": [
+            18,
+            20
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 3
+            },
+            "end": {
+              "line": 3,
+              "column": 5
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "evt",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "ItemAdded",
+            "range": [
+              25,
+              34
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 10
+              },
+              "end": {
+                "line": 3,
+                "column": 19
+              }
+            }
+          },
+          "tail": [],
+          "range": [
+            25,
+            34
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 10
+            },
+            "end": {
+              "line": 3,
+              "column": 19
+            }
+          }
+        },
+        "sourceFrames": [],
+        "dataReference": null,
+        "data": null,
+        "range": [
+          15,
+          34
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 19
+          }
+        }
+      },
+      {
+        "type": "EventmodelingTimeFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "02",
+          "range": [
+            38,
+            40
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 3
+            },
+            "end": {
+              "line": 4,
+              "column": 5
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "rmo",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "CartItems",
+            "range": [
+              45,
+              54
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 10
+              },
+              "end": {
+                "line": 4,
+                "column": 19
+              }
+            }
+          },
+          "tail": [],
+          "range": [
+            45,
+            54
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 10
+            },
+            "end": {
+              "line": 4,
+              "column": 19
+            }
+          }
+        },
+        "sourceFrames": [],
+        "dataReference": null,
+        "data": null,
+        "range": [
+          35,
+          54
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 19
+          }
+        }
+      },
+      {
+        "type": "EventmodelingTimeFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "04",
+          "range": [
+            58,
+            60
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 3
+            },
+            "end": {
+              "line": 5,
+              "column": 5
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "ui",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "CartUI",
+            "range": [
+              64,
+              70
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 9
+              },
+              "end": {
+                "line": 5,
+                "column": 15
+              }
+            }
+          },
+          "tail": [],
+          "range": [
+            64,
+            70
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 9
+            },
+            "end": {
+              "line": 5,
+              "column": 15
+            }
+          }
+        },
+        "sourceFrames": [],
+        "dataReference": null,
+        "data": null,
+        "range": [
+          55,
+          70
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 15
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      70
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 5,
+        "column": 15
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "eventmodeling",
+      "range": [
+        0,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "tf",
+      "range": [
+        15,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "03",
+      "range": [
+        18,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 3
+        },
+        "end": {
+          "line": 3,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "evt",
+      "range": [
+        21,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 6
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "ItemAdded",
+      "range": [
+        25,
+        34
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 10
+        },
+        "end": {
+          "line": 3,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "tf",
+      "range": [
+        35,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "02",
+      "range": [
+        38,
+        40
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 3
+        },
+        "end": {
+          "line": 4,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "rmo",
+      "range": [
+        41,
+        44
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 6
+        },
+        "end": {
+          "line": 4,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "CartItems",
+      "range": [
+        45,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 10
+        },
+        "end": {
+          "line": 4,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "tf",
+      "range": [
+        55,
+        57
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "04",
+      "range": [
+        58,
+        60
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 3
+        },
+        "end": {
+          "line": 5,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "ui",
+      "range": [
+        61,
+        63
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 6
+        },
+        "end": {
+          "line": 5,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "CartUI",
+      "range": [
+        64,
+        70
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 9
+        },
+        "end": {
+          "line": 5,
+          "column": 15
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    71
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 6,
+      "column": 0
+    }
+  }
+}

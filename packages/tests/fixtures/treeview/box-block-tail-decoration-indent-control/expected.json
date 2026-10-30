@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Common forms and Box-drawing reading; ast/treeview.md TreeviewAccDescrBlockStatement: A whitespace-only payload line remains literal content in an indentation diagram. Mermaid accepts with accDescr \"a\"."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "a",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "child",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

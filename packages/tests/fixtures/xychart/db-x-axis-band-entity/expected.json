@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, entity: a character reference in a category in quotes is its placeholder."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": [
+        "cﬂ°amp¶ßd"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}

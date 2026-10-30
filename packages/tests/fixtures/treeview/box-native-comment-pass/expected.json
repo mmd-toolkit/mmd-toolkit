@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a bare percent-pair line pass through box preprocessing and remain a native comment?"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "b",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

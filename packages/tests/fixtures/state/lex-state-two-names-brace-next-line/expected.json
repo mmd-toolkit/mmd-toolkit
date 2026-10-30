@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Lexical structure, The state context, rule 7: the rule is tried again at `b`, where it reads `b`, the line feed, `C`, and `{`, and rejects the input."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error: State name must be a single word. Found: \"b\n  C {\""
+  }
+}

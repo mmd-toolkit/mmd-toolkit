@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Directives inside units: a directive inside a class name; mermaid.js reads the class `cd`."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": [
+          "cd"
+        ]
+      }
+    ],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

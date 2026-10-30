@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The appended LF is consumed by hidden YAML but EOF satisfies transition EOL."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear"
+      }
+    ]
+  }
+}

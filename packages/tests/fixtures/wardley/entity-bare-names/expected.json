@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an entity reference make a bare name valid after preprocessing?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 16: Expecting token of type '[' but found `;B [0.1,0.2]`."
+  }
+}

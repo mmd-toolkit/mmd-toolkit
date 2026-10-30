@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an empty-description-looking line remain quote content while the next decoration line disappears?"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a\naccDescr {}\nb",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "x",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

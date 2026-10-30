@@ -1,0 +1,780 @@
+{
+  "type": "Root",
+  "diagramType": "classDiagram",
+  "body": {
+    "type": "ClassDiagram",
+    "body": [
+      {
+        "type": "ClassDeclaration",
+        "name": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "StringLiteral",
+            "value": "a=b",
+            "raw": "`a=b`",
+            "closed": true,
+            "range": [
+              21,
+              26
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 8
+              },
+              "end": {
+                "line": 2,
+                "column": 13
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            21,
+            26
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 8
+            },
+            "end": {
+              "line": 2,
+              "column": 13
+            }
+          }
+        },
+        "label": null,
+        "cssClass": null,
+        "annotation": null,
+        "members": null,
+        "range": [
+          15,
+          26
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 2
+          },
+          "end": {
+            "line": 2,
+            "column": 13
+          }
+        }
+      },
+      {
+        "type": "ClassCssClassStatement",
+        "idList": {
+          "type": "StringLiteral",
+          "value": "a=b",
+          "raw": "\"a=b\"",
+          "closed": true,
+          "range": [
+            38,
+            43
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 11
+            },
+            "end": {
+              "line": 3,
+              "column": 16
+            }
+          }
+        },
+        "cssClass": {
+          "type": "Identifier",
+          "name": "x",
+          "range": [
+            44,
+            45
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 17
+            },
+            "end": {
+              "line": 3,
+              "column": 18
+            }
+          }
+        },
+        "range": [
+          29,
+          45
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 2
+          },
+          "end": {
+            "line": 3,
+            "column": 18
+          }
+        }
+      },
+      {
+        "type": "ClassLinkStatement",
+        "class": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "StringLiteral",
+            "value": "a=b",
+            "raw": "`a=b`",
+            "closed": true,
+            "range": [
+              54,
+              59
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 8
+              },
+              "end": {
+                "line": 4,
+                "column": 13
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            54,
+            59
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 8
+            },
+            "end": {
+              "line": 4,
+              "column": 13
+            }
+          }
+        },
+        "url": {
+          "type": "StringLiteral",
+          "value": "https://example.com",
+          "raw": "\"https://example.com\"",
+          "closed": true,
+          "range": [
+            65,
+            86
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 19
+            },
+            "end": {
+              "line": 4,
+              "column": 40
+            }
+          }
+        },
+        "tooltip": {
+          "type": "StringLiteral",
+          "value": "t",
+          "raw": "\"t\"",
+          "closed": true,
+          "range": [
+            87,
+            90
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 41
+            },
+            "end": {
+              "line": 4,
+              "column": 44
+            }
+          }
+        },
+        "target": null,
+        "range": [
+          48,
+          90
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 2
+          },
+          "end": {
+            "line": 4,
+            "column": 44
+          }
+        }
+      },
+      {
+        "type": "ClassMemberStatement",
+        "class": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "StringLiteral",
+            "value": "a=b",
+            "raw": "`a=b`",
+            "closed": true,
+            "range": [
+              93,
+              98
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 2
+              },
+              "end": {
+                "line": 5,
+                "column": 7
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            93,
+            98
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 2
+            },
+            "end": {
+              "line": 5,
+              "column": 7
+            }
+          }
+        },
+        "member": {
+          "type": "ClassAttribute",
+          "visibility": "public",
+          "name": {
+            "type": "ClassLiteral",
+            "value": "y",
+            "range": [
+              102,
+              103
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 11
+              },
+              "end": {
+                "line": 5,
+                "column": 12
+              }
+            }
+          },
+          "classifier": "none",
+          "range": [
+            101,
+            103
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 10
+            },
+            "end": {
+              "line": 5,
+              "column": 12
+            }
+          }
+        },
+        "range": [
+          93,
+          103
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 2
+          },
+          "end": {
+            "line": 5,
+            "column": 12
+          }
+        }
+      },
+      {
+        "type": "ClassAnnotationStatement",
+        "annotation": {
+          "type": "ClassAnnotation",
+          "name": {
+            "type": "Identifier",
+            "name": "interface",
+            "range": [
+              108,
+              117
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 4
+              },
+              "end": {
+                "line": 6,
+                "column": 13
+              }
+            }
+          },
+          "range": [
+            106,
+            119
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 2
+            },
+            "end": {
+              "line": 6,
+              "column": 15
+            }
+          }
+        },
+        "class": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "StringLiteral",
+            "value": "a=b",
+            "raw": "`a=b`",
+            "closed": true,
+            "range": [
+              120,
+              125
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 16
+              },
+              "end": {
+                "line": 6,
+                "column": 21
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            120,
+            125
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 16
+            },
+            "end": {
+              "line": 6,
+              "column": 21
+            }
+          }
+        },
+        "range": [
+          106,
+          125
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 2
+          },
+          "end": {
+            "line": 6,
+            "column": 21
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      125
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 6,
+        "column": 21
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "classDiagram",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "class",
+      "range": [
+        15,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "`a=b`",
+      "range": [
+        21,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "cssClass",
+      "range": [
+        29,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 3,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"a=b\"",
+      "range": [
+        38,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 11
+        },
+        "end": {
+          "line": 3,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "x",
+      "range": [
+        44,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 17
+        },
+        "end": {
+          "line": 3,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "click",
+      "range": [
+        48,
+        53
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 2
+        },
+        "end": {
+          "line": 4,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "`a=b`",
+      "range": [
+        54,
+        59
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 8
+        },
+        "end": {
+          "line": 4,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "href",
+      "range": [
+        60,
+        64
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 14
+        },
+        "end": {
+          "line": 4,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"https://example.com\"",
+      "range": [
+        65,
+        86
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 19
+        },
+        "end": {
+          "line": 4,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"t\"",
+      "range": [
+        87,
+        90
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 41
+        },
+        "end": {
+          "line": 4,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "`a=b`",
+      "range": [
+        93,
+        98
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 2
+        },
+        "end": {
+          "line": 5,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        99,
+        100
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 8
+        },
+        "end": {
+          "line": 5,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "+",
+      "range": [
+        101,
+        102
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 10
+        },
+        "end": {
+          "line": 5,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "y",
+      "range": [
+        102,
+        103
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 11
+        },
+        "end": {
+          "line": 5,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "<<",
+      "range": [
+        106,
+        108
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 2
+        },
+        "end": {
+          "line": 6,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "interface",
+      "range": [
+        108,
+        117
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 4
+        },
+        "end": {
+          "line": 6,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ">>",
+      "range": [
+        117,
+        119
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 13
+        },
+        "end": {
+          "line": 6,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "`a=b`",
+      "range": [
+        120,
+        125
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 16
+        },
+        "end": {
+          "line": 6,
+          "column": 21
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    126
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 7,
+      "column": 0
+    }
+  }
+}

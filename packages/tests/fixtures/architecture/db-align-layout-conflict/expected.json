@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Semantic acceptance: layout conflicts between alignments and edges do not reject public parsing. Case: align-conflicting-direction."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service"
+      },
+      {
+        "id": "b",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [
+      {
+        "lhsId": "a",
+        "lhsDir": "L",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "b",
+        "rhsDir": "R",
+        "rhsInto": true,
+        "rhsGroup": false
+      }
+    ],
+    "layoutHints": [
+      {
+        "direction": "row",
+        "members": [
+          "a",
+          "b"
+        ]
+      }
+    ]
+  }
+}

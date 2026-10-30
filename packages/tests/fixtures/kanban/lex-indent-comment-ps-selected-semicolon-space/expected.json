@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md Units and contexts, Comments and Indentation and parents; ast/kanban.md indent: A semicolon selected by the style line rule inside the native comment does not change its endpoint or count comment whitespace as indent. Mermaid accepts; the Db is recorded for column/card or parent/child comparison."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "x",
+        "isGroup": true
+      },
+      {
+        "id": "T;x",
+        "label": "T;x",
+        "isGroup": true
+      },
+      {
+        "id": "A;b",
+        "label": "A;b",
+        "isGroup": false,
+        "parentId": "T;x"
+      }
+    ]
+  }
+}

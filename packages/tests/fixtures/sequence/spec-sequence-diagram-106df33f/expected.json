@@ -1,0 +1,59 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.2.0",
+    "path": "packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js",
+    "line": 1572,
+    "test": "when parsing a sequenceDiagram > should use link as a declared message endpoint"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "link"
+      },
+      {
+        "name": "link",
+        "description": "Channel",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "A",
+        "to": "link",
+        "message": "message",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "link",
+        "to": "A",
+        "message": "reply",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

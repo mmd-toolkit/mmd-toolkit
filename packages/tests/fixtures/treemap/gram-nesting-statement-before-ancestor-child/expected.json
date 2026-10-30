@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/treemap.md Gap ownership: statement before ancestor child; retain the authored occurrences and nesting without changing acceptance or the Db."
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "children": [
+          {
+            "name": "B",
+            "children": [
+              {
+                "name": "C",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "name": "D",
+            "value": 2,
+            "classSelector": "xx"
+          }
+        ]
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "xx",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

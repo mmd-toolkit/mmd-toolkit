@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read name token punctuation?"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "456 & * # : -.",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "API"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "123 & * # : -.",
+        "nodes": [
+          "A"
+        ],
+        "title": "Title",
+        "classes": [],
+        "labelType": "text",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Both quote styles use default escapes and drop backslashes on unknown escapes."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "a\n\tqu0041\\\""
+      }
+    ],
+    "curves": [
+      {
+        "label": "c\r\b\f\u000b\u0000'",
+        "entries": [
+          1
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

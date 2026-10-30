@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/er/parser/erDiagram.spec.js",
+    "line": 1210,
+    "test": "when parsing ER diagram it... > syntax fixes for special characters and numbers > entity names in relationships > should allow numbers in relationships"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-1-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "1",
+        "classes": []
+      },
+      {
+        "id": "entity-2-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "2",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-1-0",
+        "roleA": "connects",
+        "entityB": "entity-2-1",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": []
+  }
+}

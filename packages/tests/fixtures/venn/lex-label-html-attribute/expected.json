@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Double quotes of the HTML attribute become single quotes (html-attribute in label-quoted)."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10,
+        "label": "a<a href='x'>b"
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

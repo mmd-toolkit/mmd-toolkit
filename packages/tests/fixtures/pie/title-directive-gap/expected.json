@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A directive line after an empty title does not supply text."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      }
+    ]
+  }
+}

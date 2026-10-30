@@ -1,0 +1,233 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: c4-no-useless-argument >> invalid >>> docs/rules/c4-no-useless-argument.md incorrect 1
+Filename: c4-no-useless-argument-incorrect-1.mmd
+
+Code:
+  1 | C4Context
+  2 |   Person(customer, "Customer", "A bank customer", "", "external", "", "https://bank.example")
+    |                                                                       ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js ignores this argument: `Person` reads at most 6 written arguments.
+---
+
+
+Test: c4-no-useless-argument >> invalid >>> invalid/c4/extra-boundary
+Filename: tests/fixtures/rules/c4-no-useless-argument/invalid/c4/extra-boundary-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Boundary(b, "B", "type", "t", "l", "lost") {
+    |                                    ^~~~~~ [1]
+  3 | Person(a, "A")
+  4 | }
+  5 |
+
+[1] mermaid.js ignores this argument: `Boundary` reads at most 5 written arguments.
+---
+
+
+Test: c4-no-useless-argument >> invalid >>> invalid/c4/extra-component
+Filename: tests/fixtures/rules/c4-no-useless-argument/invalid/c4/extra-component-input.mmd
+
+Code:
+  1 | C4Component
+  2 | Component(a, "A", "Java", "D", "s", "t", "l", "more")
+    |                                               ^~~~~~ [1]
+  3 |
+
+[1] mermaid.js ignores this argument: `Component` reads at most 7 written arguments.
+---
+
+
+Test: c4-no-useless-argument >> invalid >>> invalid/c4/extra-container
+Filename: tests/fixtures/rules/c4-no-useless-argument/invalid/c4/extra-container-input.mmd
+
+Code:
+  1 | C4Container
+  2 | Container(a, "A", "Java", "D", "s", "t", "l", "lost")
+    |                                               ^~~~~~ [1]
+  3 |
+
+[1] mermaid.js ignores this argument: `Container` reads at most 7 written arguments.
+---
+
+
+Test: c4-no-useless-argument >> invalid >>> invalid/c4/extra-element-style
+Filename: tests/fixtures/rules/c4-no-useless-argument/invalid/c4/extra-element-style-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | UpdateElementStyle(a, "b", "f", "c", "s", "sh", "sp", "t", "l", "ls", "lost")
+    |                                                                       ^~~~~~ [1]
+  4 |
+
+[1] mermaid.js ignores this argument: `UpdateElementStyle` reads at most 10 written arguments.
+---
+
+
+Test: c4-no-useless-argument >> invalid >>> invalid/c4/extra-fixed-boundary
+Filename: tests/fixtures/rules/c4-no-useless-argument/invalid/c4/extra-fixed-boundary-input.mmd
+
+Code:
+  1 | C4Context
+  2 | System_Boundary(b, "B", "t", "l", "lost") {
+    |                                   ^~~~~~ [1]
+  3 | Person(a, "A")
+  4 | }
+  5 |
+
+[1] mermaid.js ignores this argument: `System_Boundary` reads at most 4 written arguments.
+---
+
+
+Test: c4-no-useless-argument >> invalid >>> invalid/c4/extra-link
+Filename: tests/fixtures/rules/c4-no-useless-argument/invalid/c4/extra-link-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(customer, "Customer", "A bank customer", "", "external", "", "https://bank.example")
+    |                                                                     ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js ignores this argument: `Person` reads at most 6 written arguments.
+---
+
+
+Test: c4-no-useless-argument >> invalid >>> invalid/c4/extra-named-attribute
+Filename: tests/fixtures/rules/c4-no-useless-argument/invalid/c4/extra-named-attribute-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A", "D", "s", "t", "l", $descr="New")
+    |                                    ^~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js ignores this argument: `Person` reads at most 6 written arguments.
+---
+
+
+Test: c4-no-useless-argument >> invalid >>> invalid/c4/extra-node
+Filename: tests/fixtures/rules/c4-no-useless-argument/invalid/c4/extra-node-input.mmd
+
+Code:
+  1 | C4Deployment
+  2 | Node(n, "N", "Linux", "D", "", "t", "l", "lost") {
+    |                                          ^~~~~~ [1]
+  3 | Person(a, "A")
+  4 | }
+  5 |
+
+[1] mermaid.js ignores this argument: `Node` reads at most 7 written arguments.
+---
+
+
+Test: c4-no-useless-argument >> invalid >>> invalid/c4/extra-null-placeholder
+Filename: tests/fixtures/rules/c4-no-useless-argument/invalid/c4/extra-null-placeholder-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A", "D", "s", "t", "l", , "lost")
+    |                                      ^~~~~~ [1]
+  3 |
+
+[1] mermaid.js ignores this argument: `Person` reads at most 6 written arguments.
+---
+
+
+Test: c4-no-useless-argument >> invalid >>> invalid/c4/extra-rel
+Filename: tests/fixtures/rules/c4-no-useless-argument/invalid/c4/extra-rel-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Rel(a, b, "Uses", "T", "D", "s", "t", "l", "lost")
+    |                                            ^~~~~~ [1]
+  3 |
+
+[1] mermaid.js ignores this argument: `Rel` reads at most 8 written arguments.
+---
+
+
+Test: c4-no-useless-argument >> invalid >>> invalid/c4/extra-rel-style
+Filename: tests/fixtures/rules/c4-no-useless-argument/invalid/c4/extra-rel-style-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Rel(a, b, "Uses")
+  3 | UpdateRelStyle(a, b, "r", "b", "3", "4", "lost")
+    |                                          ^~~~~~ [1]
+  4 |
+
+[1] mermaid.js ignores this argument: `UpdateRelStyle` reads at most 6 written arguments.
+---
+
+
+Test: c4-no-useless-argument >> invalid >>> invalid/c4/extra-relindex
+Filename: tests/fixtures/rules/c4-no-useless-argument/invalid/c4/extra-relindex-input.mmd
+
+Code:
+  1 | C4Dynamic
+  2 | RelIndex("1", a, b, "Uses", "T", "D", "s", "t", "l", "lost")
+    |                                                      ^~~~~~ [1]
+  3 |
+
+[1] mermaid.js ignores this argument: `RelIndex` reads at most 9 written arguments.
+---
+
+
+Test: c4-no-useless-argument >> invalid >>> invalid/c4/extra-style-before-target
+Filename: tests/fixtures/rules/c4-no-useless-argument/invalid/c4/extra-style-before-target-input.mmd
+
+Code:
+  1 | C4Context
+  2 | UpdateRelStyle(a, b, "r", "b", "3", "4", "lost")
+    |                                          ^~~~~~ [1]
+  3 | Rel(a, b, "Uses")
+  4 |
+
+[1] mermaid.js ignores this argument: `UpdateRelStyle` reads at most 6 written arguments.
+---
+
+
+Test: c4-no-useless-argument >> invalid >>> invalid/c4/extra-two-values
+Filename: tests/fixtures/rules/c4-no-useless-argument/invalid/c4/extra-two-values-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A", "D", "s", "t", "l", "old", "new")
+    |                                    ^~~~~  ^~~~~
+    |                                    [1]    [2]
+  3 |
+
+[1] mermaid.js ignores this argument: `Person` reads at most 6 written arguments.
+[2] mermaid.js ignores this argument: `Person` reads at most 6 written arguments.
+---
+
+
+Test: c4-no-useless-argument >> invalid >>> invalid/c4/gram-arguments-layout-above
+Filename: tests/fixtures/rules/c4-no-useless-argument/invalid/c4/gram-arguments-layout-above-input.mmd
+
+Code:
+  1 | C4Context
+  2 | UpdateLayoutConfig("3", "1", "ignored")
+    |                              ^~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js ignores this argument: `UpdateLayoutConfig` reads at most 2 written arguments.
+---
+
+
+Test: c4-no-useless-argument >> invalid >>> invalid/c4/gram-arguments-person-above
+Filename: tests/fixtures/rules/c4-no-useless-argument/invalid/c4/gram-arguments-person-above-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A", "D", "sprite", "tags", "link", "ignored")
+    |                                               ^~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js ignores this argument: `Person` reads at most 6 written arguments.
+---

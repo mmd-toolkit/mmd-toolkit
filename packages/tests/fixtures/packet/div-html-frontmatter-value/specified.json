@@ -1,0 +1,13 @@
+{
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "<a",
+    "accTitle": "b=\"c\">d",
+    "accDescr": "",
+    "packet": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

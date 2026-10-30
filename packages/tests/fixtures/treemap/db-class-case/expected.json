@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are class keys case sensitive?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "classSelector": "Same",
+        "children": []
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "Same",
+        "styles": [
+          "fill:red"
+        ]
+      },
+      {
+        "id": "same",
+        "styles": [
+          "color:blue"
+        ]
+      }
+    ]
+  }
+}

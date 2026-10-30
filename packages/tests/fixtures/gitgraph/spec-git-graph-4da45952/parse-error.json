@@ -1,0 +1,17 @@
+{
+  "message": "A cherry-pick parent must be an immediate parent of the source",
+  "range": [
+    287,
+    290
+  ],
+  "loc": {
+    "start": {
+      "line": 12,
+      "column": 35
+    },
+    "end": {
+      "line": 12,
+      "column": 38
+    }
+  }
+}

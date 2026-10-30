@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, label: a label in quotes after a value of a line."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 2
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 2
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "1",
+            1
+          ],
+          [
+            "2",
+            2
+          ]
+        ],
+        "pointLabels": [
+          "a",
+          ""
+        ]
+      }
+    ]
+  }
+}

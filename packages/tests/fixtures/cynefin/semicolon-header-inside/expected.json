@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does detection reject a semicolon inside the bare header before any style prefix?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: cynefin-;beta\ncomplex \"style:#x\""
+  }
+}

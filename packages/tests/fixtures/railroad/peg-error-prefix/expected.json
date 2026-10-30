@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A recovered invalid PEG rule rejects publicly."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 3, column 17: Expecting: expecting at least one iteration which starts with one of these possible Token sequences::\n  <[&] ,[!] ,[PEG_STRING] ,[PEG_ID] ,[(] ,[.]>\nbut found: ';'"
+  }
+}

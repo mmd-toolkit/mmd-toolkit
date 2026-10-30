@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ABNF also rejects embedded numeric railroad.fontFamily during configuration derivation."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "str is not iterable"
+  }
+}

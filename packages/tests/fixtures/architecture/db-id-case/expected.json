@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Semantic acceptance: ID comparisons distinguish letter case. Case: compare-case-sensitive."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service"
+      },
+      {
+        "id": "A",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [
+      {
+        "lhsId": "a",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "A",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false
+      }
+    ],
+    "layoutHints": []
+  }
+}

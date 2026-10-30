@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A cherry-pick source id must exist."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Incorrect usage of \"cherryPick\". Source commit id should exist and provided"
+  }
+}

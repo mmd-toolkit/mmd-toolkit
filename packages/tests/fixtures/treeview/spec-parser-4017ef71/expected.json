@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/treeView/parser.spec.ts",
+    "line": 16,
+    "test": "treeView parser integration > icon suppression > should set icon to none for empty icon()"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "index.js",
+        "nodeType": "file",
+        "icon": "none",
+        "children": []
+      }
+    ]
+  }
+}

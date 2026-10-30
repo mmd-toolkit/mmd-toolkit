@@ -1,0 +1,9 @@
+agentflow-beta TB
+connector C
+flow F
+A e@-->B
+end
+C@{ protocol: http }
+F@{ model: x, view: collapsed }
+e@{ instruction: go, curve: linear }
+A@{ returns: result }

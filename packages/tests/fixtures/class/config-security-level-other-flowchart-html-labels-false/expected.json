@@ -1,0 +1,50 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A class diagram with flowchart.htmlLabels false, under a securityLevel that is not one of mermaid.js's values: the flowchart setting decides here too, no text is changed, the id of a class included."
+  },
+  "config": {
+    "securityLevel": "other",
+    "flowchart": {
+      "htmlLabels": false
+    }
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "a<b>=c<br>d",
+        "text": "a<b>=c<br>d",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "a=b",
+        "type": "",
+        "label": "a=b",
+        "text": "a=b",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

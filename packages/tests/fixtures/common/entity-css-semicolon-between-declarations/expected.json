@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md `style` and `classDef` lines: the line matches the rule, and its only `;` lies between two declarations, so it is ignored, and the label has `color:#333font-size:12px`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "<span style='color:#333font-size:12px'>x</span>",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

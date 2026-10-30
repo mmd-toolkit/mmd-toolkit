@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md The statement context: an entity in a name is rejected; no rule reads the second character of its placeholder."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...lassDiagramclass Aﬂ°amp¶ß\n----------------------^"
+  }
+}

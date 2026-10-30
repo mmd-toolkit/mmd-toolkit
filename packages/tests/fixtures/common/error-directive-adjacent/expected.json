@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md ErrorDiagram: a directive ends a run of characters, so the error pseudo-diagram has the single `RawText` token `error`, and the directive follows it outside the token."
+  },
+  "accepted": true,
+  "diagramType": "error",
+  "db": {},
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

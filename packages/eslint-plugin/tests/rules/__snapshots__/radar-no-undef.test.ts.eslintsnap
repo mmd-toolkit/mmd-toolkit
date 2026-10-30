@@ -1,0 +1,132 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: radar-no-undef >> invalid >>> docs/rules/radar-no-undef.md incorrect 1
+Filename: radar-no-undef-incorrect-1.mmd
+
+Code:
+  1 | radar-beta
+  2 |   axis A, B, C
+  3 |   curve sales{A: 1, B: 2, C: 3, D: 9}
+    |                                 ^ [1]
+  4 |
+
+[1] mermaid.js drops this entry: no axis of the diagram has the id `D`.
+---
+
+
+Test: radar-no-undef >> invalid >>> invalid/radar/docs-incorrect-1
+Filename: tests/fixtures/rules/radar-no-undef/invalid/radar/docs-incorrect-1-input.mmd
+
+Code:
+  1 | radar-beta
+  2 |   axis A, B, C
+  3 |   curve sales{A: 1, B: 2, C: 3, D: 9}
+    |                                 ^ [1]
+  4 |
+
+[1] mermaid.js drops this entry: no axis of the diagram has the id `D`.
+---
+
+
+Test: radar-no-undef >> invalid >>> invalid/radar/named-extra-case
+Filename: tests/fixtures/rules/radar-no-undef/invalid/radar/named-extra-case-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | axis A, B, C
+  3 | curve sales{A:1, B:2, C:3, a:9}
+    |                            ^ [1]
+  4 |
+
+[1] mermaid.js drops this entry: no axis of the diagram has the id `a`.
+---
+
+
+Test: radar-no-undef >> invalid >>> invalid/radar/named-extra-forward
+Filename: tests/fixtures/rules/radar-no-undef/invalid/radar/named-extra-forward-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | curve sales{A:1, B:2, C:3, D:9}
+    |                            ^ [1]
+  3 | axis A, B, C
+  4 |
+
+[1] mermaid.js drops this entry: no axis of the diagram has the id `D`.
+---
+
+
+Test: radar-no-undef >> invalid >>> invalid/radar/named-extra-hidden
+Filename: tests/fixtures/rules/radar-no-undef/invalid/radar/named-extra-hidden-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | axis A, B, C
+  3 | curve sales{A:1, B:2, C:3, D %%{}%%
+    |                            ^ [1]
+  4 | :9}
+  5 |
+
+[1] mermaid.js drops this entry: no axis of the diagram has the id `D`.
+---
+
+
+Test: radar-no-undef >> invalid >>> invalid/radar/named-extra
+Filename: tests/fixtures/rules/radar-no-undef/invalid/radar/named-extra-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | axis A, B, C
+  3 | curve sales{A:1, B:2, C:3, D:9}
+    |                            ^ [1]
+  4 |
+
+[1] mermaid.js drops this entry: no axis of the diagram has the id `D`.
+---
+
+
+Test: radar-no-undef >> invalid >>> invalid/radar/named-extra-label
+Filename: tests/fixtures/rules/radar-no-undef/invalid/radar/named-extra-label-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | axis A["North"], B, C
+  3 | curve sales{A:1, B:2, C:3, North:9}
+    |                            ^~~~~ [1]
+  4 |
+
+[1] mermaid.js drops this entry: no axis of the diagram has the id `North`.
+---
+
+
+Test: radar-no-undef >> invalid >>> invalid/radar/named-extra-trivia
+Filename: tests/fixtures/rules/radar-no-undef/invalid/radar/named-extra-trivia-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | axis A, B, C
+  3 | curve sales{A:1, B:2, C:3,
+  4 | %% note
+  5 | D %%{init: {}}%% :9}
+    | ^ [1]
+  6 |
+
+[1] mermaid.js drops this entry: no axis of the diagram has the id `D`.
+---
+
+
+Test: radar-no-undef >> invalid >>> invalid/radar/named-extra-twice
+Filename: tests/fixtures/rules/radar-no-undef/invalid/radar/named-extra-twice-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | axis A, B, C
+  3 | curve sales{A:1, B:2, C:3, D:9, D:8}
+    |                            ^    ^
+    |                            [1]  [2]
+  4 |
+
+[1] mermaid.js drops this entry: no axis of the diagram has the id `D`.
+[2] mermaid.js drops this entry: no axis of the diagram has the id `D`.
+---

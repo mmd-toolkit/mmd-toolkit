@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "NaN has no reachable numeric terminal."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 2: unexpected character: ->N<- at offset: 8, skipped 3 characters. Parse error on line 2, column 5: Expecting token of type 'INT' but found `:`."
+  }
+}

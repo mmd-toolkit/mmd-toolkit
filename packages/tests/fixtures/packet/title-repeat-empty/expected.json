@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The final empty AST assignment suppresses earlier body titles."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  }
+}

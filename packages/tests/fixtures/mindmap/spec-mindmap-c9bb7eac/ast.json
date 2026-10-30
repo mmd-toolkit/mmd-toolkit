@@ -1,0 +1,367 @@
+{
+  "type": "Root",
+  "diagramType": "mindmap",
+  "body": {
+    "type": "MindmapDiagram",
+    "root": {
+      "type": "MindmapNode",
+      "indent": 4,
+      "id": {
+        "type": "MindmapLiteral",
+        "value": "root",
+        "range": [
+          12,
+          16
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 4
+          },
+          "end": {
+            "line": 2,
+            "column": 8
+          }
+        }
+      },
+      "shape": {
+        "type": "MindmapShape",
+        "opener": "[",
+        "closer": "]",
+        "label": {
+          "type": "MindmapLabel",
+          "kind": "text",
+          "value": "The root",
+          "range": [
+            17,
+            25
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 9
+            },
+            "end": {
+              "line": 2,
+              "column": 17
+            }
+          }
+        },
+        "range": [
+          16,
+          26
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 8
+          },
+          "end": {
+            "line": 2,
+            "column": 18
+          }
+        }
+      },
+      "decorations": [
+        {
+          "type": "MindmapIconStatement",
+          "icon": {
+            "type": "MindmapLiteral",
+            "value": "bomb",
+            "range": [
+              38,
+              42
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 11
+              },
+              "end": {
+                "line": 3,
+                "column": 15
+              }
+            }
+          },
+          "range": [
+            31,
+            43
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 4
+            },
+            "end": {
+              "line": 3,
+              "column": 16
+            }
+          }
+        },
+        {
+          "type": "MindmapClassStatement",
+          "cssClass": {
+            "type": "MindmapLiteral",
+            "value": "m-4 p-8",
+            "range": [
+              51,
+              58
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 7
+              },
+              "end": {
+                "line": 4,
+                "column": 14
+              }
+            }
+          },
+          "range": [
+            48,
+            58
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 4
+            },
+            "end": {
+              "line": 4,
+              "column": 14
+            }
+          }
+        }
+      ],
+      "children": [],
+      "range": [
+        12,
+        58
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 4,
+          "column": 14
+        }
+      }
+    },
+    "range": [
+      0,
+      58
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 4,
+        "column": 14
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "mindmap",
+      "range": [
+        0,
+        7
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "root",
+      "range": [
+        12,
+        16
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        16,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "The root",
+      "range": [
+        17,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 9
+        },
+        "end": {
+          "line": 2,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        25,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 17
+        },
+        "end": {
+          "line": 2,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "::icon(",
+      "range": [
+        31,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 4
+        },
+        "end": {
+          "line": 3,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "bomb",
+      "range": [
+        38,
+        42
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 11
+        },
+        "end": {
+          "line": 3,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        42,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 15
+        },
+        "end": {
+          "line": 3,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":::",
+      "range": [
+        48,
+        51
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 4
+        },
+        "end": {
+          "line": 4,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "m-4 p-8",
+      "range": [
+        51,
+        58
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 7
+        },
+        "end": {
+          "line": 4,
+          "column": 14
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    63
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 4
+    }
+  }
+}

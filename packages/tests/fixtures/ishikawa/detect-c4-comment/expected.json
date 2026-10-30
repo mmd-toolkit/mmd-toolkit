@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[H: detection and ISHIKAWA] Is a removed comment invisible to the C4 detector?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": []
+    }
+  }
+}

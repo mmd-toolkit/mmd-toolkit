@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/treemap.md shared leaves: A directive-only quoted name stays an empty StringLiteral with its original raw quotes and directive."
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/venn/parser/venn.spec.ts",
+    "line": 224,
+    "test": "Venn diagram > set requires single identifier"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...n-beta        set A,B    \n----------------------^\nExpecting 'EOF', 'NEWLINE', 'TITLE', 'SET', 'BRACKET_LABEL', 'COLON', 'UNION', 'TEXT', 'INDENT_TEXT', 'STYLE', got 'COMMA'"
+  }
+}

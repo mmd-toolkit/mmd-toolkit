@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does the default theme accept a filtered colour setting without altering the Db?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "config": {
+      "themeVariables": {
+        "primaryColor": "notacolor"
+      },
+      "treemap": {
+        "padding": 2
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ACC_DESCR ends at the directive-looking brace; the remaining percent pair is a native comment."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

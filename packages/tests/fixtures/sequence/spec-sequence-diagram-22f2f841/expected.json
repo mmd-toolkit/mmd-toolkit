@@ -1,0 +1,88 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.2.0",
+    "path": "packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js",
+    "line": 2575,
+    "test": "sequence db class > when parsing extended participant syntax > should parse hyphenated names with an attached config object"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "lead-actor",
+        "description": "lead-actor",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "database",
+        "nextActor": "order-svc"
+      },
+      {
+        "name": "order-svc",
+        "description": "order-svc",
+        "wrap": false,
+        "prevActor": "lead-actor",
+        "links": {},
+        "properties": {},
+        "type": "queue",
+        "nextActor": "kebab-case"
+      },
+      {
+        "name": "kebab-case",
+        "description": "Kebab-Cased",
+        "wrap": false,
+        "prevActor": "order-svc",
+        "links": {},
+        "properties": {},
+        "type": "control",
+        "nextActor": "web-ui"
+      },
+      {
+        "name": "web-ui",
+        "description": "Web UI",
+        "wrap": false,
+        "prevActor": "kebab-case",
+        "links": {},
+        "properties": {},
+        "type": "entity"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "lead-actor",
+        "set": {
+          "type": "database"
+        }
+      },
+      {
+        "id": "order-svc",
+        "set": {
+          "type": "queue"
+        }
+      },
+      {
+        "id": "kebab-case",
+        "set": {
+          "type": "control"
+        }
+      },
+      {
+        "id": "web-ui",
+        "set": {
+          "type": "entity"
+        }
+      }
+    ]
+  }
+}

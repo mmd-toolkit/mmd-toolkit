@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, classDef: `hasOwnProperty` is a plain name of a class."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": [
+      {
+        "name": "hasOwnProperty",
+        "color": "#f00"
+      }
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Units and contexts, Names: `C4Context` is a name, and no C4 keyword that detection takes; accepted."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      },
+      {
+        "id": "entity-C4Context-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "C4Context",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-A-0",
+        "roleA": "x",
+        "entityB": "entity-C4Context-1",
+        "cardA": "ZERO_OR_MORE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": []
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Directive removal rejoins colon keywords."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "A",
+        "seq": 0,
+        "type": 0,
+        "tags": [
+          "T"
+        ],
+        "parents": [],
+        "branch": "main"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

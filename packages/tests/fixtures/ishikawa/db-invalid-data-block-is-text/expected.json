@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A closed data-block-looking child suffix with invalid YAML stays literal text and has no data-block effect."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "A@{invalid: [}",
+          "children": []
+        }
+      ]
+    }
+  }
+}

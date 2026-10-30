@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Common values: native hidden text cannot separate accTitle from its colon."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->a<- at offset: 13, skipped 8 characters.\nLexer error on line 2, column 20: unexpected character: ->A<- at offset: 32, skipped 1 characters. Parse error on line 2, column 18: Expecting token of type 'EOF' but found `:`."
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "DOMAIN_NAME has no trailing boundary and adjacent domain units remain separate."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "clear",
+        "items": [
+          {
+            "label": "A"
+          }
+        ]
+      },
+      {
+        "name": "confusion",
+        "items": [
+          {
+            "label": "B"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

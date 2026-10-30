@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Radar has no data-block syntax or data-block recorder."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 7: unexpected character: ->@<- at offset: 17, skipped 1 characters. Parse error on line 2, column 8: Expecting token of type 'EOF' but found `{`."
+  }
+}

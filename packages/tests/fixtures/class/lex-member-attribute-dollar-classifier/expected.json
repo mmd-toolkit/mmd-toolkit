@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A dollar sign after an attribute is its classifier."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "$",
+            "id": "x"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

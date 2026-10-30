@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Common statements can be interleaved with axes, curves and options."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "Last",
+    "accTitle": "A",
+    "accDescr": "D",
+    "axes": [
+      {
+        "label": "A"
+      },
+      {
+        "label": "B"
+      }
+    ],
+    "curves": [
+      {
+        "label": "c",
+        "entries": [
+          1
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": 3,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

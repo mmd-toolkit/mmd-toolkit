@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, orientation: `horizontal` is no title of an axis."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nxychart-betax-axis horizontal\n-------------------^\nExpecting 'SQUARE_BRACES_START', 'NUMBER_WITH_DECIMAL', 'STR', 'MD_STR', 'AMP', 'NUM', 'ALPHA', 'PLUS', 'EQUALS', 'MULT', 'DOT', 'BRKT', 'MINUS', 'UNDERSCORE', got 'CHART_ORIENTATION'"
+  }
+}

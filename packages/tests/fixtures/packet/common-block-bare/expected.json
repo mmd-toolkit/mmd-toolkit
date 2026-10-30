@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A bare percent line inside a composite description remains its text."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A\n%%\nB",
+    "packet": []
+  }
+}

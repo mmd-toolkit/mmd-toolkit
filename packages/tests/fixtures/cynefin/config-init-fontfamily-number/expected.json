@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The init form of numeric cynefin.fontFamily fails common recursive setting sanitization."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "str is not iterable"
+  }
+}

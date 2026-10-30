@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ABNF grouping does not survive in the published tree."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

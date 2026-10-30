@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, text grid: punctuation (`a, b [c]: d`) in the title of a plot in quotes."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 1
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 1
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "a, b [c]: d",
+        "data": [
+          [
+            "1",
+            1
+          ]
+        ]
+      }
+    ]
+  }
+}

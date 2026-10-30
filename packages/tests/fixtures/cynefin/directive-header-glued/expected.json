@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "After directive removal the header is still glued to the next keyword and fails detection."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: cynefin-betacomplex \"A\""
+  }
+}

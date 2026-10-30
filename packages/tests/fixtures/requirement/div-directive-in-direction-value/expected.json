@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Directives inside units: a directive inside the direction value; mermaid.js reads `LR`."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

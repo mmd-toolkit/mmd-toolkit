@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-from-tree/mindmap.md, decorations: a class line before an icon line gives both to the node."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "class": "y",
+      "icon": "x",
+      "children": []
+    }
+  }
+}

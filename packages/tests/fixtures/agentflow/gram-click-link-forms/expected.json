@@ -1,0 +1,79 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Link productions retain URLs, tooltips and explicit targets."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "A",
+        "props": {},
+        "link": "https://a.example"
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "B",
+        "props": {},
+        "link": "https://b.example"
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "C",
+        "props": {},
+        "link": "https://c.example",
+        "linkTarget": "_self"
+      },
+      {
+        "id": "D",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "D",
+        "props": {},
+        "link": "https://d.example",
+        "linkTarget": "_top"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [
+      {
+        "id": "B",
+        "text": "tip"
+      },
+      {
+        "id": "D",
+        "text": "tip"
+      }
+    ]
+  }
+}

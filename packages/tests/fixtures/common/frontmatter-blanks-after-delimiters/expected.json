@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokens.md Frontmatter tokens: blanks after the `---` on the same line, the opening one and the closing one, are whitespace of the frontmatter, and the title is x."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "x",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "title": "x"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: A title takes the rest of its permitted line text, so `title T set A` contains no set statement. This input is accepted by mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "T set A",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": []
+  }
+}

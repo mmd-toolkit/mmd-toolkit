@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, prototype names: a style on `root`."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "styles": [
+        "fill:red"
+      ],
+      "children": []
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

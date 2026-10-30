@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, plot: a CRLF inside the brackets is rejected as a line feed is."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...chart-beta line [1,2]\n----------------------^\nExpecting 'NUMBER_WITH_DECIMAL', got 'NEWLINE'"
+  }
+}

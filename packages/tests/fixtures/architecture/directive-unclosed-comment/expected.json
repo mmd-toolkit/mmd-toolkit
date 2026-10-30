@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed directive comment line is checked separately from removal inside a value."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 3, column 3: Expecting token of type ':' but found `\n`."
+  }
+}

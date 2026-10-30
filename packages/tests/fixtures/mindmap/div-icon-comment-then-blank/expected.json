@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Blank lines: a comment after an icon counts as one; accepted here, rejected by mermaid.js."
+  },
+  "knownDivergence": "blank-line-after-header-or-comments",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 5:\n...t  ::icon(x) %% c  b\n--------------------^\nExpecting 'SPACELINE', 'NL', 'EOF', got 'SPACELIST'"
+  }
+}

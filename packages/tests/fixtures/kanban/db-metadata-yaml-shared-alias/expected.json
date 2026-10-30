@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Shared YAML aliases in unknown metadata keys are parsed before the Db drops those keys."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {}
+      }
+    ]
+  }
+}

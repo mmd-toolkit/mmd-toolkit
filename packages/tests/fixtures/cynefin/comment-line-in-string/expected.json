@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A full comment line inside a multiline STRING is removed before lexing."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "A\nB"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "When an entity and a subgraph have the id S, a style statement and a class statement reach both."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      },
+      {
+        "id": "entity-S-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [
+          "fill:red"
+        ],
+        "name": "S",
+        "classes": [
+          "c"
+        ]
+      },
+      {
+        "id": "entity-B-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "S",
+        "roleA": "r",
+        "entityB": "entity-B-2",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A"
+        ],
+        "title": "S",
+        "classes": [
+          "c"
+        ],
+        "cssStyles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

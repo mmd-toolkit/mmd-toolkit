@@ -1,0 +1,50 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md and ast/railroad.md: Authored PEG example preserves predicates, suffixes, ordered choice, dot and nested singleton groups."
+  },
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "Rules",
+    "accDescr": "Details",
+    "rules": [
+      {
+        "name": "item",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "special",
+              "text": "&(...)"
+            },
+            {
+              "type": "special",
+              "text": "!."
+            },
+            {
+              "type": "optional",
+              "element": {
+                "type": "terminal",
+                "value": "b"
+              }
+            },
+            {
+              "type": "repetition",
+              "element": {
+                "type": "terminal",
+                "value": "c"
+              },
+              "min": 0,
+              "max": "Infinity"
+            },
+            {
+              "type": "terminal",
+              "value": "d"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

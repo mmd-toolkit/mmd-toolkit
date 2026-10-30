@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty final accessibility title suppresses all earlier assignments."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

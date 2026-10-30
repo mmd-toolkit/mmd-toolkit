@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Names, annotations and common forms: Authored values, all four common statements, repeated annotations, both quote styles and empty names stay in the source tree."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "Access",
+    "accDescr": "Block\ntext",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "directory",
+        "cssClass": "last",
+        "icon": "none",
+        "description": "detail",
+        "children": [
+          {
+            "name": "child/ ",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

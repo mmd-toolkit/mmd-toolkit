@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Rel_U keyword with a glued non-ASCII text is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nC4ContextRel_Ué(a, b, \"Uses\", \"HTT\n--------------^"
+  }
+}

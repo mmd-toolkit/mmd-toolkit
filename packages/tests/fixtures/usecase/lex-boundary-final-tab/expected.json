@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do boundary header/end accept trailing TAB and EOF?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [
+      {
+        "id": "S",
+        "label": "S",
+        "labelType": "text",
+        "type": "rect",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

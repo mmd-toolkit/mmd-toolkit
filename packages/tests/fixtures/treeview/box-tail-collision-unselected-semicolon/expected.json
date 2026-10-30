@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Indentation and lines: Does an unselected semicolon consume the pending run as a bare node before the branch, making b its child?"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": ";",
+            "nodeType": "file",
+            "children": [
+              {
+                "name": "b",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

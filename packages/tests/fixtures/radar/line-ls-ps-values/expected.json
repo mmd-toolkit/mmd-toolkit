@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "LS and PS stay within quoted labels."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "a b c"
+      }
+    ],
+    "curves": [
+      {
+        "label": "c d e",
+        "entries": [
+          1
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

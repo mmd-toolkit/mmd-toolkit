@@ -1,0 +1,35 @@
+{
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "type": "na"
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "label": "C4Container",
+        "thickness": "normal",
+        "pattern": "solid",
+        "arrowTypeStart": "arrow_open",
+        "arrowTypeEnd": "arrow_point"
+      }
+    ],
+    "classes": []
+  }
+}

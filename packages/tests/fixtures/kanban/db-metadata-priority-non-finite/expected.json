@@ -1,0 +1,57 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Infinite YAML priorities become Infinity and -Infinity text; a scalar NaN is falsy and is not assigned."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "isGroup": false,
+        "parentId": "S",
+        "priority": "Infinity"
+      },
+      {
+        "id": "B",
+        "label": "B",
+        "isGroup": false,
+        "parentId": "S",
+        "priority": "-Infinity"
+      },
+      {
+        "id": "C",
+        "label": "C",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "priority": "Infinity"
+        }
+      },
+      {
+        "id": "B",
+        "set": {
+          "priority": "-Infinity"
+        }
+      },
+      {
+        "id": "C",
+        "set": {}
+      }
+    ]
+  }
+}

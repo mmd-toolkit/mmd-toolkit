@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/block/parser/block.spec.ts",
+    "line": 377,
+    "test": "Block diagram > when parsing a block diagram graph it should handle >  > empty blocks"
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": 3,
+      "children": [
+        {
+          "type": "space",
+          "width": 1
+        },
+        {
+          "id": "middle",
+          "label": "In the middle",
+          "type": "square",
+          "widthInColumns": 1
+        },
+        {
+          "type": "space",
+          "width": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

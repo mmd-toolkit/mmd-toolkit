@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Space-semicolon is part of an accessibility title value."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "A ;",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  }
+}

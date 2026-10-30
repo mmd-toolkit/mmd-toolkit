@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, prototype names: `__proto__` twice is one block."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "__proto__",
+          "label": "__proto__",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

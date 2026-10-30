@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Directives at the beginning and end of each architecture display value are removed before parsing."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "iconText": "Icon",
+        "title": "Title"
+      },
+      {
+        "id": "db",
+        "type": "service"
+      }
+    ],
+    "groups": [
+      {
+        "id": "g",
+        "title": "Group"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "api",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "db",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false,
+        "title": "Edge"
+      }
+    ],
+    "layoutHints": []
+  }
+}

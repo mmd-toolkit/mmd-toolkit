@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/sequence.md SequenceBoxText: mermaid.js trims the spaces at the end of the box text, so the box text and its remainder end at `-team`; the box has the fill red and the name -team."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [
+      {
+        "name": "-team",
+        "wrap": false,
+        "fill": "red",
+        "actorKeys": []
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

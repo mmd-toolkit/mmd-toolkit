@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Db normalization, subgraphs: `flowchart.inheritDir` is a value that makes the subgraph take the diagram's direction, LR; the value is `1` in the frontmatter."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "a",
+        "nodes": [],
+        "title": "a",
+        "classes": [],
+        "dir": "LR",
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "config": {
+      "flowchart": {
+        "inheritDir": 1
+      }
+    }
+  }
+}

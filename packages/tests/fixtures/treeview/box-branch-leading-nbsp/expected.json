@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does branch-prefix skipping leave a leading NBSP in the node name?"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": " a",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

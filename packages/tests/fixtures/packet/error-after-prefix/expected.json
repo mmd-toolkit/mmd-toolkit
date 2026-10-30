@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A valid block prefix does not hide a later lexer error."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 3, column 1: unexpected character: ->?<- at offset: 13, skipped 1 characters. "
+  }
+}

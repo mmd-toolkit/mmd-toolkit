@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/kanban/kanban.spec.ts",
+    "line": 54,
+    "test": "when parsing a kanban  > hierarchy > 3 should handle a simple root definition with a shape and without an id abc123"
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "root",
+        "label": "root",
+        "isGroup": true
+      }
+    ]
+  }
+}

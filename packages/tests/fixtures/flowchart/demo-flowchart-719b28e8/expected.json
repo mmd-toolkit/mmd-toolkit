@@ -1,0 +1,393 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/flowchart.html",
+    "line": 314
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "47",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "SAM.CommonFA.FMESummary",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "48",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "SAM.CommonFA.CommonFAFinanceBudget",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "37",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "SAM.CommonFA.BudgetSubserviceLineVolume",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "35",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "SAM.CommonFA.PopulationFME",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "41",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "SAM.CommonFA.MetricCost",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "44",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "SAM.CommonFA.MetricOutliers",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "46",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "SAM.CommonFA.MetricOpportunity",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "40",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "SAM.CommonFA.OPVisits",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "38",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "SAM.CommonFA.CommonFAFinanceRefund",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "43",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "SAM.CommonFA.CommonFAFinancePicuDays",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "42",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "SAM.CommonFA.CommonFAFinanceNurseryDays",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "45",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "SAM.CommonFA.MetricPreOpportunity",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "39",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "SAM.CommonFA.ChargeDetails",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "36",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "SAM.CommonFA.PremetricCost",
+        "type": "round",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "47",
+        "end": "48",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_47_48_0"
+      },
+      {
+        "start": "37",
+        "end": "48",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_37_48_0"
+      },
+      {
+        "start": "35",
+        "end": "47",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_35_47_0"
+      },
+      {
+        "start": "41",
+        "end": "47",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_41_47_0"
+      },
+      {
+        "start": "44",
+        "end": "47",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_44_47_0"
+      },
+      {
+        "start": "46",
+        "end": "47",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_46_47_0"
+      },
+      {
+        "start": "40",
+        "end": "47",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_40_47_0"
+      },
+      {
+        "start": "38",
+        "end": "47",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_38_47_0"
+      },
+      {
+        "start": "43",
+        "end": "47",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_43_47_0"
+      },
+      {
+        "start": "42",
+        "end": "47",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_42_47_0"
+      },
+      {
+        "start": "45",
+        "end": "46",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_45_46_0"
+      },
+      {
+        "start": "35",
+        "end": "45",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_35_45_0"
+      },
+      {
+        "start": "41",
+        "end": "45",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_41_45_0"
+      },
+      {
+        "start": "41",
+        "end": "44",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_41_44_0"
+      },
+      {
+        "start": "39",
+        "end": "43",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_39_43_0"
+      },
+      {
+        "start": "39",
+        "end": "42",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_39_42_0"
+      },
+      {
+        "start": "39",
+        "end": "41",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_39_41_0"
+      },
+      {
+        "start": "39",
+        "end": "40",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_39_40_0"
+      },
+      {
+        "start": "35",
+        "end": "39",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_35_39_0"
+      },
+      {
+        "start": "36",
+        "end": "39",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_36_39_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The header context reads the whitespace that contains a line feed, up to its last line feed, as no direction, so LR after an empty line is the vertex LR and the direction is TB."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "LR",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "LR",
+        "props": {}
+      },
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

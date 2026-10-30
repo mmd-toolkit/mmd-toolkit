@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A GWT keyword hyphen suffix rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 4: unexpected character: ->-<- at offset: 17, skipped 1 characters. "
+  }
+}

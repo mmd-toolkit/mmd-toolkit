@@ -1,0 +1,1554 @@
+{
+  "type": "Root",
+  "diagramType": "stateDiagram",
+  "body": {
+    "type": "StateDiagram",
+    "body": [
+      {
+        "type": "StateTransitionStatement",
+        "from": {
+          "type": "StateReference",
+          "state": {
+            "type": "StateTerminal",
+            "range": [
+              83,
+              86
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 2
+              },
+              "end": {
+                "line": 8,
+                "column": 5
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            83,
+            86
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 2
+            },
+            "end": {
+              "line": 8,
+              "column": 5
+            }
+          }
+        },
+        "to": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "Draft",
+            "range": [
+              91,
+              96
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 10
+              },
+              "end": {
+                "line": 8,
+                "column": 15
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            91,
+            96
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 10
+            },
+            "end": {
+              "line": 8,
+              "column": 15
+            }
+          }
+        },
+        "label": null,
+        "range": [
+          83,
+          96
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 2
+          },
+          "end": {
+            "line": 8,
+            "column": 15
+          }
+        }
+      },
+      {
+        "type": "StateTransitionStatement",
+        "from": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "Draft",
+            "range": [
+              99,
+              104
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 2
+              },
+              "end": {
+                "line": 9,
+                "column": 7
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            99,
+            104
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 2
+            },
+            "end": {
+              "line": 9,
+              "column": 7
+            }
+          }
+        },
+        "to": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "Submitted",
+            "range": [
+              109,
+              118
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 12
+              },
+              "end": {
+                "line": 9,
+                "column": 21
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            109,
+            118
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 12
+            },
+            "end": {
+              "line": 9,
+              "column": 21
+            }
+          }
+        },
+        "label": {
+          "type": "StateLiteral",
+          "value": "submit",
+          "range": [
+            121,
+            127
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 24
+            },
+            "end": {
+              "line": 9,
+              "column": 30
+            }
+          }
+        },
+        "range": [
+          99,
+          127
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 2
+          },
+          "end": {
+            "line": 9,
+            "column": 30
+          }
+        }
+      },
+      {
+        "type": "StateCompositeStatement",
+        "textBeforeId": null,
+        "id": {
+          "type": "Identifier",
+          "name": "Review",
+          "range": [
+            136,
+            142
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 8
+            },
+            "end": {
+              "line": 10,
+              "column": 14
+            }
+          }
+        },
+        "textBeforeBody": null,
+        "body": [
+          {
+            "type": "StateTransitionStatement",
+            "from": {
+              "type": "StateReference",
+              "state": {
+                "type": "StateTerminal",
+                "range": [
+                  149,
+                  152
+                ],
+                "loc": {
+                  "start": {
+                    "line": 11,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 11,
+                    "column": 7
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                149,
+                152
+              ],
+              "loc": {
+                "start": {
+                  "line": 11,
+                  "column": 4
+                },
+                "end": {
+                  "line": 11,
+                  "column": 7
+                }
+              }
+            },
+            "to": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "Screening",
+                "range": [
+                  157,
+                  166
+                ],
+                "loc": {
+                  "start": {
+                    "line": 11,
+                    "column": 12
+                  },
+                  "end": {
+                    "line": 11,
+                    "column": 21
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                157,
+                166
+              ],
+              "loc": {
+                "start": {
+                  "line": 11,
+                  "column": 12
+                },
+                "end": {
+                  "line": 11,
+                  "column": 21
+                }
+              }
+            },
+            "label": null,
+            "range": [
+              149,
+              166
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 4
+              },
+              "end": {
+                "line": 11,
+                "column": 21
+              }
+            }
+          },
+          {
+            "type": "StateTransitionStatement",
+            "from": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "Screening",
+                "range": [
+                  171,
+                  180
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 13
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                171,
+                180
+              ],
+              "loc": {
+                "start": {
+                  "line": 12,
+                  "column": 4
+                },
+                "end": {
+                  "line": 12,
+                  "column": 13
+                }
+              }
+            },
+            "to": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "Decision",
+                "range": [
+                  185,
+                  193
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 18
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 26
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                185,
+                193
+              ],
+              "loc": {
+                "start": {
+                  "line": 12,
+                  "column": 18
+                },
+                "end": {
+                  "line": 12,
+                  "column": 26
+                }
+              }
+            },
+            "label": null,
+            "range": [
+              171,
+              193
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 4
+              },
+              "end": {
+                "line": 12,
+                "column": 26
+              }
+            }
+          }
+        ],
+        "range": [
+          130,
+          197
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 2
+          },
+          "end": {
+            "line": 13,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "StateTransitionStatement",
+        "from": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "Submitted",
+            "range": [
+              200,
+              209
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 2
+              },
+              "end": {
+                "line": 14,
+                "column": 11
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            200,
+            209
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 2
+            },
+            "end": {
+              "line": 14,
+              "column": 11
+            }
+          }
+        },
+        "to": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "Review",
+            "range": [
+              214,
+              220
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 16
+              },
+              "end": {
+                "line": 14,
+                "column": 22
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            214,
+            220
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 16
+            },
+            "end": {
+              "line": 14,
+              "column": 22
+            }
+          }
+        },
+        "label": null,
+        "range": [
+          200,
+          220
+        ],
+        "loc": {
+          "start": {
+            "line": 14,
+            "column": 2
+          },
+          "end": {
+            "line": 14,
+            "column": 22
+          }
+        }
+      },
+      {
+        "type": "StateTransitionStatement",
+        "from": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "Review",
+            "range": [
+              223,
+              229
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 2
+              },
+              "end": {
+                "line": 15,
+                "column": 8
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            223,
+            229
+          ],
+          "loc": {
+            "start": {
+              "line": 15,
+              "column": 2
+            },
+            "end": {
+              "line": 15,
+              "column": 8
+            }
+          }
+        },
+        "to": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "Published",
+            "range": [
+              234,
+              243
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 13
+              },
+              "end": {
+                "line": 15,
+                "column": 22
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            234,
+            243
+          ],
+          "loc": {
+            "start": {
+              "line": 15,
+              "column": 13
+            },
+            "end": {
+              "line": 15,
+              "column": 22
+            }
+          }
+        },
+        "label": {
+          "type": "StateLiteral",
+          "value": "approved",
+          "range": [
+            246,
+            254
+          ],
+          "loc": {
+            "start": {
+              "line": 15,
+              "column": 25
+            },
+            "end": {
+              "line": 15,
+              "column": 33
+            }
+          }
+        },
+        "range": [
+          223,
+          254
+        ],
+        "loc": {
+          "start": {
+            "line": 15,
+            "column": 2
+          },
+          "end": {
+            "line": 15,
+            "column": 33
+          }
+        }
+      },
+      {
+        "type": "StateTransitionStatement",
+        "from": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "Review",
+            "range": [
+              257,
+              263
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 2
+              },
+              "end": {
+                "line": 16,
+                "column": 8
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            257,
+            263
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 2
+            },
+            "end": {
+              "line": 16,
+              "column": 8
+            }
+          }
+        },
+        "to": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "Draft",
+            "range": [
+              268,
+              273
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 13
+              },
+              "end": {
+                "line": 16,
+                "column": 18
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            268,
+            273
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 13
+            },
+            "end": {
+              "line": 16,
+              "column": 18
+            }
+          }
+        },
+        "label": {
+          "type": "StateLiteral",
+          "value": "rejected",
+          "range": [
+            276,
+            284
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 21
+            },
+            "end": {
+              "line": 16,
+              "column": 29
+            }
+          }
+        },
+        "range": [
+          257,
+          284
+        ],
+        "loc": {
+          "start": {
+            "line": 16,
+            "column": 2
+          },
+          "end": {
+            "line": 16,
+            "column": 29
+          }
+        }
+      },
+      {
+        "type": "StateTransitionStatement",
+        "from": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "Published",
+            "range": [
+              287,
+              296
+            ],
+            "loc": {
+              "start": {
+                "line": 17,
+                "column": 2
+              },
+              "end": {
+                "line": 17,
+                "column": 11
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            287,
+            296
+          ],
+          "loc": {
+            "start": {
+              "line": 17,
+              "column": 2
+            },
+            "end": {
+              "line": 17,
+              "column": 11
+            }
+          }
+        },
+        "to": {
+          "type": "StateReference",
+          "state": {
+            "type": "StateTerminal",
+            "range": [
+              301,
+              304
+            ],
+            "loc": {
+              "start": {
+                "line": 17,
+                "column": 16
+              },
+              "end": {
+                "line": 17,
+                "column": 19
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            301,
+            304
+          ],
+          "loc": {
+            "start": {
+              "line": 17,
+              "column": 16
+            },
+            "end": {
+              "line": 17,
+              "column": 19
+            }
+          }
+        },
+        "label": null,
+        "range": [
+          287,
+          304
+        ],
+        "loc": {
+          "start": {
+            "line": 17,
+            "column": 2
+          },
+          "end": {
+            "line": 17,
+            "column": 19
+          }
+        }
+      }
+    ],
+    "range": [
+      65,
+      304
+    ],
+    "loc": {
+      "start": {
+        "line": 7,
+        "column": 0
+      },
+      "end": {
+        "line": 17,
+        "column": 19
+      }
+    }
+  },
+  "frontmatter": {
+    "type": "Frontmatter",
+    "value": "config:\n  theme: default\n  look: classic\n  layout: dagre",
+    "valueRange": [
+      4,
+      60
+    ],
+    "range": [
+      0,
+      64
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 6,
+        "column": 3
+      }
+    }
+  },
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        0,
+        3
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "config:\n  theme: default\n  look: classic\n  layout: dagre",
+      "range": [
+        4,
+        60
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        61,
+        64
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "stateDiagram-v2",
+      "range": [
+        65,
+        80
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[*]",
+      "range": [
+        83,
+        86
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 2
+        },
+        "end": {
+          "line": 8,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        87,
+        90
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 6
+        },
+        "end": {
+          "line": 8,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Draft",
+      "range": [
+        91,
+        96
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 10
+        },
+        "end": {
+          "line": 8,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Draft",
+      "range": [
+        99,
+        104
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 2
+        },
+        "end": {
+          "line": 9,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        105,
+        108
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 8
+        },
+        "end": {
+          "line": 9,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Submitted",
+      "range": [
+        109,
+        118
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 12
+        },
+        "end": {
+          "line": 9,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        119,
+        120
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 22
+        },
+        "end": {
+          "line": 9,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "submit",
+      "range": [
+        121,
+        127
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 24
+        },
+        "end": {
+          "line": 9,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "state",
+      "range": [
+        130,
+        135
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 2
+        },
+        "end": {
+          "line": 10,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Review",
+      "range": [
+        136,
+        142
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 8
+        },
+        "end": {
+          "line": 10,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        143,
+        144
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 15
+        },
+        "end": {
+          "line": 10,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[*]",
+      "range": [
+        149,
+        152
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 4
+        },
+        "end": {
+          "line": 11,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        153,
+        156
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 8
+        },
+        "end": {
+          "line": 11,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Screening",
+      "range": [
+        157,
+        166
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 12
+        },
+        "end": {
+          "line": 11,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Screening",
+      "range": [
+        171,
+        180
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 4
+        },
+        "end": {
+          "line": 12,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        181,
+        184
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 14
+        },
+        "end": {
+          "line": 12,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Decision",
+      "range": [
+        185,
+        193
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 18
+        },
+        "end": {
+          "line": 12,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        196,
+        197
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 2
+        },
+        "end": {
+          "line": 13,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Submitted",
+      "range": [
+        200,
+        209
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 2
+        },
+        "end": {
+          "line": 14,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        210,
+        213
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 12
+        },
+        "end": {
+          "line": 14,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Review",
+      "range": [
+        214,
+        220
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 16
+        },
+        "end": {
+          "line": 14,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Review",
+      "range": [
+        223,
+        229
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 2
+        },
+        "end": {
+          "line": 15,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        230,
+        233
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 9
+        },
+        "end": {
+          "line": 15,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Published",
+      "range": [
+        234,
+        243
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 13
+        },
+        "end": {
+          "line": 15,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        244,
+        245
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 23
+        },
+        "end": {
+          "line": 15,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "approved",
+      "range": [
+        246,
+        254
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 25
+        },
+        "end": {
+          "line": 15,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Review",
+      "range": [
+        257,
+        263
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 2
+        },
+        "end": {
+          "line": 16,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        264,
+        267
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 9
+        },
+        "end": {
+          "line": 16,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Draft",
+      "range": [
+        268,
+        273
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 13
+        },
+        "end": {
+          "line": 16,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        274,
+        275
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 19
+        },
+        "end": {
+          "line": 16,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "rejected",
+      "range": [
+        276,
+        284
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 21
+        },
+        "end": {
+          "line": 16,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Published",
+      "range": [
+        287,
+        296
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 2
+        },
+        "end": {
+          "line": 17,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        297,
+        300
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 12
+        },
+        "end": {
+          "line": 17,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[*]",
+      "range": [
+        301,
+        304
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 16
+        },
+        "end": {
+          "line": 17,
+          "column": 19
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    305
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 18,
+      "column": 0
+    }
+  }
+}

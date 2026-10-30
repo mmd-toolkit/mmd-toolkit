@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/eventmodeling.md Common statement values: Does an empty description block remain a statement boundary so the next leading run excludes padding before that block?"
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "  accDescr: D",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

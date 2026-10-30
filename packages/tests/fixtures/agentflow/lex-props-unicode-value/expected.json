@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read props unicode value?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ow-beta TBA[|field:猫|Label]\n----------------------^\nExpecting 'NODE_STRING', got 'UNICODE_TEXT'"
+  }
+}

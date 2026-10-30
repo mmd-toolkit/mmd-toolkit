@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, tags: a tag with a quoted attribute in a bare name of a point."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nquadrantChart<a b='c'>d: [0.3, 0.\n-------------^"
+  }
+}

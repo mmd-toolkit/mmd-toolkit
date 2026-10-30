@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md AST items: duplicate items remain separate authored nodes."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "A"
+          },
+          {
+            "label": "A"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

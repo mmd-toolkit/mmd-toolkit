@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an invalid final duplicate reject?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Component \"A\" visibility must be between 0-1 (decimal) or 0-100 (percentage). Received: 101"
+  }
+}

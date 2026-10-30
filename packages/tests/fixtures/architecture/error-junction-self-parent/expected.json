@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A junction cannot name itself as parent."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The junction [j] cannot be placed within itself"
+  }
+}

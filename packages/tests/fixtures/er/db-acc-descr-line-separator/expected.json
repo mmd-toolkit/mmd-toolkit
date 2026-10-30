@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "U+2028 inside an accDescr line is kept."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "a b",
+    "entities": [],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

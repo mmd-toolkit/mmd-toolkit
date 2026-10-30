@@ -1,0 +1,602 @@
+{
+  "type": "Root",
+  "diagramType": "gitGraph",
+  "body": {
+    "type": "GitgraphDiagram",
+    "direction": null,
+    "textBeforeHeader": [],
+    "textBeforeDirection": [],
+    "textBeforeColon": [],
+    "body": [
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [],
+        "textAfter": [],
+        "range": [
+          18,
+          24
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 8
+          },
+          "end": {
+            "line": 2,
+            "column": 14
+          }
+        }
+      },
+      {
+        "type": "GitgraphBranchStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "branch01",
+          "range": [
+            132,
+            140
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 15
+            },
+            "end": {
+              "line": 4,
+              "column": 23
+            }
+          }
+        },
+        "order": null,
+        "textAfter": [],
+        "range": [
+          125,
+          140
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 8
+          },
+          "end": {
+            "line": 4,
+            "column": 23
+          }
+        }
+      },
+      {
+        "type": "GitgraphBranchStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "checkout02",
+          "range": [
+            156,
+            166
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 15
+            },
+            "end": {
+              "line": 5,
+              "column": 25
+            }
+          }
+        },
+        "order": null,
+        "textAfter": [],
+        "range": [
+          149,
+          166
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 8
+          },
+          "end": {
+            "line": 5,
+            "column": 25
+          }
+        }
+      },
+      {
+        "type": "GitgraphBranchStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "cherry-pick03",
+          "range": [
+            182,
+            195
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 15
+            },
+            "end": {
+              "line": 6,
+              "column": 28
+            }
+          }
+        },
+        "order": null,
+        "textAfter": [],
+        "range": [
+          175,
+          195
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 8
+          },
+          "end": {
+            "line": 6,
+            "column": 28
+          }
+        }
+      },
+      {
+        "type": "GitgraphBranchStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "branch/example-branch",
+          "range": [
+            211,
+            232
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 15
+            },
+            "end": {
+              "line": 7,
+              "column": 36
+            }
+          }
+        },
+        "order": null,
+        "textAfter": [],
+        "range": [
+          204,
+          232
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 8
+          },
+          "end": {
+            "line": 7,
+            "column": 36
+          }
+        }
+      },
+      {
+        "type": "GitgraphBranchStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "merge/test_merge",
+          "range": [
+            248,
+            264
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 15
+            },
+            "end": {
+              "line": 8,
+              "column": 31
+            }
+          }
+        },
+        "order": null,
+        "textAfter": [],
+        "range": [
+          241,
+          264
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 8
+          },
+          "end": {
+            "line": 8,
+            "column": 31
+          }
+        }
+      },
+      {
+        "type": "GitgraphBranchStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "A",
+          "range": [
+            320,
+            321
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 15
+            },
+            "end": {
+              "line": 10,
+              "column": 16
+            }
+          }
+        },
+        "order": null,
+        "textAfter": [],
+        "range": [
+          313,
+          321
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 8
+          },
+          "end": {
+            "line": 10,
+            "column": 16
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      321
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 10,
+        "column": 16
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [
+    {
+      "type": "Comment",
+      "mark": "%%",
+      "value": " branch names starting with numbers are not recommended, but are supported by git",
+      "range": [
+        33,
+        116
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 91
+        }
+      }
+    },
+    {
+      "type": "Comment",
+      "mark": "%%",
+      "value": " single character branch name",
+      "range": [
+        273,
+        304
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 8
+        },
+        "end": {
+          "line": 9,
+          "column": 39
+        }
+      }
+    }
+  ],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "gitGraph",
+      "range": [
+        0,
+        8
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        8,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 8
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        18,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "branch",
+      "range": [
+        125,
+        131
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 8
+        },
+        "end": {
+          "line": 4,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "branch01",
+      "range": [
+        132,
+        140
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 15
+        },
+        "end": {
+          "line": 4,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "branch",
+      "range": [
+        149,
+        155
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 8
+        },
+        "end": {
+          "line": 5,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "checkout02",
+      "range": [
+        156,
+        166
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 15
+        },
+        "end": {
+          "line": 5,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "branch",
+      "range": [
+        175,
+        181
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 8
+        },
+        "end": {
+          "line": 6,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "cherry-pick03",
+      "range": [
+        182,
+        195
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 15
+        },
+        "end": {
+          "line": 6,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "branch",
+      "range": [
+        204,
+        210
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 8
+        },
+        "end": {
+          "line": 7,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "branch/example-branch",
+      "range": [
+        211,
+        232
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 15
+        },
+        "end": {
+          "line": 7,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "branch",
+      "range": [
+        241,
+        247
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 8
+        },
+        "end": {
+          "line": 8,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "merge/test_merge",
+      "range": [
+        248,
+        264
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 15
+        },
+        "end": {
+          "line": 8,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "branch",
+      "range": [
+        313,
+        319
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 8
+        },
+        "end": {
+          "line": 10,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        320,
+        321
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 15
+        },
+        "end": {
+          "line": 10,
+          "column": 16
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    330
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 11,
+      "column": 8
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md, Whitespace and value units: Removing a directive after U+2028 leaves the separator outside a value unit, so the diagram is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nvenn-beta set A\n---------^"
+  }
+}

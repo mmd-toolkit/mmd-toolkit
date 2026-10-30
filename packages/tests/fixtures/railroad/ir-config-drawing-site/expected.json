@@ -1,0 +1,50 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "All railroad site options are drawing-only."
+  },
+  "config": {
+    "railroad": {
+      "compactMode": true,
+      "padding": 2,
+      "verticalSeparation": 3,
+      "horizontalSeparation": 4,
+      "arcRadius": 5,
+      "fontSize": 16,
+      "fontFamily": "serif",
+      "terminalFill": "red",
+      "terminalStroke": "blue",
+      "terminalTextColor": "green",
+      "nonTerminalFill": "red",
+      "nonTerminalStroke": "blue",
+      "nonTerminalTextColor": "green",
+      "lineColor": "purple",
+      "strokeWidth": 3,
+      "markerFill": "black",
+      "commentFill": "red",
+      "commentStroke": "blue",
+      "commentTextColor": "green",
+      "specialFill": "orange",
+      "specialStroke": "gray",
+      "ruleNameColor": "brown",
+      "showMarkers": false,
+      "markerRadius": 2,
+      "useMaxWidth": false
+    }
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

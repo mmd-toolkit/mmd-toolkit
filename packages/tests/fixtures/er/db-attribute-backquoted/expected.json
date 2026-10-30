@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A type or a name in backquotes may hold spaces, and the backquotes are not part of it."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [
+          {
+            "type": "my type",
+            "name": "my name",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "int",
+            "name": "other name",
+            "keys": [
+              "PK"
+            ],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

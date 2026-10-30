@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A longer identifier wins a keyword longer alternative."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "eventX",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

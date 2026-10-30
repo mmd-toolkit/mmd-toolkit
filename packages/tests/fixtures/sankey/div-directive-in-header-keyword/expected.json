@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sankey.md Known divergences: a directive inside the header keyword makes the input rejected here; mermaid.js accepts it."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a",
+      "b"
+    ],
+    "links": [
+      {
+        "source": "a",
+        "target": "b",
+        "value": 1
+      }
+    ]
+  }
+}

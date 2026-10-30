@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/treeView.md",
+    "line": 223
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "🚀 rocket-app",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "📦 packages",
+            "nodeType": "directory",
+            "children": [
+              {
+                "name": "🎨 ui",
+                "nodeType": "directory",
+                "children": []
+              },
+              {
+                "name": "🛠️ utils",
+                "nodeType": "directory",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "🧪 tests",
+            "nodeType": "directory",
+            "children": []
+          },
+          {
+            "name": "📝 README.md",
+            "nodeType": "file",
+            "children": []
+          },
+          {
+            "name": "⚙️ config.yaml",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

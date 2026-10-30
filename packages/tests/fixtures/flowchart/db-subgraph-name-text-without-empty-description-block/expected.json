@@ -1,0 +1,71 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Db normalization: the name text leaves out the empty description block after the name, so it is `S`, without whitespace, and the id of the subgraph is `S`; the link `B-->S` goes to the subgraph."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      },
+      {
+        "id": "S",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "S",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "B",
+        "end": "S",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_B_S_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A"
+        ],
+        "title": "S",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Text after the value is part of the statement: the direction is RL and no entity `trailing` is made."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "RL",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "x=\"y\">",
+    "accDescr": "",
+    "rules": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

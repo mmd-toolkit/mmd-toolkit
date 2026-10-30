@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The imported BOOLEAN terminal does not supply a pie value."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 5: unexpected character: ->t<- at offset: 8, skipped 4 characters. Parse error on line 2, column 9: Expecting token of type 'NUMBER_PIE' but found `\n`."
+  }
+}

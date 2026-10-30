@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A tag opened in an earlier node label converts attribute double quotes in a later data-block label; the later label is x='c}'>d, with the closing brace inside the converted attribute value."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "a",
+        "label": "<a",
+        "isGroup": true
+      },
+      {
+        "id": "b",
+        "label": "x='c}'>d",
+        "isGroup": true
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "b",
+        "set": {
+          "label": "x='c}'>d"
+        }
+      }
+    ]
+  }
+}

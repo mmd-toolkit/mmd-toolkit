@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md C02 (Decorations and comments): Empty class at U+2028 has no CLASS rule."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 3. Unrecognized text.\nkanban S :::    A\n------------^"
+  }
+}

@@ -1,0 +1,922 @@
+{
+  "type": "Root",
+  "diagramType": "radar",
+  "body": {
+    "type": "RadarDiagram",
+    "textBeforeHeader": [],
+    "textBeforeColon": [],
+    "body": [
+      {
+        "type": "RadarOptionsStatement",
+        "options": [
+          {
+            "type": "RadarShowLegendOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": "true",
+            "textAfter": [],
+            "range": [
+              11,
+              26
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 2,
+                "column": 15
+              }
+            }
+          },
+          {
+            "type": "RadarTicksOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": {
+              "type": "NumericLiteral",
+              "value": 33,
+              "raw": "33",
+              "range": [
+                33,
+                35
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 22
+                },
+                "end": {
+                  "line": 2,
+                  "column": 24
+                }
+              }
+            },
+            "textAfter": [],
+            "range": [
+              27,
+              35
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 16
+              },
+              "end": {
+                "line": 2,
+                "column": 24
+              }
+            }
+          },
+          {
+            "type": "RadarMaxOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": {
+              "type": "NumericLiteral",
+              "value": 9,
+              "raw": "9",
+              "range": [
+                40,
+                41
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 29
+                },
+                "end": {
+                  "line": 2,
+                  "column": 30
+                }
+              }
+            },
+            "textAfter": [],
+            "range": [
+              36,
+              41
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 25
+              },
+              "end": {
+                "line": 2,
+                "column": 30
+              }
+            }
+          },
+          {
+            "type": "RadarMinOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": {
+              "type": "NumericLiteral",
+              "value": 8,
+              "raw": "8",
+              "range": [
+                46,
+                47
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 35
+                },
+                "end": {
+                  "line": 2,
+                  "column": 36
+                }
+              }
+            },
+            "textAfter": [],
+            "range": [
+              42,
+              47
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 31
+              },
+              "end": {
+                "line": 2,
+                "column": 36
+              }
+            }
+          },
+          {
+            "type": "RadarGraticuleOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": "circle",
+            "textAfter": [],
+            "range": [
+              48,
+              64
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 37
+              },
+              "end": {
+                "line": 2,
+                "column": 53
+              }
+            }
+          }
+        ],
+        "range": [
+          11,
+          64
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 53
+          }
+        }
+      },
+      {
+        "type": "RadarOptionsStatement",
+        "options": [
+          {
+            "type": "RadarShowLegendOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": "false",
+            "textAfter": [],
+            "range": [
+              65,
+              81
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 16
+              }
+            }
+          },
+          {
+            "type": "RadarTicksOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": {
+              "type": "NumericLiteral",
+              "value": 0,
+              "raw": "0",
+              "range": [
+                88,
+                89
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 23
+                },
+                "end": {
+                  "line": 3,
+                  "column": 24
+                }
+              }
+            },
+            "textAfter": [],
+            "range": [
+              82,
+              89
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 17
+              },
+              "end": {
+                "line": 3,
+                "column": 24
+              }
+            }
+          },
+          {
+            "type": "RadarMaxOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": {
+              "type": "NumericLiteral",
+              "value": 0,
+              "raw": "0",
+              "range": [
+                94,
+                95
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 29
+                },
+                "end": {
+                  "line": 3,
+                  "column": 30
+                }
+              }
+            },
+            "textAfter": [],
+            "range": [
+              90,
+              95
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 25
+              },
+              "end": {
+                "line": 3,
+                "column": 30
+              }
+            }
+          },
+          {
+            "type": "RadarMinOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": {
+              "type": "NumericLiteral",
+              "value": 0,
+              "raw": "0",
+              "range": [
+                100,
+                101
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 35
+                },
+                "end": {
+                  "line": 3,
+                  "column": 36
+                }
+              }
+            },
+            "textAfter": [],
+            "range": [
+              96,
+              101
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 31
+              },
+              "end": {
+                "line": 3,
+                "column": 36
+              }
+            }
+          },
+          {
+            "type": "RadarGraticuleOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": "polygon",
+            "textAfter": [],
+            "range": [
+              102,
+              119
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 37
+              },
+              "end": {
+                "line": 3,
+                "column": 54
+              }
+            }
+          }
+        ],
+        "range": [
+          65,
+          119
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 54
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      119
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 54
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "radar-beta",
+      "range": [
+        0,
+        10
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "showLegend",
+      "range": [
+        11,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "true",
+      "range": [
+        22,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 11
+        },
+        "end": {
+          "line": 2,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        26,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 15
+        },
+        "end": {
+          "line": 2,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "ticks",
+      "range": [
+        27,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 16
+        },
+        "end": {
+          "line": 2,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "33",
+      "range": [
+        33,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 22
+        },
+        "end": {
+          "line": 2,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        35,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 24
+        },
+        "end": {
+          "line": 2,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "max",
+      "range": [
+        36,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 25
+        },
+        "end": {
+          "line": 2,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "9",
+      "range": [
+        40,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 29
+        },
+        "end": {
+          "line": 2,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        41,
+        42
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 30
+        },
+        "end": {
+          "line": 2,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "min",
+      "range": [
+        42,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 31
+        },
+        "end": {
+          "line": 2,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "8",
+      "range": [
+        46,
+        47
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 35
+        },
+        "end": {
+          "line": 2,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        47,
+        48
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 36
+        },
+        "end": {
+          "line": 2,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "graticule",
+      "range": [
+        48,
+        57
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 37
+        },
+        "end": {
+          "line": 2,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "circle",
+      "range": [
+        58,
+        64
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 47
+        },
+        "end": {
+          "line": 2,
+          "column": 53
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "showLegend",
+      "range": [
+        65,
+        75
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "false",
+      "range": [
+        76,
+        81
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 11
+        },
+        "end": {
+          "line": 3,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        81,
+        82
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 16
+        },
+        "end": {
+          "line": 3,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "ticks",
+      "range": [
+        82,
+        87
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 17
+        },
+        "end": {
+          "line": 3,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0",
+      "range": [
+        88,
+        89
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 23
+        },
+        "end": {
+          "line": 3,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        89,
+        90
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 24
+        },
+        "end": {
+          "line": 3,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "max",
+      "range": [
+        90,
+        93
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 25
+        },
+        "end": {
+          "line": 3,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0",
+      "range": [
+        94,
+        95
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 29
+        },
+        "end": {
+          "line": 3,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        95,
+        96
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 30
+        },
+        "end": {
+          "line": 3,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "min",
+      "range": [
+        96,
+        99
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 31
+        },
+        "end": {
+          "line": 3,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0",
+      "range": [
+        100,
+        101
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 35
+        },
+        "end": {
+          "line": 3,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        101,
+        102
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 36
+        },
+        "end": {
+          "line": 3,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "graticule",
+      "range": [
+        102,
+        111
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 37
+        },
+        "end": {
+          "line": 3,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "polygon",
+      "range": [
+        112,
+        119
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 47
+        },
+        "end": {
+          "line": 3,
+          "column": 54
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    119
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 54
+    }
+  }
+}

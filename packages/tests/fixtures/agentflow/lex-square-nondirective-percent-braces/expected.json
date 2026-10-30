@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md: Percent-brace without directive at a unit start in a square."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 3. Unrecognized text.\n...entflow-beta TBA[x%%{}%%y]\n---------------------^"
+  }
+}

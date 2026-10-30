@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gitgraph.md Header word and colon are complete authored components."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "generated-commit-1",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

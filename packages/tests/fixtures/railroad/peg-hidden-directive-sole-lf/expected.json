@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "PEG retained directives consume one LF without an EOL requirement."
+  },
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      },
+      {
+        "name": "s",
+        "definition": {
+          "type": "terminal",
+          "value": "b"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Grammar: an edge requires both endpoint IDs."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 3, column 10: Expecting token of type 'ID' but found `\n`."
+  }
+}

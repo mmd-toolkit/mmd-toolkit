@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/requirementDiagram.md",
+    "line": 364
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "test_req",
+        "type": "Requirement",
+        "requirementId": "1",
+        "text": "class styling example",
+        "risk": "Low",
+        "verifyMethod": "Test",
+        "cssStyles": [
+          "font-weight:bold"
+        ],
+        "classes": [
+          "important"
+        ]
+      }
+    ],
+    "elements": [
+      {
+        "name": "test_entity",
+        "type": "simulation",
+        "docRef": "",
+        "cssStyles": [
+          "font-weight:bold",
+          "fill:#f9f",
+          "stroke:#333"
+        ],
+        "classes": [
+          "important"
+        ]
+      }
+    ],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "important",
+        "styles": [
+          "font-weight:bold"
+        ]
+      }
+    ]
+  }
+}

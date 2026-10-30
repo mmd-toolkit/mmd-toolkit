@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A lone percent just before the square label terminator is rejected by the generated TEXT rule."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...flow-beta TBA[first%]B[/second%/]\n----------------------^"
+  }
+}

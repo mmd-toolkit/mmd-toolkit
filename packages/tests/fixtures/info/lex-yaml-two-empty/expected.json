@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: Two apparent empty YAML blocks leave the fourth fence unmatched."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 5, column 1: unexpected character: ->-<- at offset: 17, skipped 3 characters. "
+  }
+}

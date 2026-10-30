@@ -1,0 +1,50 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Semantic acceptance conditions: A quoted reference is compared after STRING escape decoding rather than by its raw spelling."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "Aq",
+        "label": "Aq",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Aq_X",
+        "label": "X",
+        "x": 30,
+        "y": 10,
+        "className": "pipeline-component"
+      }
+    ],
+    "links": [],
+    "trends": [
+      {
+        "nodeId": "Aq",
+        "targetX": 70
+      }
+    ],
+    "pipelines": [
+      {
+        "nodeId": "Aq",
+        "componentIds": [
+          "Aq_X"
+        ]
+      }
+    ],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

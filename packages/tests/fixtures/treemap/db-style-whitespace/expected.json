@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Which style whitespace remains after summary normalization?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "classSelector": "styles",
+        "children": []
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "styles",
+        "styles": [
+          "fill:red",
+          " color:blue"
+        ]
+      }
+    ]
+  }
+}

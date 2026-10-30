@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md requirement, a requirement and an element may have the same name; a statement that names it applies to the requirement only."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "x",
+        "type": "Requirement",
+        "requirementId": "1",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [
+          "fill:red",
+          "fill:blue"
+        ],
+        "classes": [
+          "c"
+        ]
+      }
+    ],
+    "elements": [
+      {
+        "name": "x",
+        "type": "t",
+        "docRef": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:blue"
+        ]
+      }
+    ]
+  }
+}

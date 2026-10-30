@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md, comment-takes-character: mermaid.js takes `B%% cob: Hello` as a comment and rejects the message without a target; here the target is the id run `B%% cob`."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ice->>B%% cob: Hello\n-----------------------^\nExpecting 'link', '+', '-', '()', 'ACTOR', got 'NEWLINE'"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A detailed entry cannot contain a visible newline before its value."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 3, column 20: Expecting token of type 'NUMBER' but found `\n`.\nParse error on line 4, column 1: Expecting token of type '}' but found `:`."
+  }
+}

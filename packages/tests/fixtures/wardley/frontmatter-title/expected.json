@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does frontmatter title reach the rendered title?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Front",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  },
+  "embedded": {
+    "title": "Front"
+  }
+}

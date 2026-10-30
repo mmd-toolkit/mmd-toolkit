@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md The alias context, rule 3: after `create participant A`, the statement ends at the line feed, and the next line is the creating message."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "as"
+      },
+      {
+        "name": "as",
+        "description": "as",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [
+      {
+        "id": "A",
+        "messageIndex": 0
+      }
+    ],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "as",
+        "to": "A",
+        "message": "x",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

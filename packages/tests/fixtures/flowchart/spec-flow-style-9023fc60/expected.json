@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-style.spec.js",
+    "line": 20,
+    "test": "[Style] when parsing > should handle styles for vertices"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "Q",
+        "labelType": "text",
+        "styles": [
+          "background:#fff"
+        ],
+        "classes": [],
+        "text": "Q",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

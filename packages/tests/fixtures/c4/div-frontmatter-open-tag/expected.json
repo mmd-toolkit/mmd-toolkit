@@ -1,0 +1,50 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md: A tag opened in frontmatter does not convert quotes in diagram text under the specification."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "b='c'>d"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

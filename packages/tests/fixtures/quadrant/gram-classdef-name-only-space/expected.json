@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, classDef: a class with a space and no style is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ntChartclassDef c1 \n----------------------^\nExpecting 'ALPHA', 'NUM', 'NODE_STRING', 'MINUS', 'COLON', 'BRKT', 'UNIT', 'SPACE', 'STYLE', 'PCT', got 'NEWLINE'"
+  }
+}

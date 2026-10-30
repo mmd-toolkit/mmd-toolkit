@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-from-tree/er.md Subgraphs, nodes: an entity in a subgraph and in its nested subgraph is listed in the nested one; accepted."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "I",
+        "nodes": [
+          "A"
+        ],
+        "title": "I",
+        "classes": [],
+        "cssStyles": []
+      },
+      {
+        "id": "O",
+        "nodes": [
+          "I"
+        ],
+        "title": "O",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

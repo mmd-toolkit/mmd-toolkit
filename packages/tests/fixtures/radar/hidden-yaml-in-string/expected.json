@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Both quoted label terminals own hidden-YAML-looking text within them."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "---\nbody\n---"
+      }
+    ],
+    "curves": [
+      {
+        "label": "---\nbody\n---",
+        "entries": [
+          1
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

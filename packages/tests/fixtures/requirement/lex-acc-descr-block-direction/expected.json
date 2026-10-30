@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Accessibility values: inside a description block the text is no direction line: the description `direction LR`."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "direction LR",
+    "requirements": [],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "LS and PS inside line metadata stay in that terminal."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "A B C",
+    "accDescr": "A B C",
+    "rules": []
+  }
+}

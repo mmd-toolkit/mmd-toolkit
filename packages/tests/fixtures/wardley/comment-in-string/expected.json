@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Is an inline comment-looking string fragment kept?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [
+      {
+        "text": "a %% comment\nb",
+        "x": 20,
+        "y": 10
+      }
+    ],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

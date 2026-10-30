@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/packet/packet.spec.ts",
+    "line": 240,
+    "test": "packet diagrams > should throw error if numbers are not continuous for single packets with bit counts"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Packet block 18 - 18 is not contiguous. It should start from 16."
+  }
+}

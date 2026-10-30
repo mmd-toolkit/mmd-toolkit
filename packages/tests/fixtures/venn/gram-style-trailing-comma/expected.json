@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The gram style trailing comma form is rejected by the grammar or its validation."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...tastyle A fill:red,\n----------------------^\nExpecting 'IDENTIFIER', got 'NEWLINE'"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A global directive splits accTitle."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "accTitle: A",
+    "accDescr": "",
+    "frames": []
+  }
+}

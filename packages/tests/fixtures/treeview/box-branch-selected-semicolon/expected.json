@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: A semicolon selected by a preceding style trigger may separate branch and dash components."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "child",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

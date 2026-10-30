@@ -1,0 +1,72 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are empty strings published rather than discarded?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "",
+        "label": "",
+        "x": 40,
+        "y": 30,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [
+      {
+        "source": "",
+        "target": "",
+        "dashed": false,
+        "label": ""
+      }
+    ],
+    "trends": [
+      {
+        "nodeId": "",
+        "targetX": 90
+      }
+    ],
+    "pipelines": [],
+    "annotations": [
+      {
+        "number": 0,
+        "coordinates": [
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "text": ""
+      }
+    ],
+    "notes": [
+      {
+        "text": "",
+        "x": 60,
+        "y": 50
+      }
+    ],
+    "accelerators": [
+      {
+        "name": "",
+        "x": 80,
+        "y": 70
+      }
+    ],
+    "deaccelerators": [
+      {
+        "name": "",
+        "x": 90,
+        "y": 80
+      }
+    ],
+    "axes": {}
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed directive following a complete description block follows common preprocessing."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "A",
+    "rules": []
+  }
+}

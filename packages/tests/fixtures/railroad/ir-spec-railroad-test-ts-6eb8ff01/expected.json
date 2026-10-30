@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/railroad.test.ts",
+    "line": 19,
+    "test": "Railroad parser > should parse title and accessibility metadata"
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "Accessible Railroad",
+    "accDescr": "Railroad description",
+    "rules": [
+      {
+        "name": "rule",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

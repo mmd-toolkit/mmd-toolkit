@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Numbers: A leading-zero annotation number splits into multiple integers and fails the grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 15: Expecting token of type ',' but found `1`.\nParse error on line 2, column 16: Expecting token of type ']' but found `,`."
+  }
+}

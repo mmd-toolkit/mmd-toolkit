@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md The direction line: the direction line takes the rest of the line after the value, `;` and the link included: the subgraph has the direction `TB` and no members, and there are no vertices and no edges."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "S",
+        "nodes": [],
+        "title": "S",
+        "classes": [],
+        "dir": "TB",
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

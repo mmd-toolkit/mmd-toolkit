@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed description opener falls through to bare-name parsing."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "accDescr {open",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

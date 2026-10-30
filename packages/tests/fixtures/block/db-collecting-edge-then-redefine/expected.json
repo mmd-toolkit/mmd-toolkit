@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, how the blocks are collected: a block that an edge made is redefined by a later statement."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "x",
+          "type": "square"
+        },
+        {
+          "id": "B",
+          "label": "y",
+          "type": "circle"
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "label": "",
+        "thickness": "normal",
+        "pattern": "solid",
+        "arrowTypeStart": "arrow_open",
+        "arrowTypeEnd": "arrow_point"
+      }
+    ],
+    "classes": []
+  }
+}

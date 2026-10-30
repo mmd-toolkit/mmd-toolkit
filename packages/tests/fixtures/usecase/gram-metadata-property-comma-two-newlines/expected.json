@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Native metadata: non-final comma followed by two LF; Mermaid accepts the native property list. Count line breaks after common comment removal and CRLF normalization."
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "U",
+        "label": "U",
+        "labelType": "text",
+        "type": "hollow",
+        "business": true,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

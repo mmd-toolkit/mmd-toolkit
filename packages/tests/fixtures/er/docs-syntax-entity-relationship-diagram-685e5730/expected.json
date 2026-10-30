@@ -1,0 +1,96 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/entityRelationshipDiagram.md",
+    "line": 539
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-CAR-0",
+        "attributes": [
+          {
+            "type": "string",
+            "name": "registrationNumber",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "string",
+            "name": "make",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "string",
+            "name": "model",
+            "keys": [],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "CAR",
+        "classes": [
+          "someclass"
+        ]
+      },
+      {
+        "id": "entity-PERSON-1",
+        "attributes": [
+          {
+            "type": "string",
+            "name": "firstName",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "string",
+            "name": "lastName",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "int",
+            "name": "age",
+            "keys": [],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "PERSON",
+        "classes": [
+          "someclass"
+        ]
+      },
+      {
+        "id": "entity-HOUSE-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "HOUSE",
+        "classes": [
+          "someclass"
+        ]
+      }
+    ],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "someclass",
+        "styles": [
+          "fill:#f96"
+        ]
+      }
+    ],
+    "subGraphs": []
+  }
+}

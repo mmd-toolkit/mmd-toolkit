@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Directive drawing settings do not turn a ticket into a stored URL."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "isGroup": false,
+        "parentId": "S",
+        "ticket": "TASK-1"
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "kanban": {
+        "sectionWidth": 900,
+        "ticketBaseUrl": "https://example.com/#TICKET#"
+      }
+    },
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "ticket": "TASK-1"
+        }
+      }
+    ]
+  }
+}

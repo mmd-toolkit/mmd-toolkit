@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/git/gitGraph.spec.ts",
+    "line": 1211,
+    "test": "when parsing a gitGraph > when parsing more advanced gitGraphs > should throw error when trying to merge branch to itself"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Incorrect usage of \"merge\". Cannot merge a branch to itself"
+  }
+}

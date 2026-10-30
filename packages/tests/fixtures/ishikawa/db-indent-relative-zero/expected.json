@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A relative level exactly zero is clamped to one before the next cause chooses its parent."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "A",
+          "children": []
+        },
+        {
+          "text": "B",
+          "children": []
+        },
+        {
+          "text": "C",
+          "children": []
+        }
+      ]
+    }
+  }
+}

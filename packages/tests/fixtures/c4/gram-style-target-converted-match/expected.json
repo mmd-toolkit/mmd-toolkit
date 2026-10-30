@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "CRLF in an alias and LF in the update target compare equally after source conversion; __proto__ in the shape position is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "undefined is not iterable (cannot read property Symbol(Symbol.iterator))"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Grammar: The end of the source supplies the common appended LF, without adding written text. Case: hidden-after-title-with-space-boundary."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "B",
+        "value": 2
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A transition label cannot be unquoted."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 21: unexpected character: ->A<- at offset: 33, skipped 1 characters. Parse error on line 2, column 9: Expecting token of type 'EOF' but found `-->`.\nParse error on line 2, column 19: Expecting token of type 'EOF' but found `:`."
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The inserted fragments remain literal in this value (digits in label-quoted)."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10,
+        "label": "a123b"
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, punctuation: a quote inside a word in a name of a point in quotes."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nquadrantChart\"a\"b\": [0.3, 0.6]\n------------------^\nExpecting 'ALPHA', 'NUM', 'MINUS', 'COMMA', 'AMP', 'BRKT', 'MULT', 'UNICODE_TEXT', 'SPACE', 'point_start', 'class_name', 'AXIS-TEXT-DELIMITER', 'NEWLINE', 'SEMI', 'EOF', 'PUNCTUATION', 'PLUS', 'EQUALS', 'DOT', 'UNDERSCORE', got 'STR'"
+  }
+}

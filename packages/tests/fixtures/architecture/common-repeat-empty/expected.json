@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Empty final common assignments suppress earlier values before truthy-only publication."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

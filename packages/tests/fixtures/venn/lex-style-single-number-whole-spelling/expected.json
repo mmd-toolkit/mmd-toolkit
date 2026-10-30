@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: Adjacent bare style atoms need no whitespace, as in `1red#abc`; the VennLiteral keeps their written spelling and spacing. This input is accepted by mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "x": "007"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A pie-local htmlLabels setting does not control the common sanitizer."
+  },
+  "config": {
+    "securityLevel": "other",
+    "pie": {
+      "htmlLabels": false
+    }
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "&lt;b&gt;T&lt;/b&gt;",
+    "accTitle": "&lt;i&gt;AT&lt;/i&gt;",
+    "accDescr": "<br/> AD",
+    "showData": false,
+    "sections": [
+      {
+        "label": "<b>A</b>",
+        "value": 1
+      }
+    ]
+  }
+}

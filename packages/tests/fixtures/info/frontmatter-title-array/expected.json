@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A frontmatter title array is not a body common value."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {},
+  "embedded": {
+    "title": "A,B"
+  }
+}

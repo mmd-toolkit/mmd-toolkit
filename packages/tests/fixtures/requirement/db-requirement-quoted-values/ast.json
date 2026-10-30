@@ -1,0 +1,357 @@
+{
+  "type": "Root",
+  "diagramType": "requirement",
+  "body": {
+    "type": "RequirementDiagram",
+    "body": [
+      {
+        "type": "RequirementRequirementStatement",
+        "requirementType": "requirement",
+        "name": {
+          "type": "StringLiteral",
+          "value": "my req",
+          "raw": "\"my req\"",
+          "closed": true,
+          "range": [
+            31,
+            39
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 12
+            },
+            "end": {
+              "line": 2,
+              "column": 20
+            }
+          }
+        },
+        "cssClasses": [],
+        "body": [
+          {
+            "type": "RequirementValueField",
+            "field": "id",
+            "value": {
+              "type": "StringLiteral",
+              "value": " a: b, c - d ",
+              "raw": "\" a: b, c - d \"",
+              "closed": true,
+              "range": [
+                48,
+                63
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 6
+                },
+                "end": {
+                  "line": 3,
+                  "column": 21
+                }
+              }
+            },
+            "range": [
+              44,
+              63
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 2
+              },
+              "end": {
+                "line": 3,
+                "column": 21
+              }
+            }
+          },
+          {
+            "type": "RequirementValueField",
+            "field": "text",
+            "value": {
+              "type": "StringLiteral",
+              "value": "x {y} <z>",
+              "raw": "\"x {y} <z>\"",
+              "closed": true,
+              "range": [
+                72,
+                83
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 8
+                },
+                "end": {
+                  "line": 4,
+                  "column": 19
+                }
+              }
+            },
+            "range": [
+              66,
+              83
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 2
+              },
+              "end": {
+                "line": 4,
+                "column": 19
+              }
+            }
+          }
+        ],
+        "range": [
+          19,
+          85
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 1
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      85
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 5,
+        "column": 1
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "requirementDiagram",
+      "range": [
+        0,
+        18
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "requirement",
+      "range": [
+        19,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"my req\"",
+      "range": [
+        31,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        40,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 21
+        },
+        "end": {
+          "line": 2,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "id",
+      "range": [
+        44,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 3,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        46,
+        47
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 4
+        },
+        "end": {
+          "line": 3,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\" a: b, c - d \"",
+      "range": [
+        48,
+        63
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 6
+        },
+        "end": {
+          "line": 3,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "text",
+      "range": [
+        66,
+        70
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 2
+        },
+        "end": {
+          "line": 4,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        70,
+        71
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 6
+        },
+        "end": {
+          "line": 4,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"x {y} <z>\"",
+      "range": [
+        72,
+        83
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 8
+        },
+        "end": {
+          "line": 4,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        84,
+        85
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 1
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    86
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 6,
+      "column": 0
+    }
+  }
+}

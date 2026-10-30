@@ -1,0 +1,1015 @@
+{
+  "type": "Root",
+  "diagramType": "gitGraph",
+  "body": {
+    "type": "GitgraphDiagram",
+    "direction": null,
+    "textBeforeHeader": [],
+    "textBeforeDirection": [],
+    "textBeforeColon": [],
+    "body": [
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [
+          {
+            "type": "GitgraphIdOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": {
+              "type": "StringLiteral",
+              "value": "A",
+              "raw": "\"A\"",
+              "closed": true,
+              "range": [
+                19,
+                22
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 10
+                },
+                "end": {
+                  "line": 2,
+                  "column": 13
+                }
+              }
+            },
+            "range": [
+              16,
+              22
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 13
+              }
+            }
+          }
+        ],
+        "textAfter": [],
+        "range": [
+          9,
+          22
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 13
+          }
+        }
+      },
+      {
+        "type": "GitgraphBranchStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "b",
+          "range": [
+            30,
+            31
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 7
+            },
+            "end": {
+              "line": 3,
+              "column": 8
+            }
+          }
+        },
+        "order": null,
+        "textAfter": [],
+        "range": [
+          23,
+          31
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 8
+          }
+        }
+      },
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [
+          {
+            "type": "GitgraphIdOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": {
+              "type": "StringLiteral",
+              "value": "B",
+              "raw": "\"B\"",
+              "closed": true,
+              "range": [
+                42,
+                45
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 10
+                },
+                "end": {
+                  "line": 4,
+                  "column": 13
+                }
+              }
+            },
+            "range": [
+              39,
+              45
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 7
+              },
+              "end": {
+                "line": 4,
+                "column": 13
+              }
+            }
+          }
+        ],
+        "textAfter": [],
+        "range": [
+          32,
+          45
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 13
+          }
+        }
+      },
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [
+          {
+            "type": "GitgraphIdOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": {
+              "type": "StringLiteral",
+              "value": "C",
+              "raw": "\"C\"",
+              "closed": true,
+              "range": [
+                56,
+                59
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 10
+                },
+                "end": {
+                  "line": 5,
+                  "column": 13
+                }
+              }
+            },
+            "range": [
+              53,
+              59
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 7
+              },
+              "end": {
+                "line": 5,
+                "column": 13
+              }
+            }
+          }
+        ],
+        "textAfter": [],
+        "range": [
+          46,
+          59
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 13
+          }
+        }
+      },
+      {
+        "type": "GitgraphCheckoutStatement",
+        "keyword": "checkout",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "main",
+          "range": [
+            69,
+            73
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 9
+            },
+            "end": {
+              "line": 6,
+              "column": 13
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          60,
+          73
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 13
+          }
+        }
+      },
+      {
+        "type": "GitgraphCherryPickStatement",
+        "options": [
+          {
+            "type": "GitgraphIdOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": {
+              "type": "StringLiteral",
+              "value": "B",
+              "raw": "\"B\"",
+              "closed": true,
+              "range": [
+                89,
+                92
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 15
+                },
+                "end": {
+                  "line": 7,
+                  "column": 18
+                }
+              }
+            },
+            "range": [
+              86,
+              92
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 12
+              },
+              "end": {
+                "line": 7,
+                "column": 18
+              }
+            }
+          },
+          {
+            "type": "GitgraphIdOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": {
+              "type": "StringLiteral",
+              "value": "C",
+              "raw": "\"C\"",
+              "closed": true,
+              "range": [
+                96,
+                99
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 22
+                },
+                "end": {
+                  "line": 7,
+                  "column": 25
+                }
+              }
+            },
+            "range": [
+              93,
+              99
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 19
+              },
+              "end": {
+                "line": 7,
+                "column": 25
+              }
+            }
+          },
+          {
+            "type": "GitgraphParentOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": {
+              "type": "StringLiteral",
+              "value": "A",
+              "raw": "\"A\"",
+              "closed": true,
+              "range": [
+                107,
+                110
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 33
+                },
+                "end": {
+                  "line": 7,
+                  "column": 36
+                }
+              }
+            },
+            "range": [
+              100,
+              110
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 26
+              },
+              "end": {
+                "line": 7,
+                "column": 36
+              }
+            }
+          },
+          {
+            "type": "GitgraphParentOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": {
+              "type": "StringLiteral",
+              "value": "B",
+              "raw": "\"B\"",
+              "closed": true,
+              "range": [
+                118,
+                121
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 44
+                },
+                "end": {
+                  "line": 7,
+                  "column": 47
+                }
+              }
+            },
+            "range": [
+              111,
+              121
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 37
+              },
+              "end": {
+                "line": 7,
+                "column": 47
+              }
+            }
+          }
+        ],
+        "textAfter": [],
+        "range": [
+          74,
+          121
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 47
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      121
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 7,
+        "column": 47
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "gitGraph",
+      "range": [
+        0,
+        8
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        9,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "id",
+      "range": [
+        16,
+        18
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 7
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        18,
+        19
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 9
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"A\"",
+      "range": [
+        19,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "branch",
+      "range": [
+        23,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "b",
+      "range": [
+        30,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 7
+        },
+        "end": {
+          "line": 3,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        32,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "id",
+      "range": [
+        39,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 7
+        },
+        "end": {
+          "line": 4,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        41,
+        42
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 9
+        },
+        "end": {
+          "line": 4,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"B\"",
+      "range": [
+        42,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 10
+        },
+        "end": {
+          "line": 4,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        46,
+        52
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "id",
+      "range": [
+        53,
+        55
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 7
+        },
+        "end": {
+          "line": 5,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        55,
+        56
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 9
+        },
+        "end": {
+          "line": 5,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"C\"",
+      "range": [
+        56,
+        59
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 10
+        },
+        "end": {
+          "line": 5,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "checkout",
+      "range": [
+        60,
+        68
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "main",
+      "range": [
+        69,
+        73
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 9
+        },
+        "end": {
+          "line": 6,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "cherry-pick",
+      "range": [
+        74,
+        85
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "id",
+      "range": [
+        86,
+        88
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 12
+        },
+        "end": {
+          "line": 7,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        88,
+        89
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 14
+        },
+        "end": {
+          "line": 7,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"B\"",
+      "range": [
+        89,
+        92
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 15
+        },
+        "end": {
+          "line": 7,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "id",
+      "range": [
+        93,
+        95
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 19
+        },
+        "end": {
+          "line": 7,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        95,
+        96
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 21
+        },
+        "end": {
+          "line": 7,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"C\"",
+      "range": [
+        96,
+        99
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 22
+        },
+        "end": {
+          "line": 7,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "parent",
+      "range": [
+        100,
+        106
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 26
+        },
+        "end": {
+          "line": 7,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        106,
+        107
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 32
+        },
+        "end": {
+          "line": 7,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"A\"",
+      "range": [
+        107,
+        110
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 33
+        },
+        "end": {
+          "line": 7,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "parent",
+      "range": [
+        111,
+        117
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 37
+        },
+        "end": {
+          "line": 7,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        117,
+        118
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 43
+        },
+        "end": {
+          "line": 7,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"B\"",
+      "range": [
+        118,
+        121
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 44
+        },
+        "end": {
+          "line": 7,
+          "column": 47
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    122
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 8,
+      "column": 0
+    }
+  }
+}

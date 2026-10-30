@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check HTML attribute rewriting and line-break text in acctitle."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "<b x='y'>a</b><BR>z",
+    "accDescr": "",
+    "nodes": []
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The shared style-line preprocessing also reaches a line inside a description block."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "style A fill:#red",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

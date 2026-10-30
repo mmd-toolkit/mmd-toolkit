@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Click and callbacks: a `,` read in the statement context is not a `click-comma` unit, so no click statement starts, and the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nflowchart LR,href \"x\"\n-------------^\nExpecting 'SEMI', 'NEWLINE', 'SPACE', 'EOF', 'SQS', 'SHAPE_DATA', 'AMP', 'STYLE_SEPARATOR', 'DOUBLECIRCLESTART', 'PS', '(-', 'STADIUMSTART', 'SUBROUTINESTART', 'VERTEX_WITH_PROPS_START', 'COLON', 'CYLINDERSTART', 'DIAMOND_START', 'TAGEND', 'TRAPSTART', 'INVTRAPSTART', 'START_LINK', 'LINK', 'LINK_ID', 'DOWN', 'DEFAULT', 'NUM', 'COMMA', 'NODE_STRING', 'BRKT', 'MINUS', 'MULT', 'UNICODE_TEXT', got 'HREF'"
+  }
+}

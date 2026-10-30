@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, composite blocks: a width after `end` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n... block:G    A  end:2\n---------------------^\nExpecting 'EOF', 'BLOCK_DIAGRAM_KEY', 'SPACE_BLOCK', 'COLUMNS', 'id-block', 'end', 'NODE_ID', 'classDef', 'class', 'style', got 'SIZE'"
+  }
+}

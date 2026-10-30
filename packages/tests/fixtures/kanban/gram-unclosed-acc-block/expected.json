@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "acc-block at EOF tests an unfinished or empty lexical context."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 3. Unrecognized text.\nkanban S accDescr {\n------------------^"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The note is for `</choice>` and no state is added."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [
+      {
+        "state": "</choice>",
+        "position": "left of",
+        "text": "x"
+      }
+    ],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

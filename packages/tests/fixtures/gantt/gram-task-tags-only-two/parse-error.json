@@ -1,0 +1,17 @@
+{
+  "message": "The data of a task needs an item after its tags",
+  "range": [
+    10,
+    20
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 4
+    },
+    "end": {
+      "line": 2,
+      "column": 14
+    }
+  }
+}

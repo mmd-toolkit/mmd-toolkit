@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Comments: after a `%%` comment, a line feed and two spaces stand before `%%{ }%%`, so mermaid.js reaches it directly and rejects it; a comment here (percent-brace-after-unit)."
+  },
+  "knownDivergence": "percent-brace-after-unit",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...usiveEndDates %%c  %%{ }%%\n----------------------^\nExpecting 'EOF', 'SPACE', 'NL', 'weekday_monday', 'weekday_tuesday', 'weekday_wednesday', 'weekday_thursday', 'weekday_friday', 'weekday_saturday', 'weekday_sunday', 'weekend_friday', 'weekend_saturday', 'dateFormat', 'inclusiveEndDates', 'topAxis', 'axisFormat', 'tickInterval', 'excludes', 'includes', 'todayMarker', 'title', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'section', 'taskTxt', 'click', got 'open_directive'"
+  }
+}

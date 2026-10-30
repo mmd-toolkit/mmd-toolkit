@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[L3] Are unrelated diagram keywords literal nodes?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "root",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "root",
+      "children": [
+        {
+          "text": "end",
+          "children": []
+        },
+        {
+          "text": "class X",
+          "children": []
+        },
+        {
+          "text": "style X fill:red",
+          "children": []
+        },
+        {
+          "text": "click X href",
+          "children": []
+        }
+      ]
+    }
+  }
+}

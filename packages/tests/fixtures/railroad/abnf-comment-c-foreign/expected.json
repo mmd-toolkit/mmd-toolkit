@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A C-style comment is rejected in ABNF."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 1: Expecting token of type 'EOF' but found `/`.\nParse error on line 2, column 6: Expecting token of type '=' but found `*`.\nParse error on line 2, column 7: Expecting: one of these possible Token sequences:\n  1. [ABNF_STRING]\n  2. [ABNF_NUMVAL]\n  3. [ABNF_RULENAME]\n  4. [(]\n  5. [[]\nbut found: '/'\nParse error on line 3, column 3: Expecting token of type ';' but found `=`."
+  }
+}

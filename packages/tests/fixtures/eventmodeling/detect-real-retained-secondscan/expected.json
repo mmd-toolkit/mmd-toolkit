@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Detection: Real frontmatter is separate from the retained YAML and directive owned before the header. Accepted by Mermaid."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": []
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    },
+    "title": "T"
+  }
+}

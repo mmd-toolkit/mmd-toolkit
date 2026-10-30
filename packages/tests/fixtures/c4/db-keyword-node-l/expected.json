@@ -1,0 +1,62 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The positional slots of `Node_L` map to 1=alias, 2=label.text, 3=type.text, 4=descr.text, 5=ignored sprite, 6=tags, 7=link."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "A"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "b"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      },
+      {
+        "alias": "b",
+        "label": {
+          "text": "B"
+        },
+        "type": {
+          "text": "type"
+        },
+        "descr": {
+          "text": "D"
+        },
+        "tags": "tags",
+        "link": "link",
+        "nodeType": "nodeL",
+        "parentBoundary": "global"
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

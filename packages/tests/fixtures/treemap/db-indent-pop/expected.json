@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does dedentation select the nearest shallower section?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "children": [
+          {
+            "name": "B",
+            "children": [
+              {
+                "name": "C",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "name": "D",
+            "value": 2
+          }
+        ]
+      },
+      {
+        "name": "E",
+        "value": 3
+      }
+    ],
+    "classDefs": []
+  }
+}

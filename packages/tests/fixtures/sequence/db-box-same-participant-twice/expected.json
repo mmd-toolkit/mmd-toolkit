@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Rejections outside the grammar: two participant statements for A inside the same box are accepted."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "box": 0
+      }
+    ],
+    "boxes": [
+      {
+        "name": "G",
+        "wrap": false,
+        "fill": "transparent",
+        "actorKeys": [
+          "A"
+        ]
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

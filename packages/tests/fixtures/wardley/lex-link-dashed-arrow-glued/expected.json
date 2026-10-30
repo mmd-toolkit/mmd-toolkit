@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Keyword and name boundaries: Without padding, A-.->B leaves an unreadable dot after the name prefix."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 3: unexpected character: ->.<- at offset: 15, skipped 1 characters. "
+  }
+}

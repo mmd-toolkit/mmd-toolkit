@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: Directives on both sides of a name-list comma are accepted."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "id": "item"
+      }
+    ],
+    "styles": []
+  }
+}

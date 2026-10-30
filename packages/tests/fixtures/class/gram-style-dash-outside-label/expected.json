@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Other statements: a `-` outside a label is not part of a style."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...ass Astyle A stroke-width:2px\n----------------------^\nExpecting 'NEWLINE', 'EOF', 'LABEL', 'SPACE', 'ALPHA', 'COMMA', 'STYLE', 'NUM', 'COLON', 'UNIT', 'BRKT', 'PCT', got 'MINUS'"
+  }
+}

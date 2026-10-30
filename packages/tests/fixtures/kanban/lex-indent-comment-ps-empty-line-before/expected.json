@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md Units and contexts, Comments and Indentation and parents; ast/kanban.md indent: An earlier empty line does not change PS indentation or whether the following node is a column. Mermaid accepts; the Db is recorded for column/card or parent/child comparison."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "x",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "x",
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "T;x",
+        "label": "T;x",
+        "isGroup": true
+      },
+      {
+        "id": "B;b",
+        "label": "B;b",
+        "isGroup": false,
+        "parentId": "T;x"
+      }
+    ]
+  }
+}

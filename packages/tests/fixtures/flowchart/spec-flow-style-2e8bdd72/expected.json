@@ -1,0 +1,260 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-style.spec.js",
+    "line": 267,
+    "test": "[Style] when parsing > should handle style definitions with more then 1 digit in a row"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "B1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B1",
+        "props": {}
+      },
+      {
+        "id": "B2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B2",
+        "props": {}
+      },
+      {
+        "id": "B3",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B3",
+        "props": {}
+      },
+      {
+        "id": "B4",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B4",
+        "props": {}
+      },
+      {
+        "id": "B5",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B5",
+        "props": {}
+      },
+      {
+        "id": "B6",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B6",
+        "props": {}
+      },
+      {
+        "id": "B7",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B7",
+        "props": {}
+      },
+      {
+        "id": "B8",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B8",
+        "props": {}
+      },
+      {
+        "id": "B9",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B9",
+        "props": {}
+      },
+      {
+        "id": "B10",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B10",
+        "props": {}
+      },
+      {
+        "id": "B11",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B11",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B1",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B1_0"
+      },
+      {
+        "start": "A",
+        "end": "B2",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B2_0"
+      },
+      {
+        "start": "A",
+        "end": "B3",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B3_0"
+      },
+      {
+        "start": "A",
+        "end": "B4",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B4_0"
+      },
+      {
+        "start": "A",
+        "end": "B5",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B5_0"
+      },
+      {
+        "start": "A",
+        "end": "B6",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B6_0"
+      },
+      {
+        "start": "A",
+        "end": "B7",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B7_0"
+      },
+      {
+        "start": "A",
+        "end": "B8",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B8_0"
+      },
+      {
+        "start": "A",
+        "end": "B9",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B9_0"
+      },
+      {
+        "start": "A",
+        "end": "B10",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B10_0"
+      },
+      {
+        "start": "A",
+        "end": "B11",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B11_0",
+        "style": [
+          "stroke-width:1px",
+          "fill:none"
+        ]
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

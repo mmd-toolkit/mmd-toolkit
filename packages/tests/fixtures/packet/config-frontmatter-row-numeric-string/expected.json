@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A quoted YAML numeric row width remains a string while multiplication splits the block at bit 8."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 7,
+          "label": "A"
+        }
+      ],
+      [
+        {
+          "start": 8,
+          "end": 9,
+          "label": "A"
+        }
+      ]
+    ]
+  },
+  "embedded": {
+    "config": {
+      "packet": {
+        "bitsPerRow": "8"
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The id of `activate` and `deactivate` is `C` followed by the placeholder of `#amp;`, in both entries."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "Cﬂ°amp¶ß",
+        "message": "",
+        "wrap": false,
+        "type": 17,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Cﬂ°amp¶ß",
+        "message": "",
+        "wrap": false,
+        "type": 18,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

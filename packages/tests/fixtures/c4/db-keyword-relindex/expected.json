@@ -1,0 +1,50 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The positional slots of `RelIndex` map to 1=discarded index, 2=from, 3=to, 4=label.text, 5=techn.text, 6=descr.text, 7=sprite, 8=tags, 9=link."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [
+      {
+        "type": "rel",
+        "from": "a",
+        "to": "b",
+        "label": {
+          "text": "Uses"
+        },
+        "techn": {
+          "text": "HTTPS"
+        },
+        "descr": {
+          "text": "D"
+        },
+        "sprite": "sprite",
+        "tags": "tags",
+        "link": "link"
+      }
+    ],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

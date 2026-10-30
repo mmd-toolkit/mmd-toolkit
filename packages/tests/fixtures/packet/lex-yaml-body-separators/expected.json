@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: YAML body text includes LS and PS."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 0,
+          "label": "A"
+        }
+      ]
+    ]
+  }
+}

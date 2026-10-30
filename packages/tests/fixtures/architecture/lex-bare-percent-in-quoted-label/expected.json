@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Comments: an earlier quoted label encloses a bare percent-pair line as label content."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service",
+        "title": "A\n%%\nB"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

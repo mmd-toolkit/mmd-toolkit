@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P4] Are attribute quotes rewritten in an unquoted frontmatter title?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": []
+    }
+  },
+  "embedded": {
+    "title": "<a href='x'>T</a>"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A single percent is a bare name, not a comment."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "% text",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

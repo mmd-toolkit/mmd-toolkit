@@ -1,0 +1,229 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: quadrant-no-redefined-axis >> invalid >>> docs/rules/quadrant-no-redefined-axis.md incorrect 1
+Filename: quadrant-no-redefined-axis-incorrect-1.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   x-axis Low Reach --> High Reach
+  3 |   x-axis Low Cost --> High Cost
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the earlier first text and the earlier second text of the `x-axis` with the values of this statement.
+---
+
+
+Test: quadrant-no-redefined-axis >> invalid >>> docs/rules/quadrant-no-redefined-axis.md incorrect 2
+Filename: quadrant-no-redefined-axis-incorrect-2.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   y-axis Low --> High
+  3 |   y-axis Small
+    |   ^~~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the earlier first text of the `y-axis` with the values of this statement.
+---
+
+
+Test: quadrant-no-redefined-axis >> invalid >>> invalid/quadrant/x-axis-arrow-only-after-both
+Filename: tests/fixtures/rules/quadrant-no-redefined-axis/invalid/quadrant/x-axis-arrow-only-after-both-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   x-axis L --> R
+  3 |   x-axis L -->
+    |   ^~~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the earlier first text of the `x-axis` with the values of this statement.
+---
+
+
+Test: quadrant-no-redefined-axis >> invalid >>> invalid/quadrant/x-axis-back-to-first
+Filename: tests/fixtures/rules/quadrant-no-redefined-axis/invalid/quadrant/x-axis-back-to-first-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   x-axis A --> B
+  3 |   x-axis C --> D
+    |   ^~~~~~~~~~~~~~ [1]
+  4 |   x-axis A --> B
+    |   ^~~~~~~~~~~~~~ [2]
+  5 |   A: [0.3, 0.6]
+  6 |
+
+[1] mermaid.js replaces the earlier first text and the earlier second text of the `x-axis` with the values of this statement.
+[2] mermaid.js replaces the earlier first text and the earlier second text of the `x-axis` with the values of this statement.
+---
+
+
+Test: quadrant-no-redefined-axis >> invalid >>> invalid/quadrant/x-axis-both-after-arrow-only
+Filename: tests/fixtures/rules/quadrant-no-redefined-axis/invalid/quadrant/x-axis-both-after-arrow-only-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   x-axis L -->
+  3 |   x-axis L --> R
+    |   ^~~~~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the earlier first text of the `x-axis` with the values of this statement.
+---
+
+
+Test: quadrant-no-redefined-axis >> invalid >>> invalid/quadrant/x-axis-both-replaced
+Filename: tests/fixtures/rules/quadrant-no-redefined-axis/invalid/quadrant/x-axis-both-replaced-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   x-axis Low --> High
+  3 |   x-axis Cost --> Value
+    |   ^~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the earlier first text and the earlier second text of the `x-axis` with the values of this statement.
+---
+
+
+Test: quadrant-no-redefined-axis >> invalid >>> invalid/quadrant/x-axis-directive-between
+Filename: tests/fixtures/rules/quadrant-no-redefined-axis/invalid/quadrant/x-axis-directive-between-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   x-axis L --> R
+  3 |   %%{init: {}}%%
+  4 |   x-axis M --> R
+    |   ^~~~~~~~~~~~~~ [1]
+  5 |   A: [0.3, 0.6]
+  6 |
+
+[1] mermaid.js replaces the earlier first text of the `x-axis` with the values of this statement.
+---
+
+
+Test: quadrant-no-redefined-axis >> invalid >>> invalid/quadrant/x-axis-inner-spaces-differ
+Filename: tests/fixtures/rules/quadrant-no-redefined-axis/invalid/quadrant/x-axis-inner-spaces-differ-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   x-axis Low  cost --> R
+  3 |   x-axis Low cost --> R
+    |   ^~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the earlier first text of the `x-axis` with the values of this statement.
+---
+
+
+Test: quadrant-no-redefined-axis >> invalid >>> invalid/quadrant/x-axis-inner-spaces-differ-left-only
+Filename: tests/fixtures/rules/quadrant-no-redefined-axis/invalid/quadrant/x-axis-inner-spaces-differ-left-only-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   x-axis Low  cost
+  3 |   x-axis Low cost
+    |   ^~~~~~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the earlier first text of the `x-axis` with the values of this statement.
+---
+
+
+Test: quadrant-no-redefined-axis >> invalid >>> invalid/quadrant/x-axis-left-emptied
+Filename: tests/fixtures/rules/quadrant-no-redefined-axis/invalid/quadrant/x-axis-left-emptied-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   x-axis L --> R
+  3 |   x-axis "  " --> R
+    |   ^~~~~~~~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the earlier first text of the `x-axis` with the values of this statement.
+---
+
+
+Test: quadrant-no-redefined-axis >> invalid >>> invalid/quadrant/x-axis-left-replaced
+Filename: tests/fixtures/rules/quadrant-no-redefined-axis/invalid/quadrant/x-axis-left-replaced-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   x-axis Low --> High
+  3 |   x-axis Cheap
+    |   ^~~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the earlier first text of the `x-axis` with the values of this statement.
+---
+
+
+Test: quadrant-no-redefined-axis >> invalid >>> invalid/quadrant/x-axis-semicolon-same-line
+Filename: tests/fixtures/rules/quadrant-no-redefined-axis/invalid/quadrant/x-axis-semicolon-same-line-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   x-axis L --> R; x-axis M --> R
+    |                   ^~~~~~~~~~~~~~ [1]
+  3 |   A: [0.3, 0.6]
+  4 |
+
+[1] mermaid.js replaces the earlier first text of the `x-axis` with the values of this statement.
+---
+
+
+Test: quadrant-no-redefined-axis >> invalid >>> invalid/quadrant/x-axis-upper-case-second
+Filename: tests/fixtures/rules/quadrant-no-redefined-axis/invalid/quadrant/x-axis-upper-case-second-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   x-axis L --> R
+  3 |   X-AXIS M --> R
+    |   ^~~~~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the earlier first text of the `x-axis` with the values of this statement.
+---
+
+
+Test: quadrant-no-redefined-axis >> invalid >>> invalid/quadrant/y-axis-bottom-replaced
+Filename: tests/fixtures/rules/quadrant-no-redefined-axis/invalid/quadrant/y-axis-bottom-replaced-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   y-axis B --> T
+  3 |   y-axis C
+    |   ^~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the earlier first text of the `y-axis` with the values of this statement.
+---
+
+
+Test: quadrant-no-redefined-axis >> invalid >>> invalid/quadrant/y-axis-top-replaced
+Filename: tests/fixtures/rules/quadrant-no-redefined-axis/invalid/quadrant/y-axis-top-replaced-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   y-axis B --> T
+  3 |   y-axis B --> U
+    |   ^~~~~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the earlier second text of the `y-axis` with the values of this statement.
+---

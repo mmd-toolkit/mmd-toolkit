@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Event aliases accept command sources."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "command",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "event",
+        "entityIdentifier": "B",
+        "sourceFrames": [
+          "01"
+        ],
+        "data": null
+      }
+    ]
+  }
+}

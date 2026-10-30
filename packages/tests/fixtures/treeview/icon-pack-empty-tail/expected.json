@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Names, annotations and common forms: An icon reference ending in a colon fails its terminal even though bare-name scanning stops before icon(."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 6: unexpected character: ->i<- at offset: 19, skipped 1 characters. "
+  }
+}

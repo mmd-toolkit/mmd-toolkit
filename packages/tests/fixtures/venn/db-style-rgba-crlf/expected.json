@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "This color or value-token spelling is stored as {\"fill\":\"rgba(1,\\n2,3,.5)\"}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "fill": "rgba(1,\n2,3,.5)"
+        }
+      }
+    ]
+  }
+}

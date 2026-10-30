@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The C4 detector searches commit ids anywhere after the header."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\ngitGraphcommit id:\"\n^"
+  }
+}

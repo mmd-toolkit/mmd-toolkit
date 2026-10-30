@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The block carryover kind html in metadata-assigned-quoted tests the kanban reading at this text position."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "I",
+        "label": "I",
+        "isGroup": false,
+        "parentId": "S",
+        "assigned": "a<b>b"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "I",
+        "set": {
+          "assigned": "a<b>b"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, edges: nodes defined before an edge keep their place."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "label": "",
+        "thickness": "normal",
+        "pattern": "solid",
+        "arrowTypeStart": "arrow_open",
+        "arrowTypeEnd": "arrow_point"
+      }
+    ],
+    "classes": []
+  }
+}

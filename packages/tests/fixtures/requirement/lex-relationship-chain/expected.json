@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The statement context: the target `b ` ends at `-`, and no statement starts with `-`."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...a - satisfies -> b - traces -> c\n----------------------^\nExpecting 'NEWLINE', 'EOF', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'direction_tb', 'direction_bt', 'direction_rl', 'direction_lr', 'REQUIREMENT', 'FUNCTIONAL_REQUIREMENT', 'INTERFACE_REQUIREMENT', 'PERFORMANCE_REQUIREMENT', 'PHYSICAL_REQUIREMENT', 'DESIGN_CONSTRAINT', 'ELEMENT', 'CLASSDEF', 'CLASS', 'STYLE', 'unqString', 'qString', got 'LINE'"
+  }
+}

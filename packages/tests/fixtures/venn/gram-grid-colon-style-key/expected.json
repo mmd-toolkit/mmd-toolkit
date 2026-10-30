@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The colon fragment in style-key is rejected by the grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...enn-betastyle A a:b:red\n----------------------^\nExpecting 'EOF', 'NEWLINE', 'TITLE', 'SET', 'NUMERIC', 'UNION', 'TEXT', 'IDENTIFIER', 'INDENT_TEXT', 'STYLE', 'COMMA', 'HEXCOLOR', 'RGBCOLOR', 'RGBACOLOR', got 'COLON'"
+  }
+}

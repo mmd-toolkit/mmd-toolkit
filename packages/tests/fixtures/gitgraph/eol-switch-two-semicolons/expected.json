@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Two semicolons do not provide switch EOL."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 12: unexpected character: ->;<- at offset: 20, skipped 2 characters. "
+  }
+}

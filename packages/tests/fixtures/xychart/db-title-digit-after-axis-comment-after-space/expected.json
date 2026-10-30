@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md The axis context: a comment after a space ends the line of `x-axis A`; a title with a digit follows; accepted."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "Q1",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "A",
+      "categories": []
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}

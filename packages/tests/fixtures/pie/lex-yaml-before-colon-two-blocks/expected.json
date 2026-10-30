@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Hidden YAML: Retain each recognized block as PieIgnoredText with kind `yaml-block`. Case: yaml-before-colon-two-blocks."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does LINK_LABEL require a character after semicolon?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 7: unexpected character: ->;<- at offset: 19, skipped 1 characters. "
+  }
+}

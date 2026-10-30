@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A non-ASCII suffix prevents the description composite terminal."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 9: unexpected character: ->界<- at offset: 26, skipped 1 characters. Parse error on line 2, column 12: Expecting token of type 'ARROW_DIRECTION' but found `value`."
+  }
+}

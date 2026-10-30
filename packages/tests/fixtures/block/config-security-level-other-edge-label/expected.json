@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, settings: under another `securityLevel` the label of an edge holds the replaced characters."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "type": "na"
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "label": "&lt;b&gt;x&lt;/b&gt;",
+        "thickness": "normal",
+        "pattern": "solid",
+        "arrowTypeStart": "arrow_open",
+        "arrowTypeEnd": "arrow_point"
+      }
+    ],
+    "classes": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md The statement context, rule 11: `left of` needs one space between the words; with two, the input is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...articipant A  Note left  of A: t\n----------------------^\nExpecting 'over', 'left_of', 'right_of', got 'ACTOR'"
+  }
+}

@@ -1,0 +1,905 @@
+{
+  "type": "Root",
+  "diagramType": "stateDiagram",
+  "body": {
+    "type": "StateDiagram",
+    "body": [
+      {
+        "type": "StateCompositeStatement",
+        "textBeforeId": null,
+        "id": {
+          "type": "Identifier",
+          "name": "Configuring",
+          "range": [
+            28,
+            39
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 14
+            },
+            "end": {
+              "line": 3,
+              "column": 25
+            }
+          }
+        },
+        "textBeforeBody": null,
+        "body": [
+          {
+            "type": "StateTransitionStatement",
+            "from": {
+              "type": "StateReference",
+              "state": {
+                "type": "StateTerminal",
+                "range": [
+                  52,
+                  55
+                ],
+                "loc": {
+                  "start": {
+                    "line": 4,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 4,
+                    "column": 13
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                52,
+                55
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 10
+                },
+                "end": {
+                  "line": 4,
+                  "column": 13
+                }
+              }
+            },
+            "to": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "NewValueSelection",
+                "range": [
+                  60,
+                  77
+                ],
+                "loc": {
+                  "start": {
+                    "line": 4,
+                    "column": 18
+                  },
+                  "end": {
+                    "line": 4,
+                    "column": 35
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                60,
+                77
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 18
+                },
+                "end": {
+                  "line": 4,
+                  "column": 35
+                }
+              }
+            },
+            "label": null,
+            "range": [
+              52,
+              77
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 10
+              },
+              "end": {
+                "line": 4,
+                "column": 35
+              }
+            }
+          },
+          {
+            "type": "StateTransitionStatement",
+            "from": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "NewValueSelection",
+                "range": [
+                  88,
+                  105
+                ],
+                "loc": {
+                  "start": {
+                    "line": 5,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 27
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                88,
+                105
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 10
+                },
+                "end": {
+                  "line": 5,
+                  "column": 27
+                }
+              }
+            },
+            "to": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "NewValuePreview",
+                "range": [
+                  110,
+                  125
+                ],
+                "loc": {
+                  "start": {
+                    "line": 5,
+                    "column": 32
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 47
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                110,
+                125
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 32
+                },
+                "end": {
+                  "line": 5,
+                  "column": 47
+                }
+              }
+            },
+            "label": {
+              "type": "StateLiteral",
+              "value": "EvNewValue",
+              "range": [
+                128,
+                138
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 50
+                },
+                "end": {
+                  "line": 5,
+                  "column": 60
+                }
+              }
+            },
+            "range": [
+              88,
+              138
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 10
+              },
+              "end": {
+                "line": 5,
+                "column": 60
+              }
+            }
+          },
+          {
+            "type": "StateTransitionStatement",
+            "from": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "NewValuePreview",
+                "range": [
+                  149,
+                  164
+                ],
+                "loc": {
+                  "start": {
+                    "line": 6,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 25
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                149,
+                164
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 10
+                },
+                "end": {
+                  "line": 6,
+                  "column": 25
+                }
+              }
+            },
+            "to": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "NewValueSelection",
+                "range": [
+                  169,
+                  186
+                ],
+                "loc": {
+                  "start": {
+                    "line": 6,
+                    "column": 30
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 47
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                169,
+                186
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 30
+                },
+                "end": {
+                  "line": 6,
+                  "column": 47
+                }
+              }
+            },
+            "label": {
+              "type": "StateLiteral",
+              "value": "EvNewValueRejected",
+              "range": [
+                189,
+                207
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 50
+                },
+                "end": {
+                  "line": 6,
+                  "column": 68
+                }
+              }
+            },
+            "range": [
+              149,
+              207
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 10
+              },
+              "end": {
+                "line": 6,
+                "column": 68
+              }
+            }
+          },
+          {
+            "type": "StateTransitionStatement",
+            "from": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "NewValuePreview",
+                "range": [
+                  218,
+                  233
+                ],
+                "loc": {
+                  "start": {
+                    "line": 7,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 7,
+                    "column": 25
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                218,
+                233
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 10
+                },
+                "end": {
+                  "line": 7,
+                  "column": 25
+                }
+              }
+            },
+            "to": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "NewValueSelection",
+                "range": [
+                  238,
+                  255
+                ],
+                "loc": {
+                  "start": {
+                    "line": 7,
+                    "column": 30
+                  },
+                  "end": {
+                    "line": 7,
+                    "column": 47
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                238,
+                255
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 30
+                },
+                "end": {
+                  "line": 7,
+                  "column": 47
+                }
+              }
+            },
+            "label": {
+              "type": "StateLiteral",
+              "value": "EvNewValueSaved1",
+              "range": [
+                258,
+                274
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 50
+                },
+                "end": {
+                  "line": 7,
+                  "column": 66
+                }
+              }
+            },
+            "range": [
+              218,
+              274
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 10
+              },
+              "end": {
+                "line": 7,
+                "column": 66
+              }
+            }
+          }
+        ],
+        "range": [
+          22,
+          284
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 8
+          },
+          "end": {
+            "line": 8,
+            "column": 9
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      284
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 8,
+        "column": 9
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "stateDiagram",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "state",
+      "range": [
+        22,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Configuring",
+      "range": [
+        28,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 14
+        },
+        "end": {
+          "line": 3,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        40,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 26
+        },
+        "end": {
+          "line": 3,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[*]",
+      "range": [
+        52,
+        55
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 10
+        },
+        "end": {
+          "line": 4,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        56,
+        59
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 14
+        },
+        "end": {
+          "line": 4,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NewValueSelection",
+      "range": [
+        60,
+        77
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 18
+        },
+        "end": {
+          "line": 4,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NewValueSelection",
+      "range": [
+        88,
+        105
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 10
+        },
+        "end": {
+          "line": 5,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        106,
+        109
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 28
+        },
+        "end": {
+          "line": 5,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NewValuePreview",
+      "range": [
+        110,
+        125
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 32
+        },
+        "end": {
+          "line": 5,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        126,
+        127
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 48
+        },
+        "end": {
+          "line": 5,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "EvNewValue",
+      "range": [
+        128,
+        138
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 50
+        },
+        "end": {
+          "line": 5,
+          "column": 60
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NewValuePreview",
+      "range": [
+        149,
+        164
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 10
+        },
+        "end": {
+          "line": 6,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        165,
+        168
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 26
+        },
+        "end": {
+          "line": 6,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NewValueSelection",
+      "range": [
+        169,
+        186
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 30
+        },
+        "end": {
+          "line": 6,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        187,
+        188
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 48
+        },
+        "end": {
+          "line": 6,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "EvNewValueRejected",
+      "range": [
+        189,
+        207
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 50
+        },
+        "end": {
+          "line": 6,
+          "column": 68
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NewValuePreview",
+      "range": [
+        218,
+        233
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 10
+        },
+        "end": {
+          "line": 7,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        234,
+        237
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 26
+        },
+        "end": {
+          "line": 7,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NewValueSelection",
+      "range": [
+        238,
+        255
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 30
+        },
+        "end": {
+          "line": 7,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        256,
+        257
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 48
+        },
+        "end": {
+          "line": 7,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "EvNewValueSaved1",
+      "range": [
+        258,
+        274
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 50
+        },
+        "end": {
+          "line": 7,
+          "column": 66
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        283,
+        284
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 8
+        },
+        "end": {
+          "line": 8,
+          "column": 9
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    291
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 9,
+      "column": 6
+    }
+  }
+}

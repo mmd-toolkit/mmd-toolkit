@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A junction cannot reuse a group ID."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The junction id [same] is already in use by another group"
+  }
+}

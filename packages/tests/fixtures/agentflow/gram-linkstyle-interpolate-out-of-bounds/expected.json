@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An out-of-range interpolation index is an explicit input error."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot set properties of undefined (setting 'interpolate')"
+  }
+}

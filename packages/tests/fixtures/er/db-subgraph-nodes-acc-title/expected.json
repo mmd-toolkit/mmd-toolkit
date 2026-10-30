@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An `accTitle` statement in the body adds its text as a node, and sets the title of the diagram."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "the title",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "the title"
+        ],
+        "title": "S",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

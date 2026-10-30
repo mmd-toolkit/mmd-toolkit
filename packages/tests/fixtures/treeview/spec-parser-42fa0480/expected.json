@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/treeView/parser.spec.ts",
+    "line": 16,
+    "test": "treeView parser integration > bare labels > should parse a simple filename"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "index.js",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

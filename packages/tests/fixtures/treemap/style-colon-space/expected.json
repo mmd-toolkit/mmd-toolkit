@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does whitespace between colon and hash preserve the semicolon?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "style: ﬂ°a¶ß",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  }
+}

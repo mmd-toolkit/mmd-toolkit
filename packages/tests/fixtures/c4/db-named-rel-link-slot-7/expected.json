@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A named $link in Rel argument 7 is accepted; rels[0].link is \"link\"."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [
+      {
+        "type": "rel",
+        "from": "a",
+        "to": "b",
+        "label": {
+          "text": "Uses"
+        },
+        "techn": {
+          "text": "HTTPS"
+        },
+        "descr": {
+          "text": "D"
+        },
+        "sprite": "sprite",
+        "link": "link"
+      }
+    ],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: An unselected semicolon interrupts the dash run and remains name text."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": ";─ child style:#x",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

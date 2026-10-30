@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Native metadata: Without a final comma, two trailing physical LF are permitted; the rejected two-line-break form is specific to a final comma."
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "U",
+        "label": "U",
+        "labelType": "text",
+        "type": "hollow",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

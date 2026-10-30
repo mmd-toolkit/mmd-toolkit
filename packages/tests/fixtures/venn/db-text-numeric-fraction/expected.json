@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The db text numeric fraction form stores {\"texts\":[{\"sets\":[\"A\"],\"id\":\".5\"}]}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [
+      {
+        "sets": [
+          "A"
+        ],
+        "id": ".5"
+      }
+    ],
+    "styles": []
+  }
+}

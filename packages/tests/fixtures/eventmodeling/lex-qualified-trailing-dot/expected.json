@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Names and references: A trailing dot leaves an incomplete qualified name. Rejected by Mermaid."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line ?, column ?: Expecting token of type 'EM_ID' but found ``."
+  }
+}

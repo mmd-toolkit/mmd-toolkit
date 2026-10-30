@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty ABNF terminal is retained."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": ""
+        }
+      }
+    ]
+  }
+}

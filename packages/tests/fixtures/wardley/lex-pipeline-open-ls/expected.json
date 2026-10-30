@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Grammar: Is U+2028 directly after the pipeline opening brace rejected rather than supplying its required visible LF?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 3, column 13: unexpected character: -> <- at offset: 47, skipped 1 characters. Parse error on line 3, column 14: Expecting: expecting at least one iteration which starts with one of these possible Token sequences::\n  <[NEWLINE]>\nbut found: 'component'\nParse error on line 3, column 30: Expecting token of type ',' but found `]`.\nParse error on line 4, column 1: Expecting token of type 'EOF' but found `}`."
+  }
+}

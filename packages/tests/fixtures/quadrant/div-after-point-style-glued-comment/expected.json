@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Known divergences: statements: what follows a `point-style` statement on its line: comment glued to the statement, and then a title on the next line."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": false,
+  "error": {
+    "name": "InvalidStyleError",
+    "message": "value for radius  is invalid, please use a valid number"
+  }
+}

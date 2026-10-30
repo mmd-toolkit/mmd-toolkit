@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A hash on a separate block line does not share a style segment."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

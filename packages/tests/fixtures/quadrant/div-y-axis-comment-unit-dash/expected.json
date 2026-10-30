@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Known divergences: y-axis: a comment glued to a dash after a word takes the dash."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "Bm",
+      "top": ""
+    },
+    "points": [],
+    "classes": []
+  }
+}

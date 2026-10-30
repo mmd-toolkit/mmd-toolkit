@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Native hidden forms and comments: Native YAML blocks inside a data reference have separate name and closer gap owners. Accepted by Mermaid."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

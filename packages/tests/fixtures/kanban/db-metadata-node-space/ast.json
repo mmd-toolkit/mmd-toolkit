@@ -1,0 +1,191 @@
+{
+  "type": "Root",
+  "diagramType": "kanban",
+  "body": {
+    "type": "KanbanDiagram",
+    "body": [
+      {
+        "type": "KanbanNode",
+        "indent": 1,
+        "id": {
+          "type": "KanbanLiteral",
+          "value": "S ",
+          "range": [
+            8,
+            10
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 1
+            },
+            "end": {
+              "line": 2,
+              "column": 3
+            }
+          }
+        },
+        "shape": null,
+        "data": [
+          {
+            "type": "KanbanDataBlock",
+            "value": "ticket: X",
+            "range": [
+              10,
+              22
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 3
+              },
+              "end": {
+                "line": 2,
+                "column": 15
+              }
+            }
+          }
+        ],
+        "decorations": [],
+        "children": [],
+        "range": [
+          8,
+          22
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 1
+          },
+          "end": {
+            "line": 2,
+            "column": 15
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      22
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 15
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "kanban",
+      "range": [
+        0,
+        6
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "S ",
+      "range": [
+        8,
+        10
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 1
+        },
+        "end": {
+          "line": 2,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        10,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 3
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "ticket: X",
+      "range": [
+        12,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 5
+        },
+        "end": {
+          "line": 2,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        21,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 14
+        },
+        "end": {
+          "line": 2,
+          "column": 15
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    23
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 0
+    }
+  }
+}

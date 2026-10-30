@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The hidden YAML terminal can skip a block after the header."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      }
+    ]
+  }
+}

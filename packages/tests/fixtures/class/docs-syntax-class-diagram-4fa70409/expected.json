@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/classDiagram.md",
+    "line": 800
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Animal",
+        "type": "",
+        "label": "Animal",
+        "text": "Animal",
+        "shape": "classBox",
+        "cssClasses": "default pink",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [
+          "fill:#f96",
+          "color:red",
+          "color:#f9f"
+        ]
+      },
+      {
+        "id": "Mineral",
+        "type": "",
+        "label": "Mineral",
+        "text": "Mineral",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [
+          "fill:#f96",
+          "color:red"
+        ]
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

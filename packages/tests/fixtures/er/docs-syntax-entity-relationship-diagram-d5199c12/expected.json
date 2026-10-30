@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/entityRelationshipDiagram.md",
+    "line": 159
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-This **is** _Markdown_-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "This **is** _Markdown_",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: A title keeps every character after its first whitespace separator, including further whitespace; `title` followed by a line feed can take text from the next line. This input is accepted by mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "1",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": []
+  }
+}

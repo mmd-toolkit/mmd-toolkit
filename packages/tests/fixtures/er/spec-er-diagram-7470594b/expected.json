@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/er/parser/erDiagram.spec.js",
+    "line": 216,
+    "test": "when parsing ER diagram it... > attribute name > should allow asterisks at the start of attribute declared with type and name"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-BOOK-0",
+        "attributes": [
+          {
+            "type": "id",
+            "name": "*the_Primary_Key",
+            "keys": [],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "BOOK",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

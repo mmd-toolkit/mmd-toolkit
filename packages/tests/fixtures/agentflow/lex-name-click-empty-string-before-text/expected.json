@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Names: a click context reads an empty string without a contributing Label, before later name text."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "A",
+        "nodes": [],
+        "title": "",
+        "classes": [],
+        "labelType": "text",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  }
+}

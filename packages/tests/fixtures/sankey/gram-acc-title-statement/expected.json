@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, title: an `accTitle` line is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nsankeyaccTitle: Ta,b,1\n-----------------^\nExpecting 'COMMA', got 'NEWLINE'"
+  }
+}

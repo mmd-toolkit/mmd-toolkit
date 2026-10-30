@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Identifiers remain case sensitive despite the case-insensitive lexer."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "a"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "A",
+          "a"
+        ],
+        "size": 2.5
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-edge-semantic.spec.ts",
+    "line": 35,
+    "test": "agentflow edge semantic > canonical operator → edgeSemantic mapping > `-.-` maps to reference"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "b",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "a",
+        "end": "b",
+        "type": "arrow_open",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "dotted",
+        "length": 1,
+        "id": "L_a_b_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

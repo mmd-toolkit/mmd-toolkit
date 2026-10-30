@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A non-ASCII suffix after TITLE rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 6: unexpected character: ->界<- at offset: 23, skipped 1 characters. "
+  }
+}

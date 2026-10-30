@@ -1,0 +1,874 @@
+{
+  "type": "Root",
+  "diagramType": "flowchart-v2",
+  "body": {
+    "type": "FlowchartDiagram",
+    "direction": "LR",
+    "body": [
+      {
+        "type": "FlowchartVertexStatement",
+        "first": {
+          "type": "FlowchartVertexGroup",
+          "vertices": [
+            {
+              "type": "FlowchartVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "A",
+                "range": [
+                  17,
+                  18
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 5
+                  }
+                }
+              },
+              "shape": null,
+              "cssClass": {
+                "type": "Identifier",
+                "name": "foo",
+                "range": [
+                  21,
+                  24
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 11
+                  }
+                }
+              },
+              "data": [],
+              "range": [
+                17,
+                24
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 4
+                },
+                "end": {
+                  "line": 2,
+                  "column": 11
+                }
+              }
+            },
+            {
+              "type": "FlowchartVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "B",
+                "range": [
+                  27,
+                  28
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 14
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 15
+                  }
+                }
+              },
+              "shape": null,
+              "cssClass": {
+                "type": "Identifier",
+                "name": "bar",
+                "range": [
+                  31,
+                  34
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 18
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 21
+                  }
+                }
+              },
+              "data": [],
+              "range": [
+                27,
+                34
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 14
+                },
+                "end": {
+                  "line": 2,
+                  "column": 21
+                }
+              }
+            }
+          ],
+          "range": [
+            17,
+            34
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 4
+            },
+            "end": {
+              "line": 2,
+              "column": 21
+            }
+          }
+        },
+        "links": [
+          {
+            "type": "FlowchartLink",
+            "id": null,
+            "opening": null,
+            "arrow": {
+              "type": "FlowchartArrow",
+              "value": "-->",
+              "startMarker": "none",
+              "line": "solid",
+              "length": 2,
+              "endMarker": "arrow",
+              "range": [
+                35,
+                38
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 22
+                },
+                "end": {
+                  "line": 2,
+                  "column": 25
+                }
+              }
+            },
+            "label": null,
+            "target": {
+              "type": "FlowchartVertexGroup",
+              "vertices": [
+                {
+                  "type": "FlowchartVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "C",
+                    "range": [
+                      39,
+                      40
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 2,
+                        "column": 26
+                      },
+                      "end": {
+                        "line": 2,
+                        "column": 27
+                      }
+                    }
+                  },
+                  "shape": null,
+                  "cssClass": {
+                    "type": "Identifier",
+                    "name": "foobar",
+                    "range": [
+                      43,
+                      49
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 2,
+                        "column": 30
+                      },
+                      "end": {
+                        "line": 2,
+                        "column": 36
+                      }
+                    }
+                  },
+                  "data": [],
+                  "range": [
+                    39,
+                    49
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 2,
+                      "column": 26
+                    },
+                    "end": {
+                      "line": 2,
+                      "column": 36
+                    }
+                  }
+                }
+              ],
+              "range": [
+                39,
+                49
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 26
+                },
+                "end": {
+                  "line": 2,
+                  "column": 36
+                }
+              }
+            },
+            "range": [
+              35,
+              49
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 22
+              },
+              "end": {
+                "line": 2,
+                "column": 36
+              }
+            }
+          }
+        ],
+        "range": [
+          17,
+          49
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 4
+          },
+          "end": {
+            "line": 2,
+            "column": 36
+          }
+        }
+      },
+      {
+        "type": "FlowchartClassDefStatement",
+        "cssClasses": [
+          {
+            "type": "Identifier",
+            "name": "foo",
+            "range": [
+              63,
+              66
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 13
+              },
+              "end": {
+                "line": 3,
+                "column": 16
+              }
+            }
+          }
+        ],
+        "styles": [
+          {
+            "type": "FlowchartLiteral",
+            "value": "stroke:#f00",
+            "range": [
+              67,
+              78
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 17
+              },
+              "end": {
+                "line": 3,
+                "column": 28
+              }
+            }
+          }
+        ],
+        "range": [
+          54,
+          78
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 4
+          },
+          "end": {
+            "line": 3,
+            "column": 28
+          }
+        }
+      },
+      {
+        "type": "FlowchartClassDefStatement",
+        "cssClasses": [
+          {
+            "type": "Identifier",
+            "name": "bar",
+            "range": [
+              92,
+              95
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 13
+              },
+              "end": {
+                "line": 4,
+                "column": 16
+              }
+            }
+          }
+        ],
+        "styles": [
+          {
+            "type": "FlowchartLiteral",
+            "value": "stroke:#0f0",
+            "range": [
+              96,
+              107
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 17
+              },
+              "end": {
+                "line": 4,
+                "column": 28
+              }
+            }
+          }
+        ],
+        "range": [
+          83,
+          107
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 4
+          },
+          "end": {
+            "line": 4,
+            "column": 28
+          }
+        }
+      },
+      {
+        "type": "FlowchartClassDefStatement",
+        "cssClasses": [
+          {
+            "type": "Identifier",
+            "name": "foobar",
+            "range": [
+              121,
+              127
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 13
+              },
+              "end": {
+                "line": 5,
+                "column": 19
+              }
+            }
+          }
+        ],
+        "styles": [
+          {
+            "type": "FlowchartLiteral",
+            "value": "stroke:#00f",
+            "range": [
+              128,
+              139
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 20
+              },
+              "end": {
+                "line": 5,
+                "column": 31
+              }
+            }
+          }
+        ],
+        "range": [
+          112,
+          139
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 4
+          },
+          "end": {
+            "line": 5,
+            "column": 31
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      139
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 5,
+        "column": 31
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "flowchart",
+      "range": [
+        0,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "LR",
+      "range": [
+        10,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 10
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        17,
+        18
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":::",
+      "range": [
+        18,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 5
+        },
+        "end": {
+          "line": 2,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "foo",
+      "range": [
+        21,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "&",
+      "range": [
+        25,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "B",
+      "range": [
+        27,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 14
+        },
+        "end": {
+          "line": 2,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":::",
+      "range": [
+        28,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 15
+        },
+        "end": {
+          "line": 2,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "bar",
+      "range": [
+        31,
+        34
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 18
+        },
+        "end": {
+          "line": 2,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        35,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 22
+        },
+        "end": {
+          "line": 2,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "C",
+      "range": [
+        39,
+        40
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 26
+        },
+        "end": {
+          "line": 2,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":::",
+      "range": [
+        40,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 27
+        },
+        "end": {
+          "line": 2,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "foobar",
+      "range": [
+        43,
+        49
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 30
+        },
+        "end": {
+          "line": 2,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "classDef",
+      "range": [
+        54,
+        62
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 4
+        },
+        "end": {
+          "line": 3,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "foo",
+      "range": [
+        63,
+        66
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 13
+        },
+        "end": {
+          "line": 3,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "stroke:#f00",
+      "range": [
+        67,
+        78
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 17
+        },
+        "end": {
+          "line": 3,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "classDef",
+      "range": [
+        83,
+        91
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 4
+        },
+        "end": {
+          "line": 4,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "bar",
+      "range": [
+        92,
+        95
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 13
+        },
+        "end": {
+          "line": 4,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "stroke:#0f0",
+      "range": [
+        96,
+        107
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 17
+        },
+        "end": {
+          "line": 4,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "classDef",
+      "range": [
+        112,
+        120
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 4
+        },
+        "end": {
+          "line": 5,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "foobar",
+      "range": [
+        121,
+        127
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 13
+        },
+        "end": {
+          "line": 5,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "stroke:#00f",
+      "range": [
+        128,
+        139
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 20
+        },
+        "end": {
+          "line": 5,
+          "column": 31
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    140
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 6,
+      "column": 0
+    }
+  }
+}

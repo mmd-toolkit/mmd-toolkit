@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can site treemap settings rescue invalid grammar?"
+  },
+  "config": {
+    "treemap": {
+      "padding": 2,
+      "valueFormat": "invalid-format"
+    }
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 1: Expecting token of type 'EOF' but found `Bare`."
+  }
+}

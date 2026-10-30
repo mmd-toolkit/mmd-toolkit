@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does the common sanitizer use flowchart.htmlLabels when root htmlLabels is absent?"
+  },
+  "config": {
+    "securityLevel": "other",
+    "flowchart": {
+      "htmlLabels": false
+    }
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "<b>Title</b>",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "A",
+        "label": "<i>Label</i>",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

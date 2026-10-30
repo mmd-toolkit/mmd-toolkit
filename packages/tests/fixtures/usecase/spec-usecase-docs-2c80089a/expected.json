@@ -1,0 +1,66 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/usecase.docs.spec.ts",
+    "line": 40,
+    "test": "usecase public documentation examples > parses and renders every mermaid-example fence from the canonical page"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "User",
+        "label": "User",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "Login",
+        "label": "Sign in",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [
+      {
+        "source": "User",
+        "target": "Login",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [
+      {
+        "target": "Login",
+        "label": "Requires an **active session**",
+        "labelType": "markdown"
+      },
+      {
+        "target": "User",
+        "label": "Starts the workflow",
+        "labelType": "text"
+      }
+    ],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

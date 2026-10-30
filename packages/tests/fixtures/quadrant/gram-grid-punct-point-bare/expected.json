@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, punctuation: commas, brackets, and a colon in a bare name of a point."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nquadrantCharta, b [c]: d: [0.3, 0.6]\n------------------^"
+  }
+}

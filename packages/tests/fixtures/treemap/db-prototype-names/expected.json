@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do prototype spellings remain authored names and Map entries?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "__proto__",
+        "classSelector": "__proto__",
+        "children": [
+          {
+            "name": "constructor",
+            "value": 1,
+            "classSelector": "constructor"
+          }
+        ]
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "__proto__",
+        "styles": [
+          "fill:red"
+        ]
+      },
+      {
+        "id": "constructor",
+        "styles": [
+          "color:blue"
+        ]
+      }
+    ]
+  }
+}

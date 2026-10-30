@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Unicode indentation within the source tests hidden whitespace."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: -> <- at offset: 4, skipped 1 characters. "
+  }
+}

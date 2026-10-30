@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Units and contexts (Entities): an entity in a task text is read as its placeholder, so its `#` and `;` do not end the text."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "aﬂ°amp¶ß b",
+        "people": [],
+        "score": 5
+      }
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "EBNF common publication also skips empty final AST values."
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

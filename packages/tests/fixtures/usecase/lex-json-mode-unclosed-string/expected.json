@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an unclosed JSON string select the unclosed-object fallback?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> JSON_OBJECT_LITERAL <-- but found --> '{\"value\":\"unterminated}\nA\n\n' <-- at line 2, column 8 [20,47)"
+  }
+}

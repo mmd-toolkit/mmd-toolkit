@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A backquoted name that starts with the keyword link: mermaid.js reads the keyword as a unit of its own and rejects the text; the specified reading is the class \"link x\"."
+  },
+  "knownDivergence": "name-start-reads-unit",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...assDiagram  class `link x`\n----------------------^\nExpecting 'ALPHA', 'NUM', 'MINUS', 'UNICODE_TEXT', 'BQUOTE_STR', got 'LINK'"
+  }
+}

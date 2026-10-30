@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: A positive branch column inside a quoted-looking line can determine the diagram's segment width."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "first",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "second\"",
+            "nodeType": "file",
+            "children": []
+          },
+          {
+            "name": "third",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

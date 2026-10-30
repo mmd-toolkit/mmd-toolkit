@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Participants and boxes: an empty description block in a box may be followed by a participant statement on the same line."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "B",
+        "description": "B",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "box": 0
+      }
+    ],
+    "boxes": [
+      {
+        "name": "G",
+        "wrap": false,
+        "fill": "transparent",
+        "actorKeys": [
+          "B"
+        ]
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

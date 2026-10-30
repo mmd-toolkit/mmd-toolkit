@@ -1,0 +1,963 @@
+{
+  "type": "Root",
+  "diagramType": "usecase",
+  "body": {
+    "type": "UsecaseDiagram",
+    "body": [
+      {
+        "type": "UsecaseEntityStatement",
+        "entity": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Inspect",
+            "range": [
+              13,
+              20
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 2,
+                "column": 7
+              }
+            }
+          },
+          "shape": "ellipse",
+          "label": {
+            "type": "UsecaseLabel",
+            "kind": "string",
+            "value": "Inspect payload",
+            "range": [
+              21,
+              38
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 8
+              },
+              "end": {
+                "line": 2,
+                "column": 25
+              }
+            }
+          },
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            13,
+            39
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 26
+            }
+          }
+        },
+        "range": [
+          13,
+          39
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 26
+          }
+        }
+      },
+      {
+        "type": "UsecaseJsonStatement",
+        "id": {
+          "type": "Identifier",
+          "name": "Payload",
+          "range": [
+            45,
+            52
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 5
+            },
+            "end": {
+              "line": 3,
+              "column": 12
+            }
+          }
+        },
+        "data": {
+          "type": "UsecaseJsonDataBlock",
+          "value": "\n  \"2\": \"second in source\",\n  \"1\": \"first after 2\",\n  \"enabled\": true,\n  \"count\": 3,\n  \"missing\": null,\n  \"colors\": [\"Red\", \"Green\"],\n  \"address\": { \"city\": \"Oslo\" },\n  \"items\": [{ \"name\": \"Book\" }],\n  \"emptyObject\": {},\n  \"emptyArray\": []\n",
+          "range": [
+            52,
+            295
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 12
+            },
+            "end": {
+              "line": 14,
+              "column": 1
+            }
+          }
+        },
+        "classes": [
+          {
+            "type": "Identifier",
+            "name": "data",
+            "range": [
+              298,
+              302
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 4
+              },
+              "end": {
+                "line": 14,
+                "column": 8
+              }
+            }
+          }
+        ],
+        "range": [
+          40,
+          302
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 14,
+            "column": 8
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Inspect",
+            "range": [
+              303,
+              310
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 0
+              },
+              "end": {
+                "line": 15,
+                "column": 7
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            303,
+            310
+          ],
+          "loc": {
+            "start": {
+              "line": 15,
+              "column": 0
+            },
+            "end": {
+              "line": 15,
+              "column": 7
+            }
+          }
+        },
+        "id": null,
+        "kind": "association",
+        "opening": null,
+        "label": null,
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "-->",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            311,
+            314
+          ],
+          "loc": {
+            "start": {
+              "line": 15,
+              "column": 8
+            },
+            "end": {
+              "line": 15,
+              "column": 11
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Payload",
+            "range": [
+              315,
+              322
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 12
+              },
+              "end": {
+                "line": 15,
+                "column": 19
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            315,
+            322
+          ],
+          "loc": {
+            "start": {
+              "line": 15,
+              "column": 12
+            },
+            "end": {
+              "line": 15,
+              "column": 19
+            }
+          }
+        },
+        "range": [
+          303,
+          322
+        ],
+        "loc": {
+          "start": {
+            "line": 15,
+            "column": 0
+          },
+          "end": {
+            "line": 15,
+            "column": 19
+          }
+        }
+      },
+      {
+        "type": "UsecaseClassDefStatement",
+        "classes": [
+          {
+            "type": "Identifier",
+            "name": "data",
+            "range": [
+              332,
+              336
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 9
+              },
+              "end": {
+                "line": 16,
+                "column": 13
+              }
+            }
+          }
+        ],
+        "styles": [
+          {
+            "type": "UsecaseStyleDeclaration",
+            "name": {
+              "type": "UsecaseIdentifier",
+              "name": "stroke",
+              "range": [
+                337,
+                343
+              ],
+              "loc": {
+                "start": {
+                  "line": 16,
+                  "column": 14
+                },
+                "end": {
+                  "line": 16,
+                  "column": 20
+                }
+              }
+            },
+            "value": {
+              "type": "UsecaseLiteral",
+              "value": "#3572a5",
+              "range": [
+                344,
+                351
+              ],
+              "loc": {
+                "start": {
+                  "line": 16,
+                  "column": 21
+                },
+                "end": {
+                  "line": 16,
+                  "column": 28
+                }
+              }
+            },
+            "range": [
+              337,
+              351
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 14
+              },
+              "end": {
+                "line": 16,
+                "column": 28
+              }
+            }
+          }
+        ],
+        "range": [
+          323,
+          351
+        ],
+        "loc": {
+          "start": {
+            "line": 16,
+            "column": 0
+          },
+          "end": {
+            "line": 16,
+            "column": 28
+          }
+        }
+      },
+      {
+        "type": "UsecaseStyleStatement",
+        "target": {
+          "type": "Identifier",
+          "name": "Payload",
+          "range": [
+            358,
+            365
+          ],
+          "loc": {
+            "start": {
+              "line": 17,
+              "column": 6
+            },
+            "end": {
+              "line": 17,
+              "column": 13
+            }
+          }
+        },
+        "styles": [
+          {
+            "type": "UsecaseStyleDeclaration",
+            "name": {
+              "type": "UsecaseIdentifier",
+              "name": "stroke-width",
+              "range": [
+                366,
+                378
+              ],
+              "loc": {
+                "start": {
+                  "line": 17,
+                  "column": 14
+                },
+                "end": {
+                  "line": 17,
+                  "column": 26
+                }
+              }
+            },
+            "value": {
+              "type": "UsecaseLiteral",
+              "value": "2px",
+              "range": [
+                379,
+                382
+              ],
+              "loc": {
+                "start": {
+                  "line": 17,
+                  "column": 27
+                },
+                "end": {
+                  "line": 17,
+                  "column": 30
+                }
+              }
+            },
+            "range": [
+              366,
+              382
+            ],
+            "loc": {
+              "start": {
+                "line": 17,
+                "column": 14
+              },
+              "end": {
+                "line": 17,
+                "column": 30
+              }
+            }
+          }
+        ],
+        "range": [
+          352,
+          382
+        ],
+        "loc": {
+          "start": {
+            "line": 17,
+            "column": 0
+          },
+          "end": {
+            "line": 17,
+            "column": 30
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      382
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 17,
+        "column": 30
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "usecase-beta",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Inspect",
+      "range": [
+        13,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        20,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 7
+        },
+        "end": {
+          "line": 2,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Inspect payload\"",
+      "range": [
+        21,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        38,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 25
+        },
+        "end": {
+          "line": 2,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "json",
+      "range": [
+        40,
+        44
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Payload",
+      "range": [
+        45,
+        52
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 5
+        },
+        "end": {
+          "line": 3,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@",
+      "range": [
+        52,
+        53
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 12
+        },
+        "end": {
+          "line": 3,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        53,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 13
+        },
+        "end": {
+          "line": 3,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "\n  \"2\": \"second in source\",\n  \"1\": \"first after 2\",\n  \"enabled\": true,\n  \"count\": 3,\n  \"missing\": null,\n  \"colors\": [\"Red\", \"Green\"],\n  \"address\": { \"city\": \"Oslo\" },\n  \"items\": [{ \"name\": \"Book\" }],\n  \"emptyObject\": {},\n  \"emptyArray\": []\n",
+      "range": [
+        54,
+        294
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 14
+        },
+        "end": {
+          "line": 14,
+          "column": 0
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        294,
+        295
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 0
+        },
+        "end": {
+          "line": 14,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":::",
+      "range": [
+        295,
+        298
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 1
+        },
+        "end": {
+          "line": 14,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "data",
+      "range": [
+        298,
+        302
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 4
+        },
+        "end": {
+          "line": 14,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Inspect",
+      "range": [
+        303,
+        310
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 0
+        },
+        "end": {
+          "line": 15,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        311,
+        314
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 8
+        },
+        "end": {
+          "line": 15,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Payload",
+      "range": [
+        315,
+        322
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 12
+        },
+        "end": {
+          "line": 15,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "classDef",
+      "range": [
+        323,
+        331
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 0
+        },
+        "end": {
+          "line": 16,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "data",
+      "range": [
+        332,
+        336
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 9
+        },
+        "end": {
+          "line": 16,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "stroke",
+      "range": [
+        337,
+        343
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 14
+        },
+        "end": {
+          "line": 16,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        343,
+        344
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 20
+        },
+        "end": {
+          "line": 16,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "#3572a5",
+      "range": [
+        344,
+        351
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 21
+        },
+        "end": {
+          "line": 16,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "style",
+      "range": [
+        352,
+        357
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 0
+        },
+        "end": {
+          "line": 17,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Payload",
+      "range": [
+        358,
+        365
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 6
+        },
+        "end": {
+          "line": 17,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "stroke-width",
+      "range": [
+        366,
+        378
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 14
+        },
+        "end": {
+          "line": 17,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        378,
+        379
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 26
+        },
+        "end": {
+          "line": 17,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "2px",
+      "range": [
+        379,
+        382
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 27
+        },
+        "end": {
+          "line": 17,
+          "column": 30
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    382
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 17,
+      "column": 30
+    }
+  }
+}

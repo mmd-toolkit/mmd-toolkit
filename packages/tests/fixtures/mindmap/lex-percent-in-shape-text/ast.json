@@ -1,0 +1,264 @@
+{
+  "type": "Root",
+  "diagramType": "mindmap",
+  "body": {
+    "type": "MindmapDiagram",
+    "root": {
+      "type": "MindmapNode",
+      "indent": 0,
+      "id": {
+        "type": "MindmapLiteral",
+        "value": "root",
+        "range": [
+          8,
+          12
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 4
+          }
+        }
+      },
+      "shape": null,
+      "decorations": [],
+      "children": [
+        {
+          "type": "MindmapNode",
+          "indent": 2,
+          "id": {
+            "type": "MindmapLiteral",
+            "value": "a",
+            "range": [
+              15,
+              16
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 2
+              },
+              "end": {
+                "line": 3,
+                "column": 3
+              }
+            }
+          },
+          "shape": {
+            "type": "MindmapShape",
+            "opener": "[",
+            "closer": "]",
+            "label": {
+              "type": "MindmapLabel",
+              "kind": "text",
+              "value": "%% c",
+              "range": [
+                17,
+                21
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 4
+                },
+                "end": {
+                  "line": 3,
+                  "column": 8
+                }
+              }
+            },
+            "range": [
+              16,
+              22
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 3
+              },
+              "end": {
+                "line": 3,
+                "column": 9
+              }
+            }
+          },
+          "decorations": [],
+          "children": [],
+          "range": [
+            15,
+            22
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 2
+            },
+            "end": {
+              "line": 3,
+              "column": 9
+            }
+          }
+        }
+      ],
+      "range": [
+        8,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    },
+    "range": [
+      0,
+      22
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 9
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "mindmap",
+      "range": [
+        0,
+        7
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "root",
+      "range": [
+        8,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "a",
+      "range": [
+        15,
+        16
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 3,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        16,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 3
+        },
+        "end": {
+          "line": 3,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "%% c",
+      "range": [
+        17,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 4
+        },
+        "end": {
+          "line": 3,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        21,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    23
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 0
+    }
+  }
+}

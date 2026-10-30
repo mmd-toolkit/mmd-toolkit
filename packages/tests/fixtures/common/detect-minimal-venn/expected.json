@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md entry 36: minimal accepted example of `venn`. The header line alone is accepted."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": []
+  }
+}

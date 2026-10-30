@@ -1,0 +1,91 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: xychart-no-extra-value >> invalid >>> docs/rules/xychart-no-extra-value.md incorrect 1
+Filename: xychart-no-extra-value-incorrect-1.mmd
+
+Code:
+  1 | xychart
+  2 |   x-axis [jan, feb]
+  3 |   bar [10, 20, 30]
+    |                ^~ [1]
+  4 |
+
+[1] mermaid.js drops this value because it has no category on the x axis.
+---
+
+
+Test: xychart-no-extra-value >> invalid >>> invalid/xychart/db-data-band-more-values
+Filename: tests/fixtures/rules/xychart-no-extra-value/invalid/xychart/db-data-band-more-values-input.mmd
+
+Code:
+  1 | xychart-beta
+  2 |  x-axis [a, b]
+  3 |  bar [1, 2, 3, 4]
+    |             ^  ^
+    |            [1] [2]
+  4 |
+
+[1] mermaid.js drops this value because it has no category on the x axis.
+[2] mermaid.js drops this value because it has no category on the x axis.
+---
+
+
+Test: xychart-no-extra-value >> invalid >>> invalid/xychart/db-label-beyond-categories
+Filename: tests/fixtures/rules/xychart-no-extra-value/invalid/xychart/db-label-beyond-categories-input.mmd
+
+Code:
+  1 | xychart-beta
+  2 | x-axis [a]
+  3 | line [1 "p", 2 "q"]
+    |              ^~~~~ [1]
+  4 |
+
+[1] mermaid.js drops this value because it has no category on the x axis.
+---
+
+
+Test: xychart-no-extra-value >> invalid >>> invalid/xychart/extra-plot-after-last-axis
+Filename: tests/fixtures/rules/xychart-no-extra-value/invalid/xychart/extra-plot-after-last-axis-input.mmd
+
+Code:
+  1 | xychart
+  2 |   x-axis [a, b, c, d]
+  3 |   bar [1]
+  4 |   x-axis [a, b]
+  5 |   bar [1, 2, 3]
+    |              ^ [1]
+  6 |
+
+[1] mermaid.js drops this value because it has no category on the x axis.
+---
+
+
+Test: xychart-no-extra-value >> invalid >>> invalid/xychart/extra-range-then-band
+Filename: tests/fixtures/rules/xychart-no-extra-value/invalid/xychart/extra-range-then-band-input.mmd
+
+Code:
+  1 | xychart
+  2 |   x-axis 0 --> 10
+  3 |   x-axis [a]
+  4 |   line [1, 2]
+    |            ^ [1]
+  5 |
+
+[1] mermaid.js drops this value because it has no category on the x axis.
+---
+
+
+Test: xychart-no-extra-value >> invalid >>> invalid/xychart/extra-title-only-axis-keeps-band
+Filename: tests/fixtures/rules/xychart-no-extra-value/invalid/xychart/extra-title-only-axis-keeps-band-input.mmd
+
+Code:
+  1 | xychart
+  2 |   x-axis [a, b]
+  3 |   x-axis T
+  4 |   bar [1, 2, 3]
+    |              ^ [1]
+  5 |
+
+[1] mermaid.js drops this value because it has no category on the x axis.
+---

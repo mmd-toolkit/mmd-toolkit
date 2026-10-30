@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read metadata adjacent no comma?"
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "missed comma between flow collection entries (2:23)\n\n 2 |  shape: tool  label: Work \n------------------------^"
+  }
+}

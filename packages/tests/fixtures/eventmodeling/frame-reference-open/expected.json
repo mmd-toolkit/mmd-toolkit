@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A reference needs two closing brackets."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 16: unexpected character: ->]<- at offset: 29, skipped 1 characters. Parse error on line ?, column ?: Expecting token of type ']]' but found ``."
+  }
+}

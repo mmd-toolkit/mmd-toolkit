@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[L2] Does a word suffix prevent a second ISHIKAWA token?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "ishikawax",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "ishikawax",
+      "children": []
+    }
+  }
+}

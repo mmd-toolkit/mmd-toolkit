@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Frame names do not accept negative signs."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 4: unexpected character: ->-<- at offset: 17, skipped 1 characters. "
+  }
+}

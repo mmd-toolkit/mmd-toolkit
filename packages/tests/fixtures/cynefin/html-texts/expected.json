@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Common metadata is sanitized while diagram strings remain direct converter values."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "<b>T</b>",
+    "accTitle": "<i>A</i>",
+    "accDescr": "<u>E</u>",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "<b>X</b>"
+          }
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear",
+        "label": "<i>L</i>"
+      }
+    ]
+  }
+}

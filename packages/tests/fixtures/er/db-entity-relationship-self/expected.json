@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A relationship from an entity to itself: one entity, and both ends are its id."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-A-0",
+        "roleA": "r",
+        "entityB": "entity-A-0",
+        "cardA": "ZERO_OR_MORE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": []
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An entity semicolon precedes the last semicolon on a style-like line."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "style A: ﬂ°°35¶ß;",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "classDef A: &ﬂ°°35¶ß;"
+      }
+    ],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

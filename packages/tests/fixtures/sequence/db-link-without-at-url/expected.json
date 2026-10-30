@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Building the summary, Links and properties: `link` without an `@` sets the text without its last two characters, `Dashboard https://x.examp`, to the whole text."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {
+          "Dashboard https://x.examp": "Dashboard https://x.example"
+        },
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does each converter preserve a single interior tab rather than collapse it?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "A\tB",
+    "accTitle": "C\tD",
+    "accDescr": "G\tH",
+    "showData": false,
+    "sections": []
+  }
+}

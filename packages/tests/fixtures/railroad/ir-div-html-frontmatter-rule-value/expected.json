@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A frontmatter tag splits one IR terminal value into two terminals while both readings accept."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "terminal",
+              "value": "x="
+            },
+            {
+              "type": "terminal",
+              "value": "y\">"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

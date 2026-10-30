@@ -1,0 +1,456 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: requirement-no-duplicate-field >> invalid >>> docs/rules/requirement-no-duplicate-field.md incorrect 1
+Filename: requirement-no-duplicate-field-incorrect-1.mmd
+
+Code:
+  1 | requirementDiagram
+  2 |   requirement r {
+  3 |     id: 1
+  4 |     id: 2
+    |     ^~~~~ [1]
+  5 |   }
+  6 |
+
+[1] mermaid.js keeps the first `id` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 |   requirement r {
+          3 |     id: 1
+          4 |   }
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 |   requirement r {
+          3 |     id: 2
+          4 |   }
+          5 |
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-docref-twice
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-docref-twice-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | element e {
+  3 |   docRef: a
+  4 |   docRef: b
+    |   ^~~~~~~~~ [1]
+  5 | }
+  6 |
+
+[1] mermaid.js keeps the first `docref` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | element e {
+          3 |   docRef: a
+          4 | }
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 | element e {
+          3 |   docRef: b
+          4 | }
+          5 |
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-id-back-to-first
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-id-back-to-first-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 |   requirement r {
+  3 |     id: 1
+  4 |     id: 2
+    |     ^~~~~ [1]
+  5 |     id: 1
+  6 |   }
+  7 |
+
+[1] mermaid.js keeps the first `id` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 |   requirement r {
+          3 |     id: 1
+          4 |     id: 1
+          5 |   }
+          6 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 |   requirement r {
+          3 |     id: 2
+          4 |     id: 1
+          5 |   }
+          6 |
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-id-mixed-with-other-fields
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-id-mixed-with-other-fields-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 |   id: 1
+  4 |   text: t
+  5 |   ID: 2
+    |   ^~~~~ [1]
+  6 |   id: 3
+    |   ^~~~~ [2]
+  7 | }
+  8 |
+
+[1] mermaid.js keeps the first `id` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   id: 1
+          4 |   text: t
+          5 |   id: 3
+          6 | }
+          7 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   text: t
+          4 |   ID: 2
+          5 |   id: 3
+          6 | }
+          7 |
+[2] mermaid.js keeps the first `id` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   id: 1
+          4 |   text: t
+          5 |   ID: 2
+          6 | }
+          7 |
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-id-other-case
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-id-other-case-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 |   id: 1
+  4 |   ID: 2
+    |   ^~~~~ [1]
+  5 | }
+  6 |
+
+[1] mermaid.js keeps the first `id` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   id: 1
+          4 | }
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   ID: 2
+          4 | }
+          5 |
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-id-three-times
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-id-three-times-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 |   id: 1
+  4 |   id: 2
+    |   ^~~~~ [1]
+  5 |   id: 3
+    |   ^~~~~ [2]
+  6 | }
+  7 |
+
+[1] mermaid.js keeps the first `id` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   id: 1
+          4 |   id: 3
+          5 | }
+          6 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   id: 2
+          4 |   id: 3
+          5 | }
+          6 |
+[2] mermaid.js keeps the first `id` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   id: 1
+          4 |   id: 2
+          5 | }
+          6 |
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-id-twice
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-id-twice-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 |   id: 1
+  4 |   id: 2
+    |   ^~~~~ [1]
+  5 | }
+  6 |
+
+[1] mermaid.js keeps the first `id` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   id: 1
+          4 | }
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   id: 2
+          4 | }
+          5 |
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-risk-twice
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-risk-twice-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 |   risk: low
+  4 |   risk: high
+    |   ^~~~~~~~~~ [1]
+  5 | }
+  6 |
+
+[1] mermaid.js keeps the first `risk` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   risk: low
+          4 | }
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   risk: high
+          4 | }
+          5 |
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-text-twice
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-text-twice-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 |   text: a
+  4 |   text: b
+    |   ^~~~~~~ [1]
+  5 | }
+  6 |
+
+[1] mermaid.js keeps the first `text` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   text: a
+          4 | }
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   text: b
+          4 | }
+          5 |
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-twice-around-empty-block
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-twice-around-empty-block-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 |   id: 1
+  4 |   accDescr {}
+  5 |   id: 2
+    |   ^~~~~ [1]
+  6 | }
+  7 |
+
+[1] mermaid.js keeps the first `id` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   id: 1
+          4 |   accDescr {}
+          5 | }
+          6 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   accDescr {}
+          4 |   id: 2
+          5 | }
+          6 |
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-type-twice
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-type-twice-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | element e {
+  3 |   type: a
+  4 |   type: b
+    |   ^~~~~~~ [1]
+  5 | }
+  6 |
+
+[1] mermaid.js keeps the first `type` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | element e {
+          3 |   type: a
+          4 | }
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 | element e {
+          3 |   type: b
+          4 | }
+          5 |
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-verify-method-twice
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-verify-method-twice-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 |   verifyMethod: test
+  4 |   verifyMethod: analysis
+    |   ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  5 | }
+  6 |
+
+[1] mermaid.js keeps the first `verifymethod` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   verifyMethod: test
+          4 | }
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement r {
+          3 |   verifyMethod: analysis
+          4 | }
+          5 |
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/first-field-removal-reveals-report
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/first-field-removal-reveals-report-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement R {
+  3 | id: 1
+  4 | id: 2
+    | ^~~~~ [1]
+  5 | id: 3
+    | ^~~~~ [2]
+  6 | }
+  7 |
+
+[1] mermaid.js keeps the first `id` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement R {
+          3 | id: 1
+          4 | id: 3
+          5 | }
+          6 |
+      - Remove the earlier statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement R {
+          3 | id: 2
+          4 | id: 3
+          5 | }
+          6 |
+[2] mermaid.js keeps the first `id` value and ignores this one.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | requirementDiagram
+          2 | requirement R {
+          3 | id: 1
+          4 | id: 2
+          5 | }
+          6 |
+---

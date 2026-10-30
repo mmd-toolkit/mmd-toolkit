@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A retained prefix precedes a C4 detection divergence."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\n---native---%%ev\n^"
+  }
+}

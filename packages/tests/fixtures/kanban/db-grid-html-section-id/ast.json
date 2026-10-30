@@ -1,0 +1,359 @@
+{
+  "type": "Root",
+  "diagramType": "kanban",
+  "body": {
+    "type": "KanbanDiagram",
+    "body": [
+      {
+        "type": "KanbanNode",
+        "indent": 1,
+        "id": {
+          "type": "KanbanLiteral",
+          "value": "a<b>b",
+          "range": [
+            8,
+            13
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 1
+            },
+            "end": {
+              "line": 2,
+              "column": 6
+            }
+          }
+        },
+        "shape": {
+          "type": "KanbanShape",
+          "opener": "[",
+          "closer": "]",
+          "label": {
+            "type": "KanbanLabel",
+            "kind": "text",
+            "value": "Column",
+            "range": [
+              14,
+              20
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 13
+              }
+            }
+          },
+          "range": [
+            13,
+            21
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 6
+            },
+            "end": {
+              "line": 2,
+              "column": 14
+            }
+          }
+        },
+        "data": [],
+        "decorations": [],
+        "children": [
+          {
+            "type": "KanbanNode",
+            "indent": 3,
+            "id": {
+              "type": "KanbanLiteral",
+              "value": "I",
+              "range": [
+                25,
+                26
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 3
+                },
+                "end": {
+                  "line": 3,
+                  "column": 4
+                }
+              }
+            },
+            "shape": {
+              "type": "KanbanShape",
+              "opener": "[",
+              "closer": "]",
+              "label": {
+                "type": "KanbanLabel",
+                "kind": "text",
+                "value": "Item",
+                "range": [
+                  27,
+                  31
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 5
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 9
+                  }
+                }
+              },
+              "range": [
+                26,
+                32
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 4
+                },
+                "end": {
+                  "line": 3,
+                  "column": 10
+                }
+              }
+            },
+            "data": [],
+            "decorations": [],
+            "children": [],
+            "range": [
+              25,
+              32
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 3
+              },
+              "end": {
+                "line": 3,
+                "column": 10
+              }
+            }
+          }
+        ],
+        "range": [
+          8,
+          32
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 1
+          },
+          "end": {
+            "line": 3,
+            "column": 10
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      32
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 10
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "kanban",
+      "range": [
+        0,
+        6
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "a<b>b",
+      "range": [
+        8,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 1
+        },
+        "end": {
+          "line": 2,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        13,
+        14
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Column",
+      "range": [
+        14,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 7
+        },
+        "end": {
+          "line": 2,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        20,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 13
+        },
+        "end": {
+          "line": 2,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "I",
+      "range": [
+        25,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 3
+        },
+        "end": {
+          "line": 3,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        26,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 4
+        },
+        "end": {
+          "line": 3,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Item",
+      "range": [
+        27,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 5
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        31,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 9
+        },
+        "end": {
+          "line": 3,
+          "column": 10
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    33
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 0
+    }
+  }
+}

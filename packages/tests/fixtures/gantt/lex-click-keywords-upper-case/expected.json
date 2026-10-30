@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md The statement context: `click`, `call`, and `href` are read case-insensitively."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-01-01"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "a ",
+        "classes": [
+          "clickable",
+          "clickable"
+        ],
+        "id": "id1",
+        "order": 0
+      }
+    ],
+    "links": [
+      {
+        "id": "id1",
+        "url": "u"
+      }
+    ],
+    "clickCalls": [
+      {
+        "id": "id1",
+        "name": "f",
+        "args": null
+      }
+    ]
+  }
+}

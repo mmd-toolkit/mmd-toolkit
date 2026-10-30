@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md Grammar: Does a numeric option reject a quoted numeric value?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 7: Expecting token of type 'NUMBER' but found `\"2\"`."
+  }
+}

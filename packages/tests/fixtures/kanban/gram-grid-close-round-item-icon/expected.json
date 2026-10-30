@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The block carryover kind close-round in item-icon tests the kanban reading at this text position."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...n S   I ::icon(a)b)\n--------------------^\nExpecting 'SPACELINE', 'NL', 'EOF', got 'NODE_ID'"
+  }
+}

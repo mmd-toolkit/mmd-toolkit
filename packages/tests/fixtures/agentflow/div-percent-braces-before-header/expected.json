@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md: A non-directive percent-brace line before the header."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n%%{}%%agentflow-bet\n^\nExpecting 'COMMENT', 'NEWLINE', 'SPACE', 'GRAPH', got 'NODE_STRING'"
+  }
+}

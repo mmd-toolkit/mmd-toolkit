@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "B lies in P and has the style `fill:red`."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "P",
+        "shape": "roundedWithTitle",
+        "label": "P",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [
+          "fill:red"
+        ],
+        "parentId": "P"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

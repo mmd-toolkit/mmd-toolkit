@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Files can have children; a trailing slash is not required for parenthood."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "file.txt",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "child",
+            "nodeType": "file",
+            "children": [
+              {
+                "name": "grandchild",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

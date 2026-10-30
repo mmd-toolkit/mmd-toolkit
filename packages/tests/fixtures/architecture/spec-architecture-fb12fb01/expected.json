@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/architecture/architecture.spec.ts",
+    "line": 316,
+    "test": "architecture diagrams > align directive > should reject a service whose id is the exact reserved keyword align"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 11: Expecting token of type 'ID' but found `align`.\nParse error on line 2, column 16: Expecting: one of these possible Token sequences:\n  1. [row]\n  2. [column]\nbut found: '(database)'"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Lexical structure, the link text contexts: `--` that does not close the link is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nflowchart LRA-- a -- b -->B\n------------------^"
+  }
+}

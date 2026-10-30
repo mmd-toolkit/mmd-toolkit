@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A ; at the end of a line, with U+2028 or U+2029, a directive, or a name that reads as a keyword"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "rect",
+        "label": ":",
+        "description": [],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4Dynamic in a label activates global C4 detection."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\npacket0:\"C4Dynamic\"\n^"
+  }
+}

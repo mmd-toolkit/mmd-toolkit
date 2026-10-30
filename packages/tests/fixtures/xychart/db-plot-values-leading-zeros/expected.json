@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, plot: leading zeros."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 2
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 7,
+      "max": 10
+    },
+    "plots": [
+      {
+        "type": "bar",
+        "title": "",
+        "data": [
+          [
+            "1",
+            7
+          ],
+          [
+            "2",
+            10
+          ]
+        ]
+      }
+    ]
+  }
+}

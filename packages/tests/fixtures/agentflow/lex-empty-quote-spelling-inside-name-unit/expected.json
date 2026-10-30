@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Erased forms: quotes inside an already-started ordinary name unit remain name text, not an erased empty string."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "C\"\"D",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "T"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

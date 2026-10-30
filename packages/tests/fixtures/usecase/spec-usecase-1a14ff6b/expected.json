@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/usecase.spec.ts",
+    "line": 154,
+    "test": "UseCase diagram with Chevrotain parser > when parsing use cases > should parse use case from relationship"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "User",
+        "label": "User",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "UserLoginProcess",
+        "label": "UserLoginProcess",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [
+      {
+        "source": "User",
+        "target": "UserLoginProcess",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

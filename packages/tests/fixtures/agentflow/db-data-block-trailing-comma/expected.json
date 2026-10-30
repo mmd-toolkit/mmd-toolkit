@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Valid YAML keeps a trailing comma on a plain scalar; shape tool-comma is rejected before the retry path can run."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "No such shape: tool,."
+  }
+}

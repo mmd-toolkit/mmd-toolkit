@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md Nodes: the written text of a node of text that mermaid.js does not read is the source text of its range without directives, comment regions, comments, and the ignored `;`; the `textBeforeBody` of X is the two empty strings with the two spaces between them."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "X",
+        "shape": "roundedWithTitle",
+        "label": "X",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "X"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

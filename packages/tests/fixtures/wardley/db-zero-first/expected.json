@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a zero-valued first definition retain its Map position?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "A",
+        "label": "A",
+        "x": 40,
+        "y": 30,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "B",
+        "label": "B",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

@@ -1,0 +1,13 @@
+usecase-beta
+actor A%%{init: {}}%%
+systemBoundary S%%{init: {}}%%
+B%%{init: {}}%%
+end%%{init: {}}%%
+S@{ type:package }%%{init: {}}%%
+A --> B%%{init: {}}%%
+note for A "text"%%{init: {}}%%
+json J@{}%%{init: {}}%%
+direction TB%%{init: {}}%%
+classDef hot color:red%%{init: {}}%%
+class A hot%%{init: {}}%%
+style A color:blue%%{init: {}}%%

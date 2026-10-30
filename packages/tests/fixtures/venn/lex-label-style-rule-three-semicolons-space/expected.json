@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md Directives and ignored semicolons: the quoted label with three semicolons and two trailing interior spaces is accepted; only the last semicolon is selected by the line rule."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10,
+        "label": "style:ﬂ°abc¶ß;"
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

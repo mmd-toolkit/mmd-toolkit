@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does whitespace on an adjacent closer affect the selected alternative?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "Visible",
+        "label": "Visible",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

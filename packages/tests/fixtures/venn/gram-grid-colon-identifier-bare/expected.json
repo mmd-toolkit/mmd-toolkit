@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The colon fragment in identifier-bare is rejected by the grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nvenn-betaset a:b\n---------------^\nExpecting 'NUMERIC', got 'IDENTIFIER'"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Bracketed labels: does a bare service label preserve the backslash before a double quote?"
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service",
+        "title": "\\\"B"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Site securityLevel replaces EBNF strings and trimmed special text after expression conversion."
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": true
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "a&lt;b&gt;&equals;c",
+    "accDescr": "d<br/>e&equals;f",
+    "rules": [
+      {
+        "name": "r_1",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "terminal",
+              "value": "a&lt;b&gt;"
+            },
+            {
+              "type": "sequence",
+              "elements": [
+                {
+                  "type": "optional",
+                  "element": {
+                    "type": "nonterminal",
+                    "name": "name"
+                  }
+                },
+                {
+                  "type": "repetition",
+                  "element": {
+                    "type": "special",
+                    "text": "x&equals;y"
+                  },
+                  "min": 0,
+                  "max": "Infinity"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

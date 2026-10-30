@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/treeView/boxDrawingPreprocessor.spec.ts",
+    "line": 140,
+    "test": "boxDrawingPreprocessor > preprocessBoxDrawing > space continuation after └── (last child) > should handle space continuation correctly"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "a",
+            "nodeType": "directory",
+            "children": [
+              {
+                "name": "b.txt",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "c",
+            "nodeType": "directory",
+            "children": [
+              {
+                "name": "d.txt",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

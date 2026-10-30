@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4Context header with a statement on its line is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nC4Context Person(a, \"A\")\n----------^\nExpecting 'NEWLINE', got 'PERSON'"
+  }
+}

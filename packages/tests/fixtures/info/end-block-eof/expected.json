@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A block at source EOF receives the shared appended LF."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

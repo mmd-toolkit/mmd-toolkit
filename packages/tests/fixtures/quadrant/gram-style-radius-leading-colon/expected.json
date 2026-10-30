@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, styles: a colon before the name gives a style with no name, which is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "style named  is not supported."
+  }
+}

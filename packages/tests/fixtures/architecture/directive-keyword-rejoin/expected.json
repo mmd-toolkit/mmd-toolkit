@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Keyword boundaries are evaluated after global directives are removed."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 1: Expecting token of type 'architecture-beta' but found `architecture-betaservice`.\nParse error on line 1, column 26: Expecting token of type ':' but found `api`."
+  }
+}

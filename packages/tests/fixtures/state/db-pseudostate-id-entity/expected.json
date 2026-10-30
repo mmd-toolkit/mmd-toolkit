@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The name of a pseudostate is a text unit and also the id of the state; this shows the entity in it as its placeholder, in the id and in the label."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "fﬂ°amp¶ß",
+        "shape": "fork",
+        "label": "fﬂ°amp¶ß",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

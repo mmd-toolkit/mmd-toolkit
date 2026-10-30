@@ -1,0 +1,59 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does exact id resolution beat a pipeline child with the same label?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "X",
+        "label": "X",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "P",
+        "label": "P",
+        "x": 40,
+        "y": 30,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "P_X",
+        "label": "X",
+        "x": 50,
+        "y": 30,
+        "className": "pipeline-component"
+      }
+    ],
+    "links": [
+      {
+        "source": "X",
+        "target": "P_X",
+        "dashed": false
+      }
+    ],
+    "trends": [],
+    "pipelines": [
+      {
+        "nodeId": "P",
+        "componentIds": [
+          "P_X"
+        ]
+      }
+    ],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

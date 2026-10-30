@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Trivia between units: an unclosed directive inside a title line takes the rest of the text; the title `T ` and no task."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "T ",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [],
+    "links": []
+  }
+}

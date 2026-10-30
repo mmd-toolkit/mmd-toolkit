@@ -1,0 +1,632 @@
+{
+  "type": "Root",
+  "diagramType": "treemap",
+  "body": {
+    "type": "TreemapDiagram",
+    "body": [
+      {
+        "type": "TreemapSection",
+        "indent": 0,
+        "statementsBefore": [],
+        "name": {
+          "type": "StringLiteral",
+          "value": "Category A",
+          "raw": "\"Category A\"",
+          "closed": true,
+          "range": [
+            13,
+            25
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 12
+            }
+          }
+        },
+        "classSelector": null,
+        "children": [
+          {
+            "type": "TreemapLeaf",
+            "indent": 4,
+            "statementsBefore": [],
+            "name": {
+              "type": "StringLiteral",
+              "value": "Item A1",
+              "raw": "\"Item A1\"",
+              "closed": true,
+              "range": [
+                30,
+                39
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 4
+                },
+                "end": {
+                  "line": 3,
+                  "column": 13
+                }
+              }
+            },
+            "value": {
+              "type": "NumericLiteral",
+              "value": 10,
+              "raw": "10",
+              "range": [
+                41,
+                43
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 15
+                },
+                "end": {
+                  "line": 3,
+                  "column": 17
+                }
+              }
+            },
+            "classSelector": null,
+            "range": [
+              30,
+              43
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 4
+              },
+              "end": {
+                "line": 3,
+                "column": 17
+              }
+            }
+          },
+          {
+            "type": "TreemapLeaf",
+            "indent": 4,
+            "statementsBefore": [],
+            "name": {
+              "type": "StringLiteral",
+              "value": "Item A2",
+              "raw": "\"Item A2\"",
+              "closed": true,
+              "range": [
+                48,
+                57
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 4
+                },
+                "end": {
+                  "line": 4,
+                  "column": 13
+                }
+              }
+            },
+            "value": {
+              "type": "NumericLiteral",
+              "value": 20,
+              "raw": "20",
+              "range": [
+                59,
+                61
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 15
+                },
+                "end": {
+                  "line": 4,
+                  "column": 17
+                }
+              }
+            },
+            "classSelector": null,
+            "range": [
+              48,
+              61
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 4
+              },
+              "end": {
+                "line": 4,
+                "column": 17
+              }
+            }
+          }
+        ],
+        "range": [
+          13,
+          61
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 17
+          }
+        }
+      },
+      {
+        "type": "TreemapSection",
+        "indent": 0,
+        "statementsBefore": [],
+        "name": {
+          "type": "StringLiteral",
+          "value": "Category B",
+          "raw": "\"Category B\"",
+          "closed": true,
+          "range": [
+            62,
+            74
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 5,
+              "column": 12
+            }
+          }
+        },
+        "classSelector": null,
+        "children": [
+          {
+            "type": "TreemapLeaf",
+            "indent": 4,
+            "statementsBefore": [],
+            "name": {
+              "type": "StringLiteral",
+              "value": "Item B1",
+              "raw": "\"Item B1\"",
+              "closed": true,
+              "range": [
+                79,
+                88
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 4
+                },
+                "end": {
+                  "line": 6,
+                  "column": 13
+                }
+              }
+            },
+            "value": {
+              "type": "NumericLiteral",
+              "value": 15,
+              "raw": "15",
+              "range": [
+                90,
+                92
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 15
+                },
+                "end": {
+                  "line": 6,
+                  "column": 17
+                }
+              }
+            },
+            "classSelector": null,
+            "range": [
+              79,
+              92
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 4
+              },
+              "end": {
+                "line": 6,
+                "column": 17
+              }
+            }
+          },
+          {
+            "type": "TreemapLeaf",
+            "indent": 4,
+            "statementsBefore": [],
+            "name": {
+              "type": "StringLiteral",
+              "value": "Item B2",
+              "raw": "\"Item B2\"",
+              "closed": true,
+              "range": [
+                97,
+                106
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 4
+                },
+                "end": {
+                  "line": 7,
+                  "column": 13
+                }
+              }
+            },
+            "value": {
+              "type": "NumericLiteral",
+              "value": 25,
+              "raw": "25",
+              "range": [
+                108,
+                110
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 15
+                },
+                "end": {
+                  "line": 7,
+                  "column": 17
+                }
+              }
+            },
+            "classSelector": null,
+            "range": [
+              97,
+              110
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 4
+              },
+              "end": {
+                "line": 7,
+                "column": 17
+              }
+            }
+          }
+        ],
+        "range": [
+          62,
+          110
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 17
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      110
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 7,
+        "column": 17
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "treemap-beta",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Category A\"",
+      "range": [
+        13,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Item A1\"",
+      "range": [
+        30,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 4
+        },
+        "end": {
+          "line": 3,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        39,
+        40
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 13
+        },
+        "end": {
+          "line": 3,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "10",
+      "range": [
+        41,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 15
+        },
+        "end": {
+          "line": 3,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Item A2\"",
+      "range": [
+        48,
+        57
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 4
+        },
+        "end": {
+          "line": 4,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        57,
+        58
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 13
+        },
+        "end": {
+          "line": 4,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "20",
+      "range": [
+        59,
+        61
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 15
+        },
+        "end": {
+          "line": 4,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Category B\"",
+      "range": [
+        62,
+        74
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Item B1\"",
+      "range": [
+        79,
+        88
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 4
+        },
+        "end": {
+          "line": 6,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        88,
+        89
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 13
+        },
+        "end": {
+          "line": 6,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "15",
+      "range": [
+        90,
+        92
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 15
+        },
+        "end": {
+          "line": 6,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Item B2\"",
+      "range": [
+        97,
+        106
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 4
+        },
+        "end": {
+          "line": 7,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        106,
+        107
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 13
+        },
+        "end": {
+          "line": 7,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "25",
+      "range": [
+        108,
+        110
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 15
+        },
+        "end": {
+          "line": 7,
+          "column": 17
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    111
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 8,
+      "column": 0
+    }
+  }
+}

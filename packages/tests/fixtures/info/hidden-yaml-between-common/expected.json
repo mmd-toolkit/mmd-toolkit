@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Hidden YAML on its own line follows a surviving common EOL."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

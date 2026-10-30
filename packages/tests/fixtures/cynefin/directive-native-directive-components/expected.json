@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Authored components: a global directive can separate native percent-pair and brace punctuation."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "A"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

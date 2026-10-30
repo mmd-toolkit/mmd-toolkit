@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A common line value has no string quote context."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "\"Open",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  }
+}

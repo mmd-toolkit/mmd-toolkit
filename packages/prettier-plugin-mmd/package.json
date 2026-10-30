@@ -1,0 +1,51 @@
+{
+  "name": "prettier-plugin-mmd",
+  "version": "0.0.0",
+  "description": "Prettier plugin for the Mermaid diagram syntax (.mmd files and mermaid code blocks in Markdown)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmd-toolkit/mmd-toolkit.git",
+    "directory": "packages/prettier-plugin-mmd"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.mts",
+      "default": "./lib/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib"
+  ],
+  "engines": {
+    "node": "^20.19.0 || ^22.13.0 || >=24"
+  },
+  "keywords": [
+    "prettier",
+    "prettier-plugin",
+    "mermaid",
+    "mmd",
+    "formatter"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "clean": "rimraf lib",
+    "test": "vitest run",
+    "test:update": "pnpm --filter @mmd-toolkit/parser run build && node tests/update-fixtures.ts"
+  },
+  "peerDependencies": {
+    "prettier": "^3.0.0"
+  },
+  "dependencies": {
+    "@mmd-toolkit/parser": "workspace:*"
+  },
+  "devDependencies": {
+    "@mmd-toolkit/tests": "workspace:*",
+    "prettier": "^3.9.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

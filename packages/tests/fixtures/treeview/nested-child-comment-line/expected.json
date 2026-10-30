@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Names, annotations and common forms: A common comment line between child rows does not add a row or indentation."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "left",
+            "nodeType": "file",
+            "children": []
+          },
+          {
+            "name": "right",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

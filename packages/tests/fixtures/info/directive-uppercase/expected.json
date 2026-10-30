@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Uppercase directive type is still globally removed."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

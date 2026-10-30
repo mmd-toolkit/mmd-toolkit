@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokens.md A token that a directive cuts: the spaces around a directive in a description belong to the fragments: the tokens are `x ` and ` y`."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "x  y",
+        "description": [],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

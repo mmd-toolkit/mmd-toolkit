@@ -1,0 +1,50 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-metadata-trailing-comma.spec.ts",
+    "line": 16,
+    "test": "trailing commas in multi-line @{ } metadata > single-line form still tolerates a trailing comma"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "github",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "GitHub",
+        "metadata": {
+          "protocol": "mcp"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "github",
+        "set": {
+          "metadata": {
+            "protocol": "mcp"
+          }
+        }
+      }
+    ]
+  }
+}

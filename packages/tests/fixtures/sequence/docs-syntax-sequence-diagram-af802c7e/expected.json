@@ -1,0 +1,148 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/sequenceDiagram.md",
+    "line": 558
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Alice",
+        "description": "Alice",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "Bob"
+      },
+      {
+        "name": "Bob",
+        "description": "Bob",
+        "wrap": false,
+        "prevActor": "Alice",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "John"
+      },
+      {
+        "name": "John",
+        "description": "John",
+        "wrap": false,
+        "prevActor": "Bob",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "Charlie"
+      },
+      {
+        "name": "Charlie",
+        "description": "Charlie",
+        "wrap": false,
+        "prevActor": "John",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "Diana"
+      },
+      {
+        "name": "Diana",
+        "description": "Diana",
+        "wrap": false,
+        "prevActor": "Charlie",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "message": "Alice to Bob",
+        "wrap": false,
+        "type": 19,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Alice",
+        "to": "Bob",
+        "message": "Go help John",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "Alice to John",
+        "wrap": false,
+        "type": 20,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Alice",
+        "to": "John",
+        "message": "I want this done today",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "John to Charlie",
+        "wrap": false,
+        "type": 19,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "John",
+        "to": "Charlie",
+        "message": "Can we do this today?",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "John to Diana",
+        "wrap": false,
+        "type": 20,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "John",
+        "to": "Diana",
+        "message": "Can you help us today?",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 21,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 21,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

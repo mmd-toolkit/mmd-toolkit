@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md `style` and `classDef` lines: the line matches the rule, and its only `;` is ignored, so the class has the one style `fill:#f00stroke:#0f0`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:#f00stroke:#0f0"
+        ]
+      }
+    ],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

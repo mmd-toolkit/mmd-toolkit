@@ -1,0 +1,656 @@
+{
+  "type": "Root",
+  "diagramType": "railroad",
+  "body": {
+    "type": "RailroadDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "RailroadRule",
+        "name": {
+          "type": "Identifier",
+          "name": "rule",
+          "range": [
+            31,
+            35
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 8
+            },
+            "end": {
+              "line": 3,
+              "column": 12
+            }
+          }
+        },
+        "textBeforeOperator": [],
+        "textBeforeDefinition": [],
+        "definition": {
+          "type": "RailroadSequenceCall",
+          "textBeforeOpen": [],
+          "arguments": [
+            {
+              "type": "RailroadExpressionMember",
+              "textBefore": [],
+              "expression": {
+                "type": "RailroadTerminalCall",
+                "textBeforeOpen": [],
+                "textBeforeValue": [],
+                "value": {
+                  "type": "StringLiteral",
+                  "value": "a",
+                  "raw": "\"a\"",
+                  "closed": true,
+                  "range": [
+                    56,
+                    59
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 33
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 36
+                    }
+                  }
+                },
+                "textBeforeClose": [],
+                "range": [
+                  47,
+                  60
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 24
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 37
+                  }
+                }
+              },
+              "textAfter": [],
+              "range": [
+                47,
+                60
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 24
+                },
+                "end": {
+                  "line": 3,
+                  "column": 37
+                }
+              }
+            },
+            {
+              "type": "RailroadExpressionMember",
+              "textBefore": [],
+              "expression": {
+                "type": "RailroadTerminalCall",
+                "textBeforeOpen": [],
+                "textBeforeValue": [],
+                "value": {
+                  "type": "StringLiteral",
+                  "value": "b",
+                  "raw": "\"b\"",
+                  "closed": true,
+                  "range": [
+                    71,
+                    74
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 48
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 51
+                    }
+                  }
+                },
+                "textBeforeClose": [],
+                "range": [
+                  62,
+                  75
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 39
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 52
+                  }
+                }
+              },
+              "textAfter": [],
+              "range": [
+                62,
+                75
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 39
+                },
+                "end": {
+                  "line": 3,
+                  "column": 52
+                }
+              }
+            },
+            {
+              "type": "RailroadExpressionMember",
+              "textBefore": [],
+              "expression": {
+                "type": "RailroadTerminalCall",
+                "textBeforeOpen": [],
+                "textBeforeValue": [],
+                "value": {
+                  "type": "StringLiteral",
+                  "value": "c",
+                  "raw": "\"c\"",
+                  "closed": true,
+                  "range": [
+                    86,
+                    89
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 63
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 66
+                    }
+                  }
+                },
+                "textBeforeClose": [],
+                "range": [
+                  77,
+                  90
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 54
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 67
+                  }
+                }
+              },
+              "textAfter": [],
+              "range": [
+                77,
+                90
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 54
+                },
+                "end": {
+                  "line": 3,
+                  "column": 67
+                }
+              }
+            }
+          ],
+          "range": [
+            38,
+            91
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 15
+            },
+            "end": {
+              "line": 3,
+              "column": 68
+            }
+          }
+        },
+        "textBeforeTerminator": [],
+        "range": [
+          31,
+          93
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 8
+          },
+          "end": {
+            "line": 3,
+            "column": 70
+          }
+        }
+      }
+    ],
+    "range": [
+      9,
+      93
+    ],
+    "loc": {
+      "start": {
+        "line": 2,
+        "column": 8
+      },
+      "end": {
+        "line": 3,
+        "column": 70
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "railroad-beta",
+      "range": [
+        9,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "rule",
+      "range": [
+        31,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        36,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 13
+        },
+        "end": {
+          "line": 3,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "sequence",
+      "range": [
+        38,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 15
+        },
+        "end": {
+          "line": 3,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        46,
+        47
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 23
+        },
+        "end": {
+          "line": 3,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "terminal",
+      "range": [
+        47,
+        55
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 24
+        },
+        "end": {
+          "line": 3,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        55,
+        56
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 32
+        },
+        "end": {
+          "line": 3,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"a\"",
+      "range": [
+        56,
+        59
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 33
+        },
+        "end": {
+          "line": 3,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        59,
+        60
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 36
+        },
+        "end": {
+          "line": 3,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        60,
+        61
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 37
+        },
+        "end": {
+          "line": 3,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "terminal",
+      "range": [
+        62,
+        70
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 39
+        },
+        "end": {
+          "line": 3,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        70,
+        71
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 47
+        },
+        "end": {
+          "line": 3,
+          "column": 48
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"b\"",
+      "range": [
+        71,
+        74
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 48
+        },
+        "end": {
+          "line": 3,
+          "column": 51
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        74,
+        75
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 51
+        },
+        "end": {
+          "line": 3,
+          "column": 52
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        75,
+        76
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 52
+        },
+        "end": {
+          "line": 3,
+          "column": 53
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "terminal",
+      "range": [
+        77,
+        85
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 54
+        },
+        "end": {
+          "line": 3,
+          "column": 62
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        85,
+        86
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 62
+        },
+        "end": {
+          "line": 3,
+          "column": 63
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"c\"",
+      "range": [
+        86,
+        89
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 63
+        },
+        "end": {
+          "line": 3,
+          "column": 66
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        89,
+        90
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 66
+        },
+        "end": {
+          "line": 3,
+          "column": 67
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        90,
+        91
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 67
+        },
+        "end": {
+          "line": 3,
+          "column": 68
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ";",
+      "range": [
+        92,
+        93
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 69
+        },
+        "end": {
+          "line": 3,
+          "column": 70
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    100
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 6
+    }
+  }
+}

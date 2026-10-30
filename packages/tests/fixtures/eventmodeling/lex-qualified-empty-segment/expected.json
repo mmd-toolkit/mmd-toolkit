@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Names and references: Each qualified-name dot must be followed by an identifier segment. Rejected by Mermaid."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 24: Expecting token of type 'EM_ID' but found `.`."
+  }
+}

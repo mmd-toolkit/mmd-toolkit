@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Detection: successive retained second-scan forms remain distinct. Case: retained-two-second-scans."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

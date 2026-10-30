@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, lines: a U+FEFF after the header, on its line, is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nsankey﻿a,b,1\n------^\nExpecting 'NEWLINE', got 'NON_ESCAPED_TEXT'"
+  }
+}

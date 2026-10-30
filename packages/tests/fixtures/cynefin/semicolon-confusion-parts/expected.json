@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can a selected semicolon separate confusion from its item?"
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "style:#x"
+          }
+        ]
+      },
+      {
+        "name": "confusion",
+        "items": [
+          {
+            "label": "A"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

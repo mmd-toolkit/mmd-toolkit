@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Building the summary, Participants: each time the participant is recorded inside the box, its id is added to actorKeys, so A is there twice."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "X",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "A",
+        "box": 0
+      }
+    ],
+    "boxes": [
+      {
+        "name": "a",
+        "wrap": false,
+        "fill": "transparent",
+        "actorKeys": [
+          "A",
+          "A"
+        ]
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

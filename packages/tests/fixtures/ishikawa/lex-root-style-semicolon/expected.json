@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P3: HTML, entities and semicolon preprocessing] Does the shared style line rule remove its last semicolon from a root label?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "style R fill:#abc",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "style R fill:#abc",
+      "children": []
+    }
+  }
+}

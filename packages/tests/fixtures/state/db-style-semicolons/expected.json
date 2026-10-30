@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Building the summary: style leaves out every ; of each style."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": [
+          "fill:redx",
+          "stroke:by"
+        ]
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

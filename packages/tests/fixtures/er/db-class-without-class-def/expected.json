@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The class of an entity needs no `classDef`: A has the class `c` and the diagram has no class definition."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": [
+          "c"
+        ]
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

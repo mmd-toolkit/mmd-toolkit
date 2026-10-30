@@ -1,0 +1,76 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Four port letters, both arrow marker spellings and equal port directions are accepted by publication."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service"
+      },
+      {
+        "id": "db",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [
+      {
+        "lhsId": "api",
+        "lhsDir": "L",
+        "lhsInto": true,
+        "lhsGroup": false,
+        "rhsId": "db",
+        "rhsDir": "R",
+        "rhsInto": false,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "api",
+        "lhsDir": "T",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "db",
+        "rhsDir": "B",
+        "rhsInto": true,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "api",
+        "lhsDir": "B",
+        "lhsInto": true,
+        "lhsGroup": false,
+        "rhsId": "db",
+        "rhsDir": "T",
+        "rhsInto": true,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "api",
+        "lhsDir": "R",
+        "lhsInto": true,
+        "lhsGroup": false,
+        "rhsId": "db",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "api",
+        "lhsDir": "L",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "db",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false
+      }
+    ],
+    "layoutHints": []
+  }
+}

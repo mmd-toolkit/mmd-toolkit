@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The parser-package case with leading and trailing ASCII spaces accepts the beta header at EOF."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  }
+}

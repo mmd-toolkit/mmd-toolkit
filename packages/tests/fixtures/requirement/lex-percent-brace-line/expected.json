@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The statement context: a line `%%{ }%%`, which is no directive, is a diagram comment."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "elements": [
+      {
+        "name": "e",
+        "type": "",
+        "docRef": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": []
+  }
+}

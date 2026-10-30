@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, keywords: the words `class A c` in the middle of the id of a composite."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "a",
+          "label": "",
+          "type": "composite",
+          "widthInColumns": 1,
+          "children": []
+        }
+      ]
+    },
+    "unplaced": [
+      {
+        "id": "A",
+        "type": "na",
+        "classes": [
+          "c b"
+        ]
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

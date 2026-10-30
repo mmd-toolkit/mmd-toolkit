@@ -1,0 +1,59 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/class/classDiagram.spec.ts",
+    "line": 1367,
+    "test": "given a class diagram with members and methods  > when parsing method definition > should handle generic types in members in class with brackets"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Car",
+        "type": "",
+        "label": "Car",
+        "text": "Car",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "",
+            "classifier": "",
+            "id": "setWheels",
+            "parameters": "List~Wheel~ wheels",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "getWheels",
+            "parameters": "",
+            "returnType": "List~Wheel~"
+          }
+        ],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "List~Wheel~ wheels"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

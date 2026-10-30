@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A sigma that starts an item after a U+FEFF separator is final when a letter comes before the separator: the case is mapped over the whole list text and not item by item."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [
+      "αβ",
+      "ς"
+    ],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [],
+    "links": []
+  }
+}

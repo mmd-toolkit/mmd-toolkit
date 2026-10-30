@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/treeView/parser.spec.ts",
+    "line": 16,
+    "test": "treeView parser integration > icon() annotation > should extract icon override"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "data.bin",
+        "nodeType": "file",
+        "icon": "folder",
+        "children": []
+      }
+    ]
+  }
+}

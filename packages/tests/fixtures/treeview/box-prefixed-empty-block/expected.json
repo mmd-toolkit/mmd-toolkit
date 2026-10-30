@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: A branch whose content is an accessibility block still cannot follow a node."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 3, column 1: Expecting end of file but found `        accDescr {}`."
+  }
+}

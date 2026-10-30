@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A positional curve with fewer entries is not rejected by the Db."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "A"
+      },
+      {
+        "label": "B"
+      }
+    ],
+    "curves": [
+      {
+        "label": "c",
+        "entries": [
+          1
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

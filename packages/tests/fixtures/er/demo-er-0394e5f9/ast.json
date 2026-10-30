@@ -1,0 +1,2791 @@
+{
+  "type": "Root",
+  "diagramType": "er",
+  "body": {
+    "type": "ErDiagram",
+    "body": [
+      {
+        "type": "ErRelationshipStatement",
+        "left": {
+          "type": "ErEntityReference",
+          "name": {
+            "type": "StringLiteral",
+            "value": "Person . CUSTOMER",
+            "raw": "\"Person . CUSTOMER\"",
+            "closed": true,
+            "range": [
+              134,
+              153
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 2
+              },
+              "end": {
+                "line": 10,
+                "column": 21
+              }
+            }
+          },
+          "cssClasses": [],
+          "range": [
+            134,
+            153
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 2
+            },
+            "end": {
+              "line": 10,
+              "column": 21
+            }
+          }
+        },
+        "relationship": {
+          "type": "ErRelationship",
+          "leftCardinality": "only-one",
+          "line": "identifying",
+          "rightCardinality": "zero-or-more",
+          "range": [
+            153,
+            159
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 21
+            },
+            "end": {
+              "line": 10,
+              "column": 27
+            }
+          }
+        },
+        "right": {
+          "type": "ErEntityReference",
+          "name": {
+            "type": "ErIdentifier",
+            "name": "ORDER",
+            "range": [
+              160,
+              165
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 28
+              },
+              "end": {
+                "line": 10,
+                "column": 33
+              }
+            }
+          },
+          "cssClasses": [],
+          "range": [
+            160,
+            165
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 28
+            },
+            "end": {
+              "line": 10,
+              "column": 33
+            }
+          }
+        },
+        "role": {
+          "type": "ErIdentifier",
+          "name": "places",
+          "range": [
+            168,
+            174
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 36
+            },
+            "end": {
+              "line": 10,
+              "column": 42
+            }
+          }
+        },
+        "range": [
+          134,
+          174
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 2
+          },
+          "end": {
+            "line": 10,
+            "column": 42
+          }
+        }
+      },
+      {
+        "type": "ErRelationshipStatement",
+        "left": {
+          "type": "ErEntityReference",
+          "name": {
+            "type": "ErIdentifier",
+            "name": "ORDER",
+            "range": [
+              178,
+              183
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 2
+              },
+              "end": {
+                "line": 12,
+                "column": 7
+              }
+            }
+          },
+          "cssClasses": [],
+          "range": [
+            178,
+            183
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 2
+            },
+            "end": {
+              "line": 12,
+              "column": 7
+            }
+          }
+        },
+        "relationship": {
+          "type": "ErRelationship",
+          "leftCardinality": "only-one",
+          "line": "identifying",
+          "rightCardinality": "one-or-more",
+          "range": [
+            184,
+            190
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 8
+            },
+            "end": {
+              "line": 12,
+              "column": 14
+            }
+          }
+        },
+        "right": {
+          "type": "ErEntityReference",
+          "name": {
+            "type": "StringLiteral",
+            "value": "€£LINE_ITEM ¥",
+            "raw": "\"€£LINE_ITEM ¥\"",
+            "closed": true,
+            "range": [
+              191,
+              206
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 15
+              },
+              "end": {
+                "line": 12,
+                "column": 30
+              }
+            }
+          },
+          "cssClasses": [],
+          "range": [
+            191,
+            206
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 15
+            },
+            "end": {
+              "line": 12,
+              "column": 30
+            }
+          }
+        },
+        "role": {
+          "type": "ErIdentifier",
+          "name": "contains",
+          "range": [
+            209,
+            217
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 33
+            },
+            "end": {
+              "line": 12,
+              "column": 41
+            }
+          }
+        },
+        "range": [
+          178,
+          217
+        ],
+        "loc": {
+          "start": {
+            "line": 12,
+            "column": 2
+          },
+          "end": {
+            "line": 12,
+            "column": 41
+          }
+        }
+      },
+      {
+        "type": "ErRelationshipStatement",
+        "left": {
+          "type": "ErEntityReference",
+          "name": {
+            "type": "StringLiteral",
+            "value": "Person . CUSTOMER",
+            "raw": "\"Person . CUSTOMER\"",
+            "closed": true,
+            "range": [
+              221,
+              240
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 2
+              },
+              "end": {
+                "line": 14,
+                "column": 21
+              }
+            }
+          },
+          "cssClasses": [],
+          "range": [
+            221,
+            240
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 2
+            },
+            "end": {
+              "line": 14,
+              "column": 21
+            }
+          }
+        },
+        "relationship": {
+          "type": "ErRelationship",
+          "leftCardinality": "one-or-more",
+          "line": "non-identifying",
+          "rightCardinality": "one-or-more",
+          "range": [
+            241,
+            247
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 22
+            },
+            "end": {
+              "line": 14,
+              "column": 28
+            }
+          }
+        },
+        "right": {
+          "type": "ErEntityReference",
+          "name": {
+            "type": "StringLiteral",
+            "value": "Address//StreetAddress::[DELIVERY ADDRESS]",
+            "raw": "\"Address//StreetAddress::[DELIVERY ADDRESS]\"",
+            "closed": true,
+            "range": [
+              248,
+              292
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 29
+              },
+              "end": {
+                "line": 14,
+                "column": 73
+              }
+            }
+          },
+          "cssClasses": [],
+          "range": [
+            248,
+            292
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 29
+            },
+            "end": {
+              "line": 14,
+              "column": 73
+            }
+          }
+        },
+        "role": {
+          "type": "ErIdentifier",
+          "name": "uses",
+          "range": [
+            295,
+            299
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 76
+            },
+            "end": {
+              "line": 14,
+              "column": 80
+            }
+          }
+        },
+        "range": [
+          221,
+          299
+        ],
+        "loc": {
+          "start": {
+            "line": 14,
+            "column": 2
+          },
+          "end": {
+            "line": 14,
+            "column": 80
+          }
+        }
+      },
+      {
+        "type": "ErEntityStatement",
+        "name": {
+          "type": "StringLiteral",
+          "value": "Address//StreetAddress::[DELIVERY ADDRESS]",
+          "raw": "\"Address//StreetAddress::[DELIVERY ADDRESS]\"",
+          "closed": true,
+          "range": [
+            303,
+            347
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 2
+            },
+            "end": {
+              "line": 16,
+              "column": 46
+            }
+          }
+        },
+        "alias": null,
+        "cssClasses": [],
+        "attributes": [
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "ErIdentifier",
+              "name": "int",
+              "range": [
+                354,
+                357
+              ],
+              "loc": {
+                "start": {
+                  "line": 17,
+                  "column": 4
+                },
+                "end": {
+                  "line": 17,
+                  "column": 7
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "ErIdentifier",
+              "name": "customerID",
+              "range": [
+                358,
+                368
+              ],
+              "loc": {
+                "start": {
+                  "line": 17,
+                  "column": 8
+                },
+                "end": {
+                  "line": 17,
+                  "column": 18
+                }
+              }
+            },
+            "keys": [
+              {
+                "type": "Identifier",
+                "name": "FK",
+                "range": [
+                  369,
+                  371
+                ],
+                "loc": {
+                  "start": {
+                    "line": 17,
+                    "column": 19
+                  },
+                  "end": {
+                    "line": 17,
+                    "column": 21
+                  }
+                }
+              }
+            ],
+            "comment": null,
+            "range": [
+              354,
+              371
+            ],
+            "loc": {
+              "start": {
+                "line": 17,
+                "column": 4
+              },
+              "end": {
+                "line": 17,
+                "column": 21
+              }
+            }
+          },
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "ErIdentifier",
+              "name": "string",
+              "range": [
+                376,
+                382
+              ],
+              "loc": {
+                "start": {
+                  "line": 18,
+                  "column": 4
+                },
+                "end": {
+                  "line": 18,
+                  "column": 10
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "ErIdentifier",
+              "name": "line1",
+              "range": [
+                383,
+                388
+              ],
+              "loc": {
+                "start": {
+                  "line": 18,
+                  "column": 11
+                },
+                "end": {
+                  "line": 18,
+                  "column": 16
+                }
+              }
+            },
+            "keys": [],
+            "comment": {
+              "type": "StringLiteral",
+              "value": "this is the first address line comment",
+              "raw": "\"this is the first address line comment\"",
+              "closed": true,
+              "range": [
+                389,
+                429
+              ],
+              "loc": {
+                "start": {
+                  "line": 18,
+                  "column": 17
+                },
+                "end": {
+                  "line": 18,
+                  "column": 57
+                }
+              }
+            },
+            "range": [
+              376,
+              429
+            ],
+            "loc": {
+              "start": {
+                "line": 18,
+                "column": 4
+              },
+              "end": {
+                "line": 18,
+                "column": 57
+              }
+            }
+          },
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "ErIdentifier",
+              "name": "string",
+              "range": [
+                434,
+                440
+              ],
+              "loc": {
+                "start": {
+                  "line": 19,
+                  "column": 4
+                },
+                "end": {
+                  "line": 19,
+                  "column": 10
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "ErIdentifier",
+              "name": "line2",
+              "range": [
+                441,
+                446
+              ],
+              "loc": {
+                "start": {
+                  "line": 19,
+                  "column": 11
+                },
+                "end": {
+                  "line": 19,
+                  "column": 16
+                }
+              }
+            },
+            "keys": [],
+            "comment": null,
+            "range": [
+              434,
+              446
+            ],
+            "loc": {
+              "start": {
+                "line": 19,
+                "column": 4
+              },
+              "end": {
+                "line": 19,
+                "column": 16
+              }
+            }
+          },
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "ErIdentifier",
+              "name": "string",
+              "range": [
+                451,
+                457
+              ],
+              "loc": {
+                "start": {
+                  "line": 20,
+                  "column": 4
+                },
+                "end": {
+                  "line": 20,
+                  "column": 10
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "ErIdentifier",
+              "name": "city",
+              "range": [
+                458,
+                462
+              ],
+              "loc": {
+                "start": {
+                  "line": 20,
+                  "column": 11
+                },
+                "end": {
+                  "line": 20,
+                  "column": 15
+                }
+              }
+            },
+            "keys": [],
+            "comment": null,
+            "range": [
+              451,
+              462
+            ],
+            "loc": {
+              "start": {
+                "line": 20,
+                "column": 4
+              },
+              "end": {
+                "line": 20,
+                "column": 15
+              }
+            }
+          },
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "ErIdentifier",
+              "name": "string",
+              "range": [
+                467,
+                473
+              ],
+              "loc": {
+                "start": {
+                  "line": 21,
+                  "column": 4
+                },
+                "end": {
+                  "line": 21,
+                  "column": 10
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "ErIdentifier",
+              "name": "region",
+              "range": [
+                474,
+                480
+              ],
+              "loc": {
+                "start": {
+                  "line": 21,
+                  "column": 11
+                },
+                "end": {
+                  "line": 21,
+                  "column": 17
+                }
+              }
+            },
+            "keys": [],
+            "comment": null,
+            "range": [
+              467,
+              480
+            ],
+            "loc": {
+              "start": {
+                "line": 21,
+                "column": 4
+              },
+              "end": {
+                "line": 21,
+                "column": 17
+              }
+            }
+          },
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "ErIdentifier",
+              "name": "string",
+              "range": [
+                485,
+                491
+              ],
+              "loc": {
+                "start": {
+                  "line": 22,
+                  "column": 4
+                },
+                "end": {
+                  "line": 22,
+                  "column": 10
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "ErIdentifier",
+              "name": "state",
+              "range": [
+                492,
+                497
+              ],
+              "loc": {
+                "start": {
+                  "line": 22,
+                  "column": 11
+                },
+                "end": {
+                  "line": 22,
+                  "column": 16
+                }
+              }
+            },
+            "keys": [],
+            "comment": null,
+            "range": [
+              485,
+              497
+            ],
+            "loc": {
+              "start": {
+                "line": 22,
+                "column": 4
+              },
+              "end": {
+                "line": 22,
+                "column": 16
+              }
+            }
+          },
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "ErIdentifier",
+              "name": "string(5)",
+              "range": [
+                502,
+                511
+              ],
+              "loc": {
+                "start": {
+                  "line": 23,
+                  "column": 4
+                },
+                "end": {
+                  "line": 23,
+                  "column": 13
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "ErIdentifier",
+              "name": "postal_code",
+              "range": [
+                512,
+                523
+              ],
+              "loc": {
+                "start": {
+                  "line": 23,
+                  "column": 14
+                },
+                "end": {
+                  "line": 23,
+                  "column": 25
+                }
+              }
+            },
+            "keys": [],
+            "comment": null,
+            "range": [
+              502,
+              523
+            ],
+            "loc": {
+              "start": {
+                "line": 23,
+                "column": 4
+              },
+              "end": {
+                "line": 23,
+                "column": 25
+              }
+            }
+          },
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "ErIdentifier",
+              "name": "string",
+              "range": [
+                528,
+                534
+              ],
+              "loc": {
+                "start": {
+                  "line": 24,
+                  "column": 4
+                },
+                "end": {
+                  "line": 24,
+                  "column": 10
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "ErIdentifier",
+              "name": "country",
+              "range": [
+                535,
+                542
+              ],
+              "loc": {
+                "start": {
+                  "line": 24,
+                  "column": 11
+                },
+                "end": {
+                  "line": 24,
+                  "column": 18
+                }
+              }
+            },
+            "keys": [],
+            "comment": null,
+            "range": [
+              528,
+              542
+            ],
+            "loc": {
+              "start": {
+                "line": 24,
+                "column": 4
+              },
+              "end": {
+                "line": 24,
+                "column": 18
+              }
+            }
+          }
+        ],
+        "range": [
+          303,
+          546
+        ],
+        "loc": {
+          "start": {
+            "line": 16,
+            "column": 2
+          },
+          "end": {
+            "line": 25,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "ErEntityStatement",
+        "name": {
+          "type": "StringLiteral",
+          "value": "a_~`!@#$^&*()-_=+[]{}|/;:'.?¡⁄™€£‹¢›∞ﬁ§‡•°ª·º‚≠±œŒ∑„®†ˇ¥Á¨ˆˆØπ∏“«»åÅßÍ∂ÎƒÏ©˙Ó∆Ô˚¬Ò…ÚæÆΩ¸≈π˛çÇ√◊∫ı˜µÂ≤¯≥˘÷¿",
+          "raw": "\"a_~`!@#$^&*()-_=+[]{}|/;:'.?¡⁄™€£‹¢›∞ﬁ§‡•°ª·º‚≠±œŒ∑„®†ˇ¥Á¨ˆˆØπ∏“«»åÅßÍ∂ÎƒÏ©˙Ó∆Ô˚¬Ò…ÚæÆΩ¸≈π˛çÇ√◊∫ı˜µÂ≤¯≥˘÷¿\"",
+          "closed": true,
+          "range": [
+            550,
+            659
+          ],
+          "loc": {
+            "start": {
+              "line": 27,
+              "column": 2
+            },
+            "end": {
+              "line": 27,
+              "column": 111
+            }
+          }
+        },
+        "alias": null,
+        "cssClasses": [],
+        "attributes": [
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "ErIdentifier",
+              "name": "string",
+              "range": [
+                666,
+                672
+              ],
+              "loc": {
+                "start": {
+                  "line": 28,
+                  "column": 4
+                },
+                "end": {
+                  "line": 28,
+                  "column": 10
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "ErIdentifier",
+              "name": "name",
+              "range": [
+                673,
+                677
+              ],
+              "loc": {
+                "start": {
+                  "line": 28,
+                  "column": 11
+                },
+                "end": {
+                  "line": 28,
+                  "column": 15
+                }
+              }
+            },
+            "keys": [],
+            "comment": {
+              "type": "StringLiteral",
+              "value": "this is an entity with an absurd name just to show characters that are now acceptable as long as the name is in double quotes",
+              "raw": "\"this is an entity with an absurd name just to show characters that are now acceptable as long as the name is in double quotes\"",
+              "closed": true,
+              "range": [
+                678,
+                805
+              ],
+              "loc": {
+                "start": {
+                  "line": 28,
+                  "column": 16
+                },
+                "end": {
+                  "line": 28,
+                  "column": 143
+                }
+              }
+            },
+            "range": [
+              666,
+              805
+            ],
+            "loc": {
+              "start": {
+                "line": 28,
+                "column": 4
+              },
+              "end": {
+                "line": 28,
+                "column": 143
+              }
+            }
+          }
+        ],
+        "range": [
+          550,
+          809
+        ],
+        "loc": {
+          "start": {
+            "line": 27,
+            "column": 2
+          },
+          "end": {
+            "line": 29,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "ErEntityStatement",
+        "name": {
+          "type": "StringLiteral",
+          "value": "€£LINE_ITEM ¥",
+          "raw": "\"€£LINE_ITEM ¥\"",
+          "closed": true,
+          "range": [
+            813,
+            828
+          ],
+          "loc": {
+            "start": {
+              "line": 31,
+              "column": 2
+            },
+            "end": {
+              "line": 31,
+              "column": 17
+            }
+          }
+        },
+        "alias": null,
+        "cssClasses": [],
+        "attributes": [
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "ErIdentifier",
+              "name": "int",
+              "range": [
+                835,
+                838
+              ],
+              "loc": {
+                "start": {
+                  "line": 32,
+                  "column": 4
+                },
+                "end": {
+                  "line": 32,
+                  "column": 7
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "ErIdentifier",
+              "name": "orderID",
+              "range": [
+                839,
+                846
+              ],
+              "loc": {
+                "start": {
+                  "line": 32,
+                  "column": 8
+                },
+                "end": {
+                  "line": 32,
+                  "column": 15
+                }
+              }
+            },
+            "keys": [
+              {
+                "type": "Identifier",
+                "name": "FK",
+                "range": [
+                  847,
+                  849
+                ],
+                "loc": {
+                  "start": {
+                    "line": 32,
+                    "column": 16
+                  },
+                  "end": {
+                    "line": 32,
+                    "column": 18
+                  }
+                }
+              }
+            ],
+            "comment": null,
+            "range": [
+              835,
+              849
+            ],
+            "loc": {
+              "start": {
+                "line": 32,
+                "column": 4
+              },
+              "end": {
+                "line": 32,
+                "column": 18
+              }
+            }
+          },
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "ErIdentifier",
+              "name": "int",
+              "range": [
+                854,
+                857
+              ],
+              "loc": {
+                "start": {
+                  "line": 33,
+                  "column": 4
+                },
+                "end": {
+                  "line": 33,
+                  "column": 7
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "ErIdentifier",
+              "name": "currencyId",
+              "range": [
+                858,
+                868
+              ],
+              "loc": {
+                "start": {
+                  "line": 33,
+                  "column": 8
+                },
+                "end": {
+                  "line": 33,
+                  "column": 18
+                }
+              }
+            },
+            "keys": [
+              {
+                "type": "Identifier",
+                "name": "FK",
+                "range": [
+                  869,
+                  871
+                ],
+                "loc": {
+                  "start": {
+                    "line": 33,
+                    "column": 19
+                  },
+                  "end": {
+                    "line": 33,
+                    "column": 21
+                  }
+                }
+              }
+            ],
+            "comment": null,
+            "range": [
+              854,
+              871
+            ],
+            "loc": {
+              "start": {
+                "line": 33,
+                "column": 4
+              },
+              "end": {
+                "line": 33,
+                "column": 21
+              }
+            }
+          },
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "ErIdentifier",
+              "name": "number",
+              "range": [
+                876,
+                882
+              ],
+              "loc": {
+                "start": {
+                  "line": 34,
+                  "column": 4
+                },
+                "end": {
+                  "line": 34,
+                  "column": 10
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "ErIdentifier",
+              "name": "price",
+              "range": [
+                883,
+                888
+              ],
+              "loc": {
+                "start": {
+                  "line": 34,
+                  "column": 11
+                },
+                "end": {
+                  "line": 34,
+                  "column": 16
+                }
+              }
+            },
+            "keys": [],
+            "comment": null,
+            "range": [
+              876,
+              888
+            ],
+            "loc": {
+              "start": {
+                "line": 34,
+                "column": 4
+              },
+              "end": {
+                "line": 34,
+                "column": 16
+              }
+            }
+          },
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "ErIdentifier",
+              "name": "number",
+              "range": [
+                893,
+                899
+              ],
+              "loc": {
+                "start": {
+                  "line": 35,
+                  "column": 4
+                },
+                "end": {
+                  "line": 35,
+                  "column": 10
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "ErIdentifier",
+              "name": "quantity",
+              "range": [
+                900,
+                908
+              ],
+              "loc": {
+                "start": {
+                  "line": 35,
+                  "column": 11
+                },
+                "end": {
+                  "line": 35,
+                  "column": 19
+                }
+              }
+            },
+            "keys": [],
+            "comment": null,
+            "range": [
+              893,
+              908
+            ],
+            "loc": {
+              "start": {
+                "line": 35,
+                "column": 4
+              },
+              "end": {
+                "line": 35,
+                "column": 19
+              }
+            }
+          },
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "ErIdentifier",
+              "name": "number",
+              "range": [
+                913,
+                919
+              ],
+              "loc": {
+                "start": {
+                  "line": 36,
+                  "column": 4
+                },
+                "end": {
+                  "line": 36,
+                  "column": 10
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "ErIdentifier",
+              "name": "adjustment",
+              "range": [
+                920,
+                930
+              ],
+              "loc": {
+                "start": {
+                  "line": 36,
+                  "column": 11
+                },
+                "end": {
+                  "line": 36,
+                  "column": 21
+                }
+              }
+            },
+            "keys": [],
+            "comment": null,
+            "range": [
+              913,
+              930
+            ],
+            "loc": {
+              "start": {
+                "line": 36,
+                "column": 4
+              },
+              "end": {
+                "line": 36,
+                "column": 21
+              }
+            }
+          },
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "ErIdentifier",
+              "name": "number",
+              "range": [
+                935,
+                941
+              ],
+              "loc": {
+                "start": {
+                  "line": 37,
+                  "column": 4
+                },
+                "end": {
+                  "line": 37,
+                  "column": 10
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "ErIdentifier",
+              "name": "final_price",
+              "range": [
+                942,
+                953
+              ],
+              "loc": {
+                "start": {
+                  "line": 37,
+                  "column": 11
+                },
+                "end": {
+                  "line": 37,
+                  "column": 22
+                }
+              }
+            },
+            "keys": [],
+            "comment": null,
+            "range": [
+              935,
+              953
+            ],
+            "loc": {
+              "start": {
+                "line": 37,
+                "column": 4
+              },
+              "end": {
+                "line": 37,
+                "column": 22
+              }
+            }
+          }
+        ],
+        "range": [
+          813,
+          957
+        ],
+        "loc": {
+          "start": {
+            "line": 31,
+            "column": 2
+          },
+          "end": {
+            "line": 38,
+            "column": 3
+          }
+        }
+      }
+    ],
+    "range": [
+      55,
+      957
+    ],
+    "loc": {
+      "start": {
+        "line": 6,
+        "column": 0
+      },
+      "end": {
+        "line": 38,
+        "column": 3
+      }
+    }
+  },
+  "frontmatter": {
+    "type": "Frontmatter",
+    "value": "title: This is a title\nconfig:\n  theme: forest",
+    "valueRange": [
+      4,
+      50
+    ],
+    "range": [
+      0,
+      54
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 5,
+        "column": 3
+      }
+    }
+  },
+  "comments": [
+    {
+      "type": "Comment",
+      "mark": "%%",
+      "value": " title This is a title",
+      "range": [
+        67,
+        91
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 2
+        },
+        "end": {
+          "line": 7,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Comment",
+      "mark": "%%",
+      "value": " accDescription Test a description",
+      "range": [
+        94,
+        130
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 2
+        },
+        "end": {
+          "line": 8,
+          "column": 38
+        }
+      }
+    }
+  ],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        0,
+        3
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "title: This is a title\nconfig:\n  theme: forest",
+      "range": [
+        4,
+        50
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        51,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "erDiagram",
+      "range": [
+        55,
+        64
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Person . CUSTOMER\"",
+      "range": [
+        134,
+        153
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 2
+        },
+        "end": {
+          "line": 10,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "||",
+      "range": [
+        153,
+        155
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 21
+        },
+        "end": {
+          "line": 10,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        155,
+        157
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 23
+        },
+        "end": {
+          "line": 10,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "o{",
+      "range": [
+        157,
+        159
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 25
+        },
+        "end": {
+          "line": 10,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "ORDER",
+      "range": [
+        160,
+        165
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 28
+        },
+        "end": {
+          "line": 10,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        166,
+        167
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 34
+        },
+        "end": {
+          "line": 10,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "places",
+      "range": [
+        168,
+        174
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 36
+        },
+        "end": {
+          "line": 10,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "ORDER",
+      "range": [
+        178,
+        183
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 2
+        },
+        "end": {
+          "line": 12,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "||",
+      "range": [
+        184,
+        186
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 8
+        },
+        "end": {
+          "line": 12,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        186,
+        188
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 10
+        },
+        "end": {
+          "line": 12,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "|{",
+      "range": [
+        188,
+        190
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 12
+        },
+        "end": {
+          "line": 12,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"€£LINE_ITEM ¥\"",
+      "range": [
+        191,
+        206
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 15
+        },
+        "end": {
+          "line": 12,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        207,
+        208
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 31
+        },
+        "end": {
+          "line": 12,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "contains",
+      "range": [
+        209,
+        217
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 33
+        },
+        "end": {
+          "line": 12,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Person . CUSTOMER\"",
+      "range": [
+        221,
+        240
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 2
+        },
+        "end": {
+          "line": 14,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}|",
+      "range": [
+        241,
+        243
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 22
+        },
+        "end": {
+          "line": 14,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "..",
+      "range": [
+        243,
+        245
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 24
+        },
+        "end": {
+          "line": 14,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "|{",
+      "range": [
+        245,
+        247
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 26
+        },
+        "end": {
+          "line": 14,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Address//StreetAddress::[DELIVERY ADDRESS]\"",
+      "range": [
+        248,
+        292
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 29
+        },
+        "end": {
+          "line": 14,
+          "column": 73
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        293,
+        294
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 74
+        },
+        "end": {
+          "line": 14,
+          "column": 75
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "uses",
+      "range": [
+        295,
+        299
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 76
+        },
+        "end": {
+          "line": 14,
+          "column": 80
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Address//StreetAddress::[DELIVERY ADDRESS]\"",
+      "range": [
+        303,
+        347
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 2
+        },
+        "end": {
+          "line": 16,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        348,
+        349
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 47
+        },
+        "end": {
+          "line": 16,
+          "column": 48
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "int",
+      "range": [
+        354,
+        357
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 4
+        },
+        "end": {
+          "line": 17,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "customerID",
+      "range": [
+        358,
+        368
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 8
+        },
+        "end": {
+          "line": 17,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "FK",
+      "range": [
+        369,
+        371
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 19
+        },
+        "end": {
+          "line": 17,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "string",
+      "range": [
+        376,
+        382
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 4
+        },
+        "end": {
+          "line": 18,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "line1",
+      "range": [
+        383,
+        388
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 11
+        },
+        "end": {
+          "line": 18,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"this is the first address line comment\"",
+      "range": [
+        389,
+        429
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 17
+        },
+        "end": {
+          "line": 18,
+          "column": 57
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "string",
+      "range": [
+        434,
+        440
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 4
+        },
+        "end": {
+          "line": 19,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "line2",
+      "range": [
+        441,
+        446
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 11
+        },
+        "end": {
+          "line": 19,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "string",
+      "range": [
+        451,
+        457
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 4
+        },
+        "end": {
+          "line": 20,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "city",
+      "range": [
+        458,
+        462
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 11
+        },
+        "end": {
+          "line": 20,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "string",
+      "range": [
+        467,
+        473
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 4
+        },
+        "end": {
+          "line": 21,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "region",
+      "range": [
+        474,
+        480
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 11
+        },
+        "end": {
+          "line": 21,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "string",
+      "range": [
+        485,
+        491
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 4
+        },
+        "end": {
+          "line": 22,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "state",
+      "range": [
+        492,
+        497
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 11
+        },
+        "end": {
+          "line": 22,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "string(5)",
+      "range": [
+        502,
+        511
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 4
+        },
+        "end": {
+          "line": 23,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "postal_code",
+      "range": [
+        512,
+        523
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 14
+        },
+        "end": {
+          "line": 23,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "string",
+      "range": [
+        528,
+        534
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 4
+        },
+        "end": {
+          "line": 24,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "country",
+      "range": [
+        535,
+        542
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 11
+        },
+        "end": {
+          "line": 24,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        545,
+        546
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 2
+        },
+        "end": {
+          "line": 25,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"a_~`!@#$^&*()-_=+[]{}|/;:'.?¡⁄™€£‹¢›∞ﬁ§‡•°ª·º‚≠±œŒ∑„®†ˇ¥Á¨ˆˆØπ∏“«»åÅßÍ∂ÎƒÏ©˙Ó∆Ô˚¬Ò…ÚæÆΩ¸≈π˛çÇ√◊∫ı˜µÂ≤¯≥˘÷¿\"",
+      "range": [
+        550,
+        659
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 2
+        },
+        "end": {
+          "line": 27,
+          "column": 111
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        660,
+        661
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 112
+        },
+        "end": {
+          "line": 27,
+          "column": 113
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "string",
+      "range": [
+        666,
+        672
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 4
+        },
+        "end": {
+          "line": 28,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "name",
+      "range": [
+        673,
+        677
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 11
+        },
+        "end": {
+          "line": 28,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"this is an entity with an absurd name just to show characters that are now acceptable as long as the name is in double quotes\"",
+      "range": [
+        678,
+        805
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 16
+        },
+        "end": {
+          "line": 28,
+          "column": 143
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        808,
+        809
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 2
+        },
+        "end": {
+          "line": 29,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"€£LINE_ITEM ¥\"",
+      "range": [
+        813,
+        828
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 2
+        },
+        "end": {
+          "line": 31,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        829,
+        830
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 18
+        },
+        "end": {
+          "line": 31,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "int",
+      "range": [
+        835,
+        838
+      ],
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 4
+        },
+        "end": {
+          "line": 32,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "orderID",
+      "range": [
+        839,
+        846
+      ],
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 8
+        },
+        "end": {
+          "line": 32,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "FK",
+      "range": [
+        847,
+        849
+      ],
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 16
+        },
+        "end": {
+          "line": 32,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "int",
+      "range": [
+        854,
+        857
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 4
+        },
+        "end": {
+          "line": 33,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "currencyId",
+      "range": [
+        858,
+        868
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 8
+        },
+        "end": {
+          "line": 33,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "FK",
+      "range": [
+        869,
+        871
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 19
+        },
+        "end": {
+          "line": 33,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "number",
+      "range": [
+        876,
+        882
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 4
+        },
+        "end": {
+          "line": 34,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "price",
+      "range": [
+        883,
+        888
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 11
+        },
+        "end": {
+          "line": 34,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "number",
+      "range": [
+        893,
+        899
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 4
+        },
+        "end": {
+          "line": 35,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "quantity",
+      "range": [
+        900,
+        908
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 11
+        },
+        "end": {
+          "line": 35,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "number",
+      "range": [
+        913,
+        919
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 4
+        },
+        "end": {
+          "line": 36,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "adjustment",
+      "range": [
+        920,
+        930
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 11
+        },
+        "end": {
+          "line": 36,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "number",
+      "range": [
+        935,
+        941
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 4
+        },
+        "end": {
+          "line": 37,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "final_price",
+      "range": [
+        942,
+        953
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 11
+        },
+        "end": {
+          "line": 37,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        956,
+        957
+      ],
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 2
+        },
+        "end": {
+          "line": 38,
+          "column": 3
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    957
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 38,
+      "column": 3
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md: An empty quoted relationship label is accepted."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [
+      {
+        "type": "rel",
+        "from": "a",
+        "to": "b",
+        "label": {
+          "text": ""
+        },
+        "techn": {
+          "text": ""
+        },
+        "descr": {
+          "text": ""
+        }
+      }
+    ],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

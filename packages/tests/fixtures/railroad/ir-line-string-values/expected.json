@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Literal line endings in IR strings survive conversion except shared CR normalization."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "terminal",
+              "value": "a\nb\nc d e"
+            },
+            {
+              "type": "nonterminal",
+              "name": "a\nb"
+            },
+            {
+              "type": "special",
+              "text": "a\nb"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

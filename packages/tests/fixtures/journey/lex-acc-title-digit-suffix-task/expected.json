@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Keywords and what follows them: `accTitle` needs its `:` or `{` after it, so `accTitle2` is a task text."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "accTitle2",
+        "people": [],
+        "score": "NaN"
+      }
+    ]
+  }
+}

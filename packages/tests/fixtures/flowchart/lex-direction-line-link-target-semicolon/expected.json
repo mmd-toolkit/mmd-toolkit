@@ -1,0 +1,61 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md The direction line: with `;` before the value, the line has no direction line: the link goes to the vertex `direction`, and `TB` is a vertex of its own."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "direction",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "direction",
+        "props": {}
+      },
+      {
+        "id": "TB",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "TB",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "direction",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_direction_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

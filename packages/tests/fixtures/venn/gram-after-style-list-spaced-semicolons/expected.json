@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The after style list spaced semicolons boundary is rejected by the lexer."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n... fill:red,color:blue; ;\n-----------------------^"
+  }
+}

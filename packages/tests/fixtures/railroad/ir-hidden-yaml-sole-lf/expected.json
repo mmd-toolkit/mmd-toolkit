@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A native body YAML block consumes its final LF without requiring visible EOL."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      },
+      {
+        "name": "s",
+        "definition": {
+          "type": "terminal",
+          "value": "b"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are nested property-order paths escaped as JSON Pointers?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "J",
+        "value": {
+          "a/b": {
+            "~key": [
+              {
+                "x": 1
+              },
+              {}
+            ]
+          },
+          "": {}
+        },
+        "propertyOrder": {
+          "": [
+            "a/b",
+            ""
+          ],
+          "/a~1b": [
+            "~key"
+          ],
+          "/a~1b/~0key/0": [
+            "x"
+          ],
+          "/a~1b/~0key/1": [],
+          "/": []
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "J",
+        "set": {
+          "value": {
+            "a/b": {
+              "~key": [
+                {
+                  "x": 1
+                },
+                {}
+              ]
+            },
+            "": {}
+          },
+          "propertyOrder": {
+            "": [
+              "a/b",
+              ""
+            ],
+            "/a~1b": [
+              "~key"
+            ],
+            "/a~1b/~0key/0": [
+              "x"
+            ],
+            "/a~1b/~0key/1": [],
+            "/": []
+          }
+        }
+      }
+    ]
+  }
+}

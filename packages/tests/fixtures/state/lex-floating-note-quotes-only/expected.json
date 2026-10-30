@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The note contexts, floating note context: three quotes and no text: the grammar needs a text, so the input is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...eDiagram-v2note \"\"\" as NA\n----------------------^\nExpecting 'NOTE_TEXT', 'left_of', 'right_of', got 'AS'"
+  }
+}

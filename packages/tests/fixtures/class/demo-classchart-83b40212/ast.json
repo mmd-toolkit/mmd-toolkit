@@ -1,0 +1,3614 @@
+{
+  "type": "Root",
+  "diagramType": "classDiagram",
+  "body": {
+    "type": "ClassDiagram",
+    "body": [
+      {
+        "type": "ClassRelationStatement",
+        "from": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Class01",
+            "range": [
+              13,
+              20
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 2,
+                "column": 7
+              }
+            }
+          },
+          "generic": {
+            "type": "ClassLiteral",
+            "value": "T",
+            "range": [
+              21,
+              22
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 8
+              },
+              "end": {
+                "line": 2,
+                "column": 9
+              }
+            }
+          },
+          "range": [
+            13,
+            23
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 10
+            }
+          }
+        },
+        "fromCardinality": null,
+        "arrow": {
+          "type": "ClassArrow",
+          "value": "<|--",
+          "startMarker": "triangle",
+          "line": "solid",
+          "endMarker": "none",
+          "range": [
+            24,
+            28
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 11
+            },
+            "end": {
+              "line": 2,
+              "column": 15
+            }
+          }
+        },
+        "toCardinality": null,
+        "to": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "AveryLongClass",
+            "range": [
+              29,
+              43
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 16
+              },
+              "end": {
+                "line": 2,
+                "column": 30
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            29,
+            43
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 16
+            },
+            "end": {
+              "line": 2,
+              "column": 30
+            }
+          }
+        },
+        "label": {
+          "type": "ClassLiteral",
+          "value": "Cool",
+          "range": [
+            46,
+            50
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 33
+            },
+            "end": {
+              "line": 2,
+              "column": 37
+            }
+          }
+        },
+        "range": [
+          13,
+          50
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 37
+          }
+        }
+      },
+      {
+        "type": "ClassAnnotationStatement",
+        "annotation": {
+          "type": "ClassAnnotation",
+          "name": {
+            "type": "Identifier",
+            "name": "interface",
+            "range": [
+              53,
+              62
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 2
+              },
+              "end": {
+                "line": 3,
+                "column": 11
+              }
+            }
+          },
+          "range": [
+            51,
+            64
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 3,
+              "column": 13
+            }
+          }
+        },
+        "class": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Class01",
+            "range": [
+              65,
+              72
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 14
+              },
+              "end": {
+                "line": 3,
+                "column": 21
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            65,
+            72
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 14
+            },
+            "end": {
+              "line": 3,
+              "column": 21
+            }
+          }
+        },
+        "range": [
+          51,
+          72
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 21
+          }
+        }
+      },
+      {
+        "type": "ClassRelationStatement",
+        "from": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Class03",
+            "range": [
+              73,
+              80
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 4,
+                "column": 7
+              }
+            }
+          },
+          "generic": {
+            "type": "ClassLiteral",
+            "value": "T",
+            "range": [
+              81,
+              82
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 8
+              },
+              "end": {
+                "line": 4,
+                "column": 9
+              }
+            }
+          },
+          "range": [
+            73,
+            83
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 4,
+              "column": 10
+            }
+          }
+        },
+        "fromCardinality": {
+          "type": "StringLiteral",
+          "value": "0",
+          "raw": "\"0\"",
+          "closed": true,
+          "range": [
+            84,
+            87
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 11
+            },
+            "end": {
+              "line": 4,
+              "column": 14
+            }
+          }
+        },
+        "arrow": {
+          "type": "ClassArrow",
+          "value": "*--",
+          "startMarker": "filled-diamond",
+          "line": "solid",
+          "endMarker": "none",
+          "range": [
+            88,
+            91
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 15
+            },
+            "end": {
+              "line": 4,
+              "column": 18
+            }
+          }
+        },
+        "toCardinality": {
+          "type": "StringLiteral",
+          "value": "0..n",
+          "raw": "\"0..n\"",
+          "closed": true,
+          "range": [
+            92,
+            98
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 19
+            },
+            "end": {
+              "line": 4,
+              "column": 25
+            }
+          }
+        },
+        "to": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Class04",
+            "range": [
+              99,
+              106
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 26
+              },
+              "end": {
+                "line": 4,
+                "column": 33
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            99,
+            106
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 26
+            },
+            "end": {
+              "line": 4,
+              "column": 33
+            }
+          }
+        },
+        "label": null,
+        "range": [
+          73,
+          106
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 33
+          }
+        }
+      },
+      {
+        "type": "ClassRelationStatement",
+        "from": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Class05",
+            "range": [
+              107,
+              114
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 0
+              },
+              "end": {
+                "line": 5,
+                "column": 7
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            107,
+            114
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 5,
+              "column": 7
+            }
+          }
+        },
+        "fromCardinality": {
+          "type": "StringLiteral",
+          "value": "1",
+          "raw": "\"1\"",
+          "closed": true,
+          "range": [
+            115,
+            118
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 8
+            },
+            "end": {
+              "line": 5,
+              "column": 11
+            }
+          }
+        },
+        "arrow": {
+          "type": "ClassArrow",
+          "value": "o--",
+          "startMarker": "hollow-diamond",
+          "line": "solid",
+          "endMarker": "none",
+          "range": [
+            119,
+            122
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 12
+            },
+            "end": {
+              "line": 5,
+              "column": 15
+            }
+          }
+        },
+        "toCardinality": {
+          "type": "StringLiteral",
+          "value": "many",
+          "raw": "\"many\"",
+          "closed": true,
+          "range": [
+            123,
+            129
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 16
+            },
+            "end": {
+              "line": 5,
+              "column": 22
+            }
+          }
+        },
+        "to": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Class06",
+            "range": [
+              130,
+              137
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 23
+              },
+              "end": {
+                "line": 5,
+                "column": 30
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            130,
+            137
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 23
+            },
+            "end": {
+              "line": 5,
+              "column": 30
+            }
+          }
+        },
+        "label": null,
+        "range": [
+          107,
+          137
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 30
+          }
+        }
+      },
+      {
+        "type": "ClassRelationStatement",
+        "from": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Class07",
+            "range": [
+              138,
+              145
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 0
+              },
+              "end": {
+                "line": 6,
+                "column": 7
+              }
+            }
+          },
+          "generic": {
+            "type": "ClassLiteral",
+            "value": "T",
+            "range": [
+              146,
+              147
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 8
+              },
+              "end": {
+                "line": 6,
+                "column": 9
+              }
+            }
+          },
+          "range": [
+            138,
+            148
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 0
+            },
+            "end": {
+              "line": 6,
+              "column": 10
+            }
+          }
+        },
+        "fromCardinality": null,
+        "arrow": {
+          "type": "ClassArrow",
+          "value": "..",
+          "startMarker": "none",
+          "line": "dotted",
+          "endMarker": "none",
+          "range": [
+            149,
+            151
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 11
+            },
+            "end": {
+              "line": 6,
+              "column": 13
+            }
+          }
+        },
+        "toCardinality": null,
+        "to": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Class08",
+            "range": [
+              152,
+              159
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 14
+              },
+              "end": {
+                "line": 6,
+                "column": 21
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            152,
+            159
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 14
+            },
+            "end": {
+              "line": 6,
+              "column": 21
+            }
+          }
+        },
+        "label": null,
+        "range": [
+          138,
+          159
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 21
+          }
+        }
+      },
+      {
+        "type": "ClassRelationStatement",
+        "from": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Class09",
+            "range": [
+              160,
+              167
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 0
+              },
+              "end": {
+                "line": 7,
+                "column": 7
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            160,
+            167
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 0
+            },
+            "end": {
+              "line": 7,
+              "column": 7
+            }
+          }
+        },
+        "fromCardinality": {
+          "type": "StringLiteral",
+          "value": "many",
+          "raw": "\"many\"",
+          "closed": true,
+          "range": [
+            168,
+            174
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 8
+            },
+            "end": {
+              "line": 7,
+              "column": 14
+            }
+          }
+        },
+        "arrow": {
+          "type": "ClassArrow",
+          "value": "-->",
+          "startMarker": "none",
+          "line": "solid",
+          "endMarker": "arrow",
+          "range": [
+            175,
+            178
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 15
+            },
+            "end": {
+              "line": 7,
+              "column": 18
+            }
+          }
+        },
+        "toCardinality": {
+          "type": "StringLiteral",
+          "value": "1",
+          "raw": "\"1\"",
+          "closed": true,
+          "range": [
+            179,
+            182
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 19
+            },
+            "end": {
+              "line": 7,
+              "column": 22
+            }
+          }
+        },
+        "to": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "C2",
+            "range": [
+              183,
+              185
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 23
+              },
+              "end": {
+                "line": 7,
+                "column": 25
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            183,
+            185
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 23
+            },
+            "end": {
+              "line": 7,
+              "column": 25
+            }
+          }
+        },
+        "label": {
+          "type": "ClassLiteral",
+          "value": "Where am i?",
+          "range": [
+            188,
+            199
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 28
+            },
+            "end": {
+              "line": 7,
+              "column": 39
+            }
+          }
+        },
+        "range": [
+          160,
+          199
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 39
+          }
+        }
+      },
+      {
+        "type": "ClassRelationStatement",
+        "from": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Class09",
+            "range": [
+              202,
+              209
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 2
+              },
+              "end": {
+                "line": 8,
+                "column": 9
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            202,
+            209
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 2
+            },
+            "end": {
+              "line": 8,
+              "column": 9
+            }
+          }
+        },
+        "fromCardinality": {
+          "type": "StringLiteral",
+          "value": "0",
+          "raw": "\"0\"",
+          "closed": true,
+          "range": [
+            210,
+            213
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 10
+            },
+            "end": {
+              "line": 8,
+              "column": 13
+            }
+          }
+        },
+        "arrow": {
+          "type": "ClassArrow",
+          "value": "--*",
+          "startMarker": "none",
+          "line": "solid",
+          "endMarker": "filled-diamond",
+          "range": [
+            214,
+            217
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 14
+            },
+            "end": {
+              "line": 8,
+              "column": 17
+            }
+          }
+        },
+        "toCardinality": {
+          "type": "StringLiteral",
+          "value": "1..n",
+          "raw": "\"1..n\"",
+          "closed": true,
+          "range": [
+            218,
+            224
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 18
+            },
+            "end": {
+              "line": 8,
+              "column": 24
+            }
+          }
+        },
+        "to": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "C3",
+            "range": [
+              225,
+              227
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 25
+              },
+              "end": {
+                "line": 8,
+                "column": 27
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            225,
+            227
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 25
+            },
+            "end": {
+              "line": 8,
+              "column": 27
+            }
+          }
+        },
+        "label": null,
+        "range": [
+          202,
+          227
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 2
+          },
+          "end": {
+            "line": 8,
+            "column": 27
+          }
+        }
+      },
+      {
+        "type": "ClassRelationStatement",
+        "from": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Class09",
+            "range": [
+              230,
+              237
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 2
+              },
+              "end": {
+                "line": 9,
+                "column": 9
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            230,
+            237
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 2
+            },
+            "end": {
+              "line": 9,
+              "column": 9
+            }
+          }
+        },
+        "fromCardinality": null,
+        "arrow": {
+          "type": "ClassArrow",
+          "value": "--|>",
+          "startMarker": "none",
+          "line": "solid",
+          "endMarker": "triangle",
+          "range": [
+            238,
+            242
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 10
+            },
+            "end": {
+              "line": 9,
+              "column": 14
+            }
+          }
+        },
+        "toCardinality": null,
+        "to": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Class07",
+            "range": [
+              243,
+              250
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 15
+              },
+              "end": {
+                "line": 9,
+                "column": 22
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            243,
+            250
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 15
+            },
+            "end": {
+              "line": 9,
+              "column": 22
+            }
+          }
+        },
+        "label": null,
+        "range": [
+          230,
+          250
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 2
+          },
+          "end": {
+            "line": 9,
+            "column": 22
+          }
+        }
+      },
+      {
+        "type": "ClassMemberStatement",
+        "class": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Class07",
+            "range": [
+              253,
+              260
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 2
+              },
+              "end": {
+                "line": 10,
+                "column": 9
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            253,
+            260
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 2
+            },
+            "end": {
+              "line": 10,
+              "column": 9
+            }
+          }
+        },
+        "member": {
+          "type": "ClassMethod",
+          "visibility": "none",
+          "name": {
+            "type": "ClassLiteral",
+            "value": "equals",
+            "range": [
+              263,
+              269
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 12
+              },
+              "end": {
+                "line": 10,
+                "column": 18
+              }
+            }
+          },
+          "parameters": null,
+          "returnType": null,
+          "classifier": "none",
+          "textBefore": null,
+          "textAfter": null,
+          "range": [
+            263,
+            271
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 12
+            },
+            "end": {
+              "line": 10,
+              "column": 20
+            }
+          }
+        },
+        "range": [
+          253,
+          271
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 2
+          },
+          "end": {
+            "line": 10,
+            "column": 20
+          }
+        }
+      },
+      {
+        "type": "ClassMemberStatement",
+        "class": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Class07",
+            "range": [
+              274,
+              281
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 2
+              },
+              "end": {
+                "line": 11,
+                "column": 9
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            274,
+            281
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 2
+            },
+            "end": {
+              "line": 11,
+              "column": 9
+            }
+          }
+        },
+        "member": {
+          "type": "ClassAttribute",
+          "visibility": "none",
+          "name": {
+            "type": "ClassLiteral",
+            "value": "Object[] elementData",
+            "range": [
+              284,
+              304
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 12
+              },
+              "end": {
+                "line": 11,
+                "column": 32
+              }
+            }
+          },
+          "classifier": "none",
+          "range": [
+            284,
+            304
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 12
+            },
+            "end": {
+              "line": 11,
+              "column": 32
+            }
+          }
+        },
+        "range": [
+          274,
+          304
+        ],
+        "loc": {
+          "start": {
+            "line": 11,
+            "column": 2
+          },
+          "end": {
+            "line": 11,
+            "column": 32
+          }
+        }
+      },
+      {
+        "type": "ClassMemberStatement",
+        "class": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Class01",
+            "range": [
+              307,
+              314
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 2
+              },
+              "end": {
+                "line": 12,
+                "column": 9
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            307,
+            314
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 2
+            },
+            "end": {
+              "line": 12,
+              "column": 9
+            }
+          }
+        },
+        "member": {
+          "type": "ClassMethod",
+          "visibility": "protected",
+          "name": {
+            "type": "ClassLiteral",
+            "value": "size",
+            "range": [
+              318,
+              322
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 13
+              },
+              "end": {
+                "line": 12,
+                "column": 17
+              }
+            }
+          },
+          "parameters": null,
+          "returnType": null,
+          "classifier": "none",
+          "textBefore": null,
+          "textAfter": null,
+          "range": [
+            317,
+            324
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 12
+            },
+            "end": {
+              "line": 12,
+              "column": 19
+            }
+          }
+        },
+        "range": [
+          307,
+          324
+        ],
+        "loc": {
+          "start": {
+            "line": 12,
+            "column": 2
+          },
+          "end": {
+            "line": 12,
+            "column": 19
+          }
+        }
+      },
+      {
+        "type": "ClassMemberStatement",
+        "class": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Class01",
+            "range": [
+              327,
+              334
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 2
+              },
+              "end": {
+                "line": 13,
+                "column": 9
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            327,
+            334
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 2
+            },
+            "end": {
+              "line": 13,
+              "column": 9
+            }
+          }
+        },
+        "member": {
+          "type": "ClassAttribute",
+          "visibility": "private",
+          "name": {
+            "type": "ClassLiteral",
+            "value": "int chimp",
+            "range": [
+              338,
+              347
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 13
+              },
+              "end": {
+                "line": 13,
+                "column": 22
+              }
+            }
+          },
+          "classifier": "none",
+          "range": [
+            337,
+            347
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 12
+            },
+            "end": {
+              "line": 13,
+              "column": 22
+            }
+          }
+        },
+        "range": [
+          327,
+          347
+        ],
+        "loc": {
+          "start": {
+            "line": 13,
+            "column": 2
+          },
+          "end": {
+            "line": 13,
+            "column": 22
+          }
+        }
+      },
+      {
+        "type": "ClassMemberStatement",
+        "class": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Class01",
+            "range": [
+              350,
+              357
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 2
+              },
+              "end": {
+                "line": 14,
+                "column": 9
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            350,
+            357
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 2
+            },
+            "end": {
+              "line": 14,
+              "column": 9
+            }
+          }
+        },
+        "member": {
+          "type": "ClassAttribute",
+          "visibility": "public",
+          "name": {
+            "type": "ClassLiteral",
+            "value": "int gorilla",
+            "range": [
+              361,
+              372
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 13
+              },
+              "end": {
+                "line": 14,
+                "column": 24
+              }
+            }
+          },
+          "classifier": "none",
+          "range": [
+            360,
+            372
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 12
+            },
+            "end": {
+              "line": 14,
+              "column": 24
+            }
+          }
+        },
+        "range": [
+          350,
+          372
+        ],
+        "loc": {
+          "start": {
+            "line": 14,
+            "column": 2
+          },
+          "end": {
+            "line": 14,
+            "column": 24
+          }
+        }
+      },
+      {
+        "type": "ClassRelationStatement",
+        "from": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Class08",
+            "range": [
+              375,
+              382
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 2
+              },
+              "end": {
+                "line": 15,
+                "column": 9
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            375,
+            382
+          ],
+          "loc": {
+            "start": {
+              "line": 15,
+              "column": 2
+            },
+            "end": {
+              "line": 15,
+              "column": 9
+            }
+          }
+        },
+        "fromCardinality": null,
+        "arrow": {
+          "type": "ClassArrow",
+          "value": "<-->",
+          "startMarker": "arrow",
+          "line": "solid",
+          "endMarker": "arrow",
+          "range": [
+            383,
+            387
+          ],
+          "loc": {
+            "start": {
+              "line": 15,
+              "column": 10
+            },
+            "end": {
+              "line": 15,
+              "column": 14
+            }
+          }
+        },
+        "toCardinality": null,
+        "to": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "C2",
+            "range": [
+              388,
+              390
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 15
+              },
+              "end": {
+                "line": 15,
+                "column": 17
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            388,
+            390
+          ],
+          "loc": {
+            "start": {
+              "line": 15,
+              "column": 15
+            },
+            "end": {
+              "line": 15,
+              "column": 17
+            }
+          }
+        },
+        "label": {
+          "type": "ClassLiteral",
+          "value": "Cool label",
+          "range": [
+            392,
+            402
+          ],
+          "loc": {
+            "start": {
+              "line": 15,
+              "column": 19
+            },
+            "end": {
+              "line": 15,
+              "column": 29
+            }
+          }
+        },
+        "range": [
+          375,
+          402
+        ],
+        "loc": {
+          "start": {
+            "line": 15,
+            "column": 2
+          },
+          "end": {
+            "line": 15,
+            "column": 29
+          }
+        }
+      },
+      {
+        "type": "ClassDeclaration",
+        "name": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Class10",
+            "range": [
+              413,
+              420
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 10
+              },
+              "end": {
+                "line": 16,
+                "column": 17
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            413,
+            420
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 10
+            },
+            "end": {
+              "line": 16,
+              "column": 17
+            }
+          }
+        },
+        "label": null,
+        "cssClass": null,
+        "annotation": null,
+        "members": [
+          {
+            "type": "ClassAnnotation",
+            "name": {
+              "type": "ClassLiteral",
+              "value": "service",
+              "range": [
+                429,
+                436
+              ],
+              "loc": {
+                "start": {
+                  "line": 17,
+                  "column": 6
+                },
+                "end": {
+                  "line": 17,
+                  "column": 13
+                }
+              }
+            },
+            "range": [
+              427,
+              438
+            ],
+            "loc": {
+              "start": {
+                "line": 17,
+                "column": 4
+              },
+              "end": {
+                "line": 17,
+                "column": 15
+              }
+            }
+          },
+          {
+            "type": "ClassAttribute",
+            "visibility": "none",
+            "name": {
+              "type": "ClassLiteral",
+              "value": "int id",
+              "range": [
+                443,
+                449
+              ],
+              "loc": {
+                "start": {
+                  "line": 18,
+                  "column": 4
+                },
+                "end": {
+                  "line": 18,
+                  "column": 10
+                }
+              }
+            },
+            "classifier": "none",
+            "range": [
+              443,
+              449
+            ],
+            "loc": {
+              "start": {
+                "line": 18,
+                "column": 4
+              },
+              "end": {
+                "line": 18,
+                "column": 10
+              }
+            }
+          },
+          {
+            "type": "ClassMethod",
+            "visibility": "none",
+            "name": {
+              "type": "ClassLiteral",
+              "value": "size",
+              "range": [
+                454,
+                458
+              ],
+              "loc": {
+                "start": {
+                  "line": 19,
+                  "column": 4
+                },
+                "end": {
+                  "line": 19,
+                  "column": 8
+                }
+              }
+            },
+            "parameters": null,
+            "returnType": null,
+            "classifier": "none",
+            "textBefore": null,
+            "textAfter": null,
+            "range": [
+              454,
+              460
+            ],
+            "loc": {
+              "start": {
+                "line": 19,
+                "column": 4
+              },
+              "end": {
+                "line": 19,
+                "column": 10
+              }
+            }
+          }
+        ],
+        "range": [
+          407,
+          466
+        ],
+        "loc": {
+          "start": {
+            "line": 16,
+            "column": 4
+          },
+          "end": {
+            "line": 20,
+            "column": 5
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      466
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 20,
+        "column": 5
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "classDiagram",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Class01",
+      "range": [
+        13,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "~",
+      "range": [
+        20,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 7
+        },
+        "end": {
+          "line": 2,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "T",
+      "range": [
+        21,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "~",
+      "range": [
+        22,
+        23
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 9
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "<|",
+      "range": [
+        24,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 11
+        },
+        "end": {
+          "line": 2,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        26,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 13
+        },
+        "end": {
+          "line": 2,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "AveryLongClass",
+      "range": [
+        29,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 16
+        },
+        "end": {
+          "line": 2,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        44,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 31
+        },
+        "end": {
+          "line": 2,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Cool",
+      "range": [
+        46,
+        50
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 33
+        },
+        "end": {
+          "line": 2,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "<<",
+      "range": [
+        51,
+        53
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "interface",
+      "range": [
+        53,
+        62
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 3,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ">>",
+      "range": [
+        62,
+        64
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 11
+        },
+        "end": {
+          "line": 3,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Class01",
+      "range": [
+        65,
+        72
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 14
+        },
+        "end": {
+          "line": 3,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Class03",
+      "range": [
+        73,
+        80
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "~",
+      "range": [
+        80,
+        81
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 7
+        },
+        "end": {
+          "line": 4,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "T",
+      "range": [
+        81,
+        82
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 8
+        },
+        "end": {
+          "line": 4,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "~",
+      "range": [
+        82,
+        83
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 9
+        },
+        "end": {
+          "line": 4,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"0\"",
+      "range": [
+        84,
+        87
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 11
+        },
+        "end": {
+          "line": 4,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "*",
+      "range": [
+        88,
+        89
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 15
+        },
+        "end": {
+          "line": 4,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        89,
+        91
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 16
+        },
+        "end": {
+          "line": 4,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"0..n\"",
+      "range": [
+        92,
+        98
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 19
+        },
+        "end": {
+          "line": 4,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Class04",
+      "range": [
+        99,
+        106
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 26
+        },
+        "end": {
+          "line": 4,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Class05",
+      "range": [
+        107,
+        114
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"1\"",
+      "range": [
+        115,
+        118
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 8
+        },
+        "end": {
+          "line": 5,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "o",
+      "range": [
+        119,
+        120
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 12
+        },
+        "end": {
+          "line": 5,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        120,
+        122
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 13
+        },
+        "end": {
+          "line": 5,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"many\"",
+      "range": [
+        123,
+        129
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 16
+        },
+        "end": {
+          "line": 5,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Class06",
+      "range": [
+        130,
+        137
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 23
+        },
+        "end": {
+          "line": 5,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Class07",
+      "range": [
+        138,
+        145
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "~",
+      "range": [
+        145,
+        146
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 7
+        },
+        "end": {
+          "line": 6,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "T",
+      "range": [
+        146,
+        147
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 8
+        },
+        "end": {
+          "line": 6,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "~",
+      "range": [
+        147,
+        148
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 9
+        },
+        "end": {
+          "line": 6,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "..",
+      "range": [
+        149,
+        151
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 11
+        },
+        "end": {
+          "line": 6,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Class08",
+      "range": [
+        152,
+        159
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 14
+        },
+        "end": {
+          "line": 6,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Class09",
+      "range": [
+        160,
+        167
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"many\"",
+      "range": [
+        168,
+        174
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 8
+        },
+        "end": {
+          "line": 7,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        175,
+        177
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 15
+        },
+        "end": {
+          "line": 7,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ">",
+      "range": [
+        177,
+        178
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 17
+        },
+        "end": {
+          "line": 7,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"1\"",
+      "range": [
+        179,
+        182
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 19
+        },
+        "end": {
+          "line": 7,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "C2",
+      "range": [
+        183,
+        185
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 23
+        },
+        "end": {
+          "line": 7,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        186,
+        187
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 26
+        },
+        "end": {
+          "line": 7,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Where am i?",
+      "range": [
+        188,
+        199
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 28
+        },
+        "end": {
+          "line": 7,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Class09",
+      "range": [
+        202,
+        209
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 2
+        },
+        "end": {
+          "line": 8,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"0\"",
+      "range": [
+        210,
+        213
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 10
+        },
+        "end": {
+          "line": 8,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        214,
+        216
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 14
+        },
+        "end": {
+          "line": 8,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "*",
+      "range": [
+        216,
+        217
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 16
+        },
+        "end": {
+          "line": 8,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"1..n\"",
+      "range": [
+        218,
+        224
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 18
+        },
+        "end": {
+          "line": 8,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "C3",
+      "range": [
+        225,
+        227
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 25
+        },
+        "end": {
+          "line": 8,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Class09",
+      "range": [
+        230,
+        237
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 2
+        },
+        "end": {
+          "line": 9,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        238,
+        240
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 10
+        },
+        "end": {
+          "line": 9,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "|>",
+      "range": [
+        240,
+        242
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 12
+        },
+        "end": {
+          "line": 9,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Class07",
+      "range": [
+        243,
+        250
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 15
+        },
+        "end": {
+          "line": 9,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Class07",
+      "range": [
+        253,
+        260
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 2
+        },
+        "end": {
+          "line": 10,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        261,
+        262
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 10
+        },
+        "end": {
+          "line": 10,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "equals",
+      "range": [
+        263,
+        269
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 12
+        },
+        "end": {
+          "line": 10,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        269,
+        270
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 18
+        },
+        "end": {
+          "line": 10,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        270,
+        271
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 19
+        },
+        "end": {
+          "line": 10,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Class07",
+      "range": [
+        274,
+        281
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 2
+        },
+        "end": {
+          "line": 11,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        282,
+        283
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 10
+        },
+        "end": {
+          "line": 11,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Object[] elementData",
+      "range": [
+        284,
+        304
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 12
+        },
+        "end": {
+          "line": 11,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Class01",
+      "range": [
+        307,
+        314
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 2
+        },
+        "end": {
+          "line": 12,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        315,
+        316
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 10
+        },
+        "end": {
+          "line": 12,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "#",
+      "range": [
+        317,
+        318
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 12
+        },
+        "end": {
+          "line": 12,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "size",
+      "range": [
+        318,
+        322
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 13
+        },
+        "end": {
+          "line": 12,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        322,
+        323
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 17
+        },
+        "end": {
+          "line": 12,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        323,
+        324
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 18
+        },
+        "end": {
+          "line": 12,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Class01",
+      "range": [
+        327,
+        334
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 2
+        },
+        "end": {
+          "line": 13,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        335,
+        336
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 10
+        },
+        "end": {
+          "line": 13,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-",
+      "range": [
+        337,
+        338
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 12
+        },
+        "end": {
+          "line": 13,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "int chimp",
+      "range": [
+        338,
+        347
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 13
+        },
+        "end": {
+          "line": 13,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Class01",
+      "range": [
+        350,
+        357
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 2
+        },
+        "end": {
+          "line": 14,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        358,
+        359
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 10
+        },
+        "end": {
+          "line": 14,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "+",
+      "range": [
+        360,
+        361
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 12
+        },
+        "end": {
+          "line": 14,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "int gorilla",
+      "range": [
+        361,
+        372
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 13
+        },
+        "end": {
+          "line": 14,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Class08",
+      "range": [
+        375,
+        382
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 2
+        },
+        "end": {
+          "line": 15,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "<",
+      "range": [
+        383,
+        384
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 10
+        },
+        "end": {
+          "line": 15,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        384,
+        386
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 11
+        },
+        "end": {
+          "line": 15,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ">",
+      "range": [
+        386,
+        387
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 13
+        },
+        "end": {
+          "line": 15,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "C2",
+      "range": [
+        388,
+        390
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 15
+        },
+        "end": {
+          "line": 15,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        390,
+        391
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 17
+        },
+        "end": {
+          "line": 15,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Cool label",
+      "range": [
+        392,
+        402
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 19
+        },
+        "end": {
+          "line": 15,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "class",
+      "range": [
+        407,
+        412
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 4
+        },
+        "end": {
+          "line": 16,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Class10",
+      "range": [
+        413,
+        420
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 10
+        },
+        "end": {
+          "line": 16,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        421,
+        422
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 18
+        },
+        "end": {
+          "line": 16,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "<<",
+      "range": [
+        427,
+        429
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 4
+        },
+        "end": {
+          "line": 17,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "service",
+      "range": [
+        429,
+        436
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 6
+        },
+        "end": {
+          "line": 17,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ">>",
+      "range": [
+        436,
+        438
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 13
+        },
+        "end": {
+          "line": 17,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "int id",
+      "range": [
+        443,
+        449
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 4
+        },
+        "end": {
+          "line": 18,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "size",
+      "range": [
+        454,
+        458
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 4
+        },
+        "end": {
+          "line": 19,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        458,
+        459
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 8
+        },
+        "end": {
+          "line": 19,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        459,
+        460
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 9
+        },
+        "end": {
+          "line": 19,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        465,
+        466
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 4
+        },
+        "end": {
+          "line": 20,
+          "column": 5
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    466
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 20,
+      "column": 5
+    }
+  }
+}

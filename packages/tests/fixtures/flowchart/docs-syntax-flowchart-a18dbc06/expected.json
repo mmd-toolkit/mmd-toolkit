@@ -1,0 +1,57 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/flowchart.md",
+    "line": 1436
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "B",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "fa:fa-twitter for peace",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "fab:fa-truck-bold a custom icon",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "B",
+        "end": "C",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_B_C_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

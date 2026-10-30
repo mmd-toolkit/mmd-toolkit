@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Elements: a quoted value may hold `:`."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [
+      {
+        "name": "e",
+        "type": "",
+        "docRef": "http://x",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": []
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/wardley.md",
+    "line": 235
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Pipeline Evolution",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "Database",
+        "label": "Database",
+        "x": 60,
+        "y": 40,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Database_File System",
+        "label": "File System",
+        "x": 25,
+        "y": 40,
+        "className": "pipeline-component"
+      },
+      {
+        "id": "Database_SQL DB",
+        "label": "SQL DB",
+        "x": 50,
+        "y": 40,
+        "className": "pipeline-component"
+      },
+      {
+        "id": "Database_NoSQL",
+        "label": "NoSQL",
+        "x": 70,
+        "y": 40,
+        "className": "pipeline-component"
+      },
+      {
+        "id": "Database_Cloud DB",
+        "label": "Cloud DB",
+        "x": 85,
+        "y": 40,
+        "className": "pipeline-component"
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [
+      {
+        "nodeId": "Database",
+        "componentIds": [
+          "Database_File System",
+          "Database_SQL DB",
+          "Database_NoSQL",
+          "Database_Cloud DB"
+        ]
+      }
+    ],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

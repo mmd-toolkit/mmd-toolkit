@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The character reference becomes its shared preprocessing placeholder (entity-named in identifier-quoted)."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "aﬂ°amp¶ßb"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A semicolon alone tests whether it is a node."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": ";",
+        "label": ";",
+        "isGroup": true
+      }
+    ]
+  }
+}

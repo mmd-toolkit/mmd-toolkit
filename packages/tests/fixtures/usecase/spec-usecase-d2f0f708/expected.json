@@ -1,0 +1,134 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/usecase.spec.ts",
+    "line": 367,
+    "test": "UseCase diagram with Chevrotain parser > when parsing complex diagrams > should parse a complete authentication system"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "User",
+        "label": "User",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Admin",
+        "label": "Admin",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "Login",
+        "label": "Login",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "Authentication_System",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Logout",
+        "label": "Logout",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "Authentication_System",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Register",
+        "label": "Register",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "Authentication_System",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "ResetPassword",
+        "label": "ResetPassword",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "Authentication_System",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [
+      {
+        "id": "Authentication_System",
+        "label": "Authentication System",
+        "labelType": "text",
+        "type": "rect",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "relationships": [
+      {
+        "source": "User",
+        "target": "Login",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "User",
+        "target": "Register",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "User",
+        "target": "Logout",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "Admin",
+        "target": "Login",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

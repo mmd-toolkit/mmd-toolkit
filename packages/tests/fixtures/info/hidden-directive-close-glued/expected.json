@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A glued closer fails the hidden boundary and the native comment consumes the flag."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

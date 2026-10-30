@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The classDef contexts: classDef default is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...agram-v2  classDef default fill:#f00\n----------------------^\nExpecting 'CLASSDEF_ID', 'DEFAULT', got 'DEFAULT_CLASSDEF_ID'"
+  }
+}

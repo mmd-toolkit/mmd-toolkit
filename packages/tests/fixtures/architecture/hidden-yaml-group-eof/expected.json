@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A group plus hidden YAML can end at EOF."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "groups": [
+      {
+        "id": "g"
+      }
+    ],
+    "edges": [],
+    "layoutHints": []
+  }
+}

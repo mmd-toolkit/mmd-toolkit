@@ -1,0 +1,109 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-md-string.spec.js",
+    "line": 41,
+    "test": "parsing a flow chart with markdown strings > markdown formatting in subgraphs"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "The **cat**\n  in the hat",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "b",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "The **dog** in the hog",
+        "type": "hexagon",
+        "props": {}
+      },
+      {
+        "id": "c",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "The **cat**\n  in the hat",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "d",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "The dog in the hog",
+        "type": "round",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "a",
+        "end": "b",
+        "type": "arrow_point",
+        "text": "1o",
+        "labelType": "string",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_a_b_0"
+      },
+      {
+        "start": "c",
+        "end": "d",
+        "type": "arrow_point",
+        "text": "1o **ipa**",
+        "labelType": "markdown",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_c_d_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "One",
+        "nodes": [
+          "b",
+          "a"
+        ],
+        "title": "One",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "**Two**",
+        "nodes": [
+          "d",
+          "c"
+        ],
+        "title": "**Two**",
+        "classes": [],
+        "labelType": "markdown"
+      }
+    ],
+    "tooltips": []
+  }
+}

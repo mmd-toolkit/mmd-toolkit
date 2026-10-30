@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Authored component boundaries: Removing a directive between entity and its name without leaving a lexical boundary joins them into an identifier and rejects. Rejected by Mermaid."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 15: Expecting end of file but found `entityA`."
+  }
+}

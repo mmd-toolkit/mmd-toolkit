@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Known divergences, ignored-semicolon-as-token-boundary: an ignored `;` inside a number; rejected here, mermaid.js reads the entity `12`."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      },
+      {
+        "id": "entity-Bstyle-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "Bstyle",
+        "classes": []
+      },
+      {
+        "id": "entity-12-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "12",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-A-0",
+        "roleA": "#",
+        "entityB": "entity-Bstyle-1",
+        "cardA": "ZERO_OR_MORE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": []
+  }
+}

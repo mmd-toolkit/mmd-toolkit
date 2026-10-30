@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A PEG group requires a nonempty sequence."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 7: Expecting: expecting at least one iteration which starts with one of these possible Token sequences::\n  <[&] ,[!] ,[PEG_STRING] ,[PEG_ID] ,[(] ,[.]>\nbut found: ')'"
+  }
+}

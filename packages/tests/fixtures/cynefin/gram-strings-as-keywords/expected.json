@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Quoted keyword spellings are values rather than separate terminals."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "title"
+          },
+          {
+            "label": "accTitle:"
+          },
+          {
+            "label": "complex"
+          },
+          {
+            "label": "clear"
+          }
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear",
+        "label": "complex"
+      }
+    ]
+  }
+}

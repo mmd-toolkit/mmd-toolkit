@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: The prefix column counts a supplementary character as two UTF-16 code units."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "first",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "second",
+            "nodeType": "file",
+            "children": []
+          },
+          {
+            "name": "third",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

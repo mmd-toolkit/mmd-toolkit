@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/packet/packet.spec.ts",
+    "line": 134,
+    "test": "packet diagrams > should split into multiple rows"
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 10,
+          "label": "test"
+        },
+        {
+          "start": 11,
+          "end": 31,
+          "label": "multiple"
+        }
+      ],
+      [
+        {
+          "start": 32,
+          "end": 63,
+          "label": "multiple"
+        }
+      ],
+      [
+        {
+          "start": 64,
+          "end": 90,
+          "label": "multiple"
+        }
+      ]
+    ]
+  }
+}

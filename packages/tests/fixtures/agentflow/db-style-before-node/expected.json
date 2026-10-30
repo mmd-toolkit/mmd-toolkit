@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Style creates a node and a later declaration keeps its styles."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [
+          "fill:red"
+        ],
+        "classes": [],
+        "text": "Later",
+        "props": {},
+        "type": "square"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

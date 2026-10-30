@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Node_L keyword with a glued digit is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nC4ContextNode_L1(b, \"B\", \"typ\n---------^"
+  }
+}

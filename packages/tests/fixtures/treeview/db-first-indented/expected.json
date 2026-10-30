@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The first indented node is still an outer node; a later smaller level can create another outer node."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "first",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "second",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "child",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "last",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

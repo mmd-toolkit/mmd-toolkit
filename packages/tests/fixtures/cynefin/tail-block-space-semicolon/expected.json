@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A block description cannot end with space-semicolon."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 14: unexpected character: ->;<- at offset: 26, skipped 1 characters. "
+  }
+}

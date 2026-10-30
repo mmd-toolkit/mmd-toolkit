@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "TITLE stops before a retained directive which consumes its EOL."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 1: Expecting: expecting at least one iteration which starts with one of these possible Token sequences::\n  <[ACC_DESCR] ,[ACC_TITLE] ,[TITLE]>\nbut found: 'title T'\nParse error on line 2, column 1: Expecting end of file but found `title T`."
+  }
+}

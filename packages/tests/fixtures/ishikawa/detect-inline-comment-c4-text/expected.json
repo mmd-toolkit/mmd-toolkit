@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Inline percent text retains a C4 word hidden from detection."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R %% C4Container",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R %% C4Container",
+      "children": []
+    }
+  }
+}

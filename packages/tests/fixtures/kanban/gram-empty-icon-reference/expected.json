@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md E01 (Empty forms): Reference without the empty icon."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      }
+    ]
+  }
+}

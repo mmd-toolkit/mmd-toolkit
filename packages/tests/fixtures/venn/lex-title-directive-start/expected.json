@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The lex title directive start form stores {\"title\":\"ab\"}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "ab",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": []
+  }
+}

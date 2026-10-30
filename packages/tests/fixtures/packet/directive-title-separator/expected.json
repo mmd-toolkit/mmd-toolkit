@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: The title separator is tested after common removal."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

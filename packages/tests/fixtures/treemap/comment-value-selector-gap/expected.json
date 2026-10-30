@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Can a native comment lie between a complete number and selector?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "value": 1,
+        "classSelector": "aa"
+      }
+    ],
+    "classDefs": []
+  }
+}

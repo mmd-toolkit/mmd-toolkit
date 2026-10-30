@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Grammar: a same-line domain-looking phrase is part of the title line value, not a domain statement."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "T complex \"A\"",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  }
+}

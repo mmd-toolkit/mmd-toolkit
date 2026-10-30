@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "String eventmodeling.fontFamily is a valid control for the numeric rejection."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "eventmodeling": {
+        "fontFamily": "sans-serif"
+      }
+    }
+  }
+}

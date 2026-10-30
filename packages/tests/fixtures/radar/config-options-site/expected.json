@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Configuration keys with option names do not feed Db options."
+  },
+  "config": {
+    "radar": {
+      "showLegend": false,
+      "ticks": 0,
+      "min": 10,
+      "max": 20,
+      "graticule": "polygon"
+    }
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "A"
+      }
+    ],
+    "curves": [
+      {
+        "label": "c",
+        "entries": [
+          1
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

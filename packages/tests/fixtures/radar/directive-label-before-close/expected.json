@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md Component boundaries: Can a global directive stand between the label string and its closer?"
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "A"
+      }
+    ],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

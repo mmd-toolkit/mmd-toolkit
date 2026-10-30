@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, composite blocks: a composite with no statement is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ck-beta  block:G  end\n---------------------^\nExpecting 'BLOCK_DIAGRAM_KEY', 'LINK', 'START_LINK', 'SPACE_BLOCK', 'COLUMNS', 'id-block', 'NODE_ID', 'classDef', 'class', 'style', got 'end'"
+  }
+}

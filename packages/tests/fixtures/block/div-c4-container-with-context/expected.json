@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Known divergences: detection: `C4Context` and `C4Container` in one text: rejected."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nblock-beta  C4Conte\n^"
+  }
+}

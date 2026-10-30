@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, edges: a markdown label is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nblock-beta  A -- \"`md`\" --> B\n-------------------^\nExpecting 'LINK_LABEL', got 'MD_STR'"
+  }
+}

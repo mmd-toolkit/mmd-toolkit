@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The header boundary admits Unicode whitespace but the body lexer rejects it."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 13: unexpected character: ->　<- at offset: 12, skipped 1 characters. "
+  }
+}

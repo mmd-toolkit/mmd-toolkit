@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Markup and entity spellings are retained in each text position."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "<b onclick=x>T</b> &amp; ﬂ°°35¶ß",
+    "accTitle": "<i>AT</i> &ﬂ°°65¶ß",
+    "accDescr": "<br> <br/> <br /> </br> <BR> #br# &lt;",
+    "showData": false,
+    "sections": [
+      {
+        "label": "<script>A</script> &amp; &ﬂ°°65¶ß ﬂ°°35¶ß",
+        "value": 1
+      }
+    ]
+  }
+}

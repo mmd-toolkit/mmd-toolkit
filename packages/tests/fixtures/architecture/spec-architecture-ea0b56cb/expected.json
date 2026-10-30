@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/architecture/architecture.spec.ts",
+    "line": 275,
+    "test": "architecture diagrams > align directive > should reject an align directive whose member is not a service or junction"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "align row references [ghost], which is not a service or junction"
+  }
+}

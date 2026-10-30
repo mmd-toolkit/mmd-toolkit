@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Grammar: Source references must precede the data reference. Rejected by Mermaid."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 33: Expecting token of type 'EOF' but found `->>`."
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty payload still has a nonempty raw terminal and replaces the previous value."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "accTitle:",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

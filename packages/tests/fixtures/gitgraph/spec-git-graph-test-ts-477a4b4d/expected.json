@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/gitGraph.test.ts",
+    "line": 173,
+    "test": "Parsing CherryPicking Statements > Parsing with Accessibility Titles and Descriptions > should parse multiline accessibility descriptions"
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "Detailed description\nacross multiple lines",
+    "commits": [
+      {
+        "id": "generated-commit-1",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

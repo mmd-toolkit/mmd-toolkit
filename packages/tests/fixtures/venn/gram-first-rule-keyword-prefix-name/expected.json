@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: A bounded set keyword is selected before the longer identifier set-A, so the name position is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nvenn-betaset set-A\n-------------^\nExpecting 'IDENTIFIER', 'STRING', got 'SET'"
+  }
+}

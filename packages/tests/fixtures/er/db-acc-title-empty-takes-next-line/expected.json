@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An `accTitle` with no text takes the next line as its text: the title is `A`, and no entity is made."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "A",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

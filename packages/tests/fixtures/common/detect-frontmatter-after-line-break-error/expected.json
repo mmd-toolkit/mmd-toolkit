@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md (Diagram detection): a `---` block after a line break is no frontmatter, but in the `error` pseudo-diagram a block that satisfies the frontmatter conditions at the detection point is left out, as the detection of mermaid.js leaves it out, so the text is `error`."
+  },
+  "accepted": true,
+  "diagramType": "error",
+  "db": {}
+}

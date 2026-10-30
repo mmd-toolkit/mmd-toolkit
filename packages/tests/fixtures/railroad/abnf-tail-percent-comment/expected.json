@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ABNF comment priority can swallow a terminator preceding a percent comment."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line ?, column ?: Expecting token of type ';' but found ``."
+  }
+}

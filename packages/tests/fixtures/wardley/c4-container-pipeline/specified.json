@@ -1,0 +1,41 @@
+{
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "P",
+        "label": "P",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "P_C4Container",
+        "label": "C4Container",
+        "x": 30,
+        "y": 10,
+        "className": "pipeline-component"
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [
+      {
+        "nodeId": "P",
+        "componentIds": [
+          "P_C4Container"
+        ]
+      }
+    ],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

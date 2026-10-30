@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Metadata label text uses the same common sanitizer as bracket labels."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "a<b>=c<br>next",
+        "props": {},
+        "metadata": {
+          "label": "a<b>=c<br>next"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "labelType": "markdown",
+          "text": "a<b>=c<br>next",
+          "metadata": {
+            "label": "a<b>=c<br>next"
+          }
+        }
+      }
+    ]
+  }
+}

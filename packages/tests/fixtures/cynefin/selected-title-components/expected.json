@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Authored components: a selected semicolon can separate title from its required separator."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "style:#x"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The header before frontmatter form stores {\"title\":\"T\",\"subsets\":[{\"sets\":[\"A\"],\"size\":10}]}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [],
+    "styles": []
+  },
+  "embedded": {
+    "title": "T"
+  }
+}

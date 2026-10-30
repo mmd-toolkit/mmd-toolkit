@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Detection has no suffix boundary but the parser does."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 1: Expecting token of type 'eventmodeling' but found `eventmodelingx`."
+  }
+}

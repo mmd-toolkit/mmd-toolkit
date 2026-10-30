@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A tag is matched in lower case only; otherwise it is the start or the end."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "CRIT"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "A ",
+        "classes": [],
+        "id": "task1",
+        "order": 0
+      }
+    ],
+    "links": []
+  }
+}

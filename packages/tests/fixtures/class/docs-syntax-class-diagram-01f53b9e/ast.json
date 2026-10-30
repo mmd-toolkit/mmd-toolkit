@@ -1,0 +1,2712 @@
+{
+  "type": "Root",
+  "diagramType": "classDiagram",
+  "body": {
+    "type": "ClassDiagram",
+    "body": [
+      {
+        "type": "ClassNoteStatement",
+        "class": null,
+        "text": {
+          "type": "StringLiteral",
+          "value": "From Duck till Zebra",
+          "raw": "\"From Duck till Zebra\"",
+          "closed": true,
+          "range": [
+            52,
+            74
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 9
+            },
+            "end": {
+              "line": 5,
+              "column": 31
+            }
+          }
+        },
+        "range": [
+          47,
+          74
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 4
+          },
+          "end": {
+            "line": 5,
+            "column": 31
+          }
+        }
+      },
+      {
+        "type": "ClassRelationStatement",
+        "from": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Animal",
+            "range": [
+              79,
+              85
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 4
+              },
+              "end": {
+                "line": 6,
+                "column": 10
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            79,
+            85
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 4
+            },
+            "end": {
+              "line": 6,
+              "column": 10
+            }
+          }
+        },
+        "fromCardinality": null,
+        "arrow": {
+          "type": "ClassArrow",
+          "value": "<|--",
+          "startMarker": "triangle",
+          "line": "solid",
+          "endMarker": "none",
+          "range": [
+            86,
+            90
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 11
+            },
+            "end": {
+              "line": 6,
+              "column": 15
+            }
+          }
+        },
+        "toCardinality": null,
+        "to": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Duck",
+            "range": [
+              91,
+              95
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 16
+              },
+              "end": {
+                "line": 6,
+                "column": 20
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            91,
+            95
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 16
+            },
+            "end": {
+              "line": 6,
+              "column": 20
+            }
+          }
+        },
+        "label": null,
+        "range": [
+          79,
+          95
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 4
+          },
+          "end": {
+            "line": 6,
+            "column": 20
+          }
+        }
+      },
+      {
+        "type": "ClassNoteStatement",
+        "class": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Duck",
+            "range": [
+              109,
+              113
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 13
+              },
+              "end": {
+                "line": 7,
+                "column": 17
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            109,
+            113
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 13
+            },
+            "end": {
+              "line": 7,
+              "column": 17
+            }
+          }
+        },
+        "text": {
+          "type": "StringLiteral",
+          "value": "can fly<br>can swim<br>can dive<br>can help in debugging",
+          "raw": "\"can fly<br>can swim<br>can dive<br>can help in debugging\"",
+          "closed": true,
+          "range": [
+            114,
+            172
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 18
+            },
+            "end": {
+              "line": 7,
+              "column": 76
+            }
+          }
+        },
+        "range": [
+          100,
+          172
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 4
+          },
+          "end": {
+            "line": 7,
+            "column": 76
+          }
+        }
+      },
+      {
+        "type": "ClassRelationStatement",
+        "from": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Animal",
+            "range": [
+              177,
+              183
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 4
+              },
+              "end": {
+                "line": 8,
+                "column": 10
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            177,
+            183
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 4
+            },
+            "end": {
+              "line": 8,
+              "column": 10
+            }
+          }
+        },
+        "fromCardinality": null,
+        "arrow": {
+          "type": "ClassArrow",
+          "value": "<|--",
+          "startMarker": "triangle",
+          "line": "solid",
+          "endMarker": "none",
+          "range": [
+            184,
+            188
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 11
+            },
+            "end": {
+              "line": 8,
+              "column": 15
+            }
+          }
+        },
+        "toCardinality": null,
+        "to": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Fish",
+            "range": [
+              189,
+              193
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 16
+              },
+              "end": {
+                "line": 8,
+                "column": 20
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            189,
+            193
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 16
+            },
+            "end": {
+              "line": 8,
+              "column": 20
+            }
+          }
+        },
+        "label": null,
+        "range": [
+          177,
+          193
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 4
+          },
+          "end": {
+            "line": 8,
+            "column": 20
+          }
+        }
+      },
+      {
+        "type": "ClassRelationStatement",
+        "from": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Animal",
+            "range": [
+              198,
+              204
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 4
+              },
+              "end": {
+                "line": 9,
+                "column": 10
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            198,
+            204
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 4
+            },
+            "end": {
+              "line": 9,
+              "column": 10
+            }
+          }
+        },
+        "fromCardinality": null,
+        "arrow": {
+          "type": "ClassArrow",
+          "value": "<|--",
+          "startMarker": "triangle",
+          "line": "solid",
+          "endMarker": "none",
+          "range": [
+            205,
+            209
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 11
+            },
+            "end": {
+              "line": 9,
+              "column": 15
+            }
+          }
+        },
+        "toCardinality": null,
+        "to": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Zebra",
+            "range": [
+              210,
+              215
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 16
+              },
+              "end": {
+                "line": 9,
+                "column": 21
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            210,
+            215
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 16
+            },
+            "end": {
+              "line": 9,
+              "column": 21
+            }
+          }
+        },
+        "label": null,
+        "range": [
+          198,
+          215
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 4
+          },
+          "end": {
+            "line": 9,
+            "column": 21
+          }
+        }
+      },
+      {
+        "type": "ClassMemberStatement",
+        "class": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Animal",
+            "range": [
+              220,
+              226
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 4
+              },
+              "end": {
+                "line": 10,
+                "column": 10
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            220,
+            226
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 4
+            },
+            "end": {
+              "line": 10,
+              "column": 10
+            }
+          }
+        },
+        "member": {
+          "type": "ClassAttribute",
+          "visibility": "public",
+          "name": {
+            "type": "ClassLiteral",
+            "value": "int age",
+            "range": [
+              230,
+              237
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 14
+              },
+              "end": {
+                "line": 10,
+                "column": 21
+              }
+            }
+          },
+          "classifier": "none",
+          "range": [
+            229,
+            237
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 13
+            },
+            "end": {
+              "line": 10,
+              "column": 21
+            }
+          }
+        },
+        "range": [
+          220,
+          237
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 4
+          },
+          "end": {
+            "line": 10,
+            "column": 21
+          }
+        }
+      },
+      {
+        "type": "ClassMemberStatement",
+        "class": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Animal",
+            "range": [
+              242,
+              248
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 4
+              },
+              "end": {
+                "line": 11,
+                "column": 10
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            242,
+            248
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 4
+            },
+            "end": {
+              "line": 11,
+              "column": 10
+            }
+          }
+        },
+        "member": {
+          "type": "ClassAttribute",
+          "visibility": "public",
+          "name": {
+            "type": "ClassLiteral",
+            "value": "String gender",
+            "range": [
+              252,
+              265
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 14
+              },
+              "end": {
+                "line": 11,
+                "column": 27
+              }
+            }
+          },
+          "classifier": "none",
+          "range": [
+            251,
+            265
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 13
+            },
+            "end": {
+              "line": 11,
+              "column": 27
+            }
+          }
+        },
+        "range": [
+          242,
+          265
+        ],
+        "loc": {
+          "start": {
+            "line": 11,
+            "column": 4
+          },
+          "end": {
+            "line": 11,
+            "column": 27
+          }
+        }
+      },
+      {
+        "type": "ClassMemberStatement",
+        "class": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Animal",
+            "range": [
+              270,
+              276
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 4
+              },
+              "end": {
+                "line": 12,
+                "column": 10
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            270,
+            276
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 4
+            },
+            "end": {
+              "line": 12,
+              "column": 10
+            }
+          }
+        },
+        "member": {
+          "type": "ClassMethod",
+          "visibility": "public",
+          "name": {
+            "type": "ClassLiteral",
+            "value": "isMammal",
+            "range": [
+              279,
+              287
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 13
+              },
+              "end": {
+                "line": 12,
+                "column": 21
+              }
+            }
+          },
+          "parameters": null,
+          "returnType": null,
+          "classifier": "none",
+          "textBefore": null,
+          "textAfter": null,
+          "range": [
+            278,
+            289
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 12
+            },
+            "end": {
+              "line": 12,
+              "column": 23
+            }
+          }
+        },
+        "range": [
+          270,
+          289
+        ],
+        "loc": {
+          "start": {
+            "line": 12,
+            "column": 4
+          },
+          "end": {
+            "line": 12,
+            "column": 23
+          }
+        }
+      },
+      {
+        "type": "ClassMemberStatement",
+        "class": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Animal",
+            "range": [
+              294,
+              300
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 4
+              },
+              "end": {
+                "line": 13,
+                "column": 10
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            294,
+            300
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 4
+            },
+            "end": {
+              "line": 13,
+              "column": 10
+            }
+          }
+        },
+        "member": {
+          "type": "ClassMethod",
+          "visibility": "public",
+          "name": {
+            "type": "ClassLiteral",
+            "value": "mate",
+            "range": [
+              303,
+              307
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 13
+              },
+              "end": {
+                "line": 13,
+                "column": 17
+              }
+            }
+          },
+          "parameters": null,
+          "returnType": null,
+          "classifier": "none",
+          "textBefore": null,
+          "textAfter": null,
+          "range": [
+            302,
+            309
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 12
+            },
+            "end": {
+              "line": 13,
+              "column": 19
+            }
+          }
+        },
+        "range": [
+          294,
+          309
+        ],
+        "loc": {
+          "start": {
+            "line": 13,
+            "column": 4
+          },
+          "end": {
+            "line": 13,
+            "column": 19
+          }
+        }
+      },
+      {
+        "type": "ClassDeclaration",
+        "name": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Duck",
+            "range": [
+              320,
+              324
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 10
+              },
+              "end": {
+                "line": 14,
+                "column": 14
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            320,
+            324
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 10
+            },
+            "end": {
+              "line": 14,
+              "column": 14
+            }
+          }
+        },
+        "label": null,
+        "cssClass": null,
+        "annotation": null,
+        "members": [
+          {
+            "type": "ClassAttribute",
+            "visibility": "public",
+            "name": {
+              "type": "ClassLiteral",
+              "value": "String beakColor",
+              "range": [
+                335,
+                351
+              ],
+              "loc": {
+                "start": {
+                  "line": 15,
+                  "column": 9
+                },
+                "end": {
+                  "line": 15,
+                  "column": 25
+                }
+              }
+            },
+            "classifier": "none",
+            "range": [
+              334,
+              351
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 8
+              },
+              "end": {
+                "line": 15,
+                "column": 25
+              }
+            }
+          },
+          {
+            "type": "ClassMethod",
+            "visibility": "public",
+            "name": {
+              "type": "ClassLiteral",
+              "value": "swim",
+              "range": [
+                361,
+                365
+              ],
+              "loc": {
+                "start": {
+                  "line": 16,
+                  "column": 9
+                },
+                "end": {
+                  "line": 16,
+                  "column": 13
+                }
+              }
+            },
+            "parameters": null,
+            "returnType": null,
+            "classifier": "none",
+            "textBefore": null,
+            "textAfter": null,
+            "range": [
+              360,
+              367
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 8
+              },
+              "end": {
+                "line": 16,
+                "column": 15
+              }
+            }
+          },
+          {
+            "type": "ClassMethod",
+            "visibility": "public",
+            "name": {
+              "type": "ClassLiteral",
+              "value": "quack",
+              "range": [
+                377,
+                382
+              ],
+              "loc": {
+                "start": {
+                  "line": 17,
+                  "column": 9
+                },
+                "end": {
+                  "line": 17,
+                  "column": 14
+                }
+              }
+            },
+            "parameters": null,
+            "returnType": null,
+            "classifier": "none",
+            "textBefore": null,
+            "textAfter": null,
+            "range": [
+              376,
+              384
+            ],
+            "loc": {
+              "start": {
+                "line": 17,
+                "column": 8
+              },
+              "end": {
+                "line": 17,
+                "column": 16
+              }
+            }
+          }
+        ],
+        "range": [
+          314,
+          390
+        ],
+        "loc": {
+          "start": {
+            "line": 14,
+            "column": 4
+          },
+          "end": {
+            "line": 18,
+            "column": 5
+          }
+        }
+      },
+      {
+        "type": "ClassDeclaration",
+        "name": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Fish",
+            "range": [
+              401,
+              405
+            ],
+            "loc": {
+              "start": {
+                "line": 19,
+                "column": 10
+              },
+              "end": {
+                "line": 19,
+                "column": 14
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            401,
+            405
+          ],
+          "loc": {
+            "start": {
+              "line": 19,
+              "column": 10
+            },
+            "end": {
+              "line": 19,
+              "column": 14
+            }
+          }
+        },
+        "label": null,
+        "cssClass": null,
+        "annotation": null,
+        "members": [
+          {
+            "type": "ClassAttribute",
+            "visibility": "private",
+            "name": {
+              "type": "ClassLiteral",
+              "value": "int sizeInFeet",
+              "range": [
+                416,
+                430
+              ],
+              "loc": {
+                "start": {
+                  "line": 20,
+                  "column": 9
+                },
+                "end": {
+                  "line": 20,
+                  "column": 23
+                }
+              }
+            },
+            "classifier": "none",
+            "range": [
+              415,
+              430
+            ],
+            "loc": {
+              "start": {
+                "line": 20,
+                "column": 8
+              },
+              "end": {
+                "line": 20,
+                "column": 23
+              }
+            }
+          },
+          {
+            "type": "ClassMethod",
+            "visibility": "private",
+            "name": {
+              "type": "ClassLiteral",
+              "value": "canEat",
+              "range": [
+                440,
+                446
+              ],
+              "loc": {
+                "start": {
+                  "line": 21,
+                  "column": 9
+                },
+                "end": {
+                  "line": 21,
+                  "column": 15
+                }
+              }
+            },
+            "parameters": null,
+            "returnType": null,
+            "classifier": "none",
+            "textBefore": null,
+            "textAfter": null,
+            "range": [
+              439,
+              448
+            ],
+            "loc": {
+              "start": {
+                "line": 21,
+                "column": 8
+              },
+              "end": {
+                "line": 21,
+                "column": 17
+              }
+            }
+          }
+        ],
+        "range": [
+          395,
+          454
+        ],
+        "loc": {
+          "start": {
+            "line": 19,
+            "column": 4
+          },
+          "end": {
+            "line": 22,
+            "column": 5
+          }
+        }
+      },
+      {
+        "type": "ClassDeclaration",
+        "name": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "Zebra",
+            "range": [
+              465,
+              470
+            ],
+            "loc": {
+              "start": {
+                "line": 23,
+                "column": 10
+              },
+              "end": {
+                "line": 23,
+                "column": 15
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            465,
+            470
+          ],
+          "loc": {
+            "start": {
+              "line": 23,
+              "column": 10
+            },
+            "end": {
+              "line": 23,
+              "column": 15
+            }
+          }
+        },
+        "label": null,
+        "cssClass": null,
+        "annotation": null,
+        "members": [
+          {
+            "type": "ClassAttribute",
+            "visibility": "public",
+            "name": {
+              "type": "ClassLiteral",
+              "value": "bool is_wild",
+              "range": [
+                481,
+                493
+              ],
+              "loc": {
+                "start": {
+                  "line": 24,
+                  "column": 9
+                },
+                "end": {
+                  "line": 24,
+                  "column": 21
+                }
+              }
+            },
+            "classifier": "none",
+            "range": [
+              480,
+              493
+            ],
+            "loc": {
+              "start": {
+                "line": 24,
+                "column": 8
+              },
+              "end": {
+                "line": 24,
+                "column": 21
+              }
+            }
+          },
+          {
+            "type": "ClassMethod",
+            "visibility": "public",
+            "name": {
+              "type": "ClassLiteral",
+              "value": "run",
+              "range": [
+                503,
+                506
+              ],
+              "loc": {
+                "start": {
+                  "line": 25,
+                  "column": 9
+                },
+                "end": {
+                  "line": 25,
+                  "column": 12
+                }
+              }
+            },
+            "parameters": null,
+            "returnType": null,
+            "classifier": "none",
+            "textBefore": null,
+            "textAfter": null,
+            "range": [
+              502,
+              508
+            ],
+            "loc": {
+              "start": {
+                "line": 25,
+                "column": 8
+              },
+              "end": {
+                "line": 25,
+                "column": 14
+              }
+            }
+          }
+        ],
+        "range": [
+          459,
+          514
+        ],
+        "loc": {
+          "start": {
+            "line": 23,
+            "column": 4
+          },
+          "end": {
+            "line": 26,
+            "column": 5
+          }
+        }
+      }
+    ],
+    "range": [
+      30,
+      514
+    ],
+    "loc": {
+      "start": {
+        "line": 4,
+        "column": 0
+      },
+      "end": {
+        "line": 26,
+        "column": 5
+      }
+    }
+  },
+  "frontmatter": {
+    "type": "Frontmatter",
+    "value": "title: Animal example",
+    "valueRange": [
+      4,
+      25
+    ],
+    "range": [
+      0,
+      29
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 3
+      }
+    }
+  },
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        0,
+        3
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "title: Animal example",
+      "range": [
+        4,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        26,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "classDiagram",
+      "range": [
+        30,
+        42
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "note",
+      "range": [
+        47,
+        51
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 4
+        },
+        "end": {
+          "line": 5,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"From Duck till Zebra\"",
+      "range": [
+        52,
+        74
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 9
+        },
+        "end": {
+          "line": 5,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Animal",
+      "range": [
+        79,
+        85
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 4
+        },
+        "end": {
+          "line": 6,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "<|",
+      "range": [
+        86,
+        88
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 11
+        },
+        "end": {
+          "line": 6,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        88,
+        90
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 13
+        },
+        "end": {
+          "line": 6,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Duck",
+      "range": [
+        91,
+        95
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 16
+        },
+        "end": {
+          "line": 6,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "note",
+      "range": [
+        100,
+        104
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 4
+        },
+        "end": {
+          "line": 7,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "for",
+      "range": [
+        105,
+        108
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 9
+        },
+        "end": {
+          "line": 7,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Duck",
+      "range": [
+        109,
+        113
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 13
+        },
+        "end": {
+          "line": 7,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"can fly<br>can swim<br>can dive<br>can help in debugging\"",
+      "range": [
+        114,
+        172
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 18
+        },
+        "end": {
+          "line": 7,
+          "column": 76
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Animal",
+      "range": [
+        177,
+        183
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 4
+        },
+        "end": {
+          "line": 8,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "<|",
+      "range": [
+        184,
+        186
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 11
+        },
+        "end": {
+          "line": 8,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        186,
+        188
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 13
+        },
+        "end": {
+          "line": 8,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Fish",
+      "range": [
+        189,
+        193
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 16
+        },
+        "end": {
+          "line": 8,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Animal",
+      "range": [
+        198,
+        204
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 4
+        },
+        "end": {
+          "line": 9,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "<|",
+      "range": [
+        205,
+        207
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 11
+        },
+        "end": {
+          "line": 9,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        207,
+        209
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 13
+        },
+        "end": {
+          "line": 9,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Zebra",
+      "range": [
+        210,
+        215
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 16
+        },
+        "end": {
+          "line": 9,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Animal",
+      "range": [
+        220,
+        226
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 4
+        },
+        "end": {
+          "line": 10,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        227,
+        228
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 11
+        },
+        "end": {
+          "line": 10,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "+",
+      "range": [
+        229,
+        230
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 13
+        },
+        "end": {
+          "line": 10,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "int age",
+      "range": [
+        230,
+        237
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 14
+        },
+        "end": {
+          "line": 10,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Animal",
+      "range": [
+        242,
+        248
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 4
+        },
+        "end": {
+          "line": 11,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        249,
+        250
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 11
+        },
+        "end": {
+          "line": 11,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "+",
+      "range": [
+        251,
+        252
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 13
+        },
+        "end": {
+          "line": 11,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "String gender",
+      "range": [
+        252,
+        265
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 14
+        },
+        "end": {
+          "line": 11,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Animal",
+      "range": [
+        270,
+        276
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 4
+        },
+        "end": {
+          "line": 12,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        276,
+        277
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 10
+        },
+        "end": {
+          "line": 12,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "+",
+      "range": [
+        278,
+        279
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 12
+        },
+        "end": {
+          "line": 12,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "isMammal",
+      "range": [
+        279,
+        287
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 13
+        },
+        "end": {
+          "line": 12,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        287,
+        288
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 21
+        },
+        "end": {
+          "line": 12,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        288,
+        289
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 22
+        },
+        "end": {
+          "line": 12,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Animal",
+      "range": [
+        294,
+        300
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 4
+        },
+        "end": {
+          "line": 13,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        300,
+        301
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 10
+        },
+        "end": {
+          "line": 13,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "+",
+      "range": [
+        302,
+        303
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 12
+        },
+        "end": {
+          "line": 13,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "mate",
+      "range": [
+        303,
+        307
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 13
+        },
+        "end": {
+          "line": 13,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        307,
+        308
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 17
+        },
+        "end": {
+          "line": 13,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        308,
+        309
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 18
+        },
+        "end": {
+          "line": 13,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "class",
+      "range": [
+        314,
+        319
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 4
+        },
+        "end": {
+          "line": 14,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Duck",
+      "range": [
+        320,
+        324
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 10
+        },
+        "end": {
+          "line": 14,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        324,
+        325
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 14
+        },
+        "end": {
+          "line": 14,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "+",
+      "range": [
+        334,
+        335
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 8
+        },
+        "end": {
+          "line": 15,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "String beakColor",
+      "range": [
+        335,
+        351
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 9
+        },
+        "end": {
+          "line": 15,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "+",
+      "range": [
+        360,
+        361
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 8
+        },
+        "end": {
+          "line": 16,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "swim",
+      "range": [
+        361,
+        365
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 9
+        },
+        "end": {
+          "line": 16,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        365,
+        366
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 13
+        },
+        "end": {
+          "line": 16,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        366,
+        367
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 14
+        },
+        "end": {
+          "line": 16,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "+",
+      "range": [
+        376,
+        377
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 8
+        },
+        "end": {
+          "line": 17,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "quack",
+      "range": [
+        377,
+        382
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 9
+        },
+        "end": {
+          "line": 17,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        382,
+        383
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 14
+        },
+        "end": {
+          "line": 17,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        383,
+        384
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 15
+        },
+        "end": {
+          "line": 17,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        389,
+        390
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 4
+        },
+        "end": {
+          "line": 18,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "class",
+      "range": [
+        395,
+        400
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 4
+        },
+        "end": {
+          "line": 19,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Fish",
+      "range": [
+        401,
+        405
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 10
+        },
+        "end": {
+          "line": 19,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        405,
+        406
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 14
+        },
+        "end": {
+          "line": 19,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-",
+      "range": [
+        415,
+        416
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 8
+        },
+        "end": {
+          "line": 20,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "int sizeInFeet",
+      "range": [
+        416,
+        430
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 9
+        },
+        "end": {
+          "line": 20,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-",
+      "range": [
+        439,
+        440
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 8
+        },
+        "end": {
+          "line": 21,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "canEat",
+      "range": [
+        440,
+        446
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 9
+        },
+        "end": {
+          "line": 21,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        446,
+        447
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 15
+        },
+        "end": {
+          "line": 21,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        447,
+        448
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 16
+        },
+        "end": {
+          "line": 21,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        453,
+        454
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 4
+        },
+        "end": {
+          "line": 22,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "class",
+      "range": [
+        459,
+        464
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 4
+        },
+        "end": {
+          "line": 23,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Zebra",
+      "range": [
+        465,
+        470
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 10
+        },
+        "end": {
+          "line": 23,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        470,
+        471
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 15
+        },
+        "end": {
+          "line": 23,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "+",
+      "range": [
+        480,
+        481
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 8
+        },
+        "end": {
+          "line": 24,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "bool is_wild",
+      "range": [
+        481,
+        493
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 9
+        },
+        "end": {
+          "line": 24,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "+",
+      "range": [
+        502,
+        503
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 8
+        },
+        "end": {
+          "line": 25,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "run",
+      "range": [
+        503,
+        506
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 9
+        },
+        "end": {
+          "line": 25,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        506,
+        507
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 12
+        },
+        "end": {
+          "line": 25,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        507,
+        508
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 13
+        },
+        "end": {
+          "line": 25,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        513,
+        514
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 4
+        },
+        "end": {
+          "line": 26,
+          "column": 5
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    515
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 27,
+      "column": 0
+    }
+  }
+}

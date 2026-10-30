@@ -1,0 +1,3104 @@
+{
+  "type": "Root",
+  "diagramType": "gitGraph",
+  "body": {
+    "type": "GitgraphDiagram",
+    "direction": null,
+    "textBeforeHeader": [],
+    "textBeforeDirection": [],
+    "textBeforeColon": [],
+    "body": [
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [],
+        "textAfter": [],
+        "range": [
+          111,
+          117
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 8
+          },
+          "end": {
+            "line": 9,
+            "column": 14
+          }
+        }
+      },
+      {
+        "type": "GitgraphBranchStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "hotfix",
+          "range": [
+            133,
+            139
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 15
+            },
+            "end": {
+              "line": 10,
+              "column": 21
+            }
+          }
+        },
+        "order": null,
+        "textAfter": [],
+        "range": [
+          126,
+          139
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 8
+          },
+          "end": {
+            "line": 10,
+            "column": 21
+          }
+        }
+      },
+      {
+        "type": "GitgraphCheckoutStatement",
+        "keyword": "checkout",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "hotfix",
+          "range": [
+            157,
+            163
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 17
+            },
+            "end": {
+              "line": 11,
+              "column": 23
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          148,
+          163
+        ],
+        "loc": {
+          "start": {
+            "line": 11,
+            "column": 8
+          },
+          "end": {
+            "line": 11,
+            "column": 23
+          }
+        }
+      },
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [],
+        "textAfter": [],
+        "range": [
+          172,
+          178
+        ],
+        "loc": {
+          "start": {
+            "line": 12,
+            "column": 8
+          },
+          "end": {
+            "line": 12,
+            "column": 14
+          }
+        }
+      },
+      {
+        "type": "GitgraphBranchStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "develop",
+          "range": [
+            194,
+            201
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 15
+            },
+            "end": {
+              "line": 13,
+              "column": 22
+            }
+          }
+        },
+        "order": null,
+        "textAfter": [],
+        "range": [
+          187,
+          201
+        ],
+        "loc": {
+          "start": {
+            "line": 13,
+            "column": 8
+          },
+          "end": {
+            "line": 13,
+            "column": 22
+          }
+        }
+      },
+      {
+        "type": "GitgraphCheckoutStatement",
+        "keyword": "checkout",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "develop",
+          "range": [
+            219,
+            226
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 17
+            },
+            "end": {
+              "line": 14,
+              "column": 24
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          210,
+          226
+        ],
+        "loc": {
+          "start": {
+            "line": 14,
+            "column": 8
+          },
+          "end": {
+            "line": 14,
+            "column": 24
+          }
+        }
+      },
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [
+          {
+            "type": "GitgraphIdOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": {
+              "type": "StringLiteral",
+              "value": "ash",
+              "raw": "\"ash\"",
+              "closed": true,
+              "range": [
+                245,
+                250
+              ],
+              "loc": {
+                "start": {
+                  "line": 15,
+                  "column": 18
+                },
+                "end": {
+                  "line": 15,
+                  "column": 23
+                }
+              }
+            },
+            "range": [
+              242,
+              250
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 15
+              },
+              "end": {
+                "line": 15,
+                "column": 23
+              }
+            }
+          },
+          {
+            "type": "GitgraphTagOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": {
+              "type": "StringLiteral",
+              "value": "abc",
+              "raw": "\"abc\"",
+              "closed": true,
+              "range": [
+                255,
+                260
+              ],
+              "loc": {
+                "start": {
+                  "line": 15,
+                  "column": 28
+                },
+                "end": {
+                  "line": 15,
+                  "column": 33
+                }
+              }
+            },
+            "range": [
+              251,
+              260
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 24
+              },
+              "end": {
+                "line": 15,
+                "column": 33
+              }
+            }
+          }
+        ],
+        "textAfter": [],
+        "range": [
+          235,
+          260
+        ],
+        "loc": {
+          "start": {
+            "line": 15,
+            "column": 8
+          },
+          "end": {
+            "line": 15,
+            "column": 33
+          }
+        }
+      },
+      {
+        "type": "GitgraphBranchStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "featureB",
+          "range": [
+            276,
+            284
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 15
+            },
+            "end": {
+              "line": 16,
+              "column": 23
+            }
+          }
+        },
+        "order": null,
+        "textAfter": [],
+        "range": [
+          269,
+          284
+        ],
+        "loc": {
+          "start": {
+            "line": 16,
+            "column": 8
+          },
+          "end": {
+            "line": 16,
+            "column": 23
+          }
+        }
+      },
+      {
+        "type": "GitgraphCheckoutStatement",
+        "keyword": "checkout",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "featureB",
+          "range": [
+            302,
+            310
+          ],
+          "loc": {
+            "start": {
+              "line": 17,
+              "column": 17
+            },
+            "end": {
+              "line": 17,
+              "column": 25
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          293,
+          310
+        ],
+        "loc": {
+          "start": {
+            "line": 17,
+            "column": 8
+          },
+          "end": {
+            "line": 17,
+            "column": 25
+          }
+        }
+      },
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [
+          {
+            "type": "GitgraphTypeOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": "HIGHLIGHT",
+            "range": [
+              326,
+              340
+            ],
+            "loc": {
+              "start": {
+                "line": 18,
+                "column": 15
+              },
+              "end": {
+                "line": 18,
+                "column": 29
+              }
+            }
+          }
+        ],
+        "textAfter": [],
+        "range": [
+          319,
+          340
+        ],
+        "loc": {
+          "start": {
+            "line": 18,
+            "column": 8
+          },
+          "end": {
+            "line": 18,
+            "column": 29
+          }
+        }
+      },
+      {
+        "type": "GitgraphCheckoutStatement",
+        "keyword": "checkout",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "main",
+          "range": [
+            358,
+            362
+          ],
+          "loc": {
+            "start": {
+              "line": 19,
+              "column": 17
+            },
+            "end": {
+              "line": 19,
+              "column": 21
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          349,
+          362
+        ],
+        "loc": {
+          "start": {
+            "line": 19,
+            "column": 8
+          },
+          "end": {
+            "line": 19,
+            "column": 21
+          }
+        }
+      },
+      {
+        "type": "GitgraphCheckoutStatement",
+        "keyword": "checkout",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "hotfix",
+          "range": [
+            380,
+            386
+          ],
+          "loc": {
+            "start": {
+              "line": 20,
+              "column": 17
+            },
+            "end": {
+              "line": 20,
+              "column": 23
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          371,
+          386
+        ],
+        "loc": {
+          "start": {
+            "line": 20,
+            "column": 8
+          },
+          "end": {
+            "line": 20,
+            "column": 23
+          }
+        }
+      },
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [
+          {
+            "type": "GitgraphTypeOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": "NORMAL",
+            "range": [
+              402,
+              413
+            ],
+            "loc": {
+              "start": {
+                "line": 21,
+                "column": 15
+              },
+              "end": {
+                "line": 21,
+                "column": 26
+              }
+            }
+          }
+        ],
+        "textAfter": [],
+        "range": [
+          395,
+          413
+        ],
+        "loc": {
+          "start": {
+            "line": 21,
+            "column": 8
+          },
+          "end": {
+            "line": 21,
+            "column": 26
+          }
+        }
+      },
+      {
+        "type": "GitgraphCheckoutStatement",
+        "keyword": "checkout",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "develop",
+          "range": [
+            431,
+            438
+          ],
+          "loc": {
+            "start": {
+              "line": 22,
+              "column": 17
+            },
+            "end": {
+              "line": 22,
+              "column": 24
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          422,
+          438
+        ],
+        "loc": {
+          "start": {
+            "line": 22,
+            "column": 8
+          },
+          "end": {
+            "line": 22,
+            "column": 24
+          }
+        }
+      },
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [
+          {
+            "type": "GitgraphTypeOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": "REVERSE",
+            "range": [
+              454,
+              466
+            ],
+            "loc": {
+              "start": {
+                "line": 23,
+                "column": 15
+              },
+              "end": {
+                "line": 23,
+                "column": 27
+              }
+            }
+          }
+        ],
+        "textAfter": [],
+        "range": [
+          447,
+          466
+        ],
+        "loc": {
+          "start": {
+            "line": 23,
+            "column": 8
+          },
+          "end": {
+            "line": 23,
+            "column": 27
+          }
+        }
+      },
+      {
+        "type": "GitgraphCheckoutStatement",
+        "keyword": "checkout",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "featureB",
+          "range": [
+            484,
+            492
+          ],
+          "loc": {
+            "start": {
+              "line": 24,
+              "column": 17
+            },
+            "end": {
+              "line": 24,
+              "column": 25
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          475,
+          492
+        ],
+        "loc": {
+          "start": {
+            "line": 24,
+            "column": 8
+          },
+          "end": {
+            "line": 24,
+            "column": 25
+          }
+        }
+      },
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [],
+        "textAfter": [],
+        "range": [
+          501,
+          507
+        ],
+        "loc": {
+          "start": {
+            "line": 25,
+            "column": 8
+          },
+          "end": {
+            "line": 25,
+            "column": 14
+          }
+        }
+      },
+      {
+        "type": "GitgraphCheckoutStatement",
+        "keyword": "checkout",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "main",
+          "range": [
+            525,
+            529
+          ],
+          "loc": {
+            "start": {
+              "line": 26,
+              "column": 17
+            },
+            "end": {
+              "line": 26,
+              "column": 21
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          516,
+          529
+        ],
+        "loc": {
+          "start": {
+            "line": 26,
+            "column": 8
+          },
+          "end": {
+            "line": 26,
+            "column": 21
+          }
+        }
+      },
+      {
+        "type": "GitgraphMergeStatement",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "hotfix",
+          "range": [
+            544,
+            550
+          ],
+          "loc": {
+            "start": {
+              "line": 27,
+              "column": 14
+            },
+            "end": {
+              "line": 27,
+              "column": 20
+            }
+          }
+        },
+        "options": [],
+        "textAfter": [],
+        "range": [
+          538,
+          550
+        ],
+        "loc": {
+          "start": {
+            "line": 27,
+            "column": 8
+          },
+          "end": {
+            "line": 27,
+            "column": 20
+          }
+        }
+      },
+      {
+        "type": "GitgraphCheckoutStatement",
+        "keyword": "checkout",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "featureB",
+          "range": [
+            568,
+            576
+          ],
+          "loc": {
+            "start": {
+              "line": 28,
+              "column": 17
+            },
+            "end": {
+              "line": 28,
+              "column": 25
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          559,
+          576
+        ],
+        "loc": {
+          "start": {
+            "line": 28,
+            "column": 8
+          },
+          "end": {
+            "line": 28,
+            "column": 25
+          }
+        }
+      },
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [],
+        "textAfter": [],
+        "range": [
+          585,
+          591
+        ],
+        "loc": {
+          "start": {
+            "line": 29,
+            "column": 8
+          },
+          "end": {
+            "line": 29,
+            "column": 14
+          }
+        }
+      },
+      {
+        "type": "GitgraphCheckoutStatement",
+        "keyword": "checkout",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "develop",
+          "range": [
+            609,
+            616
+          ],
+          "loc": {
+            "start": {
+              "line": 30,
+              "column": 17
+            },
+            "end": {
+              "line": 30,
+              "column": 24
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          600,
+          616
+        ],
+        "loc": {
+          "start": {
+            "line": 30,
+            "column": 8
+          },
+          "end": {
+            "line": 30,
+            "column": 24
+          }
+        }
+      },
+      {
+        "type": "GitgraphBranchStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "featureA",
+          "range": [
+            632,
+            640
+          ],
+          "loc": {
+            "start": {
+              "line": 31,
+              "column": 15
+            },
+            "end": {
+              "line": 31,
+              "column": 23
+            }
+          }
+        },
+        "order": null,
+        "textAfter": [],
+        "range": [
+          625,
+          640
+        ],
+        "loc": {
+          "start": {
+            "line": 31,
+            "column": 8
+          },
+          "end": {
+            "line": 31,
+            "column": 23
+          }
+        }
+      },
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [],
+        "textAfter": [],
+        "range": [
+          649,
+          655
+        ],
+        "loc": {
+          "start": {
+            "line": 32,
+            "column": 8
+          },
+          "end": {
+            "line": 32,
+            "column": 14
+          }
+        }
+      },
+      {
+        "type": "GitgraphCheckoutStatement",
+        "keyword": "checkout",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "develop",
+          "range": [
+            673,
+            680
+          ],
+          "loc": {
+            "start": {
+              "line": 33,
+              "column": 17
+            },
+            "end": {
+              "line": 33,
+              "column": 24
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          664,
+          680
+        ],
+        "loc": {
+          "start": {
+            "line": 33,
+            "column": 8
+          },
+          "end": {
+            "line": 33,
+            "column": 24
+          }
+        }
+      },
+      {
+        "type": "GitgraphMergeStatement",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "hotfix",
+          "range": [
+            695,
+            701
+          ],
+          "loc": {
+            "start": {
+              "line": 34,
+              "column": 14
+            },
+            "end": {
+              "line": 34,
+              "column": 20
+            }
+          }
+        },
+        "options": [],
+        "textAfter": [],
+        "range": [
+          689,
+          701
+        ],
+        "loc": {
+          "start": {
+            "line": 34,
+            "column": 8
+          },
+          "end": {
+            "line": 34,
+            "column": 20
+          }
+        }
+      },
+      {
+        "type": "GitgraphCheckoutStatement",
+        "keyword": "checkout",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "featureA",
+          "range": [
+            719,
+            727
+          ],
+          "loc": {
+            "start": {
+              "line": 35,
+              "column": 17
+            },
+            "end": {
+              "line": 35,
+              "column": 25
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          710,
+          727
+        ],
+        "loc": {
+          "start": {
+            "line": 35,
+            "column": 8
+          },
+          "end": {
+            "line": 35,
+            "column": 25
+          }
+        }
+      },
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [],
+        "textAfter": [],
+        "range": [
+          736,
+          742
+        ],
+        "loc": {
+          "start": {
+            "line": 36,
+            "column": 8
+          },
+          "end": {
+            "line": 36,
+            "column": 14
+          }
+        }
+      },
+      {
+        "type": "GitgraphCheckoutStatement",
+        "keyword": "checkout",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "featureB",
+          "range": [
+            760,
+            768
+          ],
+          "loc": {
+            "start": {
+              "line": 37,
+              "column": 17
+            },
+            "end": {
+              "line": 37,
+              "column": 25
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          751,
+          768
+        ],
+        "loc": {
+          "start": {
+            "line": 37,
+            "column": 8
+          },
+          "end": {
+            "line": 37,
+            "column": 25
+          }
+        }
+      },
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [],
+        "textAfter": [],
+        "range": [
+          777,
+          783
+        ],
+        "loc": {
+          "start": {
+            "line": 38,
+            "column": 8
+          },
+          "end": {
+            "line": 38,
+            "column": 14
+          }
+        }
+      },
+      {
+        "type": "GitgraphCheckoutStatement",
+        "keyword": "checkout",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "develop",
+          "range": [
+            801,
+            808
+          ],
+          "loc": {
+            "start": {
+              "line": 39,
+              "column": 17
+            },
+            "end": {
+              "line": 39,
+              "column": 24
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          792,
+          808
+        ],
+        "loc": {
+          "start": {
+            "line": 39,
+            "column": 8
+          },
+          "end": {
+            "line": 39,
+            "column": 24
+          }
+        }
+      },
+      {
+        "type": "GitgraphMergeStatement",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "featureA",
+          "range": [
+            823,
+            831
+          ],
+          "loc": {
+            "start": {
+              "line": 40,
+              "column": 14
+            },
+            "end": {
+              "line": 40,
+              "column": 22
+            }
+          }
+        },
+        "options": [],
+        "textAfter": [],
+        "range": [
+          817,
+          831
+        ],
+        "loc": {
+          "start": {
+            "line": 40,
+            "column": 8
+          },
+          "end": {
+            "line": 40,
+            "column": 22
+          }
+        }
+      },
+      {
+        "type": "GitgraphBranchStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "release",
+          "range": [
+            847,
+            854
+          ],
+          "loc": {
+            "start": {
+              "line": 41,
+              "column": 15
+            },
+            "end": {
+              "line": 41,
+              "column": 22
+            }
+          }
+        },
+        "order": null,
+        "textAfter": [],
+        "range": [
+          840,
+          854
+        ],
+        "loc": {
+          "start": {
+            "line": 41,
+            "column": 8
+          },
+          "end": {
+            "line": 41,
+            "column": 22
+          }
+        }
+      },
+      {
+        "type": "GitgraphCheckoutStatement",
+        "keyword": "checkout",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "release",
+          "range": [
+            872,
+            879
+          ],
+          "loc": {
+            "start": {
+              "line": 42,
+              "column": 17
+            },
+            "end": {
+              "line": 42,
+              "column": 24
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          863,
+          879
+        ],
+        "loc": {
+          "start": {
+            "line": 42,
+            "column": 8
+          },
+          "end": {
+            "line": 42,
+            "column": 24
+          }
+        }
+      },
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [],
+        "textAfter": [],
+        "range": [
+          888,
+          894
+        ],
+        "loc": {
+          "start": {
+            "line": 43,
+            "column": 8
+          },
+          "end": {
+            "line": 43,
+            "column": 14
+          }
+        }
+      },
+      {
+        "type": "GitgraphCheckoutStatement",
+        "keyword": "checkout",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "main",
+          "range": [
+            912,
+            916
+          ],
+          "loc": {
+            "start": {
+              "line": 44,
+              "column": 17
+            },
+            "end": {
+              "line": 44,
+              "column": 21
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          903,
+          916
+        ],
+        "loc": {
+          "start": {
+            "line": 44,
+            "column": 8
+          },
+          "end": {
+            "line": 44,
+            "column": 21
+          }
+        }
+      },
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [],
+        "textAfter": [],
+        "range": [
+          925,
+          931
+        ],
+        "loc": {
+          "start": {
+            "line": 45,
+            "column": 8
+          },
+          "end": {
+            "line": 45,
+            "column": 14
+          }
+        }
+      },
+      {
+        "type": "GitgraphCheckoutStatement",
+        "keyword": "checkout",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "release",
+          "range": [
+            949,
+            956
+          ],
+          "loc": {
+            "start": {
+              "line": 46,
+              "column": 17
+            },
+            "end": {
+              "line": 46,
+              "column": 24
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          940,
+          956
+        ],
+        "loc": {
+          "start": {
+            "line": 46,
+            "column": 8
+          },
+          "end": {
+            "line": 46,
+            "column": 24
+          }
+        }
+      },
+      {
+        "type": "GitgraphMergeStatement",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "main",
+          "range": [
+            971,
+            975
+          ],
+          "loc": {
+            "start": {
+              "line": 47,
+              "column": 14
+            },
+            "end": {
+              "line": 47,
+              "column": 18
+            }
+          }
+        },
+        "options": [],
+        "textAfter": [],
+        "range": [
+          965,
+          975
+        ],
+        "loc": {
+          "start": {
+            "line": 47,
+            "column": 8
+          },
+          "end": {
+            "line": 47,
+            "column": 18
+          }
+        }
+      },
+      {
+        "type": "GitgraphCheckoutStatement",
+        "keyword": "checkout",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "develop",
+          "range": [
+            993,
+            1000
+          ],
+          "loc": {
+            "start": {
+              "line": 48,
+              "column": 17
+            },
+            "end": {
+              "line": 48,
+              "column": 24
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          984,
+          1000
+        ],
+        "loc": {
+          "start": {
+            "line": 48,
+            "column": 8
+          },
+          "end": {
+            "line": 48,
+            "column": 24
+          }
+        }
+      },
+      {
+        "type": "GitgraphMergeStatement",
+        "textBeforeBranch": [],
+        "branch": {
+          "type": "Identifier",
+          "name": "release",
+          "range": [
+            1015,
+            1022
+          ],
+          "loc": {
+            "start": {
+              "line": 49,
+              "column": 14
+            },
+            "end": {
+              "line": 49,
+              "column": 21
+            }
+          }
+        },
+        "options": [],
+        "textAfter": [],
+        "range": [
+          1009,
+          1022
+        ],
+        "loc": {
+          "start": {
+            "line": 49,
+            "column": 8
+          },
+          "end": {
+            "line": 49,
+            "column": 21
+          }
+        }
+      }
+    ],
+    "range": [
+      94,
+      1022
+    ],
+    "loc": {
+      "start": {
+        "line": 8,
+        "column": 6
+      },
+      "end": {
+        "line": 49,
+        "column": 21
+      }
+    }
+  },
+  "frontmatter": {
+    "type": "Frontmatter",
+    "value": "config:\n  logLevel: 'debug'\n  theme: 'base'\n  gitGraph:\n    showBranches: false",
+    "valueRange": [
+      4,
+      83
+    ],
+    "range": [
+      0,
+      87
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 7,
+        "column": 3
+      }
+    }
+  },
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        0,
+        3
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "config:\n  logLevel: 'debug'\n  theme: 'base'\n  gitGraph:\n    showBranches: false",
+      "range": [
+        4,
+        83
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        84,
+        87
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "gitGraph",
+      "range": [
+        94,
+        102
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 6
+        },
+        "end": {
+          "line": 8,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        111,
+        117
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 8
+        },
+        "end": {
+          "line": 9,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "branch",
+      "range": [
+        126,
+        132
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 8
+        },
+        "end": {
+          "line": 10,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "hotfix",
+      "range": [
+        133,
+        139
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 15
+        },
+        "end": {
+          "line": 10,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "checkout",
+      "range": [
+        148,
+        156
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 8
+        },
+        "end": {
+          "line": 11,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "hotfix",
+      "range": [
+        157,
+        163
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 17
+        },
+        "end": {
+          "line": 11,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        172,
+        178
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 8
+        },
+        "end": {
+          "line": 12,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "branch",
+      "range": [
+        187,
+        193
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 8
+        },
+        "end": {
+          "line": 13,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "develop",
+      "range": [
+        194,
+        201
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 15
+        },
+        "end": {
+          "line": 13,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "checkout",
+      "range": [
+        210,
+        218
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 8
+        },
+        "end": {
+          "line": 14,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "develop",
+      "range": [
+        219,
+        226
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 17
+        },
+        "end": {
+          "line": 14,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        235,
+        241
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 8
+        },
+        "end": {
+          "line": 15,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "id",
+      "range": [
+        242,
+        244
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 15
+        },
+        "end": {
+          "line": 15,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        244,
+        245
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 17
+        },
+        "end": {
+          "line": 15,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"ash\"",
+      "range": [
+        245,
+        250
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 18
+        },
+        "end": {
+          "line": 15,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "tag",
+      "range": [
+        251,
+        254
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 24
+        },
+        "end": {
+          "line": 15,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        254,
+        255
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 27
+        },
+        "end": {
+          "line": 15,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"abc\"",
+      "range": [
+        255,
+        260
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 28
+        },
+        "end": {
+          "line": 15,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "branch",
+      "range": [
+        269,
+        275
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 8
+        },
+        "end": {
+          "line": 16,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "featureB",
+      "range": [
+        276,
+        284
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 15
+        },
+        "end": {
+          "line": 16,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "checkout",
+      "range": [
+        293,
+        301
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 8
+        },
+        "end": {
+          "line": 17,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "featureB",
+      "range": [
+        302,
+        310
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 17
+        },
+        "end": {
+          "line": 17,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        319,
+        325
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 8
+        },
+        "end": {
+          "line": 18,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "type",
+      "range": [
+        326,
+        330
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 15
+        },
+        "end": {
+          "line": 18,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        330,
+        331
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 19
+        },
+        "end": {
+          "line": 18,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "HIGHLIGHT",
+      "range": [
+        331,
+        340
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 20
+        },
+        "end": {
+          "line": 18,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "checkout",
+      "range": [
+        349,
+        357
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 8
+        },
+        "end": {
+          "line": 19,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "main",
+      "range": [
+        358,
+        362
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 17
+        },
+        "end": {
+          "line": 19,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "checkout",
+      "range": [
+        371,
+        379
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 8
+        },
+        "end": {
+          "line": 20,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "hotfix",
+      "range": [
+        380,
+        386
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 17
+        },
+        "end": {
+          "line": 20,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        395,
+        401
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 8
+        },
+        "end": {
+          "line": 21,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "type",
+      "range": [
+        402,
+        406
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 15
+        },
+        "end": {
+          "line": 21,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        406,
+        407
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 19
+        },
+        "end": {
+          "line": 21,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "NORMAL",
+      "range": [
+        407,
+        413
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 20
+        },
+        "end": {
+          "line": 21,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "checkout",
+      "range": [
+        422,
+        430
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 8
+        },
+        "end": {
+          "line": 22,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "develop",
+      "range": [
+        431,
+        438
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 17
+        },
+        "end": {
+          "line": 22,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        447,
+        453
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 8
+        },
+        "end": {
+          "line": 23,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "type",
+      "range": [
+        454,
+        458
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 15
+        },
+        "end": {
+          "line": 23,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        458,
+        459
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 19
+        },
+        "end": {
+          "line": 23,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "REVERSE",
+      "range": [
+        459,
+        466
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 20
+        },
+        "end": {
+          "line": 23,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "checkout",
+      "range": [
+        475,
+        483
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 8
+        },
+        "end": {
+          "line": 24,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "featureB",
+      "range": [
+        484,
+        492
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 17
+        },
+        "end": {
+          "line": 24,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        501,
+        507
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 8
+        },
+        "end": {
+          "line": 25,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "checkout",
+      "range": [
+        516,
+        524
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 8
+        },
+        "end": {
+          "line": 26,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "main",
+      "range": [
+        525,
+        529
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 17
+        },
+        "end": {
+          "line": 26,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "merge",
+      "range": [
+        538,
+        543
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 8
+        },
+        "end": {
+          "line": 27,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "hotfix",
+      "range": [
+        544,
+        550
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 14
+        },
+        "end": {
+          "line": 27,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "checkout",
+      "range": [
+        559,
+        567
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 8
+        },
+        "end": {
+          "line": 28,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "featureB",
+      "range": [
+        568,
+        576
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 17
+        },
+        "end": {
+          "line": 28,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        585,
+        591
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 8
+        },
+        "end": {
+          "line": 29,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "checkout",
+      "range": [
+        600,
+        608
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 8
+        },
+        "end": {
+          "line": 30,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "develop",
+      "range": [
+        609,
+        616
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 17
+        },
+        "end": {
+          "line": 30,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "branch",
+      "range": [
+        625,
+        631
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 8
+        },
+        "end": {
+          "line": 31,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "featureA",
+      "range": [
+        632,
+        640
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 15
+        },
+        "end": {
+          "line": 31,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        649,
+        655
+      ],
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 8
+        },
+        "end": {
+          "line": 32,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "checkout",
+      "range": [
+        664,
+        672
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 8
+        },
+        "end": {
+          "line": 33,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "develop",
+      "range": [
+        673,
+        680
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 17
+        },
+        "end": {
+          "line": 33,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "merge",
+      "range": [
+        689,
+        694
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 8
+        },
+        "end": {
+          "line": 34,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "hotfix",
+      "range": [
+        695,
+        701
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 14
+        },
+        "end": {
+          "line": 34,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "checkout",
+      "range": [
+        710,
+        718
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 8
+        },
+        "end": {
+          "line": 35,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "featureA",
+      "range": [
+        719,
+        727
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 17
+        },
+        "end": {
+          "line": 35,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        736,
+        742
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 8
+        },
+        "end": {
+          "line": 36,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "checkout",
+      "range": [
+        751,
+        759
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 8
+        },
+        "end": {
+          "line": 37,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "featureB",
+      "range": [
+        760,
+        768
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 17
+        },
+        "end": {
+          "line": 37,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        777,
+        783
+      ],
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 8
+        },
+        "end": {
+          "line": 38,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "checkout",
+      "range": [
+        792,
+        800
+      ],
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 8
+        },
+        "end": {
+          "line": 39,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "develop",
+      "range": [
+        801,
+        808
+      ],
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 17
+        },
+        "end": {
+          "line": 39,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "merge",
+      "range": [
+        817,
+        822
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 8
+        },
+        "end": {
+          "line": 40,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "featureA",
+      "range": [
+        823,
+        831
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 14
+        },
+        "end": {
+          "line": 40,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "branch",
+      "range": [
+        840,
+        846
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 8
+        },
+        "end": {
+          "line": 41,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "release",
+      "range": [
+        847,
+        854
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 15
+        },
+        "end": {
+          "line": 41,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "checkout",
+      "range": [
+        863,
+        871
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 8
+        },
+        "end": {
+          "line": 42,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "release",
+      "range": [
+        872,
+        879
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 17
+        },
+        "end": {
+          "line": 42,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        888,
+        894
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 8
+        },
+        "end": {
+          "line": 43,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "checkout",
+      "range": [
+        903,
+        911
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 8
+        },
+        "end": {
+          "line": 44,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "main",
+      "range": [
+        912,
+        916
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 17
+        },
+        "end": {
+          "line": 44,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        925,
+        931
+      ],
+      "loc": {
+        "start": {
+          "line": 45,
+          "column": 8
+        },
+        "end": {
+          "line": 45,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "checkout",
+      "range": [
+        940,
+        948
+      ],
+      "loc": {
+        "start": {
+          "line": 46,
+          "column": 8
+        },
+        "end": {
+          "line": 46,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "release",
+      "range": [
+        949,
+        956
+      ],
+      "loc": {
+        "start": {
+          "line": 46,
+          "column": 17
+        },
+        "end": {
+          "line": 46,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "merge",
+      "range": [
+        965,
+        970
+      ],
+      "loc": {
+        "start": {
+          "line": 47,
+          "column": 8
+        },
+        "end": {
+          "line": 47,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "main",
+      "range": [
+        971,
+        975
+      ],
+      "loc": {
+        "start": {
+          "line": 47,
+          "column": 14
+        },
+        "end": {
+          "line": 47,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "checkout",
+      "range": [
+        984,
+        992
+      ],
+      "loc": {
+        "start": {
+          "line": 48,
+          "column": 8
+        },
+        "end": {
+          "line": 48,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "develop",
+      "range": [
+        993,
+        1000
+      ],
+      "loc": {
+        "start": {
+          "line": 48,
+          "column": 17
+        },
+        "end": {
+          "line": 48,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "merge",
+      "range": [
+        1009,
+        1014
+      ],
+      "loc": {
+        "start": {
+          "line": 49,
+          "column": 8
+        },
+        "end": {
+          "line": 49,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "release",
+      "range": [
+        1015,
+        1022
+      ],
+      "loc": {
+        "start": {
+          "line": 49,
+          "column": 14
+        },
+        "end": {
+          "line": 49,
+          "column": 21
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    1023
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 50,
+      "column": 0
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The set label colon size directive gap boundary is rejected by the grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nvenn-betaset A[L]:2\n------------------^\nExpecting 'NUMERIC', got 'NEWLINE'"
+  }
+}

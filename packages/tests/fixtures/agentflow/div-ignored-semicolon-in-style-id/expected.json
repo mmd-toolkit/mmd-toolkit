@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid join the fragments in ignored semicolon in style id?"
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "style:#x",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "BC",
+        "labelType": "text",
+        "styles": [
+          "fill:red"
+        ],
+        "classes": [],
+        "text": "BC",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

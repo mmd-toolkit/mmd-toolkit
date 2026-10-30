@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Tasks: the tags are taken before the items are counted; two tags and four items, none read."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {},
+        "task": "a ",
+        "classes": [],
+        "done": true,
+        "crit": true,
+        "order": 0
+      }
+    ],
+    "links": []
+  }
+}

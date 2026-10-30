@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/kanban/kanban.spec.ts",
+    "line": 84,
+    "test": "when parsing a kanban  > hierarchy > 5 Multiple sections are ok"
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "section1",
+        "label": "section1",
+        "isGroup": true
+      },
+      {
+        "id": "section2",
+        "label": "section2",
+        "isGroup": true
+      }
+    ]
+  }
+}

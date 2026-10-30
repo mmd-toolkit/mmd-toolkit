@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a repeated JSON node id reject?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "ID 'J' is declared more than once (json and json) at line 3, column 6 [28,29); previous declaration at line 2, column 6 [18,19)"
+  }
+}

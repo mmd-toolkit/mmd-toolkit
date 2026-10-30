@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Building the summary: a first description equal to the id still counts: the label is A and the description y."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rectWithTitle",
+        "label": "A",
+        "description": [
+          "y"
+        ],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

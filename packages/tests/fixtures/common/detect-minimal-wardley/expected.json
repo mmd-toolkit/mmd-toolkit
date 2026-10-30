@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md entry 37: minimal accepted example of `wardley`. The header line alone is accepted."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

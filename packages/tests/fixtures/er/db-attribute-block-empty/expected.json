@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty block, written three ways, makes the entity and gives it no attributes."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      },
+      {
+        "id": "entity-B-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B",
+        "classes": []
+      },
+      {
+        "id": "entity-C-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "C",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

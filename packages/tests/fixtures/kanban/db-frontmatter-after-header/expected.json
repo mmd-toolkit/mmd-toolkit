@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "after-header frontmatter tests preprocessing without a kanban title setter."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "---",
+        "label": "---",
+        "isGroup": true
+      },
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": false,
+        "parentId": "---"
+      },
+      {
+        "id": "title: Board",
+        "label": "title: Board",
+        "isGroup": true
+      },
+      {
+        "id": "---",
+        "label": "---",
+        "isGroup": true
+      },
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": false,
+        "parentId": "---"
+      }
+    ]
+  }
+}

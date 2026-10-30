@@ -1,0 +1,80 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.2.0",
+    "path": "packages/mermaid/src/docs/syntax/mindmap.md",
+    "line": 118
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "mindmap",
+      "type": 3,
+      "children": [
+        {
+          "nodeId": "origins",
+          "level": 2,
+          "descr": "Origins",
+          "type": 6,
+          "children": [
+            {
+              "nodeId": "history",
+              "level": 4,
+              "descr": "Long history",
+              "type": 2,
+              "children": [
+                {
+                  "nodeId": "Popularisation",
+                  "level": 6,
+                  "descr": "Popularisation",
+                  "type": 0,
+                  "children": []
+                },
+                {
+                  "nodeId": "British popular psychology author Tony Buzan",
+                  "level": 6,
+                  "descr": "British popular psychology author Tony Buzan",
+                  "type": 0,
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nodeId": "research",
+          "level": 2,
+          "descr": "Research",
+          "type": 6,
+          "children": [
+            {
+              "nodeId": "uses",
+              "level": 4,
+              "descr": "Uses",
+              "type": 2,
+              "children": [
+                {
+                  "nodeId": "Creative techniques",
+                  "level": 6,
+                  "descr": "Creative techniques",
+                  "type": 0,
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "embedded": {
+    "config": {
+      "mindmap": {
+        "colorBy": "depth"
+      }
+    }
+  }
+}

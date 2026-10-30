@@ -1,0 +1,85 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Publication batches groups, services, junctions, edges and ordered layout hints independently of textual interleaving."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "Network",
+    "accDescr": "Clients and storage",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "in": "outer",
+        "iconText": "API\nnode",
+        "title": "API"
+      },
+      {
+        "id": "db",
+        "type": "service",
+        "in": "inner",
+        "icon": "database",
+        "title": "Database"
+      },
+      {
+        "id": "cross",
+        "type": "junction",
+        "in": "inner"
+      }
+    ],
+    "groups": [
+      {
+        "id": "outer",
+        "icon": "cloud",
+        "title": "Outer"
+      },
+      {
+        "id": "inner",
+        "icon": "server",
+        "title": "Inner",
+        "in": "outer"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "api",
+        "lhsDir": "R",
+        "lhsInto": true,
+        "lhsGroup": true,
+        "rhsId": "db",
+        "rhsDir": "L",
+        "rhsInto": true,
+        "rhsGroup": true,
+        "title": "traffic"
+      },
+      {
+        "lhsId": "api",
+        "lhsDir": "B",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "cross",
+        "rhsDir": "T",
+        "rhsInto": false,
+        "rhsGroup": false
+      }
+    ],
+    "layoutHints": [
+      {
+        "direction": "row",
+        "members": [
+          "api",
+          "db"
+        ]
+      },
+      {
+        "direction": "column",
+        "members": [
+          "cross",
+          "db"
+        ]
+      }
+    ]
+  }
+}

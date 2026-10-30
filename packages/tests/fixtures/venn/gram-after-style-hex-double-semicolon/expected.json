@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Removing only the last semicolon from a style line with a hex value leaves a semicolon that the lexer rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...n-betastyle A fill:ﬂ°°123¶ß\n----------------------^"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Removing one semicolon leaves the other rejecting suffix."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 31: unexpected character: ->;<- at offset: 37, skipped 1 characters. "
+  }
+}

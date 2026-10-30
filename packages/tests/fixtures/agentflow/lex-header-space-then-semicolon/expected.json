@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read header space then semicolon?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nagentflow-beta TB ;A\n------------------^\nExpecting 'NEWLINE', got 'SEMI'"
+  }
+}

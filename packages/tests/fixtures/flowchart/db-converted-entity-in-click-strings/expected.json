@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An entity is its placeholder in the converted form, in a string of a click statement as in a label."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "A",
+        "props": {},
+        "link": "a ﬂ°amp¶ß b"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [
+      {
+        "id": "A",
+        "text": "c ﬂ°lt¶ß d"
+      }
+    ]
+  }
+}

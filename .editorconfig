@@ -1,0 +1,19 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 2
+
+# Fixtures are compared byte for byte, and some end without a line break or keep
+# whitespace at the end of a line on purpose, so editors must not change line
+# endings, final line breaks, trailing whitespace, or indents there.
+[packages/{tests,eslint-plugin/tests,prettier-plugin-mmd/tests}/fixtures/**]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+indent_style = unset
+indent_size = unset

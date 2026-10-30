@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The accessibility title keyword is case-sensitive."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->A<- at offset: 5, skipped 9 characters.\nLexer error on line 2, column 11: unexpected character: ->A<- at offset: 15, skipped 1 characters. "
+  }
+}

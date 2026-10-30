@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Semantic acceptance conditions: Comparison names preserve internal whitespace, so a whitespace mismatch leaves the pipeline parent missing."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Pipeline \"A\tB\" must reference an existing component with coordinates."
+  }
+}

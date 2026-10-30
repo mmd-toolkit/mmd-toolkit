@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: A branch inside a multiline quoted name denotes spaces inside the value, not an annotation."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "one\n    :::high",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

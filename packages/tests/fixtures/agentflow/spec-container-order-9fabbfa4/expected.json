@@ -1,0 +1,76 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/containerOrder.spec.ts",
+    "line": 18,
+    "test": "agentflow container order > numbers a parent before the container nested inside it"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "b",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "b",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "inner",
+        "nodes": [
+          "a"
+        ],
+        "title": "Inner",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      },
+      {
+        "id": "outer",
+        "nodes": [
+          "inner"
+        ],
+        "title": "Outer",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      },
+      {
+        "id": "sibling",
+        "nodes": [
+          "b"
+        ],
+        "title": "Sibling",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  }
+}

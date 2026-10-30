@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The text of a tooltip holds an HTML tag with an onclick attribute. The summary records the text as written, before HTML sanitization, which would remove the attribute."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "A",
+        "props": {},
+        "link": "https://example.com"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [
+      {
+        "id": "A",
+        "text": "<b onclick=x>t</b>"
+      }
+    ]
+  }
+}

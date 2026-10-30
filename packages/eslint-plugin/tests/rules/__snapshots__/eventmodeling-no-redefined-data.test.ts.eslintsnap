@@ -1,0 +1,286 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: eventmodeling-no-redefined-data >> invalid >>> docs/rules/eventmodeling-no-redefined-data.md incorrect 1
+Filename: eventmodeling-no-redefined-data-incorrect-1.mmd
+
+Code:
+  1 | eventmodeling
+  2 |   tf 01 evt Bought [[Payload]]
+  3 |   data Payload {
+  4 | first
+  5 | }
+  6 |   data Payload {
+    |        ^~~~~~~ [1]
+  7 | second
+  8 | }
+  9 |
+
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
+---
+
+
+Test: eventmodeling-no-redefined-data >> invalid >>> invalid/eventmodeling/data-redefined-after
+Filename: tests/fixtures/rules/eventmodeling-no-redefined-data/invalid/eventmodeling/data-redefined-after-input.mmd
+
+Code:
+  1 | eventmodeling
+  2 | tf 01 evt Bought [[Payload]]
+  3 | data Payload {
+  4 | first
+  5 | }
+  6 | data Payload {
+    |      ^~~~~~~ [1]
+  7 | second
+  8 | }
+
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
+---
+
+
+Test: eventmodeling-no-redefined-data >> invalid >>> invalid/eventmodeling/data-redefined-before
+Filename: tests/fixtures/rules/eventmodeling-no-redefined-data/invalid/eventmodeling/data-redefined-before-input.mmd
+
+Code:
+  1 | eventmodeling
+  2 | data Payload {
+  3 | first
+  4 | }
+  5 | data Payload {
+    |      ^~~~~~~ [1]
+  6 | second
+  7 | }
+  8 | tf 01 evt Bought [[Payload]]
+
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
+---
+
+
+Test: eventmodeling-no-redefined-data >> invalid >>> invalid/eventmodeling/data-redefined-comment-gap
+Filename: tests/fixtures/rules/eventmodeling-no-redefined-data/invalid/eventmodeling/data-redefined-comment-gap-input.mmd
+
+Code:
+  1 | eventmodeling
+  2 | tf 01 evt Bought [[Payload]]
+  3 | data Payload {
+  4 | first
+  5 | }
+  6 | %% new sample
+  7 |
+  8 | data Payload {
+    |      ^~~~~~~ [1]
+  9 | second
+ 10 | }
+
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
+---
+
+
+Test: eventmodeling-no-redefined-data >> invalid >>> invalid/eventmodeling/data-redefined-comment-only-difference
+Filename: tests/fixtures/rules/eventmodeling-no-redefined-data/invalid/eventmodeling/data-redefined-comment-only-difference-input.mmd
+
+Code:
+  1 | eventmodeling
+  2 | tf 01 evt Bought [[Payload]]
+  3 | data Payload {
+  4 | first
+  5 | }
+  6 | data Payload {
+    |      ^~~~~~~ [1]
+  7 | first
+  8 | %% note
+  9 | }
+ 10 |
+
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
+---
+
+
+Test: eventmodeling-no-redefined-data >> invalid >>> invalid/eventmodeling/data-redefined-empty-last
+Filename: tests/fixtures/rules/eventmodeling-no-redefined-data/invalid/eventmodeling/data-redefined-empty-last-input.mmd
+
+Code:
+  1 | eventmodeling
+  2 | tf 01 evt Bought [[Payload]]
+  3 | data Payload {
+  4 | first
+  5 | }
+  6 | data Payload {
+    |      ^~~~~~~ [1]
+  7 | }
+
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
+---
+
+
+Test: eventmodeling-no-redefined-data >> invalid >>> invalid/eventmodeling/data-redefined-opaque
+Filename: tests/fixtures/rules/eventmodeling-no-redefined-data/invalid/eventmodeling/data-redefined-opaque-input.mmd
+
+Code:
+  1 | eventmodeling
+  2 | tf 01 evt Bought [[Payload]]
+  3 | data Payload {
+  4 | #35;
+  5 | }
+  6 | data Payload {
+    |      ^~~~~~~ [1]
+  7 | #
+  8 | }
+
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
+---
+
+
+Test: eventmodeling-no-redefined-data >> invalid >>> invalid/eventmodeling/data-redefined-opening-padding
+Filename: tests/fixtures/rules/eventmodeling-no-redefined-data/invalid/eventmodeling/data-redefined-opening-padding-input.mmd
+
+Code:
+  1 | eventmodeling
+  2 | tf 01 evt Bought [[Payload]]
+  3 | data Payload {
+  4 | first
+  5 | }
+  6 | data Payload {  
+    |      ^~~~~~~ [1]
+  7 | first
+  8 | }
+  9 |
+
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
+---
+
+
+Test: eventmodeling-no-redefined-data >> invalid >>> invalid/eventmodeling/data-redefined-reset-use
+Filename: tests/fixtures/rules/eventmodeling-no-redefined-data/invalid/eventmodeling/data-redefined-reset-use-input.mmd
+
+Code:
+  1 | eventmodeling
+  2 | data Payload {
+  3 | first
+  4 | }
+  5 | rf 01 evt Bought [[Payload]]
+  6 | data Payload {
+    |      ^~~~~~~ [1]
+  7 | second
+  8 | }
+
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
+---
+
+
+Test: eventmodeling-no-redefined-data >> invalid >>> invalid/eventmodeling/data-redefined-third
+Filename: tests/fixtures/rules/eventmodeling-no-redefined-data/invalid/eventmodeling/data-redefined-third-input.mmd
+
+Code:
+  1 | eventmodeling
+  2 | tf 01 evt Bought [[Payload]]
+  3 | data Payload {
+  4 | first
+  5 | }
+  6 | data Payload {
+    |      ^~~~~~~ [1]
+  7 | second
+  8 | }
+  9 | data Payload {
+ 10 | first
+ 11 | }
+ 12 | data Payload {
+    |      ^~~~~~~ [2]
+ 13 | third
+ 14 | }
+
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
+[2] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
+---
+
+
+Test: eventmodeling-no-redefined-data >> invalid >>> invalid/eventmodeling/data-redefined-trailing-space
+Filename: tests/fixtures/rules/eventmodeling-no-redefined-data/invalid/eventmodeling/data-redefined-trailing-space-input.mmd
+
+Code:
+  1 | eventmodeling
+  2 | tf 01 evt Bought [[Payload]]
+  3 | data Payload {
+  4 | first
+  5 | }
+  6 | data Payload {
+    |      ^~~~~~~ [1]
+  7 | first 
+  8 | }
+  9 |
+
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
+---
+
+
+Test: eventmodeling-no-redefined-data >> invalid >>> invalid/eventmodeling/data-redefined-whitespace-first
+Filename: tests/fixtures/rules/eventmodeling-no-redefined-data/invalid/eventmodeling/data-redefined-whitespace-first-input.mmd
+
+Code:
+  1 | eventmodeling
+  2 | tf 01 evt Bought [[Payload]]
+  3 | data Payload {
+  4 |  
+  5 | }
+  6 | data Payload {
+    |      ^~~~~~~ [1]
+  7 | second
+  8 | }
+
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
+---
+
+
+Test: eventmodeling-no-redefined-data >> invalid >>> invalid/eventmodeling/data-reset-reference-after-blocks
+Filename: tests/fixtures/rules/eventmodeling-no-redefined-data/invalid/eventmodeling/data-reset-reference-after-blocks-input.mmd
+
+Code:
+  1 | eventmodeling
+  2 | data Payload {
+  3 | first
+  4 | }
+  5 | data Payload {
+    |      ^~~~~~~ [1]
+  6 | second
+  7 | }
+  8 | resetframe 01 evt Bought [[Payload]]
+
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
+---
+
+
+Test: eventmodeling-no-redefined-data >> invalid >>> invalid/eventmodeling/data-reset-reference-before-blocks
+Filename: tests/fixtures/rules/eventmodeling-no-redefined-data/invalid/eventmodeling/data-reset-reference-before-blocks-input.mmd
+
+Code:
+  1 | eventmodeling
+  2 | resetframe 01 evt Bought [[Payload]]
+  3 | data Payload {
+  4 | first
+  5 | }
+  6 | data Payload {
+    |      ^~~~~~~ [1]
+  7 | second
+  8 | }
+
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
+---
+
+
+Test: eventmodeling-no-redefined-data >> invalid >>> invalid/eventmodeling/docs-incorrect-1
+Filename: tests/fixtures/rules/eventmodeling-no-redefined-data/invalid/eventmodeling/docs-incorrect-1-input.mmd
+
+Code:
+  1 | eventmodeling
+  2 |   tf 01 evt Bought [[Payload]]
+  3 |   data Payload {
+  4 | first
+  5 | }
+  6 |   data Payload {
+    |        ^~~~~~~ [1]
+  7 | second
+  8 | }
+  9 |
+
+[1] mermaid.js shows the first `Payload` data block; the content of this later block is not used.
+---

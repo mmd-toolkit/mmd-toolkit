@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md, Whitespace and value units: A lone CR is converted to LF before comment-line removal; the comment region follows the line terminator, and the diagram is accepted without an ignored-text node."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": []
+  }
+}

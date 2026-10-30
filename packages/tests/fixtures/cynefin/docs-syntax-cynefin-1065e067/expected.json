@@ -1,0 +1,71 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/cynefin.md",
+    "line": 119
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "Strategy Categorization",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "Market research"
+          }
+        ]
+      },
+      {
+        "name": "complicated",
+        "items": [
+          {
+            "label": "Competitive analysis"
+          }
+        ]
+      },
+      {
+        "name": "chaotic",
+        "items": [
+          {
+            "label": "Crisis management"
+          }
+        ]
+      },
+      {
+        "name": "clear",
+        "items": [
+          {
+            "label": "Standard pricing"
+          }
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "complicated",
+        "label": "Pattern identified"
+      },
+      {
+        "from": "complicated",
+        "to": "clear",
+        "label": "Best practice codified"
+      },
+      {
+        "from": "clear",
+        "to": "chaotic",
+        "label": "Complacency"
+      },
+      {
+        "from": "chaotic",
+        "to": "complex",
+        "label": "Stabilized"
+      }
+    ]
+  }
+}

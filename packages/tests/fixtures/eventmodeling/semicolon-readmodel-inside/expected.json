@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A style/hash-selected semicolon splits the named fixed atom."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "00",
+        "modelEntityType": "evt",
+        "entityIdentifier": "Marker",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "\"style:#x\""
+        }
+      },
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "readmodel",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

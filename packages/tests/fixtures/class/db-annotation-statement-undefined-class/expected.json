@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Rejections outside the grammar: an annotation statement for a class that does not exist is rejected by the Db."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot read properties of undefined (reading 'annotations')"
+  }
+}

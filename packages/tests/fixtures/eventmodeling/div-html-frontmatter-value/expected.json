@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Cross-frontmatter HTML can change only the accessibility value."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "accTitle: b='c'>d",
+    "accDescr": "",
+    "frames": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

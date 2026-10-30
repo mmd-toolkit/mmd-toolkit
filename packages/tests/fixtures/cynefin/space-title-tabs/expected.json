@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A single tab is a valid TITLE separator and common colon gap."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "T",
+    "accTitle": "A",
+    "accDescr": "D",
+    "domains": [],
+    "transitions": []
+  }
+}

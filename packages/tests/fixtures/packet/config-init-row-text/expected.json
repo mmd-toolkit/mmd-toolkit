@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A nonnumeric JSON string row width publishes no rows although the packet block is valid."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  },
+  "embedded": {
+    "config": {
+      "packet": {
+        "bitsPerRow": "abc"
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/sequenceDiagram.md",
+    "line": 439
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "John",
+        "description": "John",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "John",
+        "to": "John",
+        "message": "Text in note",
+        "wrap": false,
+        "type": 2,
+        "placement": 1
+      }
+    ]
+  }
+}

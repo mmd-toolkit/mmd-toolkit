@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty title at EOF is accepted."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": []
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Prototype-shaped names remain ordinary array entries and references."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "__proto__"
+      },
+      {
+        "label": "constructor"
+      },
+      {
+        "label": "toString"
+      }
+    ],
+    "curves": [
+      {
+        "label": "__proto__",
+        "entries": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "label": "constructor",
+        "entries": [
+          3,
+          2,
+          1
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

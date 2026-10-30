@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/architecture.html",
+    "line": 230
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "s3",
+        "type": "service",
+        "icon": "logos:aws-s3",
+        "title": "Cloud Store"
+      },
+      {
+        "id": "ec2",
+        "type": "service",
+        "icon": "logos:aws-ec2",
+        "title": "Server"
+      },
+      {
+        "id": "api",
+        "type": "service",
+        "icon": "logos:aws-api-gateway",
+        "title": "Api Gateway"
+      },
+      {
+        "id": "fa",
+        "type": "service",
+        "icon": "fa:image",
+        "title": "Font Awesome Icon"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

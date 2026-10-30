@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The state string context: the empty string is a unit, so rule 7 does not match at `x`, where a `\"` follows the whitespace; the input is the statement x and the composite state y, which holds B, while `state x y {` is rejected."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "y",
+        "shape": "roundedWithTitle",
+        "label": "y",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "y"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

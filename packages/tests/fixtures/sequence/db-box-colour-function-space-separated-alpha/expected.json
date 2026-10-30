@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The space-separated form of a color function with a slash alpha is a valid color, so the whole function is the fill and `G` the name."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "a",
+        "description": "a",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "box": 0
+      }
+    ],
+    "boxes": [
+      {
+        "name": "G",
+        "wrap": false,
+        "fill": "rgb(1 2 3 / 50%)",
+        "actorKeys": [
+          "a"
+        ]
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

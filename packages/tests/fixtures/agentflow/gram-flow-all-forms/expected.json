@@ -1,0 +1,79 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Titled, bare-id and anonymous flow productions create containers."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "C",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "named",
+        "nodes": [
+          "A"
+        ],
+        "title": "Title",
+        "classes": [],
+        "labelType": "text",
+        "type": "flow"
+      },
+      {
+        "id": "bare",
+        "nodes": [
+          "B"
+        ],
+        "title": "",
+        "classes": [],
+        "labelType": "text",
+        "type": "flow"
+      },
+      {
+        "id": "subGraph2",
+        "nodes": [
+          "C"
+        ],
+        "title": "",
+        "classes": [],
+        "labelType": "markdown",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/wardley.md",
+    "line": 116
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Anchors",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "Customer",
+        "label": "Customer",
+        "x": 95,
+        "y": 90,
+        "className": "anchor"
+      },
+      {
+        "id": "Business",
+        "label": "Business",
+        "x": 90,
+        "y": 85,
+        "className": "anchor"
+      },
+      {
+        "id": "Service",
+        "label": "Service",
+        "x": 75,
+        "y": 70,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [
+      {
+        "source": "Customer",
+        "target": "Service",
+        "dashed": false
+      },
+      {
+        "source": "Business",
+        "target": "Service",
+        "dashed": false
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

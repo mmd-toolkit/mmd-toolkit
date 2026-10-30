@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A primitive config with displayMode causes an input-derived TypeError during frontmatter processing."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot create property 'gantt' on boolean 'true'"
+  }
+}

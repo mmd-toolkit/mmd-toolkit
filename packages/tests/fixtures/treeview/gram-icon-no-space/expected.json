@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An icon marker without separating space remains part of a bare name."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "aicon(folder)",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

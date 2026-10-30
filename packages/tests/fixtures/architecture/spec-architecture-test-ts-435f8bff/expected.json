@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/architecture.test.ts",
+    "line": 78,
+    "test": "architecture > should handle TitleAndAccessibilities > should handle regular architecture + title + accTitle + multi-line accDescr"
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "sample accTitle",
+    "accDescr": "sample accDescr",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

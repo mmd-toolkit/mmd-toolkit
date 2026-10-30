@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, fields: markup is kept in a field."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "<b>a</b>",
+      "c"
+    ],
+    "links": [
+      {
+        "source": "<b>a</b>",
+        "target": "c",
+        "value": 1
+      }
+    ]
+  }
+}

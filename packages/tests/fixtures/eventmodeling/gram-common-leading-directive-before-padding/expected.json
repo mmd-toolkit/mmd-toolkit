@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/eventmodeling.md Common statement values: Does padding after a removed init directive become the adjacent leading run of accDescr?"
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": " accDescr: D",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

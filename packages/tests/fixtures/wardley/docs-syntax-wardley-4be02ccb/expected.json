@@ -1,0 +1,208 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/wardley.md",
+    "line": 391
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Software Platform Strategy",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "Customer",
+        "label": "Customer",
+        "x": 95,
+        "y": 90,
+        "className": "anchor"
+      },
+      {
+        "id": "Mobile App",
+        "label": "Mobile App",
+        "x": 85,
+        "y": 80,
+        "className": "component",
+        "inertia": false,
+        "sourceStrategy": "build"
+      },
+      {
+        "id": "Web App",
+        "label": "Web App",
+        "x": 80,
+        "y": 75,
+        "className": "component",
+        "labelOffsetX": -60,
+        "labelOffsetY": 10,
+        "inertia": false,
+        "sourceStrategy": "build"
+      },
+      {
+        "id": "API Gateway",
+        "label": "API Gateway",
+        "x": 65,
+        "y": 70,
+        "className": "component",
+        "inertia": false,
+        "sourceStrategy": "buy"
+      },
+      {
+        "id": "Auth Service",
+        "label": "Auth Service",
+        "x": 55.00000000000001,
+        "y": 60,
+        "className": "component",
+        "inertia": false,
+        "sourceStrategy": "outsource"
+      },
+      {
+        "id": "Database",
+        "label": "Database",
+        "x": 45,
+        "y": 50,
+        "className": "component",
+        "inertia": true,
+        "sourceStrategy": "buy"
+      },
+      {
+        "id": "Cloud Platform",
+        "label": "Cloud Platform",
+        "x": 95,
+        "y": 30,
+        "className": "component",
+        "inertia": false,
+        "sourceStrategy": "market"
+      }
+    ],
+    "links": [
+      {
+        "source": "Customer",
+        "target": "Mobile App",
+        "dashed": false
+      },
+      {
+        "source": "Customer",
+        "target": "Web App",
+        "dashed": false
+      },
+      {
+        "source": "Mobile App",
+        "target": "API Gateway",
+        "dashed": false
+      },
+      {
+        "source": "Web App",
+        "target": "API Gateway",
+        "dashed": false
+      },
+      {
+        "source": "API Gateway",
+        "target": "Auth Service",
+        "dashed": false
+      },
+      {
+        "source": "API Gateway",
+        "target": "Database",
+        "dashed": false
+      },
+      {
+        "source": "Database",
+        "target": "Cloud Platform",
+        "dashed": false
+      }
+    ],
+    "trends": [
+      {
+        "nodeId": "API Gateway",
+        "targetX": 85
+      },
+      {
+        "nodeId": "Database",
+        "targetX": 75
+      }
+    ],
+    "pipelines": [],
+    "annotations": [
+      {
+        "number": 1,
+        "coordinates": [
+          {
+            "x": 82,
+            "y": 78
+          }
+        ],
+        "text": "User touchpoints"
+      },
+      {
+        "number": 2,
+        "coordinates": [
+          {
+            "x": 60,
+            "y": 70
+          }
+        ],
+        "text": "Integration layer"
+      },
+      {
+        "number": 3,
+        "coordinates": [
+          {
+            "x": 40,
+            "y": 50
+          }
+        ],
+        "text": "Data persistence"
+      }
+    ],
+    "notes": [
+      {
+        "text": "Build mobile-first experience",
+        "x": 90,
+        "y": 85
+      },
+      {
+        "text": "Migrate to cloud-native database",
+        "x": 50,
+        "y": 60
+      }
+    ],
+    "accelerators": [
+      {
+        "name": "Cloud Native",
+        "x": 85,
+        "y": 20
+      }
+    ],
+    "deaccelerators": [
+      {
+        "name": "Legacy Data",
+        "x": 35,
+        "y": 45
+      }
+    ],
+    "annotationsBox": {
+      "x": 20,
+      "y": 10
+    },
+    "axes": {
+      "stages": [
+        "Genesis",
+        "Custom",
+        "Product",
+        "Commodity"
+      ],
+      "stageBoundaries": [
+        0.25,
+        0.5,
+        0.75,
+        1
+      ]
+    },
+    "size": {
+      "width": 1100,
+      "height": 800
+    }
+  }
+}

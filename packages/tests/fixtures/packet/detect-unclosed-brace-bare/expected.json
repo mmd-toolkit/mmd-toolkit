@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: A nonword unclosed brace line passed by detection is a shared Comment."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  }
+}

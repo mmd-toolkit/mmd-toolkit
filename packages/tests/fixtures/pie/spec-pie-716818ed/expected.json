@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/pie/pie.spec.ts",
+    "line": 14,
+    "test": "pie > parse > should handle very simple pie"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "ash",
+        "value": 100
+      }
+    ]
+  }
+}

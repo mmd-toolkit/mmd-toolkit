@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "EOF after a retained directive distinguishes appended LF from a visible separator."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

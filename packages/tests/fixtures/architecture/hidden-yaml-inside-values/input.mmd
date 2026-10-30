@@ -1,0 +1,16 @@
+architecture-beta
+service api "---
+A
+---" ["---
+B
+---"]
+group g["---
+C
+---"]
+service db
+api:R -["---
+D
+---"]- L:db
+accDescr {---
+E
+---}

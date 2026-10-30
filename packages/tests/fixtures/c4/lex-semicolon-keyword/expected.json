@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md: A semicolon inside a call keyword is rejected when no line rule selects it."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nC4ContextPers;on(a,\"style:#x\"\n---------^"
+  }
+}

@@ -1,0 +1,2439 @@
+{
+  "type": "Root",
+  "diagramType": "wardley",
+  "body": {
+    "type": "WardleyDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "WardleyTitleStatement",
+        "value": {
+          "type": "WardleyLiteral",
+          "value": "Kettle Evolution Pipeline",
+          "range": [
+            19,
+            44
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 6
+            },
+            "end": {
+              "line": 2,
+              "column": 31
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          13,
+          44
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 31
+          }
+        }
+      },
+      {
+        "type": "WardleySizeStatement",
+        "textBeforeOpen": [],
+        "textBeforeWidth": [],
+        "width": {
+          "type": "NumericLiteral",
+          "value": 1100,
+          "raw": "1100",
+          "range": [
+            51,
+            55
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 6
+            },
+            "end": {
+              "line": 3,
+              "column": 10
+            }
+          }
+        },
+        "textBeforeComma": [],
+        "textBeforeHeight": [],
+        "height": {
+          "type": "NumericLiteral",
+          "value": 800,
+          "raw": "800",
+          "range": [
+            57,
+            60
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 12
+            },
+            "end": {
+              "line": 3,
+              "column": 15
+            }
+          }
+        },
+        "textBeforeClose": [],
+        "textAfter": [],
+        "range": [
+          45,
+          61
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 16
+          }
+        }
+      },
+      {
+        "type": "WardleyComponentStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "WardleyIdentifier",
+          "name": "Kettle",
+          "range": [
+            73,
+            79
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 10
+            },
+            "end": {
+              "line": 5,
+              "column": 16
+            }
+          }
+        },
+        "textBeforeCoordinates": [],
+        "coordinates": {
+          "type": "WardleyCoordinates",
+          "textBeforeVisibility": [],
+          "visibility": {
+            "type": "NumericLiteral",
+            "value": 0.57,
+            "raw": "0.57",
+            "range": [
+              81,
+              85
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 18
+              },
+              "end": {
+                "line": 5,
+                "column": 22
+              }
+            }
+          },
+          "textBeforeComma": [],
+          "textBeforeEvolution": [],
+          "evolution": {
+            "type": "NumericLiteral",
+            "value": 0.45,
+            "raw": "0.45",
+            "range": [
+              87,
+              91
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 24
+              },
+              "end": {
+                "line": 5,
+                "column": 28
+              }
+            }
+          },
+          "textBeforeClose": [],
+          "range": [
+            80,
+            92
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 17
+            },
+            "end": {
+              "line": 5,
+              "column": 29
+            }
+          }
+        },
+        "decorations": [],
+        "textAfter": [],
+        "range": [
+          63,
+          92
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 29
+          }
+        }
+      },
+      {
+        "type": "WardleyComponentStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "WardleyIdentifier",
+          "name": "Power",
+          "range": [
+            103,
+            108
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 10
+            },
+            "end": {
+              "line": 6,
+              "column": 15
+            }
+          }
+        },
+        "textBeforeCoordinates": [],
+        "coordinates": {
+          "type": "WardleyCoordinates",
+          "textBeforeVisibility": [],
+          "visibility": {
+            "type": "NumericLiteral",
+            "value": 0.1,
+            "raw": "0.10",
+            "range": [
+              110,
+              114
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 17
+              },
+              "end": {
+                "line": 6,
+                "column": 21
+              }
+            }
+          },
+          "textBeforeComma": [],
+          "textBeforeEvolution": [],
+          "evolution": {
+            "type": "NumericLiteral",
+            "value": 0.7,
+            "raw": "0.70",
+            "range": [
+              116,
+              120
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 23
+              },
+              "end": {
+                "line": 6,
+                "column": 27
+              }
+            }
+          },
+          "textBeforeClose": [],
+          "range": [
+            109,
+            121
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 16
+            },
+            "end": {
+              "line": 6,
+              "column": 28
+            }
+          }
+        },
+        "decorations": [],
+        "textAfter": [],
+        "range": [
+          93,
+          121
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 28
+          }
+        }
+      },
+      {
+        "type": "WardleyLinkStatement",
+        "from": {
+          "type": "WardleyIdentifier",
+          "name": "Kettle",
+          "range": [
+            123,
+            129
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 0
+            },
+            "end": {
+              "line": 8,
+              "column": 6
+            }
+          }
+        },
+        "textBeforeFromPort": [],
+        "fromPort": null,
+        "textBeforeArrow": [],
+        "arrow": {
+          "type": "WardleyArrow",
+          "value": "->",
+          "kind": "dependency",
+          "line": "solid",
+          "startMarker": "none",
+          "label": null,
+          "endMarker": "arrow",
+          "range": [
+            130,
+            132
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 7
+            },
+            "end": {
+              "line": 8,
+              "column": 9
+            }
+          }
+        },
+        "textBeforeTo": [],
+        "to": {
+          "type": "WardleyIdentifier",
+          "name": "Power",
+          "range": [
+            133,
+            138
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 10
+            },
+            "end": {
+              "line": 8,
+              "column": 15
+            }
+          }
+        },
+        "textBeforeToPort": [],
+        "toPort": null,
+        "textBeforeLabel": [],
+        "label": null,
+        "textAfter": [],
+        "range": [
+          123,
+          138
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 0
+          },
+          "end": {
+            "line": 8,
+            "column": 15
+          }
+        }
+      },
+      {
+        "type": "WardleyPipelineStatement",
+        "textBeforeParent": [],
+        "parent": {
+          "type": "WardleyIdentifier",
+          "name": "Kettle",
+          "range": [
+            149,
+            155
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 9
+            },
+            "end": {
+              "line": 10,
+              "column": 15
+            }
+          }
+        },
+        "textBeforeBody": [],
+        "textAfterOpen": [],
+        "body": [
+          {
+            "type": "WardleyPipelineComponent",
+            "textBeforeName": [],
+            "name": {
+              "type": "WardleyIdentifier",
+              "name": "Campfire Kettle",
+              "range": [
+                170,
+                185
+              ],
+              "loc": {
+                "start": {
+                  "line": 11,
+                  "column": 12
+                },
+                "end": {
+                  "line": 11,
+                  "column": 27
+                }
+              }
+            },
+            "textBeforeOpen": [],
+            "textBeforeEvolution": [],
+            "evolution": {
+              "type": "NumericLiteral",
+              "value": 0.35,
+              "raw": "0.35",
+              "range": [
+                187,
+                191
+              ],
+              "loc": {
+                "start": {
+                  "line": 11,
+                  "column": 29
+                },
+                "end": {
+                  "line": 11,
+                  "column": 33
+                }
+              }
+            },
+            "textBeforeClose": [],
+            "labelOffset": {
+              "type": "WardleyLabelOffsetDecoration",
+              "textBefore": [],
+              "textBeforeOpen": [],
+              "textBeforeX": [],
+              "negativeX": true,
+              "textAfterXSign": [],
+              "offsetX": {
+                "type": "NumericLiteral",
+                "value": 60,
+                "raw": "60",
+                "range": [
+                  201,
+                  203
+                ],
+                "loc": {
+                  "start": {
+                    "line": 11,
+                    "column": 43
+                  },
+                  "end": {
+                    "line": 11,
+                    "column": 45
+                  }
+                }
+              },
+              "textBeforeComma": [],
+              "textBeforeY": [],
+              "negativeY": false,
+              "textAfterYSign": [],
+              "offsetY": {
+                "type": "NumericLiteral",
+                "value": 35,
+                "raw": "35",
+                "range": [
+                  205,
+                  207
+                ],
+                "loc": {
+                  "start": {
+                    "line": 11,
+                    "column": 47
+                  },
+                  "end": {
+                    "line": 11,
+                    "column": 49
+                  }
+                }
+              },
+              "textBeforeClose": [],
+              "range": [
+                193,
+                208
+              ],
+              "loc": {
+                "start": {
+                  "line": 11,
+                  "column": 35
+                },
+                "end": {
+                  "line": 11,
+                  "column": 50
+                }
+              }
+            },
+            "textAfter": [],
+            "range": [
+              160,
+              208
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 2
+              },
+              "end": {
+                "line": 11,
+                "column": 50
+              }
+            }
+          },
+          {
+            "type": "WardleyPipelineComponent",
+            "textBeforeName": [],
+            "name": {
+              "type": "WardleyIdentifier",
+              "name": "Electric Kettle",
+              "range": [
+                221,
+                236
+              ],
+              "loc": {
+                "start": {
+                  "line": 12,
+                  "column": 12
+                },
+                "end": {
+                  "line": 12,
+                  "column": 27
+                }
+              }
+            },
+            "textBeforeOpen": [],
+            "textBeforeEvolution": [],
+            "evolution": {
+              "type": "NumericLiteral",
+              "value": 0.53,
+              "raw": "0.53",
+              "range": [
+                238,
+                242
+              ],
+              "loc": {
+                "start": {
+                  "line": 12,
+                  "column": 29
+                },
+                "end": {
+                  "line": 12,
+                  "column": 33
+                }
+              }
+            },
+            "textBeforeClose": [],
+            "labelOffset": {
+              "type": "WardleyLabelOffsetDecoration",
+              "textBefore": [],
+              "textBeforeOpen": [],
+              "textBeforeX": [],
+              "negativeX": true,
+              "textAfterXSign": [],
+              "offsetX": {
+                "type": "NumericLiteral",
+                "value": 60,
+                "raw": "60",
+                "range": [
+                  252,
+                  254
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 43
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 45
+                  }
+                }
+              },
+              "textBeforeComma": [],
+              "textBeforeY": [],
+              "negativeY": false,
+              "textAfterYSign": [],
+              "offsetY": {
+                "type": "NumericLiteral",
+                "value": 35,
+                "raw": "35",
+                "range": [
+                  256,
+                  258
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 47
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 49
+                  }
+                }
+              },
+              "textBeforeClose": [],
+              "range": [
+                244,
+                259
+              ],
+              "loc": {
+                "start": {
+                  "line": 12,
+                  "column": 35
+                },
+                "end": {
+                  "line": 12,
+                  "column": 50
+                }
+              }
+            },
+            "textAfter": [],
+            "range": [
+              211,
+              259
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 2
+              },
+              "end": {
+                "line": 12,
+                "column": 50
+              }
+            }
+          },
+          {
+            "type": "WardleyPipelineComponent",
+            "textBeforeName": [],
+            "name": {
+              "type": "WardleyIdentifier",
+              "name": "Smart Kettle",
+              "range": [
+                272,
+                284
+              ],
+              "loc": {
+                "start": {
+                  "line": 13,
+                  "column": 12
+                },
+                "end": {
+                  "line": 13,
+                  "column": 24
+                }
+              }
+            },
+            "textBeforeOpen": [],
+            "textBeforeEvolution": [],
+            "evolution": {
+              "type": "NumericLiteral",
+              "value": 0.72,
+              "raw": "0.72",
+              "range": [
+                286,
+                290
+              ],
+              "loc": {
+                "start": {
+                  "line": 13,
+                  "column": 26
+                },
+                "end": {
+                  "line": 13,
+                  "column": 30
+                }
+              }
+            },
+            "textBeforeClose": [],
+            "labelOffset": {
+              "type": "WardleyLabelOffsetDecoration",
+              "textBefore": [],
+              "textBeforeOpen": [],
+              "textBeforeX": [],
+              "negativeX": true,
+              "textAfterXSign": [],
+              "offsetX": {
+                "type": "NumericLiteral",
+                "value": 30,
+                "raw": "30",
+                "range": [
+                  300,
+                  302
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 40
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 42
+                  }
+                }
+              },
+              "textBeforeComma": [],
+              "textBeforeY": [],
+              "negativeY": false,
+              "textAfterYSign": [],
+              "offsetY": {
+                "type": "NumericLiteral",
+                "value": 35,
+                "raw": "35",
+                "range": [
+                  304,
+                  306
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 44
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 46
+                  }
+                }
+              },
+              "textBeforeClose": [],
+              "range": [
+                292,
+                307
+              ],
+              "loc": {
+                "start": {
+                  "line": 13,
+                  "column": 32
+                },
+                "end": {
+                  "line": 13,
+                  "column": 47
+                }
+              }
+            },
+            "textAfter": [],
+            "range": [
+              262,
+              307
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 2
+              },
+              "end": {
+                "line": 13,
+                "column": 47
+              }
+            }
+          }
+        ],
+        "textAfter": [],
+        "range": [
+          140,
+          309
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 0
+          },
+          "end": {
+            "line": 14,
+            "column": 1
+          }
+        }
+      },
+      {
+        "type": "WardleyLinkStatement",
+        "from": {
+          "type": "WardleyIdentifier",
+          "name": "Campfire Kettle",
+          "range": [
+            311,
+            326
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 0
+            },
+            "end": {
+              "line": 16,
+              "column": 15
+            }
+          }
+        },
+        "textBeforeFromPort": [],
+        "fromPort": null,
+        "textBeforeArrow": [],
+        "arrow": {
+          "type": "WardleyArrow",
+          "value": "->",
+          "kind": "dependency",
+          "line": "solid",
+          "startMarker": "none",
+          "label": null,
+          "endMarker": "arrow",
+          "range": [
+            327,
+            329
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 16
+            },
+            "end": {
+              "line": 16,
+              "column": 18
+            }
+          }
+        },
+        "textBeforeTo": [],
+        "to": {
+          "type": "WardleyIdentifier",
+          "name": "Kettle",
+          "range": [
+            330,
+            336
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 19
+            },
+            "end": {
+              "line": 16,
+              "column": 25
+            }
+          }
+        },
+        "textBeforeToPort": [],
+        "toPort": null,
+        "textBeforeLabel": [],
+        "label": null,
+        "textAfter": [],
+        "range": [
+          311,
+          336
+        ],
+        "loc": {
+          "start": {
+            "line": 16,
+            "column": 0
+          },
+          "end": {
+            "line": 16,
+            "column": 25
+          }
+        }
+      },
+      {
+        "type": "WardleyLinkStatement",
+        "from": {
+          "type": "WardleyIdentifier",
+          "name": "Electric Kettle",
+          "range": [
+            337,
+            352
+          ],
+          "loc": {
+            "start": {
+              "line": 17,
+              "column": 0
+            },
+            "end": {
+              "line": 17,
+              "column": 15
+            }
+          }
+        },
+        "textBeforeFromPort": [],
+        "fromPort": null,
+        "textBeforeArrow": [],
+        "arrow": {
+          "type": "WardleyArrow",
+          "value": "->",
+          "kind": "dependency",
+          "line": "solid",
+          "startMarker": "none",
+          "label": null,
+          "endMarker": "arrow",
+          "range": [
+            353,
+            355
+          ],
+          "loc": {
+            "start": {
+              "line": 17,
+              "column": 16
+            },
+            "end": {
+              "line": 17,
+              "column": 18
+            }
+          }
+        },
+        "textBeforeTo": [],
+        "to": {
+          "type": "WardleyIdentifier",
+          "name": "Kettle",
+          "range": [
+            356,
+            362
+          ],
+          "loc": {
+            "start": {
+              "line": 17,
+              "column": 19
+            },
+            "end": {
+              "line": 17,
+              "column": 25
+            }
+          }
+        },
+        "textBeforeToPort": [],
+        "toPort": null,
+        "textBeforeLabel": [],
+        "label": null,
+        "textAfter": [],
+        "range": [
+          337,
+          362
+        ],
+        "loc": {
+          "start": {
+            "line": 17,
+            "column": 0
+          },
+          "end": {
+            "line": 17,
+            "column": 25
+          }
+        }
+      },
+      {
+        "type": "WardleyLinkStatement",
+        "from": {
+          "type": "WardleyIdentifier",
+          "name": "Smart Kettle",
+          "range": [
+            363,
+            375
+          ],
+          "loc": {
+            "start": {
+              "line": 18,
+              "column": 0
+            },
+            "end": {
+              "line": 18,
+              "column": 12
+            }
+          }
+        },
+        "textBeforeFromPort": [],
+        "fromPort": null,
+        "textBeforeArrow": [],
+        "arrow": {
+          "type": "WardleyArrow",
+          "value": "->",
+          "kind": "dependency",
+          "line": "solid",
+          "startMarker": "none",
+          "label": null,
+          "endMarker": "arrow",
+          "range": [
+            376,
+            378
+          ],
+          "loc": {
+            "start": {
+              "line": 18,
+              "column": 13
+            },
+            "end": {
+              "line": 18,
+              "column": 15
+            }
+          }
+        },
+        "textBeforeTo": [],
+        "to": {
+          "type": "WardleyIdentifier",
+          "name": "Kettle",
+          "range": [
+            379,
+            385
+          ],
+          "loc": {
+            "start": {
+              "line": 18,
+              "column": 16
+            },
+            "end": {
+              "line": 18,
+              "column": 22
+            }
+          }
+        },
+        "textBeforeToPort": [],
+        "toPort": null,
+        "textBeforeLabel": [],
+        "label": null,
+        "textAfter": [],
+        "range": [
+          363,
+          385
+        ],
+        "loc": {
+          "start": {
+            "line": 18,
+            "column": 0
+          },
+          "end": {
+            "line": 18,
+            "column": 22
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      385
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 18,
+        "column": 22
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "wardley-beta",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        13,
+        18
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Kettle Evolution Pipeline",
+      "range": [
+        19,
+        44
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "size",
+      "range": [
+        45,
+        49
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        50,
+        51
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 5
+        },
+        "end": {
+          "line": 3,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "1100",
+      "range": [
+        51,
+        55
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 6
+        },
+        "end": {
+          "line": 3,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        55,
+        56
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 10
+        },
+        "end": {
+          "line": 3,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "800",
+      "range": [
+        57,
+        60
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 12
+        },
+        "end": {
+          "line": 3,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        60,
+        61
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 15
+        },
+        "end": {
+          "line": 3,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "component",
+      "range": [
+        63,
+        72
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Kettle",
+      "range": [
+        73,
+        79
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 10
+        },
+        "end": {
+          "line": 5,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        80,
+        81
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 17
+        },
+        "end": {
+          "line": 5,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.57",
+      "range": [
+        81,
+        85
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 18
+        },
+        "end": {
+          "line": 5,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        85,
+        86
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 22
+        },
+        "end": {
+          "line": 5,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.45",
+      "range": [
+        87,
+        91
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 24
+        },
+        "end": {
+          "line": 5,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        91,
+        92
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 28
+        },
+        "end": {
+          "line": 5,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "component",
+      "range": [
+        93,
+        102
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Power",
+      "range": [
+        103,
+        108
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 10
+        },
+        "end": {
+          "line": 6,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        109,
+        110
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 16
+        },
+        "end": {
+          "line": 6,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.10",
+      "range": [
+        110,
+        114
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 17
+        },
+        "end": {
+          "line": 6,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        114,
+        115
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 21
+        },
+        "end": {
+          "line": 6,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.70",
+      "range": [
+        116,
+        120
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 23
+        },
+        "end": {
+          "line": 6,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        120,
+        121
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 27
+        },
+        "end": {
+          "line": 6,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Kettle",
+      "range": [
+        123,
+        129
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "->",
+      "range": [
+        130,
+        132
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 7
+        },
+        "end": {
+          "line": 8,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Power",
+      "range": [
+        133,
+        138
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 10
+        },
+        "end": {
+          "line": 8,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "pipeline",
+      "range": [
+        140,
+        148
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 0
+        },
+        "end": {
+          "line": 10,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Kettle",
+      "range": [
+        149,
+        155
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 9
+        },
+        "end": {
+          "line": 10,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        156,
+        157
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 16
+        },
+        "end": {
+          "line": 10,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "component",
+      "range": [
+        160,
+        169
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 2
+        },
+        "end": {
+          "line": 11,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Campfire Kettle",
+      "range": [
+        170,
+        185
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 12
+        },
+        "end": {
+          "line": 11,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        186,
+        187
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 28
+        },
+        "end": {
+          "line": 11,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.35",
+      "range": [
+        187,
+        191
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 29
+        },
+        "end": {
+          "line": 11,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        191,
+        192
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 33
+        },
+        "end": {
+          "line": 11,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "label",
+      "range": [
+        193,
+        198
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 35
+        },
+        "end": {
+          "line": 11,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        199,
+        200
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 41
+        },
+        "end": {
+          "line": 11,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-",
+      "range": [
+        200,
+        201
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 42
+        },
+        "end": {
+          "line": 11,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "60",
+      "range": [
+        201,
+        203
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 43
+        },
+        "end": {
+          "line": 11,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        203,
+        204
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 45
+        },
+        "end": {
+          "line": 11,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "35",
+      "range": [
+        205,
+        207
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 47
+        },
+        "end": {
+          "line": 11,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        207,
+        208
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 49
+        },
+        "end": {
+          "line": 11,
+          "column": 50
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "component",
+      "range": [
+        211,
+        220
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 2
+        },
+        "end": {
+          "line": 12,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Electric Kettle",
+      "range": [
+        221,
+        236
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 12
+        },
+        "end": {
+          "line": 12,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        237,
+        238
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 28
+        },
+        "end": {
+          "line": 12,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.53",
+      "range": [
+        238,
+        242
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 29
+        },
+        "end": {
+          "line": 12,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        242,
+        243
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 33
+        },
+        "end": {
+          "line": 12,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "label",
+      "range": [
+        244,
+        249
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 35
+        },
+        "end": {
+          "line": 12,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        250,
+        251
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 41
+        },
+        "end": {
+          "line": 12,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-",
+      "range": [
+        251,
+        252
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 42
+        },
+        "end": {
+          "line": 12,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "60",
+      "range": [
+        252,
+        254
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 43
+        },
+        "end": {
+          "line": 12,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        254,
+        255
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 45
+        },
+        "end": {
+          "line": 12,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "35",
+      "range": [
+        256,
+        258
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 47
+        },
+        "end": {
+          "line": 12,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        258,
+        259
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 49
+        },
+        "end": {
+          "line": 12,
+          "column": 50
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "component",
+      "range": [
+        262,
+        271
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 2
+        },
+        "end": {
+          "line": 13,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Smart Kettle",
+      "range": [
+        272,
+        284
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 12
+        },
+        "end": {
+          "line": 13,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        285,
+        286
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 25
+        },
+        "end": {
+          "line": 13,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.72",
+      "range": [
+        286,
+        290
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 26
+        },
+        "end": {
+          "line": 13,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        290,
+        291
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 30
+        },
+        "end": {
+          "line": 13,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "label",
+      "range": [
+        292,
+        297
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 32
+        },
+        "end": {
+          "line": 13,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        298,
+        299
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 38
+        },
+        "end": {
+          "line": 13,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-",
+      "range": [
+        299,
+        300
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 39
+        },
+        "end": {
+          "line": 13,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "30",
+      "range": [
+        300,
+        302
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 40
+        },
+        "end": {
+          "line": 13,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        302,
+        303
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 42
+        },
+        "end": {
+          "line": 13,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "35",
+      "range": [
+        304,
+        306
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 44
+        },
+        "end": {
+          "line": 13,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        306,
+        307
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 46
+        },
+        "end": {
+          "line": 13,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        308,
+        309
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 0
+        },
+        "end": {
+          "line": 14,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Campfire Kettle",
+      "range": [
+        311,
+        326
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 0
+        },
+        "end": {
+          "line": 16,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "->",
+      "range": [
+        327,
+        329
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 16
+        },
+        "end": {
+          "line": 16,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Kettle",
+      "range": [
+        330,
+        336
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 19
+        },
+        "end": {
+          "line": 16,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Electric Kettle",
+      "range": [
+        337,
+        352
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 0
+        },
+        "end": {
+          "line": 17,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "->",
+      "range": [
+        353,
+        355
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 16
+        },
+        "end": {
+          "line": 17,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Kettle",
+      "range": [
+        356,
+        362
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 19
+        },
+        "end": {
+          "line": 17,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Smart Kettle",
+      "range": [
+        363,
+        375
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 0
+        },
+        "end": {
+          "line": 18,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "->",
+      "range": [
+        376,
+        378
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 13
+        },
+        "end": {
+          "line": 18,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Kettle",
+      "range": [
+        379,
+        385
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 16
+        },
+        "end": {
+          "line": 18,
+          "column": 22
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    385
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 18,
+      "column": 22
+    }
+  }
+}

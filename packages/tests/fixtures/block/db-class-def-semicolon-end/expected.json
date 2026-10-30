@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, classes: the line rule of mermaid.js drops the last `;` of a line that has a `:` and a `#`, so the `;` at the end of the styles is dropped."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": []
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:#f00"
+        ]
+      }
+    ]
+  }
+}

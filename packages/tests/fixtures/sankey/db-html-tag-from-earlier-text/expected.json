@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A tag opened in an earlier record field converts the attribute quotes in a later unquoted record field; the node id is b='c'>d."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "<a",
+      "B",
+      "b='c'>d",
+      "C"
+    ],
+    "links": [
+      {
+        "source": "<a",
+        "target": "B",
+        "value": 1
+      },
+      {
+        "source": "b='c'>d",
+        "target": "C",
+        "value": 2
+      }
+    ]
+  }
+}

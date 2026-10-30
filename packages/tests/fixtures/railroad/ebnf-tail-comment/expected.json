@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An EBNF rule can be followed by a percent comment at EOF."
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

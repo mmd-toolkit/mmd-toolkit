@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A named $link in UpdateRelStyle argument 1 is accepted; rels[0].from is \"a\"."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [
+      {
+        "type": "rel",
+        "from": "a",
+        "to": "b",
+        "label": {
+          "text": "Uses"
+        },
+        "techn": {
+          "text": ""
+        },
+        "descr": {
+          "text": ""
+        }
+      }
+    ],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

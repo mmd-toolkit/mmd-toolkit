@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Known divergences, ignored-semicolon-as-token-boundary: the line matches the style rule, and its ignored ';' lies inside the name after state, so the input is rejected here; mermaid.js accepts it with the composite state style:#xB."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "style:#xB",
+        "shape": "roundedWithTitle",
+        "label": "style:#xB",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "C",
+        "shape": "rect",
+        "label": "C",
+        "classes": [],
+        "styles": [],
+        "parentId": "style:#xB"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

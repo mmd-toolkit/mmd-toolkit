@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Entity encoding also reaches description block text."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "ﬂ°amp¶ß &ﬂ°°65¶ß &ﬂ°x41¶ß ﬂ°°35¶ß",
+    "showData": false,
+    "sections": []
+  }
+}

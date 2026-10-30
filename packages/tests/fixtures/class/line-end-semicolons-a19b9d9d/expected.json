@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A class named like the keyword call, touching ()"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Acall",
+        "type": "",
+        "label": "Acall",
+        "text": "Acall",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "type": "",
+        "label": "B",
+        "text": "B",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [
+      {
+        "id1": "Acall",
+        "id2": "B",
+        "relation": {
+          "type1": 4,
+          "type2": 3,
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none"
+      }
+    ],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

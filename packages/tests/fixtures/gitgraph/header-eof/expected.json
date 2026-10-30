@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "EOF needs no authored newline after the header."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

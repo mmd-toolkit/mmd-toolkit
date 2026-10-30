@@ -1,0 +1,50 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A directive between the two characters of the metadata opener is removed."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {},
+        "metadata": {
+          "shape": "rect"
+        },
+        "type": "rect"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "metadata": {
+            "shape": "rect"
+          },
+          "type": "rect"
+        }
+      }
+    ]
+  }
+}

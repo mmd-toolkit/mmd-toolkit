@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a dash suffix make a valid header?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 8: unexpected character: ->-<- at offset: 7, skipped 1 characters. Parse error on line 1, column 9: Expecting token of type 'EOF' but found `x`."
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md The statement context: with `;` between them, `accDescr` and `:` are vertices."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "accDescr",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "accDescr",
+        "props": {}
+      },
+      {
+        "id": ":",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": ":",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

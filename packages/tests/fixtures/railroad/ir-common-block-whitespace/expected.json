@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Common block conversion trims and collapses lines and repeated horizontal spaces."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "A B\nC\nD",
+    "rules": []
+  }
+}

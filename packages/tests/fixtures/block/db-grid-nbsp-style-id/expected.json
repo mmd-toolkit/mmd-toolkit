@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, white space: a no-break space in the middle of the id of a `style` statement."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "a",
+          "label": "a",
+          "type": "na",
+          "widthInColumns": 1,
+          "styles": [
+            "b fill:red"
+          ]
+        },
+        {
+          "id": "b",
+          "label": "b",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

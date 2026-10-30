@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The statement context: default is a keyword."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...eDiagram-v2  A --> default\n----------------------^\nExpecting 'ID', 'EDGE_STATE', got 'DEFAULT'"
+  }
+}

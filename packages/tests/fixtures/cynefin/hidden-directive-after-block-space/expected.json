@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A space after a native directive leaves block description EOL visible."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "B"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

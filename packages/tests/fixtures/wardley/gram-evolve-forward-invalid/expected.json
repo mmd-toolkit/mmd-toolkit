@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Semantic acceptance conditions: All top-level components are registered before evolve checks, including declarations after the evolve."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Evolve target for \"A\" must be between 0-1 (decimal) or 0-100 (percentage). Received: 101"
+  }
+}

@@ -1,0 +1,608 @@
+{
+  "type": "Root",
+  "diagramType": "usecase",
+  "body": {
+    "type": "UsecaseDiagram",
+    "body": [
+      {
+        "type": "UsecaseActorStatement",
+        "actors": [
+          {
+            "type": "UsecaseActor",
+            "id": null,
+            "label": {
+              "type": "UsecaseLabel",
+              "kind": "string",
+              "value": "Customer Service",
+              "range": [
+                27,
+                45
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 14
+                },
+                "end": {
+                  "line": 2,
+                  "column": 32
+                }
+              }
+            },
+            "metadata": null,
+            "stereotype": null,
+            "classes": [],
+            "range": [
+              27,
+              45
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 14
+              },
+              "end": {
+                "line": 2,
+                "column": 32
+              }
+            }
+          }
+        ],
+        "range": [
+          21,
+          45
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 8
+          },
+          "end": {
+            "line": 2,
+            "column": 32
+          }
+        }
+      },
+      {
+        "type": "UsecaseActorStatement",
+        "actors": [
+          {
+            "type": "UsecaseActor",
+            "id": null,
+            "label": {
+              "type": "UsecaseLabel",
+              "kind": "string",
+              "value": "System Administrator",
+              "range": [
+                60,
+                82
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 14
+                },
+                "end": {
+                  "line": 3,
+                  "column": 36
+                }
+              }
+            },
+            "metadata": null,
+            "stereotype": null,
+            "classes": [],
+            "range": [
+              60,
+              82
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 14
+              },
+              "end": {
+                "line": 3,
+                "column": 36
+              }
+            }
+          }
+        ],
+        "range": [
+          54,
+          82
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 8
+          },
+          "end": {
+            "line": 3,
+            "column": 36
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": null,
+          "shape": null,
+          "label": {
+            "type": "UsecaseLabel",
+            "kind": "string",
+            "value": "Customer Service",
+            "range": [
+              91,
+              109
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 8
+              },
+              "end": {
+                "line": 4,
+                "column": 26
+              }
+            }
+          },
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            91,
+            109
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 8
+            },
+            "end": {
+              "line": 4,
+              "column": 26
+            }
+          }
+        },
+        "id": null,
+        "kind": "association",
+        "opening": null,
+        "label": null,
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "-->",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            110,
+            113
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 27
+            },
+            "end": {
+              "line": 4,
+              "column": 30
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": null,
+          "shape": null,
+          "label": {
+            "type": "UsecaseLabel",
+            "kind": "string",
+            "value": "Handle Tickets",
+            "range": [
+              114,
+              130
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 31
+              },
+              "end": {
+                "line": 4,
+                "column": 47
+              }
+            }
+          },
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            114,
+            130
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 31
+            },
+            "end": {
+              "line": 4,
+              "column": 47
+            }
+          }
+        },
+        "range": [
+          91,
+          130
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 8
+          },
+          "end": {
+            "line": 4,
+            "column": 47
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": null,
+          "shape": null,
+          "label": {
+            "type": "UsecaseLabel",
+            "kind": "string",
+            "value": "System Administrator",
+            "range": [
+              139,
+              161
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 8
+              },
+              "end": {
+                "line": 5,
+                "column": 30
+              }
+            }
+          },
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            139,
+            161
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 8
+            },
+            "end": {
+              "line": 5,
+              "column": 30
+            }
+          }
+        },
+        "id": null,
+        "kind": "association",
+        "opening": null,
+        "label": null,
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "-->",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            162,
+            165
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 31
+            },
+            "end": {
+              "line": 5,
+              "column": 34
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": null,
+          "shape": null,
+          "label": {
+            "type": "UsecaseLabel",
+            "kind": "string",
+            "value": "Manage System",
+            "range": [
+              166,
+              181
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 35
+              },
+              "end": {
+                "line": 5,
+                "column": 50
+              }
+            }
+          },
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            166,
+            181
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 35
+            },
+            "end": {
+              "line": 5,
+              "column": 50
+            }
+          }
+        },
+        "range": [
+          139,
+          181
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 8
+          },
+          "end": {
+            "line": 5,
+            "column": 50
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      181
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 5,
+        "column": 50
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "usecase-beta",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "actor",
+      "range": [
+        21,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Customer Service\"",
+      "range": [
+        27,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 14
+        },
+        "end": {
+          "line": 2,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "actor",
+      "range": [
+        54,
+        59
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"System Administrator\"",
+      "range": [
+        60,
+        82
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 14
+        },
+        "end": {
+          "line": 3,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Customer Service\"",
+      "range": [
+        91,
+        109
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 8
+        },
+        "end": {
+          "line": 4,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        110,
+        113
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 27
+        },
+        "end": {
+          "line": 4,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Handle Tickets\"",
+      "range": [
+        114,
+        130
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 31
+        },
+        "end": {
+          "line": 4,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"System Administrator\"",
+      "range": [
+        139,
+        161
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 8
+        },
+        "end": {
+          "line": 5,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        162,
+        165
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 31
+        },
+        "end": {
+          "line": 5,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Manage System\"",
+      "range": [
+        166,
+        181
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 35
+        },
+        "end": {
+          "line": 5,
+          "column": 50
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    181
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 50
+    }
+  }
+}

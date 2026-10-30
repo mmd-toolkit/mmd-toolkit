@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Composite common forms: The composite common forms below may begin at any unit position, with optional leading ASCII spaces/tabs. Case: title-double-percent-no-gap."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

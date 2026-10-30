@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, detection: the word `C4Context` is detected only at the start of the text, so a name that is `C4Context` is a name."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [
+      {
+        "text": "C4Context",
+        "className": "",
+        "x": "0.3",
+        "y": "0.6"
+      }
+    ],
+    "classes": []
+  }
+}

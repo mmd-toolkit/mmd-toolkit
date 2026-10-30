@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A comment after frontmatter tests preprocessing."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      }
+    ]
+  },
+  "embedded": {
+    "title": "Board"
+  }
+}

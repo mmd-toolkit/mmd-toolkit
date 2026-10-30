@@ -1,0 +1,62 @@
+{
+  "name": "mmd-toolkit-monorepo",
+  "description": "Third-party tooling for the Mermaid diagram syntax (monorepo)",
+  "private": true,
+  "license": "MIT",
+  "packageManager": "pnpm@10.30.1",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmd-toolkit/mmd-toolkit.git"
+  },
+  "engines": {
+    "node": "^22.18.0 || ^24.11.0 || >=26.0.0"
+  },
+  "scripts": {
+    "build": "pnpm --filter \"./packages/*\" run build",
+    "clean": "pnpm --filter \"./packages/*\" run clean",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:update": "pnpm --filter \"./packages/*\" run test:update",
+    "lint": "pnpm run lint:es && pnpm run lint:ja && pnpm run lint:ts && pnpm run lint:docs && pnpm run lint:chars",
+    "lint:es": "NODE_OPTIONS=--max-old-space-size=4096 eslint .",
+    "lint:ja": "eslint --config eslint.markdown.config.mjs \"**/*.ja.md\"",
+    "lint:ts": "tsc --noEmit && pnpm --filter @mmd-toolkit/playground run typecheck",
+    "lint:docs": "node scripts/check-ja-docs.mjs && pnpm --filter @mmd-toolkit/eslint-plugin run check:docs && node scripts/check-doc-citations.mjs && node scripts/check-mermaid-links.mjs",
+    "lint:chars": "node scripts/check-invisible-chars.mjs",
+    "eslint-fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "update": "pnpm --filter \"./packages/*\" run --if-present update",
+    "version:ci": "changeset version && pnpm run update",
+    "prerelease": "pnpm run build",
+    "release": "node scripts/copy-license.mjs && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/changelog-github": "^1.0.1",
+    "@changesets/cli": "^3.0.3",
+    "@eslint-community/eslint-plugin-eslint-comments": "^4.3.0",
+    "@eslint/markdown": "^8.0.3",
+    "@ota-meshi/eslint-plugin": "^0.20.0",
+    "@types/node": "^24.0.0",
+    "eslint": "^10.0.0",
+    "eslint-config-prettier": "^10.0.0",
+    "eslint-plugin-jsdoc": "^64.0.0",
+    "eslint-plugin-json-schema-validator": "^6.0.0",
+    "eslint-plugin-jsonc": "^3.0.0",
+    "eslint-plugin-markdown": "^5.1.0",
+    "eslint-plugin-n": "^18.0.0",
+    "eslint-plugin-node-dependencies": "^2.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-regexp": "^3.0.0",
+    "eslint-plugin-yml": "^3.0.0",
+    "eslint-plugin-vue": "^10.11.1",
+    "prettier": "^3.9.0",
+    "rimraf": "^6.1.3",
+    "tsdown": "^0.23.0",
+    "typescript": "~6.0.0",
+    "typescript-eslint": "^8.61.0",
+    "vitest": "^5.0.2",
+    "vue-eslint-parser": "^10.4.1"
+  }
+}

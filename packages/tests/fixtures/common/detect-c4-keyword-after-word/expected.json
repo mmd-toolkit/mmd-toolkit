@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md (entry 7): a C4 keyword after another word is not at the start; mermaid.js detects c4 anywhere and its C4 parser rejects the text, and here no detector matches."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nx C4ContainerContai\n^"
+  }
+}

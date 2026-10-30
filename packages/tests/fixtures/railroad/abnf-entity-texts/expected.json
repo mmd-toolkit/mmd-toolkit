@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Records shared entity placeholder conversion in each published text position."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "&ﬂ°°35¶ß &amp;",
+    "accDescr": "&ﬂ°°35¶ß &amp;",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "&ﬂ°°35¶ß &amp;"
+        }
+      }
+    ]
+  }
+}

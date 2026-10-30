@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-node-data.spec.js",
+    "line": 202,
+    "test": "when parsing directions > should error on nonexistent shape"
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "No such shape: this-shape-does-not-exist."
+  }
+}

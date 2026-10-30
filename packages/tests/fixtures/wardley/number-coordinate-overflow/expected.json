@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does overflow reject at the coordinate gate rather than disappear in JSON?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Component \"A\" visibility must be between 0-1 (decimal) or 0-100 (percentage). Received: Infinity"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A third duplicate start is validated rather than replacing a block."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Packet block 0 - 0 is not contiguous. It should start from 2."
+  }
+}

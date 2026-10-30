@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Keyword boundary: removing a directive leaves the ASCII space required after the bare header."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "A"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

@@ -1,0 +1,206 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/architecture.md",
+    "line": 182
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "src_a",
+        "type": "service",
+        "in": "sources",
+        "icon": "server",
+        "title": "Source A"
+      },
+      {
+        "id": "src_b",
+        "type": "service",
+        "in": "sources",
+        "icon": "server",
+        "title": "Source B"
+      },
+      {
+        "id": "src_c",
+        "type": "service",
+        "in": "sources",
+        "icon": "server",
+        "title": "Source C"
+      },
+      {
+        "id": "db_one",
+        "type": "service",
+        "in": "storage",
+        "icon": "database",
+        "title": "DB One"
+      },
+      {
+        "id": "db_two",
+        "type": "service",
+        "in": "storage",
+        "icon": "database",
+        "title": "DB Two"
+      },
+      {
+        "id": "db_three",
+        "type": "service",
+        "in": "storage",
+        "icon": "database",
+        "title": "DB Three"
+      },
+      {
+        "id": "brief",
+        "type": "service",
+        "in": "output",
+        "icon": "disk",
+        "title": "Brief"
+      },
+      {
+        "id": "analyst",
+        "type": "service",
+        "in": "output",
+        "icon": "server",
+        "title": "Analyst"
+      },
+      {
+        "id": "delivery",
+        "type": "service",
+        "in": "output",
+        "icon": "cloud",
+        "title": "Delivery"
+      }
+    ],
+    "groups": [
+      {
+        "id": "sources",
+        "icon": "cloud",
+        "title": "Sources"
+      },
+      {
+        "id": "storage",
+        "icon": "database",
+        "title": "Storage"
+      },
+      {
+        "id": "output",
+        "icon": "disk",
+        "title": "Output"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "src_a",
+        "lhsDir": "B",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "db_one",
+        "rhsDir": "T",
+        "rhsInto": true,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "src_b",
+        "lhsDir": "B",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "db_two",
+        "rhsDir": "T",
+        "rhsInto": true,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "src_c",
+        "lhsDir": "B",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "db_three",
+        "rhsDir": "T",
+        "rhsInto": true,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "db_two",
+        "lhsDir": "B",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "brief",
+        "rhsDir": "T",
+        "rhsInto": true,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "brief",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "analyst",
+        "rhsDir": "L",
+        "rhsInto": true,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "analyst",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "delivery",
+        "rhsDir": "L",
+        "rhsInto": true,
+        "rhsGroup": false
+      }
+    ],
+    "layoutHints": [
+      {
+        "direction": "row",
+        "members": [
+          "src_a",
+          "src_b",
+          "src_c"
+        ]
+      },
+      {
+        "direction": "row",
+        "members": [
+          "db_one",
+          "db_two",
+          "db_three"
+        ]
+      },
+      {
+        "direction": "row",
+        "members": [
+          "brief",
+          "analyst",
+          "delivery"
+        ]
+      },
+      {
+        "direction": "column",
+        "members": [
+          "src_a",
+          "db_one"
+        ]
+      },
+      {
+        "direction": "column",
+        "members": [
+          "src_b",
+          "db_two",
+          "brief"
+        ]
+      },
+      {
+        "direction": "column",
+        "members": [
+          "src_c",
+          "db_three"
+        ]
+      }
+    ]
+  }
+}

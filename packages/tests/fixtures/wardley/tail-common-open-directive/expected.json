@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does an unclosed directive affect a common line value?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

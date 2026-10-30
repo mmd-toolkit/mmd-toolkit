@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D: addNode and common strings] Are prototype names ordinary labels rather than object keys?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "__proto__",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "__proto__",
+      "children": [
+        {
+          "text": "constructor",
+          "children": [
+            {
+              "text": "toString",
+              "children": []
+            }
+          ]
+        },
+        {
+          "text": "hasOwnProperty",
+          "children": []
+        }
+      ]
+    }
+  }
+}

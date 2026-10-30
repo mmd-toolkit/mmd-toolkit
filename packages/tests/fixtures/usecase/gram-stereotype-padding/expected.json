@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are stereotype edges trimmed while internal text and case remain?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "A",
+        "label": "A",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "stereotype": "Human",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "B",
+        "label": "B",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "stereotype": "business role",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

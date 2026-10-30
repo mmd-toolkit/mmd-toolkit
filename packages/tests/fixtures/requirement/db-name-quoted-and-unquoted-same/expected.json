@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-from-tree/requirement.md, a quoted name and the unquoted name with the same text are one name."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [
+          "fill:red"
+        ],
+        "classes": [
+          "c"
+        ]
+      }
+    ],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

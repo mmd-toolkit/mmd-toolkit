@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A lone CR ends title text after shared normalization."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "A",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "B",
+        "value": 1
+      }
+    ]
+  }
+}

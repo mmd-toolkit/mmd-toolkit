@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Names: retaining an empty form does not allow a second initial string after ordinary name text."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...w-beta TBflow F \"\"\"G\"[T]Aend\n----------------------^\nExpecting 'COMMENT', 'SEMI', 'NEWLINE', 'SPACE', 'EOF', 'GRAPH', 'DIR', 'flow', 'SQS', 'end', 'global', 'connector', 'SHAPE_DATA', 'AMP', 'COLON', 'START_LINK', 'STYLE', 'LINKSTYLE', 'CLASSDEF', 'CLASS', 'CLICK', 'DOWN', 'UP', 'NUM', 'NODE_STRING', 'BRKT', 'MINUS', 'MULT', 'UNICODE_TEXT', got 'STR'"
+  }
+}

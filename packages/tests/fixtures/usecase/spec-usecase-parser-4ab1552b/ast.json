@@ -1,0 +1,1101 @@
+{
+  "type": "Root",
+  "diagramType": "usecase",
+  "body": {
+    "type": "UsecaseDiagram",
+    "body": [
+      {
+        "type": "UsecaseClassDefStatement",
+        "classes": [
+          {
+            "type": "Identifier",
+            "name": "decorated",
+            "range": [
+              22,
+              31
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 18
+              }
+            }
+          }
+        ],
+        "styles": [
+          {
+            "type": "UsecaseStyleDeclaration",
+            "name": {
+              "type": "UsecaseIdentifier",
+              "name": "fill",
+              "range": [
+                32,
+                36
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 19
+                },
+                "end": {
+                  "line": 2,
+                  "column": 23
+                }
+              }
+            },
+            "value": {
+              "type": "UsecaseLiteral",
+              "value": "#fee",
+              "range": [
+                37,
+                41
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 24
+                },
+                "end": {
+                  "line": 2,
+                  "column": 28
+                }
+              }
+            },
+            "range": [
+              32,
+              41
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 19
+              },
+              "end": {
+                "line": 2,
+                "column": 28
+              }
+            }
+          }
+        ],
+        "range": [
+          13,
+          41
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 28
+          }
+        }
+      },
+      {
+        "type": "UsecaseActorStatement",
+        "actors": [
+          {
+            "type": "UsecaseActor",
+            "id": {
+              "type": "Identifier",
+              "name": "User",
+              "range": [
+                48,
+                52
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 6
+                },
+                "end": {
+                  "line": 3,
+                  "column": 10
+                }
+              }
+            },
+            "label": {
+              "type": "UsecaseLabel",
+              "kind": "markdown",
+              "value": "**User**\nrole",
+              "range": [
+                53,
+                70
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 11
+                },
+                "end": {
+                  "line": 4,
+                  "column": 6
+                }
+              }
+            },
+            "metadata": null,
+            "stereotype": {
+              "type": "UsecaseLiteral",
+              "value": "Human",
+              "range": [
+                74,
+                79
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 10
+                },
+                "end": {
+                  "line": 4,
+                  "column": 15
+                }
+              }
+            },
+            "classes": [
+              {
+                "type": "Identifier",
+                "name": "decorated",
+                "range": [
+                  84,
+                  93
+                ],
+                "loc": {
+                  "start": {
+                    "line": 4,
+                    "column": 20
+                  },
+                  "end": {
+                    "line": 4,
+                    "column": 29
+                  }
+                }
+              }
+            ],
+            "range": [
+              48,
+              93
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 6
+              },
+              "end": {
+                "line": 4,
+                "column": 29
+              }
+            }
+          }
+        ],
+        "range": [
+          42,
+          93
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 29
+          }
+        }
+      },
+      {
+        "type": "UsecaseEntityStatement",
+        "entity": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Login",
+            "range": [
+              94,
+              99
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 0
+              },
+              "end": {
+                "line": 5,
+                "column": 5
+              }
+            }
+          },
+          "shape": "ellipse",
+          "label": {
+            "type": "UsecaseLabel",
+            "kind": "markdown",
+            "value": "Sign\nin",
+            "range": [
+              100,
+              111
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 6
+              },
+              "end": {
+                "line": 6,
+                "column": 4
+              }
+            }
+          },
+          "metadata": null,
+          "stereotype": {
+            "type": "UsecaseLiteral",
+            "value": "Primary",
+            "range": [
+              115,
+              122
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 8
+              },
+              "end": {
+                "line": 6,
+                "column": 15
+              }
+            }
+          },
+          "classes": [
+            {
+              "type": "Identifier",
+              "name": "decorated",
+              "range": [
+                127,
+                136
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 20
+                },
+                "end": {
+                  "line": 6,
+                  "column": 29
+                }
+              }
+            }
+          ],
+          "range": [
+            94,
+            136
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 6,
+              "column": 29
+            }
+          }
+        },
+        "range": [
+          94,
+          136
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 29
+          }
+        }
+      },
+      {
+        "type": "UsecaseEntityStatement",
+        "entity": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Escaped",
+            "range": [
+              137,
+              144
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 0
+              },
+              "end": {
+                "line": 7,
+                "column": 7
+              }
+            }
+          },
+          "shape": "ellipse",
+          "label": {
+            "type": "UsecaseLabel",
+            "kind": "string",
+            "value": "Open #40;safe#41; #91;now#93;",
+            "range": [
+              145,
+              176
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 8
+              },
+              "end": {
+                "line": 7,
+                "column": 39
+              }
+            }
+          },
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            137,
+            177
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 0
+            },
+            "end": {
+              "line": 7,
+              "column": 40
+            }
+          }
+        },
+        "range": [
+          137,
+          177
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 40
+          }
+        }
+      },
+      {
+        "type": "UsecaseEntityStatement",
+        "entity": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Literal",
+            "range": [
+              178,
+              185
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 0
+              },
+              "end": {
+                "line": 8,
+                "column": 7
+              }
+            }
+          },
+          "shape": "ellipse",
+          "label": {
+            "type": "UsecaseLabel",
+            "kind": "string",
+            "value": "First\\nSecond",
+            "range": [
+              186,
+              201
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 8
+              },
+              "end": {
+                "line": 8,
+                "column": 23
+              }
+            }
+          },
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            178,
+            202
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 0
+            },
+            "end": {
+              "line": 8,
+              "column": 24
+            }
+          }
+        },
+        "range": [
+          178,
+          202
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 0
+          },
+          "end": {
+            "line": 8,
+            "column": 24
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      202
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 8,
+        "column": 24
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "usecase-beta",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "classDef",
+      "range": [
+        13,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "decorated",
+      "range": [
+        22,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 9
+        },
+        "end": {
+          "line": 2,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "fill",
+      "range": [
+        32,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 19
+        },
+        "end": {
+          "line": 2,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        36,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 23
+        },
+        "end": {
+          "line": 2,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "#fee",
+      "range": [
+        37,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 24
+        },
+        "end": {
+          "line": 2,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "actor",
+      "range": [
+        42,
+        47
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "User",
+      "range": [
+        48,
+        52
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 6
+        },
+        "end": {
+          "line": 3,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        52,
+        53
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 10
+        },
+        "end": {
+          "line": 3,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"`**User**\nrole`\"",
+      "range": [
+        53,
+        70
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 11
+        },
+        "end": {
+          "line": 4,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        70,
+        71
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 6
+        },
+        "end": {
+          "line": 4,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "<<",
+      "range": [
+        72,
+        74
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 8
+        },
+        "end": {
+          "line": 4,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Human",
+      "range": [
+        74,
+        79
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 10
+        },
+        "end": {
+          "line": 4,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ">>",
+      "range": [
+        79,
+        81
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 15
+        },
+        "end": {
+          "line": 4,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":::",
+      "range": [
+        81,
+        84
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 17
+        },
+        "end": {
+          "line": 4,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "decorated",
+      "range": [
+        84,
+        93
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 20
+        },
+        "end": {
+          "line": 4,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Login",
+      "range": [
+        94,
+        99
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        99,
+        100
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 5
+        },
+        "end": {
+          "line": 5,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"`Sign\nin`\"",
+      "range": [
+        100,
+        111
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 6
+        },
+        "end": {
+          "line": 6,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        111,
+        112
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 4
+        },
+        "end": {
+          "line": 6,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "<<",
+      "range": [
+        113,
+        115
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 6
+        },
+        "end": {
+          "line": 6,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Primary",
+      "range": [
+        115,
+        122
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 8
+        },
+        "end": {
+          "line": 6,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ">>",
+      "range": [
+        122,
+        124
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 15
+        },
+        "end": {
+          "line": 6,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":::",
+      "range": [
+        124,
+        127
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 17
+        },
+        "end": {
+          "line": 6,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "decorated",
+      "range": [
+        127,
+        136
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 20
+        },
+        "end": {
+          "line": 6,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Escaped",
+      "range": [
+        137,
+        144
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        144,
+        145
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 7
+        },
+        "end": {
+          "line": 7,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Open #40;safe#41; #91;now#93;\"",
+      "range": [
+        145,
+        176
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 8
+        },
+        "end": {
+          "line": 7,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        176,
+        177
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 39
+        },
+        "end": {
+          "line": 7,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Literal",
+      "range": [
+        178,
+        185
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        185,
+        186
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 7
+        },
+        "end": {
+          "line": 8,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"First\\nSecond\"",
+      "range": [
+        186,
+        201
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 8
+        },
+        "end": {
+          "line": 8,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        201,
+        202
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 23
+        },
+        "end": {
+          "line": 8,
+          "column": 24
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    202
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 8,
+      "column": 24
+    }
+  }
+}

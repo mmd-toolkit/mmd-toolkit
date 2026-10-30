@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "CR normalization preserves the closer-space LF control."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

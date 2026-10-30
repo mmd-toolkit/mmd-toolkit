@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Grammar, shapes: the rectangle written with `[|` has the property `borders` with the value `lt`; its name is `rectangle` and its Db type `rect`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "text",
+        "type": "rect",
+        "props": {
+          "borders": "lt"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

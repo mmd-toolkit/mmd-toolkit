@@ -1,0 +1,118 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/architecture.md",
+    "line": 229
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "left_disk",
+        "type": "service",
+        "icon": "disk",
+        "title": "Disk"
+      },
+      {
+        "id": "top_disk",
+        "type": "service",
+        "icon": "disk",
+        "title": "Disk"
+      },
+      {
+        "id": "bottom_disk",
+        "type": "service",
+        "icon": "disk",
+        "title": "Disk"
+      },
+      {
+        "id": "top_gateway",
+        "type": "service",
+        "icon": "internet",
+        "title": "Gateway"
+      },
+      {
+        "id": "bottom_gateway",
+        "type": "service",
+        "icon": "internet",
+        "title": "Gateway"
+      },
+      {
+        "id": "junctionCenter",
+        "type": "junction"
+      },
+      {
+        "id": "junctionRight",
+        "type": "junction"
+      }
+    ],
+    "groups": [],
+    "edges": [
+      {
+        "lhsId": "left_disk",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "junctionCenter",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "top_disk",
+        "lhsDir": "B",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "junctionCenter",
+        "rhsDir": "T",
+        "rhsInto": false,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "bottom_disk",
+        "lhsDir": "T",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "junctionCenter",
+        "rhsDir": "B",
+        "rhsInto": false,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "junctionCenter",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "junctionRight",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "top_gateway",
+        "lhsDir": "B",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "junctionRight",
+        "rhsDir": "T",
+        "rhsInto": false,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "bottom_gateway",
+        "lhsDir": "T",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "junctionRight",
+        "rhsDir": "B",
+        "rhsInto": false,
+        "rhsGroup": false
+      }
+    ],
+    "layoutHints": []
+  }
+}

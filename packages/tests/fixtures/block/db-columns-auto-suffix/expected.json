@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, columns: `columns auto2` is the node `columns` and the node `auto2`: `auto` must be a word of its own."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "columns",
+          "label": "columns",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "auto2",
+          "label": "auto2",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

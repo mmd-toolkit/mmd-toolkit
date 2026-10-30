@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "LS is text inside a line description."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A B",
+    "packet": []
+  }
+}

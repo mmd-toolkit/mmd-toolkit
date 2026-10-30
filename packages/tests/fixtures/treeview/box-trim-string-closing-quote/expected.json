@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: A quote in a physical-line branch prefix does not close the enclosing multiline quoted name."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "one\n        two\nthree",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

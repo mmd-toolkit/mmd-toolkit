@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The label that a data block sets under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): mermaid.js does not replace the characters of it, and the vertex has the label as written."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "a<b>=c<br>d",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "labelType": "markdown",
+          "text": "a<b>=c<br>d"
+        }
+      }
+    ]
+  }
+}

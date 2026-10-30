@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, accessibility and titles: `title t` is two nodes: a block diagram has no title statement."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "title",
+          "label": "title",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "t",
+          "label": "t",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do links fall back to the first label while evolve requires an exact id?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "P",
+        "label": "P",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Q",
+        "label": "Q",
+        "x": 40,
+        "y": 30,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "P_X",
+        "label": "X",
+        "x": 50,
+        "y": 10,
+        "className": "pipeline-component"
+      },
+      {
+        "id": "Q_X",
+        "label": "X",
+        "x": 60,
+        "y": 30,
+        "className": "pipeline-component"
+      }
+    ],
+    "links": [
+      {
+        "source": "P_X",
+        "target": "P_X",
+        "dashed": false
+      },
+      {
+        "source": "P_X",
+        "target": "Q",
+        "dashed": false
+      }
+    ],
+    "trends": [],
+    "pipelines": [
+      {
+        "nodeId": "P",
+        "componentIds": [
+          "P_X"
+        ]
+      },
+      {
+        "nodeId": "Q",
+        "componentIds": [
+          "Q_X"
+        ]
+      }
+    ],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

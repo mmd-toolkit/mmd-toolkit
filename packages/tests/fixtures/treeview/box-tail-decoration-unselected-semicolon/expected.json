@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Indentation and lines: Does an unselected semicolon take the ordinary tail run itself, leaving b a root after the decoration?"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "x",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "a",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": ";",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "b",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

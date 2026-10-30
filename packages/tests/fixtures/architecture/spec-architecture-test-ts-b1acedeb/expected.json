@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/architecture.test.ts",
+    "line": 158,
+    "test": "architecture > should handle service titles with quotes > should preserve inner quotes in service titles when escaped"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The service [api]'s parent does not exist. Please make sure the parent is created before this service"
+  }
+}

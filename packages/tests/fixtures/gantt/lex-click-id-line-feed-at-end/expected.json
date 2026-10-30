@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Units and contexts: the line feed leaves the click context, and the click statement has no part; rejected by the grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...01-01, 1dclick id1\n---------------------^\nExpecting 'callbackname', 'href', got 'NL'"
+  }
+}

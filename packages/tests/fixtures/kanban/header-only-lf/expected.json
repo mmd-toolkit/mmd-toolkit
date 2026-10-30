@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A final line feed tests an empty document."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": []
+  }
+}

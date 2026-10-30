@@ -1,0 +1,155 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/usecase.docs.spec.ts",
+    "line": 40,
+    "test": "usecase public documentation examples > parses and renders every mermaid-example fence from the canonical page"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [
+      {
+        "id": "Inspect",
+        "label": "Inspect payload",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [
+      {
+        "source": "Inspect",
+        "target": "Payload",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "Payload",
+        "value": {
+          "1": "first after 2",
+          "2": "second in source",
+          "enabled": true,
+          "count": 3,
+          "missing": null,
+          "colors": [
+            "Red",
+            "Green"
+          ],
+          "address": {
+            "city": "Oslo"
+          },
+          "items": [
+            {
+              "name": "Book"
+            }
+          ],
+          "emptyObject": {},
+          "emptyArray": []
+        },
+        "propertyOrder": {
+          "": [
+            "2",
+            "1",
+            "enabled",
+            "count",
+            "missing",
+            "colors",
+            "address",
+            "items",
+            "emptyObject",
+            "emptyArray"
+          ],
+          "/address": [
+            "city"
+          ],
+          "/items/0": [
+            "name"
+          ],
+          "/emptyObject": []
+        },
+        "classes": [
+          "data"
+        ],
+        "styles": [
+          "stroke-width:2px"
+        ]
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "data",
+        "styles": [
+          "stroke:#3572a5"
+        ]
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "Payload",
+        "set": {
+          "value": {
+            "1": "first after 2",
+            "2": "second in source",
+            "enabled": true,
+            "count": 3,
+            "missing": null,
+            "colors": [
+              "Red",
+              "Green"
+            ],
+            "address": {
+              "city": "Oslo"
+            },
+            "items": [
+              {
+                "name": "Book"
+              }
+            ],
+            "emptyObject": {},
+            "emptyArray": []
+          },
+          "propertyOrder": {
+            "": [
+              "2",
+              "1",
+              "enabled",
+              "count",
+              "missing",
+              "colors",
+              "address",
+              "items",
+              "emptyObject",
+              "emptyArray"
+            ],
+            "/address": [
+              "city"
+            ],
+            "/items/0": [
+              "name"
+            ],
+            "/emptyObject": []
+          }
+        }
+      }
+    ]
+  }
+}

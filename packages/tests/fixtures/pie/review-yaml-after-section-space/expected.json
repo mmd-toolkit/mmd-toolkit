@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A space after the closing hidden YAML fence leaves LF for the preceding section's EOL and allows the next section."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      },
+      {
+        "label": "B",
+        "value": 2
+      }
+    ]
+  }
+}

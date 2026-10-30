@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, settings: under securityLevel loose, the title and the ids are recorded as written."
+  },
+  "config": {
+    "securityLevel": "loose"
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "T<b>x</b>",
+    "nodes": [
+      "A<b>x</b> & <i>",
+      "B"
+    ],
+    "links": [
+      {
+        "source": "A<b>x</b> & <i>",
+        "target": "B",
+        "value": 1
+      }
+    ]
+  },
+  "embedded": {
+    "title": "T<b>x</b>"
+  }
+}

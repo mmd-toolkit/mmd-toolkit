@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A hyphen after showInfo."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 6: unexpected character: ->s<- at offset: 5, skipped 10 characters. "
+  }
+}

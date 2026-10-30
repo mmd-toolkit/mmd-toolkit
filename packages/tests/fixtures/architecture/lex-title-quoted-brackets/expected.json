@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Bracketed labels: quoted alternatives start immediately after the opening bracket; padding selects the bare alternative, which cannot contain brackets. Case: title-quoted-brackets."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service",
+        "title": "[x]"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

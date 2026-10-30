@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A third nonempty common assignment replaces the second independently of line or block form."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "Third",
+    "accDescr": "Third",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, spaces: `space:3` is three blocks, each with the width 3."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "type": "space",
+          "width": 3
+        },
+        {
+          "type": "space",
+          "width": 3
+        },
+        {
+          "type": "space",
+          "width": 3
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

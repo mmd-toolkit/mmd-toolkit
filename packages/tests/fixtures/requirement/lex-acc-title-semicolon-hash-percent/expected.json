@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Accessibility values: `;`, `#`, and `%%` are characters of the title."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "a;b #c %% d",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

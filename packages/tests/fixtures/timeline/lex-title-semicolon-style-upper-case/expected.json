@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, title: the word `style` is matched in lower case only, so the `;` ends a character reference."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "Style:ﬂ°x¶ßy",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

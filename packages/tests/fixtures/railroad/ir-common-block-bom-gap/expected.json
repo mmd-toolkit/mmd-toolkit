@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The description composite terminal permits BOM in its keyword-to-brace whitespace."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "D",
+    "rules": []
+  }
+}

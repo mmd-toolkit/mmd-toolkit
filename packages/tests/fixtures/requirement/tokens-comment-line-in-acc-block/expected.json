@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Trivia between units: a comment line inside a description block is removed."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "d",
+    "requirements": [],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

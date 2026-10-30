@@ -1,0 +1,147 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: c4-no-invalid-attribute-key >> invalid >>> docs/rules/c4-no-invalid-attribute-key.md incorrect 1
+Filename: c4-no-invalid-attribute-key-incorrect-1.mmd
+
+Code:
+  1 | C4Context
+  2 |   Person(a, "A")
+  3 |   UpdateElementStyle(a, $BgColor="red")
+    |                          ^~~~~~~ [1]
+  4 |
+
+[1] mermaid.js stores `BgColor` as a separate attribute; use `bgColor` to set this style.
+---
+
+
+Test: c4-no-invalid-attribute-key >> invalid >>> invalid/c4/all-element-color-key-cases
+Filename: tests/fixtures/rules/c4-no-invalid-attribute-key/invalid/c4/all-element-color-key-cases-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | UpdateElementStyle(a, $BgColor="red", $FontColor="white", $BorderColor="black")
+    |                        ^~~~~~~ [1]     ^~~~~~~~~ [2]       ^~~~~~~~~~~ [3]
+  4 |
+
+[1] mermaid.js stores `BgColor` as a separate attribute; use `bgColor` to set this style.
+[2] mermaid.js stores `FontColor` as a separate attribute; use `fontColor` to set this style.
+[3] mermaid.js stores `BorderColor` as a separate attribute; use `borderColor` to set this style.
+---
+
+
+Test: c4-no-invalid-attribute-key >> invalid >>> invalid/c4/all-relationship-key-cases
+Filename: tests/fixtures/rules/c4-no-invalid-attribute-key/invalid/c4/all-relationship-key-cases-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Rel(a, b, "Uses")
+  3 | UpdateRelStyle(a, b, $TextColor="red", $LineColor="blue", $OffsetX="3", $OffsetY="4")
+    |                       ^~~~~~~~~ [1]     ^~~~~~~~~ [2]      ^~~~~~~ [3]   ^~~~~~~ [4]
+  4 |
+
+[1] mermaid.js stores `TextColor` as a separate attribute; use `textColor` to set this style.
+[2] mermaid.js stores `LineColor` as a separate attribute; use `lineColor` to set this style.
+[3] mermaid.js stores `OffsetX` as a separate attribute; use `offsetX` to set this style.
+[4] mermaid.js stores `OffsetY` as a separate attribute; use `offsetY` to set this style.
+---
+
+
+Test: c4-no-invalid-attribute-key >> invalid >>> invalid/c4/boundary-style-case
+Filename: tests/fixtures/rules/c4-no-invalid-attribute-key/invalid/c4/boundary-style-case-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Boundary(b, "Bank") {
+  3 | Person(a, "A")
+  4 | }
+  5 | UpdateElementStyle(b, $FontColor="red")
+    |                        ^~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js stores `FontColor` as a separate attribute; use `fontColor` to set this style.
+---
+
+
+Test: c4-no-invalid-attribute-key >> invalid >>> invalid/c4/case-key-no-target-after
+Filename: tests/fixtures/rules/c4-no-invalid-attribute-key/invalid/c4/case-key-no-target-after-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | UpdateElementStyle(a, $BgColor="red")
+    |                        ^~~~~~~ [1]
+  4 |
+
+[1] mermaid.js stores `BgColor` as a separate attribute; use `bgColor` to set this style.
+---
+
+
+Test: c4-no-invalid-attribute-key >> invalid >>> invalid/c4/global-style-case
+Filename: tests/fixtures/rules/c4-no-invalid-attribute-key/invalid/c4/global-style-case-input.mmd
+
+Code:
+  1 | C4Context
+  2 | UpdateElementStyle(global, $BgColor="red")
+    |                             ^~~~~~~ [1]
+  3 |
+
+[1] mermaid.js stores `BgColor` as a separate attribute; use `bgColor` to set this style.
+---
+
+
+Test: c4-no-invalid-attribute-key >> invalid >>> invalid/c4/key-surrounding-spaces
+Filename: tests/fixtures/rules/c4-no-invalid-attribute-key/invalid/c4/key-surrounding-spaces-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | UpdateElementStyle(a, $ BgColor = "red")
+    |                         ^~~~~~~ [1]
+  4 |
+
+[1] mermaid.js stores `BgColor` as a separate attribute; use `bgColor` to set this style.
+---
+
+
+Test: c4-no-invalid-attribute-key >> invalid >>> invalid/c4/misspelled-element-key-case
+Filename: tests/fixtures/rules/c4-no-invalid-attribute-key/invalid/c4/misspelled-element-key-case-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | UpdateElementStyle(a, $BgColor="red")
+    |                        ^~~~~~~ [1]
+  4 |
+
+[1] mermaid.js stores `BgColor` as a separate attribute; use `bgColor` to set this style.
+---
+
+
+Test: c4-no-invalid-attribute-key >> invalid >>> invalid/c4/offset-key-case
+Filename: tests/fixtures/rules/c4-no-invalid-attribute-key/invalid/c4/offset-key-case-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Rel(a, b, "Uses")
+  3 | UpdateRelStyle(a, b, "red", "blue", $OffsetX="3")
+    |                                      ^~~~~~~ [1]
+  4 |
+
+[1] mermaid.js stores `OffsetX` as a separate attribute; use `offsetX` to set this style.
+---
+
+
+Test: c4-no-invalid-attribute-key >> invalid >>> invalid/c4/rel-key-case
+Filename: tests/fixtures/rules/c4-no-invalid-attribute-key/invalid/c4/rel-key-case-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Rel(a, b, "Uses")
+  3 | UpdateRelStyle(a, b, $TextColor="red")
+    |                       ^~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js stores `TextColor` as a separate attribute; use `textColor` to set this style.
+---

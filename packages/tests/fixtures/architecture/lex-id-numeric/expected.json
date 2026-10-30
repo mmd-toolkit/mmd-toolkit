@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ID accepts leading digits and underscores without numeric conversion."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "0",
+        "type": "service",
+        "in": "12"
+      },
+      {
+        "id": "_j",
+        "type": "junction",
+        "in": "12"
+      }
+    ],
+    "groups": [
+      {
+        "id": "12"
+      }
+    ],
+    "edges": [],
+    "layoutHints": []
+  }
+}

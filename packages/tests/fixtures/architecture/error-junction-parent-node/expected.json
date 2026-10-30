@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A junction parent cannot be a service."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The junction [j]'s parent is not a group"
+  }
+}

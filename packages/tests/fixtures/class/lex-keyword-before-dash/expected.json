@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Lexical structure: `-` is no word character, so `class-A` is the keyword `class` and the name `-A`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "-A",
+        "type": "",
+        "label": "-A",
+        "text": "-A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

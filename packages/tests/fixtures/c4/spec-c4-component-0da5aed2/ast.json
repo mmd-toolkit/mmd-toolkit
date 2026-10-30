@@ -1,0 +1,411 @@
+{
+  "type": "Root",
+  "diagramType": "c4",
+  "body": {
+    "type": "C4Diagram",
+    "kind": "component",
+    "beforeBody": [],
+    "body": [
+      {
+        "type": "C4TitleStatement",
+        "value": {
+          "type": "C4Literal",
+          "value": "Component diagram for Internet Banking Component ",
+          "range": [
+            19,
+            68
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 6
+            },
+            "end": {
+              "line": 2,
+              "column": 55
+            }
+          }
+        },
+        "range": [
+          13,
+          68
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 55
+          }
+        }
+      },
+      {
+        "type": "C4ElementStatement",
+        "keyword": "ComponentQueue_Ext",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "ComponentAA",
+            "range": [
+              88,
+              99
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 19
+              },
+              "end": {
+                "line": 3,
+                "column": 30
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Internet Banking Component",
+            "raw": "\"Internet Banking Component\"",
+            "closed": true,
+            "range": [
+              101,
+              129
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 32
+              },
+              "end": {
+                "line": 3,
+                "column": 60
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Technology",
+            "raw": "\"Technology\"",
+            "closed": true,
+            "range": [
+              131,
+              143
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 62
+              },
+              "end": {
+                "line": 3,
+                "column": 74
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Allows customers to view information about their bank accounts, and make payments.",
+            "raw": "\"Allows customers to view information about their bank accounts, and make payments.\"",
+            "closed": true,
+            "range": [
+              145,
+              229
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 76
+              },
+              "end": {
+                "line": 3,
+                "column": 160
+              }
+            }
+          }
+        ],
+        "range": [
+          69,
+          230
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 161
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      230
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 161
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "C4Component",
+      "range": [
+        0,
+        11
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        13,
+        18
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Component diagram for Internet Banking Component ",
+      "range": [
+        19,
+        68
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 55
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "ComponentQueue_Ext",
+      "range": [
+        69,
+        87
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        87,
+        88
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 18
+        },
+        "end": {
+          "line": 3,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "ComponentAA",
+      "range": [
+        88,
+        99
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 19
+        },
+        "end": {
+          "line": 3,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        99,
+        100
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 30
+        },
+        "end": {
+          "line": 3,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Internet Banking Component\"",
+      "range": [
+        101,
+        129
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 32
+        },
+        "end": {
+          "line": 3,
+          "column": 60
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        129,
+        130
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 60
+        },
+        "end": {
+          "line": 3,
+          "column": 61
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Technology\"",
+      "range": [
+        131,
+        143
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 62
+        },
+        "end": {
+          "line": 3,
+          "column": 74
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        143,
+        144
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 74
+        },
+        "end": {
+          "line": 3,
+          "column": 75
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Allows customers to view information about their bank accounts, and make payments.\"",
+      "range": [
+        145,
+        229
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 76
+        },
+        "end": {
+          "line": 3,
+          "column": 160
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        229,
+        230
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 160
+        },
+        "end": {
+          "line": 3,
+          "column": 161
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    231
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 162
+    }
+  }
+}

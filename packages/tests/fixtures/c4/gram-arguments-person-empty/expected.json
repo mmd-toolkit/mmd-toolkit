@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`Person` with empty quoted arguments is accepted; shapes[0] is {\"alias\":\"\",\"label\":{\"text\":\"\"},\"descr\":{\"text\":\"\"},\"sprite\":\"\",\"tags\":\"\",\"link\":\"\",\"typeC4Shape\":{\"text\":\"person\"},\"parentBoundary\":\"global\"}."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "",
+        "label": {
+          "text": ""
+        },
+        "descr": {
+          "text": ""
+        },
+        "sprite": "",
+        "tags": "",
+        "link": "",
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

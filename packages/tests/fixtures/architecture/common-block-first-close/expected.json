@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A nested opening brace does not postpone the first closing brace of ACC_DESCR."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 20: unexpected character: ->}<- at offset: 37, skipped 1 characters. Parse error on line 2, column 1: Expecting: expecting at least one iteration which starts with one of these possible Token sequences::\n  <[ACC_DESCR] ,[ACC_TITLE] ,[TITLE]>\nbut found: 'accDescr {A { B }'\nParse error on line 2, column 1: Expecting end of file but found `accDescr {A { B }`."
+  }
+}

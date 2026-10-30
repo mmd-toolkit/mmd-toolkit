@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Metadata labels override the bracket label without bracket-label trimming."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "  Later  ",
+        "type": "square",
+        "props": {},
+        "metadata": {
+          "label": "  Later  ",
+          "labelType": "string"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "labelType": "string",
+          "text": "  Later  ",
+          "metadata": {
+            "label": "  Later  ",
+            "labelType": "string"
+          }
+        }
+      }
+    ]
+  }
+}

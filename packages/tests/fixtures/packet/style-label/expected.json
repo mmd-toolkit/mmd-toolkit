@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The shared style pass can remove a semicolon inside STRING."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 0,
+          "label": "style x fill:#f00"
+        }
+      ]
+    ]
+  }
+}

@@ -1,0 +1,322 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: block-no-duplicate-columns >> invalid >>> docs/rules/block-no-duplicate-columns.md incorrect 1
+Filename: block-no-duplicate-columns-incorrect-1.mmd
+
+Code:
+  1 | block
+  2 |   columns 2
+  3 |   A B
+  4 |   columns 3
+    |   ^~~~~~~~~ [1]
+  5 |   C
+  6 |
+
+[1] mermaid.js replaces the earlier column count with this count for the whole block.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   columns 2
+          3 |   A B
+          4 |   C
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   A B
+          3 |   columns 3
+          4 |   C
+          5 |
+---
+
+
+Test: block-no-duplicate-columns >> invalid >>> invalid/block/columns-auto-then-number
+Filename: tests/fixtures/rules/block-no-duplicate-columns/invalid/block/columns-auto-then-number-input.mmd
+
+Code:
+  1 | block
+  2 |   columns auto
+  3 |   columns 2
+    |   ^~~~~~~~~ [1]
+  4 |   A
+  5 |
+
+[1] mermaid.js replaces the earlier column count with this count for the whole block.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   columns auto
+          3 |   A
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   columns 2
+          3 |   A
+          4 |
+---
+
+
+Test: block-no-duplicate-columns >> invalid >>> invalid/block/columns-back-to-first
+Filename: tests/fixtures/rules/block-no-duplicate-columns/invalid/block/columns-back-to-first-input.mmd
+
+Code:
+  1 | block
+  2 |   columns 2
+  3 |   columns 3
+    |   ^~~~~~~~~ [1]
+  4 |   columns 2
+    |   ^~~~~~~~~ [2]
+  5 |   A
+  6 |
+
+[1] mermaid.js replaces the earlier column count with this count for the whole block.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   columns 2
+          3 |   columns 2
+          4 |   A
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   columns 3
+          3 |   columns 2
+          4 |   A
+          5 |
+[2] mermaid.js replaces the earlier column count with this count for the whole block.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   columns 2
+          3 |   columns 3
+          4 |   A
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   columns 2
+          3 |   columns 2
+          4 |   A
+          5 |
+---
+
+
+Test: block-no-duplicate-columns >> invalid >>> invalid/block/columns-comment-between
+Filename: tests/fixtures/rules/block-no-duplicate-columns/invalid/block/columns-comment-between-input.mmd
+
+Code:
+  1 | block
+  2 |   columns 2
+  3 |   %% c
+  4 |   columns 3
+    |   ^~~~~~~~~ [1]
+  5 |   A
+  6 |
+
+[1] mermaid.js replaces the earlier column count with this count for the whole block.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   columns 2
+          3 |   %% c
+          4 |   A
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   %% c
+          3 |   columns 3
+          4 |   A
+          5 |
+---
+
+
+Test: block-no-duplicate-columns >> invalid >>> invalid/block/columns-directive-between
+Filename: tests/fixtures/rules/block-no-duplicate-columns/invalid/block/columns-directive-between-input.mmd
+
+Code:
+  1 | block
+  2 |   columns 2
+  3 |   %%{init: {}}%%
+  4 |   columns 3
+    |   ^~~~~~~~~ [1]
+  5 |   A
+  6 |
+
+[1] mermaid.js replaces the earlier column count with this count for the whole block.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   columns 2
+          3 |   %%{init: {}}%%
+          4 |   A
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   %%{init: {}}%%
+          3 |   columns 3
+          4 |   A
+          5 |
+---
+
+
+Test: block-no-duplicate-columns >> invalid >>> invalid/block/columns-equal-predecessor
+Filename: tests/fixtures/rules/block-no-duplicate-columns/invalid/block/columns-equal-predecessor-input.mmd
+
+Code:
+  1 | block
+  2 | columns 2
+  3 | columns 2
+  4 | columns 3
+    | ^~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier column count with this count for the whole block.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 | columns 2
+          3 | columns 2
+          4 |
+---
+
+
+Test: block-no-duplicate-columns >> invalid >>> invalid/block/columns-outer-after-end
+Filename: tests/fixtures/rules/block-no-duplicate-columns/invalid/block/columns-outer-after-end-input.mmd
+
+Code:
+  1 | block
+  2 |   columns 2
+  3 |   block:G
+  4 |     columns 3
+  5 |     A
+  6 |   end
+  7 |   columns 4
+    |   ^~~~~~~~~ [1]
+  8 |
+
+[1] mermaid.js replaces the earlier column count with this count for the whole block.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   columns 2
+          3 |   block:G
+          4 |     columns 3
+          5 |     A
+          6 |   end
+          7 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   block:G
+          3 |     columns 3
+          4 |     A
+          5 |   end
+          6 |   columns 4
+          7 |
+---
+
+
+Test: block-no-duplicate-columns >> invalid >>> invalid/block/columns-replaced
+Filename: tests/fixtures/rules/block-no-duplicate-columns/invalid/block/columns-replaced-input.mmd
+
+Code:
+  1 | block
+  2 |   columns 2
+  3 |   A B
+  4 |   columns 3
+    |   ^~~~~~~~~ [1]
+  5 |   C
+  6 |
+
+[1] mermaid.js replaces the earlier column count with this count for the whole block.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   columns 2
+          3 |   A B
+          4 |   C
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   A B
+          3 |   columns 3
+          4 |   C
+          5 |
+---
+
+
+Test: block-no-duplicate-columns >> invalid >>> invalid/block/columns-twice-in-composite
+Filename: tests/fixtures/rules/block-no-duplicate-columns/invalid/block/columns-twice-in-composite-input.mmd
+
+Code:
+  1 | block
+  2 |   block:G
+  3 |     columns 2
+  4 |     A
+  5 |     columns 3
+    |     ^~~~~~~~~ [1]
+  6 |   end
+  7 |
+
+[1] mermaid.js replaces the earlier column count with this count for the whole block.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   block:G
+          3 |     columns 2
+          4 |     A
+          5 |   end
+          6 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   block:G
+          3 |     A
+          4 |     columns 3
+          5 |   end
+          6 |
+---
+
+
+Test: block-no-duplicate-columns >> invalid >>> invalid/block/columns-zero-then-auto
+Filename: tests/fixtures/rules/block-no-duplicate-columns/invalid/block/columns-zero-then-auto-input.mmd
+
+Code:
+  1 | block
+  2 |   columns 0
+  3 |   columns auto
+    |   ^~~~~~~~~~~~ [1]
+  4 |   A
+  5 |
+
+[1] mermaid.js replaces the earlier column count with this count for the whole block.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | block
+          2 |   columns 0
+          3 |   A
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | block
+          2 |   columns auto
+          3 |   A
+          4 |
+---

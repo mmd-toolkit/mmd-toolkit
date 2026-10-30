@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/venn/parser/venn.spec.ts",
+    "line": 20,
+    "test": "Venn diagram > simple"
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "foo bar",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "size": 2.5
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Known divergences: a title with a digit after `x-axis A;` on its line; mermaid.js reads the digit in the axis context and rejects it."
+  },
+  "knownDivergence": "title-digit-after-axis-statement",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...rtx-axis A; title Q1\n----------------------^\nExpecting 'title', 'X_AXIS', 'Y_AXIS', 'LINE', 'BAR', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'NEWLINE', 'SEMI', 'EOF', got 'NUMBER_WITH_DECIMAL'"
+  }
+}

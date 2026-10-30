@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, fields: a field can start with a `#`."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "#a",
+      "b"
+    ],
+    "links": [
+      {
+        "source": "#a",
+        "target": "b",
+        "value": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do removed global directives preserve EOL after each statement form?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "U",
+        "label": "U",
+        "x": 20,
+        "y": 10,
+        "className": "anchor"
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "A_X",
+        "label": "X",
+        "x": 30,
+        "y": 10,
+        "className": "pipeline-component"
+      }
+    ],
+    "links": [
+      {
+        "source": "A",
+        "target": "U",
+        "dashed": false
+      }
+    ],
+    "trends": [
+      {
+        "nodeId": "A",
+        "targetX": 80
+      }
+    ],
+    "pipelines": [
+      {
+        "nodeId": "A",
+        "componentIds": [
+          "A_X"
+        ]
+      }
+    ],
+    "annotations": [
+      {
+        "number": 1,
+        "coordinates": [
+          {
+            "x": 2,
+            "y": 100
+          }
+        ],
+        "text": "N"
+      }
+    ],
+    "notes": [
+      {
+        "text": "N",
+        "x": 20,
+        "y": 10
+      }
+    ],
+    "accelerators": [
+      {
+        "name": "X",
+        "x": 20,
+        "y": 10
+      }
+    ],
+    "deaccelerators": [
+      {
+        "name": "Y",
+        "x": 20,
+        "y": 10
+      }
+    ],
+    "annotationsBox": {
+      "x": 2,
+      "y": 100
+    },
+    "axes": {
+      "stages": [
+        "A",
+        "B"
+      ],
+      "stageBoundaries": []
+    },
+    "size": {
+      "width": 1,
+      "height": 2
+    }
+  }
+}

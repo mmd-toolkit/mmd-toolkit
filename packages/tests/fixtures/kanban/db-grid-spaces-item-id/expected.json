@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The block carryover kind spaces in item-id tests the kanban reading at this text position."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "a  b",
+        "label": "Item",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

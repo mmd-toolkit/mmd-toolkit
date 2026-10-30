@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Class statements: the annotation is one name part."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...class A <<abstract class>>\n----------------------^\nExpecting 'ANNOTATION_END', got 'ALPHA'"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A later `accTitle` replaces the earlier one."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "second",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Must accessibility tokens begin at an indented physical line start?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting: one of these possible Token sequences:\n  1. [DEPENDENCY_ARROW]\n  2. [GENERALIZATION]\n  3. [FORWARD_SOLID]\n  4. [BACKWARD_SOLID]\n  5. [MARKERLESS_SOLID]\n  6. [FORWARD_CIRCLE]\n  7. [BACKWARD_CIRCLE]\n  8. [FORWARD_CROSS]\n  9. [BACKWARD_CROSS]\nbut found: 'accTitle' at line 2, column 9 [21,29)"
+  }
+}

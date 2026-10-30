@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md requirement, the converted form: an entity is its placeholder in the name, the type and the reference of an element."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [
+      {
+        "name": "aﬂ°amp¶ß b",
+        "type": "cﬂ°°35¶ß d",
+        "docRef": "eﬂ°lt¶ß f",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": []
+  }
+}

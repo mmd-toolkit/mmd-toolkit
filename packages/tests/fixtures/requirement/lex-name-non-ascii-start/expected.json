@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The statement context: a name starts with an ASCII word character; `é` is read by no rule."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...Diagramrequirement é {}\n----------------------^"
+  }
+}

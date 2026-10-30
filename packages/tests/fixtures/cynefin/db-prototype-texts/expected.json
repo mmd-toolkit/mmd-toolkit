@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Prototype spellings in all authored text fields are ordinary text."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "__proto__",
+    "accTitle": "constructor",
+    "accDescr": "__proto__",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "__proto__"
+          },
+          {
+            "label": "constructor"
+          }
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear",
+        "label": "constructor"
+      }
+    ]
+  }
+}

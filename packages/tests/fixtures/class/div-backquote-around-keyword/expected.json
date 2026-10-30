@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Known divergences, name-start-reads-unit: here `note` is a backquoted class name followed by a string, which no statement takes, and the input is rejected; mermaid.js reads the keyword `note` and adds a note."
+  },
+  "knownDivergence": "name-start-reads-unit",
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "text": "x"
+      }
+    ],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

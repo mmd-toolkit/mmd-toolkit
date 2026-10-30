@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Detection: `journeyX` is a task text, not the header, so the grammar finds no header."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\njourneyX: 1\n^\nExpecting 'journey', got 'taskName'"
+  }
+}

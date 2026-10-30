@@ -1,0 +1,457 @@
+{
+  "type": "Root",
+  "diagramType": "gitGraph",
+  "body": {
+    "type": "GitgraphDiagram",
+    "direction": null,
+    "textBeforeHeader": [],
+    "textBeforeDirection": [],
+    "textBeforeColon": [],
+    "body": [
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [
+          {
+            "type": "GitgraphIdOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": {
+              "type": "StringLiteral",
+              "value": "Alpha",
+              "raw": "\"Alpha\"",
+              "closed": true,
+              "range": [
+                31,
+                38
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 18
+                },
+                "end": {
+                  "line": 2,
+                  "column": 25
+                }
+              }
+            },
+            "range": [
+              27,
+              38
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 14
+              },
+              "end": {
+                "line": 2,
+                "column": 25
+              }
+            }
+          }
+        ],
+        "textAfter": [],
+        "range": [
+          20,
+          38
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 7
+          },
+          "end": {
+            "line": 2,
+            "column": 25
+          }
+        }
+      },
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [
+          {
+            "type": "GitgraphIdOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": {
+              "type": "StringLiteral",
+              "value": "Beta",
+              "raw": "\"Beta\"",
+              "closed": true,
+              "range": [
+                57,
+                63
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 18
+                },
+                "end": {
+                  "line": 3,
+                  "column": 24
+                }
+              }
+            },
+            "range": [
+              53,
+              63
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 14
+              },
+              "end": {
+                "line": 3,
+                "column": 24
+              }
+            }
+          }
+        ],
+        "textAfter": [],
+        "range": [
+          46,
+          63
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 7
+          },
+          "end": {
+            "line": 3,
+            "column": 24
+          }
+        }
+      },
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [
+          {
+            "type": "GitgraphIdOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": {
+              "type": "StringLiteral",
+              "value": "Gamma",
+              "raw": "\"Gamma\"",
+              "closed": true,
+              "range": [
+                82,
+                89
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 18
+                },
+                "end": {
+                  "line": 4,
+                  "column": 25
+                }
+              }
+            },
+            "range": [
+              78,
+              89
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 14
+              },
+              "end": {
+                "line": 4,
+                "column": 25
+              }
+            }
+          }
+        ],
+        "textAfter": [],
+        "range": [
+          71,
+          89
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 7
+          },
+          "end": {
+            "line": 4,
+            "column": 25
+          }
+        }
+      }
+    ],
+    "range": [
+      4,
+      89
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 4
+      },
+      "end": {
+        "line": 4,
+        "column": 25
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "gitGraph",
+      "range": [
+        4,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 4
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        20,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 7
+        },
+        "end": {
+          "line": 2,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "id",
+      "range": [
+        27,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 14
+        },
+        "end": {
+          "line": 2,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        29,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 16
+        },
+        "end": {
+          "line": 2,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Alpha\"",
+      "range": [
+        31,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 18
+        },
+        "end": {
+          "line": 2,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        46,
+        52
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 7
+        },
+        "end": {
+          "line": 3,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "id",
+      "range": [
+        53,
+        55
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 14
+        },
+        "end": {
+          "line": 3,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        55,
+        56
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 16
+        },
+        "end": {
+          "line": 3,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Beta\"",
+      "range": [
+        57,
+        63
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 18
+        },
+        "end": {
+          "line": 3,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        71,
+        77
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 7
+        },
+        "end": {
+          "line": 4,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "id",
+      "range": [
+        78,
+        80
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 14
+        },
+        "end": {
+          "line": 4,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        80,
+        81
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 16
+        },
+        "end": {
+          "line": 4,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Gamma\"",
+      "range": [
+        82,
+        89
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 18
+        },
+        "end": {
+          "line": 4,
+          "column": 25
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    90
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 0
+    }
+  }
+}

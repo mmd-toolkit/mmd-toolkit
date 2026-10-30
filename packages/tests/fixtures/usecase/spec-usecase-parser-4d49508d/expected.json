@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/usecase.parser.spec.ts",
+    "line": 1122,
+    "test": "usecase parser publication and normalized AST > locates the JSON id j even when it is a substring of the json keyword"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "j",
+        "value": {
+          "a": 1
+        },
+        "propertyOrder": {
+          "": [
+            "a"
+          ]
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "j",
+        "set": {
+          "value": {
+            "a": 1
+          },
+          "propertyOrder": {
+            "": [
+              "a"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

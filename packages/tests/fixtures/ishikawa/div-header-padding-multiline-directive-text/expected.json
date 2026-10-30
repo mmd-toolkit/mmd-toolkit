@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md Blank lines and Directives: trailing header padding is trivia and a multiline directive joins root text RA."
+  },
+  "knownDivergence": "blank-line-after-header-or-comments",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nishikawa RA\n---------^\nExpecting 'SPACELINE', 'NL', 'EOF', got 'TEXT'"
+  }
+}

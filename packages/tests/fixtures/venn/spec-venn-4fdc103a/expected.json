@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/venn/parser/venn.spec.ts",
+    "line": 35,
+    "test": "Venn diagram > with bracket labels"
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10,
+        "label": "Alpha"
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "size": 10,
+        "label": "Beta"
+      },
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "size": 2.5,
+        "label": "AB"
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

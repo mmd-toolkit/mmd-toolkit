@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "EOF satisfies the accessibility-title EOL after a hidden directive."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "A",
+    "accDescr": "",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

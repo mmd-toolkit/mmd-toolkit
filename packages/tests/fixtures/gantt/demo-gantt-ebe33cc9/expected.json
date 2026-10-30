@@ -1,0 +1,61 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/gantt.html",
+    "line": 77
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "YYYY-MM-DD",
+    "axisFormat": "%d",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": true,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "Inclusive end dates (Manual date should end on 4th)",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "Section1"
+    ],
+    "tasks": [
+      {
+        "section": "Section1",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2019-01-01"
+          },
+          "endTime": {
+            "data": "2d"
+          }
+        },
+        "task": "2 Days",
+        "classes": [],
+        "id": "1",
+        "order": 0
+      },
+      {
+        "section": "Section1",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2019-01-01"
+          },
+          "endTime": {
+            "data": "2019-01-03"
+          }
+        },
+        "task": "Manual Date",
+        "classes": [],
+        "id": "2",
+        "order": 1
+      }
+    ],
+    "links": []
+  }
+}

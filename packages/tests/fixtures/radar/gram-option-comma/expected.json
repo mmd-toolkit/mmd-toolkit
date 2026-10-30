@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The option comma production does not permit a visible newline."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 9: Expecting: one of these possible Token sequences:\n  1. [showLegend]\n  2. [ticks]\n  3. [max]\n  4. [min]\n  5. [graticule]\nbut found: '\n'"
+  }
+}

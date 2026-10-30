@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, links: a link back to the source adds no node."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a",
+      "b"
+    ],
+    "links": [
+      {
+        "source": "a",
+        "target": "b",
+        "value": 1
+      },
+      {
+        "source": "b",
+        "target": "a",
+        "value": 2
+      }
+    ]
+  }
+}

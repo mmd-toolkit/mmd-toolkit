@@ -1,0 +1,17 @@
+{
+  "message": "Architecture alignment members must be distinct",
+  "range": [
+    58,
+    61
+  ],
+  "loc": {
+    "start": {
+      "line": 4,
+      "column": 17
+    },
+    "end": {
+      "line": 4,
+      "column": 20
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences/name-start-reads-unit.md: the keyword `note` without backquotes followed by a string is a note in both."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "text": "x"
+      }
+    ],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

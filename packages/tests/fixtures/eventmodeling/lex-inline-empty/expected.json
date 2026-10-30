@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Empty inline forms remain stored terminals, not tokenless forms."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "\"\""
+        }
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "evt",
+        "entityIdentifier": "B",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "''"
+        }
+      },
+      {
+        "kind": "time",
+        "name": "03",
+        "modelEntityType": "evt",
+        "entityIdentifier": "C",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "{}"
+        }
+      }
+    ]
+  }
+}

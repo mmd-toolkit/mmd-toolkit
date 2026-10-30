@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can CLASS_DEF consume a newline before its style?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": [
+      {
+        "id": "styled",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

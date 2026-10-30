@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Grammar: a selected semicolon on an item line does not end the domain item sequence."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "A"
+          },
+          {
+            "label": "style:#x"
+          },
+          {
+            "label": "B"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

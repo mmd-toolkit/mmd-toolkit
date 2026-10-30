@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, composite blocks: `end` cannot be an id: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nblock-beta  end\n------------^\nExpecting 'BLOCK_DIAGRAM_KEY', 'SPACE_BLOCK', 'COLUMNS', 'id-block', 'NODE_ID', 'classDef', 'class', 'style', got 'end'"
+  }
+}

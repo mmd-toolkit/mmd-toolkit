@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Building the summary: the return type of the Db keeps the space between the return-type unit and the classifier mark that ends it: Foo and a space, with the classifier $."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "$",
+            "id": "getInstance",
+            "parameters": "",
+            "returnType": "Foo "
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Which text fields retain internal Unicode whitespace and which trim their ends?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": " U\tV﻿W X　Y ",
+        "label": " U\tV﻿W X　Y ",
+        "x": 20,
+        "y": 10,
+        "className": "anchor"
+      },
+      {
+        "id": " C\tD﻿E F　G ",
+        "label": " C\tD﻿E F　G ",
+        "x": 30,
+        "y": 20,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [
+      {
+        "source": " U\tV﻿W X　Y ",
+        "target": " C\tD﻿E F　G ",
+        "dashed": false,
+        "label": " F\tG﻿H I　J ",
+        "flow": "forward"
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [
+      {
+        "number": 1,
+        "coordinates": [
+          {
+            "x": 2,
+            "y": 100
+          }
+        ],
+        "text": " A\tB﻿C D　E "
+      }
+    ],
+    "notes": [],
+    "accelerators": [
+      {
+        "name": " X\tY﻿Z A　B ",
+        "x": 40,
+        "y": 30
+      }
+    ],
+    "deaccelerators": [
+      {
+        "name": " Y\tZ﻿A B　C ",
+        "x": 50,
+        "y": 40
+      }
+    ],
+    "axes": {
+      "stages": [
+        "G\tH﻿I J　K / L",
+        "P"
+      ],
+      "stageBoundaries": []
+    }
+  }
+}

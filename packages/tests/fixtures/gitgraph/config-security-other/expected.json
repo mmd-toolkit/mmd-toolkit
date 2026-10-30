@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Unsupported security levels expose the common sanitizer escaping branch."
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": true
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "&lt;b&gt;A&lt;/b&gt;",
+        "seq": 0,
+        "type": 0,
+        "tags": [
+          "&lt;u&gt;T&lt;/u&gt;"
+        ],
+        "parents": [],
+        "branch": "main"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

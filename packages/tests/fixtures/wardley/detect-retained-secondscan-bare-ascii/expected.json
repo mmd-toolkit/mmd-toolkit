@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Detection: Passed bare lines and ASCII trivia between retained forms are not read again."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

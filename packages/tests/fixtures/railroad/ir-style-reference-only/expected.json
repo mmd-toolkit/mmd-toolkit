@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Shared style preprocessing reaches a quoted nonterminal label."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "nonterminal",
+          "name": "classDef x:#f00"
+        }
+      }
+    ]
+  }
+}

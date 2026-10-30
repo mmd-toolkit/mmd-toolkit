@@ -1,0 +1,119 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Nested Boundary bodies is accepted; boundaries is [{\"alias\":\"global\",\"label\":{\"text\":\"global\"},\"type\":{\"text\":\"global\"},\"tags\":null,\"link\":null,\"parentBoundary\":\"\"},{\"alias\":\"b\",\"label\":{\"text\":\"B\"},\"type\":{\"text\":\"system\"},\"parentBoundary\":\"global\"},{\"alias\":\"c\",\"label\":{\"text\":\"C\"},\"type\":{\"text\":\"node\"},\"descr\":{\"text\":\"\"},\"nodeType\":\"node\",\"parentBoundary\":\"b\"},{\"alias\":\"d\",\"label\":{\"text\":\"D\"},\"type\":{\"text\":\"CONTAINER\"},\"parentBoundary\":\"c\"}], and shapes[0].parentBoundary is \"d\"."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "A"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "d"
+      },
+      {
+        "alias": "e",
+        "label": {
+          "text": "E"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "c"
+      },
+      {
+        "alias": "f",
+        "label": {
+          "text": "F"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "b"
+      },
+      {
+        "alias": "g",
+        "label": {
+          "text": "G"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      },
+      {
+        "alias": "b",
+        "label": {
+          "text": "B"
+        },
+        "type": {
+          "text": "system"
+        },
+        "parentBoundary": "global"
+      },
+      {
+        "alias": "c",
+        "label": {
+          "text": "C"
+        },
+        "type": {
+          "text": "node"
+        },
+        "descr": {
+          "text": ""
+        },
+        "nodeType": "node",
+        "parentBoundary": "b"
+      },
+      {
+        "alias": "d",
+        "label": {
+          "text": "D"
+        },
+        "type": {
+          "text": "CONTAINER"
+        },
+        "parentBoundary": "c"
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

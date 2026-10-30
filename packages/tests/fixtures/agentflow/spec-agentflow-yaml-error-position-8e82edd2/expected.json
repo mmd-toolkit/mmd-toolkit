@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-yaml-error-position.spec.ts",
+    "line": 31,
+    "test": "issue #56 part 2: YAML @{ } errors report source coordinates > multi-line block: error on the @{ line itself maps with the content-column offset"
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "name of an alias node must contain at least one character (2:16)\n\n 2 |  x: *,\n----------^\n 3 |     y: 1 "
+  }
+}

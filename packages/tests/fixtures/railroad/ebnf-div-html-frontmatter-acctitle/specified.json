@@ -1,0 +1,12 @@
+{
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "x=\"y\">",
+    "accDescr": "",
+    "rules": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

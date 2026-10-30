@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md Known divergences (c4-keyword-anywhere): The header selects kanban; the later C4 word does not change detection."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nkanban S   A[\"C4Dy\n^"
+  }
+}

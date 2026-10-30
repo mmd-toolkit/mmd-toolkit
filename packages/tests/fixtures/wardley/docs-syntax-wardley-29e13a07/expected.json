@@ -1,0 +1,57 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/wardley.md",
+    "line": 253
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Custom Stages",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "Raw Data",
+        "label": "Raw Data",
+        "x": 20,
+        "y": 15,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Analysis",
+        "label": "Analysis",
+        "x": 50,
+        "y": 45,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Reports",
+        "label": "Reports",
+        "x": 70,
+        "y": 75,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {
+      "stages": [
+        "Unmodelled",
+        "Divergent",
+        "Convergent",
+        "Modelled"
+      ],
+      "stageBoundaries": []
+    }
+  }
+}

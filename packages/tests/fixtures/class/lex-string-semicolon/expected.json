@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Strings: `;` is a character of a string."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "text": "a;b"
+      }
+    ],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

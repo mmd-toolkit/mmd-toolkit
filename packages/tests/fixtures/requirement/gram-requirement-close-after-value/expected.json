@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Requirements: `}` after a value is a character of the value, and the body is not closed."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 5:\n...rement r {id: 1 }\n--------------------^\nExpecting 'NEWLINE', 'ID', 'TEXT', 'RISK', 'VERIFYMTHD', 'STRUCT_STOP', got 'EOF'"
+  }
+}

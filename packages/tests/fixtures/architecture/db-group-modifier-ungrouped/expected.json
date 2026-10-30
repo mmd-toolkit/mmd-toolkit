@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Group modifiers on ungrouped services are retained without semantic rejection."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service"
+      },
+      {
+        "id": "db",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [
+      {
+        "lhsId": "api",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": true,
+        "rhsId": "db",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": true
+      }
+    ],
+    "layoutHints": []
+  }
+}

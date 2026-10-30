@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does whitespace after a retained closer matter to ML_COMMENT?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "value": 1
+      },
+      {
+        "name": "B",
+        "value": 2
+      }
+    ],
+    "classDefs": []
+  }
+}

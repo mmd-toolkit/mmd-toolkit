@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Detection: the header alone, without a line feed after it, is accepted."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

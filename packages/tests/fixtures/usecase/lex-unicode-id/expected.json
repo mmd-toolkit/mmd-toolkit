@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are unquoted semantic ids restricted to ASCII word characters?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Redundant input, expecting EOF but found: é at line 2, column 1 [13,14)"
+  }
+}

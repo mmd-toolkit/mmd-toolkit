@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can a hidden DIRECTIVE retained by the second detection scan stand before pie? It is accepted and belongs to textBeforeHeader."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

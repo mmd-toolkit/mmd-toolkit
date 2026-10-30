@@ -1,0 +1,180 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/agentflow.md",
+    "line": 128
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "brief",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Brief",
+        "type": "lean-right",
+        "props": {},
+        "metadata": {
+          "shape": "lean-right"
+        }
+      },
+      {
+        "id": "draft",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Draft copy",
+        "type": "roundedRect",
+        "props": {},
+        "metadata": {
+          "shape": "roundedRect"
+        }
+      },
+      {
+        "id": "spellcheck",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "spell_check",
+        "type": "subroutine",
+        "props": {},
+        "metadata": {
+          "shape": "subroutine"
+        }
+      },
+      {
+        "id": "guide",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Style guide",
+        "type": "lin-doc",
+        "props": {},
+        "metadata": {
+          "shape": "lin-doc"
+        }
+      },
+      {
+        "id": "publish",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Publish",
+        "type": "hexagon",
+        "props": {},
+        "metadata": {
+          "shape": "hexagon"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "start": "brief",
+        "end": "draft",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_brief_draft_0"
+      },
+      {
+        "start": "draft",
+        "end": "spellcheck",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_draft_spellcheck_0"
+      },
+      {
+        "start": "spellcheck",
+        "end": "publish",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_spellcheck_publish_0"
+      },
+      {
+        "start": "draft",
+        "end": "guide",
+        "type": "arrow_open",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "dotted",
+        "length": 1,
+        "id": "L_draft_guide_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "brief",
+        "set": {
+          "type": "lean-right",
+          "metadata": {
+            "shape": "lean-right"
+          }
+        }
+      },
+      {
+        "id": "draft",
+        "set": {
+          "type": "roundedRect",
+          "metadata": {
+            "shape": "roundedRect"
+          }
+        }
+      },
+      {
+        "id": "spellcheck",
+        "set": {
+          "type": "subroutine",
+          "metadata": {
+            "shape": "subroutine"
+          }
+        }
+      },
+      {
+        "id": "guide",
+        "set": {
+          "type": "lin-doc",
+          "metadata": {
+            "shape": "lin-doc"
+          }
+        }
+      },
+      {
+        "id": "publish",
+        "set": {
+          "type": "hexagon",
+          "metadata": {
+            "shape": "hexagon"
+          }
+        }
+      }
+    ]
+  }
+}

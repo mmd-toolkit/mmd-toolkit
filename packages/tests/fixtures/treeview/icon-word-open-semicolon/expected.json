@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Names, annotations and common forms: A selected semicolon between icon and its opening parenthesis is allowed."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "style:#x",
+        "nodeType": "file",
+        "icon": "file",
+        "children": []
+      }
+    ]
+  }
+}

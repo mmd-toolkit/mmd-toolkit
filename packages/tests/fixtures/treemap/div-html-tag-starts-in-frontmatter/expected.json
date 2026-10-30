@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Can a frontmatter tag start change the closing quote of a later node name?"
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "<a",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "b='c'>d",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check entity preprocessing in bare text."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a &amp; &ﬂ°°65¶ß ﬂ°°65¶ß ﬂ°quot¶ß #br# b",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

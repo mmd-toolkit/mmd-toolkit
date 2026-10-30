@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The cardinalities, numbers, and lines: `many(2)` is the keyword `many` and `(2)`; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nerDiagramA many(2) to one B : x\n---------------^\nExpecting 'UNICODE_TEXT', 'NUM', 'ENTITY_NAME', 'DECIMAL_NUM', 'ENTITY_ONE', 'NON_IDENTIFYING', 'IDENTIFYING', got '('"
+  }
+}

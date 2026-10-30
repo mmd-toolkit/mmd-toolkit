@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The after text id colon space boundary is rejected by the grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...enn-betatext A item: \n----------------------^\nExpecting 'EOF', 'NEWLINE', 'TITLE', 'SET', 'BRACKET_LABEL', 'UNION', 'TEXT', 'INDENT_TEXT', 'STYLE', got 'COLON'"
+  }
+}

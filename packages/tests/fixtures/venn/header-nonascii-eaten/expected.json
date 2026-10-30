@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: 2. One UTF-16 code unit other than `}`, immediately followed by `%%`, is swallowed with the following diagram comment. This input is accepted by mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": []
+  }
+}

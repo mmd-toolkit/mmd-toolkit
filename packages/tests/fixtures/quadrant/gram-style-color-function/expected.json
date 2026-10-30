@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, styles: a colour function is rejected: the parenthesis is no character of the text."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...0.3, 0.6] color: rgb(1,2,3)\n-----------------------^"
+  }
+}

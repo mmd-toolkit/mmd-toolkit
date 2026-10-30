@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty description line does not absorb a later rule after a comment."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "next",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

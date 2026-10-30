@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A comment line between two blocks of one entity: the attributes add up."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [
+          {
+            "type": "int",
+            "name": "a",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "int",
+            "name": "b",
+            "keys": [],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

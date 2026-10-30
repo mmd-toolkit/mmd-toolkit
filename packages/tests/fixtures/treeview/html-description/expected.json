@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check HTML attribute rewriting and line-break text in description."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "description": "<b x='y'>a</b><BR>z",
+        "children": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/parser/state-parser.spec.js",
+    "line": 36,
+    "test": "state parser can parse... > invalid name between state and curly bracket > invalid syntax > should throw error with 2 words"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error: State name must be a single word. Found: \"invalid syntax {\""
+  }
+}

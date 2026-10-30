@@ -1,0 +1,7 @@
+railroad-beta
+title "Syntax"
+accTitle: Rules
+accDescr: Short
+accDescr {}
+accDescr { Details }
+item = sequence(terminal("a\n"), nonterminal("item"), choice(special("note"), optional(terminal(""))), zeroOrMore(terminal("b")), oneOrMore(terminal("c")));

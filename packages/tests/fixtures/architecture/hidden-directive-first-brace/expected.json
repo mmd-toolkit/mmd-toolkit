@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ACC_DESCR ends at the first brace of hidden-looking text before native comment handling."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "%%{",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

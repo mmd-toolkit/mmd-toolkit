@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md The statement context: `mon` is no day name; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nganttweekday mon\n----------------^\nExpecting 'taskData', got 'NL'"
+  }
+}

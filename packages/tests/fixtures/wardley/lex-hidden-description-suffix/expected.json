@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md WardleyAccDescrStatement: Does a hidden suffix before the line description visible EOL belong to textAfter while a later hidden form belongs to body?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "D",
+    "nodes": [
+      {
+        "id": "B",
+        "label": "B",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md The statement context: `click` is a keyword only with whitespace after it, so `click\"\"b` is an id run and the vertex is `A:click\"\"b`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A:click\"\"b",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A:click\"\"b",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "C",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A:click\"\"b",
+        "end": "C",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A:click\"\"b_C_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

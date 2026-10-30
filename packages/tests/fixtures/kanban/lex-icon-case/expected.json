@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md C01 (Decorations and comments): Icon keyword is case-insensitive."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      }
+    ]
+  }
+}

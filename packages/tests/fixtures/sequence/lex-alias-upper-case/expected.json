@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md The alias context: `as` is case-insensitive: A has the description `B`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "B",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

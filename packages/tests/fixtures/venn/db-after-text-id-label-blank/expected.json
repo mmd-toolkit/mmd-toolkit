@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The blank ending leaves the completed text id label blank statement unchanged."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "item",
+        "label": "L"
+      }
+    ],
+    "styles": []
+  }
+}

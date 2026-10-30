@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Building the summary, link: the character before `@` is left out of the label: `Das`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {
+          "Das": "https://x.example"
+        },
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

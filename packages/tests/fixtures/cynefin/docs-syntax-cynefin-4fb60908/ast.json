@@ -1,0 +1,784 @@
+{
+  "type": "Root",
+  "diagramType": "cynefin",
+  "body": {
+    "type": "CynefinDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "CynefinTitleStatement",
+        "value": {
+          "type": "CynefinLiteral",
+          "value": "Incident Response",
+          "range": [
+            21,
+            38
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 8
+            },
+            "end": {
+              "line": 2,
+              "column": 25
+            }
+          }
+        },
+        "textAfter": [],
+        "range": [
+          15,
+          38
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 2
+          },
+          "end": {
+            "line": 2,
+            "column": 25
+          }
+        }
+      },
+      {
+        "type": "CynefinDomainStatement",
+        "name": "complex",
+        "textAfterName": [],
+        "items": [
+          {
+            "type": "CynefinDomainItem",
+            "textBefore": [],
+            "label": {
+              "type": "StringLiteral",
+              "value": "Investigate root cause",
+              "raw": "\"Investigate root cause\"",
+              "closed": true,
+              "range": [
+                54,
+                78
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 4
+                },
+                "end": {
+                  "line": 5,
+                  "column": 28
+                }
+              }
+            },
+            "textAfter": [],
+            "range": [
+              54,
+              78
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 4
+              },
+              "end": {
+                "line": 5,
+                "column": 28
+              }
+            }
+          },
+          {
+            "type": "CynefinDomainItem",
+            "textBefore": [],
+            "label": {
+              "type": "StringLiteral",
+              "value": "Run chaos experiment",
+              "raw": "\"Run chaos experiment\"",
+              "closed": true,
+              "range": [
+                83,
+                105
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 4
+                },
+                "end": {
+                  "line": 6,
+                  "column": 26
+                }
+              }
+            },
+            "textAfter": [],
+            "range": [
+              83,
+              105
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 4
+              },
+              "end": {
+                "line": 6,
+                "column": 26
+              }
+            }
+          }
+        ],
+        "range": [
+          42,
+          105
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 2
+          },
+          "end": {
+            "line": 6,
+            "column": 26
+          }
+        }
+      },
+      {
+        "type": "CynefinDomainStatement",
+        "name": "complicated",
+        "textAfterName": [],
+        "items": [
+          {
+            "type": "CynefinDomainItem",
+            "textBefore": [],
+            "label": {
+              "type": "StringLiteral",
+              "value": "Analyze performance data",
+              "raw": "\"Analyze performance data\"",
+              "closed": true,
+              "range": [
+                125,
+                151
+              ],
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 4
+                },
+                "end": {
+                  "line": 9,
+                  "column": 30
+                }
+              }
+            },
+            "textAfter": [],
+            "range": [
+              125,
+              151
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 4
+              },
+              "end": {
+                "line": 9,
+                "column": 30
+              }
+            }
+          },
+          {
+            "type": "CynefinDomainItem",
+            "textBefore": [],
+            "label": {
+              "type": "StringLiteral",
+              "value": "Expert review needed",
+              "raw": "\"Expert review needed\"",
+              "closed": true,
+              "range": [
+                156,
+                178
+              ],
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 4
+                },
+                "end": {
+                  "line": 10,
+                  "column": 26
+                }
+              }
+            },
+            "textAfter": [],
+            "range": [
+              156,
+              178
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 4
+              },
+              "end": {
+                "line": 10,
+                "column": 26
+              }
+            }
+          }
+        ],
+        "range": [
+          109,
+          178
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 2
+          },
+          "end": {
+            "line": 10,
+            "column": 26
+          }
+        }
+      },
+      {
+        "type": "CynefinDomainStatement",
+        "name": "clear",
+        "textAfterName": [],
+        "items": [
+          {
+            "type": "CynefinDomainItem",
+            "textBefore": [],
+            "label": {
+              "type": "StringLiteral",
+              "value": "Restart service",
+              "raw": "\"Restart service\"",
+              "closed": true,
+              "range": [
+                192,
+                209
+              ],
+              "loc": {
+                "start": {
+                  "line": 13,
+                  "column": 4
+                },
+                "end": {
+                  "line": 13,
+                  "column": 21
+                }
+              }
+            },
+            "textAfter": [],
+            "range": [
+              192,
+              209
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 4
+              },
+              "end": {
+                "line": 13,
+                "column": 21
+              }
+            }
+          },
+          {
+            "type": "CynefinDomainItem",
+            "textBefore": [],
+            "label": {
+              "type": "StringLiteral",
+              "value": "Apply known fix",
+              "raw": "\"Apply known fix\"",
+              "closed": true,
+              "range": [
+                214,
+                231
+              ],
+              "loc": {
+                "start": {
+                  "line": 14,
+                  "column": 4
+                },
+                "end": {
+                  "line": 14,
+                  "column": 21
+                }
+              }
+            },
+            "textAfter": [],
+            "range": [
+              214,
+              231
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 4
+              },
+              "end": {
+                "line": 14,
+                "column": 21
+              }
+            }
+          }
+        ],
+        "range": [
+          182,
+          231
+        ],
+        "loc": {
+          "start": {
+            "line": 12,
+            "column": 2
+          },
+          "end": {
+            "line": 14,
+            "column": 21
+          }
+        }
+      },
+      {
+        "type": "CynefinDomainStatement",
+        "name": "chaotic",
+        "textAfterName": [],
+        "items": [
+          {
+            "type": "CynefinDomainItem",
+            "textBefore": [],
+            "label": {
+              "type": "StringLiteral",
+              "value": "Page on-call immediately",
+              "raw": "\"Page on-call immediately\"",
+              "closed": true,
+              "range": [
+                247,
+                273
+              ],
+              "loc": {
+                "start": {
+                  "line": 17,
+                  "column": 4
+                },
+                "end": {
+                  "line": 17,
+                  "column": 30
+                }
+              }
+            },
+            "textAfter": [],
+            "range": [
+              247,
+              273
+            ],
+            "loc": {
+              "start": {
+                "line": 17,
+                "column": 4
+              },
+              "end": {
+                "line": 17,
+                "column": 30
+              }
+            }
+          }
+        ],
+        "range": [
+          235,
+          273
+        ],
+        "loc": {
+          "start": {
+            "line": 16,
+            "column": 2
+          },
+          "end": {
+            "line": 17,
+            "column": 30
+          }
+        }
+      },
+      {
+        "type": "CynefinDomainStatement",
+        "name": "confusion",
+        "textAfterName": [],
+        "items": [
+          {
+            "type": "CynefinDomainItem",
+            "textBefore": [],
+            "label": {
+              "type": "StringLiteral",
+              "value": "Unknown failure mode",
+              "raw": "\"Unknown failure mode\"",
+              "closed": true,
+              "range": [
+                291,
+                313
+              ],
+              "loc": {
+                "start": {
+                  "line": 20,
+                  "column": 4
+                },
+                "end": {
+                  "line": 20,
+                  "column": 26
+                }
+              }
+            },
+            "textAfter": [],
+            "range": [
+              291,
+              313
+            ],
+            "loc": {
+              "start": {
+                "line": 20,
+                "column": 4
+              },
+              "end": {
+                "line": 20,
+                "column": 26
+              }
+            }
+          }
+        ],
+        "range": [
+          277,
+          313
+        ],
+        "loc": {
+          "start": {
+            "line": 19,
+            "column": 2
+          },
+          "end": {
+            "line": 20,
+            "column": 26
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      313
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 20,
+        "column": 26
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "cynefin-beta",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        15,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Incident Response",
+      "range": [
+        21,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "complex",
+      "range": [
+        42,
+        49
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 2
+        },
+        "end": {
+          "line": 4,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Investigate root cause\"",
+      "range": [
+        54,
+        78
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 4
+        },
+        "end": {
+          "line": 5,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Run chaos experiment\"",
+      "range": [
+        83,
+        105
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 4
+        },
+        "end": {
+          "line": 6,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "complicated",
+      "range": [
+        109,
+        120
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 2
+        },
+        "end": {
+          "line": 8,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Analyze performance data\"",
+      "range": [
+        125,
+        151
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 4
+        },
+        "end": {
+          "line": 9,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Expert review needed\"",
+      "range": [
+        156,
+        178
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 4
+        },
+        "end": {
+          "line": 10,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "clear",
+      "range": [
+        182,
+        187
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 2
+        },
+        "end": {
+          "line": 12,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Restart service\"",
+      "range": [
+        192,
+        209
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 4
+        },
+        "end": {
+          "line": 13,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Apply known fix\"",
+      "range": [
+        214,
+        231
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 4
+        },
+        "end": {
+          "line": 14,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "chaotic",
+      "range": [
+        235,
+        242
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 2
+        },
+        "end": {
+          "line": 16,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Page on-call immediately\"",
+      "range": [
+        247,
+        273
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 4
+        },
+        "end": {
+          "line": 17,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "confusion",
+      "range": [
+        277,
+        286
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 2
+        },
+        "end": {
+          "line": 19,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Unknown failure mode\"",
+      "range": [
+        291,
+        313
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 4
+        },
+        "end": {
+          "line": 20,
+          "column": 26
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    314
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 21,
+      "column": 0
+    }
+  }
+}

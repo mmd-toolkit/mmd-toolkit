@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/treemap.test.ts",
+    "line": 12,
+    "test": "Treemap Parser > Data Types > should correctly parse string values"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "My Section",
+        "children": []
+      }
+    ],
+    "classDefs": []
+  }
+}

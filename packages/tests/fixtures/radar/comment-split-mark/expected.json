@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Whitespace cannot split the percent pair of a comment opener."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->%<- at offset: 11, skipped 1 characters.\nLexer error on line 2, column 3: unexpected character: ->%<- at offset: 13, skipped 1 characters. Parse error on line 2, column 5: Expecting token of type 'EOF' but found `comment`."
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Lowercase port directions are not ARROW_DIRECTION terminals."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 4, column 5: Expecting token of type 'ARROW_DIRECTION' but found `r`.\nParse error on line 4, column 7: Expecting: one of these possible Token sequences:\n  1. [NEWLINE]\n  2. [EOF]\nbut found: '--'\nParse error on line 4, column 14: Expecting token of type ':' but found `\n`."
+  }
+}

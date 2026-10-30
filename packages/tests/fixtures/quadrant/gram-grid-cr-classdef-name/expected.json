@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, line terminators: a CR alone in the name of a class."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...rantChartclassDef ab color: #f00\n----------------------^\nExpecting 'ALPHA', 'NUM', 'NODE_STRING', 'DOWN', 'MINUS', 'DEFAULT', 'COMMA', 'COLON', 'AMP', 'BRKT', 'MULT', 'UNICODE_TEXT', 'SPACE', got 'NEWLINE'"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The classDef contexts: the whitespace after the name takes a line feed, so the styles are the next line."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [
+      {
+        "id": "a",
+        "styles": [
+          "B"
+        ]
+      }
+    ],
+    "links": []
+  }
+}

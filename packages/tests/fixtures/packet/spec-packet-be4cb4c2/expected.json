@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/packet/packet.spec.ts",
+    "line": 261,
+    "test": "packet diagrams > should throw error if end is less than start"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Packet block 25 - 20 is invalid. End must be greater than start."
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Connector redefinitions update the shared vertex record and retain metadata."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "Third",
+        "props": {},
+        "metadata": {
+          "endpoint": "x"
+        }
+      },
+      {
+        "id": "D",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "Partner",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "C",
+        "end": "D",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_C_D_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "C",
+        "set": {
+          "metadata": {
+            "endpoint": "x"
+          }
+        }
+      }
+    ]
+  }
+}

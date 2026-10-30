@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, nodes: ids that differ in case are two nodes."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "A",
+      "a"
+    ],
+    "links": [
+      {
+        "source": "A",
+        "target": "a",
+        "value": 1
+      }
+    ]
+  }
+}

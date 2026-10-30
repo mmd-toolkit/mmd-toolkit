@@ -1,0 +1,68 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-global.spec.ts",
+    "line": 15,
+    "test": "issue #80: global scope block > keeps \"global\" usable inside bracketed labels"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a global thing",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "b",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "b",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "a",
+        "end": "b",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_a_b_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "f",
+        "nodes": [
+          "b",
+          "a"
+        ],
+        "title": "global settings",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  }
+}

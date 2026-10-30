@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed global directive can remove the remaining source."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  }
+}

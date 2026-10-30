@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Default size: after complete frontmatter trivia removal the 50001-unit body uses Step 5 and removes the comment-looking string line."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "before\nafter",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "title": "T"
+  }
+}

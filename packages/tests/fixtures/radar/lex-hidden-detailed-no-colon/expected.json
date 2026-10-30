@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md: Can native hidden text separate an entry axis name from its number without a colon?"
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "A"
+      }
+    ],
+    "curves": [
+      {
+        "label": "c",
+        "entries": [
+          1
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

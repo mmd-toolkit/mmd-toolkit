@@ -1,0 +1,336 @@
+{
+  "type": "Root",
+  "diagramType": "ishikawa",
+  "body": {
+    "type": "IshikawaDiagram",
+    "root": {
+      "type": "IshikawaNode",
+      "indent": 4,
+      "text": {
+        "type": "IshikawaLiteral",
+        "value": "Blurry Photo",
+        "range": [
+          18,
+          30
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 4
+          },
+          "end": {
+            "line": 2,
+            "column": 16
+          }
+        }
+      },
+      "children": [
+        {
+          "type": "IshikawaNode",
+          "indent": 8,
+          "text": {
+            "type": "IshikawaLiteral",
+            "value": "Process",
+            "range": [
+              39,
+              46
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 8
+              },
+              "end": {
+                "line": 3,
+                "column": 15
+              }
+            }
+          },
+          "children": [
+            {
+              "type": "IshikawaNode",
+              "indent": 12,
+              "text": {
+                "type": "IshikawaLiteral",
+                "value": "Out of focus",
+                "range": [
+                  59,
+                  71
+                ],
+                "loc": {
+                  "start": {
+                    "line": 4,
+                    "column": 12
+                  },
+                  "end": {
+                    "line": 4,
+                    "column": 24
+                  }
+                }
+              },
+              "children": [],
+              "range": [
+                59,
+                71
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 12
+                },
+                "end": {
+                  "line": 4,
+                  "column": 24
+                }
+              }
+            }
+          ],
+          "range": [
+            39,
+            71
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 8
+            },
+            "end": {
+              "line": 4,
+              "column": 24
+            }
+          }
+        },
+        {
+          "type": "IshikawaNode",
+          "indent": 8,
+          "text": {
+            "type": "IshikawaLiteral",
+            "value": "User",
+            "range": [
+              80,
+              84
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 8
+              },
+              "end": {
+                "line": 5,
+                "column": 12
+              }
+            }
+          },
+          "children": [
+            {
+              "type": "IshikawaNode",
+              "indent": 12,
+              "text": {
+                "type": "IshikawaLiteral",
+                "value": "Shaky hands",
+                "range": [
+                  97,
+                  108
+                ],
+                "loc": {
+                  "start": {
+                    "line": 6,
+                    "column": 12
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 23
+                  }
+                }
+              },
+              "children": [],
+              "range": [
+                97,
+                108
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 12
+                },
+                "end": {
+                  "line": 6,
+                  "column": 23
+                }
+              }
+            }
+          ],
+          "range": [
+            80,
+            108
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 8
+            },
+            "end": {
+              "line": 6,
+              "column": 23
+            }
+          }
+        }
+      ],
+      "range": [
+        18,
+        108
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 6,
+          "column": 23
+        }
+      }
+    },
+    "range": [
+      0,
+      108
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 6,
+        "column": 23
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "ishikawa-beta",
+      "range": [
+        0,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Blurry Photo",
+      "range": [
+        18,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Process",
+      "range": [
+        39,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Out of focus",
+      "range": [
+        59,
+        71
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 12
+        },
+        "end": {
+          "line": 4,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "User",
+      "range": [
+        80,
+        84
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 8
+        },
+        "end": {
+          "line": 5,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Shaky hands",
+      "range": [
+        97,
+        108
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 12
+        },
+        "end": {
+          "line": 6,
+          "column": 23
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    109
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 7,
+      "column": 0
+    }
+  }
+}

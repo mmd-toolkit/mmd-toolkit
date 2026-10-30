@@ -1,0 +1,121 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Which published fields survive normalization before drawing?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "T",
+    "accTitle": "A",
+    "accDescr": "D\nE",
+    "nodes": [
+      {
+        "id": "User",
+        "label": "User",
+        "x": 80,
+        "y": 90,
+        "className": "anchor"
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "x": 50,
+        "y": 40,
+        "className": "component",
+        "labelOffsetX": 0,
+        "labelOffsetY": -2,
+        "inertia": true,
+        "sourceStrategy": "build"
+      },
+      {
+        "id": "B",
+        "label": "B",
+        "x": 30,
+        "y": 20,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "A_Child",
+        "label": "Child",
+        "x": 60,
+        "y": 40,
+        "className": "pipeline-component"
+      }
+    ],
+    "links": [
+      {
+        "source": "User",
+        "target": "A_Child",
+        "dashed": false,
+        "label": "label"
+      }
+    ],
+    "trends": [
+      {
+        "nodeId": "A",
+        "targetX": 90
+      }
+    ],
+    "pipelines": [
+      {
+        "nodeId": "A",
+        "componentIds": [
+          "A_Child"
+        ]
+      }
+    ],
+    "annotations": [
+      {
+        "number": 1,
+        "coordinates": [
+          {
+            "x": 40,
+            "y": 30
+          }
+        ],
+        "text": "Text"
+      }
+    ],
+    "notes": [
+      {
+        "text": "N",
+        "x": 20,
+        "y": 10
+      }
+    ],
+    "accelerators": [
+      {
+        "name": "X",
+        "x": 30,
+        "y": 20
+      }
+    ],
+    "deaccelerators": [
+      {
+        "name": "Y",
+        "x": 40,
+        "y": 30
+      }
+    ],
+    "annotationsBox": {
+      "x": 20,
+      "y": 10
+    },
+    "axes": {
+      "stages": [
+        "G / C",
+        "P"
+      ],
+      "stageBoundaries": [
+        0.3,
+        1
+      ]
+    },
+    "size": {
+      "width": 900,
+      "height": 600
+    }
+  }
+}

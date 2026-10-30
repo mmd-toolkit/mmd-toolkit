@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A common block owns comment-looking text, apart from global removals."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": " accDescr {\nfirst\n%% comment\nlast\n}",
+    "frames": []
+  }
+}

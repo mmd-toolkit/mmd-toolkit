@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Icons and classes: an icon line before a child decorates the root."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "icon": "x",
+      "children": [
+        {
+          "nodeId": "a",
+          "level": 2,
+          "descr": "a",
+          "type": 0,
+          "children": []
+        }
+      ]
+    }
+  }
+}

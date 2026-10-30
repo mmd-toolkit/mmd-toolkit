@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The statement context: `high` is a keyword, so `high risk` is no value."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...quirement r {text: high risk}\n----------------------^\nExpecting 'unqString', 'qString', got 'HIGH_RISK'"
+  }
+}

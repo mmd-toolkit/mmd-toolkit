@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Blank lines: two comments after the header and a node after U+2028, accepted by both."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": []
+    }
+  }
+}

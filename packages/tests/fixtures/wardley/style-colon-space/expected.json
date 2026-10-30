@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does space after colon keep the final semicolon?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "style: ﬂ°a¶ß",
+    "accTitle": "classDef: ﬂ°b¶ß",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [
+      {
+        "text": "style: ﬂ°c¶ß",
+        "x": 20,
+        "y": 10
+      }
+    ],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

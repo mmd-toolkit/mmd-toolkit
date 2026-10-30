@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Names, annotations and common forms: A class-looking suffix with no name remains part of a previously-started bare name."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node :::",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

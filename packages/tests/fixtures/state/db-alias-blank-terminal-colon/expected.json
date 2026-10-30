@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Building the summary from the tree, shape: A colon supplies two descriptions even when both are empty and sets rectWithTitle."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "rectWithTitle",
+        "label": "",
+        "description": [
+          ""
+        ],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

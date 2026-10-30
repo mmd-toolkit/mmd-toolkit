@@ -1,0 +1,21 @@
+{
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "description": "a<b>=c",
+        "children": []
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "htmlLabels": false
+    }
+  }
+}

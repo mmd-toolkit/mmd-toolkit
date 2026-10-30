@@ -1,0 +1,72 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-from-tree/gantt.md Tasks: tasks without an id are numbered task1, task2 among themselves."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "a ",
+        "classes": [],
+        "id": "task1",
+        "order": 0
+      },
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-01-01"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "b ",
+        "classes": [],
+        "id": "x",
+        "order": 1
+      },
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd",
+            "id": "x"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "c ",
+        "classes": [],
+        "id": "task2",
+        "order": 2
+      }
+    ],
+    "links": []
+  }
+}

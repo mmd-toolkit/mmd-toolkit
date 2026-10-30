@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: cross-fence converted accessibility is discarded"
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {},
+  "embedded": {
+    "title": "<a"
+  }
+}

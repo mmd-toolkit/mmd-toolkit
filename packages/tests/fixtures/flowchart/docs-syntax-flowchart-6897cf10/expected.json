@@ -1,0 +1,193 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/flowchart.md",
+    "line": 1020
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "i1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "i1",
+        "props": {}
+      },
+      {
+        "id": "f1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "f1",
+        "props": {}
+      },
+      {
+        "id": "i2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "i2",
+        "props": {}
+      },
+      {
+        "id": "f2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "f2",
+        "props": {}
+      },
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "TOP",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "TOP",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      },
+      {
+        "id": "B1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B1",
+        "props": {}
+      },
+      {
+        "id": "B2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B2",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "i1",
+        "end": "f1",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_i1_f1_0"
+      },
+      {
+        "start": "i2",
+        "end": "f2",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_i2_f2_0"
+      },
+      {
+        "start": "A",
+        "end": "TOP",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_TOP_0"
+      },
+      {
+        "start": "TOP",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_TOP_B_0"
+      },
+      {
+        "start": "B1",
+        "end": "B2",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_B1_B2_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "B1",
+        "nodes": [
+          "f1",
+          "i1"
+        ],
+        "title": "B1",
+        "classes": [],
+        "dir": "RL",
+        "labelType": "text"
+      },
+      {
+        "id": "B2",
+        "nodes": [
+          "f2",
+          "i2"
+        ],
+        "title": "B2",
+        "classes": [],
+        "dir": "BT",
+        "labelType": "text"
+      },
+      {
+        "id": "TOP",
+        "nodes": [
+          "B1",
+          "B2"
+        ],
+        "title": "TOP",
+        "classes": [],
+        "dir": "TB",
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

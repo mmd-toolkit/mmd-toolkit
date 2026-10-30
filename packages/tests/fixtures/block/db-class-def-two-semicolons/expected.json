@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, classes: two `;` at the end: the line rule drops the last, and the other follows `#f00` and is read as the end of a character reference."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": []
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:ﬂ°f00¶ß"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Retained YAML before a retained native directive is not reconstructed or discarded."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

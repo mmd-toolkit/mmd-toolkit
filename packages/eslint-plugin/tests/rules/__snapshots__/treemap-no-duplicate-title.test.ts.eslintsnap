@@ -1,0 +1,843 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: treemap-no-duplicate-title >> invalid >>> docs/rules/treemap-no-duplicate-title.md incorrect 1
+Filename: treemap-no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | treemap
+  2 |   title First
+  3 |   title Second
+    |   ^~~~~~~~~~~~ [1]
+  4 |   "Revenue": 10
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 |   title First
+          3 |   "Revenue": 10
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | treemap
+          2 |   title Second
+          3 |   "Revenue": 10
+          4 |
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/acctitle-comment-next
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/acctitle-comment-next-input.mmd
+
+Code:
+  1 | treemap
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | %% next
+  5 | "A":10
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treemap
+          2 | accTitle: First
+          3 | %% next
+          4 | "A":10
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treemap
+          2 | accTitle:
+          3 | %% next
+          4 | "A":10
+          5 |
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/acctitle-directive-next
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/acctitle-directive-next-input.mmd
+
+Code:
+  1 | treemap
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | %%{init: {"theme":"forest"}}%%
+  5 | "A":10
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treemap
+          2 | accTitle: First
+          3 | %%{init: {"theme":"forest"}}%%
+          4 | "A":10
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treemap
+          2 | accTitle:
+          3 | %%{init: {"theme":"forest"}}%%
+          4 | "A":10
+          5 |
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/acctitle-empty
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/acctitle-empty-input.mmd
+
+Code:
+  1 | treemap
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | "A":10
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treemap
+          2 | accTitle: First
+          3 | "A":10
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treemap
+          2 | accTitle:
+          3 | "A":10
+          4 |
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/acctitle-three-mixed
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/acctitle-three-mixed-input.mmd
+
+Code:
+  1 | treemap
+  2 | accTitle: A
+  3 | title Other
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 | accTitle:
+    | ^~~~~~~~~ [2]
+  6 | accTitle: A
+  7 | "A":10
+  8 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treemap
+          2 | accTitle: A
+          3 | title Other
+          4 | accTitle:
+          5 | accTitle: A
+          6 | "A":10
+          7 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treemap
+          2 | title Other
+          3 | accTitle: B
+          4 | accTitle:
+          5 | accTitle: A
+          6 | "A":10
+          7 |
+[2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treemap
+          2 | accTitle: A
+          3 | title Other
+          4 | accTitle: B
+          5 | accTitle: A
+          6 | "A":10
+          7 |
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/acctitle-two
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/acctitle-two-input.mmd
+
+Code:
+  1 | treemap
+  2 | accTitle: First
+  3 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | "A":10
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treemap
+          2 | accTitle: First
+          3 | "A":10
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treemap
+          2 | accTitle: Second
+          3 | "A":10
+          4 |
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/docs-incorrect-1
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/docs-incorrect-1-input.mmd
+
+Code:
+  1 | treemap
+  2 |   title First
+  3 |   title Second
+    |   ^~~~~~~~~~~~ [1]
+  4 |   "Revenue": 10
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 |   title First
+          3 |   "Revenue": 10
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | treemap
+          2 |   title Second
+          3 |   "Revenue": 10
+          4 |
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/nested-statement-gaps-title-history
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/nested-statement-gaps-title-history-input.mmd
+
+Code:
+  1 | treemap
+  2 | title First
+  3 | accTitle: First
+  4 | "Root"
+  5 | title Second
+    | ^~~~~~~~~~~~ [1]
+  6 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [2]
+  7 |   "Branch"
+  8 | title Third
+    | ^~~~~~~~~~~ [3]
+  9 | accTitle: Third
+    | ^~~~~~~~~~~~~~~ [4]
+ 10 |     "Leaf":1
+ 11 | classDef aa fill:red;
+ 12 | title Fourth
+    | ^~~~~~~~~~~~ [5]
+ 13 | accTitle: Fourth
+    | ^~~~~~~~~~~~~~~~ [6]
+ 14 |   "Sibling":2
+ 15 | title Fifth
+    | ^~~~~~~~~~~ [7]
+ 16 | accTitle: Fifth
+    | ^~~~~~~~~~~~~~~ [8]
+ 17 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | title First
+          3 | accTitle: First
+          4 | "Root"
+          5 | accTitle: Second
+          6 |   "Branch"
+          7 | title Third
+          8 | accTitle: Third
+          9 |     "Leaf":1
+         10 | classDef aa fill:red;
+         11 | title Fourth
+         12 | accTitle: Fourth
+         13 |   "Sibling":2
+         14 | title Fifth
+         15 | accTitle: Fifth
+         16 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | treemap
+          2 | accTitle: First
+          3 | "Root"
+          4 | title Second
+          5 | accTitle: Second
+          6 |   "Branch"
+          7 | title Third
+          8 | accTitle: Third
+          9 |     "Leaf":1
+         10 | classDef aa fill:red;
+         11 | title Fourth
+         12 | accTitle: Fourth
+         13 |   "Sibling":2
+         14 | title Fifth
+         15 | accTitle: Fifth
+         16 |
+[2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treemap
+          2 | title First
+          3 | accTitle: First
+          4 | "Root"
+          5 | title Second
+          6 |   "Branch"
+          7 | title Third
+          8 | accTitle: Third
+          9 |     "Leaf":1
+         10 | classDef aa fill:red;
+         11 | title Fourth
+         12 | accTitle: Fourth
+         13 |   "Sibling":2
+         14 | title Fifth
+         15 | accTitle: Fifth
+         16 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treemap
+          2 | title First
+          3 | "Root"
+          4 | title Second
+          5 | accTitle: Second
+          6 |   "Branch"
+          7 | title Third
+          8 | accTitle: Third
+          9 |     "Leaf":1
+         10 | classDef aa fill:red;
+         11 | title Fourth
+         12 | accTitle: Fourth
+         13 |   "Sibling":2
+         14 | title Fifth
+         15 | accTitle: Fifth
+         16 |
+[3] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | title First
+          3 | accTitle: First
+          4 | "Root"
+          5 | title Second
+          6 | accTitle: Second
+          7 |   "Branch"
+          8 | accTitle: Third
+          9 |     "Leaf":1
+         10 | classDef aa fill:red;
+         11 | title Fourth
+         12 | accTitle: Fourth
+         13 |   "Sibling":2
+         14 | title Fifth
+         15 | accTitle: Fifth
+         16 |
+[4] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treemap
+          2 | title First
+          3 | accTitle: First
+          4 | "Root"
+          5 | title Second
+          6 | accTitle: Second
+          7 |   "Branch"
+          8 | title Third
+          9 |     "Leaf":1
+         10 | classDef aa fill:red;
+         11 | title Fourth
+         12 | accTitle: Fourth
+         13 |   "Sibling":2
+         14 | title Fifth
+         15 | accTitle: Fifth
+         16 |
+[5] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | title First
+          3 | accTitle: First
+          4 | "Root"
+          5 | title Second
+          6 | accTitle: Second
+          7 |   "Branch"
+          8 | title Third
+          9 | accTitle: Third
+         10 |     "Leaf":1
+         11 | classDef aa fill:red;
+         12 | accTitle: Fourth
+         13 |   "Sibling":2
+         14 | title Fifth
+         15 | accTitle: Fifth
+         16 |
+[6] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treemap
+          2 | title First
+          3 | accTitle: First
+          4 | "Root"
+          5 | title Second
+          6 | accTitle: Second
+          7 |   "Branch"
+          8 | title Third
+          9 | accTitle: Third
+         10 |     "Leaf":1
+         11 | classDef aa fill:red;
+         12 | title Fourth
+         13 |   "Sibling":2
+         14 | title Fifth
+         15 | accTitle: Fifth
+         16 |
+[7] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | title First
+          3 | accTitle: First
+          4 | "Root"
+          5 | title Second
+          6 | accTitle: Second
+          7 |   "Branch"
+          8 | title Third
+          9 | accTitle: Third
+         10 |     "Leaf":1
+         11 | classDef aa fill:red;
+         12 | title Fourth
+         13 | accTitle: Fourth
+         14 |   "Sibling":2
+         15 | accTitle: Fifth
+         16 |
+[8] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treemap
+          2 | title First
+          3 | accTitle: First
+          4 | "Root"
+          5 | title Second
+          6 | accTitle: Second
+          7 |   "Branch"
+          8 | title Third
+          9 | accTitle: Third
+         10 |     "Leaf":1
+         11 | classDef aa fill:red;
+         12 | title Fourth
+         13 | accTitle: Fourth
+         14 |   "Sibling":2
+         15 | title Fifth
+         16 |
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-directive-only
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-directive-only-input.mmd
+
+Code:
+  1 | treemap
+  2 | title First
+  3 | title %%{init: {}}%%
+    | ^~~~~ [1]
+  4 | "A":10
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | treemap
+          2 | title %%{init: {}}%%
+          3 | "A":10
+          4 |
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-empty
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-empty-input.mmd
+
+Code:
+  1 | treemap
+  2 | title First
+  3 | title
+    | ^~~~~ [1]
+  4 | "A":10
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | title First
+          3 | "A":10
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | treemap
+          2 | title
+          3 | "A":10
+          4 |
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-empty-resets
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-empty-resets-input.mmd
+
+Code:
+  1 | treemap
+  2 | title First
+  3 | title
+    | ^~~~~ [1]
+  4 | title Second
+  5 | "A":1
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | title First
+          3 | title Second
+          4 | "A":1
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | treemap
+          2 | title
+          3 | title Second
+          4 | "A":1
+          5 |
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-empty-same-front
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-empty-same-front-input.mmd
+
+Code:
+  1 | ---
+  2 | title: First
+  3 | ---
+  4 | treemap
+  5 | title First
+  6 | title
+    | ^~~~~ [1]
+  7 | "A":10
+  8 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | ---
+          2 | title: First
+          3 | ---
+          4 | treemap
+          5 | title First
+          6 | "A":10
+          7 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | ---
+          2 | title: First
+          3 | ---
+          4 | treemap
+          5 | title
+          6 | "A":10
+          7 |
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-entity-equivalent
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-entity-equivalent-input.mmd
+
+Code:
+  1 | treemap
+  2 | title #35;
+  3 | title #
+    | ^~~~~~~ [1]
+  4 | "A":10
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | title #35;
+          3 | "A":10
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | treemap
+          2 | title #
+          3 | "A":10
+          4 |
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-equal-predecessor
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-equal-predecessor-input.mmd
+
+Code:
+  1 | treemap
+  2 | accTitle: A
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treemap
+          2 | accTitle: A
+          3 | accTitle: A
+          4 |
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-front
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-front-input.mmd
+
+Code:
+  1 | ---
+  2 | title: Front
+  3 | ---
+  4 | treemap
+  5 | title First
+  6 | title
+    | ^~~~~ [1]
+  7 | "A":10
+  8 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | ---
+          2 | title: Front
+          3 | ---
+          4 | treemap
+          5 | title First
+          6 | "A":10
+          7 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | ---
+          2 | title: Front
+          3 | ---
+          4 | treemap
+          5 | title
+          6 | "A":10
+          7 |
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-html-written
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-html-written-input.mmd
+
+Code:
+  1 | treemap
+  2 | title <b x="a">Text</b>
+  3 | title <b x='a'>Text</b>
+    | ^~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 | "A":1
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | title <b x="a">Text</b>
+          3 | "A":1
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | treemap
+          2 | title <b x='a'>Text</b>
+          3 | "A":1
+          4 |
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-removal-empty-predecessor
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | treemap
+  2 | accTitle:
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treemap
+          2 | accTitle:
+          3 | accTitle: A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treemap
+          2 | accTitle:
+          3 | accTitle: B
+          4 |
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-three
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-three-input.mmd
+
+Code:
+  1 | treemap
+  2 | title First
+  3 | title Second
+    | ^~~~~~~~~~~~ [1]
+  4 | title First
+    | ^~~~~~~~~~~ [2]
+  5 | "A":10
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | title First
+          3 | title First
+          4 | "A":10
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | treemap
+          2 | title Second
+          3 | title First
+          4 | "A":10
+          5 |
+[2] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | title First
+          3 | title Second
+          4 | "A":10
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | treemap
+          2 | title First
+          3 | title First
+          4 | "A":10
+          5 |
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-two
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-two-input.mmd
+
+Code:
+  1 | treemap
+  2 | title First
+  3 | title Second
+    | ^~~~~~~~~~~~ [1]
+  4 | "A":10
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | title First
+          3 | "A":10
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | treemap
+          2 | title Second
+          3 | "A":10
+          4 |
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-whitespace-clears
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-whitespace-clears-input.mmd
+
+Code:
+  1 | treemap
+  2 | title First
+  3 | accTitle: First
+  4 | title   
+    | ^~~~~~~~ [1]
+  5 | accTitle:   
+    | ^~~~~~~~~~~~ [2]
+  6 | "A":1
+  7 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | treemap
+          2 | title First
+          3 | accTitle: First
+          4 | accTitle:   
+          5 | "A":1
+          6 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | treemap
+          2 | accTitle: First
+          3 | title   
+          4 | accTitle:   
+          5 | "A":1
+          6 |
+[2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | treemap
+          2 | title First
+          3 | accTitle: First
+          4 | title   
+          5 | "A":1
+          6 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | treemap
+          2 | title First
+          3 | title   
+          4 | accTitle:   
+          5 | "A":1
+          6 |
+---

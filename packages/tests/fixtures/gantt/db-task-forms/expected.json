@@ -1,0 +1,72 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "One item is the end, with the end of the task before as the start; two items are the start and the end; three are the id, start, and end."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd"
+          },
+          "endTime": {
+            "data": "2d"
+          }
+        },
+        "task": "A ",
+        "classes": [],
+        "id": "task1",
+        "order": 0
+      },
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-01-01"
+          },
+          "endTime": {
+            "data": "2d"
+          }
+        },
+        "task": "B ",
+        "classes": [],
+        "id": "task2",
+        "order": 1
+      },
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-01-01"
+          },
+          "endTime": {
+            "data": "2d"
+          }
+        },
+        "task": "C ",
+        "classes": [],
+        "id": "c",
+        "order": 2
+      }
+    ],
+    "links": []
+  }
+}

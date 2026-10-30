@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The after indent number semicolon spaced boundary is rejected by the lexer."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 3. Unrecognized text.\n...-betaset A text 2 ;\n---------------------^"
+  }
+}

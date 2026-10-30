@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An edge must end in EOL rather than a semicolon."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 14: unexpected character: ->;<- at offset: 54, skipped 1 characters. "
+  }
+}

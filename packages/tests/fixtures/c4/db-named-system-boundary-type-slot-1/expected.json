@@ -1,0 +1,62 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A named $type in System_Boundary argument 1 is accepted; boundaries[1].alias is {\"type\":\"V\"}."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "A"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": {
+          "type": "V"
+        }
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      },
+      {
+        "alias": {
+          "type": "V"
+        },
+        "label": {
+          "text": "B"
+        },
+        "type": {
+          "text": "SYSTEM"
+        },
+        "tags": "tags",
+        "link": "link",
+        "parentBoundary": "global"
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

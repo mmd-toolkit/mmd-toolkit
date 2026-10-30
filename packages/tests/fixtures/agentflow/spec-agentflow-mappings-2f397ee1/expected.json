@@ -1,0 +1,77 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-mappings.spec.ts",
+    "line": 126,
+    "test": "agentflow element mappings > container positions > captures positions for nested flow containers"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "n1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "n1",
+        "props": {}
+      },
+      {
+        "id": "n2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "n2",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "n1",
+        "end": "n2",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_n1_n2_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "inner",
+        "nodes": [
+          "n2",
+          "n1"
+        ],
+        "title": "Inner",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      },
+      {
+        "id": "outer",
+        "nodes": [
+          "inner"
+        ],
+        "title": "Outer",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  }
+}

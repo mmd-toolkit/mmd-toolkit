@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does redefining a class append styles at its first Map position?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "classSelector": "same",
+        "children": []
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "same",
+        "styles": [
+          "fill:red",
+          "color:green"
+        ]
+      },
+      {
+        "id": "other",
+        "styles": [
+          "stroke:blue"
+        ]
+      }
+    ]
+  }
+}

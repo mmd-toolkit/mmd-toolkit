@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, numbers: fullwidth digits are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n... [0.3, 0.6] radius: １０\n-----------------------^\nExpecting 'ALPHA', 'NUM', 'NODE_STRING', 'MINUS', 'COMMA', 'COLON', 'BRKT', 'UNIT', 'SPACE', 'STYLE', 'PCT', 'NEWLINE', 'SEMI', 'EOF', got 'UNICODE_TEXT'"
+  }
+}

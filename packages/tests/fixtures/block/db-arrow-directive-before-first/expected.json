@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/block.md BlockArrowShape: a directive before the first direction is left out of it, which keeps the space after (; the direction is a space followed by right."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "x",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            " right"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

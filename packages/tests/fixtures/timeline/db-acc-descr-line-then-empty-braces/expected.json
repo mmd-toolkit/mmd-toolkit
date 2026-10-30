@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, accessibility: an empty block of two braces after a description on a line leaves the description."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "d",
+    "sections": [],
+    "tasks": []
+  }
+}

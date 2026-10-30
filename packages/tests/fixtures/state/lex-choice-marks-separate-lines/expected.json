@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The state context, rule 4: LF bounds each mark search: the two lines define separate choices."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "a",
+        "shape": "choice",
+        "label": "a",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "b",
+        "shape": "choice",
+        "label": "b",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

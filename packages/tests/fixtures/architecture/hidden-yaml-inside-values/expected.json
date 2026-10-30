@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Earlier enclosing text terminals own YAML-looking text inside every multiline display value."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "---\nE\n---",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "iconText": "---\nA\n---",
+        "title": "---\nB\n---"
+      },
+      {
+        "id": "db",
+        "type": "service"
+      }
+    ],
+    "groups": [
+      {
+        "id": "g",
+        "title": "---\nC\n---"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "api",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "db",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false,
+        "title": "---\nD\n---"
+      }
+    ],
+    "layoutHints": []
+  }
+}

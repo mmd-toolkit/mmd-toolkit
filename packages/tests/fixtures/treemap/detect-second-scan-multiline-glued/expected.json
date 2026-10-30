@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Does a glued header fail to repair an unreadable second-scan prefix?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 5: unexpected character: ->}<- at offset: 8, skipped 1 characters. Parse error on line 2, column 1: Expecting token of type 'TREEMAP_KEYWORD' but found `wrap`."
+  }
+}

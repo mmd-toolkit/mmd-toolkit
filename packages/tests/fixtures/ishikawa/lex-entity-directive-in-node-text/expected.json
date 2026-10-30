@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md F3: A directive splits a named entity inside one node text."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "Rﬂ°amp¶ß",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "Rﬂ°amp¶ß",
+      "children": []
+    }
+  }
+}

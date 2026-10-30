@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md S01, E02 (Shape context): Whole empty markdown label."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nkanban S[\"``\"]\n-------------^\nExpecting 'NODE_DESCR', got 'NODE_DEND'"
+  }
+}

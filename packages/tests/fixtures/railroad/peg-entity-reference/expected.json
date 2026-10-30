@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Character references cannot form a PEG reference."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 7: unexpected character: ->ﬂ<- at offset: 24, skipped 7 characters. Parse error on line 2, column 14: Expecting: one of these possible Token sequences:\n  1. [PEG_STRING]\n  2. [PEG_ID]\n  3. [(]\n  4. [.]\nbut found: ';'"
+  }
+}

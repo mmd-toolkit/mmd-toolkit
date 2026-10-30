@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, lines: a CRLF ends a line as a line feed does, and is no part of the text."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "child",
+          "level": 2,
+          "descr": "child",
+          "type": 0,
+          "children": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Accessibility statements: a later description from a line replaces one from a block."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "b",
+    "sections": [],
+    "tasks": []
+  }
+}

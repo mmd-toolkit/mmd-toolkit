@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/class/classDiagram.spec.ts",
+    "line": 1951,
+    "test": "given a class diagram with relationships,  > when parsing basic relationships > should associate callback with tooltip"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Class1",
+        "type": "",
+        "label": "Class1",
+        "text": "Class1",
+        "shape": "classBox",
+        "cssClasses": "default clickable",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "",
+            "classifier": "",
+            "id": "someMethod",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "haveCallback": true,
+        "tooltip": "A tooltip"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": [],
+    "clickCalls": [
+      {
+        "id": "Class1",
+        "name": "functionCall",
+        "args": null
+      }
+    ]
+  }
+}

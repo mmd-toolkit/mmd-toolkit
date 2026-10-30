@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Common statements: A padded title in a name position is captured by the composite metadata terminal and rejects there. Rejected by Mermaid."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 21: Expecting token of type 'EM_ID' but found ` title`."
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/stateDiagram.spec.js",
+    "line": 190,
+    "test": "state diagram,  > when parsing an info graph it > should handle recursive state definitions"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "Configuring",
+        "shape": "roundedWithTitle",
+        "label": "Configuring",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "Configuring_start",
+        "shape": "stateStart",
+        "label": "Configuring_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "Configuring"
+      },
+      {
+        "id": "NewValueSelection",
+        "shape": "rect",
+        "label": "NewValueSelection",
+        "classes": [],
+        "styles": [],
+        "parentId": "Configuring"
+      },
+      {
+        "id": "NewValuePreview",
+        "shape": "roundedWithTitle",
+        "label": "NewValuePreview",
+        "classes": [],
+        "styles": [],
+        "parentId": "Configuring",
+        "dir": "TB"
+      },
+      {
+        "id": "State1",
+        "shape": "rect",
+        "label": "State1",
+        "classes": [],
+        "styles": [],
+        "parentId": "NewValuePreview"
+      },
+      {
+        "id": "State2",
+        "shape": "rect",
+        "label": "State2",
+        "classes": [],
+        "styles": [],
+        "parentId": "NewValuePreview"
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "Configuring_start",
+        "end": "NewValueSelection",
+        "label": ""
+      },
+      {
+        "start": "NewValueSelection",
+        "end": "NewValuePreview",
+        "label": "EvNewValue"
+      },
+      {
+        "start": "NewValuePreview",
+        "end": "NewValueSelection",
+        "label": "EvNewValueRejected"
+      },
+      {
+        "start": "NewValuePreview",
+        "end": "NewValueSelection",
+        "label": "EvNewValueSaved"
+      },
+      {
+        "start": "State1",
+        "end": "State2",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/er/parser/erDiagram.spec.js",
+    "line": 151,
+    "test": "when parsing ER diagram it... > entity name > can have an alias even if the relationship is defined before buzz"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-foo-0",
+        "attributes": [],
+        "alias": "batman",
+        "cssStyles": [],
+        "name": "foo",
+        "classes": []
+      },
+      {
+        "id": "entity-bar-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "bar",
+        "classes": []
+      },
+      {
+        "id": "entity-buzz-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "buzz",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-foo-0",
+        "roleA": "rel",
+        "entityB": "entity-bar-1",
+        "cardA": "ZERO_OR_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": []
+  }
+}

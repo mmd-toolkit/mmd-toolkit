@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The last reachable accessibility assignment wins."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "accTitle: third",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "evt",
+        "entityIdentifier": "B",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

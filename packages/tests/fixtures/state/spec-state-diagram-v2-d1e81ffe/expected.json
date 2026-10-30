@@ -1,0 +1,150 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/stateDiagram-v2.spec.js",
+    "line": 228,
+    "test": "state diagram V2,  > when parsing an info graph it > should handle multiple recursive state definitions"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "NotShooting",
+        "shape": "roundedWithTitle",
+        "label": "NotShooting",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "NotShooting_start",
+        "shape": "stateStart",
+        "label": "NotShooting_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "NotShooting"
+      },
+      {
+        "id": "Idle",
+        "shape": "rect",
+        "label": "Idle",
+        "classes": [],
+        "styles": [],
+        "parentId": "NotShooting"
+      },
+      {
+        "id": "Configuring",
+        "shape": "roundedWithTitle",
+        "label": "Configuring",
+        "classes": [],
+        "styles": [],
+        "parentId": "NotShooting",
+        "dir": "TB"
+      },
+      {
+        "id": "Configuring_start",
+        "shape": "stateStart",
+        "label": "Configuring_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "Configuring"
+      },
+      {
+        "id": "NewValueSelection",
+        "shape": "rect",
+        "label": "NewValueSelection",
+        "classes": [],
+        "styles": [],
+        "parentId": "Configuring"
+      },
+      {
+        "id": "NewValuePreview",
+        "shape": "roundedWithTitle",
+        "label": "NewValuePreview",
+        "classes": [],
+        "styles": [],
+        "parentId": "Configuring",
+        "dir": "TB"
+      },
+      {
+        "id": "State1",
+        "shape": "rect",
+        "label": "State1",
+        "classes": [],
+        "styles": [],
+        "parentId": "NewValuePreview"
+      },
+      {
+        "id": "State2",
+        "shape": "rect",
+        "label": "State2",
+        "classes": [],
+        "styles": [],
+        "parentId": "NewValuePreview"
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "NotShooting",
+        "label": ""
+      },
+      {
+        "start": "NotShooting_start",
+        "end": "Idle",
+        "label": ""
+      },
+      {
+        "start": "Idle",
+        "end": "Configuring",
+        "label": "EvConfig"
+      },
+      {
+        "start": "Configuring",
+        "end": "Idle",
+        "label": "EvConfig"
+      },
+      {
+        "start": "Configuring_start",
+        "end": "NewValueSelection",
+        "label": ""
+      },
+      {
+        "start": "NewValueSelection",
+        "end": "NewValuePreview",
+        "label": "EvNewValue"
+      },
+      {
+        "start": "NewValuePreview",
+        "end": "NewValueSelection",
+        "label": "EvNewValueRejected"
+      },
+      {
+        "start": "NewValuePreview",
+        "end": "NewValueSelection",
+        "label": "EvNewValueSaved"
+      },
+      {
+        "start": "State1",
+        "end": "State2",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

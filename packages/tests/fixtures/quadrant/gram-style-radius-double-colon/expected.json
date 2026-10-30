@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, styles: two colons give an empty value and are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "InvalidStyleError",
+    "message": "value for radius  is invalid, please use a valid number"
+  }
+}

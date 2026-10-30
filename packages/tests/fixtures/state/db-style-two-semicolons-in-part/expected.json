@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A style part loses every `;`, unlike a classDef part, which loses only its first: the style of A is `abc`."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": [
+          "abc"
+        ]
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

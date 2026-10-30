@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "No hash keeps the rejecting block suffix semicolon."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 25: unexpected character: ->;<- at offset: 29, skipped 1 characters. "
+  }
+}

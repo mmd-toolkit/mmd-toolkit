@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: An empty accessibility block remains a metadata statement and is not hidden expression trivia."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 9: Expecting token of type ';' but found `accDescr {}`."
+  }
+}

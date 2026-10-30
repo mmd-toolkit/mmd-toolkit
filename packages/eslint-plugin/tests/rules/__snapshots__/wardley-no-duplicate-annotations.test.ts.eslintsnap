@@ -1,0 +1,289 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: wardley-no-duplicate-annotations >> invalid >>> docs/rules/wardley-no-duplicate-annotations.md incorrect 1
+Filename: wardley-no-duplicate-annotations-incorrect-1.mmd
+
+Code:
+  1 | wardley-beta
+  2 |   annotations [0.1, 0.2]
+  3 |   annotations [0.3, 0.4]
+    |   ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |   annotation 1, [0.6, 0.7] "Review"
+  5 |
+
+[1] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 |   annotations [0.1, 0.2]
+          3 |   annotation 1, [0.6, 0.7] "Review"
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 |   annotations [0.3, 0.4]
+          3 |   annotation 1, [0.6, 0.7] "Review"
+          4 |
+---
+
+
+Test: wardley-no-duplicate-annotations >> invalid >>> invalid/wardley/annotations-clamp-same
+Filename: tests/fixtures/rules/wardley-no-duplicate-annotations/invalid/wardley/annotations-clamp-same-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | annotations [0.0,1.0]
+  3 | annotations [0.0,0.99]
+    | ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 | annotation 1,[0.6,0.7] "Review"
+
+[1] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.0,1.0]
+          3 | annotation 1,[0.6,0.7] "Review"
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.0,0.99]
+          3 | annotation 1,[0.6,0.7] "Review"
+---
+
+
+Test: wardley-no-duplicate-annotations >> invalid >>> invalid/wardley/annotations-duplicate
+Filename: tests/fixtures/rules/wardley-no-duplicate-annotations/invalid/wardley/annotations-duplicate-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | annotations [0.1,0.2]
+  3 | annotations [0.3,0.4]
+    | ^~~~~~~~~~~~~~~~~~~~~ [1]
+  4 | annotation 1,[0.6,0.7] "Review"
+
+[1] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.1,0.2]
+          3 | annotation 1,[0.6,0.7] "Review"
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.3,0.4]
+          3 | annotation 1,[0.6,0.7] "Review"
+---
+
+
+Test: wardley-no-duplicate-annotations >> invalid >>> invalid/wardley/annotations-duplicate-out-of-range
+Filename: tests/fixtures/rules/wardley-no-duplicate-annotations/invalid/wardley/annotations-duplicate-out-of-range-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | annotations [0.1,0.2]
+  3 | annotations [101,0]
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  4 | annotation 1,[0.6,0.7] "Review"
+
+[1] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.1,0.2]
+          3 | annotation 1,[0.6,0.7] "Review"
+---
+
+
+Test: wardley-no-duplicate-annotations >> invalid >>> invalid/wardley/annotations-first-equality-third
+Filename: tests/fixtures/rules/wardley-no-duplicate-annotations/invalid/wardley/annotations-first-equality-third-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | annotations [0.1,0.2]
+  3 | annotations [0.3,0.4]
+    | ^~~~~~~~~~~~~~~~~~~~~ [1]
+  4 | annotations [10,20]
+  5 | annotation 1,[0.6,0.7] "Review"
+
+[1] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.1,0.2]
+          3 | annotations [10,20]
+          4 | annotation 1,[0.6,0.7] "Review"
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.3,0.4]
+          3 | annotations [10,20]
+          4 | annotation 1,[0.6,0.7] "Review"
+---
+
+
+Test: wardley-no-duplicate-annotations >> invalid >>> invalid/wardley/annotations-same-as-ignored-not-first
+Filename: tests/fixtures/rules/wardley-no-duplicate-annotations/invalid/wardley/annotations-same-as-ignored-not-first-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | annotations [0.1,0.2]
+  3 | annotations [0.3,0.4]
+    | ^~~~~~~~~~~~~~~~~~~~~ [1]
+  4 | annotations [0.3,0.4]
+    | ^~~~~~~~~~~~~~~~~~~~~ [2]
+  5 | annotation 1,[0.6,0.7] "Review"
+
+[1] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.1,0.2]
+          3 | annotations [0.3,0.4]
+          4 | annotation 1,[0.6,0.7] "Review"
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.3,0.4]
+          3 | annotations [0.3,0.4]
+          4 | annotation 1,[0.6,0.7] "Review"
+[2] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.1,0.2]
+          3 | annotations [0.3,0.4]
+          4 | annotation 1,[0.6,0.7] "Review"
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.3,0.4]
+          3 | annotations [0.3,0.4]
+          4 | annotation 1,[0.6,0.7] "Review"
+---
+
+
+Test: wardley-no-duplicate-annotations >> invalid >>> invalid/wardley/annotations-text-before-boxes
+Filename: tests/fixtures/rules/wardley-no-duplicate-annotations/invalid/wardley/annotations-text-before-boxes-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | annotation 1,[0.6,0.7] "Review"
+  3 | annotations [0.1,0.2]
+  4 | annotations [0.3,0.4]
+    | ^~~~~~~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | annotation 1,[0.6,0.7] "Review"
+          3 | annotations [0.1,0.2]
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | annotation 1,[0.6,0.7] "Review"
+          3 | annotations [0.3,0.4]
+---
+
+
+Test: wardley-no-duplicate-annotations >> invalid >>> invalid/wardley/annotations-whitespace-text
+Filename: tests/fixtures/rules/wardley-no-duplicate-annotations/invalid/wardley/annotations-whitespace-text-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | annotations [0.1,0.2]
+  3 | annotations [0.3,0.4]
+    | ^~~~~~~~~~~~~~~~~~~~~ [1]
+  4 | annotation 1,[0.6,0.7] " "
+
+[1] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.1,0.2]
+          3 | annotation 1,[0.6,0.7] " "
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.3,0.4]
+          3 | annotation 1,[0.6,0.7] " "
+---
+
+
+Test: wardley-no-duplicate-annotations >> invalid >>> invalid/wardley/docs-incorrect-1
+Filename: tests/fixtures/rules/wardley-no-duplicate-annotations/invalid/wardley/docs-incorrect-1-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 |   annotations [0.1, 0.2]
+  3 |   annotations [0.3, 0.4]
+    |   ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |   annotation 1, [0.6, 0.7] "Review"
+  5 |
+
+[1] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 |   annotations [0.1, 0.2]
+          3 |   annotation 1, [0.6, 0.7] "Review"
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 |   annotations [0.3, 0.4]
+          3 |   annotation 1, [0.6, 0.7] "Review"
+          4 |
+---
+
+
+Test: wardley-no-duplicate-annotations >> invalid >>> invalid/wardley/first-position-removal-still-reports-third
+Filename: tests/fixtures/rules/wardley-no-duplicate-annotations/invalid/wardley/first-position-removal-still-reports-third-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | annotations [0.1, 0.2]
+  3 | annotations [0.3, 0.4]
+    | ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 | annotations [0.5, 0.6]
+    | ^~~~~~~~~~~~~~~~~~~~~~ [2]
+  5 | annotation 1, [0.6, 0.7] "Review"
+  6 |
+
+[1] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.1, 0.2]
+          3 | annotations [0.5, 0.6]
+          4 | annotation 1, [0.6, 0.7] "Review"
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.3, 0.4]
+          3 | annotations [0.5, 0.6]
+          4 | annotation 1, [0.6, 0.7] "Review"
+          5 |
+[2] mermaid.js keeps the annotation box at the first position and ignores this position.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | annotations [0.1, 0.2]
+          3 | annotations [0.3, 0.4]
+          4 | annotation 1, [0.6, 0.7] "Review"
+          5 |
+---

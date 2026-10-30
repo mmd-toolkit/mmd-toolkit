@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A directive inside the id string is removed globally."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "AB",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

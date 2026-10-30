@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Does a directive in the keyword-name gap preserve required whitespace?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": [
+      {
+        "id": "aa",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

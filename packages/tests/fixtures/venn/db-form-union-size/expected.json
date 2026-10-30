@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The db form union size form stores {\"subsets\":[{\"sets\":[\"A\"],\"size\":10},{\"sets\":[\"B\"],\"size\":10},{\"sets\":[\"A\",\"B\"],\"size\":4}]}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "size": 4
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "U+2029 is not the NEWLINE terminal."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 4: unexpected character: -> <- at offset: 3, skipped 1 characters.\nLexer error on line 1, column 10: unexpected character: -> <- at offset: 9, skipped 1 characters. Parse error on line 1, column 11: Expecting: one of these possible Token sequences:\n  1. [NEWLINE]\n  2. [EOF]\nbut found: '\"B\"'"
+  }
+}

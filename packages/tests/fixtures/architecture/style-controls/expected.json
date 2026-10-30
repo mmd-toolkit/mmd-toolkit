@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Case, a space after the colon, no hash and two semicolons distinguish preprocessing from plain text."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "style B fill: ﬂ°red¶ß",
+    "accDescr": "style C fill:red;",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "title": "style D fill:ﬂ°red¶ß"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

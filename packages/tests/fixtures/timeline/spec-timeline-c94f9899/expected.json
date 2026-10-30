@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/timeline/timeline.spec.js",
+    "line": 108,
+    "test": "when parsing a timeline  > Timeline > should handle a section, and task and its events including markdown link"
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "abc-123"
+    ],
+    "tasks": [
+      {
+        "section": "abc-123",
+        "task": "task1",
+        "events": [
+          "[event1](http://example.com)"
+        ]
+      },
+      {
+        "section": "abc-123",
+        "task": "task2",
+        "events": [
+          "event2",
+          "event3"
+        ]
+      }
+    ]
+  }
+}

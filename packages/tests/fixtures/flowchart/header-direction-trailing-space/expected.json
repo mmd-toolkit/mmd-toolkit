@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Lexical structure: the space after the direction is followed by the added `\\n`, which ends the header."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

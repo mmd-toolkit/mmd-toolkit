@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md Hidden forms: Can the shared line rule select a semicolon inside a native directive opener without splitting an atomic word?"
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "style:#x"
+      },
+      {
+        "label": "B"
+      }
+    ],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

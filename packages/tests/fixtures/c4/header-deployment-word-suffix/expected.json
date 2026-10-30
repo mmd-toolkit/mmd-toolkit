@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4Deployment header followed immediately by word is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nC4DeploymentwordPer\n^"
+  }
+}

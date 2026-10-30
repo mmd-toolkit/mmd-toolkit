@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, header: the same after `sankey-beta`."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nsankey-betaéa,b,1\n-----------^\nExpecting 'NEWLINE', got 'NON_ESCAPED_TEXT'"
+  }
+}

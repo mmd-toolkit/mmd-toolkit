@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md The statement context: rule 12: U+2028 is a character of the data, so the line is one task: the score part `5`, U+2028, and `B`, and the person `3`."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A",
+        "people": [
+          "3"
+        ],
+        "score": "NaN"
+      }
+    ]
+  }
+}

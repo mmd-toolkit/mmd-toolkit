@@ -1,0 +1,610 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: sequence-no-duplicate-title >> invalid >>> docs/rules/sequence-no-duplicate-title.md incorrect 1
+Filename: sequence-no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   title first
+  3 |   title second
+    |   ^~~~~~~~~~~~ [1]
+  4 |   A ->> B: x
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | sequenceDiagram
+          2 |   title first
+          3 |   A ->> B: x
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | sequenceDiagram
+          2 |   title second
+          3 |   A ->> B: x
+          4 |
+---
+
+
+Test: sequence-no-duplicate-title >> invalid >>> docs/rules/sequence-no-duplicate-title.md incorrect 2
+Filename: sequence-no-duplicate-title-incorrect-2.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   A ->> B: x
+  3 |   accTitle: first
+  4 |   accTitle: second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 |   A ->> B: x
+          3 |   accTitle: first
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 |   A ->> B: x
+          3 |   accTitle: second
+          4 |
+---
+
+
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/acc-title-back-to-first
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/acc-title-back-to-first-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   accTitle: a
+  3 |   accTitle: b
+    |   ^~~~~~~~~~~ [1]
+  4 |   accTitle: a
+    |   ^~~~~~~~~~~ [2]
+  5 |   A ->> B: x
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 |   accTitle: a
+          3 |   accTitle: a
+          4 |   A ->> B: x
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 |   accTitle: b
+          3 |   accTitle: a
+          4 |   A ->> B: x
+          5 |
+[2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 |   accTitle: a
+          3 |   accTitle: b
+          4 |   A ->> B: x
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 |   accTitle: a
+          3 |   accTitle: a
+          4 |   A ->> B: x
+          5 |
+---
+
+
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/db-acc-title-line-empty-takes-empty-description-block
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/db-acc-title-line-empty-takes-empty-description-block-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accTitle: t
+  3 | accTitle:
+    | ^~~~~~~~~\ [1]
+  4 | accDescr {}
+    | ~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accTitle: t
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accTitle:
+          3 | accDescr {}
+          4 |
+---
+
+
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/db-acc-title-line-empty-takes-next-after-comment
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/db-acc-title-line-empty-takes-next-after-comment-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accTitle: t
+  3 | accTitle:
+    | ^~~~~~~~~\ [1]
+  4 | %% c
+    | ~~~~\ [1]
+  5 | A->>B: x
+    | ~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accTitle: t
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accTitle:
+          3 | %% c
+          4 | A->>B: x
+          5 |
+---
+
+
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/db-acc-title-line-empty-takes-next-after-directive
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/db-acc-title-line-empty-takes-next-after-directive-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accTitle: t
+  3 | accTitle:
+    | ^~~~~~~~~\ [1]
+  4 | %%{init: {}}%%
+    | ~~~~~~~~~~~~~~\ [1]
+  5 | A->>B: x
+    | ~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accTitle:
+          3 | %%{init: {}}%%
+          4 | A->>B: x
+          5 |
+---
+
+
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/db-acc-title-line-empty-takes-next-lines
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/db-acc-title-line-empty-takes-next-lines-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accTitle: t
+  3 | accTitle:
+    | ^~~~~~~~~\ [1]
+  4 |
+    | ~\ [1]
+  5 | A->>B: x
+    | ~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accTitle: t
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accTitle:
+          3 |
+          4 | A->>B: x
+          5 |
+---
+
+
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/db-acc-title-line-empty-then-comment-only
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/db-acc-title-line-empty-then-comment-only-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accTitle: t
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | %% c
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accTitle: t
+          3 | %% c
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accTitle:
+          3 | %% c
+          4 |
+---
+
+
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/db-acc-title-line-empty-then-directive-only
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/db-acc-title-line-empty-then-directive-only-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accTitle: t
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | %%{init: {}}%%
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accTitle: t
+          3 | %%{init: {}}%%
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accTitle:
+          3 | %%{init: {}}%%
+          4 |
+---
+
+
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/db-acc-title-line-empty-then-empty-lines-only
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/db-acc-title-line-empty-then-empty-lines-only-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accTitle: t
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 |
+  5 |
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accTitle: t
+          3 |
+          4 |
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accTitle:
+          3 |
+          4 |
+          5 |
+---
+
+
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/db-acc-title-line-empty-then-unclosed-directive
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/db-acc-title-line-empty-then-unclosed-directive-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accTitle: t
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | %%{init: {}
+  5 | A->>B: x
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accTitle: t
+          3 | %%{init: {}
+          4 | A->>B: x
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accTitle:
+          3 | %%{init: {}
+          4 | A->>B: x
+          5 |
+---
+
+
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/db-acc-title-line-empty-trailing-spaces-at-end
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/db-acc-title-line-empty-trailing-spaces-at-end-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accTitle: t
+  3 | accTitle:   
+    | ^~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accTitle: t
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accTitle:   
+---
+
+
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/db-acc-title-replaces
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/db-acc-title-replaces-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: x
+  3 | accTitle: first
+  4 | accTitle: second
+    | ^~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | A->>B: x
+          3 | accTitle: first
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | A->>B: x
+          3 | accTitle: second
+          4 |
+---
+
+
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/db-acc-title-semicolon-text
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/db-acc-title-semicolon-text-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accTitle: t
+  3 | accTitle:;
+    | ^~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accTitle: t
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accTitle:;
+          3 |
+---
+
+
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/db-title-inside-block
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/db-title-inside-block-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | title outer
+  3 | loop x
+  4 | title inner
+    | ^~~~~~~~~~~ [1]
+  5 | accTitle: inner
+  6 | end
+  7 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | sequenceDiagram
+          2 | title outer
+          3 | loop x
+          4 | accTitle: inner
+          5 | end
+          6 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | sequenceDiagram
+          2 | loop x
+          3 | title inner
+          4 | accTitle: inner
+          5 | end
+          6 |
+---
+
+
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/db-title-replaces
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/db-title-replaces-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | title first
+  3 | title second
+    | ^~~~~~~~~~~~ [1]
+  4 | A->>B: x
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | sequenceDiagram
+          2 | title first
+          3 | A->>B: x
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | sequenceDiagram
+          2 | title second
+          3 | A->>B: x
+          4 |
+---
+
+
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/legacy-title-then-title-with-colon
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/legacy-title-then-title-with-colon-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | title first
+  3 | title: second
+    | ^~~~~~~~~~~~~ [1]
+  4 | A->>B: x
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | sequenceDiagram
+          2 | title first
+          3 | A->>B: x
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | sequenceDiagram
+          2 | title: second
+          3 | A->>B: x
+          4 |
+---
+
+
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/lex-acc-title-at-end
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/lex-acc-title-at-end-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accTitle: x
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accTitle: x
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accTitle:
+---
+
+
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/outer-accessibility-title-after-loop-title
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/outer-accessibility-title-after-loop-title-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | loop x
+  3 | A->>B: y
+  4 | accTitle: inner
+  5 | end
+  6 | accTitle: outer
+    | ^~~~~~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | loop x
+          3 | A->>B: y
+          4 | accTitle: inner
+          5 | end
+          6 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | loop x
+          3 | A->>B: y
+          4 | end
+          5 | accTitle: outer
+          6 |
+---
+
+
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/title-equal-predecessor
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/title-equal-predecessor-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accTitle: A
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | sequenceDiagram
+          2 | accTitle: A
+          3 | accTitle: A
+          4 |
+---
+
+
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/title-extra-space
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/title-extra-space-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   title T
+  3 |   title  T
+    |   ^~~~~~~~ [1]
+  4 |   A ->> B: x
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | sequenceDiagram
+          2 |   title T
+          3 |   A ->> B: x
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | sequenceDiagram
+          2 |   title  T
+          3 |   A ->> B: x
+          4 |
+---

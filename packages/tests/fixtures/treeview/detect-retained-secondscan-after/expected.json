@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Detection: Detection may pass a retained block before a second-scan directive, but treeview still rejects its native reading."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 1: Expecting token of type 'treeView-beta' but found `---`.\nParse error on line 6, column 1: Expecting token of type 'EOF' but found `treeView-beta`."
+  }
+}

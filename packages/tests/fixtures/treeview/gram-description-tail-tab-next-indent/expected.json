@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check a trailing indentation token followed by a separate next-line indentation after description."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "file",
+        "description": "d",
+        "children": [
+          {
+            "name": "child",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

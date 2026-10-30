@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The EBNF header alone has an empty rules array."
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": []
+  }
+}

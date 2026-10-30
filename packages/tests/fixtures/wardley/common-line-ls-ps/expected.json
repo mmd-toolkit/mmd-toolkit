@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do LS and PS remain part of every common line value?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "A B",
+    "accTitle": "C D",
+    "accDescr": "E F G",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

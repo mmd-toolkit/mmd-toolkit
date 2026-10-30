@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/architecture.test.ts",
+    "line": 195,
+    "test": "architecture > should handle non-ASCII and punctuation in unquoted titles > should handle a group title containing Chinese characters"
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "groups": [
+      {
+        "id": "g1",
+        "icon": "server",
+        "title": "你好世界"
+      }
+    ],
+    "edges": [],
+    "layoutHints": []
+  }
+}

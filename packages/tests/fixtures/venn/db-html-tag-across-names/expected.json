@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md, Lexical structure: An HTML tag starts in an earlier quoted name and ends inside a later quoted name; attribute double quotes become single quotes, and the later name is b='c'>d."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "<a"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "b='c'>d"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

@@ -1,0 +1,186 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: journey-no-empty-person >> invalid >>> docs/rules/journey-no-empty-person.md incorrect 1
+Filename: journey-no-empty-person-incorrect-1.mmd
+
+Code:
+  1 | journey
+  2 |   section Work
+  3 |     Make tea: 5: Me,
+    |                    ^ [1]
+  4 |
+
+[1] mermaid.js takes the empty name after this separator as a person of the task.
+    Suggestions:
+      - Remove this empty person and its separator.
+        Output:
+          1 | journey
+          2 |   section Work
+          3 |     Make tea: 5: Me
+          4 |
+---
+
+
+Test: journey-no-empty-person >> invalid >>> docs/rules/journey-no-empty-person.md incorrect 2
+Filename: journey-no-empty-person-incorrect-2.mmd
+
+Code:
+  1 | journey
+  2 |   section Work
+  3 |     Make tea: 5:
+    |                ^ [1]
+  4 |
+
+[1] mermaid.js takes the empty name after this separator as a person of the task.
+    Suggestions:
+      - Remove this empty person and its separator.
+        Output:
+          1 | journey
+          2 |   section Work
+          3 |     Make tea: 5
+          4 |
+---
+
+
+Test: journey-no-empty-person >> invalid >>> invalid/journey/db-task-people-blank
+Filename: tests/fixtures/rules/journey-no-empty-person/invalid/journey/db-task-people-blank-input.mmd
+
+Code:
+  1 | journey
+  2 |   A: 3: 
+    |       ^ [1]
+  3 |
+
+[1] mermaid.js takes the empty name after this separator as a person of the task.
+    Suggestions:
+      - Remove this empty person and its separator.
+        Output:
+          1 | journey
+          2 |   A: 3 
+          3 |
+---
+
+
+Test: journey-no-empty-person >> invalid >>> invalid/journey/db-task-people-empty-item
+Filename: tests/fixtures/rules/journey-no-empty-person/invalid/journey/db-task-people-empty-item-input.mmd
+
+Code:
+  1 | journey
+  2 |   A: 3: a,,b
+    |          ^ [1]
+  3 |
+
+[1] mermaid.js takes the empty name after this separator as a person of the task.
+    Suggestions:
+      - Remove this empty person and its separator.
+        Output:
+          1 | journey
+          2 |   A: 3: a,b
+          3 |
+---
+
+
+Test: journey-no-empty-person >> invalid >>> invalid/journey/gram-task-people-trailing-comma
+Filename: tests/fixtures/rules/journey-no-empty-person/invalid/journey/gram-task-people-trailing-comma-input.mmd
+
+Code:
+  1 | journey
+  2 |   A: 5: Me,
+    |           ^ [1]
+  3 |
+
+[1] mermaid.js takes the empty name after this separator as a person of the task.
+    Suggestions:
+      - Remove this empty person and its separator.
+        Output:
+          1 | journey
+          2 |   A: 5: Me
+          3 |
+---
+
+
+Test: journey-no-empty-person >> invalid >>> invalid/journey/gram-task-second-colon-at-end
+Filename: tests/fixtures/rules/journey-no-empty-person/invalid/journey/gram-task-second-colon-at-end-input.mmd
+
+Code:
+  1 | journey
+  2 |   A: 5:
+    |       ^ [1]
+  3 |
+
+[1] mermaid.js takes the empty name after this separator as a person of the task.
+    Suggestions:
+      - Remove this empty person and its separator.
+        Output:
+          1 | journey
+          2 |   A: 5
+          3 |
+---
+
+
+Test: journey-no-empty-person >> invalid >>> invalid/journey/person-comma-only
+Filename: tests/fixtures/rules/journey-no-empty-person/invalid/journey/person-comma-only-input.mmd
+
+Code:
+  1 | journey
+  2 |   section Work
+  3 |     A: 5: ,
+    |         ^ [1]
+    |           ^ [2]
+  4 |
+
+[1] mermaid.js takes the empty name after this separator as a person of the task.
+    Suggestions:
+      - Remove this empty person and its separator.
+        Output:
+          1 | journey
+          2 |   section Work
+          3 |     A: 5
+          4 |
+[2] mermaid.js takes the empty name after this separator as a person of the task.
+    Suggestions:
+      - Remove this empty person and its separator.
+        Output:
+          1 | journey
+          2 |   section Work
+          3 |     A: 5
+          4 |
+---
+
+
+Test: journey-no-empty-person >> invalid >>> invalid/journey/person-empty-then-ignored-text
+Filename: tests/fixtures/rules/journey-no-empty-person/invalid/journey/person-empty-then-ignored-text-input.mmd
+
+Code:
+  1 | journey
+  2 |   section Work
+  3 |     A: 5:: x
+    |         ^ [1]
+  4 |
+
+[1] mermaid.js takes the empty name after this separator as a person of the task.
+---
+
+
+Test: journey-no-empty-person >> invalid >>> invalid/journey/person-first-empty
+Filename: tests/fixtures/rules/journey-no-empty-person/invalid/journey/person-first-empty-input.mmd
+
+Code:
+  1 | journey
+  2 |   title My day
+  3 |   section Work
+  4 |     Make tea: 5: ,Me
+    |                ^ [1]
+  5 |
+
+[1] mermaid.js takes the empty name after this separator as a person of the task.
+    Suggestions:
+      - Remove this empty person and its separator.
+        Output:
+          1 | journey
+          2 |   title My day
+          3 |   section Work
+          4 |     Make tea: 5:Me
+          5 |
+---

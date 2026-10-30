@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The TITLE prefix prevents titlex from being an ABNF reference."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 5: Expecting: expecting at least one iteration which starts with one of these possible Token sequences::\n  <[ABNF_REPEAT] ,[ABNF_EXACT_REPEAT] ,[ABNF_STRING] ,[ABNF_NUMVAL] ,[ABNF_RULENAME] ,[(] ,[[]>\nbut found: 'title'\nParse error on line 2, column 11: Expecting token of type '=' but found `;`."
+  }
+}

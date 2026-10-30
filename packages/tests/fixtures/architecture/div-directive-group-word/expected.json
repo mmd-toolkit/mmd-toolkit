@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Directive boundaries: braces and the complete group word are separate components; the word is indivisible. Case: group-modifier-directive-word-middle."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service"
+      },
+      {
+        "id": "b",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [
+      {
+        "lhsId": "a",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": true,
+        "rhsId": "b",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false
+      }
+    ],
+    "layoutHints": []
+  }
+}

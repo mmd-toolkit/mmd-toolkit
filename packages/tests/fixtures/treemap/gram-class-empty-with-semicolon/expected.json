@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Can an empty class definition end with a semicolon?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": [
+      {
+        "id": "aa",
+        "styles": [
+          ""
+        ]
+      }
+    ]
+  }
+}

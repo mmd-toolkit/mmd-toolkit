@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-metadata-no-validation.spec.ts",
+    "line": 15,
+    "test": "issue #64: parser does not validate metadata (semantics owns it) > metadata is carried, never validated > carries `prompt` as an ordinary unknown key (no alias, no rename, no warning)"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "type": "square",
+        "props": {},
+        "metadata": {
+          "prompt": "do the thing"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "a",
+        "set": {
+          "metadata": {
+            "prompt": "do the thing"
+          }
+        }
+      }
+    ]
+  }
+}

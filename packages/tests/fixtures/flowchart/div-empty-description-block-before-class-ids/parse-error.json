@@ -1,0 +1,17 @@
+{
+  "message": "An empty description block can only be written where a statement starts or ends",
+  "range": [
+    21,
+    32
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 6
+    },
+    "end": {
+      "line": 3,
+      "column": 17
+    }
+  }
+}

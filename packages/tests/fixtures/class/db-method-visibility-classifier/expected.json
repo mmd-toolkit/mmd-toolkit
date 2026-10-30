@@ -1,0 +1,89 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Each of the four visibility marks and the two classifier marks is read at its place in a method line, also without the other, and the parameters and the return type are the empty text when there are none."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "a",
+            "parameters": "",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "-",
+            "classifier": "$",
+            "id": "b",
+            "parameters": "",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "#",
+            "classifier": "*",
+            "id": "c",
+            "parameters": "x",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "~",
+            "classifier": "",
+            "id": "d",
+            "parameters": "",
+            "returnType": "int"
+          },
+          {
+            "memberType": "method",
+            "visibility": "",
+            "classifier": "$",
+            "id": "e",
+            "parameters": "x",
+            "returnType": "int"
+          },
+          {
+            "memberType": "method",
+            "visibility": "",
+            "classifier": "*",
+            "id": "f",
+            "parameters": "",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "~",
+            "classifier": "*",
+            "id": "g",
+            "parameters": "y, z",
+            "returnType": "int"
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

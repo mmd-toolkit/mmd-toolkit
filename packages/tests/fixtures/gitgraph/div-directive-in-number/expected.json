@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Removal joins integer digits."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "b"
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

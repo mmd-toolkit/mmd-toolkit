@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: An ordinary indented annotation line in box mode still hits the mixed-indent guard."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Line 4: Unexpected indentation without box-drawing characters. In box-drawing format, use ├── or └── prefixes for indented nodes."
+  }
+}

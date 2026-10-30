@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Overflowed repeat bounds use numberOrText instead of embedded-config tags."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "repetition",
+          "element": {
+            "type": "terminal",
+            "value": "a"
+          },
+          "min": "Infinity",
+          "max": "Infinity"
+        }
+      }
+    ]
+  }
+}

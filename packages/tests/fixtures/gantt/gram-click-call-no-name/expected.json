@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Click statements: `(` right after `call` and its whitespace leaves no callback name; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n... 1dclick id1 call (1)\n----------------------^\nExpecting 'callbackname', 'href', got 'callbackargs'"
+  }
+}

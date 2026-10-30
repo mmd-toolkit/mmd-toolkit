@@ -1,0 +1,306 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: gantt-no-duplicate-title >> invalid >>> docs/rules/gantt-no-duplicate-title.md incorrect 1
+Filename: gantt-no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | gantt
+  2 |   title first
+  3 |   title second
+    |   ^~~~~~~~~~~~ [1]
+  4 |   dateFormat YYYY-MM-DD
+  5 |   Design :2024-01-06, 3d
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gantt
+          2 |   title first
+          3 |   dateFormat YYYY-MM-DD
+          4 |   Design :2024-01-06, 3d
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | gantt
+          2 |   title second
+          3 |   dateFormat YYYY-MM-DD
+          4 |   Design :2024-01-06, 3d
+          5 |
+---
+
+
+Test: gantt-no-duplicate-title >> invalid >>> docs/rules/gantt-no-duplicate-title.md incorrect 2
+Filename: gantt-no-duplicate-title-incorrect-2.mmd
+
+Code:
+  1 | gantt
+  2 |   accTitle: first
+  3 |   accTitle: second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   dateFormat YYYY-MM-DD
+  5 |   Design :2024-01-06, 3d
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | gantt
+          2 |   accTitle: first
+          3 |   dateFormat YYYY-MM-DD
+          4 |   Design :2024-01-06, 3d
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | gantt
+          2 |   accTitle: second
+          3 |   dateFormat YYYY-MM-DD
+          4 |   Design :2024-01-06, 3d
+          5 |
+---
+
+
+Test: gantt-no-duplicate-title >> invalid >>> invalid/gantt/acc-title-back-to-first
+Filename: tests/fixtures/rules/gantt-no-duplicate-title/invalid/gantt/acc-title-back-to-first-input.mmd
+
+Code:
+  1 | gantt
+  2 |   accTitle: a
+  3 |   accTitle: b
+    |   ^~~~~~~~~~~ [1]
+  4 |   accTitle: a
+    |   ^~~~~~~~~~~ [2]
+  5 |   dateFormat YYYY-MM-DD
+  6 |   a : 2024-01-01, 1d
+  7 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | gantt
+          2 |   accTitle: a
+          3 |   accTitle: a
+          4 |   dateFormat YYYY-MM-DD
+          5 |   a : 2024-01-01, 1d
+          6 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | gantt
+          2 |   accTitle: b
+          3 |   accTitle: a
+          4 |   dateFormat YYYY-MM-DD
+          5 |   a : 2024-01-01, 1d
+          6 |
+[2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | gantt
+          2 |   accTitle: a
+          3 |   accTitle: b
+          4 |   dateFormat YYYY-MM-DD
+          5 |   a : 2024-01-01, 1d
+          6 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | gantt
+          2 |   accTitle: a
+          3 |   accTitle: a
+          4 |   dateFormat YYYY-MM-DD
+          5 |   a : 2024-01-01, 1d
+          6 |
+---
+
+
+Test: gantt-no-duplicate-title >> invalid >>> invalid/gantt/acc-title-second-after-comment-line
+Filename: tests/fixtures/rules/gantt-no-duplicate-title/invalid/gantt/acc-title-second-after-comment-line-input.mmd
+
+Code:
+  1 | gantt
+  2 | dateFormat YYYY-MM-DD
+  3 | accTitle: a
+  4 | accTitle:
+    | ^~~~~~~~~\ [1]
+  5 | %% c
+    | ~~~~\ [1]
+  6 | T
+    | ~ [1]
+  7 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | gantt
+          2 | dateFormat YYYY-MM-DD
+          3 | accTitle: a
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | gantt
+          2 | dateFormat YYYY-MM-DD
+          3 | accTitle:
+          4 | %% c
+          5 | T
+          6 |
+---
+
+
+Test: gantt-no-duplicate-title >> invalid >>> invalid/gantt/acc-title-second-after-directive
+Filename: tests/fixtures/rules/gantt-no-duplicate-title/invalid/gantt/acc-title-second-after-directive-input.mmd
+
+Code:
+  1 | gantt
+  2 | dateFormat YYYY-MM-DD
+  3 | accTitle: a
+  4 | accTitle:
+    | ^~~~~~~~~\ [1]
+  5 | %%{init: {}}%%
+    | ~~~~~~~~~~~~~~\ [1]
+  6 | T
+    | ~ [1]
+  7 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | gantt
+          2 | dateFormat YYYY-MM-DD
+          3 | accTitle:
+          4 | %%{init: {}}%%
+          5 | T
+          6 |
+---
+
+
+Test: gantt-no-duplicate-title >> invalid >>> invalid/gantt/acc-title-second-takes-next-line
+Filename: tests/fixtures/rules/gantt-no-duplicate-title/invalid/gantt/acc-title-second-takes-next-line-input.mmd
+
+Code:
+  1 | gantt
+  2 | dateFormat YYYY-MM-DD
+  3 | accTitle: a
+  4 | accTitle:
+    | ^~~~~~~~~\ [1]
+  5 | T
+    | ~ [1]
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | gantt
+          2 | dateFormat YYYY-MM-DD
+          3 | accTitle: a
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | gantt
+          2 | dateFormat YYYY-MM-DD
+          3 | accTitle:
+          4 | T
+          5 |
+---
+
+
+Test: gantt-no-duplicate-title >> invalid >>> invalid/gantt/db-acc-title-twice
+Filename: tests/fixtures/rules/gantt-no-duplicate-title/invalid/gantt/db-acc-title-twice-input.mmd
+
+Code:
+  1 | gantt
+  2 | accTitle: a
+  3 | accTitle: b
+    | ^~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | gantt
+          2 | accTitle: a
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | gantt
+          2 | accTitle: b
+---
+
+
+Test: gantt-no-duplicate-title >> invalid >>> invalid/gantt/lex-title-twice
+Filename: tests/fixtures/rules/gantt-no-duplicate-title/invalid/gantt/lex-title-twice-input.mmd
+
+Code:
+  1 | gantt
+  2 | title a
+  3 | title b
+    | ^~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gantt
+          2 | title a
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | gantt
+          2 | title b
+---
+
+
+Test: gantt-no-duplicate-title >> invalid >>> invalid/gantt/title-equal-predecessor
+Filename: tests/fixtures/rules/gantt-no-duplicate-title/invalid/gantt/title-equal-predecessor-input.mmd
+
+Code:
+  1 | gantt
+  2 | accTitle: A
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | gantt
+          2 | accTitle: A
+          3 | accTitle: A
+          4 |
+---
+
+
+Test: gantt-no-duplicate-title >> invalid >>> invalid/gantt/title-extra-space
+Filename: tests/fixtures/rules/gantt-no-duplicate-title/invalid/gantt/title-extra-space-input.mmd
+
+Code:
+  1 | gantt
+  2 |   title T
+  3 |   title  T
+    |   ^~~~~~~~ [1]
+  4 |   dateFormat YYYY-MM-DD
+  5 |   a : 2024-01-01, 1d
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | gantt
+          2 |   title T
+          3 |   dateFormat YYYY-MM-DD
+          4 |   a : 2024-01-01, 1d
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | gantt
+          2 |   title  T
+          3 |   dateFormat YYYY-MM-DD
+          4 |   a : 2024-01-01, 1d
+          5 |
+---

@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/class/parser/class.spec.js",
+    "line": 15,
+    "test": "class diagram > prototype properties > should work with a __proto__ property"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "__proto__"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "__proto__",
+        "label": "__proto__",
+        "classes": [
+          "A"
+        ],
+        "notes": [],
+        "children": [],
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

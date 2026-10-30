@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The after union colon space boundary is rejected by the grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n... Aset Bunion A,B: \n---------------------^\nExpecting 'NUMERIC', got 'NEWLINE'"
+  }
+}

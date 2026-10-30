@@ -1,0 +1,67 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-flow-self-reference.spec.ts",
+    "line": 16,
+    "test": "issue #70: edge from a task to its own containing flow > does not make the flow a member of its own subgraph"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Task A",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "myFlow",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "myFlow",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "a",
+        "end": "myFlow",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_a_myFlow_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "myFlow",
+        "nodes": [
+          "a"
+        ],
+        "title": "My Flow",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  }
+}

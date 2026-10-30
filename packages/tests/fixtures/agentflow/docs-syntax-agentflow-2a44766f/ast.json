@@ -1,0 +1,1153 @@
+{
+  "type": "Root",
+  "diagramType": "agentflow",
+  "body": {
+    "type": "AgentflowDiagram",
+    "direction": "LR",
+    "body": [
+      {
+        "type": "AgentflowConnectorStatement",
+        "name": {
+          "type": "AgentflowName",
+          "parts": [
+            {
+              "type": "AgentflowLabel",
+              "kind": "text",
+              "value": "github",
+              "range": [
+                30,
+                36
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 12
+                },
+                "end": {
+                  "line": 2,
+                  "column": 18
+                }
+              }
+            }
+          ],
+          "range": [
+            30,
+            36
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 12
+            },
+            "end": {
+              "line": 2,
+              "column": 18
+            }
+          }
+        },
+        "title": {
+          "type": "AgentflowLabel",
+          "kind": "string",
+          "value": "GitHub API",
+          "range": [
+            37,
+            49
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 19
+            },
+            "end": {
+              "line": 2,
+              "column": 31
+            }
+          }
+        },
+        "data": [],
+        "range": [
+          20,
+          50
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 2
+          },
+          "end": {
+            "line": 2,
+            "column": 32
+          }
+        }
+      },
+      {
+        "type": "AgentflowVertexStatement",
+        "first": {
+          "type": "AgentflowVertexGroup",
+          "vertices": [
+            {
+              "type": "AgentflowVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "github",
+                "range": [
+                  53,
+                  59
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 8
+                  }
+                }
+              },
+              "shape": null,
+              "cssClass": null,
+              "data": [
+                {
+                  "type": "AgentflowDataBlock",
+                  "value": " protocol: \"http\", endpoint: \"https://api.github.com\" ",
+                  "range": [
+                    59,
+                    116
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 65
+                    }
+                  }
+                }
+              ],
+              "range": [
+                53,
+                116
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 2
+                },
+                "end": {
+                  "line": 3,
+                  "column": 65
+                }
+              }
+            }
+          ],
+          "range": [
+            53,
+            116
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 2
+            },
+            "end": {
+              "line": 3,
+              "column": 65
+            }
+          }
+        },
+        "links": [],
+        "range": [
+          53,
+          116
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 2
+          },
+          "end": {
+            "line": 3,
+            "column": 65
+          }
+        }
+      },
+      {
+        "type": "AgentflowVertexStatement",
+        "first": {
+          "type": "AgentflowVertexGroup",
+          "vertices": [
+            {
+              "type": "AgentflowVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "title",
+                "range": [
+                  120,
+                  125
+                ],
+                "loc": {
+                  "start": {
+                    "line": 5,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 7
+                  }
+                }
+              },
+              "shape": {
+                "type": "AgentflowShape",
+                "name": "rectangle",
+                "property": null,
+                "label": {
+                  "type": "AgentflowLabel",
+                  "kind": "string",
+                  "value": "Issue title",
+                  "range": [
+                    126,
+                    139
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 5,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 21
+                    }
+                  }
+                },
+                "range": [
+                  125,
+                  140
+                ],
+                "loc": {
+                  "start": {
+                    "line": 5,
+                    "column": 7
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 22
+                  }
+                }
+              },
+              "cssClass": null,
+              "data": [
+                {
+                  "type": "AgentflowDataBlock",
+                  "value": " shape: input ",
+                  "range": [
+                    140,
+                    157
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 5,
+                      "column": 22
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 39
+                    }
+                  }
+                }
+              ],
+              "range": [
+                120,
+                157
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 2
+                },
+                "end": {
+                  "line": 5,
+                  "column": 39
+                }
+              }
+            }
+          ],
+          "range": [
+            120,
+            157
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 2
+            },
+            "end": {
+              "line": 5,
+              "column": 39
+            }
+          }
+        },
+        "links": [],
+        "range": [
+          120,
+          157
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 2
+          },
+          "end": {
+            "line": 5,
+            "column": 39
+          }
+        }
+      },
+      {
+        "type": "AgentflowVertexStatement",
+        "first": {
+          "type": "AgentflowVertexGroup",
+          "vertices": [
+            {
+              "type": "AgentflowVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "create",
+                "range": [
+                  160,
+                  166
+                ],
+                "loc": {
+                  "start": {
+                    "line": 6,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 8
+                  }
+                }
+              },
+              "shape": {
+                "type": "AgentflowShape",
+                "name": "rectangle",
+                "property": null,
+                "label": {
+                  "type": "AgentflowLabel",
+                  "kind": "string",
+                  "value": "create_issue",
+                  "range": [
+                    167,
+                    181
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 6,
+                      "column": 9
+                    },
+                    "end": {
+                      "line": 6,
+                      "column": 23
+                    }
+                  }
+                },
+                "range": [
+                  166,
+                  182
+                ],
+                "loc": {
+                  "start": {
+                    "line": 6,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 24
+                  }
+                }
+              },
+              "cssClass": null,
+              "data": [
+                {
+                  "type": "AgentflowDataBlock",
+                  "value": " shape: tool, connectorRef: \"github.create_issue\" ",
+                  "range": [
+                    182,
+                    235
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 6,
+                      "column": 24
+                    },
+                    "end": {
+                      "line": 6,
+                      "column": 77
+                    }
+                  }
+                }
+              ],
+              "range": [
+                160,
+                235
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 2
+                },
+                "end": {
+                  "line": 6,
+                  "column": 77
+                }
+              }
+            }
+          ],
+          "range": [
+            160,
+            235
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 2
+            },
+            "end": {
+              "line": 6,
+              "column": 77
+            }
+          }
+        },
+        "links": [],
+        "range": [
+          160,
+          235
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 2
+          },
+          "end": {
+            "line": 6,
+            "column": 77
+          }
+        }
+      },
+      {
+        "type": "AgentflowVertexStatement",
+        "first": {
+          "type": "AgentflowVertexGroup",
+          "vertices": [
+            {
+              "type": "AgentflowVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "title",
+                "range": [
+                  239,
+                  244
+                ],
+                "loc": {
+                  "start": {
+                    "line": 8,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 8,
+                    "column": 7
+                  }
+                }
+              },
+              "shape": null,
+              "cssClass": null,
+              "data": [],
+              "range": [
+                239,
+                244
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 2
+                },
+                "end": {
+                  "line": 8,
+                  "column": 7
+                }
+              }
+            }
+          ],
+          "range": [
+            239,
+            244
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 2
+            },
+            "end": {
+              "line": 8,
+              "column": 7
+            }
+          }
+        },
+        "links": [
+          {
+            "type": "AgentflowLink",
+            "id": null,
+            "opening": null,
+            "arrow": {
+              "type": "AgentflowArrow",
+              "value": "-->",
+              "startMarker": "none",
+              "line": "solid",
+              "length": 2,
+              "endMarker": "arrow",
+              "range": [
+                245,
+                248
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 8
+                },
+                "end": {
+                  "line": 8,
+                  "column": 11
+                }
+              }
+            },
+            "label": null,
+            "target": {
+              "type": "AgentflowVertexGroup",
+              "vertices": [
+                {
+                  "type": "AgentflowVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "create",
+                    "range": [
+                      249,
+                      255
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 8,
+                        "column": 12
+                      },
+                      "end": {
+                        "line": 8,
+                        "column": 18
+                      }
+                    }
+                  },
+                  "shape": null,
+                  "cssClass": null,
+                  "data": [],
+                  "range": [
+                    249,
+                    255
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 8,
+                      "column": 12
+                    },
+                    "end": {
+                      "line": 8,
+                      "column": 18
+                    }
+                  }
+                }
+              ],
+              "range": [
+                249,
+                255
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 12
+                },
+                "end": {
+                  "line": 8,
+                  "column": 18
+                }
+              }
+            },
+            "range": [
+              245,
+              255
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 8
+              },
+              "end": {
+                "line": 8,
+                "column": 18
+              }
+            }
+          }
+        ],
+        "range": [
+          239,
+          255
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 2
+          },
+          "end": {
+            "line": 8,
+            "column": 18
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      255
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 8,
+        "column": 18
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "agentflow-beta",
+      "range": [
+        0,
+        14
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "LR",
+      "range": [
+        15,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 15
+        },
+        "end": {
+          "line": 1,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "connector",
+      "range": [
+        20,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "github",
+      "range": [
+        30,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        36,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 18
+        },
+        "end": {
+          "line": 2,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"GitHub API\"",
+      "range": [
+        37,
+        49
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 19
+        },
+        "end": {
+          "line": 2,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        49,
+        50
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 31
+        },
+        "end": {
+          "line": 2,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "github",
+      "range": [
+        53,
+        59
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 3,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        59,
+        61
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " protocol: \"http\", endpoint: \"https://api.github.com\" ",
+      "range": [
+        61,
+        115
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 10
+        },
+        "end": {
+          "line": 3,
+          "column": 64
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        115,
+        116
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 64
+        },
+        "end": {
+          "line": 3,
+          "column": 65
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "title",
+      "range": [
+        120,
+        125
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 2
+        },
+        "end": {
+          "line": 5,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        125,
+        126
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 7
+        },
+        "end": {
+          "line": 5,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Issue title\"",
+      "range": [
+        126,
+        139
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 8
+        },
+        "end": {
+          "line": 5,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        139,
+        140
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 21
+        },
+        "end": {
+          "line": 5,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        140,
+        142
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 22
+        },
+        "end": {
+          "line": 5,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " shape: input ",
+      "range": [
+        142,
+        156
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 24
+        },
+        "end": {
+          "line": 5,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        156,
+        157
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 38
+        },
+        "end": {
+          "line": 5,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "create",
+      "range": [
+        160,
+        166
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 2
+        },
+        "end": {
+          "line": 6,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        166,
+        167
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 8
+        },
+        "end": {
+          "line": 6,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"create_issue\"",
+      "range": [
+        167,
+        181
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 9
+        },
+        "end": {
+          "line": 6,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        181,
+        182
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 23
+        },
+        "end": {
+          "line": 6,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        182,
+        184
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 24
+        },
+        "end": {
+          "line": 6,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " shape: tool, connectorRef: \"github.create_issue\" ",
+      "range": [
+        184,
+        234
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 26
+        },
+        "end": {
+          "line": 6,
+          "column": 76
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        234,
+        235
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 76
+        },
+        "end": {
+          "line": 6,
+          "column": 77
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "title",
+      "range": [
+        239,
+        244
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 2
+        },
+        "end": {
+          "line": 8,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        245,
+        248
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 8
+        },
+        "end": {
+          "line": 8,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "create",
+      "range": [
+        249,
+        255
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 12
+        },
+        "end": {
+          "line": 8,
+          "column": 18
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    256
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 9,
+      "column": 0
+    }
+  }
+}

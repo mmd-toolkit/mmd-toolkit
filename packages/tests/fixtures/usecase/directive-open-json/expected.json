@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "What happens to an unclosed directive after JSON at EOF?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "J",
+        "value": {},
+        "propertyOrder": {
+          "": []
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "J",
+        "set": {
+          "value": {},
+          "propertyOrder": {
+            "": []
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "C4Component",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

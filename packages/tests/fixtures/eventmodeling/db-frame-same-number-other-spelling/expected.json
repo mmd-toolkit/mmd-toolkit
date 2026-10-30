@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "diagrams/eventmodeling.md, Semantic acceptance conditions: frame names are compared as written, so `01` and `1` are two names and the input is accepted."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "First",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "1",
+        "modelEntityType": "cmd",
+        "entityIdentifier": "Second",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check crlf inside accline text."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "a",
+    "nodes": [
+      {
+        "name": "b",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

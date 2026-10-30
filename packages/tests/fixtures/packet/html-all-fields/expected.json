@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Shared HTML quote cleanup and unsanitized text apply to common fields and labels."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "<b x='q'>T</b>",
+    "accTitle": "<i>A</i>",
+    "accDescr": "<u>D</u>",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 0,
+          "label": "<b x='q'>A</b>"
+        }
+      ]
+    ]
+  }
+}

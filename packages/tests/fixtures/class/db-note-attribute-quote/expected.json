@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The converted form reads each attribute quote as `'`. The `\"` of the tag attribute does not end the string, and the note text holds `'`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "text": "<a b='c'>x</a>"
+      }
+    ],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

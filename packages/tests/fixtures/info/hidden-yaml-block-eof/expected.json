@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Hidden YAML can consume the appended LF at source EOF."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

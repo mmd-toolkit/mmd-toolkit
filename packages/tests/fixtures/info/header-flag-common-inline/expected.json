@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A common value on the same line after the flag."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

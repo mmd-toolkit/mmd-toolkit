@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty unquoted bracket pair is not ARCH_TITLE."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 12: unexpected character: ->[<- at offset: 29, skipped 2 characters. "
+  }
+}

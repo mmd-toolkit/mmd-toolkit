@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: The trailing whitespace of a branch line is excluded even inside a multiline quoted name."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "one\n    two\nthree",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

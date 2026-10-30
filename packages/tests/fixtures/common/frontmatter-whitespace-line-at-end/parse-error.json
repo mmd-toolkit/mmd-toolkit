@@ -1,0 +1,17 @@
+{
+  "message": "No diagram type detected",
+  "range": [
+    19,
+    19
+  ],
+  "loc": {
+    "start": {
+      "line": 4,
+      "column": 2
+    },
+    "end": {
+      "line": 4,
+      "column": 2
+    }
+  }
+}

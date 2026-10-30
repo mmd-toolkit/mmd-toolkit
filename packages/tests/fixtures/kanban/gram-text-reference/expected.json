@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md E02 (Empty forms): Bare-label reference for empty forms."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "x",
+        "isGroup": true
+      }
+    ]
+  }
+}

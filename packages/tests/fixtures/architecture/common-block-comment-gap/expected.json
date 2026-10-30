@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A comment in the composite description keyword-to-brace gap prevents the terminal."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "A",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

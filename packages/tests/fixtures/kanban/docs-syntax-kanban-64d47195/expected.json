@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/kanban.md",
+    "line": 10
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "column1",
+        "label": "Column Title",
+        "isGroup": true
+      },
+      {
+        "id": "task1",
+        "label": "Task Description",
+        "isGroup": false,
+        "parentId": "column1"
+      }
+    ]
+  }
+}

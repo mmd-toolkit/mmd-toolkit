@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The statement context: `-` is a `-` unit, not a name."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...Diagramrequirement -r {}\n----------------------^\nExpecting 'unqString', 'qString', got 'LINE'"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Data: LS cannot occur inside the same-line brace-data unit. Rejected by Mermaid."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 27: unexpected character: ->{<- at offset: 26, skipped 1 characters.\nLexer error on line 1, column 31: unexpected character: ->}<- at offset: 30, skipped 1 characters. Parse error on line 1, column 28: Expecting token of type 'EOF' but found `a`."
+  }
+}

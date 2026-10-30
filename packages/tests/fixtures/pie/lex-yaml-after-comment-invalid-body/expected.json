@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Detection: Matching byte order marks on both fences can instead form real leading frontmatter. Case: yaml-after-comment-invalid-body."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

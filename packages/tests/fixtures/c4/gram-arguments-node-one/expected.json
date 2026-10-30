@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`Deployment_Node` with one argument is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...b) {Person(a, \"A\")}\n---------------------^\nExpecting 'LBRACE', got 'RBRACE'"
+  }
+}

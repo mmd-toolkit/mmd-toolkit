@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A group cannot be an alignment member."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "align row references [g], which is not a service or junction"
+  }
+}

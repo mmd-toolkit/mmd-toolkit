@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Member lines: the whitespace at the end of the line belongs to no unit, so the member text is `+` and the member name text is empty; there is no member-name unit, and the member has the visibility `+` and the empty id."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": ""
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

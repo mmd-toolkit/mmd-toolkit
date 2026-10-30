@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, styles: `Radius` is not a style."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "style named Radius is not supported."
+  }
+}

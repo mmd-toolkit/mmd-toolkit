@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Grammar: A native property key and colon cannot be separated by a physical newline."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> COLON <-- but found --> '\n' <-- at line 2, column 14 [26,27)"
+  }
+}

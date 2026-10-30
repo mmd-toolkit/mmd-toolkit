@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Sandbox security does not change info's empty summary."
+  },
+  "config": {
+    "securityLevel": "sandbox"
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

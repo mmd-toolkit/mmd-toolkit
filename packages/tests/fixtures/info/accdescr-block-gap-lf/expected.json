@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A newline is allowed before a description opening brace."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

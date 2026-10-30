@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does non-ASCII glued after title reject?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 6: unexpected character: ->日<- at offset: 18, skipped 1 characters. "
+  }
+}

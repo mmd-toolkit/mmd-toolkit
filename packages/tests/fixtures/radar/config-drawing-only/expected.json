@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Drawing configuration does not affect published values."
+  },
+  "config": {
+    "radar": {
+      "width": 120,
+      "height": 80,
+      "marginTop": 1,
+      "marginBottom": 2,
+      "marginLeft": 3,
+      "marginRight": 4,
+      "axisScaleFactor": 0.5,
+      "axisLabelFactor": 2,
+      "curveTension": 0,
+      "useMaxWidth": false
+    }
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "A"
+      }
+    ],
+    "curves": [
+      {
+        "label": "c",
+        "entries": [
+          1
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Every supported data type is a tag; content is not validated as that format."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "{ bad json }"
+        }
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "evt",
+        "entityIdentifier": "B",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "{ a: b }"
+        }
+      },
+      {
+        "kind": "time",
+        "name": "03",
+        "modelEntityType": "evt",
+        "entityIdentifier": "C",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "\"link\""
+        }
+      },
+      {
+        "kind": "time",
+        "name": "04",
+        "modelEntityType": "evt",
+        "entityIdentifier": "D",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "'salt'"
+        }
+      },
+      {
+        "kind": "time",
+        "name": "05",
+        "modelEntityType": "evt",
+        "entityIdentifier": "E",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "{ link }"
+        }
+      },
+      {
+        "kind": "time",
+        "name": "06",
+        "modelEntityType": "evt",
+        "entityIdentifier": "F",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "{ # markdown }"
+        }
+      },
+      {
+        "kind": "time",
+        "name": "07",
+        "modelEntityType": "evt",
+        "entityIdentifier": "G",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "{ <b>html</b> }"
+        }
+      },
+      {
+        "kind": "time",
+        "name": "08",
+        "modelEntityType": "evt",
+        "entityIdentifier": "H",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "{ raw }"
+        }
+      }
+    ]
+  }
+}

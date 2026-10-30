@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, styles: a code with a letter that is not a hex digit is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "InvalidStyleError",
+    "message": "value for color #gggggg is invalid, please use a valid hex code"
+  }
+}

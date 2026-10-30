@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A service parent must be a group, not another service."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The service [db]'s parent is not a group"
+  }
+}

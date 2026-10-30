@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "positions/flowchart.md FlowchartStyleStatement: a `;` that the line rule ignores between two style values cuts the style into two RawText tokens; the Db has the one style `fill:#f00stroke:#0f0`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [
+          "fill:#f00stroke:#0f0"
+        ],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

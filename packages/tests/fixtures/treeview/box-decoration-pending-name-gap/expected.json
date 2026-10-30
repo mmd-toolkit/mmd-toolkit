@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: A decoration between visible indentation and an unindented name belongs to textBeforeName."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "other",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

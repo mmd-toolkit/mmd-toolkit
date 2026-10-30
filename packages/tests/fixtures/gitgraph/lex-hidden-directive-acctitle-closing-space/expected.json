@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A closing space preserves accessibility title EOL."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "A",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "generated-commit-1",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

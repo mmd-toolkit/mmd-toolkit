@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, statements: what follows a `point-class` statement on its line: `;` and a comment, and then a title on the next line."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "U",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [
+      {
+        "text": "A",
+        "className": "c1",
+        "x": "0.3",
+        "y": "0.6"
+      }
+    ],
+    "classes": []
+  }
+}

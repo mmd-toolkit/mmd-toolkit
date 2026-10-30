@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Units and contexts: U+2028 is one character of the indentation."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "a",
+          "level": 1,
+          "descr": "a",
+          "type": 0,
+          "children": []
+        }
+      ]
+    }
+  }
+}

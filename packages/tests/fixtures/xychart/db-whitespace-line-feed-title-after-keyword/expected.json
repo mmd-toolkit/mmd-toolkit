@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Line breaks: a line feed after whitespace on its line is whitespace, so the text of `title` and a space may stand on the next line; accepted."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": []
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}

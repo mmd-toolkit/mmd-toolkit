@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md The statement context: an `includes` text ends before `#`; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nganttincludes a #b\n------------------^\nExpecting 'taskData', got 'NL'"
+  }
+}

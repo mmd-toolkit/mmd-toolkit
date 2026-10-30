@@ -1,0 +1,482 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: mindmap-no-duplicate-decoration >> invalid >>> docs/rules/mindmap-no-duplicate-decoration.md incorrect 1
+Filename: mindmap-no-duplicate-decoration-incorrect-1.mmd
+
+Code:
+  1 | mindmap
+  2 |   Plans
+  3 |     Write
+  4 |     :::urgent
+  5 |     :::large
+    |     ^~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js keeps only the last class line and drops the earlier ones for this node.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | mindmap
+          2 |   Plans
+          3 |     Write
+          4 |     :::urgent
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | mindmap
+          2 |   Plans
+          3 |     Write
+          4 |     :::large
+          5 |
+---
+
+
+Test: mindmap-no-duplicate-decoration >> invalid >>> docs/rules/mindmap-no-duplicate-decoration.md incorrect 2
+Filename: mindmap-no-duplicate-decoration-incorrect-2.mmd
+
+Code:
+  1 | mindmap
+  2 |   Plans
+  3 |     Write
+  4 |     ::icon(fa fa-book)
+  5 |     ::icon(fa fa-pen)
+    |     ^~~~~~~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js keeps only the last icon and drops the earlier ones for this node.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | mindmap
+          2 |   Plans
+          3 |     Write
+          4 |     ::icon(fa fa-book)
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | mindmap
+          2 |   Plans
+          3 |     Write
+          4 |     ::icon(fa fa-pen)
+          5 |
+---
+
+
+Test: mindmap-no-duplicate-decoration >> invalid >>> invalid/mindmap/class-icon-class
+Filename: tests/fixtures/rules/mindmap-no-duplicate-decoration/invalid/mindmap/class-icon-class-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   root
+  3 |     :::urgent
+  4 |     ::icon(fa fa-book)
+  5 |     :::large
+    |     ^~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js keeps only the last class line and drops the earlier ones for this node.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     :::urgent
+          4 |     ::icon(fa fa-book)
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     ::icon(fa fa-book)
+          4 |     :::large
+          5 |
+---
+
+
+Test: mindmap-no-duplicate-decoration >> invalid >>> invalid/mindmap/class-same-value-after-another
+Filename: tests/fixtures/rules/mindmap-no-duplicate-decoration/invalid/mindmap/class-same-value-after-another-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   Plans
+  3 |     Write
+  4 |     :::urgent
+  5 |     :::large
+    |     ^~~~~~~~ [1]
+  6 |     :::urgent
+    |     ^~~~~~~~~ [2]
+  7 |
+
+[1] mermaid.js keeps only the last class line and drops the earlier ones for this node.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | mindmap
+          2 |   Plans
+          3 |     Write
+          4 |     :::urgent
+          5 |     :::urgent
+          6 |
+      - Remove the earlier statement.
+        Output:
+          1 | mindmap
+          2 |   Plans
+          3 |     Write
+          4 |     :::large
+          5 |     :::urgent
+          6 |
+[2] mermaid.js keeps only the last class line and drops the earlier ones for this node.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | mindmap
+          2 |   Plans
+          3 |     Write
+          4 |     :::urgent
+          5 |     :::large
+          6 |
+      - Remove the earlier statement.
+        Output:
+          1 | mindmap
+          2 |   Plans
+          3 |     Write
+          4 |     :::urgent
+          5 |     :::urgent
+          6 |
+---
+
+
+Test: mindmap-no-duplicate-decoration >> invalid >>> invalid/mindmap/class-twice-comment-line-between
+Filename: tests/fixtures/rules/mindmap-no-duplicate-decoration/invalid/mindmap/class-twice-comment-line-between-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   root
+  3 |     :::urgent
+  4 |     %% note
+  5 |     :::large
+    |     ^~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js keeps only the last class line and drops the earlier ones for this node.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     :::urgent
+          4 |     %% note
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     %% note
+          4 |     :::large
+          5 |
+---
+
+
+Test: mindmap-no-duplicate-decoration >> invalid >>> invalid/mindmap/class-twice-directive-between
+Filename: tests/fixtures/rules/mindmap-no-duplicate-decoration/invalid/mindmap/class-twice-directive-between-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   root
+  3 |     :::urgent
+  4 |     %%{init: {}}%%
+  5 |     :::large
+    |     ^~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js keeps only the last class line and drops the earlier ones for this node.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     :::urgent
+          4 |     %%{init: {}}%%
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     %%{init: {}}%%
+          4 |     :::large
+          5 |
+---
+
+
+Test: mindmap-no-duplicate-decoration >> invalid >>> invalid/mindmap/class-twice-empty-line-between
+Filename: tests/fixtures/rules/mindmap-no-duplicate-decoration/invalid/mindmap/class-twice-empty-line-between-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   root
+  3 |     :::a
+  4 |
+  5 |     :::b
+    |     ^~~~ [1]
+  6 |
+
+[1] mermaid.js keeps only the last class line and drops the earlier ones for this node.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     :::a
+          4 |
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |
+          4 |     :::b
+          5 |
+---
+
+
+Test: mindmap-no-duplicate-decoration >> invalid >>> invalid/mindmap/class-words-other-order
+Filename: tests/fixtures/rules/mindmap-no-duplicate-decoration/invalid/mindmap/class-words-other-order-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   Plans
+  3 |     Write
+  4 |     :::urgent large
+  5 |     :::large urgent
+    |     ^~~~~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js keeps only the last class line and drops the earlier ones for this node.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | mindmap
+          2 |   Plans
+          3 |     Write
+          4 |     :::urgent large
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | mindmap
+          2 |   Plans
+          3 |     Write
+          4 |     :::large urgent
+          5 |
+---
+
+
+Test: mindmap-no-duplicate-decoration >> invalid >>> invalid/mindmap/db-class-twice
+Filename: tests/fixtures/rules/mindmap-no-duplicate-decoration/invalid/mindmap/db-class-twice-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   root
+  3 |     :::a
+  4 |     :::b
+    |     ^~~~ [1]
+  5 |
+
+[1] mermaid.js keeps only the last class line and drops the earlier ones for this node.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     :::a
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     :::b
+          4 |
+---
+
+
+Test: mindmap-no-duplicate-decoration >> invalid >>> invalid/mindmap/db-icon-twice
+Filename: tests/fixtures/rules/mindmap-no-duplicate-decoration/invalid/mindmap/db-icon-twice-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   root
+  3 |     ::icon(a)
+  4 |     ::icon(b)
+    |     ^~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js keeps only the last icon and drops the earlier ones for this node.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     ::icon(a)
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     ::icon(b)
+          4 |
+---
+
+
+Test: mindmap-no-duplicate-decoration >> invalid >>> invalid/mindmap/icon-class-icon
+Filename: tests/fixtures/rules/mindmap-no-duplicate-decoration/invalid/mindmap/icon-class-icon-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   root
+  3 |     ::icon(fa fa-book)
+  4 |     :::urgent
+  5 |     ::icon(fa fa-pen)
+    |     ^~~~~~~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js keeps only the last icon and drops the earlier ones for this node.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     ::icon(fa fa-book)
+          4 |     :::urgent
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     :::urgent
+          4 |     ::icon(fa fa-pen)
+          5 |
+---
+
+
+Test: mindmap-no-duplicate-decoration >> invalid >>> invalid/mindmap/icon-equal-predecessor
+Filename: tests/fixtures/rules/mindmap-no-duplicate-decoration/invalid/mindmap/icon-equal-predecessor-input.mmd
+
+Code:
+  1 | mindmap
+  2 | R
+  3 | ::icon(a)
+  4 | ::icon(a)
+  5 | ::icon(b)
+    | ^~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js keeps only the last icon and drops the earlier ones for this node.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | mindmap
+          2 | R
+          3 | ::icon(a)
+          4 | ::icon(a)
+          5 |
+---
+
+
+Test: mindmap-no-duplicate-decoration >> invalid >>> invalid/mindmap/icon-three-times
+Filename: tests/fixtures/rules/mindmap-no-duplicate-decoration/invalid/mindmap/icon-three-times-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   root
+  3 |     ::icon(fa fa-book)
+  4 |     ::icon(fa fa-pen)
+    |     ^~~~~~~~~~~~~~~~~ [1]
+  5 |     ::icon(fa fa-cog)
+    |     ^~~~~~~~~~~~~~~~~ [2]
+  6 |
+
+[1] mermaid.js keeps only the last icon and drops the earlier ones for this node.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     ::icon(fa fa-book)
+          4 |     ::icon(fa fa-cog)
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     ::icon(fa fa-pen)
+          4 |     ::icon(fa fa-cog)
+          5 |
+[2] mermaid.js keeps only the last icon and drops the earlier ones for this node.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     ::icon(fa fa-book)
+          4 |     ::icon(fa fa-pen)
+          5 |
+---
+
+
+Test: mindmap-no-duplicate-decoration >> invalid >>> invalid/mindmap/icon-twice-second-less-indented
+Filename: tests/fixtures/rules/mindmap-no-duplicate-decoration/invalid/mindmap/icon-twice-second-less-indented-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   root
+  3 |     child
+  4 |       ::icon(fa fa-book)
+  5 |     ::icon(fa fa-pen)
+    |     ^~~~~~~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js keeps only the last icon and drops the earlier ones for this node.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     child
+          4 |       ::icon(fa fa-book)
+          5 |
+      - Remove the earlier statement.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     child
+          4 |     ::icon(fa fa-pen)
+          5 |
+---
+
+
+Test: mindmap-no-duplicate-decoration >> invalid >>> invalid/mindmap/icon-twice-upper-case
+Filename: tests/fixtures/rules/mindmap-no-duplicate-decoration/invalid/mindmap/icon-twice-upper-case-input.mmd
+
+Code:
+  1 | mindmap
+  2 |   root
+  3 |     ::icon(fa fa-book)
+  4 |     ::ICON(fa fa-pen)
+    |     ^~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js keeps only the last icon and drops the earlier ones for this node.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     ::icon(fa fa-book)
+          4 |
+      - Remove the earlier statement.
+        Output:
+          1 | mindmap
+          2 |   root
+          3 |     ::ICON(fa fa-pen)
+          4 |
+---

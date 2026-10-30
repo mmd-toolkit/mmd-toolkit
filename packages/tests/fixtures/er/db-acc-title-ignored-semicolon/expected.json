@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The line has `style`, `:#`, and a `;`, so its last `;` is ignored, and `#x;` is read as an entity and replaced by a placeholder: the title is `style:`, the placeholder, and `y`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "style:ﬂ°x¶ßy",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A class with a digit first is not a class annotation."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a :::9bad",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

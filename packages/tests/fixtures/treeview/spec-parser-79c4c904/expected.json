@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/treeView/parser.spec.ts",
+    "line": 16,
+    "test": "treeView parser integration > bare labels with spaces > should preserve consecutive spaces and unicode in bare names"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "But  _  _ton💓.tsx",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

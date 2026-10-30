@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, styles: a `#` after the value joins the value, which is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "InvalidStyleError",
+    "message": "value for color #f00 #c is invalid, please use a valid hex code"
+  }
+}

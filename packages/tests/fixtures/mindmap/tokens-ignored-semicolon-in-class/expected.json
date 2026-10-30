@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Directives inside units: the ignored `;` inside a class text is read through, the class `style:#xy`."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "a",
+          "level": 2,
+          "descr": "a",
+          "type": 0,
+          "class": "style:#xy",
+          "children": []
+        }
+      ]
+    }
+  }
+}

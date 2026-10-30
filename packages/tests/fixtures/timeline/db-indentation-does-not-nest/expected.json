@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, lines: the indentation of a line changes nothing, so the tasks are not nested."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "a ",
+        "events": [
+          "e"
+        ]
+      },
+      {
+        "section": "",
+        "task": "b ",
+        "events": [
+          "f"
+        ]
+      },
+      {
+        "section": "",
+        "task": "c",
+        "events": []
+      }
+    ]
+  }
+}

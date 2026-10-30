@@ -1,0 +1,50 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The written name `A,B` is a list of two names. Both classes get the link, the target, and the tooltip."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default clickable",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "link": "u",
+        "linkTarget": "_self",
+        "tooltip": "t"
+      },
+      {
+        "id": "B",
+        "type": "",
+        "label": "B",
+        "text": "B",
+        "shape": "classBox",
+        "cssClasses": "default clickable",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "link": "u",
+        "linkTarget": "_self",
+        "tooltip": "t"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

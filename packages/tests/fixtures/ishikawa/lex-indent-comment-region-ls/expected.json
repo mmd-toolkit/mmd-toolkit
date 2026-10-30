@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md Indentation and Comments: A common LS comment region removes its preceding space, separator, and line end; A has one remaining indentation space."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "A",
+          "children": [
+            {
+              "text": "B",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

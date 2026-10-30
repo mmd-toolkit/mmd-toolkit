@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A non-ASCII keyword suffix is a lexer error rather than a longer ID."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 8: unexpected character: ->界<- at offset: 25, skipped 1 characters. "
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P1: directive preprocessing] Can a removed directive supply the required root?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "root": null
+  }
+}

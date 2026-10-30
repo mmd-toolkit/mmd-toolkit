@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Rejections outside the grammar, subgraph members: in one group the members are in source order, `hasOwnProperty` and then `A`, so the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "prims[type].hasOwnProperty is not a function"
+  }
+}

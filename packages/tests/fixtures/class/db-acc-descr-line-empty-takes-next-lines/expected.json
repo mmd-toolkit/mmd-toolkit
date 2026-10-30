@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An accDescr with no text takes the next line that holds text, past an empty line."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "class A",
+    "classes": [],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

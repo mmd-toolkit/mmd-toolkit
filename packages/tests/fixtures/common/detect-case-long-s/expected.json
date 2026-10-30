@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md Case: only ASCII letters change case, so U+017F in place of s is not detected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: iſhikawa\nProblem\n  Cause"
+  }
+}

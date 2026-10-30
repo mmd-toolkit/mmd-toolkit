@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, classDef: a style with no value is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "InvalidStyleError",
+    "message": "value for color  is invalid, please use a valid hex code"
+  }
+}

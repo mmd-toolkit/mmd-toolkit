@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md, Units and contexts: After the numeric style atom 1, the first matching rule reads set before set-x, so the style is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...-betastyle A x:1set-x\n----------------------^"
+  }
+}

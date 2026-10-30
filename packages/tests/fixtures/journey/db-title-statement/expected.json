@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The title is the rest of the line after title and its whitespace."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "My day",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

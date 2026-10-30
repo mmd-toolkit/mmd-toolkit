@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A frontmatter-spanning tag changes a common value without changing acceptance."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "<a",
+    "accTitle": "b='c'>d",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

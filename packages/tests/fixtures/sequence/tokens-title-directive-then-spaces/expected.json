@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/sequence.md Tokens: the directive cuts the title; the fragment `x` and the two spaces at the end of the value are tokens, and the title is `x` and three spaces."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "x   ",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

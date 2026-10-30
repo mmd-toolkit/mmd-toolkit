@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A retained directive between bare lines survives the body-only HTML reading."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "accTitle: b='c'>d",
+    "accDescr": "",
+    "frames": []
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    },
+    "title": "<a"
+  }
+}

@@ -1,0 +1,267 @@
+{
+  "type": "Root",
+  "diagramType": "kanban",
+  "body": {
+    "type": "KanbanDiagram",
+    "body": [
+      {
+        "type": "KanbanNode",
+        "indent": 1,
+        "id": {
+          "type": "KanbanLiteral",
+          "value": "S",
+          "range": [
+            8,
+            9
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 1
+            },
+            "end": {
+              "line": 2,
+              "column": 2
+            }
+          }
+        },
+        "shape": null,
+        "data": [],
+        "decorations": [],
+        "children": [
+          {
+            "type": "KanbanNode",
+            "indent": 3,
+            "id": {
+              "type": "KanbanLiteral",
+              "value": "A",
+              "range": [
+                13,
+                14
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 3
+                },
+                "end": {
+                  "line": 3,
+                  "column": 4
+                }
+              }
+            },
+            "shape": null,
+            "data": [],
+            "decorations": [
+              {
+                "type": "KanbanIconStatement",
+                "icon": {
+                  "type": "KanbanLiteral",
+                  "value": "star",
+                  "range": [
+                    25,
+                    29
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 4,
+                      "column": 10
+                    },
+                    "end": {
+                      "line": 4,
+                      "column": 14
+                    }
+                  }
+                },
+                "range": [
+                  18,
+                  30
+                ],
+                "loc": {
+                  "start": {
+                    "line": 4,
+                    "column": 3
+                  },
+                  "end": {
+                    "line": 4,
+                    "column": 15
+                  }
+                }
+              }
+            ],
+            "children": [],
+            "range": [
+              13,
+              30
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 3
+              },
+              "end": {
+                "line": 4,
+                "column": 15
+              }
+            }
+          }
+        ],
+        "range": [
+          8,
+          30
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 1
+          },
+          "end": {
+            "line": 4,
+            "column": 15
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      30
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 4,
+        "column": 15
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "kanban",
+      "range": [
+        0,
+        6
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "S",
+      "range": [
+        8,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 1
+        },
+        "end": {
+          "line": 2,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "A",
+      "range": [
+        13,
+        14
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 3
+        },
+        "end": {
+          "line": 3,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "::icon(",
+      "range": [
+        18,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 3
+        },
+        "end": {
+          "line": 4,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "star",
+      "range": [
+        25,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 10
+        },
+        "end": {
+          "line": 4,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        29,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 14
+        },
+        "end": {
+          "line": 4,
+          "column": 15
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    31
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 0
+    }
+  }
+}

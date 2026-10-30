@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P4] Can a plain markup frontmatter title be recorded before sanitization?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": []
+    }
+  },
+  "embedded": {
+    "title": "<b>T</b>"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The first closing brace ends the description terminal."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 20: unexpected character: ->C<- at offset: 23, skipped 1 characters.\nLexer error on line 2, column 22: unexpected character: ->}<- at offset: 25, skipped 1 characters. "
+  }
+}

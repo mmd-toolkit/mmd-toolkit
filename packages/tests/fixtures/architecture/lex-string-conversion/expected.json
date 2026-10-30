@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "STRING takes Langium's default escape conversion rather than the unreachable ARCH_TEXT_ICON branch."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "iconText": "A\nB\tCq\\D"
+      },
+      {
+        "id": "db",
+        "type": "service",
+        "iconText": "x'yu0041"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

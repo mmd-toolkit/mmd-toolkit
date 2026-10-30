@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/cynefin/cynefin.integration.spec.ts",
+    "line": 264,
+    "test": "Cynefin Parsing - Re-parse after clear > should have fresh state after clear and re-parse"
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "Second Diagram",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "chaotic",
+        "items": [
+          {
+            "label": "Delta"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

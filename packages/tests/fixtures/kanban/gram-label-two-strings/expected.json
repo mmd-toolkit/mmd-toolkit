@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Adjacent quoted fragments test whether descriptions concatenate."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nkanban S[\"a\"\"b\"]\n-------------^\nExpecting 'NODE_DEND', got 'NODE_DESCR'"
+  }
+}

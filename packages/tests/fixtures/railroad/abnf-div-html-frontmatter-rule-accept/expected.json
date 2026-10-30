@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A frontmatter tag absorbs an otherwise invalid at sign into an ABNF terminal."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "x='@'>"
+        }
+      }
+    ]
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

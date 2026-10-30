@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Space after the YAML closer preserves block EOL."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

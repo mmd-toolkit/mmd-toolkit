@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md S05, S07 (Shape context): Quote after initial space belongs to bare label."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": " \"x\" ",
+        "isGroup": true
+      }
+    ]
+  }
+}

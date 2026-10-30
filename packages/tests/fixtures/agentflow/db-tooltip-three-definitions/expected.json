@@ -1,0 +1,57 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read tooltip three definitions?"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable",
+          "clickable",
+          "clickable"
+        ],
+        "text": "A",
+        "props": {},
+        "link": "https://c"
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "B",
+        "props": {},
+        "link": "https://b"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [
+      {
+        "id": "A",
+        "text": "third"
+      },
+      {
+        "id": "B",
+        "text": "partner"
+      }
+    ]
+  }
+}

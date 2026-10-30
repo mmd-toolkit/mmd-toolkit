@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md L04 (Common lexical rules): Directive splits class marker."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      }
+    ]
+  }
+}

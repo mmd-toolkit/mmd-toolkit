@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Accessibility statements: the accessibility title is read without the whitespace at its ends."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "T",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

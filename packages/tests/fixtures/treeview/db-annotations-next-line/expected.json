@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Annotations can follow a node on later lines because newlines are hidden."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a",
+        "nodeType": "file",
+        "cssClass": "highlight",
+        "icon": "folder",
+        "description": "desc",
+        "children": []
+      },
+      {
+        "name": "next",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

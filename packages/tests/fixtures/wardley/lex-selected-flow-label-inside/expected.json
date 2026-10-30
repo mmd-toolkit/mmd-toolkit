@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Common boundaries in authored components: A selected semicolon inside flow-label text is permitted and omitted from the authored value."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [
+      {
+        "source": "A",
+        "target": "B",
+        "dashed": false,
+        "label": "style:#x",
+        "flow": "forward"
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/info.test.ts",
+    "line": 44,
+    "test": "info > should handle showInfo"
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

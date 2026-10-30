@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The statement context: `-` ends a value, and the `-` unit after it is no newline."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...uirement r {text: a-b}\n----------------------^\nExpecting 'NEWLINE', got 'LINE'"
+  }
+}

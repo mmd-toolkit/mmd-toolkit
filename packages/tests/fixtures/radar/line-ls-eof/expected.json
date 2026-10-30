@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A final LS remains before the appended LF and is rejected by radar lexing."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 7: unexpected character: -> <- at offset: 17, skipped 1 characters. "
+  }
+}

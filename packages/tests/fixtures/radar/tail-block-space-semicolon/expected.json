@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Is a semicolon separated by a space still rejected after a description block closer?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 14: unexpected character: ->;<- at offset: 24, skipped 1 characters. "
+  }
+}

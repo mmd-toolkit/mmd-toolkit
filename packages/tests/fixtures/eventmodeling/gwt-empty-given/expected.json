@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Given must contain a statement."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 14: Expecting: expecting at least one iteration which starts with one of these possible Token sequences::\n  <[rmo] ,[readmodel] ,[ui] ,[cmd] ,[command] ,[evt] ,[event] ,[pcr] ,[processor]>\nbut found: 'then'"
+  }
+}

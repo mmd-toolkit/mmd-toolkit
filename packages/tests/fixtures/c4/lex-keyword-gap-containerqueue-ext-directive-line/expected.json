@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`ContainerQueue_Ext` followed by a directive line before `(` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...tContainerQueue_Ext(a, \"A\", \"Java\", \"\n----------------------^"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A spaced semicolon tests header delimiting."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": ";",
+        "label": ";",
+        "isGroup": true
+      },
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      }
+    ]
+  }
+}

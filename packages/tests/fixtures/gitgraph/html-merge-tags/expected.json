@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Merge stores its tags directly while custom id passes the sanitizer."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "A",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      },
+      {
+        "id": "B",
+        "seq": 1,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "A"
+        ],
+        "branch": "b"
+      },
+      {
+        "id": "&lt;b&gt;M&lt;/b&gt;",
+        "seq": 2,
+        "type": 3,
+        "tags": [
+          "<i>T</i>"
+        ],
+        "parents": [
+          "A",
+          "B"
+        ],
+        "branch": "main",
+        "customId": true
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "b"
+      }
+    ]
+  }
+}

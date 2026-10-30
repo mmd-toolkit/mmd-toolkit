@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Hidden YAML: bare source CR is preserved inside the node and excluded after its closer."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "chaotic",
+        "items": [
+          {
+            "label": "C"
+          }
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear"
+      }
+    ]
+  }
+}

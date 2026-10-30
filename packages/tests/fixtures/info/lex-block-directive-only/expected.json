@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: empty written block after common removal"
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {},
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a selected semicolon inside the atomic icon name join file only in Mermaid?"
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "style:#x",
+        "nodeType": "file",
+        "icon": "file",
+        "children": []
+      },
+      {
+        "name": "root",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The statement context: `title` followed by a space and `#` is no `title` unit, so `title #c` is a name: the relationship from `title #c` to b."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [
+      {
+        "type": "satisfies",
+        "src": "title #c",
+        "dst": "b"
+      }
+    ],
+    "classes": []
+  }
+}

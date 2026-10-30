@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`System_Ext` followed by a space before `(` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nC4ContextSystem_Ext (a, \"A\", \"D\", \"spri\n-------------------^"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "NBSP can satisfy a hidden closer boundary while remaining invalid body whitespace."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 4: unexpected character: -> <- at offset: 23, skipped 1 characters. "
+  }
+}

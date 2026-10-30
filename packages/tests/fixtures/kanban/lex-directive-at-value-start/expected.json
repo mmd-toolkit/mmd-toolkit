@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A directive at the start of a quoted value tests joining its remaining text."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "Work",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

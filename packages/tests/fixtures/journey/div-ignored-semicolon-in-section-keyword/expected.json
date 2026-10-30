@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Known divergences: ignored-semicolon-as-token-boundary: inside `section`; mermaid.js reads the section `S`."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "style:#x",
+    "sections": [
+      "S"
+    ],
+    "tasks": []
+  }
+}

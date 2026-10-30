@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md The statement context, direction line: the rule is tried before the header keyword and takes the header line."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...rection LRclass A\n--------------------^\nExpecting , got 'EOF'"
+  }
+}

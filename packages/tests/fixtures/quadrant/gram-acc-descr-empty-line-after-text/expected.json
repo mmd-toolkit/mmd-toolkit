@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, accessibility: an `accDescr:` with no text at the end is rejected, also after a text."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 6:\n...escr: DaccDescr:\n-------------------^\nExpecting 'NEWLINE', 'SEMI', 'EOF', got '1'"
+  }
+}

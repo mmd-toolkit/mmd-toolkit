@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/treeView/boxDrawingPreprocessor.spec.ts",
+    "line": 39,
+    "test": "boxDrawingPreprocessor > preprocessBoxDrawing > indent format passthrough > should return indent-based input unchanged"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "src",
+            "nodeType": "directory",
+            "children": [
+              {
+                "name": "index.js",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

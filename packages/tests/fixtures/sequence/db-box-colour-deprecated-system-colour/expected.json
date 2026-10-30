@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A deprecated system color is still a value of the color property, so `ActiveBorder` is the fill of the box."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "a",
+        "description": "a",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "box": 0
+      }
+    ],
+    "boxes": [
+      {
+        "name": "G",
+        "wrap": false,
+        "fill": "ActiveBorder",
+        "actorKeys": [
+          "a"
+        ]
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/xychart/parser/xychart.jison.spec.ts",
+    "line": 8,
+    "test": "Testing xychart jison file > parse x-axis complete variant 1"
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "this is x axis",
+      "categories": [
+        "category1",
+        "category 2",
+        "category3"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}

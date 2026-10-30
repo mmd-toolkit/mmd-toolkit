@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does property-order collection decode each JSON key escape to the value key?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "J",
+        "value": {
+          "\b\f\n\r\t/": "a"
+        },
+        "propertyOrder": {
+          "": [
+            "\b\f\n\r\t/"
+          ]
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "J",
+        "set": {
+          "value": {
+            "\b\f\n\r\t/": "a"
+          },
+          "propertyOrder": {
+            "": [
+              "\b\f\n\r\t/"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

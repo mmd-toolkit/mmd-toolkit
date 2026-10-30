@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md M06 (Data context): Shape cannot follow metadata."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...anban S@{ticket: X}[x]\n----------------------^\nExpecting 'SPACELINE', 'NL', 'EOF', 'SHAPE_DATA', got 'NODE_DSTART'"
+  }
+}

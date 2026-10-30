@@ -1,0 +1,246 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/examples.md",
+    "line": 51
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "sq",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "green"
+        ],
+        "text": "Square shape",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "ci",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Circle shape",
+        "type": "circle",
+        "props": {}
+      },
+      {
+        "id": "od",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Odd shape",
+        "type": "odd",
+        "props": {}
+      },
+      {
+        "id": "ro",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Rounded<br>square<br>shape",
+        "props": {},
+        "type": "round"
+      },
+      {
+        "id": "di",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "orange"
+        ],
+        "text": "Diamond with <br/> line break",
+        "type": "diamond",
+        "props": {}
+      },
+      {
+        "id": "ro2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Rounded square shape",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "e",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "green"
+        ],
+        "text": "Inner / circle<br>and some odd <br>special characters",
+        "props": {},
+        "type": "circle"
+      },
+      {
+        "id": "od3",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Really long text with linebreak<br>in an Odd shape",
+        "type": "odd",
+        "props": {}
+      },
+      {
+        "id": "f",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": ",.?!+-*ز",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "cyr",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Cyrillic",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "cyr2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Circle shape Начало",
+        "type": "circle",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "sq",
+        "end": "ci",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_sq_ci_0"
+      },
+      {
+        "start": "od",
+        "end": "ro",
+        "type": "arrow_point",
+        "text": "Two line<br/>edge comment",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_od_ro_0"
+      },
+      {
+        "start": "di",
+        "end": "ro",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "dotted",
+        "length": 1,
+        "id": "L_di_ro_0"
+      },
+      {
+        "start": "di",
+        "end": "ro2",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "thick",
+        "length": 1,
+        "id": "L_di_ro2_0"
+      },
+      {
+        "start": "e",
+        "end": "od3",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_e_od3_0"
+      },
+      {
+        "start": "e",
+        "end": "f",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_e_f_0"
+      },
+      {
+        "start": "cyr",
+        "end": "cyr2",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_cyr_cyr2_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "green",
+        "styles": [
+          "fill:#9f6",
+          "stroke:#333",
+          "stroke-width:2px"
+        ]
+      },
+      {
+        "id": "orange",
+        "styles": [
+          "fill:#f96",
+          "stroke:#333",
+          "stroke-width:4px"
+        ]
+      }
+    ],
+    "subgraphs": [
+      {
+        "id": "A",
+        "nodes": [
+          "ro",
+          "od",
+          "di",
+          "ro2"
+        ],
+        "title": "A",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

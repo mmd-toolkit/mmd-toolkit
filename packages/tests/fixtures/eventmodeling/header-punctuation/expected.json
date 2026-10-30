@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A colon is not a header flag."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 14: unexpected character: ->:<- at offset: 13, skipped 1 characters. Parse error on line 1, column 1: Expecting token of type 'eventmodeling' but found `eventmodeling`."
+  }
+}

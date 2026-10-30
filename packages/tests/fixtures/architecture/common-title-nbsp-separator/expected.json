@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "NBSP does not replace the required ASCII separator after title."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 6: unexpected character: -> <- at offset: 23, skipped 1 characters. Parse error on line 2, column 1: Expecting: expecting at least one iteration which starts with one of these possible Token sequences::\n  <[ACC_DESCR] ,[ACC_TITLE] ,[TITLE]>\nbut found: 'title'\nParse error on line 2, column 1: Expecting end of file but found `title`."
+  }
+}

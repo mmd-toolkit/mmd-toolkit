@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "linkStyle index past the last edge: rejected with a TypeError. flow.jison passes the indices as strings (numList: NUM), so the bounds check in FlowDB.updateLink (typeof pos === 'number') is skipped and this.edges[pos] is undefined. Plain JavaScript, so a browser throws the same."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot set properties of undefined (setting 'style')"
+  }
+}

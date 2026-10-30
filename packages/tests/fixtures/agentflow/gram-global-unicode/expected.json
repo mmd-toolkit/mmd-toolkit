@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A non-ASCII suffix satisfies the global boundary."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...tflow-beta TBglobal猫end\n----------------------^\nExpecting 'COMMENT', 'SEMI', 'NEWLINE', 'EOF', got 'UNICODE_TEXT'"
+  }
+}

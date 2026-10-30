@@ -1,0 +1,98 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/intro/examples.md",
+    "line": 42
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": " YYYY-MM-DD",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [
+      "weekdays",
+      "2014-01-10"
+    ],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "Adding GANTT diagram to mermaid",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "A section"
+    ],
+    "tasks": [
+      {
+        "section": "A section",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2014-01-06"
+          },
+          "endTime": {
+            "data": "2014-01-08"
+          }
+        },
+        "task": "Completed task            ",
+        "classes": [],
+        "id": "des1",
+        "done": true,
+        "order": 0
+      },
+      {
+        "section": "A section",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2014-01-09"
+          },
+          "endTime": {
+            "data": "3d"
+          }
+        },
+        "task": "Active task               ",
+        "classes": [],
+        "id": "des2",
+        "active": true,
+        "order": 1
+      },
+      {
+        "section": "A section",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "after des2"
+          },
+          "endTime": {
+            "data": "5d"
+          }
+        },
+        "task": "Future task               ",
+        "classes": [],
+        "id": "des3",
+        "order": 2
+      },
+      {
+        "section": "A section",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "after des3"
+          },
+          "endTime": {
+            "data": "5d"
+          }
+        },
+        "task": "Future task2               ",
+        "classes": [],
+        "id": "des4",
+        "order": 3
+      }
+    ],
+    "links": []
+  }
+}

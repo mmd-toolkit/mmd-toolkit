@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md The statement context: rule 12: `:` and data after the header are data without a task text, which no rule takes."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\njourney: x\n-------^\nExpecting 'EOF', 'SPACE', 'NEWLINE', 'title', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'section', 'taskName', got 'taskData'"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 13: unexpected character: ->c<- at offset: 25, skipped 1 characters. "
+  }
+}

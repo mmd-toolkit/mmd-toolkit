@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md entry 35: minimal accepted example of `railroadPeg`. The header line alone is accepted."
+  },
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": []
+  }
+}

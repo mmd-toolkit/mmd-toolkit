@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Directive removal can leave whitespace inside a block-description terminal."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": " accDescr\n{ D }",
+    "frames": []
+  }
+}

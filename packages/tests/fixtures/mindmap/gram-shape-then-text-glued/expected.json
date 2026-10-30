@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Nodes and shapes: a node text after a shape is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...indmaproot  a[\"x\"]y\n---------------------^\nExpecting 'SPACELINE', 'NL', 'EOF', got 'NODE_ID'"
+  }
+}

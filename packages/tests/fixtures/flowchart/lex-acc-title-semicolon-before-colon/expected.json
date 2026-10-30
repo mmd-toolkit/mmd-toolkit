@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md The statement context: `accTitle` is a keyword only with the `:` that rule 1 reads after whitespace; with `;` between them, `accTitle` and `:` are vertices."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "accTitle",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "accTitle",
+        "props": {}
+      },
+      {
+        "id": ":",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": ":",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

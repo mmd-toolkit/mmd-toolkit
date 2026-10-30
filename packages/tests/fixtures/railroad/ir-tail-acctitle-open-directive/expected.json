@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed directive following an accessibility title follows common preprocessing."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "A",
+    "accDescr": "",
+    "rules": []
+  }
+}

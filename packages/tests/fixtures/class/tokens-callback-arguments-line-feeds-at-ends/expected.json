@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/class.md ClassCallbackStatement: the arguments keep the line feeds at their ends, a line feed, `x`, and a line feed, as mermaid.js passes them on."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default clickable",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "haveCallback": true
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": [],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "f",
+        "args": "\nx\n"
+      }
+    ]
+  }
+}

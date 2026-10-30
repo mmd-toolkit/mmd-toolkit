@@ -1,0 +1,169 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: usecase-no-duplicate-direction >> invalid >>> docs/rules/usecase-no-duplicate-direction.md incorrect 1
+Filename: usecase-no-duplicate-direction-incorrect-1.mmd
+
+Code:
+  1 | usecase-beta
+  2 |   direction LR
+  3 |   direction BT
+    |   ^~~~~~~~~~~~ [1]
+  4 |   A
+  5 |
+
+[1] mermaid.js replaces the earlier direction with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | usecase-beta
+          2 |   direction LR
+          3 |   A
+          4 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | usecase-beta
+          2 |   direction BT
+          3 |   A
+          4 |
+---
+
+
+Test: usecase-no-duplicate-direction >> invalid >>> invalid/usecase/direction-alias-history
+Filename: tests/fixtures/rules/usecase-no-duplicate-direction/invalid/usecase/direction-alias-history-input.mmd
+
+Code:
+  1 | usecase-beta
+  2 | direction LR
+  3 | direction TD
+    | ^~~~~~~~~~~~ [1]
+  4 | direction TB
+  5 | direction RL
+    | ^~~~~~~~~~~~ [2]
+  6 |
+
+[1] mermaid.js replaces the earlier direction with `TD`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | usecase-beta
+          2 | direction LR
+          3 | direction TB
+          4 | direction RL
+          5 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | usecase-beta
+          2 | direction TD
+          3 | direction TB
+          4 | direction RL
+          5 |
+[2] mermaid.js replaces the earlier direction with `RL`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | usecase-beta
+          2 | direction LR
+          3 | direction TD
+          4 | direction TB
+          5 |
+---
+
+
+Test: usecase-no-duplicate-direction >> invalid >>> invalid/usecase/direction-equal-predecessor
+Filename: tests/fixtures/rules/usecase-no-duplicate-direction/invalid/usecase/direction-equal-predecessor-input.mmd
+
+Code:
+  1 | usecase-beta
+  2 | direction LR
+  3 | direction LR
+  4 | direction BT
+    | ^~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier direction with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | usecase-beta
+          2 | direction LR
+          3 | direction LR
+          4 |
+---
+
+
+Test: usecase-no-duplicate-direction >> invalid >>> invalid/usecase/direction-gaps
+Filename: tests/fixtures/rules/usecase-no-duplicate-direction/invalid/usecase/direction-gaps-input.mmd
+
+Code:
+  1 | usecase-beta
+  2 | direction LR
+  3 | %% comment
+  4 |
+  5 | %%{init: {}}%%
+  6 | direction RL
+    | ^~~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the earlier direction with `RL`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | usecase-beta
+          2 | direction LR
+          3 | %% comment
+          4 |
+          5 | %%{init: {}}%%
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | usecase-beta
+          2 | %% comment
+          3 |
+          4 | %%{init: {}}%%
+          5 | direction RL
+          6 |
+---
+
+
+Test: usecase-no-duplicate-direction >> invalid >>> invalid/usecase/direction-three
+Filename: tests/fixtures/rules/usecase-no-duplicate-direction/invalid/usecase/direction-three-input.mmd
+
+Code:
+  1 | usecase-beta
+  2 | direction LR
+  3 | direction BT
+    | ^~~~~~~~~~~~ [1]
+  4 | direction LR
+    | ^~~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the earlier direction with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | usecase-beta
+          2 | direction LR
+          3 | direction LR
+          4 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | usecase-beta
+          2 | direction BT
+          3 | direction LR
+          4 |
+[2] mermaid.js replaces the earlier direction with `LR`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | usecase-beta
+          2 | direction LR
+          3 | direction BT
+          4 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | usecase-beta
+          2 | direction LR
+          3 | direction LR
+          4 |
+---

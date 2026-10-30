@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, settings: the sections, the periods, and the events are recorded as written under the same securityLevel."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "S<b>1</b> &amp; <u>"
+    ],
+    "tasks": [
+      {
+        "section": "S<b>1</b> &amp; <u>",
+        "task": "P<b>2</b> & <i> ",
+        "events": [
+          "E<b>3</b><script>q</script> & <u>"
+        ]
+      }
+    ]
+  }
+}

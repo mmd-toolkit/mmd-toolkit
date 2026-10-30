@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md AST domains: an empty domain at source EOF remains an authored statement."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  }
+}

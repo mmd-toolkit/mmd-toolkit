@@ -1,0 +1,7 @@
+{
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ssDiagramA --> %% cB\n----------------------^\nExpecting 'STR', 'ALPHA', 'LINE', 'DOTTED_LINE', 'NUM', 'MINUS', 'UNICODE_TEXT', 'BQUOTE_STR', got 'NEWLINE'"
+  }
+}

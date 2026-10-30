@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Retained hidden directives are checked at each reachable unit gap across all statement forms."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "in": "g",
+        "iconText": "Icon",
+        "title": "Service"
+      },
+      {
+        "id": "j",
+        "type": "junction",
+        "in": "g"
+      }
+    ],
+    "groups": [
+      {
+        "id": "g",
+        "icon": "cloud",
+        "title": "Group"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "api",
+        "lhsDir": "R",
+        "lhsInto": true,
+        "lhsGroup": false,
+        "rhsId": "j",
+        "rhsDir": "L",
+        "rhsInto": true,
+        "rhsGroup": false,
+        "title": "Edge"
+      }
+    ],
+    "layoutHints": [
+      {
+        "direction": "row",
+        "members": [
+          "api",
+          "j"
+        ]
+      }
+    ]
+  }
+}

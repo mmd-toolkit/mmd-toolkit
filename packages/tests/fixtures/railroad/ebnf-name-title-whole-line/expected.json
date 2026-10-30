@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "TITLE consumes the entire apparent EBNF rule, leaving no rules."
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "<a",
+    "accTitle": "b=\"c\">d",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

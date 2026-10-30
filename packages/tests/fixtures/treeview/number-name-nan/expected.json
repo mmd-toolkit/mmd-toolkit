@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Numeric-looking node NaN stays text; there is no reachable number converter."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "NaN",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

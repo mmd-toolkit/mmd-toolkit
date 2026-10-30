@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "EM common values retain keyword and delimiter prefixes."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "accTitle: A",
+    "accDescr": " accDescr { D }",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "E",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[H: detection and ISHIKAWA] Does an extra empty line supply a document?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "root": null
+  }
+}

@@ -1,0 +1,259 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: journey-no-duplicate-description >> invalid >>> docs/rules/journey-no-duplicate-description.md incorrect 1
+Filename: journey-no-duplicate-description-incorrect-1.mmd
+
+Code:
+  1 | journey
+  2 |   accDescr: first
+  3 |   accDescr { second }
+    |   ^~~~~~~~~~~~~~~~~~~ [1]
+  4 |   section Work
+  5 |     Make tea: 5: Me
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | journey
+          2 |   accDescr: first
+          3 |   section Work
+          4 |     Make tea: 5: Me
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | journey
+          2 |   accDescr { second }
+          3 |   section Work
+          4 |     Make tea: 5: Me
+          5 |
+---
+
+
+Test: journey-no-duplicate-description >> invalid >>> invalid/journey/acc-descr-back-to-first
+Filename: tests/fixtures/rules/journey-no-duplicate-description/invalid/journey/acc-descr-back-to-first-input.mmd
+
+Code:
+  1 | journey
+  2 |   accDescr: a
+  3 |   accDescr: b
+    |   ^~~~~~~~~~~ [1]
+  4 |   accDescr: a
+    |   ^~~~~~~~~~~ [2]
+  5 |   section S
+  6 |     t: 5: Me
+  7 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | journey
+          2 |   accDescr: a
+          3 |   accDescr: a
+          4 |   section S
+          5 |     t: 5: Me
+          6 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | journey
+          2 |   accDescr: b
+          3 |   accDescr: a
+          4 |   section S
+          5 |     t: 5: Me
+          6 |
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | journey
+          2 |   accDescr: a
+          3 |   accDescr: b
+          4 |   section S
+          5 |     t: 5: Me
+          6 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | journey
+          2 |   accDescr: a
+          3 |   accDescr: a
+          4 |   section S
+          5 |     t: 5: Me
+          6 |
+---
+
+
+Test: journey-no-duplicate-description >> invalid >>> invalid/journey/acc-descr-second-takes-next-line
+Filename: tests/fixtures/rules/journey-no-duplicate-description/invalid/journey/acc-descr-second-takes-next-line-input.mmd
+
+Code:
+  1 | journey
+  2 |   accDescr: a
+  3 |   accDescr:
+    |   ^~~~~~~~~\ [1]
+  4 |   b
+    | ~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | journey
+          2 |   accDescr: a
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | journey
+          2 |   accDescr:
+          3 |   b
+          4 |
+---
+
+
+Test: journey-no-duplicate-description >> invalid >>> invalid/journey/acc-descr-trailing-space-inside-block
+Filename: tests/fixtures/rules/journey-no-duplicate-description/invalid/journey/acc-descr-trailing-space-inside-block-input.mmd
+
+Code:
+  1 | journey
+  2 |   accDescr {
+  3 |     d
+  4 |     e
+  5 |   }
+  6 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  7 |     d  
+    | ~~~~~~~\ [1]
+  8 |     e
+    | ~~~~~\ [1]
+  9 |   }
+    | ~~~ [1]
+ 10 |   section S
+ 11 |     t: 5: Me
+ 12 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | journey
+          2 |   accDescr {
+          3 |     d
+          4 |     e
+          5 |   }
+          6 |   section S
+          7 |     t: 5: Me
+          8 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | journey
+          2 |   accDescr {
+          3 |     d  
+          4 |     e
+          5 |   }
+          6 |   section S
+          7 |     t: 5: Me
+          8 |
+---
+
+
+Test: journey-no-duplicate-description >> invalid >>> invalid/journey/acc-descr-twice-lines
+Filename: tests/fixtures/rules/journey-no-duplicate-description/invalid/journey/acc-descr-twice-lines-input.mmd
+
+Code:
+  1 | journey
+  2 |   accDescr: a
+  3 |   accDescr: b
+    |   ^~~~~~~~~~~ [1]
+  4 |   A: 5: Me
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | journey
+          2 |   accDescr: a
+          3 |   A: 5: Me
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | journey
+          2 |   accDescr: b
+          3 |   A: 5: Me
+          4 |
+---
+
+
+Test: journey-no-duplicate-description >> invalid >>> invalid/journey/description-equal-predecessor
+Filename: tests/fixtures/rules/journey-no-duplicate-description/invalid/journey/description-equal-predecessor-input.mmd
+
+Code:
+  1 | journey
+  2 | accDescr: A
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | journey
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
+---
+
+
+Test: journey-no-duplicate-description >> invalid >>> invalid/journey/gram-acc-descr-block-then-line
+Filename: tests/fixtures/rules/journey-no-duplicate-description/invalid/journey/gram-acc-descr-block-then-line-input.mmd
+
+Code:
+  1 | journey
+  2 |   accDescr { a }
+  3 |   accDescr: b
+    |   ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | journey
+          2 |   accDescr { a }
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | journey
+          2 |   accDescr: b
+          3 |
+---
+
+
+Test: journey-no-duplicate-description >> invalid >>> invalid/journey/gram-acc-descr-twice
+Filename: tests/fixtures/rules/journey-no-duplicate-description/invalid/journey/gram-acc-descr-twice-input.mmd
+
+Code:
+  1 | journey
+  2 |   accDescr: a
+  3 |   accDescr { b }
+    |   ^~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | journey
+          2 |   accDescr: a
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | journey
+          2 |   accDescr { b }
+          3 |
+---

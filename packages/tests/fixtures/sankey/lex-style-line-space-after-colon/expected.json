@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, style line: whitespace between the `:` and the `#` stops the rule, so the `;` ends a character reference and the line is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nsankeystyle: ﬂ°x¶ßy,b,1\n-------------^\nExpecting 'NEWLINE', 'EOF', 'COMMA', got 'NON_ESCAPED_TEXT'"
+  }
+}

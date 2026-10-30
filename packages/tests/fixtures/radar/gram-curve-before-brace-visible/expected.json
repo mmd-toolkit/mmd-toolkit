@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md: Does a visible newline between a curve name and opening brace reject?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 8: Expecting token of type '{' but found `\n`.\nParse error on line 2, column 8: Expecting: one of these possible Token sequences:\n  1. [NUMBER]\n  2. [NEWLINE, NUMBER]\n  3. [NEWLINE, NEWLINE, NEWLINE]\n  4. [NEWLINE, NEWLINE, NUMBER]\n  5. [ID]\n  6. [NEWLINE, ID]\n  7. [NEWLINE, NEWLINE, NEWLINE]\n  8. [NEWLINE, NEWLINE, ID]\nbut found: '\n'\nParse error on line 3, column 1: Expecting token of type 'EOF' but found `{`."
+  }
+}

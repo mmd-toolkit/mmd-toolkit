@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A site text-size limit larger than the source accepts the text."
+  },
+  "config": {
+    "maxTextSize": 500
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "title": "Long label"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

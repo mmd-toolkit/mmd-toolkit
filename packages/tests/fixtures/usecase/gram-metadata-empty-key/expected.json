@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Is an empty quoted metadata key lexically accepted then rejected by model validation?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Metadata property '' is invalid for actor 'A' at line 2, column 11 [23,23)"
+  }
+}

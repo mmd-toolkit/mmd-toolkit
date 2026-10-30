@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, classes: a class name that no classDef gives is kept on the point."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [
+      {
+        "text": "A",
+        "className": "c2",
+        "x": "0.3",
+        "y": "0.6"
+      }
+    ],
+    "classes": [
+      {
+        "name": "c1",
+        "color": "#f00"
+      }
+    ]
+  }
+}

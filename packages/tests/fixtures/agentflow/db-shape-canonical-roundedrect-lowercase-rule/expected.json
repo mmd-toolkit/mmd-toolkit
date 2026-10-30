@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read shape canonical roundedrect lowercase rule?"
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "No such shape: roundedRect. Shape names should be lowercase."
+  }
+}

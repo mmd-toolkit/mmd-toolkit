@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: Backslash followed by physical PS does not form a string escape."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 3: unexpected character: ->\"<- at offset: 9, skipped 6 characters. Parse error on line 2, column 9: Expecting token of type 'STRING' but found `\n`."
+  }
+}

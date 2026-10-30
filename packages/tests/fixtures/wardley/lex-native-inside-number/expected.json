@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Common boundaries in authored components: Native hidden text does not join two decimal fragments into one number."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 15: unexpected character: ->.<- at offset: 27, skipped 1 characters. Parse error on line 2, column 14: Expecting token of type 'WARDLEY_NUMBER' but found `0`."
+  }
+}

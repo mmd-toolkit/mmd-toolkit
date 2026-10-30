@@ -1,0 +1,13 @@
+eventmodeling
+tf 01 ui Shop.Screen
+tf 02 cmd Shop.Buy ->> 01 `json`{ x: 1 }
+tf 03 evt Shop.Bought ->> 02 [[D]]
+rf 04 rmo Shop.View ->> 03
+data D `html` {
+<b>x</b>
+}
+entity Shop.Buy
+note 03 `md` {
+Note
+}
+gwt 03 given cmd Buy when evt Bought then rmo View

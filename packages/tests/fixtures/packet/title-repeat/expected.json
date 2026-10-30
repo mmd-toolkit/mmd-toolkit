@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Only the third title is published."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "Third",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  }
+}

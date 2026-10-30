@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, header: a character outside ASCII glued to the header is not part of the header and is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nsankeyéa,b,1\n------^\nExpecting 'NEWLINE', got 'NON_ESCAPED_TEXT'"
+  }
+}

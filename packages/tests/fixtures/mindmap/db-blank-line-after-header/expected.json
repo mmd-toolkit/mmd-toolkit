@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, lines: an empty line between the header and the first node is rejected."
+  },
+  "knownDivergence": "blank-line-after-header-or-comments",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\nmindmap  root\n-------^\nExpecting 'SPACELINE', 'NL', 'EOF', got 'SPACELIST'"
+  }
+}

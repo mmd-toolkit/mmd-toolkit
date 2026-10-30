@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Quotes do not protect a closing brace inside a common block."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 14: unexpected character: ->\"<- at offset: 18, skipped 1 characters.\nLexer error on line 2, column 16: unexpected character: ->}<- at offset: 20, skipped 1 characters. "
+  }
+}

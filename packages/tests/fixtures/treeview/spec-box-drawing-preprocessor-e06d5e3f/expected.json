@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/treeView/boxDrawingPreprocessor.spec.ts",
+    "line": 120,
+    "test": "boxDrawingPreprocessor > preprocessBoxDrawing > standard tree output > should handle no root line (all box-drawing)"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "file1.txt",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "file2.txt",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

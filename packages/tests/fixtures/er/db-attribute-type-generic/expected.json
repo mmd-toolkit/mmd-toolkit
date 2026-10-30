@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A type with `~` generic marks is one type, `List~int~`; a space inside the marks does not end it."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [
+          {
+            "type": "List~int~",
+            "name": "a",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "Map~string, int~",
+            "name": "b",
+            "keys": [],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

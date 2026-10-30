@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, classes: the ids of a `class` statement are split at the comma and not trimmed when they are looked up: ` B` is no block, and a block `B` outside the diagram is made."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1,
+          "classes": [
+            "c"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [
+      {
+        "id": "B",
+        "type": "na",
+        "classes": [
+          "c"
+        ]
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

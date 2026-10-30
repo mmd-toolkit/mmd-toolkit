@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md AST gap ownership: a domain name suffix and item before/after forms have separate owners."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "A"
+          },
+          {
+            "label": "B"
+          }
+        ]
+      },
+      {
+        "name": "clear",
+        "items": [
+          {
+            "label": "C"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

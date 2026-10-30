@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, definitions of the same id: three classes on a node are kept in order."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1,
+          "classes": [
+            "c",
+            "d",
+            "e"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

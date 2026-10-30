@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-from-tree/mindmap.md, texts: the whitespace on both sides of a directive after a node text stays in the text."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root   ",
+      "level": 0,
+      "descr": "root   ",
+      "type": 0,
+      "children": []
+    }
+  }
+}

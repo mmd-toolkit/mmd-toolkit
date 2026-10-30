@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Detection: Without a passed bare line, native whitespace reads the LS-only line between retained forms. Accepted by Mermaid."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": []
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

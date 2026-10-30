@@ -1,0 +1,753 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: flowchart-no-duplicate-direction >> invalid >>> docs/rules/flowchart-no-duplicate-direction.md incorrect 1
+Filename: flowchart-no-duplicate-direction-incorrect-1.mmd
+
+Code:
+  1 | flowchart TB
+  2 |   subgraph S
+  3 |     direction LR
+  4 |     A --> B
+  5 |     direction BT
+    |     ^~~~~~~~~~~~ [1]
+  6 |   end
+  7 |
+
+[1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 |   subgraph S
+          3 |     direction LR
+          4 |     A --> B
+          5 |   end
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart TB
+          2 |   subgraph S
+          3 |     A --> B
+          4 |     direction BT
+          5 |   end
+          6 |
+---
+
+
+Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/direction-equal-predecessor
+Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/direction-equal-predecessor-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S
+  3 | direction LR
+  4 | direction LR
+  5 | direction BT
+    | ^~~~~~~~~~~~ [1]
+  6 | end
+  7 |
+
+[1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart LR
+          2 | subgraph S
+          3 | direction LR
+          4 | direction LR
+          5 | end
+          6 |
+---
+
+
+Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/direction-reveals-later-report
+Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/direction-reveals-later-report-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S
+  3 | direction LR
+  4 | direction TD
+    | ^~~~~~~~~~~~ [1]
+  5 | direction TB
+  6 | end
+  7 |
+
+[1] mermaid.js replaces the earlier direction for this subgraph with `TD`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart LR
+          2 | subgraph S
+          3 | direction LR
+          4 | direction TB
+          5 | end
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart LR
+          2 | subgraph S
+          3 | direction TD
+          4 | direction TB
+          5 | end
+          6 |
+---
+
+
+Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/direction-semicolon
+Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/direction-semicolon-input.mmd
+
+Code:
+  1 | flowchart TB
+  2 | subgraph S
+  3 |   direction LR;
+  4 |   A
+  5 |   direction BT;
+    |   ^~~~~~~~~~~~~ [1]
+  6 | end
+  7 |
+
+[1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+---
+
+
+Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/elk
+Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/elk-input.mmd
+
+Code:
+  1 | flowchart-elk TB
+  2 | subgraph S
+  3 |   direction LR
+  4 |   A
+  5 |   direction BT
+    |   ^~~~~~~~~~~~ [1]
+  6 | end
+  7 |
+
+[1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart-elk TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   A
+          5 | end
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart-elk TB
+          2 | subgraph S
+          3 |   A
+          4 |   direction BT
+          5 | end
+          6 |
+---
+
+
+Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/graph-header
+Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/graph-header-input.mmd
+
+Code:
+  1 | graph TB
+  2 | subgraph S
+  3 |   direction LR
+  4 |   A
+  5 |   direction BT
+    |   ^~~~~~~~~~~~ [1]
+  6 | end
+  7 |
+
+[1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | graph TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   A
+          5 | end
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | graph TB
+          2 | subgraph S
+          3 |   A
+          4 |   direction BT
+          5 | end
+          6 |
+---
+
+
+Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/in-label
+Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/in-label-input.mmd
+
+Code:
+  1 | flowchart TB
+  2 | subgraph S
+  3 |   direction LR
+  4 |   A[Set direction BT]
+    |   ^~~~~~~~~~~~~~~~~~~ [1]
+  5 | end
+  6 |
+
+[1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   A[Set direction BT]
+          4 | end
+          5 |
+---
+
+
+Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/nested-after-inner
+Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/nested-after-inner-input.mmd
+
+Code:
+  1 | flowchart TB
+  2 | subgraph S
+  3 |   direction LR
+  4 |   subgraph T
+  5 |     direction BT
+  6 |     A
+  7 |   end
+  8 |   direction RL
+    |   ^~~~~~~~~~~~ [1]
+  9 | end
+ 10 |
+
+[1] mermaid.js replaces the earlier direction for this subgraph with `RL`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   subgraph T
+          5 |     direction BT
+          6 |     A
+          7 |   end
+          8 | end
+          9 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   subgraph T
+          4 |     direction BT
+          5 |     A
+          6 |   end
+          7 |   direction RL
+          8 | end
+          9 |
+---
+
+
+Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/same-id-first-two
+Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/same-id-first-two-input.mmd
+
+Code:
+  1 | flowchart TB
+  2 | subgraph S
+  3 |   direction LR
+  4 |   direction BT
+    |   ^~~~~~~~~~~~ [1]
+  5 |   A
+  6 | end
+  7 | subgraph S
+  8 |   direction BT
+  9 |   B
+ 10 | end
+ 11 |
+
+[1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   A
+          5 | end
+          6 | subgraph S
+          7 |   direction BT
+          8 |   B
+          9 | end
+         10 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction BT
+          4 |   A
+          5 | end
+          6 | subgraph S
+          7 |   direction BT
+          8 |   B
+          9 | end
+         10 |
+---
+
+
+Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/same-id-first-without
+Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/same-id-first-without-input.mmd
+
+Code:
+  1 | flowchart TB
+  2 | subgraph S
+  3 |   A
+  4 | end
+  5 | subgraph S
+  6 |   direction BT
+    |   ^~~~~~~~~~~~ [1]
+  7 |   B
+  8 | end
+  9 |
+
+[1] mermaid.js keeps the direction of the first subgraph `S` and ignores this `direction BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   A
+          4 | end
+          5 | subgraph S
+          6 |   B
+          7 | end
+          8 |
+---
+
+
+Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/same-id-first-without-later-two
+Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/same-id-first-without-later-two-input.mmd
+
+Code:
+  1 | flowchart TB
+  2 | subgraph S
+  3 |   A
+  4 | end
+  5 | subgraph S
+  6 |   direction LR
+    |   ^~~~~~~~~~~~ [1]
+  7 |   direction BT
+    |   ^~~~~~~~~~~~ [2]
+  8 |   B
+  9 | end
+ 10 |
+
+[1] mermaid.js keeps the direction of the first subgraph `S` and ignores this `direction LR`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   A
+          4 | end
+          5 | subgraph S
+          6 |   direction BT
+          7 |   B
+          8 | end
+          9 |
+[2] mermaid.js keeps the direction of the first subgraph `S` and ignores this `direction BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   A
+          4 | end
+          5 | subgraph S
+          6 |   direction LR
+          7 |   B
+          8 | end
+          9 |
+---
+
+
+Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/same-id-later-restores-first
+Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/same-id-later-restores-first-input.mmd
+
+Code:
+  1 | flowchart TB
+  2 | subgraph S
+  3 |   direction LR
+  4 |   A
+  5 | end
+  6 | subgraph S
+  7 |   direction BT
+    |   ^~~~~~~~~~~~ [1]
+  8 |   direction LR
+    |   ^~~~~~~~~~~~ [2]
+  9 |   B
+ 10 | end
+ 11 |
+
+[1] mermaid.js keeps the direction of the first subgraph `S` and ignores this `direction BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   A
+          5 | end
+          6 | subgraph S
+          7 |   direction LR
+          8 |   B
+          9 | end
+         10 |
+[2] mermaid.js replaces the earlier direction for this subgraph with `LR`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   A
+          5 | end
+          6 | subgraph S
+          7 |   direction BT
+          8 |   B
+          9 | end
+         10 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   A
+          5 | end
+          6 | subgraph S
+          7 |   direction LR
+          8 |   B
+          9 | end
+         10 |
+---
+
+
+Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/same-id-later-two
+Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/same-id-later-two-input.mmd
+
+Code:
+  1 | flowchart TB
+  2 | subgraph S
+  3 |   direction LR
+  4 |   A
+  5 | end
+  6 | subgraph S
+  7 |   direction LR
+  8 |   direction BT
+    |   ^~~~~~~~~~~~ [1]
+  9 |   B
+ 10 | end
+ 11 |
+
+[1] mermaid.js keeps the direction of the first subgraph `S` and ignores this `direction BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   A
+          5 | end
+          6 | subgraph S
+          7 |   direction LR
+          8 |   B
+          9 | end
+         10 |
+---
+
+
+Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/same-id-nested-completion-order
+Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/same-id-nested-completion-order-input.mmd
+
+Code:
+  1 | flowchart TB
+  2 | subgraph S
+  3 |   direction LR
+    |   ^~~~~~~~~~~~ [1]
+  4 |   subgraph S
+  5 |     direction BT
+  6 |     A
+  7 |   end
+  8 | end
+  9 |
+
+[1] mermaid.js keeps the direction of the first subgraph `S` and ignores this `direction LR`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   subgraph S
+          4 |     direction BT
+          5 |     A
+          6 |   end
+          7 | end
+          8 |
+---
+
+
+Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/same-id-twice
+Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/same-id-twice-input.mmd
+
+Code:
+  1 | flowchart TB
+  2 | subgraph S
+  3 |   direction LR
+  4 |   A
+  5 | end
+  6 | subgraph S
+  7 |   direction BT
+    |   ^~~~~~~~~~~~ [1]
+  8 |   B
+  9 | end
+ 10 |
+
+[1] mermaid.js keeps the direction of the first subgraph `S` and ignores this `direction BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   A
+          5 | end
+          6 | subgraph S
+          7 |   B
+          8 | end
+          9 |
+---
+
+
+Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/swimlane
+Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/swimlane-input.mmd
+
+Code:
+  1 | swimlane-beta TB
+  2 | subgraph S
+  3 |   direction LR
+  4 |   A
+  5 |   direction BT
+    |   ^~~~~~~~~~~~ [1]
+  6 | end
+  7 |
+
+[1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | swimlane-beta TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   A
+          5 | end
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | swimlane-beta TB
+          2 | subgraph S
+          3 |   A
+          4 |   direction BT
+          5 | end
+          6 |
+---
+
+
+Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/td-then-bt
+Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/td-then-bt-input.mmd
+
+Code:
+  1 | flowchart TB
+  2 | subgraph S
+  3 |   direction TD
+  4 |   direction BT
+    |   ^~~~~~~~~~~~ [1]
+  5 |   A
+  6 | end
+  7 |
+
+[1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction TD
+          4 |   A
+          5 | end
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction BT
+          4 |   A
+          5 | end
+          6 |
+---
+
+
+Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/three-directions
+Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/three-directions-input.mmd
+
+Code:
+  1 | flowchart TB
+  2 | subgraph S
+  3 |   direction LR
+  4 |   direction BT
+    |   ^~~~~~~~~~~~ [1]
+  5 |   direction LR
+    |   ^~~~~~~~~~~~ [2]
+  6 |   A
+  7 | end
+  8 |
+
+[1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   direction LR
+          5 |   A
+          6 | end
+          7 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction BT
+          4 |   direction LR
+          5 |   A
+          6 | end
+          7 |
+[2] mermaid.js replaces the earlier direction for this subgraph with `LR`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   direction BT
+          5 |   A
+          6 | end
+          7 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   direction LR
+          5 |   A
+          6 | end
+          7 |
+---
+
+
+Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/trivia-between
+Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/trivia-between-input.mmd
+
+Code:
+  1 | flowchart TB
+  2 | subgraph S
+  3 |   direction LR
+  4 |   
+  5 |   %% comment
+  6 |   %%{init: {}}%%
+  7 |   direction BT
+    |   ^~~~~~~~~~~~ [1]
+  8 |   A
+  9 | end
+ 10 |
+
+[1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   
+          5 |   %% comment
+          6 |   %%{init: {}}%%
+          7 |   A
+          8 | end
+          9 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   
+          4 |   %% comment
+          5 |   %%{init: {}}%%
+          6 |   direction BT
+          7 |   A
+          8 | end
+          9 |
+---
+
+
+Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/two-directions
+Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/two-directions-input.mmd
+
+Code:
+  1 | flowchart TB
+  2 | subgraph S
+  3 |   direction LR
+  4 |   A
+  5 |   direction BT
+    |   ^~~~~~~~~~~~ [1]
+  6 | end
+  7 |
+
+[1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove this direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   direction LR
+          4 |   A
+          5 | end
+          6 |
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   A
+          4 |   direction BT
+          5 | end
+          6 |
+---
+
+
+Test: flowchart-no-duplicate-direction >> invalid >>> invalid/flowchart/with-text-on-line
+Filename: tests/fixtures/rules/flowchart-no-duplicate-direction/invalid/flowchart/with-text-on-line-input.mmd
+
+Code:
+  1 | flowchart TB
+  2 | subgraph S
+  3 |   direction LR
+  4 |   A-->B; direction BT
+    |   ^~~~~~~~~~~~~~~~~~~ [1]
+  5 | end
+  6 |
+
+[1] mermaid.js replaces the earlier direction for this subgraph with `BT`.
+    Suggestions:
+      - Remove the earlier direction statement.
+        Output:
+          1 | flowchart TB
+          2 | subgraph S
+          3 |   A-->B; direction BT
+          4 | end
+          5 |
+---

@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-from-tree/requirement.md, the title of an accTitle line without the whitespace at its end, a no-break space included."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "a",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

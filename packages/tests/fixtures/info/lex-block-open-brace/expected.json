@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: opening brace inside block has no nesting role"
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

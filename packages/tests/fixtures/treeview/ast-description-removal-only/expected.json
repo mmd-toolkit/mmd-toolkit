@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/treeview.md TreeviewDescriptionAnnotation: a directive-only payload leaves a null value while the annotation remains."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

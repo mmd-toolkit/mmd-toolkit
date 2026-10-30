@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Named endpoint assignments in the offset positions become numbers, which match neither string nor named-attribute endpoint arguments; __proto__ is accepted."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [
+      {
+        "type": "rel",
+        "from": 7,
+        "to": 8,
+        "label": {
+          "text": "Uses"
+        },
+        "techn": {
+          "text": ""
+        },
+        "descr": {
+          "text": ""
+        },
+        "textColor": "red",
+        "lineColor": "blue"
+      }
+    ],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

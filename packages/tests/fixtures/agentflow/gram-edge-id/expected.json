@@ -1,0 +1,79 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A named edge receives metadata and promoted animation/curve fields."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "interpolate": "linear",
+        "stroke": "normal",
+        "length": 1,
+        "id": "e",
+        "animate": true,
+        "animation": "fast",
+        "metadata": {
+          "instruction": "run",
+          "animate": true,
+          "animation": "fast",
+          "curve": "linear"
+        }
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "e",
+        "set": {
+          "interpolate": "linear",
+          "animate": true,
+          "animation": "fast",
+          "metadata": {
+            "instruction": "run",
+            "animate": true,
+            "animation": "fast",
+            "curve": "linear"
+          }
+        }
+      }
+    ]
+  }
+}

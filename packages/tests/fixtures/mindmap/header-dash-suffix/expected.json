@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Detection: `-` ends the keyword: the root `-x` on the header line."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "-x",
+      "level": 0,
+      "descr": "-x",
+      "type": 0,
+      "children": []
+    }
+  }
+}

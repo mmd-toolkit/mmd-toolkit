@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A right group endpoint also throws TypeError in addEdge, not a missing browser feature."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot read properties of undefined (reading 'in')"
+  }
+}

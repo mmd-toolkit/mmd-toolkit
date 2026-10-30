@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A fractional number needs digits after the dot."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 10: unexpected character: ->.<- at offset: 20, skipped 1 characters. Parse error on line 2, column 11: Expecting token of type 'NUMBER' but found `}`."
+  }
+}

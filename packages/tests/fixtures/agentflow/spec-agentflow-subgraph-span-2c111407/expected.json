@@ -1,0 +1,57 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-subgraph-span.spec.ts",
+    "line": 16,
+    "test": "innermost-match ranking > prefers the tighter span when a nested container shares the point"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Alpha",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "inner",
+        "nodes": [
+          "a"
+        ],
+        "title": "Inner",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      },
+      {
+        "id": "outer",
+        "nodes": [
+          "inner"
+        ],
+        "title": "Outer",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  }
+}

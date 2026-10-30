@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, styles: a space before the unit is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "InvalidStyleError",
+    "message": "value for stroke-width 3 px is invalid, please use a valid number of pixels (eg. 10px)"
+  }
+}

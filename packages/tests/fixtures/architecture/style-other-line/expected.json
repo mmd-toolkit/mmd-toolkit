@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A semicolon on another line is not the style line's final semicolon."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "style A fill:#red\nplain;",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

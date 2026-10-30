@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Common values: one title separator leaves null, while an additional separator is an authored whitespace literal. Case: title-two-spaces-literal."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

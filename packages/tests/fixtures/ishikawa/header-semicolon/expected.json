@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[H: detection and ISHIKAWA] Is a semicolon after the header literal node text?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": ";R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": ";R",
+      "children": []
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A directive line does not continue the line: the message is `x`, and `C->>D: y` is a second message."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "B"
+      },
+      {
+        "name": "B",
+        "description": "B",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "C"
+      },
+      {
+        "name": "C",
+        "description": "C",
+        "wrap": false,
+        "prevActor": "B",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "D"
+      },
+      {
+        "name": "D",
+        "description": "D",
+        "wrap": false,
+        "prevActor": "C",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "A",
+        "to": "B",
+        "message": "x",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "C",
+        "to": "D",
+        "message": "y",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

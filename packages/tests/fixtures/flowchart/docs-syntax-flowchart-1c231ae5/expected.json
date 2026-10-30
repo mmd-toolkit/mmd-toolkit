@@ -1,0 +1,214 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/flowchart.md",
+    "line": 999
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "c1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "c1",
+        "props": {}
+      },
+      {
+        "id": "a2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "a2",
+        "props": {}
+      },
+      {
+        "id": "a1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "a1",
+        "props": {}
+      },
+      {
+        "id": "b1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "b1",
+        "props": {}
+      },
+      {
+        "id": "b2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "b2",
+        "props": {}
+      },
+      {
+        "id": "c2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "c2",
+        "props": {}
+      },
+      {
+        "id": "one",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "one",
+        "props": {}
+      },
+      {
+        "id": "two",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "two",
+        "props": {}
+      },
+      {
+        "id": "three",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "three",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "c1",
+        "end": "a2",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_c1_a2_0"
+      },
+      {
+        "start": "a1",
+        "end": "a2",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_a1_a2_0"
+      },
+      {
+        "start": "b1",
+        "end": "b2",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_b1_b2_0"
+      },
+      {
+        "start": "c1",
+        "end": "c2",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_c1_c2_0"
+      },
+      {
+        "start": "one",
+        "end": "two",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_one_two_0"
+      },
+      {
+        "start": "three",
+        "end": "two",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_three_two_0"
+      },
+      {
+        "start": "two",
+        "end": "c2",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_two_c2_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "one",
+        "nodes": [
+          "a2",
+          "a1"
+        ],
+        "title": "one",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "two",
+        "nodes": [
+          "b2",
+          "b1"
+        ],
+        "title": "two",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "three",
+        "nodes": [
+          "c2",
+          "c1"
+        ],
+        "title": "three",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A hidden YAML closer requires its fence immediately after a line terminator."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->-<- at offset: 11, skipped 3 characters.\nLexer error on line 4, column 2: unexpected character: ->-<- at offset: 21, skipped 3 characters. Parse error on line 3, column 1: Expecting token of type 'EOF' but found `body`."
+  }
+}

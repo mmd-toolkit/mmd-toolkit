@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Detection: `-` ends the keyword, and the `-` unit after the header is no newline."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nrequirementDiagram-x\n------------------^\nExpecting 'NEWLINE', got 'LINE'"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure: A selected semicolon in the HWS between -- and the following CSS property-name word is accepted trivia in a style statement; the name keeps its space."
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [
+      {
+        "id": "A",
+        "label": "A",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": [
+          "fill:#x",
+          "-- color:red"
+        ]
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

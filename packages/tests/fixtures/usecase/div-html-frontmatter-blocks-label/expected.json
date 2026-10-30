@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: A frontmatter attribute quote can prevent a body tag conversion."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error lexing usecase diagram: unexpected character: ->'<- at offset: 23, skipped 1 characters. at line 2, column 11 [23,24)"
+  }
+}

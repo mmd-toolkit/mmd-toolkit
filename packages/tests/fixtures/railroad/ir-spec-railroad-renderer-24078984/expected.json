@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/railroad/railroadRenderer.spec.ts",
+    "line": 91,
+    "test": "Railroad Renderer > connects centered choice alternatives from the left edge"
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "term",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "nonterminal",
+              "name": "number"
+            },
+            {
+              "type": "sequence",
+              "elements": [
+                {
+                  "type": "terminal",
+                  "value": "("
+                },
+                {
+                  "type": "nonterminal",
+                  "name": "expression"
+                },
+                {
+                  "type": "terminal",
+                  "value": ")"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

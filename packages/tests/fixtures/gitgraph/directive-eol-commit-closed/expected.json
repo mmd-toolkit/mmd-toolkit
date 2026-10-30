@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A globally removed closed directive after commit leaves its EOL LF visible."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "generated-commit-1",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      },
+      {
+        "id": "generated-commit-2",
+        "seq": 1,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "generated-commit-1"
+        ],
+        "branch": "main"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

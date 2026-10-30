@@ -1,0 +1,599 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/flowchart.html",
+    "line": 1054
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A1",
+        "labelType": "text",
+        "styles": [
+          "stroke:#ff0000",
+          "fill:#ffcccc",
+          "color:#ff0000"
+        ],
+        "classes": [],
+        "text": "red text",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "A2",
+        "labelType": "text",
+        "styles": [
+          "stroke:#0000ff",
+          "fill:#ccccff",
+          "color:#0000ff"
+        ],
+        "classes": [],
+        "text": "blue text",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "B1",
+        "labelType": "text",
+        "styles": [
+          "stroke:#ff0000",
+          "fill:#ffcccc",
+          "color:#ff0000"
+        ],
+        "classes": [],
+        "text": "red text",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "B2",
+        "labelType": "text",
+        "styles": [
+          "stroke:#0000ff",
+          "fill:#ccccff",
+          "color:#0000ff"
+        ],
+        "classes": [],
+        "text": "blue text",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "C1",
+        "labelType": "text",
+        "styles": [
+          "stroke:#ff0000",
+          "fill:#ffcccc",
+          "color:#ff0000"
+        ],
+        "classes": [],
+        "text": "red text",
+        "type": "stadium",
+        "props": {}
+      },
+      {
+        "id": "C2",
+        "labelType": "text",
+        "styles": [
+          "stroke:#0000ff",
+          "fill:#ccccff",
+          "color:#0000ff"
+        ],
+        "classes": [],
+        "text": "blue text",
+        "type": "stadium",
+        "props": {}
+      },
+      {
+        "id": "D1",
+        "labelType": "text",
+        "styles": [
+          "stroke:#ff0000",
+          "fill:#ffcccc",
+          "color:#ff0000"
+        ],
+        "classes": [],
+        "text": "red text",
+        "type": "subroutine",
+        "props": {}
+      },
+      {
+        "id": "D2",
+        "labelType": "text",
+        "styles": [
+          "stroke:#0000ff",
+          "fill:#ccccff",
+          "color:#0000ff"
+        ],
+        "classes": [],
+        "text": "blue text",
+        "type": "subroutine",
+        "props": {}
+      },
+      {
+        "id": "E1",
+        "labelType": "text",
+        "styles": [
+          "stroke:#ff0000",
+          "fill:#ffcccc",
+          "color:#ff0000"
+        ],
+        "classes": [],
+        "text": "red text",
+        "type": "cylinder",
+        "props": {}
+      },
+      {
+        "id": "E2",
+        "labelType": "text",
+        "styles": [
+          "stroke:#0000ff",
+          "fill:#ccccff",
+          "color:#0000ff"
+        ],
+        "classes": [],
+        "text": "blue text",
+        "type": "cylinder",
+        "props": {}
+      },
+      {
+        "id": "F1",
+        "labelType": "text",
+        "styles": [
+          "stroke:#ff0000",
+          "fill:#ffcccc",
+          "color:#ff0000"
+        ],
+        "classes": [],
+        "text": "red text",
+        "type": "circle",
+        "props": {}
+      },
+      {
+        "id": "F2",
+        "labelType": "text",
+        "styles": [
+          "stroke:#0000ff",
+          "fill:#ccccff",
+          "color:#0000ff"
+        ],
+        "classes": [],
+        "text": "blue text",
+        "type": "circle",
+        "props": {}
+      },
+      {
+        "id": "G1",
+        "labelType": "text",
+        "styles": [
+          "stroke:#ff0000",
+          "fill:#ffcccc",
+          "color:#ff0000"
+        ],
+        "classes": [],
+        "text": "red text",
+        "type": "odd",
+        "props": {}
+      },
+      {
+        "id": "G2",
+        "labelType": "text",
+        "styles": [
+          "stroke:#0000ff",
+          "fill:#ccccff",
+          "color:#0000ff"
+        ],
+        "classes": [],
+        "text": "blue text",
+        "type": "odd",
+        "props": {}
+      },
+      {
+        "id": "H1",
+        "labelType": "text",
+        "styles": [
+          "stroke:#ff0000",
+          "fill:#ffcccc",
+          "color:#ff0000"
+        ],
+        "classes": [],
+        "text": "red text",
+        "type": "diamond",
+        "props": {}
+      },
+      {
+        "id": "H2",
+        "labelType": "text",
+        "styles": [
+          "stroke:#0000ff",
+          "fill:#ccccff",
+          "color:#0000ff"
+        ],
+        "classes": [],
+        "text": "blue text",
+        "type": "diamond",
+        "props": {}
+      },
+      {
+        "id": "I1",
+        "labelType": "text",
+        "styles": [
+          "stroke:#ff0000",
+          "fill:#ffcccc",
+          "color:#ff0000"
+        ],
+        "classes": [],
+        "text": "red text",
+        "type": "hexagon",
+        "props": {}
+      },
+      {
+        "id": "I2",
+        "labelType": "text",
+        "styles": [
+          "stroke:#0000ff",
+          "fill:#ccccff",
+          "color:#0000ff"
+        ],
+        "classes": [],
+        "text": "blue text",
+        "type": "hexagon",
+        "props": {}
+      },
+      {
+        "id": "J1",
+        "labelType": "text",
+        "styles": [
+          "stroke:#ff0000",
+          "fill:#ffcccc",
+          "color:#ff0000"
+        ],
+        "classes": [],
+        "text": "red text",
+        "type": "lean_right",
+        "props": {}
+      },
+      {
+        "id": "J2",
+        "labelType": "text",
+        "styles": [
+          "stroke:#0000ff",
+          "fill:#ccccff",
+          "color:#0000ff"
+        ],
+        "classes": [],
+        "text": "blue text",
+        "type": "lean_right",
+        "props": {}
+      },
+      {
+        "id": "K1",
+        "labelType": "text",
+        "styles": [
+          "stroke:#ff0000",
+          "fill:#ffcccc",
+          "color:#ff0000"
+        ],
+        "classes": [],
+        "text": "red text",
+        "type": "lean_left",
+        "props": {}
+      },
+      {
+        "id": "K2",
+        "labelType": "text",
+        "styles": [
+          "stroke:#0000ff",
+          "fill:#ccccff",
+          "color:#0000ff"
+        ],
+        "classes": [],
+        "text": "blue text",
+        "type": "lean_left",
+        "props": {}
+      },
+      {
+        "id": "L1",
+        "labelType": "text",
+        "styles": [
+          "stroke:#ff0000",
+          "fill:#ffcccc",
+          "color:#ff0000"
+        ],
+        "classes": [],
+        "text": "red text",
+        "type": "trapezoid",
+        "props": {}
+      },
+      {
+        "id": "L2",
+        "labelType": "text",
+        "styles": [
+          "stroke:#0000ff",
+          "fill:#ccccff",
+          "color:#0000ff"
+        ],
+        "classes": [],
+        "text": "blue text",
+        "type": "trapezoid",
+        "props": {}
+      },
+      {
+        "id": "M1",
+        "labelType": "text",
+        "styles": [
+          "stroke:#ff0000",
+          "fill:#ffcccc",
+          "color:#ff0000"
+        ],
+        "classes": [],
+        "text": "red text",
+        "type": "inv_trapezoid",
+        "props": {}
+      },
+      {
+        "id": "M2",
+        "labelType": "text",
+        "styles": [
+          "stroke:#0000ff",
+          "fill:#ccccff",
+          "color:#0000ff"
+        ],
+        "classes": [],
+        "text": "blue text",
+        "type": "inv_trapezoid",
+        "props": {}
+      },
+      {
+        "id": "N1",
+        "labelType": "text",
+        "styles": [
+          "stroke:#ff0000",
+          "fill:#ffcccc",
+          "color:#ff0000"
+        ],
+        "classes": [],
+        "text": "red text",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "N2",
+        "labelType": "text",
+        "styles": [
+          "stroke:#0000ff",
+          "fill:#ccccff",
+          "color:#0000ff"
+        ],
+        "classes": [],
+        "text": "blue text",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "O1",
+        "labelType": "text",
+        "styles": [
+          "stroke:#ff0000",
+          "fill:#ffcccc",
+          "color:#ff0000"
+        ],
+        "classes": [],
+        "text": "red text",
+        "type": "doublecircle",
+        "props": {}
+      },
+      {
+        "id": "O2",
+        "labelType": "text",
+        "styles": [
+          "stroke:#0000ff",
+          "fill:#ccccff",
+          "color:#0000ff"
+        ],
+        "classes": [],
+        "text": "blue text",
+        "type": "doublecircle",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A1",
+        "end": "A2",
+        "type": "double_arrow_point",
+        "text": "default style",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A1_A2_0"
+      },
+      {
+        "start": "B1",
+        "end": "B2",
+        "type": "double_arrow_point",
+        "text": "default style",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_B1_B2_0"
+      },
+      {
+        "start": "C1",
+        "end": "C2",
+        "type": "double_arrow_point",
+        "text": "default style",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_C1_C2_0"
+      },
+      {
+        "start": "D1",
+        "end": "D2",
+        "type": "double_arrow_point",
+        "text": "default style",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_D1_D2_0"
+      },
+      {
+        "start": "E1",
+        "end": "E2",
+        "type": "double_arrow_point",
+        "text": "default style",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_E1_E2_0"
+      },
+      {
+        "start": "F1",
+        "end": "F2",
+        "type": "double_arrow_point",
+        "text": "default style",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_F1_F2_0"
+      },
+      {
+        "start": "G1",
+        "end": "G2",
+        "type": "double_arrow_point",
+        "text": "default style",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_G1_G2_0"
+      },
+      {
+        "start": "H1",
+        "end": "H2",
+        "type": "double_arrow_point",
+        "text": "default style",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_H1_H2_0"
+      },
+      {
+        "start": "I1",
+        "end": "I2",
+        "type": "double_arrow_point",
+        "text": "default style",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_I1_I2_0"
+      },
+      {
+        "start": "J1",
+        "end": "J2",
+        "type": "double_arrow_point",
+        "text": "default style",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_J1_J2_0"
+      },
+      {
+        "start": "K1",
+        "end": "K2",
+        "type": "double_arrow_point",
+        "text": "default style",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_K1_K2_0"
+      },
+      {
+        "start": "L1",
+        "end": "L2",
+        "type": "double_arrow_point",
+        "text": "default style",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_L1_L2_0"
+      },
+      {
+        "start": "M1",
+        "end": "M2",
+        "type": "double_arrow_point",
+        "text": "default style",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_M1_M2_0"
+      },
+      {
+        "start": "N1",
+        "end": "N2",
+        "type": "double_arrow_point",
+        "text": "default style",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_N1_N2_0"
+      },
+      {
+        "start": "O1",
+        "end": "O2",
+        "type": "double_arrow_point",
+        "text": "default style",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_O1_O2_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": [
+        "color:Sienna"
+      ]
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

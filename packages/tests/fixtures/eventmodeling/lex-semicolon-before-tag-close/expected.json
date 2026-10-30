@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Authored component boundaries: A selected semicolon before the closing type-tag backtick lies between complete components. Accepted by Mermaid."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "00",
+        "modelEntityType": "evt",
+        "entityIdentifier": "Marker",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "\"style:#x\""
+        }
+      },
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "{x}"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/sankey.html",
+    "line": 63
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "x",
+      "y"
+    ],
+    "links": [
+      {
+        "source": "a",
+        "target": "b",
+        "value": 8
+      },
+      {
+        "source": "b",
+        "target": "c",
+        "value": 8
+      },
+      {
+        "source": "c",
+        "target": "d",
+        "value": 8
+      },
+      {
+        "source": "d",
+        "target": "e",
+        "value": 8
+      },
+      {
+        "source": "x",
+        "target": "c",
+        "value": 4
+      },
+      {
+        "source": "c",
+        "target": "y",
+        "value": 4
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "sankey": {
+        "width": 800,
+        "nodeAlignment": "left",
+        "prefix": "$",
+        "suffix": "B"
+      }
+    }
+  }
+}

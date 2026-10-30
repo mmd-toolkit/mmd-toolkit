@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: A Unicode paragraph separator cannot be the character of a backslash escape."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 3: unexpected character: ->\"<- at offset: 21, skipped 1 characters.\nLexer error on line 2, column 5: unexpected character: ->\\<- at offset: 23, skipped 2 characters.\nLexer error on line 2, column 8: unexpected character: ->\"<- at offset: 26, skipped 1 characters. "
+  }
+}

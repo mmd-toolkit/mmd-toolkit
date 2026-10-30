@@ -1,0 +1,76 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/treeView.html",
+    "line": 88
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "my-project",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "src",
+            "nodeType": "directory",
+            "children": [
+              {
+                "name": "components",
+                "nodeType": "directory",
+                "children": [
+                  {
+                    "name": "Button.tsx",
+                    "nodeType": "file",
+                    "children": []
+                  },
+                  {
+                    "name": "Header.tsx",
+                    "nodeType": "file",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "name": "App.tsx",
+                "nodeType": "file",
+                "children": []
+              },
+              {
+                "name": "index.js",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": ".gitignore",
+            "nodeType": "file",
+            "children": []
+          },
+          {
+            "name": "package.json",
+            "nodeType": "file",
+            "children": []
+          },
+          {
+            "name": "README.md",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "treeView": {
+        "showIcons": true
+      }
+    }
+  }
+}

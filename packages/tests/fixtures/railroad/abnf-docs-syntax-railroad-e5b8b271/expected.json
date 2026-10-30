@@ -1,0 +1,81 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/railroad.md",
+    "line": 200
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "phone",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "optional",
+              "element": {
+                "type": "sequence",
+                "elements": [
+                  {
+                    "type": "terminal",
+                    "value": "+"
+                  },
+                  {
+                    "type": "nonterminal",
+                    "name": "country-code"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "nonterminal",
+              "name": "subscriber"
+            }
+          ]
+        }
+      },
+      {
+        "name": "country-code",
+        "definition": {
+          "type": "repetition",
+          "element": {
+            "type": "nonterminal",
+            "name": "DIGIT"
+          },
+          "min": 1,
+          "max": "Infinity"
+        }
+      },
+      {
+        "name": "subscriber",
+        "definition": {
+          "type": "repetition",
+          "element": {
+            "type": "choice",
+            "alternatives": [
+              {
+                "type": "nonterminal",
+                "name": "DIGIT"
+              },
+              {
+                "type": "terminal",
+                "value": "-"
+              },
+              {
+                "type": "terminal",
+                "value": " "
+              }
+            ]
+          },
+          "min": 1,
+          "max": "Infinity"
+        }
+      }
+    ]
+  }
+}

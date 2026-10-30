@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Known divergences, headerless-empty-ending: `classDiagramX` is no header but a name; mermaid.js accepts the text because it ends with an empty title. Here a text without a header is rejected."
+  },
+  "knownDivergence": "headerless-empty-ending",
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

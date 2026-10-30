@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The block carryover kind proto in metadata-icon-bare tests the kanban reading at this text position."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "I",
+        "label": "I",
+        "isGroup": false,
+        "parentId": "S",
+        "icon": "a__proto__b"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "I",
+        "set": {
+          "icon": "a__proto__b"
+        }
+      }
+    ]
+  }
+}

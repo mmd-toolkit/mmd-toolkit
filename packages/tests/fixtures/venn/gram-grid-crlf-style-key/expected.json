@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The crlf fragment in style-key is rejected by the grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nvenn-betastyle A ab:red\n------------------^\nExpecting 'COLON', got 'NEWLINE'"
+  }
+}

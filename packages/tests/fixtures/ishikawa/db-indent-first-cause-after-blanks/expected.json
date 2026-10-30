@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D] Is baseLevel chosen only by an actual cause after removed lines?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "A",
+          "children": [
+            {
+              "text": "B",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

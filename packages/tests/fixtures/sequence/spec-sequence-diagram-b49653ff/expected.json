@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.2.0",
+    "path": "packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js",
+    "line": 1603,
+    "test": "when parsing a sequenceDiagram > should attach actor-menu links to LINK"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {
+          "Help": "https://example.com/help"
+        },
+        "properties": {},
+        "type": "participant",
+        "nextActor": "LINK"
+      },
+      {
+        "name": "LINK",
+        "description": "Channel",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {
+          "Help": "https://example.com/channel",
+          "Repo": "https://example.com/repo"
+        },
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/community/contributing.md",
+    "line": 445
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "source",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Edit /packages/mermaid/src/docs",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "published",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "View /docs which will be published on Official Website",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "source",
+        "end": "published",
+        "type": "arrow_point",
+        "text": "automatic processing",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_source_published_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "default",
+        "styles": [
+          "fill:#fff",
+          "color:black",
+          "stroke:black"
+        ]
+      }
+    ],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

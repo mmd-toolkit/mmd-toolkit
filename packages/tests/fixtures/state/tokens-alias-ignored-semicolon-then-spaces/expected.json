@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/state.md StateAliasDefinitionStatement: the second description `#x;` and two spaces is read as written without the `;` that the line rule ignores; its tokens are `#x`, the IgnoredSemicolon token, and the two spaces, and its value is `#x` and two spaces."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A style",
+        "shape": "rectWithTitle",
+        "label": "d",
+        "description": [
+          "#x  "
+        ],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

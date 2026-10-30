@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Comments: %% in a note text is part of it."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [
+      {
+        "state": "A",
+        "position": "left of",
+        "text": "x %% c"
+      }
+    ],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

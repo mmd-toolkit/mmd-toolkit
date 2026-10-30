@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an unindented leaf after a leaf without trailing whitespace return to the outer level?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "children": [
+          {
+            "name": "x",
+            "value": 1
+          }
+        ]
+      },
+      {
+        "name": "y",
+        "value": 2
+      }
+    ],
+    "classDefs": []
+  }
+}

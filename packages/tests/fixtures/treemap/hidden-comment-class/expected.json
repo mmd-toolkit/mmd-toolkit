@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does CLASS_DEF enclose a retained directive-like form?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "C",
+        "classSelector": "styled",
+        "children": []
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "styled",
+        "styles": [
+          "fill:red%%{!}%%"
+        ]
+      }
+    ]
+  }
+}

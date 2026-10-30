@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Named entries reject for a missing axis, using its label in the error."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Missing entry for axis Bee"
+  }
+}

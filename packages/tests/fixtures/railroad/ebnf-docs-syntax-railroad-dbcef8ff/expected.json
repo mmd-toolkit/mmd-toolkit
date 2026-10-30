@@ -1,0 +1,171 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/railroad.md",
+    "line": 167
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "json",
+        "definition": {
+          "type": "nonterminal",
+          "name": "element"
+        }
+      },
+      {
+        "name": "element",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "nonterminal",
+              "name": "object"
+            },
+            {
+              "type": "nonterminal",
+              "name": "array"
+            },
+            {
+              "type": "nonterminal",
+              "name": "string"
+            },
+            {
+              "type": "nonterminal",
+              "name": "number"
+            },
+            {
+              "type": "terminal",
+              "value": "true"
+            },
+            {
+              "type": "terminal",
+              "value": "false"
+            },
+            {
+              "type": "terminal",
+              "value": "null"
+            }
+          ]
+        }
+      },
+      {
+        "name": "object",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "terminal",
+              "value": "{"
+            },
+            {
+              "type": "optional",
+              "element": {
+                "type": "sequence",
+                "elements": [
+                  {
+                    "type": "nonterminal",
+                    "name": "member"
+                  },
+                  {
+                    "type": "repetition",
+                    "element": {
+                      "type": "sequence",
+                      "elements": [
+                        {
+                          "type": "terminal",
+                          "value": ","
+                        },
+                        {
+                          "type": "nonterminal",
+                          "name": "member"
+                        }
+                      ]
+                    },
+                    "min": 0,
+                    "max": "Infinity"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "terminal",
+              "value": "}"
+            }
+          ]
+        }
+      },
+      {
+        "name": "array",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "terminal",
+              "value": "["
+            },
+            {
+              "type": "optional",
+              "element": {
+                "type": "sequence",
+                "elements": [
+                  {
+                    "type": "nonterminal",
+                    "name": "element"
+                  },
+                  {
+                    "type": "repetition",
+                    "element": {
+                      "type": "sequence",
+                      "elements": [
+                        {
+                          "type": "terminal",
+                          "value": ","
+                        },
+                        {
+                          "type": "nonterminal",
+                          "name": "element"
+                        }
+                      ]
+                    },
+                    "min": 0,
+                    "max": "Infinity"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "terminal",
+              "value": "]"
+            }
+          ]
+        }
+      },
+      {
+        "name": "member",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "nonterminal",
+              "name": "string"
+            },
+            {
+              "type": "terminal",
+              "value": ":"
+            },
+            {
+              "type": "nonterminal",
+              "name": "element"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

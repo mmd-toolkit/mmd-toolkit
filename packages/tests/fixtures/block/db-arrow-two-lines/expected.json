@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, block arrows: two block arrows."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "x",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "right"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "y",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "down"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

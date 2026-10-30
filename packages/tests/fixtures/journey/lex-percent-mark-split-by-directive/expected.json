@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Comments: the mark is found in the text without directives: `%`, a directive, and `% c` is a comment with the mark `%%`."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A",
+        "people": [],
+        "score": 1
+      }
+    ]
+  }
+}

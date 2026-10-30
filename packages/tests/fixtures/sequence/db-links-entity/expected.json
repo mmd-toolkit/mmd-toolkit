@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Links and properties: the JSON is read from the converted form of the text, where an entity is a placeholder."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {
+          "a": "ﬂ°°9829¶ß"
+        },
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

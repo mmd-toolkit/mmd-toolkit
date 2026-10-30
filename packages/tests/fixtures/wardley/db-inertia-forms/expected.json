@@ -1,0 +1,66 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How do bare and parenthesized inertia and every strategy publish?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "A",
+        "label": "A",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": true
+      },
+      {
+        "id": "B",
+        "label": "B",
+        "x": 30,
+        "y": 20,
+        "className": "component",
+        "inertia": true
+      },
+      {
+        "id": "C",
+        "label": "C",
+        "x": 40,
+        "y": 30,
+        "className": "component",
+        "inertia": true,
+        "sourceStrategy": "market"
+      },
+      {
+        "id": "D",
+        "label": "D",
+        "x": 50,
+        "y": 40,
+        "className": "component",
+        "inertia": false,
+        "sourceStrategy": "outsource"
+      },
+      {
+        "id": "E",
+        "label": "E",
+        "x": 60,
+        "y": 50,
+        "className": "component",
+        "inertia": false,
+        "sourceStrategy": "buy"
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

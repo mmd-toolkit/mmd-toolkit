@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Negative zero is not an ABNF repeat token."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 5: unexpected character: ->-<- at offset: 23, skipped 1 characters. "
+  }
+}

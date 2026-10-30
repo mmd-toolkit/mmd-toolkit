@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A zero edge limit rejects the first edge."
+  },
+  "config": {
+    "maxEdges": 0
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Edge limit exceeded. 0 edges found, but the limit is 0.\n\nInitialize mermaid with maxEdges set to a higher number to allow more edges.\nYou cannot set this config via configuration inside the diagram as it is a secure config.\nYou have to call mermaid.initialize."
+  }
+}

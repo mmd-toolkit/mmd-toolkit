@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md: An erased empty block alone does not satisfy the required Name after the one flow-space gap."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n... TBflow accDescr {}Aend\n----------------------^\nExpecting 'SPACE', 'GRAPH', 'DIR', 'flow', 'end', 'global', 'connector', 'AMP', 'COLON', 'START_LINK', 'STR', 'MD_STR', 'STYLE', 'LINKSTYLE', 'CLASSDEF', 'CLASS', 'CLICK', 'DOWN', 'UP', 'NUM', 'NODE_STRING', 'BRKT', 'MINUS', 'MULT', 'UNICODE_TEXT', got 'NEWLINE'"
+  }
+}

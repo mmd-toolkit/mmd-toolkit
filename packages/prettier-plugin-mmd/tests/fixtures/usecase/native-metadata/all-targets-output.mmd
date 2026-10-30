@@ -1,0 +1,11 @@
+usecase-beta
+  actor Customer@{ type: normal, icon: '', business: false }
+  Task(Work)@{ business: true }
+  systemBoundary Scope@{ type: package }
+    Item
+  end
+  Customer edge@--> Task
+  edge@{ animate: false, animation: fast }
+  Scope@{ type: rect }
+  json Data @{}
+  Data@{ }

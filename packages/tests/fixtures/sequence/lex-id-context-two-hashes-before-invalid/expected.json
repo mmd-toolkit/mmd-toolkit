@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md The id context, rule 6: the longest run that the condition allows ends before the second `#`, so the participant is `A # b`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A # b",
+        "description": "A # b",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

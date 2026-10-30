@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/wardley.md",
+    "line": 208
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Evolution",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "Database",
+        "label": "Database",
+        "x": 50,
+        "y": 40,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "API",
+        "label": "API",
+        "x": 60,
+        "y": 55.00000000000001,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [
+      {
+        "source": "Database",
+        "target": "API",
+        "dashed": false
+      }
+    ],
+    "trends": [
+      {
+        "nodeId": "Database",
+        "targetX": 75
+      },
+      {
+        "nodeId": "API",
+        "targetX": 80
+      }
+    ],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

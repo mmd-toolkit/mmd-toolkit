@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A tag opened in title <a converts the attribute quotes in a later Person label; the recorded label is b='c'>d."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "<a",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "p",
+        "label": {
+          "text": "b='c'>d"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-attachment-mapping.spec.ts",
+    "line": 18,
+    "test": "issue #75: standalone `id@{ ... }` attachment mappings > a flow attachment maps as `attachment`, so the flow id owns no vertex mapping"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "a",
+        "props": {}
+      },
+      {
+        "id": "b",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "b",
+        "props": {}
+      },
+      {
+        "id": "pipeline",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "pipeline",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "a",
+        "end": "b",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_a_b_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "pipeline",
+        "nodes": [
+          "b",
+          "a"
+        ],
+        "title": "Pipeline",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow",
+        "metadata": {
+          "view": "collapsed"
+        }
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "pipeline",
+        "set": {
+          "metadata": {
+            "view": "collapsed"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/railroad/parser/railroadDiagram.spec.ts",
+    "line": 303,
+    "test": "Railroad Parser > Edge Cases > should parse deeply nested IR"
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "rule",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "choice",
+              "alternatives": [
+                {
+                  "type": "terminal",
+                  "value": "a"
+                },
+                {
+                  "type": "terminal",
+                  "value": "b"
+                }
+              ]
+            },
+            {
+              "type": "choice",
+              "alternatives": [
+                {
+                  "type": "terminal",
+                  "value": "c"
+                },
+                {
+                  "type": "terminal",
+                  "value": "d"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

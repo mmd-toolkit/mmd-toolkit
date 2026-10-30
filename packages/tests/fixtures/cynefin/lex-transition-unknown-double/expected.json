@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Unknown escape conversion is checked independently in double-quoted labels."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear",
+        "label": "aqbu0041cx41"
+      }
+    ]
+  }
+}

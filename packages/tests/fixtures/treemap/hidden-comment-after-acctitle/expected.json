@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a retained native comment after ACC_TITLE leave the next row reachable?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "A",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "B",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-empty-metadata.spec.ts",
+    "line": 18,
+    "test": "issue #83: empty/whitespace @{ } metadata block > multi-line empty block @{\\n} parses without crashing (the reported repro)"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "newtask",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Example",
+        "type": "square",
+        "props": {},
+        "metadata": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "newtask",
+        "set": {
+          "metadata": {}
+        }
+      }
+    ]
+  }
+}

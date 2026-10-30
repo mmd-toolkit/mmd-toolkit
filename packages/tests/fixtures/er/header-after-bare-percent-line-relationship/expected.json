@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences/bare-percent-line-before-header.md The difference, example 6: a bare %% line before an ER diagram with the A ||--o{ B : has relationship. Mermaid rejects before the header; the specified reading accepts both entities and the identifying relationship with zero-or-more B and exactly-one A."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n%%erDiagram  A ||-\n^\nExpecting 'ER_DIAGRAM', got '%'"
+  }
+}

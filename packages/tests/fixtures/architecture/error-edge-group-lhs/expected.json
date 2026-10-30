@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A group endpoint passes the existence test then throws TypeError when reading its node parent."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot read properties of undefined (reading 'in')"
+  }
+}

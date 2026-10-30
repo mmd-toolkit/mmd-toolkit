@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A retained native directive prefix coexists with the frontmatter HTML quote divergence."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "<a",
+    "accTitle": "b='c'>d",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    },
+    "title": "<a"
+  }
+}

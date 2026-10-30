@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/treeView/boxDrawingPreprocessor.spec.ts",
+    "line": 397,
+    "test": "boxDrawingPreprocessor > preprocessBoxDrawing > error cases > should handle tab-indented box-drawing lines"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "src",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "index.ts",
+            "nodeType": "file",
+            "children": []
+          },
+          {
+            "name": "utils.ts",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

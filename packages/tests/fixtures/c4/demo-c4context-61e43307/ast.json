@@ -1,0 +1,8252 @@
+{
+  "type": "Root",
+  "diagramType": "c4",
+  "body": {
+    "type": "C4Diagram",
+    "kind": "context",
+    "beforeBody": [],
+    "body": [
+      {
+        "type": "C4AccTitleStatement",
+        "value": {
+          "type": "C4Literal",
+          "value": "C4 context demo",
+          "range": [
+            20,
+            35
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 10
+            },
+            "end": {
+              "line": 2,
+              "column": 25
+            }
+          }
+        },
+        "range": [
+          10,
+          35
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 25
+          }
+        }
+      },
+      {
+        "type": "C4AccDescrStatement",
+        "value": {
+          "type": "C4Literal",
+          "value": "Many large C4 diagrams",
+          "range": [
+            46,
+            68
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 10
+            },
+            "end": {
+              "line": 3,
+              "column": 32
+            }
+          }
+        },
+        "range": [
+          36,
+          68
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 32
+          }
+        }
+      },
+      {
+        "type": "C4TitleStatement",
+        "value": {
+          "type": "C4Literal",
+          "value": "System Context diagram for Internet Banking System",
+          "range": [
+            76,
+            126
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 6
+            },
+            "end": {
+              "line": 5,
+              "column": 56
+            }
+          }
+        },
+        "range": [
+          70,
+          126
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 56
+          }
+        }
+      },
+      {
+        "type": "C4BoundaryStatement",
+        "keyword": "Enterprise_Boundary",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "b0",
+            "range": [
+              148,
+              150
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 20
+              },
+              "end": {
+                "line": 7,
+                "column": 22
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "BankBoundary0",
+            "raw": "\"BankBoundary0\"",
+            "closed": true,
+            "range": [
+              152,
+              167
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 24
+              },
+              "end": {
+                "line": 7,
+                "column": 39
+              }
+            }
+          }
+        ],
+        "beforeBody": [],
+        "body": [
+          {
+            "type": "C4ElementStatement",
+            "keyword": "Person",
+            "arguments": [
+              {
+                "type": "C4Literal",
+                "value": "customerA",
+                "range": [
+                  182,
+                  191
+                ],
+                "loc": {
+                  "start": {
+                    "line": 8,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 8,
+                    "column": 20
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "Banking Customer A",
+                "raw": "\"Banking Customer A\"",
+                "closed": true,
+                "range": [
+                  193,
+                  213
+                ],
+                "loc": {
+                  "start": {
+                    "line": 8,
+                    "column": 22
+                  },
+                  "end": {
+                    "line": 8,
+                    "column": 42
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "A customer of the bank, with personal bank accounts.",
+                "raw": "\"A customer of the bank, with personal bank accounts.\"",
+                "closed": true,
+                "range": [
+                  215,
+                  269
+                ],
+                "loc": {
+                  "start": {
+                    "line": 8,
+                    "column": 44
+                  },
+                  "end": {
+                    "line": 8,
+                    "column": 98
+                  }
+                }
+              }
+            ],
+            "range": [
+              175,
+              270
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 4
+              },
+              "end": {
+                "line": 8,
+                "column": 99
+              }
+            }
+          },
+          {
+            "type": "C4ElementStatement",
+            "keyword": "Person",
+            "arguments": [
+              {
+                "type": "C4Literal",
+                "value": "customerB",
+                "range": [
+                  282,
+                  291
+                ],
+                "loc": {
+                  "start": {
+                    "line": 9,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 9,
+                    "column": 20
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "Banking Customer B",
+                "raw": "\"Banking Customer B\"",
+                "closed": true,
+                "range": [
+                  293,
+                  313
+                ],
+                "loc": {
+                  "start": {
+                    "line": 9,
+                    "column": 22
+                  },
+                  "end": {
+                    "line": 9,
+                    "column": 42
+                  }
+                }
+              }
+            ],
+            "range": [
+              275,
+              314
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 4
+              },
+              "end": {
+                "line": 9,
+                "column": 43
+              }
+            }
+          },
+          {
+            "type": "C4ElementStatement",
+            "keyword": "Person_Ext",
+            "arguments": [
+              {
+                "type": "C4Literal",
+                "value": "customerC",
+                "range": [
+                  330,
+                  339
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 15
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 24
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "Banking Customer C",
+                "raw": "\"Banking Customer C\"",
+                "closed": true,
+                "range": [
+                  341,
+                  361
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 26
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 46
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "desc",
+                "raw": "\"desc\"",
+                "closed": true,
+                "range": [
+                  363,
+                  369
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 48
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 54
+                  }
+                }
+              }
+            ],
+            "range": [
+              319,
+              370
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 4
+              },
+              "end": {
+                "line": 10,
+                "column": 55
+              }
+            }
+          },
+          {
+            "type": "C4ElementStatement",
+            "keyword": "Person",
+            "arguments": [
+              {
+                "type": "C4Literal",
+                "value": "customerD",
+                "range": [
+                  383,
+                  392
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 20
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "Banking Customer D",
+                "raw": "\"Banking Customer D\"",
+                "closed": true,
+                "range": [
+                  394,
+                  414
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 22
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 42
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "A customer of the bank, <br/> with personal bank accounts.",
+                "raw": "\"A customer of the bank, <br/> with personal bank accounts.\"",
+                "closed": true,
+                "range": [
+                  416,
+                  476
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 44
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 104
+                  }
+                }
+              }
+            ],
+            "range": [
+              376,
+              477
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 4
+              },
+              "end": {
+                "line": 12,
+                "column": 105
+              }
+            }
+          },
+          {
+            "type": "C4ElementStatement",
+            "keyword": "System",
+            "arguments": [
+              {
+                "type": "C4Literal",
+                "value": "SystemAA",
+                "range": [
+                  490,
+                  498
+                ],
+                "loc": {
+                  "start": {
+                    "line": 14,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 14,
+                    "column": 19
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "Internet Banking System",
+                "raw": "\"Internet Banking System\"",
+                "closed": true,
+                "range": [
+                  500,
+                  525
+                ],
+                "loc": {
+                  "start": {
+                    "line": 14,
+                    "column": 21
+                  },
+                  "end": {
+                    "line": 14,
+                    "column": 46
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "Allows customers to view information about their bank accounts, and make payments.",
+                "raw": "\"Allows customers to view information about their bank accounts, and make payments.\"",
+                "closed": true,
+                "range": [
+                  527,
+                  611
+                ],
+                "loc": {
+                  "start": {
+                    "line": 14,
+                    "column": 48
+                  },
+                  "end": {
+                    "line": 14,
+                    "column": 132
+                  }
+                }
+              }
+            ],
+            "range": [
+              483,
+              612
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 4
+              },
+              "end": {
+                "line": 14,
+                "column": 133
+              }
+            }
+          },
+          {
+            "type": "C4BoundaryStatement",
+            "keyword": "Enterprise_Boundary",
+            "arguments": [
+              {
+                "type": "C4Literal",
+                "value": "b1",
+                "range": [
+                  638,
+                  640
+                ],
+                "loc": {
+                  "start": {
+                    "line": 16,
+                    "column": 24
+                  },
+                  "end": {
+                    "line": 16,
+                    "column": 26
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "BankBoundary",
+                "raw": "\"BankBoundary\"",
+                "closed": true,
+                "range": [
+                  642,
+                  656
+                ],
+                "loc": {
+                  "start": {
+                    "line": 16,
+                    "column": 28
+                  },
+                  "end": {
+                    "line": 16,
+                    "column": 42
+                  }
+                }
+              }
+            ],
+            "beforeBody": [],
+            "body": [
+              {
+                "type": "C4ElementStatement",
+                "keyword": "SystemDb_Ext",
+                "arguments": [
+                  {
+                    "type": "C4Literal",
+                    "value": "SystemE",
+                    "range": [
+                      680,
+                      687
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 18,
+                        "column": 19
+                      },
+                      "end": {
+                        "line": 18,
+                        "column": 26
+                      }
+                    }
+                  },
+                  {
+                    "type": "StringLiteral",
+                    "value": "Mainframe Banking System",
+                    "raw": "\"Mainframe Banking System\"",
+                    "closed": true,
+                    "range": [
+                      689,
+                      715
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 18,
+                        "column": 28
+                      },
+                      "end": {
+                        "line": 18,
+                        "column": 54
+                      }
+                    }
+                  },
+                  {
+                    "type": "StringLiteral",
+                    "value": "Stores all of the core banking information about customers, accounts, transactions, etc.",
+                    "raw": "\"Stores all of the core banking information about customers, accounts, transactions, etc.\"",
+                    "closed": true,
+                    "range": [
+                      717,
+                      807
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 18,
+                        "column": 56
+                      },
+                      "end": {
+                        "line": 18,
+                        "column": 146
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  667,
+                  808
+                ],
+                "loc": {
+                  "start": {
+                    "line": 18,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 18,
+                    "column": 147
+                  }
+                }
+              },
+              {
+                "type": "C4BoundaryStatement",
+                "keyword": "System_Boundary",
+                "arguments": [
+                  {
+                    "type": "C4Literal",
+                    "value": "b2",
+                    "range": [
+                      832,
+                      834
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 20,
+                        "column": 22
+                      },
+                      "end": {
+                        "line": 20,
+                        "column": 24
+                      }
+                    }
+                  },
+                  {
+                    "type": "StringLiteral",
+                    "value": "BankBoundary2",
+                    "raw": "\"BankBoundary2\"",
+                    "closed": true,
+                    "range": [
+                      836,
+                      851
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 20,
+                        "column": 26
+                      },
+                      "end": {
+                        "line": 20,
+                        "column": 41
+                      }
+                    }
+                  }
+                ],
+                "beforeBody": [],
+                "body": [
+                  {
+                    "type": "C4ElementStatement",
+                    "keyword": "System",
+                    "arguments": [
+                      {
+                        "type": "C4Literal",
+                        "value": "SystemA",
+                        "range": [
+                          870,
+                          877
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 21,
+                            "column": 15
+                          },
+                          "end": {
+                            "line": 21,
+                            "column": 22
+                          }
+                        }
+                      },
+                      {
+                        "type": "StringLiteral",
+                        "value": "Banking System A",
+                        "raw": "\"Banking System A\"",
+                        "closed": true,
+                        "range": [
+                          879,
+                          897
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 21,
+                            "column": 24
+                          },
+                          "end": {
+                            "line": 21,
+                            "column": 42
+                          }
+                        }
+                      }
+                    ],
+                    "range": [
+                      863,
+                      898
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 21,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 21,
+                        "column": 43
+                      }
+                    }
+                  },
+                  {
+                    "type": "C4ElementStatement",
+                    "keyword": "System",
+                    "arguments": [
+                      {
+                        "type": "C4Literal",
+                        "value": "SystemB",
+                        "range": [
+                          914,
+                          921
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 22,
+                            "column": 15
+                          },
+                          "end": {
+                            "line": 22,
+                            "column": 22
+                          }
+                        }
+                      },
+                      {
+                        "type": "StringLiteral",
+                        "value": "Banking System B",
+                        "raw": "\"Banking System B\"",
+                        "closed": true,
+                        "range": [
+                          923,
+                          941
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 22,
+                            "column": 24
+                          },
+                          "end": {
+                            "line": 22,
+                            "column": 42
+                          }
+                        }
+                      },
+                      {
+                        "type": "StringLiteral",
+                        "value": "A system of the bank, with personal bank accounts. next line.",
+                        "raw": "\"A system of the bank, with personal bank accounts. next line.\"",
+                        "closed": true,
+                        "range": [
+                          943,
+                          1006
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 22,
+                            "column": 44
+                          },
+                          "end": {
+                            "line": 22,
+                            "column": 107
+                          }
+                        }
+                      }
+                    ],
+                    "range": [
+                      907,
+                      1007
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 22,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 22,
+                        "column": 108
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  816,
+                  1015
+                ],
+                "loc": {
+                  "start": {
+                    "line": 20,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 23,
+                    "column": 7
+                  }
+                }
+              },
+              {
+                "type": "C4ElementStatement",
+                "keyword": "System_Ext",
+                "arguments": [
+                  {
+                    "type": "C4Literal",
+                    "value": "SystemC",
+                    "range": [
+                      1034,
+                      1041
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 25,
+                        "column": 17
+                      },
+                      "end": {
+                        "line": 25,
+                        "column": 24
+                      }
+                    }
+                  },
+                  {
+                    "type": "StringLiteral",
+                    "value": "E-mail system",
+                    "raw": "\"E-mail system\"",
+                    "closed": true,
+                    "range": [
+                      1043,
+                      1058
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 25,
+                        "column": 26
+                      },
+                      "end": {
+                        "line": 25,
+                        "column": 41
+                      }
+                    }
+                  },
+                  {
+                    "type": "StringLiteral",
+                    "value": "The internal Microsoft Exchange e-mail system.",
+                    "raw": "\"The internal Microsoft Exchange e-mail system.\"",
+                    "closed": true,
+                    "range": [
+                      1060,
+                      1108
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 25,
+                        "column": 43
+                      },
+                      "end": {
+                        "line": 25,
+                        "column": 91
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1023,
+                  1109
+                ],
+                "loc": {
+                  "start": {
+                    "line": 25,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 25,
+                    "column": 92
+                  }
+                }
+              },
+              {
+                "type": "C4ElementStatement",
+                "keyword": "SystemDb",
+                "arguments": [
+                  {
+                    "type": "C4Literal",
+                    "value": "SystemD",
+                    "range": [
+                      1125,
+                      1132
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 26,
+                        "column": 15
+                      },
+                      "end": {
+                        "line": 26,
+                        "column": 22
+                      }
+                    }
+                  },
+                  {
+                    "type": "StringLiteral",
+                    "value": "Banking System D Database",
+                    "raw": "\"Banking System D Database\"",
+                    "closed": true,
+                    "range": [
+                      1134,
+                      1161
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 26,
+                        "column": 24
+                      },
+                      "end": {
+                        "line": 26,
+                        "column": 51
+                      }
+                    }
+                  },
+                  {
+                    "type": "StringLiteral",
+                    "value": "A system of the bank, with personal bank accounts.",
+                    "raw": "\"A system of the bank, with personal bank accounts.\"",
+                    "closed": true,
+                    "range": [
+                      1163,
+                      1215
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 26,
+                        "column": 53
+                      },
+                      "end": {
+                        "line": 26,
+                        "column": 105
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1116,
+                  1216
+                ],
+                "loc": {
+                  "start": {
+                    "line": 26,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 26,
+                    "column": 106
+                  }
+                }
+              },
+              {
+                "type": "C4BoundaryStatement",
+                "keyword": "Boundary",
+                "arguments": [
+                  {
+                    "type": "C4Literal",
+                    "value": "b3",
+                    "range": [
+                      1233,
+                      1235
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 28,
+                        "column": 15
+                      },
+                      "end": {
+                        "line": 28,
+                        "column": 17
+                      }
+                    }
+                  },
+                  {
+                    "type": "StringLiteral",
+                    "value": "BankBoundary3",
+                    "raw": "\"BankBoundary3\"",
+                    "closed": true,
+                    "range": [
+                      1237,
+                      1252
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 28,
+                        "column": 19
+                      },
+                      "end": {
+                        "line": 28,
+                        "column": 34
+                      }
+                    }
+                  },
+                  {
+                    "type": "StringLiteral",
+                    "value": "boundary",
+                    "raw": "\"boundary\"",
+                    "closed": true,
+                    "range": [
+                      1254,
+                      1264
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 28,
+                        "column": 36
+                      },
+                      "end": {
+                        "line": 28,
+                        "column": 46
+                      }
+                    }
+                  }
+                ],
+                "beforeBody": [],
+                "body": [
+                  {
+                    "type": "C4ElementStatement",
+                    "keyword": "SystemQueue",
+                    "arguments": [
+                      {
+                        "type": "C4Literal",
+                        "value": "SystemF",
+                        "range": [
+                          1288,
+                          1295
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 29,
+                            "column": 20
+                          },
+                          "end": {
+                            "line": 29,
+                            "column": 27
+                          }
+                        }
+                      },
+                      {
+                        "type": "StringLiteral",
+                        "value": "Banking System F Queue",
+                        "raw": "\"Banking System F Queue\"",
+                        "closed": true,
+                        "range": [
+                          1297,
+                          1321
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 29,
+                            "column": 29
+                          },
+                          "end": {
+                            "line": 29,
+                            "column": 53
+                          }
+                        }
+                      },
+                      {
+                        "type": "StringLiteral",
+                        "value": "A system of the bank.",
+                        "raw": "\"A system of the bank.\"",
+                        "closed": true,
+                        "range": [
+                          1323,
+                          1346
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 29,
+                            "column": 55
+                          },
+                          "end": {
+                            "line": 29,
+                            "column": 78
+                          }
+                        }
+                      }
+                    ],
+                    "range": [
+                      1276,
+                      1347
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 29,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 29,
+                        "column": 79
+                      }
+                    }
+                  },
+                  {
+                    "type": "C4ElementStatement",
+                    "keyword": "SystemQueue_Ext",
+                    "arguments": [
+                      {
+                        "type": "C4Literal",
+                        "value": "SystemG",
+                        "range": [
+                          1372,
+                          1379
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 30,
+                            "column": 24
+                          },
+                          "end": {
+                            "line": 30,
+                            "column": 31
+                          }
+                        }
+                      },
+                      {
+                        "type": "StringLiteral",
+                        "value": "Banking System G Queue",
+                        "raw": "\"Banking System G Queue\"",
+                        "closed": true,
+                        "range": [
+                          1381,
+                          1405
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 30,
+                            "column": 33
+                          },
+                          "end": {
+                            "line": 30,
+                            "column": 57
+                          }
+                        }
+                      },
+                      {
+                        "type": "StringLiteral",
+                        "value": "A system of the bank, with personal bank accounts.",
+                        "raw": "\"A system of the bank, with personal bank accounts.\"",
+                        "closed": true,
+                        "range": [
+                          1407,
+                          1459
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 30,
+                            "column": 59
+                          },
+                          "end": {
+                            "line": 30,
+                            "column": 111
+                          }
+                        }
+                      }
+                    ],
+                    "range": [
+                      1356,
+                      1460
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 30,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 30,
+                        "column": 112
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1224,
+                  1468
+                ],
+                "loc": {
+                  "start": {
+                    "line": 28,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 31,
+                    "column": 7
+                  }
+                }
+              }
+            ],
+            "range": [
+              618,
+              1474
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 4
+              },
+              "end": {
+                "line": 32,
+                "column": 5
+              }
+            }
+          }
+        ],
+        "range": [
+          128,
+          1478
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 0
+          },
+          "end": {
+            "line": 33,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "C4RelationshipStatement",
+        "keyword": "BiRel",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "customerA",
+            "range": [
+              1486,
+              1495
+            ],
+            "loc": {
+              "start": {
+                "line": 35,
+                "column": 6
+              },
+              "end": {
+                "line": 35,
+                "column": 15
+              }
+            }
+          },
+          {
+            "type": "C4Literal",
+            "value": "SystemAA",
+            "range": [
+              1497,
+              1505
+            ],
+            "loc": {
+              "start": {
+                "line": 35,
+                "column": 17
+              },
+              "end": {
+                "line": 35,
+                "column": 25
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Uses",
+            "raw": "\"Uses\"",
+            "closed": true,
+            "range": [
+              1507,
+              1513
+            ],
+            "loc": {
+              "start": {
+                "line": 35,
+                "column": 27
+              },
+              "end": {
+                "line": 35,
+                "column": 33
+              }
+            }
+          }
+        ],
+        "range": [
+          1480,
+          1514
+        ],
+        "loc": {
+          "start": {
+            "line": 35,
+            "column": 0
+          },
+          "end": {
+            "line": 35,
+            "column": 34
+          }
+        }
+      },
+      {
+        "type": "C4RelationshipStatement",
+        "keyword": "BiRel",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "SystemAA",
+            "range": [
+              1521,
+              1529
+            ],
+            "loc": {
+              "start": {
+                "line": 36,
+                "column": 6
+              },
+              "end": {
+                "line": 36,
+                "column": 14
+              }
+            }
+          },
+          {
+            "type": "C4Literal",
+            "value": "SystemE",
+            "range": [
+              1531,
+              1538
+            ],
+            "loc": {
+              "start": {
+                "line": 36,
+                "column": 16
+              },
+              "end": {
+                "line": 36,
+                "column": 23
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Uses",
+            "raw": "\"Uses\"",
+            "closed": true,
+            "range": [
+              1540,
+              1546
+            ],
+            "loc": {
+              "start": {
+                "line": 36,
+                "column": 25
+              },
+              "end": {
+                "line": 36,
+                "column": 31
+              }
+            }
+          }
+        ],
+        "range": [
+          1515,
+          1547
+        ],
+        "loc": {
+          "start": {
+            "line": 36,
+            "column": 0
+          },
+          "end": {
+            "line": 36,
+            "column": 32
+          }
+        }
+      },
+      {
+        "type": "C4RelationshipStatement",
+        "keyword": "Rel",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "SystemAA",
+            "range": [
+              1552,
+              1560
+            ],
+            "loc": {
+              "start": {
+                "line": 37,
+                "column": 4
+              },
+              "end": {
+                "line": 37,
+                "column": 12
+              }
+            }
+          },
+          {
+            "type": "C4Literal",
+            "value": "SystemC",
+            "range": [
+              1562,
+              1569
+            ],
+            "loc": {
+              "start": {
+                "line": 37,
+                "column": 14
+              },
+              "end": {
+                "line": 37,
+                "column": 21
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Sends e-mails",
+            "raw": "\"Sends e-mails\"",
+            "closed": true,
+            "range": [
+              1571,
+              1586
+            ],
+            "loc": {
+              "start": {
+                "line": 37,
+                "column": 23
+              },
+              "end": {
+                "line": 37,
+                "column": 38
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "SMTP",
+            "raw": "\"SMTP\"",
+            "closed": true,
+            "range": [
+              1588,
+              1594
+            ],
+            "loc": {
+              "start": {
+                "line": 37,
+                "column": 40
+              },
+              "end": {
+                "line": 37,
+                "column": 46
+              }
+            }
+          }
+        ],
+        "range": [
+          1548,
+          1595
+        ],
+        "loc": {
+          "start": {
+            "line": 37,
+            "column": 0
+          },
+          "end": {
+            "line": 37,
+            "column": 47
+          }
+        }
+      },
+      {
+        "type": "C4RelationshipStatement",
+        "keyword": "Rel",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "SystemC",
+            "range": [
+              1600,
+              1607
+            ],
+            "loc": {
+              "start": {
+                "line": 38,
+                "column": 4
+              },
+              "end": {
+                "line": 38,
+                "column": 11
+              }
+            }
+          },
+          {
+            "type": "C4Literal",
+            "value": "customerA",
+            "range": [
+              1609,
+              1618
+            ],
+            "loc": {
+              "start": {
+                "line": 38,
+                "column": 13
+              },
+              "end": {
+                "line": 38,
+                "column": 22
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Sends e-mails to",
+            "raw": "\"Sends e-mails to\"",
+            "closed": true,
+            "range": [
+              1620,
+              1638
+            ],
+            "loc": {
+              "start": {
+                "line": 38,
+                "column": 24
+              },
+              "end": {
+                "line": 38,
+                "column": 42
+              }
+            }
+          }
+        ],
+        "range": [
+          1596,
+          1639
+        ],
+        "loc": {
+          "start": {
+            "line": 38,
+            "column": 0
+          },
+          "end": {
+            "line": 38,
+            "column": 43
+          }
+        }
+      },
+      {
+        "type": "C4UpdateStatement",
+        "keyword": "UpdateElementStyle",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "customerA",
+            "range": [
+              1660,
+              1669
+            ],
+            "loc": {
+              "start": {
+                "line": 40,
+                "column": 19
+              },
+              "end": {
+                "line": 40,
+                "column": 28
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "fontColor",
+              "range": [
+                1672,
+                1681
+              ],
+              "loc": {
+                "start": {
+                  "line": 40,
+                  "column": 31
+                },
+                "end": {
+                  "line": 40,
+                  "column": 40
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "red",
+              "raw": "\"red\"",
+              "closed": true,
+              "range": [
+                1682,
+                1687
+              ],
+              "loc": {
+                "start": {
+                  "line": 40,
+                  "column": 41
+                },
+                "end": {
+                  "line": 40,
+                  "column": 46
+                }
+              }
+            },
+            "range": [
+              1671,
+              1687
+            ],
+            "loc": {
+              "start": {
+                "line": 40,
+                "column": 30
+              },
+              "end": {
+                "line": 40,
+                "column": 46
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "bgColor",
+              "range": [
+                1690,
+                1697
+              ],
+              "loc": {
+                "start": {
+                  "line": 40,
+                  "column": 49
+                },
+                "end": {
+                  "line": 40,
+                  "column": 56
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "grey",
+              "raw": "\"grey\"",
+              "closed": true,
+              "range": [
+                1698,
+                1704
+              ],
+              "loc": {
+                "start": {
+                  "line": 40,
+                  "column": 57
+                },
+                "end": {
+                  "line": 40,
+                  "column": 63
+                }
+              }
+            },
+            "range": [
+              1689,
+              1704
+            ],
+            "loc": {
+              "start": {
+                "line": 40,
+                "column": 48
+              },
+              "end": {
+                "line": 40,
+                "column": 63
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "borderColor",
+              "range": [
+                1707,
+                1718
+              ],
+              "loc": {
+                "start": {
+                  "line": 40,
+                  "column": 66
+                },
+                "end": {
+                  "line": 40,
+                  "column": 77
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "red",
+              "raw": "\"red\"",
+              "closed": true,
+              "range": [
+                1719,
+                1724
+              ],
+              "loc": {
+                "start": {
+                  "line": 40,
+                  "column": 78
+                },
+                "end": {
+                  "line": 40,
+                  "column": 83
+                }
+              }
+            },
+            "range": [
+              1706,
+              1724
+            ],
+            "loc": {
+              "start": {
+                "line": 40,
+                "column": 65
+              },
+              "end": {
+                "line": 40,
+                "column": 83
+              }
+            }
+          }
+        ],
+        "range": [
+          1641,
+          1725
+        ],
+        "loc": {
+          "start": {
+            "line": 40,
+            "column": 0
+          },
+          "end": {
+            "line": 40,
+            "column": 84
+          }
+        }
+      },
+      {
+        "type": "C4UpdateStatement",
+        "keyword": "UpdateRelStyle",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "customerA",
+            "range": [
+              1741,
+              1750
+            ],
+            "loc": {
+              "start": {
+                "line": 41,
+                "column": 15
+              },
+              "end": {
+                "line": 41,
+                "column": 24
+              }
+            }
+          },
+          {
+            "type": "C4Literal",
+            "value": "SystemAA",
+            "range": [
+              1752,
+              1760
+            ],
+            "loc": {
+              "start": {
+                "line": 41,
+                "column": 26
+              },
+              "end": {
+                "line": 41,
+                "column": 34
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "textColor",
+              "range": [
+                1763,
+                1772
+              ],
+              "loc": {
+                "start": {
+                  "line": 41,
+                  "column": 37
+                },
+                "end": {
+                  "line": 41,
+                  "column": 46
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "blue",
+              "raw": "\"blue\"",
+              "closed": true,
+              "range": [
+                1773,
+                1779
+              ],
+              "loc": {
+                "start": {
+                  "line": 41,
+                  "column": 47
+                },
+                "end": {
+                  "line": 41,
+                  "column": 53
+                }
+              }
+            },
+            "range": [
+              1762,
+              1779
+            ],
+            "loc": {
+              "start": {
+                "line": 41,
+                "column": 36
+              },
+              "end": {
+                "line": 41,
+                "column": 53
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "lineColor",
+              "range": [
+                1782,
+                1791
+              ],
+              "loc": {
+                "start": {
+                  "line": 41,
+                  "column": 56
+                },
+                "end": {
+                  "line": 41,
+                  "column": 65
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "blue",
+              "raw": "\"blue\"",
+              "closed": true,
+              "range": [
+                1792,
+                1798
+              ],
+              "loc": {
+                "start": {
+                  "line": 41,
+                  "column": 66
+                },
+                "end": {
+                  "line": 41,
+                  "column": 72
+                }
+              }
+            },
+            "range": [
+              1781,
+              1798
+            ],
+            "loc": {
+              "start": {
+                "line": 41,
+                "column": 55
+              },
+              "end": {
+                "line": 41,
+                "column": 72
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "offsetX",
+              "range": [
+                1801,
+                1808
+              ],
+              "loc": {
+                "start": {
+                  "line": 41,
+                  "column": 75
+                },
+                "end": {
+                  "line": 41,
+                  "column": 82
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "5",
+              "raw": "\"5\"",
+              "closed": true,
+              "range": [
+                1809,
+                1812
+              ],
+              "loc": {
+                "start": {
+                  "line": 41,
+                  "column": 83
+                },
+                "end": {
+                  "line": 41,
+                  "column": 86
+                }
+              }
+            },
+            "range": [
+              1800,
+              1812
+            ],
+            "loc": {
+              "start": {
+                "line": 41,
+                "column": 74
+              },
+              "end": {
+                "line": 41,
+                "column": 86
+              }
+            }
+          }
+        ],
+        "range": [
+          1726,
+          1813
+        ],
+        "loc": {
+          "start": {
+            "line": 41,
+            "column": 0
+          },
+          "end": {
+            "line": 41,
+            "column": 87
+          }
+        }
+      },
+      {
+        "type": "C4UpdateStatement",
+        "keyword": "UpdateRelStyle",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "SystemAA",
+            "range": [
+              1829,
+              1837
+            ],
+            "loc": {
+              "start": {
+                "line": 42,
+                "column": 15
+              },
+              "end": {
+                "line": 42,
+                "column": 23
+              }
+            }
+          },
+          {
+            "type": "C4Literal",
+            "value": "SystemE",
+            "range": [
+              1839,
+              1846
+            ],
+            "loc": {
+              "start": {
+                "line": 42,
+                "column": 25
+              },
+              "end": {
+                "line": 42,
+                "column": 32
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "textColor",
+              "range": [
+                1849,
+                1858
+              ],
+              "loc": {
+                "start": {
+                  "line": 42,
+                  "column": 35
+                },
+                "end": {
+                  "line": 42,
+                  "column": 44
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "blue",
+              "raw": "\"blue\"",
+              "closed": true,
+              "range": [
+                1859,
+                1865
+              ],
+              "loc": {
+                "start": {
+                  "line": 42,
+                  "column": 45
+                },
+                "end": {
+                  "line": 42,
+                  "column": 51
+                }
+              }
+            },
+            "range": [
+              1848,
+              1865
+            ],
+            "loc": {
+              "start": {
+                "line": 42,
+                "column": 34
+              },
+              "end": {
+                "line": 42,
+                "column": 51
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "lineColor",
+              "range": [
+                1868,
+                1877
+              ],
+              "loc": {
+                "start": {
+                  "line": 42,
+                  "column": 54
+                },
+                "end": {
+                  "line": 42,
+                  "column": 63
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "blue",
+              "raw": "\"blue\"",
+              "closed": true,
+              "range": [
+                1878,
+                1884
+              ],
+              "loc": {
+                "start": {
+                  "line": 42,
+                  "column": 64
+                },
+                "end": {
+                  "line": 42,
+                  "column": 70
+                }
+              }
+            },
+            "range": [
+              1867,
+              1884
+            ],
+            "loc": {
+              "start": {
+                "line": 42,
+                "column": 53
+              },
+              "end": {
+                "line": 42,
+                "column": 70
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "offsetY",
+              "range": [
+                1887,
+                1894
+              ],
+              "loc": {
+                "start": {
+                  "line": 42,
+                  "column": 73
+                },
+                "end": {
+                  "line": 42,
+                  "column": 80
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "-10",
+              "raw": "\"-10\"",
+              "closed": true,
+              "range": [
+                1895,
+                1900
+              ],
+              "loc": {
+                "start": {
+                  "line": 42,
+                  "column": 81
+                },
+                "end": {
+                  "line": 42,
+                  "column": 86
+                }
+              }
+            },
+            "range": [
+              1886,
+              1900
+            ],
+            "loc": {
+              "start": {
+                "line": 42,
+                "column": 72
+              },
+              "end": {
+                "line": 42,
+                "column": 86
+              }
+            }
+          }
+        ],
+        "range": [
+          1814,
+          1901
+        ],
+        "loc": {
+          "start": {
+            "line": 42,
+            "column": 0
+          },
+          "end": {
+            "line": 42,
+            "column": 87
+          }
+        }
+      },
+      {
+        "type": "C4UpdateStatement",
+        "keyword": "UpdateRelStyle",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "SystemAA",
+            "range": [
+              1917,
+              1925
+            ],
+            "loc": {
+              "start": {
+                "line": 43,
+                "column": 15
+              },
+              "end": {
+                "line": 43,
+                "column": 23
+              }
+            }
+          },
+          {
+            "type": "C4Literal",
+            "value": "SystemC",
+            "range": [
+              1927,
+              1934
+            ],
+            "loc": {
+              "start": {
+                "line": 43,
+                "column": 25
+              },
+              "end": {
+                "line": 43,
+                "column": 32
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "textColor",
+              "range": [
+                1937,
+                1946
+              ],
+              "loc": {
+                "start": {
+                  "line": 43,
+                  "column": 35
+                },
+                "end": {
+                  "line": 43,
+                  "column": 44
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "blue",
+              "raw": "\"blue\"",
+              "closed": true,
+              "range": [
+                1947,
+                1953
+              ],
+              "loc": {
+                "start": {
+                  "line": 43,
+                  "column": 45
+                },
+                "end": {
+                  "line": 43,
+                  "column": 51
+                }
+              }
+            },
+            "range": [
+              1936,
+              1953
+            ],
+            "loc": {
+              "start": {
+                "line": 43,
+                "column": 34
+              },
+              "end": {
+                "line": 43,
+                "column": 51
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "lineColor",
+              "range": [
+                1956,
+                1965
+              ],
+              "loc": {
+                "start": {
+                  "line": 43,
+                  "column": 54
+                },
+                "end": {
+                  "line": 43,
+                  "column": 63
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "blue",
+              "raw": "\"blue\"",
+              "closed": true,
+              "range": [
+                1966,
+                1972
+              ],
+              "loc": {
+                "start": {
+                  "line": 43,
+                  "column": 64
+                },
+                "end": {
+                  "line": 43,
+                  "column": 70
+                }
+              }
+            },
+            "range": [
+              1955,
+              1972
+            ],
+            "loc": {
+              "start": {
+                "line": 43,
+                "column": 53
+              },
+              "end": {
+                "line": 43,
+                "column": 70
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "offsetY",
+              "range": [
+                1975,
+                1982
+              ],
+              "loc": {
+                "start": {
+                  "line": 43,
+                  "column": 73
+                },
+                "end": {
+                  "line": 43,
+                  "column": 80
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "-40",
+              "raw": "\"-40\"",
+              "closed": true,
+              "range": [
+                1983,
+                1988
+              ],
+              "loc": {
+                "start": {
+                  "line": 43,
+                  "column": 81
+                },
+                "end": {
+                  "line": 43,
+                  "column": 86
+                }
+              }
+            },
+            "range": [
+              1974,
+              1988
+            ],
+            "loc": {
+              "start": {
+                "line": 43,
+                "column": 72
+              },
+              "end": {
+                "line": 43,
+                "column": 86
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "offsetX",
+              "range": [
+                1991,
+                1998
+              ],
+              "loc": {
+                "start": {
+                  "line": 43,
+                  "column": 89
+                },
+                "end": {
+                  "line": 43,
+                  "column": 96
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "-50",
+              "raw": "\"-50\"",
+              "closed": true,
+              "range": [
+                1999,
+                2004
+              ],
+              "loc": {
+                "start": {
+                  "line": 43,
+                  "column": 97
+                },
+                "end": {
+                  "line": 43,
+                  "column": 102
+                }
+              }
+            },
+            "range": [
+              1990,
+              2004
+            ],
+            "loc": {
+              "start": {
+                "line": 43,
+                "column": 88
+              },
+              "end": {
+                "line": 43,
+                "column": 102
+              }
+            }
+          }
+        ],
+        "range": [
+          1902,
+          2005
+        ],
+        "loc": {
+          "start": {
+            "line": 43,
+            "column": 0
+          },
+          "end": {
+            "line": 43,
+            "column": 103
+          }
+        }
+      },
+      {
+        "type": "C4UpdateStatement",
+        "keyword": "UpdateRelStyle",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "SystemC",
+            "range": [
+              2021,
+              2028
+            ],
+            "loc": {
+              "start": {
+                "line": 44,
+                "column": 15
+              },
+              "end": {
+                "line": 44,
+                "column": 22
+              }
+            }
+          },
+          {
+            "type": "C4Literal",
+            "value": "customerA",
+            "range": [
+              2030,
+              2039
+            ],
+            "loc": {
+              "start": {
+                "line": 44,
+                "column": 24
+              },
+              "end": {
+                "line": 44,
+                "column": 33
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "textColor",
+              "range": [
+                2042,
+                2051
+              ],
+              "loc": {
+                "start": {
+                  "line": 44,
+                  "column": 36
+                },
+                "end": {
+                  "line": 44,
+                  "column": 45
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "red",
+              "raw": "\"red\"",
+              "closed": true,
+              "range": [
+                2052,
+                2057
+              ],
+              "loc": {
+                "start": {
+                  "line": 44,
+                  "column": 46
+                },
+                "end": {
+                  "line": 44,
+                  "column": 51
+                }
+              }
+            },
+            "range": [
+              2041,
+              2057
+            ],
+            "loc": {
+              "start": {
+                "line": 44,
+                "column": 35
+              },
+              "end": {
+                "line": 44,
+                "column": 51
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "lineColor",
+              "range": [
+                2060,
+                2069
+              ],
+              "loc": {
+                "start": {
+                  "line": 44,
+                  "column": 54
+                },
+                "end": {
+                  "line": 44,
+                  "column": 63
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "red",
+              "raw": "\"red\"",
+              "closed": true,
+              "range": [
+                2070,
+                2075
+              ],
+              "loc": {
+                "start": {
+                  "line": 44,
+                  "column": 64
+                },
+                "end": {
+                  "line": 44,
+                  "column": 69
+                }
+              }
+            },
+            "range": [
+              2059,
+              2075
+            ],
+            "loc": {
+              "start": {
+                "line": 44,
+                "column": 53
+              },
+              "end": {
+                "line": 44,
+                "column": 69
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "offsetX",
+              "range": [
+                2078,
+                2085
+              ],
+              "loc": {
+                "start": {
+                  "line": 44,
+                  "column": 72
+                },
+                "end": {
+                  "line": 44,
+                  "column": 79
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "-50",
+              "raw": "\"-50\"",
+              "closed": true,
+              "range": [
+                2086,
+                2091
+              ],
+              "loc": {
+                "start": {
+                  "line": 44,
+                  "column": 80
+                },
+                "end": {
+                  "line": 44,
+                  "column": 85
+                }
+              }
+            },
+            "range": [
+              2077,
+              2091
+            ],
+            "loc": {
+              "start": {
+                "line": 44,
+                "column": 71
+              },
+              "end": {
+                "line": 44,
+                "column": 85
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "offsetY",
+              "range": [
+                2094,
+                2101
+              ],
+              "loc": {
+                "start": {
+                  "line": 44,
+                  "column": 88
+                },
+                "end": {
+                  "line": 44,
+                  "column": 95
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "20",
+              "raw": "\"20\"",
+              "closed": true,
+              "range": [
+                2102,
+                2106
+              ],
+              "loc": {
+                "start": {
+                  "line": 44,
+                  "column": 96
+                },
+                "end": {
+                  "line": 44,
+                  "column": 100
+                }
+              }
+            },
+            "range": [
+              2093,
+              2106
+            ],
+            "loc": {
+              "start": {
+                "line": 44,
+                "column": 87
+              },
+              "end": {
+                "line": 44,
+                "column": 100
+              }
+            }
+          }
+        ],
+        "range": [
+          2006,
+          2107
+        ],
+        "loc": {
+          "start": {
+            "line": 44,
+            "column": 0
+          },
+          "end": {
+            "line": 44,
+            "column": 101
+          }
+        }
+      },
+      {
+        "type": "C4UpdateStatement",
+        "keyword": "UpdateLayoutConfig",
+        "arguments": [
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "c4ShapeInRow",
+              "range": [
+                2129,
+                2141
+              ],
+              "loc": {
+                "start": {
+                  "line": 46,
+                  "column": 20
+                },
+                "end": {
+                  "line": 46,
+                  "column": 32
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "3",
+              "raw": "\"3\"",
+              "closed": true,
+              "range": [
+                2142,
+                2145
+              ],
+              "loc": {
+                "start": {
+                  "line": 46,
+                  "column": 33
+                },
+                "end": {
+                  "line": 46,
+                  "column": 36
+                }
+              }
+            },
+            "range": [
+              2128,
+              2145
+            ],
+            "loc": {
+              "start": {
+                "line": 46,
+                "column": 19
+              },
+              "end": {
+                "line": 46,
+                "column": 36
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "c4BoundaryInRow",
+              "range": [
+                2148,
+                2163
+              ],
+              "loc": {
+                "start": {
+                  "line": 46,
+                  "column": 39
+                },
+                "end": {
+                  "line": 46,
+                  "column": 54
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "1",
+              "raw": "\"1\"",
+              "closed": true,
+              "range": [
+                2164,
+                2167
+              ],
+              "loc": {
+                "start": {
+                  "line": 46,
+                  "column": 55
+                },
+                "end": {
+                  "line": 46,
+                  "column": 58
+                }
+              }
+            },
+            "range": [
+              2147,
+              2167
+            ],
+            "loc": {
+              "start": {
+                "line": 46,
+                "column": 38
+              },
+              "end": {
+                "line": 46,
+                "column": 58
+              }
+            }
+          }
+        ],
+        "range": [
+          2109,
+          2168
+        ],
+        "loc": {
+          "start": {
+            "line": 46,
+            "column": 0
+          },
+          "end": {
+            "line": 46,
+            "column": 59
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      2168
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 46,
+        "column": 59
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "C4Context",
+      "range": [
+        0,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accTitle",
+      "range": [
+        10,
+        18
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        18,
+        19
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "C4 context demo",
+      "range": [
+        20,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accDescr",
+      "range": [
+        36,
+        44
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        44,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Many large C4 diagrams",
+      "range": [
+        46,
+        68
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 10
+        },
+        "end": {
+          "line": 3,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        70,
+        75
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "System Context diagram for Internet Banking System",
+      "range": [
+        76,
+        126
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 6
+        },
+        "end": {
+          "line": 5,
+          "column": 56
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Enterprise_Boundary",
+      "range": [
+        128,
+        147
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        147,
+        148
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 19
+        },
+        "end": {
+          "line": 7,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "b0",
+      "range": [
+        148,
+        150
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 20
+        },
+        "end": {
+          "line": 7,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        150,
+        151
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 22
+        },
+        "end": {
+          "line": 7,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"BankBoundary0\"",
+      "range": [
+        152,
+        167
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 24
+        },
+        "end": {
+          "line": 7,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        167,
+        168
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 39
+        },
+        "end": {
+          "line": 7,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        169,
+        170
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 41
+        },
+        "end": {
+          "line": 7,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Person",
+      "range": [
+        175,
+        181
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 4
+        },
+        "end": {
+          "line": 8,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        181,
+        182
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 10
+        },
+        "end": {
+          "line": 8,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "customerA",
+      "range": [
+        182,
+        191
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 11
+        },
+        "end": {
+          "line": 8,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        191,
+        192
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 20
+        },
+        "end": {
+          "line": 8,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Banking Customer A\"",
+      "range": [
+        193,
+        213
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 22
+        },
+        "end": {
+          "line": 8,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        213,
+        214
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 42
+        },
+        "end": {
+          "line": 8,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"A customer of the bank, with personal bank accounts.\"",
+      "range": [
+        215,
+        269
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 44
+        },
+        "end": {
+          "line": 8,
+          "column": 98
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        269,
+        270
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 98
+        },
+        "end": {
+          "line": 8,
+          "column": 99
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Person",
+      "range": [
+        275,
+        281
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 4
+        },
+        "end": {
+          "line": 9,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        281,
+        282
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 10
+        },
+        "end": {
+          "line": 9,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "customerB",
+      "range": [
+        282,
+        291
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 11
+        },
+        "end": {
+          "line": 9,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        291,
+        292
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 20
+        },
+        "end": {
+          "line": 9,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Banking Customer B\"",
+      "range": [
+        293,
+        313
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 22
+        },
+        "end": {
+          "line": 9,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        313,
+        314
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 42
+        },
+        "end": {
+          "line": 9,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Person_Ext",
+      "range": [
+        319,
+        329
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 4
+        },
+        "end": {
+          "line": 10,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        329,
+        330
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 14
+        },
+        "end": {
+          "line": 10,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "customerC",
+      "range": [
+        330,
+        339
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 15
+        },
+        "end": {
+          "line": 10,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        339,
+        340
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 24
+        },
+        "end": {
+          "line": 10,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Banking Customer C\"",
+      "range": [
+        341,
+        361
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 26
+        },
+        "end": {
+          "line": 10,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        361,
+        362
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 46
+        },
+        "end": {
+          "line": 10,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"desc\"",
+      "range": [
+        363,
+        369
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 48
+        },
+        "end": {
+          "line": 10,
+          "column": 54
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        369,
+        370
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 54
+        },
+        "end": {
+          "line": 10,
+          "column": 55
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Person",
+      "range": [
+        376,
+        382
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 4
+        },
+        "end": {
+          "line": 12,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        382,
+        383
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 10
+        },
+        "end": {
+          "line": 12,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "customerD",
+      "range": [
+        383,
+        392
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 11
+        },
+        "end": {
+          "line": 12,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        392,
+        393
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 20
+        },
+        "end": {
+          "line": 12,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Banking Customer D\"",
+      "range": [
+        394,
+        414
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 22
+        },
+        "end": {
+          "line": 12,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        414,
+        415
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 42
+        },
+        "end": {
+          "line": 12,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"A customer of the bank, <br/> with personal bank accounts.\"",
+      "range": [
+        416,
+        476
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 44
+        },
+        "end": {
+          "line": 12,
+          "column": 104
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        476,
+        477
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 104
+        },
+        "end": {
+          "line": 12,
+          "column": 105
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "System",
+      "range": [
+        483,
+        489
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 4
+        },
+        "end": {
+          "line": 14,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        489,
+        490
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 10
+        },
+        "end": {
+          "line": 14,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "SystemAA",
+      "range": [
+        490,
+        498
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 11
+        },
+        "end": {
+          "line": 14,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        498,
+        499
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 19
+        },
+        "end": {
+          "line": 14,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Internet Banking System\"",
+      "range": [
+        500,
+        525
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 21
+        },
+        "end": {
+          "line": 14,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        525,
+        526
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 46
+        },
+        "end": {
+          "line": 14,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Allows customers to view information about their bank accounts, and make payments.\"",
+      "range": [
+        527,
+        611
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 48
+        },
+        "end": {
+          "line": 14,
+          "column": 132
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        611,
+        612
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 132
+        },
+        "end": {
+          "line": 14,
+          "column": 133
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Enterprise_Boundary",
+      "range": [
+        618,
+        637
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 4
+        },
+        "end": {
+          "line": 16,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        637,
+        638
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 23
+        },
+        "end": {
+          "line": 16,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "b1",
+      "range": [
+        638,
+        640
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 24
+        },
+        "end": {
+          "line": 16,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        640,
+        641
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 26
+        },
+        "end": {
+          "line": 16,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"BankBoundary\"",
+      "range": [
+        642,
+        656
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 28
+        },
+        "end": {
+          "line": 16,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        656,
+        657
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 42
+        },
+        "end": {
+          "line": 16,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        658,
+        659
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 44
+        },
+        "end": {
+          "line": 16,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "SystemDb_Ext",
+      "range": [
+        667,
+        679
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 6
+        },
+        "end": {
+          "line": 18,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        679,
+        680
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 18
+        },
+        "end": {
+          "line": 18,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "SystemE",
+      "range": [
+        680,
+        687
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 19
+        },
+        "end": {
+          "line": 18,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        687,
+        688
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 26
+        },
+        "end": {
+          "line": 18,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Mainframe Banking System\"",
+      "range": [
+        689,
+        715
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 28
+        },
+        "end": {
+          "line": 18,
+          "column": 54
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        715,
+        716
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 54
+        },
+        "end": {
+          "line": 18,
+          "column": 55
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Stores all of the core banking information about customers, accounts, transactions, etc.\"",
+      "range": [
+        717,
+        807
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 56
+        },
+        "end": {
+          "line": 18,
+          "column": 146
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        807,
+        808
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 146
+        },
+        "end": {
+          "line": 18,
+          "column": 147
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "System_Boundary",
+      "range": [
+        816,
+        831
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 6
+        },
+        "end": {
+          "line": 20,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        831,
+        832
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 21
+        },
+        "end": {
+          "line": 20,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "b2",
+      "range": [
+        832,
+        834
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 22
+        },
+        "end": {
+          "line": 20,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        834,
+        835
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 24
+        },
+        "end": {
+          "line": 20,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"BankBoundary2\"",
+      "range": [
+        836,
+        851
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 26
+        },
+        "end": {
+          "line": 20,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        851,
+        852
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 41
+        },
+        "end": {
+          "line": 20,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        853,
+        854
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 43
+        },
+        "end": {
+          "line": 20,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "System",
+      "range": [
+        863,
+        869
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 8
+        },
+        "end": {
+          "line": 21,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        869,
+        870
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 14
+        },
+        "end": {
+          "line": 21,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "SystemA",
+      "range": [
+        870,
+        877
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 15
+        },
+        "end": {
+          "line": 21,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        877,
+        878
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 22
+        },
+        "end": {
+          "line": 21,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Banking System A\"",
+      "range": [
+        879,
+        897
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 24
+        },
+        "end": {
+          "line": 21,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        897,
+        898
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 42
+        },
+        "end": {
+          "line": 21,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "System",
+      "range": [
+        907,
+        913
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 8
+        },
+        "end": {
+          "line": 22,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        913,
+        914
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 14
+        },
+        "end": {
+          "line": 22,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "SystemB",
+      "range": [
+        914,
+        921
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 15
+        },
+        "end": {
+          "line": 22,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        921,
+        922
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 22
+        },
+        "end": {
+          "line": 22,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Banking System B\"",
+      "range": [
+        923,
+        941
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 24
+        },
+        "end": {
+          "line": 22,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        941,
+        942
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 42
+        },
+        "end": {
+          "line": 22,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"A system of the bank, with personal bank accounts. next line.\"",
+      "range": [
+        943,
+        1006
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 44
+        },
+        "end": {
+          "line": 22,
+          "column": 107
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1006,
+        1007
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 107
+        },
+        "end": {
+          "line": 22,
+          "column": 108
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        1014,
+        1015
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 6
+        },
+        "end": {
+          "line": 23,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "System_Ext",
+      "range": [
+        1023,
+        1033
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 6
+        },
+        "end": {
+          "line": 25,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1033,
+        1034
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 16
+        },
+        "end": {
+          "line": 25,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "SystemC",
+      "range": [
+        1034,
+        1041
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 17
+        },
+        "end": {
+          "line": 25,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1041,
+        1042
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 24
+        },
+        "end": {
+          "line": 25,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"E-mail system\"",
+      "range": [
+        1043,
+        1058
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 26
+        },
+        "end": {
+          "line": 25,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1058,
+        1059
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 41
+        },
+        "end": {
+          "line": 25,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"The internal Microsoft Exchange e-mail system.\"",
+      "range": [
+        1060,
+        1108
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 43
+        },
+        "end": {
+          "line": 25,
+          "column": 91
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1108,
+        1109
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 91
+        },
+        "end": {
+          "line": 25,
+          "column": 92
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "SystemDb",
+      "range": [
+        1116,
+        1124
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 6
+        },
+        "end": {
+          "line": 26,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1124,
+        1125
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 14
+        },
+        "end": {
+          "line": 26,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "SystemD",
+      "range": [
+        1125,
+        1132
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 15
+        },
+        "end": {
+          "line": 26,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1132,
+        1133
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 22
+        },
+        "end": {
+          "line": 26,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Banking System D Database\"",
+      "range": [
+        1134,
+        1161
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 24
+        },
+        "end": {
+          "line": 26,
+          "column": 51
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1161,
+        1162
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 51
+        },
+        "end": {
+          "line": 26,
+          "column": 52
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"A system of the bank, with personal bank accounts.\"",
+      "range": [
+        1163,
+        1215
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 53
+        },
+        "end": {
+          "line": 26,
+          "column": 105
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1215,
+        1216
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 105
+        },
+        "end": {
+          "line": 26,
+          "column": 106
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Boundary",
+      "range": [
+        1224,
+        1232
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 6
+        },
+        "end": {
+          "line": 28,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1232,
+        1233
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 14
+        },
+        "end": {
+          "line": 28,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "b3",
+      "range": [
+        1233,
+        1235
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 15
+        },
+        "end": {
+          "line": 28,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1235,
+        1236
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 17
+        },
+        "end": {
+          "line": 28,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"BankBoundary3\"",
+      "range": [
+        1237,
+        1252
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 19
+        },
+        "end": {
+          "line": 28,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1252,
+        1253
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 34
+        },
+        "end": {
+          "line": 28,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"boundary\"",
+      "range": [
+        1254,
+        1264
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 36
+        },
+        "end": {
+          "line": 28,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1264,
+        1265
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 46
+        },
+        "end": {
+          "line": 28,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        1266,
+        1267
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 48
+        },
+        "end": {
+          "line": 28,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "SystemQueue",
+      "range": [
+        1276,
+        1287
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 8
+        },
+        "end": {
+          "line": 29,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1287,
+        1288
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 19
+        },
+        "end": {
+          "line": 29,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "SystemF",
+      "range": [
+        1288,
+        1295
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 20
+        },
+        "end": {
+          "line": 29,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1295,
+        1296
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 27
+        },
+        "end": {
+          "line": 29,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Banking System F Queue\"",
+      "range": [
+        1297,
+        1321
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 29
+        },
+        "end": {
+          "line": 29,
+          "column": 53
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1321,
+        1322
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 53
+        },
+        "end": {
+          "line": 29,
+          "column": 54
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"A system of the bank.\"",
+      "range": [
+        1323,
+        1346
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 55
+        },
+        "end": {
+          "line": 29,
+          "column": 78
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1346,
+        1347
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 78
+        },
+        "end": {
+          "line": 29,
+          "column": 79
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "SystemQueue_Ext",
+      "range": [
+        1356,
+        1371
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 8
+        },
+        "end": {
+          "line": 30,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1371,
+        1372
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 23
+        },
+        "end": {
+          "line": 30,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "SystemG",
+      "range": [
+        1372,
+        1379
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 24
+        },
+        "end": {
+          "line": 30,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1379,
+        1380
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 31
+        },
+        "end": {
+          "line": 30,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Banking System G Queue\"",
+      "range": [
+        1381,
+        1405
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 33
+        },
+        "end": {
+          "line": 30,
+          "column": 57
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1405,
+        1406
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 57
+        },
+        "end": {
+          "line": 30,
+          "column": 58
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"A system of the bank, with personal bank accounts.\"",
+      "range": [
+        1407,
+        1459
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 59
+        },
+        "end": {
+          "line": 30,
+          "column": 111
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1459,
+        1460
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 111
+        },
+        "end": {
+          "line": 30,
+          "column": 112
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        1467,
+        1468
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 6
+        },
+        "end": {
+          "line": 31,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        1473,
+        1474
+      ],
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 4
+        },
+        "end": {
+          "line": 32,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        1477,
+        1478
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 2
+        },
+        "end": {
+          "line": 33,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "BiRel",
+      "range": [
+        1480,
+        1485
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 0
+        },
+        "end": {
+          "line": 35,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1485,
+        1486
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 5
+        },
+        "end": {
+          "line": 35,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "customerA",
+      "range": [
+        1486,
+        1495
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 6
+        },
+        "end": {
+          "line": 35,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1495,
+        1496
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 15
+        },
+        "end": {
+          "line": 35,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "SystemAA",
+      "range": [
+        1497,
+        1505
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 17
+        },
+        "end": {
+          "line": 35,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1505,
+        1506
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 25
+        },
+        "end": {
+          "line": 35,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Uses\"",
+      "range": [
+        1507,
+        1513
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 27
+        },
+        "end": {
+          "line": 35,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1513,
+        1514
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 33
+        },
+        "end": {
+          "line": 35,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "BiRel",
+      "range": [
+        1515,
+        1520
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 0
+        },
+        "end": {
+          "line": 36,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1520,
+        1521
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 5
+        },
+        "end": {
+          "line": 36,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "SystemAA",
+      "range": [
+        1521,
+        1529
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 6
+        },
+        "end": {
+          "line": 36,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1529,
+        1530
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 14
+        },
+        "end": {
+          "line": 36,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "SystemE",
+      "range": [
+        1531,
+        1538
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 16
+        },
+        "end": {
+          "line": 36,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1538,
+        1539
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 23
+        },
+        "end": {
+          "line": 36,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Uses\"",
+      "range": [
+        1540,
+        1546
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 25
+        },
+        "end": {
+          "line": 36,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1546,
+        1547
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 31
+        },
+        "end": {
+          "line": 36,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Rel",
+      "range": [
+        1548,
+        1551
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 0
+        },
+        "end": {
+          "line": 37,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1551,
+        1552
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 3
+        },
+        "end": {
+          "line": 37,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "SystemAA",
+      "range": [
+        1552,
+        1560
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 4
+        },
+        "end": {
+          "line": 37,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1560,
+        1561
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 12
+        },
+        "end": {
+          "line": 37,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "SystemC",
+      "range": [
+        1562,
+        1569
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 14
+        },
+        "end": {
+          "line": 37,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1569,
+        1570
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 21
+        },
+        "end": {
+          "line": 37,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Sends e-mails\"",
+      "range": [
+        1571,
+        1586
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 23
+        },
+        "end": {
+          "line": 37,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1586,
+        1587
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 38
+        },
+        "end": {
+          "line": 37,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"SMTP\"",
+      "range": [
+        1588,
+        1594
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 40
+        },
+        "end": {
+          "line": 37,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1594,
+        1595
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 46
+        },
+        "end": {
+          "line": 37,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Rel",
+      "range": [
+        1596,
+        1599
+      ],
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 0
+        },
+        "end": {
+          "line": 38,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1599,
+        1600
+      ],
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 3
+        },
+        "end": {
+          "line": 38,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "SystemC",
+      "range": [
+        1600,
+        1607
+      ],
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 4
+        },
+        "end": {
+          "line": 38,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1607,
+        1608
+      ],
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 11
+        },
+        "end": {
+          "line": 38,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "customerA",
+      "range": [
+        1609,
+        1618
+      ],
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 13
+        },
+        "end": {
+          "line": 38,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1618,
+        1619
+      ],
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 22
+        },
+        "end": {
+          "line": 38,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Sends e-mails to\"",
+      "range": [
+        1620,
+        1638
+      ],
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 24
+        },
+        "end": {
+          "line": 38,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1638,
+        1639
+      ],
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 42
+        },
+        "end": {
+          "line": 38,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "UpdateElementStyle",
+      "range": [
+        1641,
+        1659
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 0
+        },
+        "end": {
+          "line": 40,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1659,
+        1660
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 18
+        },
+        "end": {
+          "line": 40,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "customerA",
+      "range": [
+        1660,
+        1669
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 19
+        },
+        "end": {
+          "line": 40,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1669,
+        1670
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 28
+        },
+        "end": {
+          "line": 40,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1671,
+        1672
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 30
+        },
+        "end": {
+          "line": 40,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "fontColor",
+      "range": [
+        1672,
+        1681
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 31
+        },
+        "end": {
+          "line": 40,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1681,
+        1682
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 40
+        },
+        "end": {
+          "line": 40,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"red\"",
+      "range": [
+        1682,
+        1687
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 41
+        },
+        "end": {
+          "line": 40,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1687,
+        1688
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 46
+        },
+        "end": {
+          "line": 40,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1689,
+        1690
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 48
+        },
+        "end": {
+          "line": 40,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "bgColor",
+      "range": [
+        1690,
+        1697
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 49
+        },
+        "end": {
+          "line": 40,
+          "column": 56
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1697,
+        1698
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 56
+        },
+        "end": {
+          "line": 40,
+          "column": 57
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"grey\"",
+      "range": [
+        1698,
+        1704
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 57
+        },
+        "end": {
+          "line": 40,
+          "column": 63
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1704,
+        1705
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 63
+        },
+        "end": {
+          "line": 40,
+          "column": 64
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1706,
+        1707
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 65
+        },
+        "end": {
+          "line": 40,
+          "column": 66
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "borderColor",
+      "range": [
+        1707,
+        1718
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 66
+        },
+        "end": {
+          "line": 40,
+          "column": 77
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1718,
+        1719
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 77
+        },
+        "end": {
+          "line": 40,
+          "column": 78
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"red\"",
+      "range": [
+        1719,
+        1724
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 78
+        },
+        "end": {
+          "line": 40,
+          "column": 83
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1724,
+        1725
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 83
+        },
+        "end": {
+          "line": 40,
+          "column": 84
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "UpdateRelStyle",
+      "range": [
+        1726,
+        1740
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 0
+        },
+        "end": {
+          "line": 41,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1740,
+        1741
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 14
+        },
+        "end": {
+          "line": 41,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "customerA",
+      "range": [
+        1741,
+        1750
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 15
+        },
+        "end": {
+          "line": 41,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1750,
+        1751
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 24
+        },
+        "end": {
+          "line": 41,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "SystemAA",
+      "range": [
+        1752,
+        1760
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 26
+        },
+        "end": {
+          "line": 41,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1760,
+        1761
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 34
+        },
+        "end": {
+          "line": 41,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1762,
+        1763
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 36
+        },
+        "end": {
+          "line": 41,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "textColor",
+      "range": [
+        1763,
+        1772
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 37
+        },
+        "end": {
+          "line": 41,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1772,
+        1773
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 46
+        },
+        "end": {
+          "line": 41,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"blue\"",
+      "range": [
+        1773,
+        1779
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 47
+        },
+        "end": {
+          "line": 41,
+          "column": 53
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1779,
+        1780
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 53
+        },
+        "end": {
+          "line": 41,
+          "column": 54
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1781,
+        1782
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 55
+        },
+        "end": {
+          "line": 41,
+          "column": 56
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "lineColor",
+      "range": [
+        1782,
+        1791
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 56
+        },
+        "end": {
+          "line": 41,
+          "column": 65
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1791,
+        1792
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 65
+        },
+        "end": {
+          "line": 41,
+          "column": 66
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"blue\"",
+      "range": [
+        1792,
+        1798
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 66
+        },
+        "end": {
+          "line": 41,
+          "column": 72
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1798,
+        1799
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 72
+        },
+        "end": {
+          "line": 41,
+          "column": 73
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1800,
+        1801
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 74
+        },
+        "end": {
+          "line": 41,
+          "column": 75
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "offsetX",
+      "range": [
+        1801,
+        1808
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 75
+        },
+        "end": {
+          "line": 41,
+          "column": 82
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1808,
+        1809
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 82
+        },
+        "end": {
+          "line": 41,
+          "column": 83
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"5\"",
+      "range": [
+        1809,
+        1812
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 83
+        },
+        "end": {
+          "line": 41,
+          "column": 86
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1812,
+        1813
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 86
+        },
+        "end": {
+          "line": 41,
+          "column": 87
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "UpdateRelStyle",
+      "range": [
+        1814,
+        1828
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 0
+        },
+        "end": {
+          "line": 42,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1828,
+        1829
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 14
+        },
+        "end": {
+          "line": 42,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "SystemAA",
+      "range": [
+        1829,
+        1837
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 15
+        },
+        "end": {
+          "line": 42,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1837,
+        1838
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 23
+        },
+        "end": {
+          "line": 42,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "SystemE",
+      "range": [
+        1839,
+        1846
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 25
+        },
+        "end": {
+          "line": 42,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1846,
+        1847
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 32
+        },
+        "end": {
+          "line": 42,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1848,
+        1849
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 34
+        },
+        "end": {
+          "line": 42,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "textColor",
+      "range": [
+        1849,
+        1858
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 35
+        },
+        "end": {
+          "line": 42,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1858,
+        1859
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 44
+        },
+        "end": {
+          "line": 42,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"blue\"",
+      "range": [
+        1859,
+        1865
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 45
+        },
+        "end": {
+          "line": 42,
+          "column": 51
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1865,
+        1866
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 51
+        },
+        "end": {
+          "line": 42,
+          "column": 52
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1867,
+        1868
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 53
+        },
+        "end": {
+          "line": 42,
+          "column": 54
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "lineColor",
+      "range": [
+        1868,
+        1877
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 54
+        },
+        "end": {
+          "line": 42,
+          "column": 63
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1877,
+        1878
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 63
+        },
+        "end": {
+          "line": 42,
+          "column": 64
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"blue\"",
+      "range": [
+        1878,
+        1884
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 64
+        },
+        "end": {
+          "line": 42,
+          "column": 70
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1884,
+        1885
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 70
+        },
+        "end": {
+          "line": 42,
+          "column": 71
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1886,
+        1887
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 72
+        },
+        "end": {
+          "line": 42,
+          "column": 73
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "offsetY",
+      "range": [
+        1887,
+        1894
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 73
+        },
+        "end": {
+          "line": 42,
+          "column": 80
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1894,
+        1895
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 80
+        },
+        "end": {
+          "line": 42,
+          "column": 81
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"-10\"",
+      "range": [
+        1895,
+        1900
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 81
+        },
+        "end": {
+          "line": 42,
+          "column": 86
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1900,
+        1901
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 86
+        },
+        "end": {
+          "line": 42,
+          "column": 87
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "UpdateRelStyle",
+      "range": [
+        1902,
+        1916
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 0
+        },
+        "end": {
+          "line": 43,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1916,
+        1917
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 14
+        },
+        "end": {
+          "line": 43,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "SystemAA",
+      "range": [
+        1917,
+        1925
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 15
+        },
+        "end": {
+          "line": 43,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1925,
+        1926
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 23
+        },
+        "end": {
+          "line": 43,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "SystemC",
+      "range": [
+        1927,
+        1934
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 25
+        },
+        "end": {
+          "line": 43,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1934,
+        1935
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 32
+        },
+        "end": {
+          "line": 43,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1936,
+        1937
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 34
+        },
+        "end": {
+          "line": 43,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "textColor",
+      "range": [
+        1937,
+        1946
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 35
+        },
+        "end": {
+          "line": 43,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1946,
+        1947
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 44
+        },
+        "end": {
+          "line": 43,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"blue\"",
+      "range": [
+        1947,
+        1953
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 45
+        },
+        "end": {
+          "line": 43,
+          "column": 51
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1953,
+        1954
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 51
+        },
+        "end": {
+          "line": 43,
+          "column": 52
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1955,
+        1956
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 53
+        },
+        "end": {
+          "line": 43,
+          "column": 54
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "lineColor",
+      "range": [
+        1956,
+        1965
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 54
+        },
+        "end": {
+          "line": 43,
+          "column": 63
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1965,
+        1966
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 63
+        },
+        "end": {
+          "line": 43,
+          "column": 64
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"blue\"",
+      "range": [
+        1966,
+        1972
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 64
+        },
+        "end": {
+          "line": 43,
+          "column": 70
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1972,
+        1973
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 70
+        },
+        "end": {
+          "line": 43,
+          "column": 71
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1974,
+        1975
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 72
+        },
+        "end": {
+          "line": 43,
+          "column": 73
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "offsetY",
+      "range": [
+        1975,
+        1982
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 73
+        },
+        "end": {
+          "line": 43,
+          "column": 80
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1982,
+        1983
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 80
+        },
+        "end": {
+          "line": 43,
+          "column": 81
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"-40\"",
+      "range": [
+        1983,
+        1988
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 81
+        },
+        "end": {
+          "line": 43,
+          "column": 86
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1988,
+        1989
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 86
+        },
+        "end": {
+          "line": 43,
+          "column": 87
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1990,
+        1991
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 88
+        },
+        "end": {
+          "line": 43,
+          "column": 89
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "offsetX",
+      "range": [
+        1991,
+        1998
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 89
+        },
+        "end": {
+          "line": 43,
+          "column": 96
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1998,
+        1999
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 96
+        },
+        "end": {
+          "line": 43,
+          "column": 97
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"-50\"",
+      "range": [
+        1999,
+        2004
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 97
+        },
+        "end": {
+          "line": 43,
+          "column": 102
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        2004,
+        2005
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 102
+        },
+        "end": {
+          "line": 43,
+          "column": 103
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "UpdateRelStyle",
+      "range": [
+        2006,
+        2020
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 0
+        },
+        "end": {
+          "line": 44,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        2020,
+        2021
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 14
+        },
+        "end": {
+          "line": 44,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "SystemC",
+      "range": [
+        2021,
+        2028
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 15
+        },
+        "end": {
+          "line": 44,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        2028,
+        2029
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 22
+        },
+        "end": {
+          "line": 44,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "customerA",
+      "range": [
+        2030,
+        2039
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 24
+        },
+        "end": {
+          "line": 44,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        2039,
+        2040
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 33
+        },
+        "end": {
+          "line": 44,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        2041,
+        2042
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 35
+        },
+        "end": {
+          "line": 44,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "textColor",
+      "range": [
+        2042,
+        2051
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 36
+        },
+        "end": {
+          "line": 44,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        2051,
+        2052
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 45
+        },
+        "end": {
+          "line": 44,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"red\"",
+      "range": [
+        2052,
+        2057
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 46
+        },
+        "end": {
+          "line": 44,
+          "column": 51
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        2057,
+        2058
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 51
+        },
+        "end": {
+          "line": 44,
+          "column": 52
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        2059,
+        2060
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 53
+        },
+        "end": {
+          "line": 44,
+          "column": 54
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "lineColor",
+      "range": [
+        2060,
+        2069
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 54
+        },
+        "end": {
+          "line": 44,
+          "column": 63
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        2069,
+        2070
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 63
+        },
+        "end": {
+          "line": 44,
+          "column": 64
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"red\"",
+      "range": [
+        2070,
+        2075
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 64
+        },
+        "end": {
+          "line": 44,
+          "column": 69
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        2075,
+        2076
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 69
+        },
+        "end": {
+          "line": 44,
+          "column": 70
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        2077,
+        2078
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 71
+        },
+        "end": {
+          "line": 44,
+          "column": 72
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "offsetX",
+      "range": [
+        2078,
+        2085
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 72
+        },
+        "end": {
+          "line": 44,
+          "column": 79
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        2085,
+        2086
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 79
+        },
+        "end": {
+          "line": 44,
+          "column": 80
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"-50\"",
+      "range": [
+        2086,
+        2091
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 80
+        },
+        "end": {
+          "line": 44,
+          "column": 85
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        2091,
+        2092
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 85
+        },
+        "end": {
+          "line": 44,
+          "column": 86
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        2093,
+        2094
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 87
+        },
+        "end": {
+          "line": 44,
+          "column": 88
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "offsetY",
+      "range": [
+        2094,
+        2101
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 88
+        },
+        "end": {
+          "line": 44,
+          "column": 95
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        2101,
+        2102
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 95
+        },
+        "end": {
+          "line": 44,
+          "column": 96
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"20\"",
+      "range": [
+        2102,
+        2106
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 96
+        },
+        "end": {
+          "line": 44,
+          "column": 100
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        2106,
+        2107
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 100
+        },
+        "end": {
+          "line": 44,
+          "column": 101
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "UpdateLayoutConfig",
+      "range": [
+        2109,
+        2127
+      ],
+      "loc": {
+        "start": {
+          "line": 46,
+          "column": 0
+        },
+        "end": {
+          "line": 46,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        2127,
+        2128
+      ],
+      "loc": {
+        "start": {
+          "line": 46,
+          "column": 18
+        },
+        "end": {
+          "line": 46,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        2128,
+        2129
+      ],
+      "loc": {
+        "start": {
+          "line": 46,
+          "column": 19
+        },
+        "end": {
+          "line": 46,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "c4ShapeInRow",
+      "range": [
+        2129,
+        2141
+      ],
+      "loc": {
+        "start": {
+          "line": 46,
+          "column": 20
+        },
+        "end": {
+          "line": 46,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        2141,
+        2142
+      ],
+      "loc": {
+        "start": {
+          "line": 46,
+          "column": 32
+        },
+        "end": {
+          "line": 46,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"3\"",
+      "range": [
+        2142,
+        2145
+      ],
+      "loc": {
+        "start": {
+          "line": 46,
+          "column": 33
+        },
+        "end": {
+          "line": 46,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        2145,
+        2146
+      ],
+      "loc": {
+        "start": {
+          "line": 46,
+          "column": 36
+        },
+        "end": {
+          "line": 46,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        2147,
+        2148
+      ],
+      "loc": {
+        "start": {
+          "line": 46,
+          "column": 38
+        },
+        "end": {
+          "line": 46,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "c4BoundaryInRow",
+      "range": [
+        2148,
+        2163
+      ],
+      "loc": {
+        "start": {
+          "line": 46,
+          "column": 39
+        },
+        "end": {
+          "line": 46,
+          "column": 54
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        2163,
+        2164
+      ],
+      "loc": {
+        "start": {
+          "line": 46,
+          "column": 54
+        },
+        "end": {
+          "line": 46,
+          "column": 55
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"1\"",
+      "range": [
+        2164,
+        2167
+      ],
+      "loc": {
+        "start": {
+          "line": 46,
+          "column": 55
+        },
+        "end": {
+          "line": 46,
+          "column": 58
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        2167,
+        2168
+      ],
+      "loc": {
+        "start": {
+          "line": 46,
+          "column": 58
+        },
+        "end": {
+          "line": 46,
+          "column": 59
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    2168
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 46,
+      "column": 59
+    }
+  }
+}

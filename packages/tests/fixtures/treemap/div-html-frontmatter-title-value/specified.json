@@ -1,0 +1,14 @@
+{
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "x=\"y\">",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

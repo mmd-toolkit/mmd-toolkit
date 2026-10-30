@@ -1,0 +1,57 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/block.html",
+    "line": 28
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A1",
+          "label": "square",
+          "type": "square",
+          "widthInColumns": 1
+        },
+        {
+          "id": "B1",
+          "label": "rounded",
+          "type": "round",
+          "widthInColumns": 1
+        },
+        {
+          "id": "C1",
+          "label": "circle",
+          "type": "circle",
+          "widthInColumns": 1
+        },
+        {
+          "id": "A2",
+          "label": "rect_left_inv_arrow",
+          "type": "rect_left_inv_arrow",
+          "widthInColumns": 1
+        },
+        {
+          "id": "B2",
+          "label": "diamond",
+          "type": "diamond",
+          "widthInColumns": 1
+        },
+        {
+          "id": "C2",
+          "label": "hexagon",
+          "type": "hexagon",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

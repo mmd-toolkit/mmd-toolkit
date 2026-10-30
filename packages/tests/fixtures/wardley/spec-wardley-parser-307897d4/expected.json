@@ -1,0 +1,48 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/wardley/wardleyParser.spec.ts",
+    "line": 24,
+    "test": "wardley parser > parses components and links"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Example",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "Alpha",
+        "label": "Alpha",
+        "x": 10,
+        "y": 20,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Beta",
+        "label": "Beta",
+        "x": 30,
+        "y": 40,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [
+      {
+        "source": "Alpha",
+        "target": "Beta",
+        "dashed": false
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

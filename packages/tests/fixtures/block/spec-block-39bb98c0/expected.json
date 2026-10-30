@@ -1,0 +1,63 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/block/parser/block.spec.ts",
+    "line": 343,
+    "test": "Block diagram > when parsing a block diagram graph it should handle >  > Arrow blocks with multiple points"
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": 1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "blockArrow",
+          "label": "&nbsp;&nbsp;&nbsp;",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "up",
+            "down"
+          ]
+        },
+        {
+          "label": "",
+          "type": "composite",
+          "columns": 3,
+          "children": [
+            {
+              "id": "B",
+              "label": "B",
+              "type": "na",
+              "widthInColumns": 1
+            },
+            {
+              "id": "C",
+              "label": "C",
+              "type": "na",
+              "widthInColumns": 1
+            },
+            {
+              "id": "D",
+              "label": "D",
+              "type": "na",
+              "widthInColumns": 1
+            }
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

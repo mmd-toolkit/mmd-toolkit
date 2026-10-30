@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A numeric frontmatter title becomes text when there is no root."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "7",
+    "accTitle": "",
+    "accDescr": "",
+    "root": null
+  },
+  "embedded": {
+    "title": "7"
+  }
+}

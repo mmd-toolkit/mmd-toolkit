@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/gitGraph.test.ts",
+    "line": 51,
+    "test": "Parsing Commit Statements > should parse multiple commits with different types"
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "generated-commit-1",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      },
+      {
+        "id": "generated-commit-2",
+        "seq": 1,
+        "type": 1,
+        "tags": [],
+        "parents": [
+          "generated-commit-1"
+        ],
+        "branch": "main"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

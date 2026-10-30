@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The block carryover kind open-brace in section-id tests the kanban reading at this text position."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nkanban a{b[Column]   I[Item\n--------^"
+  }
+}

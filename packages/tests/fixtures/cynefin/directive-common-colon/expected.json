@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A removed directive can stand before the common colon."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "A",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  }
+}

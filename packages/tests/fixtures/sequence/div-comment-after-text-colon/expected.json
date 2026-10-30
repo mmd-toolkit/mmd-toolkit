@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md, comment-takes-character: mermaid.js takes the `:` into the comment and rejects the message without `:`; here `:` is a unit and the message is `%% c`."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ceDiagramA->>B:%% c\n----------------------^\nExpecting 'TXT', got 'NEWLINE'"
+  }
+}

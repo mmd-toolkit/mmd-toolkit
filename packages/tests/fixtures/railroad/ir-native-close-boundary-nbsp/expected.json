@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: A native closer can see a Unicode whitespace boundary while native padding cannot consume that character."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 4: unexpected character: -> <- at offset: 23, skipped 1 characters. "
+  }
+}

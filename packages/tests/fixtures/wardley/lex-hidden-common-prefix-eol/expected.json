@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Native padding, hidden forms and EOL: A hidden suffix before the first visible EOL belongs to the common statement."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "A",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "B",
+        "label": "B",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

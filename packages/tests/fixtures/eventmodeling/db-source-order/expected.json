@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Source references are membership tests; their order and repetitions are unused."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "evt",
+        "entityIdentifier": "B",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "03",
+        "modelEntityType": "rmo",
+        "entityIdentifier": "C",
+        "sourceFrames": [
+          "01",
+          "02"
+        ],
+        "data": null
+      }
+    ]
+  }
+}

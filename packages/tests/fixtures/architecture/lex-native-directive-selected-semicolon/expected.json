@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Hidden forms: a selected semicolon is omitted from the native directive written value."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

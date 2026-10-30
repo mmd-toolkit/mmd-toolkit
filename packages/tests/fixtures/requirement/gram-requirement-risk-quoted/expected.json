@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Requirements: a risk may not be a string."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...uirement r {risk: \"high\"}\n----------------------^\nExpecting 'LOW_RISK', 'MED_RISK', 'HIGH_RISK', got 'qString'"
+  }
+}

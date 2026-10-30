@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md F3: An HTML tag starts in a common comment and converts the following node quotes."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "b='c'>d",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "b='c'>d",
+      "children": []
+    }
+  }
+}

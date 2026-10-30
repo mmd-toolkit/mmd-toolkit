@@ -1,0 +1,161 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/railroad.html",
+    "line": 68
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "url",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "nonterminal",
+              "name": "protocol"
+            },
+            {
+              "type": "terminal",
+              "value": "://"
+            },
+            {
+              "type": "nonterminal",
+              "name": "domain"
+            },
+            {
+              "type": "optional",
+              "element": {
+                "type": "nonterminal",
+                "name": "path"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "protocol",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "terminal",
+              "value": "http"
+            },
+            {
+              "type": "terminal",
+              "value": "https"
+            },
+            {
+              "type": "terminal",
+              "value": "ftp"
+            }
+          ]
+        }
+      },
+      {
+        "name": "domain",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "nonterminal",
+              "name": "label"
+            },
+            {
+              "type": "repetition",
+              "element": {
+                "type": "sequence",
+                "elements": [
+                  {
+                    "type": "terminal",
+                    "value": "."
+                  },
+                  {
+                    "type": "nonterminal",
+                    "name": "label"
+                  }
+                ]
+              },
+              "min": 0,
+              "max": "Infinity"
+            }
+          ]
+        }
+      },
+      {
+        "name": "label",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "nonterminal",
+              "name": "letter"
+            },
+            {
+              "type": "repetition",
+              "element": {
+                "type": "choice",
+                "alternatives": [
+                  {
+                    "type": "nonterminal",
+                    "name": "letter"
+                  },
+                  {
+                    "type": "nonterminal",
+                    "name": "digit"
+                  },
+                  {
+                    "type": "terminal",
+                    "value": "-"
+                  }
+                ]
+              },
+              "min": 0,
+              "max": "Infinity"
+            }
+          ]
+        }
+      },
+      {
+        "name": "path",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "terminal",
+              "value": "/"
+            },
+            {
+              "type": "nonterminal",
+              "name": "segment"
+            },
+            {
+              "type": "repetition",
+              "element": {
+                "type": "sequence",
+                "elements": [
+                  {
+                    "type": "terminal",
+                    "value": "/"
+                  },
+                  {
+                    "type": "nonterminal",
+                    "name": "segment"
+                  }
+                ]
+              },
+              "min": 0,
+              "max": "Infinity"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

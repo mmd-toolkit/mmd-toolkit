@@ -1,0 +1,75 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Db normalization, classes: the class goes to the edge e1 and the subgraph S."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "C",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [
+          "c"
+        ],
+        "isUserDefinedId": true,
+        "stroke": "normal",
+        "length": 1,
+        "id": "e1"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "C"
+        ],
+        "title": "S",
+        "classes": [
+          "c"
+        ],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

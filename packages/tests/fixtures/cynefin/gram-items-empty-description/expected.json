@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Grammar: an empty description block ends a domain block and leaves a following string orphaned."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 5, column 1: Expecting token of type 'EOF' but found `\"B\"`."
+  }
+}

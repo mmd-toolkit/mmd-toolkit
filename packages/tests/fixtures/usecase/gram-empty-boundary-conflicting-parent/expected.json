@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: An empty boundary id and a nonempty boundary can both contain the same written element without a parent conflict."
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [
+      {
+        "id": "A",
+        "label": "A",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "S",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [
+      {
+        "id": "",
+        "label": "",
+        "labelType": "text",
+        "type": "rect",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "S",
+        "label": "S",
+        "labelType": "text",
+        "type": "rect",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

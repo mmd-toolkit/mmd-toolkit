@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md The class name context: no whitespace after :::."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nquadrantChartA ::: c1: [0.3, 0.6]\n------------------^"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A class definition named `default` is kept in the list of definitions, and the entity A has the class `default`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": [
+          "default"
+        ]
+      }
+    ],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "default",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ],
+    "subGraphs": []
+  }
+}

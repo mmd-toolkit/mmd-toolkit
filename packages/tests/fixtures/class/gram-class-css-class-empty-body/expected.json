@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Class statements: after `:::`, a member body needs at least one member line."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...iagramclass A:::c {}\n----------------------^\nExpecting 'MEMBER', got 'STRUCT_STOP'"
+  }
+}

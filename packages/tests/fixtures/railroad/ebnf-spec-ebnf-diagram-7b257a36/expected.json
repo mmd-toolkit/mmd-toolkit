@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/railroad/parser/ebnfDiagram.spec.ts",
+    "line": 44,
+    "test": "EBNF Parser > Basic Parsing > should parse sequence"
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "rule",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "terminal",
+              "value": "a"
+            },
+            {
+              "type": "terminal",
+              "value": "b"
+            },
+            {
+              "type": "terminal",
+              "value": "c"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

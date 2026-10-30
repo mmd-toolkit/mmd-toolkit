@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do the name exclusion and common title terminal differ on prefixes?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "titlex",
+        "label": "titlex",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "accTitlex",
+        "label": "accTitlex",
+        "x": 30,
+        "y": 20,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

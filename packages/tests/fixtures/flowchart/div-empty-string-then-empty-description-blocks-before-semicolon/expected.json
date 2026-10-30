@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences/tokenless-empty-forms.md, The difference: mermaid.js reads nothing for the empty string at the start of the label, which this specification rejects; the empty description blocks after the vertex are followed only by each other and then a `;`, so they stay in the reference input, which is read as the units of the input other than the empty string, and mermaid.js gives it the same Db."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

@@ -1,0 +1,466 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: sequence-no-empty-description-block >> invalid >>> docs/rules/sequence-no-empty-description-block.md incorrect 1
+Filename: sequence-no-empty-description-block-incorrect-1.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   A ->> B: x
+  3 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | sequenceDiagram
+          2 |   A ->> B: x
+          3 |
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> docs/rules/sequence-no-empty-description-block.md incorrect 2
+Filename: sequence-no-empty-description-block-incorrect-2.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   A ->> B: x
+  3 |   accDescr { }
+    |   ^~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | sequenceDiagram
+          2 |   A ->> B: x
+          3 |
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> docs/rules/sequence-no-empty-description-block.md incorrect 3
+Filename: sequence-no-empty-description-block-incorrect-3.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   A ->> B: x
+  3 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  4 |   }
+    | ~~~ [1]
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | sequenceDiagram
+          2 |   A ->> B: x
+          3 |
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/db-acc-descr-empty-block-after-message
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/db-acc-descr-empty-block-after-message-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: x
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | sequenceDiagram
+          2 | A->>B: x
+          3 |
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/db-acc-descr-empty-block-keeps
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/db-acc-descr-empty-block-keeps-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr: x
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | sequenceDiagram
+          2 | accDescr: x
+          3 |
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/db-acc-descr-empty-block-lines-after-message
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/db-acc-descr-empty-block-lines-after-message-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: x
+  3 | accDescr {
+    | ^~~~~~~~~~\ [1]
+  4 | }
+    | ~ [1]
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | sequenceDiagram
+          2 | A->>B: x
+          3 |
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/db-acc-descr-empty-block-spaces-after-message
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/db-acc-descr-empty-block-spaces-after-message-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: x
+  3 | accDescr { }
+    | ^~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | sequenceDiagram
+          2 | A->>B: x
+          3 |
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/db-acc-descr-spaces-block-keeps
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/db-acc-descr-spaces-block-keeps-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr: x
+  3 | accDescr { }
+    | ^~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | sequenceDiagram
+          2 | accDescr: x
+          3 |
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/db-empty-description-block-with-directive-wrap
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/db-empty-description-block-with-directive-wrap-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   accDescr { %%{init: {"sequence": {"wrap": true}}}%% }
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 |   A->>B: y
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/gram-acc-descr-block-empty-then-statement
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/gram-acc-descr-block-empty-then-statement-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr {} A->>B: x
+    | ^~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/gram-box-empty-description-block-before-end
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/gram-box-empty-description-block-before-end-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   box G
+  3 |     participant B
+  4 |     accDescr {} end
+    |     ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/gram-box-empty-description-block-line
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/gram-box-empty-description-block-line-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   box G
+  3 |     accDescr {}
+    |     ^~~~~~~~~~~ [1]
+  4 |     participant B
+  5 |   end
+  6 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | sequenceDiagram
+          2 |   box G
+          3 |     participant B
+          4 |   end
+          5 |
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/gram-box-empty-description-block-lines
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/gram-box-empty-description-block-lines-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   box G
+  3 |     accDescr {
+    |     ^~~~~~~~~~\ [1]
+  4 |     }
+    | ~~~~~ [1]
+  5 |     participant B
+  6 |   end
+  7 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | sequenceDiagram
+          2 |   box G
+          3 |     participant B
+          4 |   end
+          5 |
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/gram-box-empty-description-block-then-participant
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/gram-box-empty-description-block-then-participant-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   box G
+  3 |     accDescr {} participant B
+    |     ^~~~~~~~~~~ [1]
+  4 |   end
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/gram-directive-then-empty-description-block-after-autonumber
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/gram-directive-then-empty-description-block-after-autonumber-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | autonumber %%{init: {}}%% accDescr {}
+    |                           ^~~~~~~~~~~ [1]
+  3 | A->>B: x
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/gram-empty-description-block-after-actor-data-glued
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/gram-empty-description-block-after-actor-data-glued-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | actor A@{ "type": "actor" }accDescr {}
+    |                            ^~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/gram-empty-description-block-after-autonumber-at-end
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/gram-empty-description-block-after-autonumber-at-end-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | autonumber accDescr {}
+    |            ^~~~~~~~~~~ [1]
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/gram-empty-description-block-after-autonumber
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/gram-empty-description-block-after-autonumber-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | autonumber accDescr {}
+    |            ^~~~~~~~~~~ [1]
+  3 | A->>B: x
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/gram-empty-description-block-after-autonumber-semicolon
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/gram-empty-description-block-after-autonumber-semicolon-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | autonumber accDescr {};A->>B: x
+    |            ^~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/gram-empty-description-block-after-autonumber-spaces
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/gram-empty-description-block-after-autonumber-spaces-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | autonumber  accDescr {}
+    |             ^~~~~~~~~~~ [1]
+  3 | A->>B: x
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/gram-empty-description-block-after-autonumber-then-comment
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/gram-empty-description-block-after-autonumber-then-comment-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | autonumber accDescr {} %% c
+    |            ^~~~~~~~~~~ [1]
+  3 | A->>B: x
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/gram-empty-description-block-after-end
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/gram-empty-description-block-after-end-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | loop x
+  3 | A->>B: y
+  4 | end accDescr {}
+    |     ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/gram-empty-description-block-after-participant-data
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/gram-empty-description-block-after-participant-data-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | participant A@{ "type": "actor" } accDescr {}
+    |                                   ^~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/gram-empty-description-block-directive-after-autonumber
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/gram-empty-description-block-directive-after-autonumber-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | autonumber accDescr {%%{init: {}}%%}
+    |            ^~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 | A->>B: x
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/gram-empty-description-block-lines-after-autonumber
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/gram-empty-description-block-lines-after-autonumber-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | autonumber accDescr {
+    |            ^~~~~~~~~~\ [1]
+  3 | }
+    | ~ [1]
+  4 | A->>B: x
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/gram-empty-description-blocks-after-autonumber
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/gram-empty-description-blocks-after-autonumber-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | autonumber accDescr {} accDescr {}
+    |            ^~~~~~~~~~~ ^~~~~~~~~~~
+    |            [1]         [2]
+  3 | A->>B: x
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+[2] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/header-empty-description-block
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/header-empty-description-block-input.mmd
+
+Code:
+  1 | sequenceDiagram accDescr {}
+    |                 ^~~~~~~~~~~ [1]
+  2 | A->>B: x
+  3 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: sequence-no-empty-description-block >> invalid >>> invalid/sequence/header-empty-description-block-spaces
+Filename: tests/fixtures/rules/sequence-no-empty-description-block/invalid/sequence/header-empty-description-block-spaces-input.mmd
+
+Code:
+  1 | sequenceDiagram accDescr { }
+    |                 ^~~~~~~~~~~~ [1]
+  2 | A->>B: x
+  3 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---

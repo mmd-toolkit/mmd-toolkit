@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Building the summary from the tree, shape: A nonblank alias for [*] in P has shape rect and description d."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "P",
+        "shape": "roundedWithTitle",
+        "label": "P",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "P_start",
+        "shape": "rect",
+        "label": "d",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "parentId": "P"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

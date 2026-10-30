@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "TITLE does not require quote closure."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "\"open",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  }
+}

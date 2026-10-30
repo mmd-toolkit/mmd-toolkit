@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Grammar: A GWT entity-type word without an identifier does not complete an item. Rejected by Mermaid."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 32: Expecting token of type 'EM_ID' but found `then`."
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: A whitespace-only ASCII line passed after a bare percent pair is trivia, like the immediate-header ASCII control."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ASCII whitespace-only lines and trailing whitespace are ignored."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

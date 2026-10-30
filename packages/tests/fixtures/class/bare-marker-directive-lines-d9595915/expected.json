@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A line of only %% and a line of directives at the end of the text: the directive line was indented, and the text rejected"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Is an attached accessibility-title semicolon retained?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "A;",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": []
+  }
+}

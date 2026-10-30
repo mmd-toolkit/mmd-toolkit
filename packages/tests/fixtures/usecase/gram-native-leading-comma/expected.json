@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: An initial comma does not supply a native property."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> RBRACE <-- but found --> ',' <-- at line 2, column 10 [22,23)"
+  }
+}

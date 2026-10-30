@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: Repeated exceptions and postfixes apply in written order."
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "repetition",
+          "element": {
+            "type": "sequence",
+            "elements": [
+              {
+                "type": "sequence",
+                "elements": [
+                  {
+                    "type": "nonterminal",
+                    "name": "A"
+                  },
+                  {
+                    "type": "terminal",
+                    "value": "-"
+                  },
+                  {
+                    "type": "nonterminal",
+                    "name": "B"
+                  }
+                ]
+              },
+              {
+                "type": "terminal",
+                "value": "-"
+              },
+              {
+                "type": "nonterminal",
+                "name": "C"
+              }
+            ]
+          },
+          "min": 1,
+          "max": "Infinity"
+        }
+      }
+    ]
+  }
+}

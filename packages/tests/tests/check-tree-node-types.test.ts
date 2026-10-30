@@ -1,0 +1,135 @@
+import { readFileSync } from "node:fs"
+import path from "node:path"
+import { fileURLToPath } from "node:url"
+import { describe, expect, it } from "vitest"
+import {
+  STRUCTURE_NODE_TYPES,
+  VALUE_NODE_TYPES,
+} from "../src/check-tree/node-types.ts"
+
+// The tables of node types of the check of a tree (`node-types.ts`) are kept
+// consistent with the tree documents of the specification: the node types
+// that a document defines are the node types that the tables classify.
+
+const SPEC_DOCS = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../spec/docs",
+)
+
+const DIAGRAMS = [
+  "treeview",
+  "eventmodeling",
+  "cynefin",
+  "wardley",
+  "railroad",
+  "treemap",
+  "radar",
+  "architecture",
+  "gitgraph",
+  "info",
+  "packet",
+  "pie",
+  "usecase",
+  "agentflow",
+  "flowchart",
+  "sequence",
+  "class",
+  "state",
+  "er",
+  "gantt",
+  "journey",
+  "requirement",
+  "mindmap",
+  "timeline",
+  "sankey",
+  "xychart",
+  "quadrant",
+  "block",
+  "kanban",
+  "c4",
+  "venn",
+  "ishikawa",
+] as const
+
+/** Documented type aliases have their own headings, but are not node types. */
+const TYPE_ALIASES: ReadonlySet<string> = new Set(["C4Argument"])
+
+/** The node types that no `ast/<diagram>.md` defines: `ast.md` defines them. */
+const NODE_TYPES_OF_AST_MD: ReadonlySet<string> = new Set([
+  "Root",
+  "ErrorDiagram",
+  "Identifier",
+  "StringLiteral",
+  "NumericLiteral",
+])
+
+/** The words of `heading` that are type names: a heading may name several, as `A, B, and C`. */
+function nodeTypeNamesIn(heading: string): string[] {
+  const names: string[] = []
+  let word = ""
+  for (const character of `${heading} `) {
+    const isNameCharacter = /^[0-9A-Za-z]$/u.test(character)
+    if (isNameCharacter) {
+      word += character
+    } else {
+      if (word.length > 0) names.push(word)
+      word = ""
+    }
+  }
+  return names.filter((name) => /^[A-Z]/u.test(name) && /[a-z]/u.test(name))
+}
+
+/** The types that the tree documents of the diagrams define, by their headings. */
+function documentedTypes(): Set<string> {
+  const defined = new Set<string>()
+  for (const diagram of DIAGRAMS) {
+    const text = readFileSync(
+      path.join(SPEC_DOCS, "ast", `${diagram}.md`),
+      "utf8",
+    )
+    for (const line of text.split("\n")) {
+      // ast/gitgraph.md has a prose subsection between its node definitions.
+      if (
+        line === "### Statement gap ownership" ||
+        line === "### Gap ownership"
+      )
+        continue
+      if (line.startsWith("### ")) {
+        for (const name of nodeTypeNamesIn(line.slice(4))) defined.add(name)
+      }
+    }
+  }
+  return defined
+}
+
+describe("the node types of the check of a tree", () => {
+  it("classify every node type that the tree documents define, and no other", () => {
+    const defined = documentedTypes()
+    const classified = new Set([...VALUE_NODE_TYPES, ...STRUCTURE_NODE_TYPES])
+    expect(
+      [...defined].filter(
+        (name) => !TYPE_ALIASES.has(name) && !classified.has(name),
+      ),
+      "defined by a tree document and not classified",
+    ).toEqual([])
+    expect(
+      [...classified].filter(
+        (name) =>
+          TYPE_ALIASES.has(name) ||
+          (!defined.has(name) && !NODE_TYPES_OF_AST_MD.has(name)),
+      ),
+      "classified and defined by no tree document",
+    ).toEqual([])
+  })
+
+  it("list only documented type aliases in the alias table", () => {
+    const defined = documentedTypes()
+    expect([...TYPE_ALIASES].filter((name) => !defined.has(name))).toEqual([])
+  })
+
+  it("classify no node type twice", () => {
+    expect(
+      [...VALUE_NODE_TYPES].filter((name) => STRUCTURE_NODE_TYPES.has(name)),
+    ).toEqual([])
+  })
+})

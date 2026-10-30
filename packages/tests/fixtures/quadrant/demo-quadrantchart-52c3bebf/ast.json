@@ -1,0 +1,649 @@
+{
+  "type": "Root",
+  "diagramType": "quadrantChart",
+  "body": {
+    "type": "QuadrantDiagram",
+    "body": [
+      {
+        "type": "QuadrantAxisStatement",
+        "axis": "x",
+        "start": {
+          "type": "QuadrantLabel",
+          "kind": "text",
+          "value": "Urgent",
+          "range": [
+            147,
+            153
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 9
+            },
+            "end": {
+              "line": 3,
+              "column": 15
+            }
+          }
+        },
+        "arrow": true,
+        "end": {
+          "type": "QuadrantLabel",
+          "kind": "text",
+          "value": "Not Urgent",
+          "range": [
+            158,
+            168
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 20
+            },
+            "end": {
+              "line": 3,
+              "column": 30
+            }
+          }
+        },
+        "range": [
+          140,
+          168
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 2
+          },
+          "end": {
+            "line": 3,
+            "column": 30
+          }
+        }
+      },
+      {
+        "type": "QuadrantAxisStatement",
+        "axis": "y",
+        "start": {
+          "type": "QuadrantLabel",
+          "kind": "text",
+          "value": "Not Important",
+          "range": [
+            178,
+            191
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 9
+            },
+            "end": {
+              "line": 4,
+              "column": 22
+            }
+          }
+        },
+        "arrow": true,
+        "end": {
+          "type": "QuadrantLabel",
+          "kind": "text",
+          "value": "important",
+          "range": [
+            196,
+            205
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 27
+            },
+            "end": {
+              "line": 4,
+              "column": 36
+            }
+          }
+        },
+        "range": [
+          171,
+          205
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 2
+          },
+          "end": {
+            "line": 4,
+            "column": 36
+          }
+        }
+      },
+      {
+        "type": "QuadrantQuadrantStatement",
+        "quadrant": 1,
+        "text": {
+          "type": "QuadrantLabel",
+          "kind": "text",
+          "value": "Plan",
+          "range": [
+            219,
+            223
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 13
+            },
+            "end": {
+              "line": 5,
+              "column": 17
+            }
+          }
+        },
+        "range": [
+          208,
+          223
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 2
+          },
+          "end": {
+            "line": 5,
+            "column": 17
+          }
+        }
+      },
+      {
+        "type": "QuadrantQuadrantStatement",
+        "quadrant": 2,
+        "text": {
+          "type": "QuadrantLabel",
+          "kind": "text",
+          "value": "Do",
+          "range": [
+            237,
+            239
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 13
+            },
+            "end": {
+              "line": 6,
+              "column": 15
+            }
+          }
+        },
+        "range": [
+          226,
+          239
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 2
+          },
+          "end": {
+            "line": 6,
+            "column": 15
+          }
+        }
+      },
+      {
+        "type": "QuadrantQuadrantStatement",
+        "quadrant": 3,
+        "text": {
+          "type": "QuadrantLabel",
+          "kind": "text",
+          "value": "Delegate",
+          "range": [
+            253,
+            261
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 13
+            },
+            "end": {
+              "line": 7,
+              "column": 21
+            }
+          }
+        },
+        "range": [
+          242,
+          261
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 2
+          },
+          "end": {
+            "line": 7,
+            "column": 21
+          }
+        }
+      },
+      {
+        "type": "QuadrantQuadrantStatement",
+        "quadrant": 4,
+        "text": {
+          "type": "QuadrantLabel",
+          "kind": "text",
+          "value": "Delete",
+          "range": [
+            275,
+            281
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 13
+            },
+            "end": {
+              "line": 8,
+              "column": 19
+            }
+          }
+        },
+        "range": [
+          264,
+          281
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 2
+          },
+          "end": {
+            "line": 8,
+            "column": 19
+          }
+        }
+      }
+    ],
+    "range": [
+      124,
+      281
+    ],
+    "loc": {
+      "start": {
+        "line": 2,
+        "column": 0
+      },
+      "end": {
+        "line": 8,
+        "column": 19
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [
+    {
+      "type": "Directive",
+      "name": "init",
+      "value": "init: {\"quadrantChart\": {\"quadrantPadding\": 10}, \"theme\": \"forest\", \"themeVariables\": {\"quadrant1TextFill\": \"blue\"}} ",
+      "closed": true,
+      "range": [
+        0,
+        123
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 123
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "Directive",
+      "value": "%%{init: {\"quadrantChart\": {\"quadrantPadding\": 10}, \"theme\": \"forest\", \"themeVariables\": {\"quadrant1TextFill\": \"blue\"}} }%%",
+      "range": [
+        0,
+        123
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 123
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "quadrantChart",
+      "range": [
+        124,
+        137
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "x-axis",
+      "range": [
+        140,
+        146
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 3,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Urgent",
+      "range": [
+        147,
+        153
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 9
+        },
+        "end": {
+          "line": 3,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        154,
+        157
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 16
+        },
+        "end": {
+          "line": 3,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Not Urgent",
+      "range": [
+        158,
+        168
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 20
+        },
+        "end": {
+          "line": 3,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "y-axis",
+      "range": [
+        171,
+        177
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 2
+        },
+        "end": {
+          "line": 4,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Not Important",
+      "range": [
+        178,
+        191
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 9
+        },
+        "end": {
+          "line": 4,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        192,
+        195
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 23
+        },
+        "end": {
+          "line": 4,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "important",
+      "range": [
+        196,
+        205
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 27
+        },
+        "end": {
+          "line": 4,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "quadrant-1",
+      "range": [
+        208,
+        218
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 2
+        },
+        "end": {
+          "line": 5,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Plan",
+      "range": [
+        219,
+        223
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 13
+        },
+        "end": {
+          "line": 5,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "quadrant-2",
+      "range": [
+        226,
+        236
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 2
+        },
+        "end": {
+          "line": 6,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Do",
+      "range": [
+        237,
+        239
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 13
+        },
+        "end": {
+          "line": 6,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "quadrant-3",
+      "range": [
+        242,
+        252
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 2
+        },
+        "end": {
+          "line": 7,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Delegate",
+      "range": [
+        253,
+        261
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 13
+        },
+        "end": {
+          "line": 7,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "quadrant-4",
+      "range": [
+        264,
+        274
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 2
+        },
+        "end": {
+          "line": 8,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Delete",
+      "range": [
+        275,
+        281
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 13
+        },
+        "end": {
+          "line": 8,
+          "column": 19
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    281
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 8,
+      "column": 19
+    }
+  }
+}

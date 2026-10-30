@@ -1,0 +1,59 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.2.0",
+    "path": "packages/mermaid/src/diagrams/eventmodeling/eventmodeling.spec.ts",
+    "line": 105,
+    "test": "eventmodeling diagrams > should keep explicit sources on a reset frame without inferring the previous frame"
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "ui",
+        "entityIdentifier": "UI",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "cmd",
+        "entityIdentifier": "Command",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "03",
+        "modelEntityType": "evt",
+        "entityIdentifier": "Event",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "reset",
+        "name": "04",
+        "modelEntityType": "rmo",
+        "entityIdentifier": "ReadModel",
+        "sourceFrames": [
+          "03"
+        ],
+        "data": null
+      },
+      {
+        "kind": "reset",
+        "name": "05",
+        "modelEntityType": "ui",
+        "entityIdentifier": "OtherUI",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

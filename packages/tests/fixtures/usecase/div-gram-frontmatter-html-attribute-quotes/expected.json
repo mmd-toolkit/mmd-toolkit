@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does global HTML attribute rewriting affect YAML and label quoting?"
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "bad indentation of a mapping entry (1:22)\n\n 1 | title: '<span title='x'>Title</span>'\n--------------------------^"
+  }
+}

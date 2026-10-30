@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Nodes and shapes: `(` with a closer other than `)` is a cloud: type 4."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "a",
+          "level": 2,
+          "descr": "x",
+          "type": 4,
+          "children": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,375 @@
+{
+  "type": "Root",
+  "diagramType": "treeView",
+  "body": {
+    "type": "TreeviewDiagram",
+    "body": [
+      {
+        "type": "TreeviewNode",
+        "indent": 0,
+        "textBefore": [],
+        "prefix": null,
+        "textBeforeName": [],
+        "name": {
+          "type": "TreeviewIdentifier",
+          "name": "index.js",
+          "range": [
+            14,
+            22
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 8
+            }
+          }
+        },
+        "annotations": [
+          {
+            "type": "TreeviewClassAnnotation",
+            "textBefore": [],
+            "prefix": null,
+            "name": {
+              "type": "Identifier",
+              "name": "highlight",
+              "range": [
+                26,
+                35
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 12
+                },
+                "end": {
+                  "line": 2,
+                  "column": 21
+                }
+              }
+            },
+            "range": [
+              23,
+              35
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 21
+              }
+            }
+          },
+          {
+            "type": "TreeviewIconAnnotation",
+            "textBefore": [],
+            "prefix": null,
+            "name": {
+              "type": "Identifier",
+              "name": "javascript",
+              "range": [
+                41,
+                51
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 27
+                },
+                "end": {
+                  "line": 2,
+                  "column": 37
+                }
+              }
+            },
+            "range": [
+              36,
+              52
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 22
+              },
+              "end": {
+                "line": 2,
+                "column": 38
+              }
+            }
+          },
+          {
+            "type": "TreeviewDescriptionAnnotation",
+            "textBefore": [],
+            "prefix": null,
+            "value": {
+              "type": "TreeviewLiteral",
+              "value": " entry point",
+              "range": [
+                55,
+                67
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 41
+                },
+                "end": {
+                  "line": 2,
+                  "column": 53
+                }
+              }
+            },
+            "range": [
+              53,
+              67
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 39
+              },
+              "end": {
+                "line": 2,
+                "column": 53
+              }
+            }
+          }
+        ],
+        "range": [
+          14,
+          67
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 53
+          }
+        },
+        "children": []
+      }
+    ],
+    "range": [
+      0,
+      67
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 53
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "treeView-beta",
+      "range": [
+        0,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "index.js",
+      "range": [
+        14,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":::",
+      "range": [
+        23,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 9
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "highlight",
+      "range": [
+        26,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "icon",
+      "range": [
+        36,
+        40
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 22
+        },
+        "end": {
+          "line": 2,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        40,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 26
+        },
+        "end": {
+          "line": 2,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "javascript",
+      "range": [
+        41,
+        51
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 27
+        },
+        "end": {
+          "line": 2,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        51,
+        52
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 37
+        },
+        "end": {
+          "line": 2,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "##",
+      "range": [
+        53,
+        55
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 39
+        },
+        "end": {
+          "line": 2,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " entry point",
+      "range": [
+        55,
+        67
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 41
+        },
+        "end": {
+          "line": 2,
+          "column": 53
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    67
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 53
+    }
+  }
+}

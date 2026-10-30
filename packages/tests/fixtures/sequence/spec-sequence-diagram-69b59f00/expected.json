@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js",
+    "line": 2700,
+    "test": "sequence db class > participant type parsing > should not hang when \"as\" is used without a space before the alias text"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...        participant X_AutoPublishable as...\n-----------------------^\nExpecting 'link', 'ACTOR', got 'INVALID'"
+  }
+}

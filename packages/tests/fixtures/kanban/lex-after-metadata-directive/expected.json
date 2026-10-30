@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "directive after metadata tests text, trivia, or rejected extra tokens."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "isGroup": false,
+        "parentId": "S",
+        "assigned": "Ada"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "assigned": "Ada"
+        }
+      }
+    ]
+  }
+}

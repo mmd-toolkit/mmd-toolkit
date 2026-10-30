@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A class diagram line of only %% (or %%{ }%%, no directive) followed by a line of directives: the output must not indent the directive line, which would be a line of only whitespace for mermaid.js; and such a %% is no comment line, so it joins no lines"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Class names: name parts may come before a backquoted name without a `.`; the class is `Ab c`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Ab c",
+        "type": "",
+        "label": "Ab c",
+        "text": "Ab c",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: Each variable-run dash is a separate component, so a directive between dashes is allowed."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "child",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

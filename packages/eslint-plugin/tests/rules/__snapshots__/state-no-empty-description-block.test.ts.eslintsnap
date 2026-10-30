@@ -1,0 +1,152 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: state-no-empty-description-block >> invalid >>> docs/rules/state-no-empty-description-block.md incorrect 1
+Filename: state-no-empty-description-block-incorrect-1.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   A --> B
+  3 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | stateDiagram-v2
+          2 |   A --> B
+          3 |
+---
+
+
+Test: state-no-empty-description-block >> invalid >>> docs/rules/state-no-empty-description-block.md incorrect 2
+Filename: state-no-empty-description-block-incorrect-2.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   A --> B
+  3 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  4 |   }
+    | ~~~ [1]
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | stateDiagram-v2
+          2 |   A --> B
+          3 |
+---
+
+
+Test: state-no-empty-description-block >> invalid >>> invalid/state/db-acc-descr-empty-block-keeps
+Filename: tests/fixtures/rules/state-no-empty-description-block/invalid/state/db-acc-descr-empty-block-keeps-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   accDescr: x
+  3 |   accDescr {  }
+    |   ^~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accDescr: x
+          3 |
+---
+
+
+Test: state-no-empty-description-block >> invalid >>> invalid/state/db-empty-description-block-directive-only
+Filename: tests/fixtures/rules/state-no-empty-description-block/invalid/state/db-empty-description-block-directive-only-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | accDescr { %%{init: {"state": {"padding": 20}}}%% }
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 | A
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: state-no-empty-description-block >> invalid >>> invalid/state/directive-only-block-keeps-description
+Filename: tests/fixtures/rules/state-no-empty-description-block/invalid/state/directive-only-block-keeps-description-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | accDescr: x
+  3 | accDescr { %%{init: {"state": {"padding": 20}}}%% }
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 | A
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: state-no-empty-description-block >> invalid >>> invalid/state/gram-click-empty-description-block-after
+Filename: tests/fixtures/rules/state-no-empty-description-block/invalid/state/gram-click-empty-description-block-after-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | A
+  3 | click A "u" "t" accDescr {}
+    |                 ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: state-no-empty-description-block >> invalid >>> invalid/state/gram-empty-description-block-after-transition
+Filename: tests/fixtures/rules/state-no-empty-description-block/invalid/state/gram-empty-description-block-after-transition-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   A --> B accDescr {}
+    |           ^~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: state-no-empty-description-block >> invalid >>> invalid/state/gram-empty-description-block-statement
+Filename: tests/fixtures/rules/state-no-empty-description-block/invalid/state/gram-empty-description-block-statement-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   A
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | stateDiagram-v2
+          2 |   A
+          3 |
+---
+
+
+Test: state-no-empty-description-block >> invalid >>> invalid/state/header-empty-description-block
+Filename: tests/fixtures/rules/state-no-empty-description-block/invalid/state/header-empty-description-block-input.mmd
+
+Code:
+  1 | stateDiagram-v2 accDescr {}
+    |                 ^~~~~~~~~~~ [1]
+  2 | A --> B
+  3 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---

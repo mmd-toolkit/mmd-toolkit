@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The keyword-block fragment in identifier-bare is rejected by the grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nvenn-betaset a block b\n---------------^\nExpecting 'EOF', 'NEWLINE', 'TITLE', 'SET', 'BRACKET_LABEL', 'COLON', 'UNION', 'TEXT', 'INDENT_TEXT', 'STYLE', got 'IDENTIFIER'"
+  }
+}

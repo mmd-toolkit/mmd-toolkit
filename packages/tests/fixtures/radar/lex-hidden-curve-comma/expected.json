@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md: Can native hidden forms stand before and after a curve-list comma?"
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [],
+    "curves": [
+      {
+        "label": "c",
+        "entries": [
+          1
+        ]
+      },
+      {
+        "label": "d",
+        "entries": [
+          2
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

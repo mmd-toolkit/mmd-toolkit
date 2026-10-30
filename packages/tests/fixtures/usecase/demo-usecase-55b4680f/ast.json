@@ -1,0 +1,5401 @@
+{
+  "type": "Root",
+  "diagramType": "usecase",
+  "body": {
+    "type": "UsecaseDiagram",
+    "body": [
+      {
+        "type": "UsecaseDirectionStatement",
+        "direction": "LR",
+        "range": [
+          13,
+          25
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 12
+          }
+        }
+      },
+      {
+        "type": "UsecaseActorStatement",
+        "actors": [
+          {
+            "type": "UsecaseActor",
+            "id": {
+              "type": "Identifier",
+              "name": "User1",
+              "range": [
+                40,
+                45
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 14
+                },
+                "end": {
+                  "line": 3,
+                  "column": 19
+                }
+              }
+            },
+            "label": {
+              "type": "UsecaseLabel",
+              "kind": "string",
+              "value": "Customer",
+              "range": [
+                46,
+                56
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 20
+                },
+                "end": {
+                  "line": 3,
+                  "column": 30
+                }
+              }
+            },
+            "metadata": null,
+            "stereotype": null,
+            "classes": [],
+            "range": [
+              40,
+              57
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 14
+              },
+              "end": {
+                "line": 3,
+                "column": 31
+              }
+            }
+          }
+        ],
+        "range": [
+          34,
+          57
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 8
+          },
+          "end": {
+            "line": 3,
+            "column": 31
+          }
+        }
+      },
+      {
+        "type": "UsecaseActorStatement",
+        "actors": [
+          {
+            "type": "UsecaseActor",
+            "id": {
+              "type": "Identifier",
+              "name": "User2",
+              "range": [
+                72,
+                77
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 14
+                },
+                "end": {
+                  "line": 4,
+                  "column": 19
+                }
+              }
+            },
+            "label": {
+              "type": "UsecaseLabel",
+              "kind": "string",
+              "value": "Account owner",
+              "range": [
+                78,
+                93
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 20
+                },
+                "end": {
+                  "line": 4,
+                  "column": 35
+                }
+              }
+            },
+            "metadata": null,
+            "stereotype": null,
+            "classes": [],
+            "range": [
+              72,
+              94
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 14
+              },
+              "end": {
+                "line": 4,
+                "column": 36
+              }
+            }
+          }
+        ],
+        "range": [
+          66,
+          94
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 8
+          },
+          "end": {
+            "line": 4,
+            "column": 36
+          }
+        }
+      },
+      {
+        "type": "UsecaseActorStatement",
+        "actors": [
+          {
+            "type": "UsecaseActor",
+            "id": {
+              "type": "Identifier",
+              "name": "User3",
+              "range": [
+                109,
+                114
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 14
+                },
+                "end": {
+                  "line": 5,
+                  "column": 19
+                }
+              }
+            },
+            "label": {
+              "type": "UsecaseLabel",
+              "kind": "string",
+              "value": "Analyst",
+              "range": [
+                115,
+                124
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 20
+                },
+                "end": {
+                  "line": 5,
+                  "column": 29
+                }
+              }
+            },
+            "metadata": null,
+            "stereotype": null,
+            "classes": [],
+            "range": [
+              109,
+              125
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 14
+              },
+              "end": {
+                "line": 5,
+                "column": 30
+              }
+            }
+          }
+        ],
+        "range": [
+          103,
+          125
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 8
+          },
+          "end": {
+            "line": 5,
+            "column": 30
+          }
+        }
+      },
+      {
+        "type": "UsecaseActorStatement",
+        "actors": [
+          {
+            "type": "UsecaseActor",
+            "id": {
+              "type": "Identifier",
+              "name": "User4",
+              "range": [
+                140,
+                145
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 14
+                },
+                "end": {
+                  "line": 6,
+                  "column": 19
+                }
+              }
+            },
+            "label": {
+              "type": "UsecaseLabel",
+              "kind": "string",
+              "value": "Auditor",
+              "range": [
+                146,
+                155
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 20
+                },
+                "end": {
+                  "line": 6,
+                  "column": 29
+                }
+              }
+            },
+            "metadata": null,
+            "stereotype": null,
+            "classes": [],
+            "range": [
+              140,
+              156
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 14
+              },
+              "end": {
+                "line": 6,
+                "column": 30
+              }
+            }
+          }
+        ],
+        "range": [
+          134,
+          156
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 8
+          },
+          "end": {
+            "line": 6,
+            "column": 30
+          }
+        }
+      },
+      {
+        "type": "UsecaseActorStatement",
+        "actors": [
+          {
+            "type": "UsecaseActor",
+            "id": {
+              "type": "Identifier",
+              "name": "Admin1",
+              "range": [
+                171,
+                177
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 14
+                },
+                "end": {
+                  "line": 7,
+                  "column": 20
+                }
+              }
+            },
+            "label": {
+              "type": "UsecaseLabel",
+              "kind": "string",
+              "value": "Module A administrator",
+              "range": [
+                178,
+                202
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 21
+                },
+                "end": {
+                  "line": 7,
+                  "column": 45
+                }
+              }
+            },
+            "metadata": null,
+            "stereotype": null,
+            "classes": [],
+            "range": [
+              171,
+              203
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 14
+              },
+              "end": {
+                "line": 7,
+                "column": 46
+              }
+            }
+          }
+        ],
+        "range": [
+          165,
+          203
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 8
+          },
+          "end": {
+            "line": 7,
+            "column": 46
+          }
+        }
+      },
+      {
+        "type": "UsecaseActorStatement",
+        "actors": [
+          {
+            "type": "UsecaseActor",
+            "id": {
+              "type": "Identifier",
+              "name": "Admin2",
+              "range": [
+                218,
+                224
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 14
+                },
+                "end": {
+                  "line": 8,
+                  "column": 20
+                }
+              }
+            },
+            "label": {
+              "type": "UsecaseLabel",
+              "kind": "string",
+              "value": "Module B administrator",
+              "range": [
+                225,
+                249
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 21
+                },
+                "end": {
+                  "line": 8,
+                  "column": 45
+                }
+              }
+            },
+            "metadata": null,
+            "stereotype": null,
+            "classes": [],
+            "range": [
+              218,
+              250
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 14
+              },
+              "end": {
+                "line": 8,
+                "column": 46
+              }
+            }
+          }
+        ],
+        "range": [
+          212,
+          250
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 8
+          },
+          "end": {
+            "line": 8,
+            "column": 46
+          }
+        }
+      },
+      {
+        "type": "UsecaseActorStatement",
+        "actors": [
+          {
+            "type": "UsecaseActor",
+            "id": {
+              "type": "Identifier",
+              "name": "NotificationService",
+              "range": [
+                265,
+                284
+              ],
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 14
+                },
+                "end": {
+                  "line": 9,
+                  "column": 33
+                }
+              }
+            },
+            "label": {
+              "type": "UsecaseLabel",
+              "kind": "string",
+              "value": "Notification service",
+              "range": [
+                285,
+                307
+              ],
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 34
+                },
+                "end": {
+                  "line": 9,
+                  "column": 56
+                }
+              }
+            },
+            "metadata": {
+              "type": "UsecaseMetadata",
+              "properties": [
+                {
+                  "type": "UsecaseMetadataProperty",
+                  "key": {
+                    "type": "Identifier",
+                    "name": "icon",
+                    "range": [
+                      311,
+                      315
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 9,
+                        "column": 60
+                      },
+                      "end": {
+                        "line": 9,
+                        "column": 64
+                      }
+                    }
+                  },
+                  "value": {
+                    "type": "StringLiteral",
+                    "value": "fa:bell",
+                    "raw": "\"fa:bell\"",
+                    "closed": true,
+                    "range": [
+                      317,
+                      326
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 9,
+                        "column": 66
+                      },
+                      "end": {
+                        "line": 9,
+                        "column": 75
+                      }
+                    }
+                  },
+                  "range": [
+                    311,
+                    326
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 9,
+                      "column": 60
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 75
+                    }
+                  }
+                }
+              ],
+              "range": [
+                308,
+                328
+              ],
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 57
+                },
+                "end": {
+                  "line": 9,
+                  "column": 77
+                }
+              }
+            },
+            "stereotype": null,
+            "classes": [],
+            "range": [
+              265,
+              328
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 14
+              },
+              "end": {
+                "line": 9,
+                "column": 77
+              }
+            }
+          }
+        ],
+        "range": [
+          259,
+          328
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 8
+          },
+          "end": {
+            "line": 9,
+            "column": 77
+          }
+        }
+      },
+      {
+        "type": "UsecaseActorStatement",
+        "actors": [
+          {
+            "type": "UsecaseActor",
+            "id": {
+              "type": "Identifier",
+              "name": "DataService",
+              "range": [
+                343,
+                354
+              ],
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 14
+                },
+                "end": {
+                  "line": 10,
+                  "column": 25
+                }
+              }
+            },
+            "label": {
+              "type": "UsecaseLabel",
+              "kind": "string",
+              "value": "Data service",
+              "range": [
+                355,
+                369
+              ],
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 26
+                },
+                "end": {
+                  "line": 10,
+                  "column": 40
+                }
+              }
+            },
+            "metadata": {
+              "type": "UsecaseMetadata",
+              "properties": [
+                {
+                  "type": "UsecaseMetadataProperty",
+                  "key": {
+                    "type": "Identifier",
+                    "name": "icon",
+                    "range": [
+                      373,
+                      377
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 10,
+                        "column": 44
+                      },
+                      "end": {
+                        "line": 10,
+                        "column": 48
+                      }
+                    }
+                  },
+                  "value": {
+                    "type": "StringLiteral",
+                    "value": "fa:database",
+                    "raw": "\"fa:database\"",
+                    "closed": true,
+                    "range": [
+                      379,
+                      392
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 10,
+                        "column": 50
+                      },
+                      "end": {
+                        "line": 10,
+                        "column": 63
+                      }
+                    }
+                  },
+                  "range": [
+                    373,
+                    392
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 10,
+                      "column": 44
+                    },
+                    "end": {
+                      "line": 10,
+                      "column": 63
+                    }
+                  }
+                }
+              ],
+              "range": [
+                370,
+                394
+              ],
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 41
+                },
+                "end": {
+                  "line": 10,
+                  "column": 65
+                }
+              }
+            },
+            "stereotype": null,
+            "classes": [],
+            "range": [
+              343,
+              394
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 14
+              },
+              "end": {
+                "line": 10,
+                "column": 65
+              }
+            }
+          }
+        ],
+        "range": [
+          337,
+          394
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 8
+          },
+          "end": {
+            "line": 10,
+            "column": 65
+          }
+        }
+      },
+      {
+        "type": "UsecaseSystemBoundaryStatement",
+        "id": null,
+        "title": {
+          "type": "UsecaseLabel",
+          "kind": "string",
+          "value": "Module A",
+          "range": [
+            419,
+            429
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 23
+            },
+            "end": {
+              "line": 12,
+              "column": 33
+            }
+          }
+        },
+        "metadata": null,
+        "classes": [],
+        "body": [
+          {
+            "type": "UsecaseEntityStatement",
+            "entity": {
+              "type": "UsecaseEntity",
+              "id": {
+                "type": "Identifier",
+                "name": "FeatureA1",
+                "range": [
+                  440,
+                  449
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 19
+                  }
+                }
+              },
+              "shape": "ellipse",
+              "label": {
+                "type": "UsecaseLabel",
+                "kind": "string",
+                "value": "Feature A1",
+                "range": [
+                  450,
+                  462
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 20
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 32
+                  }
+                }
+              },
+              "metadata": null,
+              "stereotype": null,
+              "classes": [],
+              "range": [
+                440,
+                463
+              ],
+              "loc": {
+                "start": {
+                  "line": 13,
+                  "column": 10
+                },
+                "end": {
+                  "line": 13,
+                  "column": 33
+                }
+              }
+            },
+            "range": [
+              440,
+              463
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 10
+              },
+              "end": {
+                "line": 13,
+                "column": 33
+              }
+            }
+          },
+          {
+            "type": "UsecaseEntityStatement",
+            "entity": {
+              "type": "UsecaseEntity",
+              "id": {
+                "type": "Identifier",
+                "name": "FeatureA2",
+                "range": [
+                  474,
+                  483
+                ],
+                "loc": {
+                  "start": {
+                    "line": 14,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 14,
+                    "column": 19
+                  }
+                }
+              },
+              "shape": "ellipse",
+              "label": {
+                "type": "UsecaseLabel",
+                "kind": "string",
+                "value": "Feature A2",
+                "range": [
+                  484,
+                  496
+                ],
+                "loc": {
+                  "start": {
+                    "line": 14,
+                    "column": 20
+                  },
+                  "end": {
+                    "line": 14,
+                    "column": 32
+                  }
+                }
+              },
+              "metadata": null,
+              "stereotype": null,
+              "classes": [],
+              "range": [
+                474,
+                497
+              ],
+              "loc": {
+                "start": {
+                  "line": 14,
+                  "column": 10
+                },
+                "end": {
+                  "line": 14,
+                  "column": 33
+                }
+              }
+            },
+            "range": [
+              474,
+              497
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 10
+              },
+              "end": {
+                "line": 14,
+                "column": 33
+              }
+            }
+          },
+          {
+            "type": "UsecaseEntityStatement",
+            "entity": {
+              "type": "UsecaseEntity",
+              "id": {
+                "type": "Identifier",
+                "name": "AdminA1",
+                "range": [
+                  508,
+                  515
+                ],
+                "loc": {
+                  "start": {
+                    "line": 15,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 15,
+                    "column": 17
+                  }
+                }
+              },
+              "shape": "ellipse",
+              "label": {
+                "type": "UsecaseLabel",
+                "kind": "string",
+                "value": "Admin A1",
+                "range": [
+                  516,
+                  526
+                ],
+                "loc": {
+                  "start": {
+                    "line": 15,
+                    "column": 18
+                  },
+                  "end": {
+                    "line": 15,
+                    "column": 28
+                  }
+                }
+              },
+              "metadata": null,
+              "stereotype": null,
+              "classes": [],
+              "range": [
+                508,
+                527
+              ],
+              "loc": {
+                "start": {
+                  "line": 15,
+                  "column": 10
+                },
+                "end": {
+                  "line": 15,
+                  "column": 29
+                }
+              }
+            },
+            "range": [
+              508,
+              527
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 10
+              },
+              "end": {
+                "line": 15,
+                "column": 29
+              }
+            }
+          }
+        ],
+        "range": [
+          404,
+          539
+        ],
+        "loc": {
+          "start": {
+            "line": 12,
+            "column": 8
+          },
+          "end": {
+            "line": 16,
+            "column": 11
+          }
+        }
+      },
+      {
+        "type": "UsecaseMetadataAssignmentStatement",
+        "target": {
+          "type": "Identifier",
+          "name": "Module_A",
+          "range": [
+            548,
+            556
+          ],
+          "loc": {
+            "start": {
+              "line": 17,
+              "column": 8
+            },
+            "end": {
+              "line": 17,
+              "column": 16
+            }
+          }
+        },
+        "metadata": {
+          "type": "UsecaseMetadata",
+          "properties": [
+            {
+              "type": "UsecaseMetadataProperty",
+              "key": {
+                "type": "Identifier",
+                "name": "type",
+                "range": [
+                  559,
+                  563
+                ],
+                "loc": {
+                  "start": {
+                    "line": 17,
+                    "column": 19
+                  },
+                  "end": {
+                    "line": 17,
+                    "column": 23
+                  }
+                }
+              },
+              "value": {
+                "type": "Identifier",
+                "name": "package",
+                "range": [
+                  565,
+                  572
+                ],
+                "loc": {
+                  "start": {
+                    "line": 17,
+                    "column": 25
+                  },
+                  "end": {
+                    "line": 17,
+                    "column": 32
+                  }
+                }
+              },
+              "range": [
+                559,
+                572
+              ],
+              "loc": {
+                "start": {
+                  "line": 17,
+                  "column": 19
+                },
+                "end": {
+                  "line": 17,
+                  "column": 32
+                }
+              }
+            }
+          ],
+          "range": [
+            556,
+            574
+          ],
+          "loc": {
+            "start": {
+              "line": 17,
+              "column": 16
+            },
+            "end": {
+              "line": 17,
+              "column": 34
+            }
+          }
+        },
+        "range": [
+          548,
+          574
+        ],
+        "loc": {
+          "start": {
+            "line": 17,
+            "column": 8
+          },
+          "end": {
+            "line": 17,
+            "column": 34
+          }
+        }
+      },
+      {
+        "type": "UsecaseSystemBoundaryStatement",
+        "id": null,
+        "title": {
+          "type": "UsecaseLabel",
+          "kind": "string",
+          "value": "Module B",
+          "range": [
+            599,
+            609
+          ],
+          "loc": {
+            "start": {
+              "line": 19,
+              "column": 23
+            },
+            "end": {
+              "line": 19,
+              "column": 33
+            }
+          }
+        },
+        "metadata": null,
+        "classes": [],
+        "body": [
+          {
+            "type": "UsecaseEntityStatement",
+            "entity": {
+              "type": "UsecaseEntity",
+              "id": {
+                "type": "Identifier",
+                "name": "FeatureB1",
+                "range": [
+                  620,
+                  629
+                ],
+                "loc": {
+                  "start": {
+                    "line": 20,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 20,
+                    "column": 19
+                  }
+                }
+              },
+              "shape": "ellipse",
+              "label": {
+                "type": "UsecaseLabel",
+                "kind": "string",
+                "value": "Feature B1",
+                "range": [
+                  630,
+                  642
+                ],
+                "loc": {
+                  "start": {
+                    "line": 20,
+                    "column": 20
+                  },
+                  "end": {
+                    "line": 20,
+                    "column": 32
+                  }
+                }
+              },
+              "metadata": null,
+              "stereotype": null,
+              "classes": [],
+              "range": [
+                620,
+                643
+              ],
+              "loc": {
+                "start": {
+                  "line": 20,
+                  "column": 10
+                },
+                "end": {
+                  "line": 20,
+                  "column": 33
+                }
+              }
+            },
+            "range": [
+              620,
+              643
+            ],
+            "loc": {
+              "start": {
+                "line": 20,
+                "column": 10
+              },
+              "end": {
+                "line": 20,
+                "column": 33
+              }
+            }
+          },
+          {
+            "type": "UsecaseEntityStatement",
+            "entity": {
+              "type": "UsecaseEntity",
+              "id": {
+                "type": "Identifier",
+                "name": "FeatureB2",
+                "range": [
+                  654,
+                  663
+                ],
+                "loc": {
+                  "start": {
+                    "line": 21,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 21,
+                    "column": 19
+                  }
+                }
+              },
+              "shape": "ellipse",
+              "label": {
+                "type": "UsecaseLabel",
+                "kind": "string",
+                "value": "Feature B2",
+                "range": [
+                  664,
+                  676
+                ],
+                "loc": {
+                  "start": {
+                    "line": 21,
+                    "column": 20
+                  },
+                  "end": {
+                    "line": 21,
+                    "column": 32
+                  }
+                }
+              },
+              "metadata": null,
+              "stereotype": null,
+              "classes": [],
+              "range": [
+                654,
+                677
+              ],
+              "loc": {
+                "start": {
+                  "line": 21,
+                  "column": 10
+                },
+                "end": {
+                  "line": 21,
+                  "column": 33
+                }
+              }
+            },
+            "range": [
+              654,
+              677
+            ],
+            "loc": {
+              "start": {
+                "line": 21,
+                "column": 10
+              },
+              "end": {
+                "line": 21,
+                "column": 33
+              }
+            }
+          },
+          {
+            "type": "UsecaseEntityStatement",
+            "entity": {
+              "type": "UsecaseEntity",
+              "id": {
+                "type": "Identifier",
+                "name": "AdminB1",
+                "range": [
+                  688,
+                  695
+                ],
+                "loc": {
+                  "start": {
+                    "line": 22,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 22,
+                    "column": 17
+                  }
+                }
+              },
+              "shape": "ellipse",
+              "label": {
+                "type": "UsecaseLabel",
+                "kind": "string",
+                "value": "Admin B1",
+                "range": [
+                  696,
+                  706
+                ],
+                "loc": {
+                  "start": {
+                    "line": 22,
+                    "column": 18
+                  },
+                  "end": {
+                    "line": 22,
+                    "column": 28
+                  }
+                }
+              },
+              "metadata": null,
+              "stereotype": null,
+              "classes": [],
+              "range": [
+                688,
+                707
+              ],
+              "loc": {
+                "start": {
+                  "line": 22,
+                  "column": 10
+                },
+                "end": {
+                  "line": 22,
+                  "column": 29
+                }
+              }
+            },
+            "range": [
+              688,
+              707
+            ],
+            "loc": {
+              "start": {
+                "line": 22,
+                "column": 10
+              },
+              "end": {
+                "line": 22,
+                "column": 29
+              }
+            }
+          }
+        ],
+        "range": [
+          584,
+          719
+        ],
+        "loc": {
+          "start": {
+            "line": 19,
+            "column": 8
+          },
+          "end": {
+            "line": 23,
+            "column": 11
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "User1",
+            "range": [
+              729,
+              734
+            ],
+            "loc": {
+              "start": {
+                "line": 25,
+                "column": 8
+              },
+              "end": {
+                "line": 25,
+                "column": 13
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            729,
+            734
+          ],
+          "loc": {
+            "start": {
+              "line": 25,
+              "column": 8
+            },
+            "end": {
+              "line": 25,
+              "column": 13
+            }
+          }
+        },
+        "id": null,
+        "kind": "association",
+        "opening": {
+          "type": "UsecaseOpeningArrow",
+          "value": "--",
+          "startMarker": "none",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            735,
+            737
+          ],
+          "loc": {
+            "start": {
+              "line": 25,
+              "column": 14
+            },
+            "end": {
+              "line": 25,
+              "column": 16
+            }
+          }
+        },
+        "label": {
+          "type": "UsecaseLabel",
+          "kind": "string",
+          "value": "important",
+          "range": [
+            738,
+            749
+          ],
+          "loc": {
+            "start": {
+              "line": 25,
+              "column": 17
+            },
+            "end": {
+              "line": 25,
+              "column": 28
+            }
+          }
+        },
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "-->",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            750,
+            753
+          ],
+          "loc": {
+            "start": {
+              "line": 25,
+              "column": 29
+            },
+            "end": {
+              "line": 25,
+              "column": 32
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "FeatureA1",
+            "range": [
+              754,
+              763
+            ],
+            "loc": {
+              "start": {
+                "line": 25,
+                "column": 33
+              },
+              "end": {
+                "line": 25,
+                "column": 42
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            754,
+            763
+          ],
+          "loc": {
+            "start": {
+              "line": 25,
+              "column": 33
+            },
+            "end": {
+              "line": 25,
+              "column": 42
+            }
+          }
+        },
+        "range": [
+          729,
+          763
+        ],
+        "loc": {
+          "start": {
+            "line": 25,
+            "column": 8
+          },
+          "end": {
+            "line": 25,
+            "column": 42
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "User2",
+            "range": [
+              772,
+              777
+            ],
+            "loc": {
+              "start": {
+                "line": 26,
+                "column": 8
+              },
+              "end": {
+                "line": 26,
+                "column": 13
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            772,
+            777
+          ],
+          "loc": {
+            "start": {
+              "line": 26,
+              "column": 8
+            },
+            "end": {
+              "line": 26,
+              "column": 13
+            }
+          }
+        },
+        "id": null,
+        "kind": "association",
+        "opening": null,
+        "label": null,
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "-->",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            778,
+            781
+          ],
+          "loc": {
+            "start": {
+              "line": 26,
+              "column": 14
+            },
+            "end": {
+              "line": 26,
+              "column": 17
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "FeatureA2",
+            "range": [
+              782,
+              791
+            ],
+            "loc": {
+              "start": {
+                "line": 26,
+                "column": 18
+              },
+              "end": {
+                "line": 26,
+                "column": 27
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            782,
+            791
+          ],
+          "loc": {
+            "start": {
+              "line": 26,
+              "column": 18
+            },
+            "end": {
+              "line": 26,
+              "column": 27
+            }
+          }
+        },
+        "range": [
+          772,
+          791
+        ],
+        "loc": {
+          "start": {
+            "line": 26,
+            "column": 8
+          },
+          "end": {
+            "line": 26,
+            "column": 27
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Admin1",
+            "range": [
+              800,
+              806
+            ],
+            "loc": {
+              "start": {
+                "line": 27,
+                "column": 8
+              },
+              "end": {
+                "line": 27,
+                "column": 14
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            800,
+            806
+          ],
+          "loc": {
+            "start": {
+              "line": 27,
+              "column": 8
+            },
+            "end": {
+              "line": 27,
+              "column": 14
+            }
+          }
+        },
+        "id": null,
+        "kind": "association",
+        "opening": null,
+        "label": null,
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "-->",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            807,
+            810
+          ],
+          "loc": {
+            "start": {
+              "line": 27,
+              "column": 15
+            },
+            "end": {
+              "line": 27,
+              "column": 18
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "AdminA1",
+            "range": [
+              811,
+              818
+            ],
+            "loc": {
+              "start": {
+                "line": 27,
+                "column": 19
+              },
+              "end": {
+                "line": 27,
+                "column": 26
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            811,
+            818
+          ],
+          "loc": {
+            "start": {
+              "line": 27,
+              "column": 19
+            },
+            "end": {
+              "line": 27,
+              "column": 26
+            }
+          }
+        },
+        "range": [
+          800,
+          818
+        ],
+        "loc": {
+          "start": {
+            "line": 27,
+            "column": 8
+          },
+          "end": {
+            "line": 27,
+            "column": 26
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "User3",
+            "range": [
+              827,
+              832
+            ],
+            "loc": {
+              "start": {
+                "line": 28,
+                "column": 8
+              },
+              "end": {
+                "line": 28,
+                "column": 13
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            827,
+            832
+          ],
+          "loc": {
+            "start": {
+              "line": 28,
+              "column": 8
+            },
+            "end": {
+              "line": 28,
+              "column": 13
+            }
+          }
+        },
+        "id": null,
+        "kind": "association",
+        "opening": null,
+        "label": null,
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "-->",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            833,
+            836
+          ],
+          "loc": {
+            "start": {
+              "line": 28,
+              "column": 14
+            },
+            "end": {
+              "line": 28,
+              "column": 17
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "FeatureB1",
+            "range": [
+              837,
+              846
+            ],
+            "loc": {
+              "start": {
+                "line": 28,
+                "column": 18
+              },
+              "end": {
+                "line": 28,
+                "column": 27
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            837,
+            846
+          ],
+          "loc": {
+            "start": {
+              "line": 28,
+              "column": 18
+            },
+            "end": {
+              "line": 28,
+              "column": 27
+            }
+          }
+        },
+        "range": [
+          827,
+          846
+        ],
+        "loc": {
+          "start": {
+            "line": 28,
+            "column": 8
+          },
+          "end": {
+            "line": 28,
+            "column": 27
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "User4",
+            "range": [
+              855,
+              860
+            ],
+            "loc": {
+              "start": {
+                "line": 29,
+                "column": 8
+              },
+              "end": {
+                "line": 29,
+                "column": 13
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            855,
+            860
+          ],
+          "loc": {
+            "start": {
+              "line": 29,
+              "column": 8
+            },
+            "end": {
+              "line": 29,
+              "column": 13
+            }
+          }
+        },
+        "id": null,
+        "kind": "association",
+        "opening": null,
+        "label": null,
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "-->",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            861,
+            864
+          ],
+          "loc": {
+            "start": {
+              "line": 29,
+              "column": 14
+            },
+            "end": {
+              "line": 29,
+              "column": 17
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "FeatureB2",
+            "range": [
+              865,
+              874
+            ],
+            "loc": {
+              "start": {
+                "line": 29,
+                "column": 18
+              },
+              "end": {
+                "line": 29,
+                "column": 27
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            865,
+            874
+          ],
+          "loc": {
+            "start": {
+              "line": 29,
+              "column": 18
+            },
+            "end": {
+              "line": 29,
+              "column": 27
+            }
+          }
+        },
+        "range": [
+          855,
+          874
+        ],
+        "loc": {
+          "start": {
+            "line": 29,
+            "column": 8
+          },
+          "end": {
+            "line": 29,
+            "column": 27
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Admin2",
+            "range": [
+              883,
+              889
+            ],
+            "loc": {
+              "start": {
+                "line": 30,
+                "column": 8
+              },
+              "end": {
+                "line": 30,
+                "column": 14
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            883,
+            889
+          ],
+          "loc": {
+            "start": {
+              "line": 30,
+              "column": 8
+            },
+            "end": {
+              "line": 30,
+              "column": 14
+            }
+          }
+        },
+        "id": null,
+        "kind": "association",
+        "opening": null,
+        "label": null,
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "-->",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            890,
+            893
+          ],
+          "loc": {
+            "start": {
+              "line": 30,
+              "column": 15
+            },
+            "end": {
+              "line": 30,
+              "column": 18
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "AdminB1",
+            "range": [
+              894,
+              901
+            ],
+            "loc": {
+              "start": {
+                "line": 30,
+                "column": 19
+              },
+              "end": {
+                "line": 30,
+                "column": 26
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            894,
+            901
+          ],
+          "loc": {
+            "start": {
+              "line": 30,
+              "column": 19
+            },
+            "end": {
+              "line": 30,
+              "column": 26
+            }
+          }
+        },
+        "range": [
+          883,
+          901
+        ],
+        "loc": {
+          "start": {
+            "line": 30,
+            "column": 8
+          },
+          "end": {
+            "line": 30,
+            "column": 26
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "FeatureA1",
+            "range": [
+              911,
+              920
+            ],
+            "loc": {
+              "start": {
+                "line": 32,
+                "column": 8
+              },
+              "end": {
+                "line": 32,
+                "column": 17
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            911,
+            920
+          ],
+          "loc": {
+            "start": {
+              "line": 32,
+              "column": 8
+            },
+            "end": {
+              "line": 32,
+              "column": 17
+            }
+          }
+        },
+        "id": null,
+        "kind": "association",
+        "opening": null,
+        "label": null,
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "-->",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            921,
+            924
+          ],
+          "loc": {
+            "start": {
+              "line": 32,
+              "column": 18
+            },
+            "end": {
+              "line": 32,
+              "column": 21
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "NotificationService",
+            "range": [
+              925,
+              944
+            ],
+            "loc": {
+              "start": {
+                "line": 32,
+                "column": 22
+              },
+              "end": {
+                "line": 32,
+                "column": 41
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            925,
+            944
+          ],
+          "loc": {
+            "start": {
+              "line": 32,
+              "column": 22
+            },
+            "end": {
+              "line": 32,
+              "column": 41
+            }
+          }
+        },
+        "range": [
+          911,
+          944
+        ],
+        "loc": {
+          "start": {
+            "line": 32,
+            "column": 8
+          },
+          "end": {
+            "line": 32,
+            "column": 41
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "FeatureB1",
+            "range": [
+              953,
+              962
+            ],
+            "loc": {
+              "start": {
+                "line": 33,
+                "column": 8
+              },
+              "end": {
+                "line": 33,
+                "column": 17
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            953,
+            962
+          ],
+          "loc": {
+            "start": {
+              "line": 33,
+              "column": 8
+            },
+            "end": {
+              "line": 33,
+              "column": 17
+            }
+          }
+        },
+        "id": null,
+        "kind": "association",
+        "opening": null,
+        "label": null,
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "-->",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            963,
+            966
+          ],
+          "loc": {
+            "start": {
+              "line": 33,
+              "column": 18
+            },
+            "end": {
+              "line": 33,
+              "column": 21
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "NotificationService",
+            "range": [
+              967,
+              986
+            ],
+            "loc": {
+              "start": {
+                "line": 33,
+                "column": 22
+              },
+              "end": {
+                "line": 33,
+                "column": 41
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            967,
+            986
+          ],
+          "loc": {
+            "start": {
+              "line": 33,
+              "column": 22
+            },
+            "end": {
+              "line": 33,
+              "column": 41
+            }
+          }
+        },
+        "range": [
+          953,
+          986
+        ],
+        "loc": {
+          "start": {
+            "line": 33,
+            "column": 8
+          },
+          "end": {
+            "line": 33,
+            "column": 41
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "AdminA1",
+            "range": [
+              995,
+              1002
+            ],
+            "loc": {
+              "start": {
+                "line": 34,
+                "column": 8
+              },
+              "end": {
+                "line": 34,
+                "column": 15
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            995,
+            1002
+          ],
+          "loc": {
+            "start": {
+              "line": 34,
+              "column": 8
+            },
+            "end": {
+              "line": 34,
+              "column": 15
+            }
+          }
+        },
+        "id": null,
+        "kind": "association",
+        "opening": null,
+        "label": null,
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "-->",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            1003,
+            1006
+          ],
+          "loc": {
+            "start": {
+              "line": 34,
+              "column": 16
+            },
+            "end": {
+              "line": 34,
+              "column": 19
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "DataService",
+            "range": [
+              1007,
+              1018
+            ],
+            "loc": {
+              "start": {
+                "line": 34,
+                "column": 20
+              },
+              "end": {
+                "line": 34,
+                "column": 31
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            1007,
+            1018
+          ],
+          "loc": {
+            "start": {
+              "line": 34,
+              "column": 20
+            },
+            "end": {
+              "line": 34,
+              "column": 31
+            }
+          }
+        },
+        "range": [
+          995,
+          1018
+        ],
+        "loc": {
+          "start": {
+            "line": 34,
+            "column": 8
+          },
+          "end": {
+            "line": 34,
+            "column": 31
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "AdminB1",
+            "range": [
+              1027,
+              1034
+            ],
+            "loc": {
+              "start": {
+                "line": 35,
+                "column": 8
+              },
+              "end": {
+                "line": 35,
+                "column": 15
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            1027,
+            1034
+          ],
+          "loc": {
+            "start": {
+              "line": 35,
+              "column": 8
+            },
+            "end": {
+              "line": 35,
+              "column": 15
+            }
+          }
+        },
+        "id": null,
+        "kind": "association",
+        "opening": null,
+        "label": null,
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "-->",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            1035,
+            1038
+          ],
+          "loc": {
+            "start": {
+              "line": 35,
+              "column": 16
+            },
+            "end": {
+              "line": 35,
+              "column": 19
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "DataService",
+            "range": [
+              1039,
+              1050
+            ],
+            "loc": {
+              "start": {
+                "line": 35,
+                "column": 20
+              },
+              "end": {
+                "line": 35,
+                "column": 31
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            1039,
+            1050
+          ],
+          "loc": {
+            "start": {
+              "line": 35,
+              "column": 20
+            },
+            "end": {
+              "line": 35,
+              "column": 31
+            }
+          }
+        },
+        "range": [
+          1027,
+          1050
+        ],
+        "loc": {
+          "start": {
+            "line": 35,
+            "column": 8
+          },
+          "end": {
+            "line": 35,
+            "column": 31
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "User1",
+            "range": [
+              1060,
+              1065
+            ],
+            "loc": {
+              "start": {
+                "line": 37,
+                "column": 8
+              },
+              "end": {
+                "line": 37,
+                "column": 13
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            1060,
+            1065
+          ],
+          "loc": {
+            "start": {
+              "line": 37,
+              "column": 8
+            },
+            "end": {
+              "line": 37,
+              "column": 13
+            }
+          }
+        },
+        "id": null,
+        "kind": "association",
+        "opening": {
+          "type": "UsecaseOpeningArrow",
+          "value": "--",
+          "startMarker": "none",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            1066,
+            1068
+          ],
+          "loc": {
+            "start": {
+              "line": 37,
+              "column": 14
+            },
+            "end": {
+              "line": 37,
+              "column": 16
+            }
+          }
+        },
+        "label": {
+          "type": "UsecaseLabel",
+          "kind": "string",
+          "value": "collaborates",
+          "range": [
+            1069,
+            1083
+          ],
+          "loc": {
+            "start": {
+              "line": 37,
+              "column": 17
+            },
+            "end": {
+              "line": 37,
+              "column": 31
+            }
+          }
+        },
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "-->",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            1084,
+            1087
+          ],
+          "loc": {
+            "start": {
+              "line": 37,
+              "column": 32
+            },
+            "end": {
+              "line": 37,
+              "column": 35
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "User2",
+            "range": [
+              1088,
+              1093
+            ],
+            "loc": {
+              "start": {
+                "line": 37,
+                "column": 36
+              },
+              "end": {
+                "line": 37,
+                "column": 41
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            1088,
+            1093
+          ],
+          "loc": {
+            "start": {
+              "line": 37,
+              "column": 36
+            },
+            "end": {
+              "line": 37,
+              "column": 41
+            }
+          }
+        },
+        "range": [
+          1060,
+          1093
+        ],
+        "loc": {
+          "start": {
+            "line": 37,
+            "column": 8
+          },
+          "end": {
+            "line": 37,
+            "column": 41
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Admin1",
+            "range": [
+              1102,
+              1108
+            ],
+            "loc": {
+              "start": {
+                "line": 38,
+                "column": 8
+              },
+              "end": {
+                "line": 38,
+                "column": 14
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            1102,
+            1108
+          ],
+          "loc": {
+            "start": {
+              "line": 38,
+              "column": 8
+            },
+            "end": {
+              "line": 38,
+              "column": 14
+            }
+          }
+        },
+        "id": null,
+        "kind": "association",
+        "opening": {
+          "type": "UsecaseOpeningArrow",
+          "value": "--",
+          "startMarker": "none",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            1109,
+            1111
+          ],
+          "loc": {
+            "start": {
+              "line": 38,
+              "column": 15
+            },
+            "end": {
+              "line": 38,
+              "column": 17
+            }
+          }
+        },
+        "label": {
+          "type": "UsecaseLabel",
+          "kind": "string",
+          "value": "supervises",
+          "range": [
+            1112,
+            1124
+          ],
+          "loc": {
+            "start": {
+              "line": 38,
+              "column": 18
+            },
+            "end": {
+              "line": 38,
+              "column": 30
+            }
+          }
+        },
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "-->",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            1125,
+            1128
+          ],
+          "loc": {
+            "start": {
+              "line": 38,
+              "column": 31
+            },
+            "end": {
+              "line": 38,
+              "column": 34
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Admin2",
+            "range": [
+              1129,
+              1135
+            ],
+            "loc": {
+              "start": {
+                "line": 38,
+                "column": 35
+              },
+              "end": {
+                "line": 38,
+                "column": 41
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            1129,
+            1135
+          ],
+          "loc": {
+            "start": {
+              "line": 38,
+              "column": 35
+            },
+            "end": {
+              "line": 38,
+              "column": 41
+            }
+          }
+        },
+        "range": [
+          1102,
+          1135
+        ],
+        "loc": {
+          "start": {
+            "line": 38,
+            "column": 8
+          },
+          "end": {
+            "line": 38,
+            "column": 41
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      1135
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 38,
+        "column": 41
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "usecase-beta",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "direction",
+      "range": [
+        13,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "LR",
+      "range": [
+        23,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "actor",
+      "range": [
+        34,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "User1",
+      "range": [
+        40,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 14
+        },
+        "end": {
+          "line": 3,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        45,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 19
+        },
+        "end": {
+          "line": 3,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Customer\"",
+      "range": [
+        46,
+        56
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 20
+        },
+        "end": {
+          "line": 3,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        56,
+        57
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 30
+        },
+        "end": {
+          "line": 3,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "actor",
+      "range": [
+        66,
+        71
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 8
+        },
+        "end": {
+          "line": 4,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "User2",
+      "range": [
+        72,
+        77
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 14
+        },
+        "end": {
+          "line": 4,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        77,
+        78
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 19
+        },
+        "end": {
+          "line": 4,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Account owner\"",
+      "range": [
+        78,
+        93
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 20
+        },
+        "end": {
+          "line": 4,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        93,
+        94
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 35
+        },
+        "end": {
+          "line": 4,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "actor",
+      "range": [
+        103,
+        108
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 8
+        },
+        "end": {
+          "line": 5,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "User3",
+      "range": [
+        109,
+        114
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 14
+        },
+        "end": {
+          "line": 5,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        114,
+        115
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 19
+        },
+        "end": {
+          "line": 5,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Analyst\"",
+      "range": [
+        115,
+        124
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 20
+        },
+        "end": {
+          "line": 5,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        124,
+        125
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 29
+        },
+        "end": {
+          "line": 5,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "actor",
+      "range": [
+        134,
+        139
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 8
+        },
+        "end": {
+          "line": 6,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "User4",
+      "range": [
+        140,
+        145
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 14
+        },
+        "end": {
+          "line": 6,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        145,
+        146
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 19
+        },
+        "end": {
+          "line": 6,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Auditor\"",
+      "range": [
+        146,
+        155
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 20
+        },
+        "end": {
+          "line": 6,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        155,
+        156
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 29
+        },
+        "end": {
+          "line": 6,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "actor",
+      "range": [
+        165,
+        170
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 8
+        },
+        "end": {
+          "line": 7,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Admin1",
+      "range": [
+        171,
+        177
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 14
+        },
+        "end": {
+          "line": 7,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        177,
+        178
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 20
+        },
+        "end": {
+          "line": 7,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Module A administrator\"",
+      "range": [
+        178,
+        202
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 21
+        },
+        "end": {
+          "line": 7,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        202,
+        203
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 45
+        },
+        "end": {
+          "line": 7,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "actor",
+      "range": [
+        212,
+        217
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 8
+        },
+        "end": {
+          "line": 8,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Admin2",
+      "range": [
+        218,
+        224
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 14
+        },
+        "end": {
+          "line": 8,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        224,
+        225
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 20
+        },
+        "end": {
+          "line": 8,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Module B administrator\"",
+      "range": [
+        225,
+        249
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 21
+        },
+        "end": {
+          "line": 8,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        249,
+        250
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 45
+        },
+        "end": {
+          "line": 8,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "actor",
+      "range": [
+        259,
+        264
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 8
+        },
+        "end": {
+          "line": 9,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NotificationService",
+      "range": [
+        265,
+        284
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 14
+        },
+        "end": {
+          "line": 9,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        284,
+        285
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 33
+        },
+        "end": {
+          "line": 9,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Notification service\"",
+      "range": [
+        285,
+        307
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 34
+        },
+        "end": {
+          "line": 9,
+          "column": 56
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        307,
+        308
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 56
+        },
+        "end": {
+          "line": 9,
+          "column": 57
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        308,
+        310
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 57
+        },
+        "end": {
+          "line": 9,
+          "column": 59
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "icon",
+      "range": [
+        311,
+        315
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 60
+        },
+        "end": {
+          "line": 9,
+          "column": 64
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        315,
+        316
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 64
+        },
+        "end": {
+          "line": 9,
+          "column": 65
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"fa:bell\"",
+      "range": [
+        317,
+        326
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 66
+        },
+        "end": {
+          "line": 9,
+          "column": 75
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        327,
+        328
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 76
+        },
+        "end": {
+          "line": 9,
+          "column": 77
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "actor",
+      "range": [
+        337,
+        342
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 8
+        },
+        "end": {
+          "line": 10,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "DataService",
+      "range": [
+        343,
+        354
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 14
+        },
+        "end": {
+          "line": 10,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        354,
+        355
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 25
+        },
+        "end": {
+          "line": 10,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Data service\"",
+      "range": [
+        355,
+        369
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 26
+        },
+        "end": {
+          "line": 10,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        369,
+        370
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 40
+        },
+        "end": {
+          "line": 10,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        370,
+        372
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 41
+        },
+        "end": {
+          "line": 10,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "icon",
+      "range": [
+        373,
+        377
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 44
+        },
+        "end": {
+          "line": 10,
+          "column": 48
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        377,
+        378
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 48
+        },
+        "end": {
+          "line": 10,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"fa:database\"",
+      "range": [
+        379,
+        392
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 50
+        },
+        "end": {
+          "line": 10,
+          "column": 63
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        393,
+        394
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 64
+        },
+        "end": {
+          "line": 10,
+          "column": 65
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "systemBoundary",
+      "range": [
+        404,
+        418
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 8
+        },
+        "end": {
+          "line": 12,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Module A\"",
+      "range": [
+        419,
+        429
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 23
+        },
+        "end": {
+          "line": 12,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "FeatureA1",
+      "range": [
+        440,
+        449
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 10
+        },
+        "end": {
+          "line": 13,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        449,
+        450
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 19
+        },
+        "end": {
+          "line": 13,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Feature A1\"",
+      "range": [
+        450,
+        462
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 20
+        },
+        "end": {
+          "line": 13,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        462,
+        463
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 32
+        },
+        "end": {
+          "line": 13,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "FeatureA2",
+      "range": [
+        474,
+        483
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 10
+        },
+        "end": {
+          "line": 14,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        483,
+        484
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 19
+        },
+        "end": {
+          "line": 14,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Feature A2\"",
+      "range": [
+        484,
+        496
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 20
+        },
+        "end": {
+          "line": 14,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        496,
+        497
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 32
+        },
+        "end": {
+          "line": 14,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "AdminA1",
+      "range": [
+        508,
+        515
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 10
+        },
+        "end": {
+          "line": 15,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        515,
+        516
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 17
+        },
+        "end": {
+          "line": 15,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Admin A1\"",
+      "range": [
+        516,
+        526
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 18
+        },
+        "end": {
+          "line": 15,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        526,
+        527
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 28
+        },
+        "end": {
+          "line": 15,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "end",
+      "range": [
+        536,
+        539
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 8
+        },
+        "end": {
+          "line": 16,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Module_A",
+      "range": [
+        548,
+        556
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 8
+        },
+        "end": {
+          "line": 17,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        556,
+        558
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 16
+        },
+        "end": {
+          "line": 17,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "type",
+      "range": [
+        559,
+        563
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 19
+        },
+        "end": {
+          "line": 17,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        563,
+        564
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 23
+        },
+        "end": {
+          "line": 17,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "package",
+      "range": [
+        565,
+        572
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 25
+        },
+        "end": {
+          "line": 17,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        573,
+        574
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 33
+        },
+        "end": {
+          "line": 17,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "systemBoundary",
+      "range": [
+        584,
+        598
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 8
+        },
+        "end": {
+          "line": 19,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Module B\"",
+      "range": [
+        599,
+        609
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 23
+        },
+        "end": {
+          "line": 19,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "FeatureB1",
+      "range": [
+        620,
+        629
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 10
+        },
+        "end": {
+          "line": 20,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        629,
+        630
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 19
+        },
+        "end": {
+          "line": 20,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Feature B1\"",
+      "range": [
+        630,
+        642
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 20
+        },
+        "end": {
+          "line": 20,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        642,
+        643
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 32
+        },
+        "end": {
+          "line": 20,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "FeatureB2",
+      "range": [
+        654,
+        663
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 10
+        },
+        "end": {
+          "line": 21,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        663,
+        664
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 19
+        },
+        "end": {
+          "line": 21,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Feature B2\"",
+      "range": [
+        664,
+        676
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 20
+        },
+        "end": {
+          "line": 21,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        676,
+        677
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 32
+        },
+        "end": {
+          "line": 21,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "AdminB1",
+      "range": [
+        688,
+        695
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 10
+        },
+        "end": {
+          "line": 22,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        695,
+        696
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 17
+        },
+        "end": {
+          "line": 22,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Admin B1\"",
+      "range": [
+        696,
+        706
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 18
+        },
+        "end": {
+          "line": 22,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        706,
+        707
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 28
+        },
+        "end": {
+          "line": 22,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "end",
+      "range": [
+        716,
+        719
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 8
+        },
+        "end": {
+          "line": 23,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "User1",
+      "range": [
+        729,
+        734
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 8
+        },
+        "end": {
+          "line": 25,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        735,
+        737
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 14
+        },
+        "end": {
+          "line": 25,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"important\"",
+      "range": [
+        738,
+        749
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 17
+        },
+        "end": {
+          "line": 25,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        750,
+        753
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 29
+        },
+        "end": {
+          "line": 25,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "FeatureA1",
+      "range": [
+        754,
+        763
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 33
+        },
+        "end": {
+          "line": 25,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "User2",
+      "range": [
+        772,
+        777
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 8
+        },
+        "end": {
+          "line": 26,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        778,
+        781
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 14
+        },
+        "end": {
+          "line": 26,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "FeatureA2",
+      "range": [
+        782,
+        791
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 18
+        },
+        "end": {
+          "line": 26,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Admin1",
+      "range": [
+        800,
+        806
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 8
+        },
+        "end": {
+          "line": 27,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        807,
+        810
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 15
+        },
+        "end": {
+          "line": 27,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "AdminA1",
+      "range": [
+        811,
+        818
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 19
+        },
+        "end": {
+          "line": 27,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "User3",
+      "range": [
+        827,
+        832
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 8
+        },
+        "end": {
+          "line": 28,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        833,
+        836
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 14
+        },
+        "end": {
+          "line": 28,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "FeatureB1",
+      "range": [
+        837,
+        846
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 18
+        },
+        "end": {
+          "line": 28,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "User4",
+      "range": [
+        855,
+        860
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 8
+        },
+        "end": {
+          "line": 29,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        861,
+        864
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 14
+        },
+        "end": {
+          "line": 29,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "FeatureB2",
+      "range": [
+        865,
+        874
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 18
+        },
+        "end": {
+          "line": 29,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Admin2",
+      "range": [
+        883,
+        889
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 8
+        },
+        "end": {
+          "line": 30,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        890,
+        893
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 15
+        },
+        "end": {
+          "line": 30,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "AdminB1",
+      "range": [
+        894,
+        901
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 19
+        },
+        "end": {
+          "line": 30,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "FeatureA1",
+      "range": [
+        911,
+        920
+      ],
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 8
+        },
+        "end": {
+          "line": 32,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        921,
+        924
+      ],
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 18
+        },
+        "end": {
+          "line": 32,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NotificationService",
+      "range": [
+        925,
+        944
+      ],
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 22
+        },
+        "end": {
+          "line": 32,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "FeatureB1",
+      "range": [
+        953,
+        962
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 8
+        },
+        "end": {
+          "line": 33,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        963,
+        966
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 18
+        },
+        "end": {
+          "line": 33,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NotificationService",
+      "range": [
+        967,
+        986
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 22
+        },
+        "end": {
+          "line": 33,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "AdminA1",
+      "range": [
+        995,
+        1002
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 8
+        },
+        "end": {
+          "line": 34,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        1003,
+        1006
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 16
+        },
+        "end": {
+          "line": 34,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "DataService",
+      "range": [
+        1007,
+        1018
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 20
+        },
+        "end": {
+          "line": 34,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "AdminB1",
+      "range": [
+        1027,
+        1034
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 8
+        },
+        "end": {
+          "line": 35,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        1035,
+        1038
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 16
+        },
+        "end": {
+          "line": 35,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "DataService",
+      "range": [
+        1039,
+        1050
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 20
+        },
+        "end": {
+          "line": 35,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "User1",
+      "range": [
+        1060,
+        1065
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 8
+        },
+        "end": {
+          "line": 37,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        1066,
+        1068
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 14
+        },
+        "end": {
+          "line": 37,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"collaborates\"",
+      "range": [
+        1069,
+        1083
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 17
+        },
+        "end": {
+          "line": 37,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        1084,
+        1087
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 32
+        },
+        "end": {
+          "line": 37,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "User2",
+      "range": [
+        1088,
+        1093
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 36
+        },
+        "end": {
+          "line": 37,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Admin1",
+      "range": [
+        1102,
+        1108
+      ],
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 8
+        },
+        "end": {
+          "line": 38,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        1109,
+        1111
+      ],
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 15
+        },
+        "end": {
+          "line": 38,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"supervises\"",
+      "range": [
+        1112,
+        1124
+      ],
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 18
+        },
+        "end": {
+          "line": 38,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        1125,
+        1128
+      ],
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 31
+        },
+        "end": {
+          "line": 38,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Admin2",
+      "range": [
+        1129,
+        1135
+      ],
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 35
+        },
+        "end": {
+          "line": 38,
+          "column": 41
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    1135
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 38,
+      "column": 41
+    }
+  }
+}

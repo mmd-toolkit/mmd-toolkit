@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md IR grammar and ast/railroad.md RailroadZeroOrMoreCall: Does zeroOrMore reject two expression arguments?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 29: Expecting token of type ')' but found `,`."
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a second-scan form preserve the Unicode trivia of a later passed bare line?"
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 3, column 1: unexpected character: -> <- at offset: 14, skipped 1 characters. "
+  }
+}

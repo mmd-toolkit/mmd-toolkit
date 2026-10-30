@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Known divergences: mermaid.js reads the quotes of the string as `'` from a tag opened in the frontmatter; here the string ends at its second quote."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "b='c'>d",
+      "type": 2,
+      "children": []
+    }
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

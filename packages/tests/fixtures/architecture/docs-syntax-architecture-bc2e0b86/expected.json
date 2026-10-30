@@ -1,0 +1,84 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/architecture.md",
+    "line": 8
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "db",
+        "type": "service",
+        "in": "api",
+        "icon": "database",
+        "title": "Database"
+      },
+      {
+        "id": "disk1",
+        "type": "service",
+        "in": "api",
+        "icon": "disk",
+        "title": "Storage"
+      },
+      {
+        "id": "disk2",
+        "type": "service",
+        "in": "api",
+        "icon": "disk",
+        "title": "Storage"
+      },
+      {
+        "id": "server",
+        "type": "service",
+        "in": "api",
+        "icon": "server",
+        "title": "Server"
+      }
+    ],
+    "groups": [
+      {
+        "id": "api",
+        "icon": "cloud",
+        "title": "API"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "db",
+        "lhsDir": "L",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "server",
+        "rhsDir": "R",
+        "rhsInto": false,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "disk1",
+        "lhsDir": "T",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "server",
+        "rhsDir": "B",
+        "rhsInto": false,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "disk2",
+        "lhsDir": "T",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "db",
+        "rhsDir": "B",
+        "rhsInto": false,
+        "rhsGroup": false
+      }
+    ],
+    "layoutHints": []
+  }
+}

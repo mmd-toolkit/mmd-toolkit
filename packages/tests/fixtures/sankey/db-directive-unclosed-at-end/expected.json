@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, directives: a directive without `}%%` at the end of the text takes nothing from a line."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a",
+      "b"
+    ],
+    "links": [
+      {
+        "source": "a",
+        "target": "b",
+        "value": 1
+      }
+    ]
+  }
+}

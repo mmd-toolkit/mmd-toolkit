@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, directives: a directive inside quotes is removed."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a",
+      "bc"
+    ],
+    "links": [
+      {
+        "source": "a",
+        "target": "bc",
+        "value": 1
+      }
+    ]
+  }
+}

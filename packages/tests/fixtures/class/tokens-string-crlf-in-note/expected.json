@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokens.md Tokens: a String token keeps its text as written, a CR and a line feed inside it too: the value is `\"a`, CR, line feed, `b\"`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "class": "A",
+        "text": "a\nb"
+      }
+    ],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

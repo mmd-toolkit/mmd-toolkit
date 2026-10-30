@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Accessibility-looking titles test ordinary bare nodes."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "accTitle: First",
+        "label": "accTitle: First",
+        "isGroup": true
+      },
+      {
+        "id": "accTitle: Second",
+        "label": "accTitle: Second",
+        "isGroup": true
+      }
+    ]
+  }
+}

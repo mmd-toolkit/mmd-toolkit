@@ -1,0 +1,62 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/railroad.md",
+    "line": 113
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "expression",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "nonterminal",
+              "name": "term"
+            },
+            {
+              "type": "repetition",
+              "element": {
+                "type": "sequence",
+                "elements": [
+                  {
+                    "type": "choice",
+                    "alternatives": [
+                      {
+                        "type": "terminal",
+                        "value": "+"
+                      },
+                      {
+                        "type": "terminal",
+                        "value": "-"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "nonterminal",
+                    "name": "term"
+                  }
+                ]
+              },
+              "min": 0,
+              "max": "Infinity"
+            }
+          ]
+        }
+      },
+      {
+        "name": "term",
+        "definition": {
+          "type": "terminal",
+          "value": "number"
+        }
+      }
+    ]
+  }
+}

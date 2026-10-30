@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A native closer without boundary falls back to a comment and hides the same-line rule."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "s",
+        "definition": {
+          "type": "terminal",
+          "value": "visible"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: An earlier STRING owns enclosed native-directive-looking text."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 0,
+          "label": "A%%{!}%%B"
+        }
+      ]
+    ]
+  }
+}

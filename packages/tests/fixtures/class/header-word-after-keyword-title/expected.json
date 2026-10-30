@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Known divergences, headerless-empty-ending: without a header and without an empty value at the end, both reject the text."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...agramXaccTitle: x\n--------------------^\nExpecting , got 'EOF'"
+  }
+}

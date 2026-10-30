@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Building the summary, names: the first `~` of the written name `~a~b` is its first character, so the id is `~a~b` and there is no type. mermaid.js reads a generic type at the start of the backquotes and rejects the input (name-start-reads-unit)."
+  },
+  "knownDivergence": "name-start-reads-unit",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...lassDiagramclass `~a~b`\n----------------------^\nExpecting 'ALPHA', 'NUM', 'MINUS', 'UNICODE_TEXT', 'BQUOTE_STR', got 'GENERICTYPE'"
+  }
+}

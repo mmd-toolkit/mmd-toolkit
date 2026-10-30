@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-from-tree/requirement.md, an empty description block does not change a description block before it."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "y",
+    "requirements": [],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, styles: `styleA` is not the keyword, and the lexer stops at the text: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 3. Unrecognized text.\n...ta  A  styleA fill:#f00\n---------------------^"
+  }
+}

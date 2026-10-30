@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does CRLF frontmatter extraction agree with diagram line cleanup?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "title": "T"
+  }
+}

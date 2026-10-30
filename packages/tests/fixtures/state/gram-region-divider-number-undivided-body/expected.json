@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Rejections outside the grammar: the divider of a body that is not divided is counted too, so the divider of X is `divider-id-2`."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Group nodes can only have label. Remove the additional description for node [divider-id-2_start]"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-mappings.spec.ts",
+    "line": 66,
+    "test": "agentflow element mappings > vertex positions > captures vertices for inline shapes"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "sq",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "c",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "diamond",
+        "type": "diamond",
+        "props": {}
+      },
+      {
+        "id": "d",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "trap",
+        "type": "lean_right",
+        "props": {}
+      },
+      {
+        "id": "f",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "f",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "f",
+        "end": "a",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_f_a_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

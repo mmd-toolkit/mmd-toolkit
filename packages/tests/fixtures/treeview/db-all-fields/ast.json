@@ -1,0 +1,1082 @@
+{
+  "type": "Root",
+  "diagramType": "treeView",
+  "body": {
+    "type": "TreeviewDiagram",
+    "body": [
+      {
+        "type": "TreeviewTitleStatement",
+        "prefix": null,
+        "value": {
+          "type": "TreeviewLiteral",
+          "value": "Hidden",
+          "range": [
+            20,
+            26
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 6
+            },
+            "end": {
+              "line": 2,
+              "column": 12
+            }
+          }
+        },
+        "range": [
+          14,
+          26
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 12
+          }
+        }
+      },
+      {
+        "type": "TreeviewAccTitleStatement",
+        "prefix": null,
+        "value": {
+          "type": "TreeviewLiteral",
+          "value": " Accessible",
+          "range": [
+            36,
+            47
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 9
+            },
+            "end": {
+              "line": 3,
+              "column": 20
+            }
+          }
+        },
+        "range": [
+          27,
+          47
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 20
+          }
+        }
+      },
+      {
+        "type": "TreeviewAccDescrBlockStatement",
+        "prefix": null,
+        "textBeforeOpen": [],
+        "value": {
+          "type": "TreeviewLiteral",
+          "value": " Description ",
+          "range": [
+            58,
+            71
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 10
+            },
+            "end": {
+              "line": 4,
+              "column": 23
+            }
+          }
+        },
+        "range": [
+          48,
+          72
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 24
+          }
+        }
+      },
+      {
+        "type": "TreeviewNode",
+        "indent": 0,
+        "textBefore": [],
+        "prefix": null,
+        "textBeforeName": [],
+        "name": {
+          "type": "TreeviewIdentifier",
+          "name": "root/",
+          "range": [
+            73,
+            78
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 5,
+              "column": 5
+            }
+          }
+        },
+        "annotations": [
+          {
+            "type": "TreeviewClassAnnotation",
+            "textBefore": [],
+            "prefix": null,
+            "name": {
+              "type": "Identifier",
+              "name": "highlight",
+              "range": [
+                82,
+                91
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 9
+                },
+                "end": {
+                  "line": 5,
+                  "column": 18
+                }
+              }
+            },
+            "range": [
+              79,
+              91
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 6
+              },
+              "end": {
+                "line": 5,
+                "column": 18
+              }
+            }
+          },
+          {
+            "type": "TreeviewIconAnnotation",
+            "textBefore": [],
+            "prefix": null,
+            "name": {
+              "type": "Identifier",
+              "name": "folder",
+              "range": [
+                97,
+                103
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 24
+                },
+                "end": {
+                  "line": 5,
+                  "column": 30
+                }
+              }
+            },
+            "range": [
+              92,
+              104
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 19
+              },
+              "end": {
+                "line": 5,
+                "column": 31
+              }
+            }
+          },
+          {
+            "type": "TreeviewDescriptionAnnotation",
+            "textBefore": [],
+            "prefix": null,
+            "value": {
+              "type": "TreeviewLiteral",
+              "value": " root description",
+              "range": [
+                107,
+                124
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 34
+                },
+                "end": {
+                  "line": 5,
+                  "column": 51
+                }
+              }
+            },
+            "range": [
+              105,
+              124
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 32
+              },
+              "end": {
+                "line": 5,
+                "column": 51
+              }
+            }
+          }
+        ],
+        "range": [
+          73,
+          190
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 14
+          }
+        },
+        "children": [
+          {
+            "type": "TreeviewNode",
+            "indent": 2,
+            "textBefore": [],
+            "prefix": null,
+            "textBeforeName": [],
+            "name": {
+              "type": "TreeviewIdentifier",
+              "name": "child.txt",
+              "range": [
+                127,
+                136
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 2
+                },
+                "end": {
+                  "line": 6,
+                  "column": 11
+                }
+              }
+            },
+            "annotations": [
+              {
+                "type": "TreeviewIconAnnotation",
+                "textBefore": [],
+                "prefix": null,
+                "name": {
+                  "type": "Identifier",
+                  "name": "logos:react",
+                  "range": [
+                    142,
+                    153
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 6,
+                      "column": 17
+                    },
+                    "end": {
+                      "line": 6,
+                      "column": 28
+                    }
+                  }
+                },
+                "range": [
+                  137,
+                  154
+                ],
+                "loc": {
+                  "start": {
+                    "line": 6,
+                    "column": 12
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 29
+                  }
+                }
+              },
+              {
+                "type": "TreeviewDescriptionAnnotation",
+                "textBefore": [],
+                "prefix": null,
+                "value": {
+                  "type": "TreeviewLiteral",
+                  "value": " child description",
+                  "range": [
+                    157,
+                    175
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 6,
+                      "column": 32
+                    },
+                    "end": {
+                      "line": 6,
+                      "column": 50
+                    }
+                  }
+                },
+                "range": [
+                  155,
+                  175
+                ],
+                "loc": {
+                  "start": {
+                    "line": 6,
+                    "column": 30
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 50
+                  }
+                }
+              }
+            ],
+            "range": [
+              127,
+              175
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 2
+              },
+              "end": {
+                "line": 6,
+                "column": 50
+              }
+            },
+            "children": []
+          },
+          {
+            "type": "TreeviewNode",
+            "indent": 2,
+            "textBefore": [],
+            "prefix": null,
+            "textBeforeName": [],
+            "name": {
+              "type": "TreeviewIdentifier",
+              "name": "plain",
+              "range": [
+                178,
+                183
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 2
+                },
+                "end": {
+                  "line": 7,
+                  "column": 7
+                }
+              }
+            },
+            "annotations": [
+              {
+                "type": "TreeviewIconAnnotation",
+                "textBefore": [],
+                "prefix": null,
+                "name": null,
+                "range": [
+                  184,
+                  190
+                ],
+                "loc": {
+                  "start": {
+                    "line": 7,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 7,
+                    "column": 14
+                  }
+                }
+              }
+            ],
+            "range": [
+              178,
+              190
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 2
+              },
+              "end": {
+                "line": 7,
+                "column": 14
+              }
+            },
+            "children": []
+          }
+        ]
+      },
+      {
+        "type": "TreeviewNode",
+        "indent": 0,
+        "textBefore": [],
+        "prefix": null,
+        "textBeforeName": [],
+        "name": {
+          "type": "TreeviewIdentifier",
+          "name": "last",
+          "range": [
+            191,
+            195
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 0
+            },
+            "end": {
+              "line": 8,
+              "column": 4
+            }
+          }
+        },
+        "annotations": [],
+        "range": [
+          191,
+          195
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 0
+          },
+          "end": {
+            "line": 8,
+            "column": 4
+          }
+        },
+        "children": []
+      }
+    ],
+    "range": [
+      0,
+      195
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 8,
+        "column": 4
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "treeView-beta",
+      "range": [
+        0,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        14,
+        19
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Hidden",
+      "range": [
+        20,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accTitle",
+      "range": [
+        27,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        35,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " Accessible",
+      "range": [
+        36,
+        47
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 9
+        },
+        "end": {
+          "line": 3,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accDescr",
+      "range": [
+        48,
+        56
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        57,
+        58
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 9
+        },
+        "end": {
+          "line": 4,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " Description ",
+      "range": [
+        58,
+        71
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 10
+        },
+        "end": {
+          "line": 4,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        71,
+        72
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 23
+        },
+        "end": {
+          "line": 4,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "root/",
+      "range": [
+        73,
+        78
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":::",
+      "range": [
+        79,
+        82
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 6
+        },
+        "end": {
+          "line": 5,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "highlight",
+      "range": [
+        82,
+        91
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 9
+        },
+        "end": {
+          "line": 5,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "icon",
+      "range": [
+        92,
+        96
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 19
+        },
+        "end": {
+          "line": 5,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        96,
+        97
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 23
+        },
+        "end": {
+          "line": 5,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "folder",
+      "range": [
+        97,
+        103
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 24
+        },
+        "end": {
+          "line": 5,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        103,
+        104
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 30
+        },
+        "end": {
+          "line": 5,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "##",
+      "range": [
+        105,
+        107
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 32
+        },
+        "end": {
+          "line": 5,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " root description",
+      "range": [
+        107,
+        124
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 34
+        },
+        "end": {
+          "line": 5,
+          "column": 51
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "child.txt",
+      "range": [
+        127,
+        136
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 2
+        },
+        "end": {
+          "line": 6,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "icon",
+      "range": [
+        137,
+        141
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 12
+        },
+        "end": {
+          "line": 6,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        141,
+        142
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 16
+        },
+        "end": {
+          "line": 6,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "logos:react",
+      "range": [
+        142,
+        153
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 17
+        },
+        "end": {
+          "line": 6,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        153,
+        154
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 28
+        },
+        "end": {
+          "line": 6,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "##",
+      "range": [
+        155,
+        157
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 30
+        },
+        "end": {
+          "line": 6,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " child description",
+      "range": [
+        157,
+        175
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 32
+        },
+        "end": {
+          "line": 6,
+          "column": 50
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "plain",
+      "range": [
+        178,
+        183
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 2
+        },
+        "end": {
+          "line": 7,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "icon",
+      "range": [
+        184,
+        188
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 8
+        },
+        "end": {
+          "line": 7,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        188,
+        189
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 12
+        },
+        "end": {
+          "line": 7,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        189,
+        190
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 13
+        },
+        "end": {
+          "line": 7,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "last",
+      "range": [
+        191,
+        195
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 4
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    195
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 8,
+      "column": 4
+    }
+  }
+}

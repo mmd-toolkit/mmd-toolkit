@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P3: HTML, entities and semicolon preprocessing] Are named hash references encoded in a child?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "Aﬂ°amp¶ßB",
+          "children": []
+        }
+      ]
+    }
+  }
+}

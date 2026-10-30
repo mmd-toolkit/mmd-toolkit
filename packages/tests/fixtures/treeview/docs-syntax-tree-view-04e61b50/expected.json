@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/treeView.md",
+    "line": 96
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "src",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "index.js",
+            "nodeType": "file",
+            "description": "app entry point",
+            "children": []
+          },
+          {
+            "name": "config.ts",
+            "nodeType": "file",
+            "description": "runtime configuration",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "package.json",
+        "nodeType": "file",
+        "description": "project manifest",
+        "children": []
+      }
+    ]
+  }
+}

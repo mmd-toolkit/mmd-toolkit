@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md Known divergences: Does an open frontmatter tag reject a single-quoted name that body-only quote reading accepts?"
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 5: Expecting token of type 'EOF' but found `y`."
+  }
+}

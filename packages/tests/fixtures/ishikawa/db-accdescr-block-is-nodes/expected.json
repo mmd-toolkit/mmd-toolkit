@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D: addNode and common strings] Does a description-looking block create ordinary nodes?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "accDescr {",
+          "children": [
+            {
+              "text": "First",
+              "children": []
+            },
+            {
+              "text": "Second",
+              "children": []
+            }
+          ]
+        },
+        {
+          "text": "}",
+          "children": []
+        }
+      ]
+    }
+  }
+}

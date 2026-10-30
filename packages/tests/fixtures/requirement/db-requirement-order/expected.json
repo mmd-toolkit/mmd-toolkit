@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md requirement, requirements and elements are in the order of their first definitions, each in its own list."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "b",
+        "type": "Design Constraint",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": []
+      },
+      {
+        "name": "a",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "elements": [
+      {
+        "name": "z",
+        "type": "",
+        "docRef": "",
+        "cssStyles": [],
+        "classes": []
+      },
+      {
+        "name": "y",
+        "type": "",
+        "docRef": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": []
+  }
+}

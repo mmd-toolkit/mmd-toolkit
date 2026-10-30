@@ -1,0 +1,82 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/usecase-colorIndex.spec.ts",
+    "line": 38,
+    "test": "usecase diagram colour slots > numbers system boundaries from zero, on their own counter"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "Clerk",
+        "label": "Clerk",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "parentId": "sb1",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "Authorize",
+        "label": "Authorize payment",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "sb1",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Dispatch",
+        "label": "Dispatch order",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "sb2",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Receipt",
+        "label": "Create receipt",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [
+      {
+        "id": "sb1",
+        "label": "Payment service",
+        "labelType": "text",
+        "type": "rect",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "sb2",
+        "label": "Shipping",
+        "labelType": "text",
+        "type": "rect",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

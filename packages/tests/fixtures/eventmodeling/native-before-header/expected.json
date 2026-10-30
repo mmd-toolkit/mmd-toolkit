@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Detection does not skip native slash comments before the header."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: /* native */ eventmodeling\ntf 01 evt A\n"
+  }
+}

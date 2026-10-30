@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Common line values preserve quote characters rather than STRING-unescaping."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "\"T\"",
+    "accTitle": "'A'",
+    "accDescr": "\"D\"",
+    "domains": [],
+    "transitions": []
+  }
+}

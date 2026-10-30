@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, settings: under a securityLevel that is not one of mermaid.js's values, a script tag is replaced like any tag."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "\"&lt;script&gt;alert(1)&lt;/script&gt;\"",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "&lt;img src&equals;x onerror&equals;alert(1)&gt;",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "&lt;script&gt;alert(1)&lt;/script&gt;",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [
+      {
+        "text": "&lt;a href&equals;x&gt;p&lt;/a&gt;",
+        "className": "",
+        "x": "0.3",
+        "y": "0.6"
+      }
+    ],
+    "classes": []
+  }
+}

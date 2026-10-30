@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "EBNF multiline strings and special text retain their line content."
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "terminal",
+              "value": "a\nb\nc d e"
+            },
+            {
+              "type": "special",
+              "text": "a\nb"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

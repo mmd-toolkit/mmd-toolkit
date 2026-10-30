@@ -1,0 +1,13 @@
+C4Context
+title All fields
+accDescr: Accessible description
+Boundary(outer, "Outer", "company", "bt", "bl") {
+Node(inner, "Inner", "machine", "Node description", "node sprite", "nt", "nl") {
+Container(a, "A", "Java", "Description", "sprite", "tags", "javascript:alert(1)")
+Person(b, "B", "Person description", $custom="own")
+}
+}
+Rel(a, b, "Uses", "HTTPS", "Relationship", "rel sprite", "rt", "rl")
+UpdateElementStyle(a, "red", "white", "blue", "yes", "box", "changed sprite", "Changed technology", "Legend", "Legend sprite")
+UpdateRelStyle(a, b, "green", "black", "-4px", "+7.5")
+UpdateLayoutConfig("3", "1")

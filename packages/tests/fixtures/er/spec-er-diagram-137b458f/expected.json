@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/er/parser/erDiagram.spec.js",
+    "line": 454,
+    "test": "when parsing ER diagram it... > should allow an empty attribute block"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-BOOK-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "BOOK",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

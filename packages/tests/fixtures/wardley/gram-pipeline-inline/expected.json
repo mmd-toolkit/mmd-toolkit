@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a pipeline require a newline after its opening brace?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 3, column 14: Expecting: expecting at least one iteration which starts with one of these possible Token sequences::\n  <[NEWLINE]>\nbut found: 'component'\nParse error on line 3, column 30: Expecting token of type ',' but found `]`."
+  }
+}

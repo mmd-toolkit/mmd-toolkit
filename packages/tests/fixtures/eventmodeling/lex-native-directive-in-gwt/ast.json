@@ -1,0 +1,472 @@
+{
+  "type": "Root",
+  "diagramType": "eventmodeling",
+  "body": {
+    "type": "EventmodelingDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "EventmodelingGwtStatement",
+        "textBeforeSourceFrame": [],
+        "sourceFrame": {
+          "type": "Identifier",
+          "name": "01",
+          "range": [
+            18,
+            20
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 18
+            },
+            "end": {
+              "line": 1,
+              "column": 20
+            }
+          }
+        },
+        "given": {
+          "type": "EventmodelingGwtClause",
+          "textBefore": [],
+          "kind": "given",
+          "body": [
+            {
+              "type": "EventmodelingGwtItem",
+              "textBefore": [],
+              "modelEntityType": "evt",
+              "textBeforeEntityIdentifier": [],
+              "entityIdentifier": {
+                "type": "Identifier",
+                "name": "A",
+                "range": [
+                  31,
+                  32
+                ],
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 31
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 32
+                  }
+                }
+              },
+              "range": [
+                27,
+                32
+              ],
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 27
+                },
+                "end": {
+                  "line": 1,
+                  "column": 32
+                }
+              }
+            },
+            {
+              "type": "EventmodelingGwtItem",
+              "textBefore": [
+                {
+                  "type": "EventmodelingIgnoredText",
+                  "kind": "directive",
+                  "value": "%%{{x}}%%",
+                  "range": [
+                    33,
+                    42
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 1,
+                      "column": 33
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 42
+                    }
+                  }
+                }
+              ],
+              "modelEntityType": "cmd",
+              "textBeforeEntityIdentifier": [],
+              "entityIdentifier": {
+                "type": "Identifier",
+                "name": "B",
+                "range": [
+                  47,
+                  48
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 5
+                  }
+                }
+              },
+              "range": [
+                33,
+                48
+              ],
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 33
+                },
+                "end": {
+                  "line": 2,
+                  "column": 5
+                }
+              }
+            }
+          ],
+          "range": [
+            21,
+            48
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 21
+            },
+            "end": {
+              "line": 2,
+              "column": 5
+            }
+          }
+        },
+        "when": null,
+        "then": {
+          "type": "EventmodelingGwtClause",
+          "textBefore": [],
+          "kind": "then",
+          "body": [
+            {
+              "type": "EventmodelingGwtItem",
+              "textBefore": [],
+              "modelEntityType": "evt",
+              "textBeforeEntityIdentifier": [],
+              "entityIdentifier": {
+                "type": "Identifier",
+                "name": "C",
+                "range": [
+                  58,
+                  59
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 15
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 16
+                  }
+                }
+              },
+              "range": [
+                54,
+                59
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 11
+                },
+                "end": {
+                  "line": 2,
+                  "column": 16
+                }
+              }
+            }
+          ],
+          "range": [
+            49,
+            59
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 6
+            },
+            "end": {
+              "line": 2,
+              "column": 16
+            }
+          }
+        },
+        "range": [
+          14,
+          59
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 14
+          },
+          "end": {
+            "line": 2,
+            "column": 16
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      59
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 16
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "eventmodeling",
+      "range": [
+        0,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "gwt",
+      "range": [
+        14,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 14
+        },
+        "end": {
+          "line": 1,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "01",
+      "range": [
+        18,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 18
+        },
+        "end": {
+          "line": 1,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "given",
+      "range": [
+        21,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 21
+        },
+        "end": {
+          "line": 1,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "evt",
+      "range": [
+        27,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 27
+        },
+        "end": {
+          "line": 1,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        31,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 31
+        },
+        "end": {
+          "line": 1,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "%%{{x}}%%",
+      "range": [
+        33,
+        42
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 33
+        },
+        "end": {
+          "line": 1,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "cmd",
+      "range": [
+        43,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "B",
+      "range": [
+        47,
+        48
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "then",
+      "range": [
+        49,
+        53
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "evt",
+      "range": [
+        54,
+        57
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 11
+        },
+        "end": {
+          "line": 2,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "C",
+      "range": [
+        58,
+        59
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 15
+        },
+        "end": {
+          "line": 2,
+          "column": 16
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    59
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 16
+    }
+  }
+}

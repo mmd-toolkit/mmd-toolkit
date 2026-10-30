@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does conflicting duplicate metadata in a declaration reject instead of last-wins?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Actor 'A' has conflicting type metadata at line 2, column 22 [34,38); previous declaration at line 2, column 7 [19,20)"
+  }
+}

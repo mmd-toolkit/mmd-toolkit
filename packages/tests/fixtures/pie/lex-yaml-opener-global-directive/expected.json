@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Global trivia inside values: Common directives and selected semicolons can lie inside strings, common-value text and ignored-form text; their written values leave those trivia out. Case: yaml-opener-global-directive."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      }
+    ]
+  }
+}

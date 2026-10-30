@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md: Can HTML attribute-quote rewriting cross frontmatter and make a double-quoted label accepted?"
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "<a",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "x='y'>"
+      }
+    ],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

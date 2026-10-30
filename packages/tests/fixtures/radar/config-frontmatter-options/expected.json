@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Frontmatter radar option-shaped keys do not change Db options."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "Front",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "A"
+      }
+    ],
+    "curves": [
+      {
+        "label": "c",
+        "entries": [
+          1
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  },
+  "embedded": {
+    "config": {
+      "radar": {
+        "showLegend": false
+      }
+    },
+    "title": "Front"
+  }
+}

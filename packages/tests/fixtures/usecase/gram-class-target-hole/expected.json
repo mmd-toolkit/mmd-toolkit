@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: A class target list has no empty interior target."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> IDENTIFIER <-- but found --> ',' <-- at line 4, column 9 [25,26)"
+  }
+}

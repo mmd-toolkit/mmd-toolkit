@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Lexical structure: `test` followed by a space is the keyword `test`, which no name may start with."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...Diagramrequirement test req {}\n----------------------^\nExpecting 'unqString', 'qString', got 'VERIFY_TEST'"
+  }
+}

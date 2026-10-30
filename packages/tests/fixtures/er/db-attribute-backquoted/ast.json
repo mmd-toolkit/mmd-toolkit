@@ -1,0 +1,380 @@
+{
+  "type": "Root",
+  "diagramType": "er",
+  "body": {
+    "type": "ErDiagram",
+    "body": [
+      {
+        "type": "ErEntityStatement",
+        "name": {
+          "type": "ErIdentifier",
+          "name": "A",
+          "range": [
+            12,
+            13
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 2
+            },
+            "end": {
+              "line": 2,
+              "column": 3
+            }
+          }
+        },
+        "alias": null,
+        "cssClasses": [],
+        "attributes": [
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "StringLiteral",
+              "value": "my type",
+              "raw": "`my type`",
+              "closed": true,
+              "range": [
+                20,
+                29
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 4
+                },
+                "end": {
+                  "line": 3,
+                  "column": 13
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "StringLiteral",
+              "value": "my name",
+              "raw": "`my name`",
+              "closed": true,
+              "range": [
+                30,
+                39
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 14
+                },
+                "end": {
+                  "line": 3,
+                  "column": 23
+                }
+              }
+            },
+            "keys": [],
+            "comment": null,
+            "range": [
+              20,
+              39
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 4
+              },
+              "end": {
+                "line": 3,
+                "column": 23
+              }
+            }
+          },
+          {
+            "type": "ErAttribute",
+            "dataType": {
+              "type": "ErIdentifier",
+              "name": "int",
+              "range": [
+                44,
+                47
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 4
+                },
+                "end": {
+                  "line": 4,
+                  "column": 7
+                }
+              }
+            },
+            "optional": false,
+            "name": {
+              "type": "StringLiteral",
+              "value": "other name",
+              "raw": "`other name`",
+              "closed": true,
+              "range": [
+                48,
+                60
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 8
+                },
+                "end": {
+                  "line": 4,
+                  "column": 20
+                }
+              }
+            },
+            "keys": [
+              {
+                "type": "Identifier",
+                "name": "PK",
+                "range": [
+                  61,
+                  63
+                ],
+                "loc": {
+                  "start": {
+                    "line": 4,
+                    "column": 21
+                  },
+                  "end": {
+                    "line": 4,
+                    "column": 23
+                  }
+                }
+              }
+            ],
+            "comment": null,
+            "range": [
+              44,
+              63
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 4
+              },
+              "end": {
+                "line": 4,
+                "column": 23
+              }
+            }
+          }
+        ],
+        "range": [
+          12,
+          67
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 2
+          },
+          "end": {
+            "line": 5,
+            "column": 3
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      67
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 5,
+        "column": 3
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "erDiagram",
+      "range": [
+        0,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        12,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        14,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "`my type`",
+      "range": [
+        20,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 4
+        },
+        "end": {
+          "line": 3,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "`my name`",
+      "range": [
+        30,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 14
+        },
+        "end": {
+          "line": 3,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "int",
+      "range": [
+        44,
+        47
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 4
+        },
+        "end": {
+          "line": 4,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "`other name`",
+      "range": [
+        48,
+        60
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 8
+        },
+        "end": {
+          "line": 4,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "PK",
+      "range": [
+        61,
+        63
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 21
+        },
+        "end": {
+          "line": 4,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        66,
+        67
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 2
+        },
+        "end": {
+          "line": 5,
+          "column": 3
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    68
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 6,
+      "column": 0
+    }
+  }
+}

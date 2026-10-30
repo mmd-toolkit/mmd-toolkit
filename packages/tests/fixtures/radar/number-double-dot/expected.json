@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The negative dot lookahead prevents a malformed floating value."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 10: unexpected character: ->.<- at offset: 20, skipped 1 characters. "
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The link is looked up as `classId-1A`, which no class has, and the tooltip is set by the id `1A`. The class `1A` has only the tooltip."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "1A",
+        "type": "",
+        "label": "1A",
+        "text": "1A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "tooltip": "t"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

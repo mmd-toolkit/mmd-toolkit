@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: Detection precedes selected-semicolon removal and cannot find this split header."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: \n"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An entity in an accTitle is its placeholder."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "aﬂ°amp¶ßb",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

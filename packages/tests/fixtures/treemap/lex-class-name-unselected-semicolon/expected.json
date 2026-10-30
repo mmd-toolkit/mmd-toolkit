@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Does a semicolon before the line-rule hash stay unselected and reject?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 11: unexpected character: ->;<- at offset: 18, skipped 1 characters.\nLexer error on line 2, column 19: unexpected character: ->#<- at offset: 26, skipped 1 characters. Parse error on line 2, column 1: Expecting token of type 'EOF' but found `classDef`.\nParse error on line 2, column 10: Expecting: one of these possible Token sequences:\n  1. [STRING2]\n  2. [CLASS_DEF]\nbut found: 'a'\nParse error on line 2, column 14: Expecting: one of these possible Token sequences:\n  1. [STRING2]\n  2. [CLASS_DEF]\nbut found: 'fill'"
+  }
+}

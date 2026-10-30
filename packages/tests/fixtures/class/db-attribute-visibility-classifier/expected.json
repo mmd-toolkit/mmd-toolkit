@@ -1,0 +1,81 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Each of the four visibility marks and the two classifier marks is read at its place, also without the other. The members show `visibility` and `classifier` for each."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "$",
+            "id": "a"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "-",
+            "classifier": "*",
+            "id": "b"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "#",
+            "classifier": "$",
+            "id": "c"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "~",
+            "classifier": "*",
+            "id": "d"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "$",
+            "id": "e"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "*",
+            "id": "f"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "g"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "-",
+            "classifier": "",
+            "id": "h"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

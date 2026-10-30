@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A numeric text id keeps leading zeros rather than converting to a number."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "007"
+      }
+    ],
+    "styles": []
+  }
+}

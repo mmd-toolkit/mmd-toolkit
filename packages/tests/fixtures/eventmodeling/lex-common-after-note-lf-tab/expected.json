@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Common statements: After a note block consumes its closing LF, can tab-indented accDescr claim its own padding?"
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "\taccDescr: D",
+    "frames": []
+  }
+}

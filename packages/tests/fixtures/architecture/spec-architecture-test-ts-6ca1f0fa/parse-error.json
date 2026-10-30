@@ -1,0 +1,17 @@
+{
+  "message": "Architecture parent must be a registered group",
+  "range": [
+    59,
+    61
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 41
+    },
+    "end": {
+      "line": 2,
+      "column": 43
+    }
+  }
+}

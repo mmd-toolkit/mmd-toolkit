@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Trivia between units: only the last `;` is ignored, so `#f00;` is an entity, whose placeholder no rule of the style context reads."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 4. Unrecognized text.\n... r {}style r fill:ﬂ°f00¶ßstroke:#0f0\n---------------------^"
+  }
+}

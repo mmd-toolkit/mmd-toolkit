@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can a tag opened in frontmatter rewrite double quotes inside a later pie label?"
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "<a",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A='B'>C",
+        "value": 1
+      }
+    ]
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

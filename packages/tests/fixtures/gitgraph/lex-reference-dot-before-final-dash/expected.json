@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gitgraph.md Reference may have dot before final dash."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "a.-"
+      }
+    ]
+  }
+}

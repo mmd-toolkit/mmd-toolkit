@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Hidden TAB before a branch EOL is accepted."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "b"
+      }
+    ]
+  }
+}

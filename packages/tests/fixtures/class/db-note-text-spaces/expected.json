@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Building the summary, notes: the text of a note is kept as written."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "text": "  x  "
+      }
+    ],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

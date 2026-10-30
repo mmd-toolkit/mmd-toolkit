@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Valid embedded railroad settings cannot rescue an invalid EBNF rule."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line ?, column ?: Expecting token of type ';' but found ``."
+  }
+}

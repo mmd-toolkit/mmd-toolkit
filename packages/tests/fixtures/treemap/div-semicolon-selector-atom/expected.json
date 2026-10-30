@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Does the line-rule semicolon inside a selector join an atomic name only in Mermaid?"
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "style:#x",
+        "classSelector": "aa",
+        "children": []
+      }
+    ],
+    "classDefs": []
+  }
+}

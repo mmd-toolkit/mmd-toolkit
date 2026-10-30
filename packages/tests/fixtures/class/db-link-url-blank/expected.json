@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The URL is empty without the whitespace at its ends, so `link` is not set. `linkTarget` is `_blank` and the class is clickable."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default clickable",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "linkTarget": "_blank"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

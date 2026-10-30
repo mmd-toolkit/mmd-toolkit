@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A bare node on the header line tests the greedy node-id rule."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      }
+    ]
+  }
+}

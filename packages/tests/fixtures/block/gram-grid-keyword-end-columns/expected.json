@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, keywords: the word `end` after `columns`: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ock-beta  columns  end   A\n----------------------^\nExpecting 'EOF', got 'end'"
+  }
+}

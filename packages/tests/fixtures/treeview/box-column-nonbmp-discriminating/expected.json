@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: UTF-16 column counting keeps the later branch a sibling where code-point counting would make it a child."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "first",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "second",
+            "nodeType": "file",
+            "children": []
+          },
+          {
+            "name": "last",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A junction parent must exist."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The junction [j]'s parent does not exist. Please make sure the parent is created before this junction"
+  }
+}

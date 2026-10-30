@@ -1,0 +1,33 @@
+{
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Z",
+        "type": "",
+        "label": "Z",
+        "text": "Z",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "text": "x"
+      }
+    ],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

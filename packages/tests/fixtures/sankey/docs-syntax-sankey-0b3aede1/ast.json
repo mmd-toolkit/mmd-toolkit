@@ -1,0 +1,386 @@
+{
+  "type": "Root",
+  "diagramType": "sankey",
+  "body": {
+    "type": "SankeyDiagram",
+    "body": [
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Pumped heat",
+          "range": [
+            8,
+            19
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 3,
+              "column": 11
+            }
+          }
+        },
+        "target": {
+          "type": "StringLiteral",
+          "value": "Heating and cooling, \"\"homes\"\"",
+          "raw": "\"Heating and cooling, \"\"homes\"\"\"",
+          "closed": true,
+          "range": [
+            20,
+            52
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 12
+            },
+            "end": {
+              "line": 3,
+              "column": 44
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "193.026",
+          "range": [
+            53,
+            60
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 45
+            },
+            "end": {
+              "line": 3,
+              "column": 52
+            }
+          }
+        },
+        "range": [
+          8,
+          60
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 52
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Pumped heat",
+          "range": [
+            61,
+            72
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 4,
+              "column": 11
+            }
+          }
+        },
+        "target": {
+          "type": "StringLiteral",
+          "value": "Heating and cooling, \"\"commercial\"\"",
+          "raw": "\"Heating and cooling, \"\"commercial\"\"\"",
+          "closed": true,
+          "range": [
+            73,
+            110
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 12
+            },
+            "end": {
+              "line": 4,
+              "column": 49
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "70.672",
+          "range": [
+            111,
+            117
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 50
+            },
+            "end": {
+              "line": 4,
+              "column": 56
+            }
+          }
+        },
+        "range": [
+          61,
+          117
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 56
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      117
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 4,
+        "column": 56
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "sankey",
+      "range": [
+        0,
+        6
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Pumped heat",
+      "range": [
+        8,
+        19
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        19,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 11
+        },
+        "end": {
+          "line": 3,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Heating and cooling, \"\"homes\"\"\"",
+      "range": [
+        20,
+        52
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 12
+        },
+        "end": {
+          "line": 3,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        52,
+        53
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 44
+        },
+        "end": {
+          "line": 3,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "193.026",
+      "range": [
+        53,
+        60
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 45
+        },
+        "end": {
+          "line": 3,
+          "column": 52
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Pumped heat",
+      "range": [
+        61,
+        72
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        72,
+        73
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 11
+        },
+        "end": {
+          "line": 4,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Heating and cooling, \"\"commercial\"\"\"",
+      "range": [
+        73,
+        110
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 12
+        },
+        "end": {
+          "line": 4,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        110,
+        111
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 49
+        },
+        "end": {
+          "line": 4,
+          "column": 50
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "70.672",
+      "range": [
+        111,
+        117
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 50
+        },
+        "end": {
+          "line": 4,
+          "column": 56
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    118
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 0
+    }
+  }
+}

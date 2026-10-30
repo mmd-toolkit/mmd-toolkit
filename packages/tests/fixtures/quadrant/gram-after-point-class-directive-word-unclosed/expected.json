@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, statements: what follows a `point-class` statement on its line: a directive with a word and no closing, and then a title on the next line."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "style named U is not supported."
+  }
+}

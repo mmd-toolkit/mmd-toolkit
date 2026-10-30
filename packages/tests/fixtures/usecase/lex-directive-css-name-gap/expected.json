@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure: A directive in the horizontal whitespace between the markerless -- prefix and its following CSS property-name word is accepted as trivia; both surrounding spaces are retained."
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [
+      {
+        "id": "A",
+        "label": "A",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": [
+          "--  color:red"
+        ]
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

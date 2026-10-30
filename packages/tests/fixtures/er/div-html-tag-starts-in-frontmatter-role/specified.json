@@ -1,0 +1,59 @@
+{
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "<a",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      },
+      {
+        "id": "entity-B-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B",
+        "classes": []
+      },
+      {
+        "id": "entity-c-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "c",
+        "classes": []
+      },
+      {
+        "id": "entity->d-3",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": ">d",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-A-0",
+        "roleA": "b=",
+        "entityB": "entity-B-1",
+        "cardA": "ZERO_OR_MORE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

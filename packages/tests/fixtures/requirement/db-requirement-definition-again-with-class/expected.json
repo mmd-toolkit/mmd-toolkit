@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-from-tree/requirement.md, a requirement statement with a name that exists gives it the classes after `:::` and changes nothing else."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": [
+          "c"
+        ]
+      }
+    ],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Grammar: The required opener newline run can include blank lines before the first child."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "P",
+        "label": "P",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "P_X",
+        "label": "X",
+        "x": 30,
+        "y": 10,
+        "className": "pipeline-component"
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [
+      {
+        "nodeId": "P",
+        "componentIds": [
+          "P_X"
+        ]
+      }
+    ],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

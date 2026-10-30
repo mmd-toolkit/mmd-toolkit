@@ -1,0 +1,250 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: sequence-no-unclosed-description-block >> invalid >>> docs/rules/sequence-no-unclosed-description-block.md incorrect 1
+Filename: sequence-no-unclosed-description-block-incorrect-1.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   A ->> B: x
+  3 |   accDescr { y
+    |   ^~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---
+
+
+Test: sequence-no-unclosed-description-block >> invalid >>> docs/rules/sequence-no-unclosed-description-block.md incorrect 2
+Filename: sequence-no-unclosed-description-block-incorrect-2.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   A ->> B: x
+  3 |   accDescr { y
+    |   ^~~~~~~~~~ [1]
+  4 |   B ->> A: z
+  5 |
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+    Suggestions:
+      - Close the block at the end of the text.
+        Output:
+          1 | sequenceDiagram
+          2 |   A ->> B: x
+          3 |   accDescr { y
+          4 |   B ->> A: z
+          5 | }
+          6 |
+---
+
+
+Test: sequence-no-unclosed-description-block >> invalid >>> invalid/sequence/db-acc-descr-block-brace-own-closing-later-line
+Filename: tests/fixtures/rules/sequence-no-unclosed-description-block/invalid/sequence/db-acc-descr-block-brace-own-closing-later-line-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr {
+    | ^~~~~~~~~~ [1]
+  3 | a {b }
+  4 | A->>B: x
+  5 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: sequence-no-unclosed-description-block >> invalid >>> invalid/sequence/db-acc-descr-block-closed-by-data-block
+Filename: tests/fixtures/rules/sequence-no-unclosed-description-block/invalid/sequence/db-acc-descr-block-closed-by-data-block-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr { first
+    | ^~~~~~~~~~ [1]
+  3 | participant A@{ "type": "actor" }
+  4 | A->>B: x
+  5 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: sequence-no-unclosed-description-block >> invalid >>> invalid/sequence/db-acc-descr-block-closed-by-links
+Filename: tests/fixtures/rules/sequence-no-unclosed-description-block/invalid/sequence/db-acc-descr-block-closed-by-links-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr { first
+    | ^~~~~~~~~~ [1]
+  3 | links A: {"a": "https://x"}
+  4 | A->>B: x
+  5 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: sequence-no-unclosed-description-block >> invalid >>> invalid/sequence/db-acc-descr-block-closed-by-message-text
+Filename: tests/fixtures/rules/sequence-no-unclosed-description-block/invalid/sequence/db-acc-descr-block-closed-by-message-text-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr { first
+    | ^~~~~~~~~~ [1]
+  3 | A->>B: f{x}
+  4 | B->>A: y
+  5 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: sequence-no-unclosed-description-block >> invalid >>> invalid/sequence/db-acc-descr-block-unclosed-comment-line
+Filename: tests/fixtures/rules/sequence-no-unclosed-description-block/invalid/sequence/db-acc-descr-block-unclosed-comment-line-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr: d
+  3 | accDescr {
+    | ^~~~~~~~~~ [1]
+  4 | %% c
+  5 |
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---
+
+
+Test: sequence-no-unclosed-description-block >> invalid >>> invalid/sequence/db-acc-descr-block-unclosed-directive-only
+Filename: tests/fixtures/rules/sequence-no-unclosed-description-block/invalid/sequence/db-acc-descr-block-unclosed-directive-only-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr: d
+  3 | accDescr { %%{init: {}}%%
+    | ^~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---
+
+
+Test: sequence-no-unclosed-description-block >> invalid >>> invalid/sequence/db-acc-descr-block-unclosed-empty-line
+Filename: tests/fixtures/rules/sequence-no-unclosed-description-block/invalid/sequence/db-acc-descr-block-unclosed-empty-line-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr: d
+  3 | accDescr { x
+    | ^~~~~~~~~~ [1]
+  4 |
+  5 |
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---
+
+
+Test: sequence-no-unclosed-description-block >> invalid >>> invalid/sequence/db-acc-descr-block-unclosed
+Filename: tests/fixtures/rules/sequence-no-unclosed-description-block/invalid/sequence/db-acc-descr-block-unclosed-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr: d
+  3 | accDescr { x
+    | ^~~~~~~~~~ [1]
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---
+
+
+Test: sequence-no-unclosed-description-block >> invalid >>> invalid/sequence/db-acc-descr-block-unclosed-semicolon
+Filename: tests/fixtures/rules/sequence-no-unclosed-description-block/invalid/sequence/db-acc-descr-block-unclosed-semicolon-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr: d
+  3 | accDescr { x;
+    | ^~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---
+
+
+Test: sequence-no-unclosed-description-block >> invalid >>> invalid/sequence/db-acc-descr-block-unclosed-takes-statements
+Filename: tests/fixtures/rules/sequence-no-unclosed-description-block/invalid/sequence/db-acc-descr-block-unclosed-takes-statements-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr: d
+  3 | accDescr { first
+    | ^~~~~~~~~~ [1]
+  4 | A->>B: x
+  5 |
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+    Suggestions:
+      - Close the block at the end of the text.
+        Output:
+          1 | sequenceDiagram
+          2 | accDescr: d
+          3 | accDescr { first
+          4 | A->>B: x
+          5 | }
+          6 |
+---
+
+
+Test: sequence-no-unclosed-description-block >> invalid >>> invalid/sequence/db-acc-descr-block-unclosed-unclosed-directive
+Filename: tests/fixtures/rules/sequence-no-unclosed-description-block/invalid/sequence/db-acc-descr-block-unclosed-unclosed-directive-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr: d
+  3 | accDescr { x %%{init: {}
+    | ^~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---
+
+
+Test: sequence-no-unclosed-description-block >> invalid >>> invalid/sequence/lex-acc-descr-block-emoji-directive-before-brace
+Filename: tests/fixtures/rules/sequence-no-unclosed-description-block/invalid/sequence/lex-acc-descr-block-emoji-directive-before-brace-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr {
+    | ^~~~~~~~~~ [1]
+  3 | A{x
+  4 | %%{init: {"themeVariables": {"x": "😀😀"}}}%%B }
+  5 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: sequence-no-unclosed-description-block >> invalid >>> invalid/sequence/lex-acc-descr-block-unclosed-empty
+Filename: tests/fixtures/rules/sequence-no-unclosed-description-block/invalid/sequence/lex-acc-descr-block-unclosed-empty-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr: x
+  3 | accDescr {
+    | ^~~~~~~~~~ [1]
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---
+
+
+Test: sequence-no-unclosed-description-block >> invalid >>> invalid/sequence/unclosed-directive-in-block
+Filename: tests/fixtures/rules/sequence-no-unclosed-description-block/invalid/sequence/unclosed-directive-in-block-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr { first %%{wrap skip tail
+    | ^~~~~~~~~~ [1]
+  3 | A ->> B: x
+  4 |
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---

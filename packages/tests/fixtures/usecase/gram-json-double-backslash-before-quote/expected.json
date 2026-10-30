@@ -1,0 +1,58 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an even backslash run let the quote close before following braces?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "J",
+        "value": {
+          "a": "backslash\\",
+          "b": {}
+        },
+        "propertyOrder": {
+          "": [
+            "a",
+            "b"
+          ],
+          "/b": []
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "J",
+        "set": {
+          "value": {
+            "a": "backslash\\",
+            "b": {}
+          },
+          "propertyOrder": {
+            "": [
+              "a",
+              "b"
+            ],
+            "/b": []
+          }
+        }
+      }
+    ]
+  }
+}

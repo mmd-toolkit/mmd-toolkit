@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md, tokenless-empty-forms: an empty string inside what mermaid.js reads as one number of a link style statement is rejected by mermaid.js too."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...A-->BlinkStyle 0\"\"0 stroke:red\n---------------------^\nExpecting 'SPACE', 'COMMA', got 'NUM'"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A style-like line inside a multiline quoted value is a line for entity preprocessing."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A\nstyle fill:#f00\nB",
+        "value": 1
+      }
+    ]
+  }
+}

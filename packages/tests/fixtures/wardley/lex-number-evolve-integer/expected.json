@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Numbers: An evolve target requires a decimal rather than an integer."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 10: Expecting token of type 'WARDLEY_NUMBER' but found `1`."
+  }
+}

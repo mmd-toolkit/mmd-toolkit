@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Plots: a value after a label without a comma; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nxychartline [1 \"a\" 2]\n-------------------^\nExpecting 'SQUARE_BRACES_END', 'COMMA', got 'NUMBER_WITH_DECIMAL'"
+  }
+}

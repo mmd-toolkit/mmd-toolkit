@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/railroad.md RailroadChoiceCall: Which named call and argument-member gaps own native directives before the opener and inside a two-argument choice?"
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "terminal",
+              "value": "a"
+            },
+            {
+              "type": "nonterminal",
+              "name": "b"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

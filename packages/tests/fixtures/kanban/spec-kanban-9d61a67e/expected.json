@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/kanban/kanban.spec.ts",
+    "line": 145,
+    "test": "when parsing a kanban  > nodes > KNBN-9 should handle an id and type for a node definition"
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "root",
+        "label": "root",
+        "isGroup": true
+      },
+      {
+        "id": "theId",
+        "label": "child1",
+        "isGroup": false,
+        "parentId": "root"
+      }
+    ]
+  }
+}

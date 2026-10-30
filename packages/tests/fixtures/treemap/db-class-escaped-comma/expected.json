@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are escaped style commas kept within a style?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "classSelector": "colors",
+        "children": []
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "colors",
+        "styles": [
+          "fill:rgb(1,2,3)",
+          "color:red"
+        ]
+      }
+    ]
+  }
+}

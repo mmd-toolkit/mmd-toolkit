@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, points: an open bracket alone is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\nquadrantChartA: [\n-----------------^\nExpecting 'point_x', got '1'"
+  }
+}

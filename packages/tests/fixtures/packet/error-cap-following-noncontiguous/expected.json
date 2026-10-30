@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A noncontiguous block after the publication cap still rejects before its publication loop is skipped."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Packet block 320002 - 320002 is not contiguous. It should start from 320000."
+  }
+}

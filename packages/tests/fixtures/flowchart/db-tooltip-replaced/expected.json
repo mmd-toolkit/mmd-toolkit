@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Db normalization, click statements: the later tooltip for A replaces its text and keeps its position before B."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable",
+          "clickable"
+        ],
+        "text": "A",
+        "props": {},
+        "link": "u"
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "B",
+        "props": {},
+        "link": "u"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [
+      {
+        "id": "A",
+        "text": "t3"
+      },
+      {
+        "id": "B",
+        "text": "t2"
+      }
+    ]
+  }
+}

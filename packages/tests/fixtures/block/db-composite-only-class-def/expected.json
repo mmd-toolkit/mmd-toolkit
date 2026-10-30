@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, composite blocks: a composite that holds only a `classDef` is accepted, with no children."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "label": "",
+          "type": "composite",
+          "children": []
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

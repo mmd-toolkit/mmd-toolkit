@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: Selected semicolons cannot divide the line-description fixed word."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "D",
+    "packet": []
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/treeview.md Authored values: digit-looking node names are TreeviewIdentifier rather than NumericLiteral."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "123",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "001.5",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

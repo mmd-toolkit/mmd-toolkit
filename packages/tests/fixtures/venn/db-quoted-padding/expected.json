@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Quoted identifier, text-id and style-string interiors retain their surrounding whitespace."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "  A  "
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [
+      {
+        "sets": [
+          "  A  "
+        ],
+        "id": " item "
+      }
+    ],
+    "styles": [
+      {
+        "targets": [
+          "  A  "
+        ],
+        "styles": {
+          "color": " red "
+        }
+      }
+    ]
+  }
+}

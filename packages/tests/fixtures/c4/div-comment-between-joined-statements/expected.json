@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md: An inline comment takes the separator between calls in mermaid.js."
+  },
+  "knownDivergence": "comment-takes-line-break",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...Person(a,\"A\") %% cPerson(b,\"B\")\n---------------------^\nExpecting 'NEWLINE', 'EOF', 'LBRACE', 'RBRACE', 'STR', 'STR_KEY', 'ATTRIBUTE', 'ATTRIBUTE_EMPTY', got 'PERSON'"
+  }
+}

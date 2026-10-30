@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty first block still wins the data lookup."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": {
+          "kind": "block",
+          "value": "{\n}\ndata D {\nvalue\n}\n"
+        }
+      }
+    ]
+  }
+}

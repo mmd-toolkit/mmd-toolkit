@@ -1,0 +1,84 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/class/classDiagram.spec.ts",
+    "line": 214,
+    "test": "given a basic class diagram,  > when parsing class definition > moves classes inside implicit namespaces to the nearest explicit ancestor in compact mode"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Developer",
+        "type": "",
+        "label": "Developer",
+        "text": "Developer",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "Company.Engineering.Backend"
+      },
+      {
+        "id": "CEO",
+        "type": "",
+        "label": "CEO",
+        "text": "CEO",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "Company"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "Company",
+        "label": "Company",
+        "classes": [
+          "CEO"
+        ],
+        "notes": [],
+        "children": [
+          "Company.Engineering"
+        ],
+        "explicit": true
+      },
+      {
+        "id": "Company.Engineering",
+        "label": "Engineering",
+        "classes": [],
+        "notes": [],
+        "children": [
+          "Company.Engineering.Backend"
+        ],
+        "parent": "Company",
+        "explicit": false
+      },
+      {
+        "id": "Company.Engineering.Backend",
+        "label": "Backend",
+        "classes": [
+          "Developer"
+        ],
+        "notes": [],
+        "children": [],
+        "parent": "Company.Engineering",
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Malformed metadata YAML is rejected by the Db with a positioned YAML error."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "name of an alias node must contain at least one character (2:11)\n\n 2 |  key: *, \n------------^"
+  }
+}

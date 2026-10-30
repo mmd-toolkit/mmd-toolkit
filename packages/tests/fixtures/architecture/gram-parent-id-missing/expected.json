@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Grammar: a written in clause requires its parent ID."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 13: Expecting token of type 'ID' but found `\n`."
+  }
+}

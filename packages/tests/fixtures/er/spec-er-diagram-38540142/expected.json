@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/er/parser/erDiagram.spec.js",
+    "line": 49,
+    "test": "when parsing ER diagram it... > entity name > has non A-Za-z0-9_- chars > Blo[rf fails if not surrounded by quotes"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nerDiagram Blo[rf\n----------------^\nExpecting 'SQE', got 'NEWLINE'"
+  }
+}

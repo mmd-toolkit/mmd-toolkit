@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty final domain replaces earlier items with an empty list."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  }
+}

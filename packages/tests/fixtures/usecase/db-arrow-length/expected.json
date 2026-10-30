@@ -1,0 +1,107 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do extra dashes determine minimum length on the final operator segment?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [
+      {
+        "id": "A",
+        "label": "A",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "label": "B",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [
+      {
+        "source": "A",
+        "target": "B",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 3,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "A",
+        "target": "B",
+        "type": "association",
+        "arrowType": 1,
+        "minlen": 3,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "A",
+        "target": "B",
+        "type": "association",
+        "arrowType": 2,
+        "minlen": 3,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "A",
+        "target": "B",
+        "type": "association",
+        "arrowType": 0,
+        "label": "longer",
+        "labelType": "text",
+        "minlen": 3,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "A",
+        "target": "B",
+        "type": "association",
+        "arrowType": 1,
+        "label": "longer",
+        "labelType": "text",
+        "minlen": 3,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "A",
+        "target": "B",
+        "type": "association",
+        "arrowType": 2,
+        "label": "longer",
+        "labelType": "text",
+        "minlen": 3,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

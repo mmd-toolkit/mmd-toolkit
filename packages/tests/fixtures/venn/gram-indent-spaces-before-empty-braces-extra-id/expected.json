@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md, Text and implicit text mode: A nonempty spaces-only line before an unindented %%{ }%% line keeps implicit text mode enabled, so text A x is rejected as implicit text with an extra identifier."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 5:\n...  %%{ }%% text A x\n--------------------^\nExpecting 'EOF', 'NEWLINE', 'TITLE', 'SET', 'BRACKET_LABEL', 'UNION', 'TEXT', 'INDENT_TEXT', 'STYLE', got 'IDENTIFIER'"
+  }
+}

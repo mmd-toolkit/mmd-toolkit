@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: [] proposed upstream gap is a literal node in this pin."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "A",
+          "children": [
+            {
+              "text": "[]",
+              "children": []
+            },
+            {
+              "text": "B",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

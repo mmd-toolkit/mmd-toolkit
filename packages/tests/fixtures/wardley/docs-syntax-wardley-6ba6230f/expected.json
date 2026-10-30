@@ -1,0 +1,58 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/wardley.md",
+    "line": 306
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Notes",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "API",
+        "label": "API",
+        "x": 70,
+        "y": 60,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Database",
+        "label": "Database",
+        "x": 50,
+        "y": 40,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [
+      {
+        "source": "API",
+        "target": "Database",
+        "dashed": false
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [
+      {
+        "text": "Critical decision point",
+        "x": 55.00000000000001,
+        "y": 65
+      },
+      {
+        "text": "High risk area",
+        "x": 35,
+        "y": 40
+      }
+    ],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

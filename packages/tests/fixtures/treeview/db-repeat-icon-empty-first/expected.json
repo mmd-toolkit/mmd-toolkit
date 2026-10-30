@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A nonempty final icon overrides an earlier empty icon."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a",
+        "nodeType": "file",
+        "icon": "folder",
+        "children": []
+      }
+    ]
+  }
+}

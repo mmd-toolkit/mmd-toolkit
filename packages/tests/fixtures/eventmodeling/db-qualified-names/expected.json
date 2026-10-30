@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Qualified names with one, two and three parts remain intact."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A.B",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "03",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A.B.C",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The text after a third colon is left out."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A",
+        "people": [
+          "a",
+          "b"
+        ],
+        "score": 3
+      }
+    ]
+  }
+}

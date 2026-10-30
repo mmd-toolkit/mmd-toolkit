@@ -1,0 +1,159 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/venn.html",
+    "line": 124
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "Many text nodes in debug text layout mode",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 18,
+        "label": "Five nodes"
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "size": 18,
+        "label": "Nine nodes"
+      },
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "size": 3,
+        "label": "Common"
+      }
+    ],
+    "texts": [
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "A1"
+      },
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "A2"
+      },
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "A3"
+      },
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "A4"
+      },
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "A5"
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "id": "B1"
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "id": "B2"
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "id": "B3"
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "id": "B4"
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "id": "B5"
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "id": "B6"
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "id": "B7",
+        "label": "Long label"
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "id": "B8 with a long label"
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "id": "B9 with a loooooooong label"
+      },
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "id": "shared",
+        "label": "shared note"
+      }
+    ],
+    "styles": [
+      {
+        "targets": [
+          "B4"
+        ],
+        "styles": {
+          "color": "red"
+        }
+      },
+      {
+        "targets": [
+          "B7"
+        ],
+        "styles": {
+          "color": "green"
+        }
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "venn": {
+        "useDebugLayout": true
+      }
+    }
+  }
+}

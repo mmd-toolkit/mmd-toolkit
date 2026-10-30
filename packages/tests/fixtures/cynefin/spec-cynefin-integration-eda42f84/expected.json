@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/cynefin/cynefin.integration.spec.ts",
+    "line": 249,
+    "test": "Cynefin Parsing - Re-parse after clear > should have fresh state after clear and re-parse"
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "First Diagram",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "Alpha"
+          },
+          {
+            "label": "Beta"
+          }
+        ]
+      },
+      {
+        "name": "complicated",
+        "items": [
+          {
+            "label": "Gamma"
+          }
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "complicated",
+        "label": "Move"
+      }
+    ]
+  }
+}

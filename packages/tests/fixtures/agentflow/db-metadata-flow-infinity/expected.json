@@ -1,0 +1,66 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read metadata flow infinity?"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "F",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "F",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "F",
+        "nodes": [
+          "A"
+        ],
+        "title": "",
+        "classes": [],
+        "labelType": "text",
+        "type": "flow",
+        "metadata": {
+          "custom": "Infinity"
+        }
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "F",
+        "set": {
+          "metadata": {
+            "custom": "Infinity"
+          }
+        }
+      }
+    ]
+  }
+}

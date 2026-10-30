@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Building the summary, Links and properties: a properties text that is not JSON, here with a trailing comma, changes nothing."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

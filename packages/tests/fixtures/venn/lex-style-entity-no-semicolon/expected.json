@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The lex style entity no semicolon form stores {\"styles\":[{\"targets\":[\"A\"],\"styles\":{\"color\":\"a#35b\"}}]}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "color": "a#35b"
+        }
+      }
+    ]
+  }
+}

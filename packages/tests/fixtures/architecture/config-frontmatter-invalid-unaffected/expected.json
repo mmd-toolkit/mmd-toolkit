@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A valid frontmatter drawing setting does not rescue a grammar rejection."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 9: Expecting token of type 'ID' but found `[invalid]`."
+  }
+}

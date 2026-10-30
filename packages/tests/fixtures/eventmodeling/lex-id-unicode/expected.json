@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An identifier cannot begin with non-ASCII text."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 8: unexpected character: ->猫<- at offset: 21, skipped 1 characters. Parse error on line ?, column ?: Expecting token of type 'EM_ID' but found ``."
+  }
+}

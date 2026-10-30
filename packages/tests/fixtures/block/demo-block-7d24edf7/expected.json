@@ -1,0 +1,69 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/block.html",
+    "line": 38
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A1",
+          "label": "stadium",
+          "type": "stadium",
+          "widthInColumns": 1
+        },
+        {
+          "id": "A2",
+          "label": "subroutine",
+          "type": "subroutine",
+          "widthInColumns": 1
+        },
+        {
+          "id": "B1",
+          "label": "cylinder",
+          "type": "cylinder",
+          "widthInColumns": 1
+        },
+        {
+          "id": "C1",
+          "label": "surprise",
+          "type": "rect_left_inv_arrow",
+          "widthInColumns": 1
+        },
+        {
+          "id": "A3",
+          "label": "lean right",
+          "type": "lean_right",
+          "widthInColumns": 1
+        },
+        {
+          "id": "B2",
+          "label": "lean left",
+          "type": "lean_left",
+          "widthInColumns": 1
+        },
+        {
+          "id": "C2",
+          "label": "trapezoid",
+          "type": "trapezoid",
+          "widthInColumns": 1
+        },
+        {
+          "id": "D2",
+          "label": "trapezoid",
+          "type": "inv_trapezoid",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

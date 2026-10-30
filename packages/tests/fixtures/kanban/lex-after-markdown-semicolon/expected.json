@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "semicolon after markdown tests text, trivia, or rejected extra tokens."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...an S   A[\"`Work`\"];\n---------------------^\nExpecting 'SPACELINE', 'NL', 'EOF', 'SHAPE_DATA', got 'NODE_ID'"
+  }
+}

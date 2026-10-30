@@ -1,0 +1,83 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/git/gitGraph.spec.ts",
+    "line": 999,
+    "test": "when parsing a gitGraph > when parsing more advanced gitGraphs > should support cherry-picking of merge commits with tag"
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "ZERO",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      },
+      {
+        "id": "A",
+        "seq": 1,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "ZERO"
+        ],
+        "branch": "feature"
+      },
+      {
+        "id": "B",
+        "seq": 2,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "A"
+        ],
+        "branch": "feature"
+      },
+      {
+        "id": "M",
+        "seq": 3,
+        "type": 3,
+        "tags": [],
+        "parents": [
+          "ZERO",
+          "B"
+        ],
+        "branch": "main",
+        "customId": true
+      },
+      {
+        "id": "generated-commit-1",
+        "seq": 4,
+        "type": 4,
+        "tags": [
+          "v1.0"
+        ],
+        "parents": [
+          "ZERO",
+          "M"
+        ],
+        "branch": "release"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "feature"
+      },
+      {
+        "name": "release"
+      }
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md requirement, the accessibility title under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): it is recorded with the characters replaced."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "a&lt;b&gt;c & d",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

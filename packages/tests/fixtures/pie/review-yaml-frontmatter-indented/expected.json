@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does matching frontmatter indentation retain its title?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "Front",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  },
+  "embedded": {
+    "title": "Front"
+  }
+}

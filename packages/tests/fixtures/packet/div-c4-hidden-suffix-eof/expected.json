@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: A C4 word in a native hidden suffix at EOF does not select C4 here."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\npacket0:\"A\"%%{! C4D\n^"
+  }
+}

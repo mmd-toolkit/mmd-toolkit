@@ -1,0 +1,1049 @@
+{
+  "type": "Root",
+  "diagramType": "mindmap",
+  "body": {
+    "type": "MindmapDiagram",
+    "root": {
+      "type": "MindmapNode",
+      "indent": 2,
+      "id": {
+        "type": "MindmapLiteral",
+        "value": "root",
+        "range": [
+          56,
+          60
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 2
+          },
+          "end": {
+            "line": 7,
+            "column": 6
+          }
+        }
+      },
+      "shape": {
+        "type": "MindmapShape",
+        "opener": "((",
+        "closer": "))",
+        "label": {
+          "type": "MindmapLabel",
+          "kind": "text",
+          "value": "mindmap",
+          "range": [
+            62,
+            69
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 8
+            },
+            "end": {
+              "line": 7,
+              "column": 15
+            }
+          }
+        },
+        "range": [
+          60,
+          71
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 6
+          },
+          "end": {
+            "line": 7,
+            "column": 17
+          }
+        }
+      },
+      "decorations": [],
+      "children": [
+        {
+          "type": "MindmapNode",
+          "indent": 4,
+          "id": {
+            "type": "MindmapLiteral",
+            "value": "origins",
+            "range": [
+              76,
+              83
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 4
+              },
+              "end": {
+                "line": 8,
+                "column": 11
+              }
+            }
+          },
+          "shape": {
+            "type": "MindmapShape",
+            "opener": "{{",
+            "closer": "}}",
+            "label": {
+              "type": "MindmapLabel",
+              "kind": "text",
+              "value": "Origins",
+              "range": [
+                85,
+                92
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 13
+                },
+                "end": {
+                  "line": 8,
+                  "column": 20
+                }
+              }
+            },
+            "range": [
+              83,
+              94
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 11
+              },
+              "end": {
+                "line": 8,
+                "column": 22
+              }
+            }
+          },
+          "decorations": [],
+          "children": [
+            {
+              "type": "MindmapNode",
+              "indent": 6,
+              "id": {
+                "type": "MindmapLiteral",
+                "value": "history",
+                "range": [
+                  101,
+                  108
+                ],
+                "loc": {
+                  "start": {
+                    "line": 9,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 9,
+                    "column": 13
+                  }
+                }
+              },
+              "shape": {
+                "type": "MindmapShape",
+                "opener": "[",
+                "closer": "]",
+                "label": {
+                  "type": "MindmapLabel",
+                  "kind": "text",
+                  "value": "Long history",
+                  "range": [
+                    109,
+                    121
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 9,
+                      "column": 14
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 26
+                    }
+                  }
+                },
+                "range": [
+                  108,
+                  122
+                ],
+                "loc": {
+                  "start": {
+                    "line": 9,
+                    "column": 13
+                  },
+                  "end": {
+                    "line": 9,
+                    "column": 27
+                  }
+                }
+              },
+              "decorations": [],
+              "children": [
+                {
+                  "type": "MindmapNode",
+                  "indent": 8,
+                  "id": {
+                    "type": "MindmapLiteral",
+                    "value": "Popularisation",
+                    "range": [
+                      131,
+                      145
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 10,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 10,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "shape": null,
+                  "decorations": [],
+                  "children": [],
+                  "range": [
+                    131,
+                    145
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 10,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 10,
+                      "column": 22
+                    }
+                  }
+                },
+                {
+                  "type": "MindmapNode",
+                  "indent": 8,
+                  "id": {
+                    "type": "MindmapLiteral",
+                    "value": "British popular psychology author Tony Buzan",
+                    "range": [
+                      154,
+                      198
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 11,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 11,
+                        "column": 52
+                      }
+                    }
+                  },
+                  "shape": null,
+                  "decorations": [],
+                  "children": [],
+                  "range": [
+                    154,
+                    198
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 11,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 11,
+                      "column": 52
+                    }
+                  }
+                }
+              ],
+              "range": [
+                101,
+                198
+              ],
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 6
+                },
+                "end": {
+                  "line": 11,
+                  "column": 52
+                }
+              }
+            }
+          ],
+          "range": [
+            76,
+            198
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 4
+            },
+            "end": {
+              "line": 11,
+              "column": 52
+            }
+          }
+        },
+        {
+          "type": "MindmapNode",
+          "indent": 4,
+          "id": {
+            "type": "MindmapLiteral",
+            "value": "research",
+            "range": [
+              203,
+              211
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 4
+              },
+              "end": {
+                "line": 12,
+                "column": 12
+              }
+            }
+          },
+          "shape": {
+            "type": "MindmapShape",
+            "opener": "{{",
+            "closer": "}}",
+            "label": {
+              "type": "MindmapLabel",
+              "kind": "text",
+              "value": "Research",
+              "range": [
+                213,
+                221
+              ],
+              "loc": {
+                "start": {
+                  "line": 12,
+                  "column": 14
+                },
+                "end": {
+                  "line": 12,
+                  "column": 22
+                }
+              }
+            },
+            "range": [
+              211,
+              223
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 12
+              },
+              "end": {
+                "line": 12,
+                "column": 24
+              }
+            }
+          },
+          "decorations": [],
+          "children": [
+            {
+              "type": "MindmapNode",
+              "indent": 6,
+              "id": {
+                "type": "MindmapLiteral",
+                "value": "uses",
+                "range": [
+                  230,
+                  234
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 10
+                  }
+                }
+              },
+              "shape": {
+                "type": "MindmapShape",
+                "opener": "[",
+                "closer": "]",
+                "label": {
+                  "type": "MindmapLabel",
+                  "kind": "text",
+                  "value": "Uses",
+                  "range": [
+                    235,
+                    239
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 13,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 13,
+                      "column": 15
+                    }
+                  }
+                },
+                "range": [
+                  234,
+                  240
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 16
+                  }
+                }
+              },
+              "decorations": [],
+              "children": [
+                {
+                  "type": "MindmapNode",
+                  "indent": 8,
+                  "id": {
+                    "type": "MindmapLiteral",
+                    "value": "Creative techniques",
+                    "range": [
+                      249,
+                      268
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 14,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 14,
+                        "column": 27
+                      }
+                    }
+                  },
+                  "shape": null,
+                  "decorations": [],
+                  "children": [],
+                  "range": [
+                    249,
+                    268
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 14,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 14,
+                      "column": 27
+                    }
+                  }
+                }
+              ],
+              "range": [
+                230,
+                268
+              ],
+              "loc": {
+                "start": {
+                  "line": 13,
+                  "column": 6
+                },
+                "end": {
+                  "line": 14,
+                  "column": 27
+                }
+              }
+            }
+          ],
+          "range": [
+            203,
+            268
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 4
+            },
+            "end": {
+              "line": 14,
+              "column": 27
+            }
+          }
+        }
+      ],
+      "range": [
+        56,
+        268
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 2
+        },
+        "end": {
+          "line": 14,
+          "column": 27
+        }
+      }
+    },
+    "range": [
+      46,
+      268
+    ],
+    "loc": {
+      "start": {
+        "line": 6,
+        "column": 0
+      },
+      "end": {
+        "line": 14,
+        "column": 27
+      }
+    }
+  },
+  "frontmatter": {
+    "type": "Frontmatter",
+    "value": "config:\n  mindmap:\n    colorBy: depth",
+    "valueRange": [
+      4,
+      41
+    ],
+    "range": [
+      0,
+      45
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 5,
+        "column": 3
+      }
+    }
+  },
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        0,
+        3
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "config:\n  mindmap:\n    colorBy: depth",
+      "range": [
+        4,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        42,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "mindmap",
+      "range": [
+        46,
+        53
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "root",
+      "range": [
+        56,
+        60
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 2
+        },
+        "end": {
+          "line": 7,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "((",
+      "range": [
+        60,
+        62
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 6
+        },
+        "end": {
+          "line": 7,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "mindmap",
+      "range": [
+        62,
+        69
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 8
+        },
+        "end": {
+          "line": 7,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "))",
+      "range": [
+        69,
+        71
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 15
+        },
+        "end": {
+          "line": 7,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "origins",
+      "range": [
+        76,
+        83
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 4
+        },
+        "end": {
+          "line": 8,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{{",
+      "range": [
+        83,
+        85
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 11
+        },
+        "end": {
+          "line": 8,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Origins",
+      "range": [
+        85,
+        92
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 13
+        },
+        "end": {
+          "line": 8,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}}",
+      "range": [
+        92,
+        94
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 20
+        },
+        "end": {
+          "line": 8,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "history",
+      "range": [
+        101,
+        108
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 6
+        },
+        "end": {
+          "line": 9,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        108,
+        109
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 13
+        },
+        "end": {
+          "line": 9,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Long history",
+      "range": [
+        109,
+        121
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 14
+        },
+        "end": {
+          "line": 9,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        121,
+        122
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 26
+        },
+        "end": {
+          "line": 9,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Popularisation",
+      "range": [
+        131,
+        145
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 8
+        },
+        "end": {
+          "line": 10,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "British popular psychology author Tony Buzan",
+      "range": [
+        154,
+        198
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 8
+        },
+        "end": {
+          "line": 11,
+          "column": 52
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "research",
+      "range": [
+        203,
+        211
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 4
+        },
+        "end": {
+          "line": 12,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{{",
+      "range": [
+        211,
+        213
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 12
+        },
+        "end": {
+          "line": 12,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Research",
+      "range": [
+        213,
+        221
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 14
+        },
+        "end": {
+          "line": 12,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}}",
+      "range": [
+        221,
+        223
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 22
+        },
+        "end": {
+          "line": 12,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "uses",
+      "range": [
+        230,
+        234
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 6
+        },
+        "end": {
+          "line": 13,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        234,
+        235
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 10
+        },
+        "end": {
+          "line": 13,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Uses",
+      "range": [
+        235,
+        239
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 11
+        },
+        "end": {
+          "line": 13,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        239,
+        240
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 15
+        },
+        "end": {
+          "line": 13,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Creative techniques",
+      "range": [
+        249,
+        268
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 8
+        },
+        "end": {
+          "line": 14,
+          "column": 27
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    269
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 15,
+      "column": 0
+    }
+  }
+}

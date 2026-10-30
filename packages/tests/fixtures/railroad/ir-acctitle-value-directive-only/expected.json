@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/railroad.md RailroadAccTitleStatement: Is accTitle value null when only a removed common directive follows the colon without padding?"
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

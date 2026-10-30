@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4Dynamic in a service EOF comment can affect detection."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

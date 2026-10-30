@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The lex after style directive word unclosed form stores {\"styles\":[{\"targets\":[\"A\"],\"styles\":{\"color\":\"red\"}}]}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "color": "red"
+        }
+      }
+    ]
+  }
+}

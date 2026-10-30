@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "EBNF retained native directives are hidden rather than metadata."
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      },
+      {
+        "name": "s",
+        "definition": {
+          "type": "terminal",
+          "value": "b"
+        }
+      }
+    ]
+  }
+}

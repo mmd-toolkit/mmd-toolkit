@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Quote marks do not protect a right brace in a block."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 18: unexpected character: ->\"<- at offset: 26, skipped 1 characters.\nLexer error on line 2, column 20: unexpected character: ->}<- at offset: 28, skipped 1 characters. Parse error on line 2, column 1: Expecting: expecting at least one iteration which starts with one of these possible Token sequences::\n  <[ACC_DESCR] ,[ACC_TITLE] ,[TITLE]>\nbut found: 'accDescr { \"A }'\nParse error on line 2, column 1: Expecting end of file but found `accDescr { \"A }`."
+  }
+}

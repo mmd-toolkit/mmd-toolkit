@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A shape property operand must be one id-run, not a number unit."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nagentflow-betaA[|1:value|Label]\n-----------------^\nExpecting 'NODE_STRING', got 'NUM'"
+  }
+}

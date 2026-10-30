@@ -1,0 +1,81 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Publishes ISO and postfix expressions, including exception as a sequence."
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "A",
+    "accDescr": "D\nE",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "sequence",
+              "elements": [
+                {
+                  "type": "terminal",
+                  "value": "a"
+                },
+                {
+                  "type": "nonterminal",
+                  "name": "ref"
+                },
+                {
+                  "type": "optional",
+                  "element": {
+                    "type": "terminal",
+                    "value": "b"
+                  }
+                },
+                {
+                  "type": "repetition",
+                  "element": {
+                    "type": "terminal",
+                    "value": "c"
+                  },
+                  "min": 0,
+                  "max": "Infinity"
+                },
+                {
+                  "type": "repetition",
+                  "element": {
+                    "type": "terminal",
+                    "value": "d"
+                  },
+                  "min": 1,
+                  "max": "Infinity"
+                },
+                {
+                  "type": "special",
+                  "text": "special"
+                }
+              ]
+            },
+            {
+              "type": "sequence",
+              "elements": [
+                {
+                  "type": "terminal",
+                  "value": "e"
+                },
+                {
+                  "type": "terminal",
+                  "value": "-"
+                },
+                {
+                  "type": "terminal",
+                  "value": "f"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

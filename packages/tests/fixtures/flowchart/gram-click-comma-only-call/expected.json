@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Click and callbacks: the click context reads `,` as a `click-comma` unit, so the callback statement has empty click ids and is accepted."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [],
+    "clickCalls": [
+      {
+        "id": "",
+        "name": "cb",
+        "args": null
+      },
+      {
+        "id": "",
+        "name": "cb",
+        "args": null
+      }
+    ]
+  }
+}

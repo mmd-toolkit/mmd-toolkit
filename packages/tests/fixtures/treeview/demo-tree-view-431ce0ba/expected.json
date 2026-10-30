@@ -1,0 +1,69 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/treeView.html",
+    "line": 139
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "my-project",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "src",
+            "nodeType": "directory",
+            "children": [
+              {
+                "name": "App.tsx",
+                "nodeType": "file",
+                "children": []
+              },
+              {
+                "name": "utils.ts",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "Dockerfile",
+            "nodeType": "file",
+            "children": []
+          },
+          {
+            "name": "notes.txt",
+            "nodeType": "file",
+            "children": []
+          },
+          {
+            "name": "README.md",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "treeView": {
+        "showIcons": true,
+        "defaultIconPack": "material-icon-theme",
+        "filenameIcons": {
+          "Dockerfile": "docker"
+        },
+        "extensionIcons": {
+          ".ts": "typescript",
+          ".tsx": "react-ts",
+          ".txt": "none"
+        }
+      }
+    }
+  }
+}

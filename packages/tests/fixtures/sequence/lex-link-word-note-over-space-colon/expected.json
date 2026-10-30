@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "diagrams/sequence.md, The statement context, rule 11: a space and `:` follow `link`, so it is no keyword; a note over `link`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "link",
+        "description": "link",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "link",
+        "to": "link",
+        "message": "x",
+        "wrap": false,
+        "type": 2,
+        "placement": 2
+      }
+    ]
+  }
+}

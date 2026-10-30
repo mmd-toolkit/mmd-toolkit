@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Lexical structure: U+3000 after the colon of `accTitle:` is read with the colon."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "t",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

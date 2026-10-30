@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The block diagram left-arrow shape tests kanban delimiter recognition rather than assuming shared shape syntax."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S>Work]",
+        "label": "S>Work]",
+        "isGroup": true
+      }
+    ]
+  }
+}

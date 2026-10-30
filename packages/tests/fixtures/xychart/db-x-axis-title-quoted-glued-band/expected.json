@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md The axis context: a bracket may follow a quoted title with no space; accepted with the title `A` and the category `a`."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "A",
+      "categories": [
+        "a"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}

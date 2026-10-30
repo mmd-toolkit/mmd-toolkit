@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Diagram and statements: two statements on one line, with whitespace between them; both read."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": true,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [],
+    "links": []
+  }
+}

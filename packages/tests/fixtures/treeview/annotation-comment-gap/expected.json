@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Names, annotations and common forms: A removed common comment line does not detach a following class annotation from its node."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "file",
+        "cssClass": "high",
+        "children": []
+      }
+    ]
+  }
+}

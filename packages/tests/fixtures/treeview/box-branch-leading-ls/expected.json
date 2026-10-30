@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does LS immediately after a branch remain in its name rather than act as a physical line break?"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": " a",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

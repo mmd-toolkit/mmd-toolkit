@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "FLOAT is unreachable from packet blocks."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 2: unexpected character: ->1<- at offset: 8, skipped 2 characters. "
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Can an accessibility title follow a description block without EOL?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "X",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": []
+  }
+}

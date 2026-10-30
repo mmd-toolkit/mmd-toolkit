@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Nodes and shapes: strings in other shapes."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "a",
+          "level": 2,
+          "descr": "x",
+          "type": 1,
+          "children": []
+        },
+        {
+          "nodeId": "b",
+          "level": 2,
+          "descr": "y",
+          "type": 3,
+          "children": []
+        }
+      ]
+    }
+  }
+}

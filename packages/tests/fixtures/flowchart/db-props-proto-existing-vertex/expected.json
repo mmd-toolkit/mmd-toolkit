@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Db normalization, the vertex step: `A` already has props, made empty by its first vertex step, and a property named `__proto__` added later changes nothing, so the props are empty."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "text",
+        "props": {},
+        "type": "rect"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Keyword and name boundaries: Padding ends the written name before a whole native form and the coordinate bracket."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "Foo\tBar",
+        "label": "Foo\tBar",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

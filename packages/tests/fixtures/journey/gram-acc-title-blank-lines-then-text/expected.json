@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Accessibility values: the whitespace after the colon holds empty lines."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "T",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

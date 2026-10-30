@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Entities: #f00; is an entity, whose placeholder no style takes."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...: [0.3, 0.6] color: ﬂ°f00¶ß\n-----------------------^\nExpecting 'ALPHA', 'NUM', 'NODE_STRING', 'MINUS', 'COMMA', 'COLON', 'BRKT', 'UNIT', 'SPACE', 'STYLE', 'PCT', 'NEWLINE', 'SEMI', 'EOF', got 'UNICODE_TEXT'"
+  }
+}

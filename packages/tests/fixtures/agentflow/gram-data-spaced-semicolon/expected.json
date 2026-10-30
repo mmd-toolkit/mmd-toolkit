@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The wrapper only removes padding before a newline, not before a semicolon."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...BA@{ shape: tool } ;B\n----------------------^\nExpecting 'AMP', got 'SEMI'"
+  }
+}

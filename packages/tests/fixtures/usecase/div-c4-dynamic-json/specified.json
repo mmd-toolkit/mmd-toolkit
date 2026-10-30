@@ -1,0 +1,48 @@
+{
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "J",
+        "value": {
+          "text": "C4Dynamic"
+        },
+        "propertyOrder": {
+          "": [
+            "text"
+          ]
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "J",
+        "set": {
+          "value": {
+            "text": "C4Dynamic"
+          },
+          "propertyOrder": {
+            "": [
+              "text"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

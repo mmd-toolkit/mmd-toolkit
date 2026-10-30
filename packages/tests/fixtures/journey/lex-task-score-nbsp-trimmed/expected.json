@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Tasks: the score is the score part without the whitespace at its ends, U+00A0 included: `5`."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A",
+        "people": [
+          "Me"
+        ],
+        "score": 5
+      }
+    ]
+  }
+}

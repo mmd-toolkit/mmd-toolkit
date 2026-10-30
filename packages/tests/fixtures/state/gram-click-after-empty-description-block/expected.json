@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Click statements: a click statement may follow an empty description block statement on its line."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": [
+      {
+        "state": "A",
+        "url": "\"u\"",
+        "tooltip": ""
+      }
+    ]
+  }
+}

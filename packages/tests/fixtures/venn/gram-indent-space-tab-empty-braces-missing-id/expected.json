@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md, Text and implicit text mode: The leading space and tab before %%{ }%% are skipped as one run before rule 7 disables the mode; text item is rejected as explicit text with no id."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n... \t%%{ }%% text item\n----------------------^\nExpecting 'NUMERIC', 'IDENTIFIER', 'STRING', 'COMMA', got 'NEWLINE'"
+  }
+}

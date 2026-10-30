@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A non-ASCII suffix does not supply the SPACE after CLASS."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ntflow-beta TBclass猫\n----------------------^\nExpecting 'SPACE', got 'UNICODE_TEXT'"
+  }
+}

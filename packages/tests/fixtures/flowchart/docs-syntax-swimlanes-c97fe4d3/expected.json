@@ -1,0 +1,120 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/swimlanes.md",
+    "line": 200
+  },
+  "accepted": true,
+  "diagramType": "swimlane",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "choose",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Choose product",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "pay",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Pay invoice",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "reserve",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Reserve stock",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "ship",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Ship product",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "choose",
+        "end": "reserve",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_choose_reserve_0"
+      },
+      {
+        "start": "reserve",
+        "end": "pay",
+        "type": "arrow_point",
+        "text": "Invoice ready",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_reserve_pay_0"
+      },
+      {
+        "start": "pay",
+        "end": "ship",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_pay_ship_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "Buyer",
+        "nodes": [
+          "choose",
+          "pay"
+        ],
+        "title": "Buyer",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "Store",
+        "nodes": [
+          "reserve",
+          "ship"
+        ],
+        "title": "Store",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

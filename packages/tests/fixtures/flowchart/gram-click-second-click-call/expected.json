@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Click and callbacks: the second `click` is followed by the click id `B`, so the grammar reads it, and the click statement rejects it."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...RABclick A click B call cb()\n--------------------^\nExpecting 'DIR', 'AMP', 'COLON', 'STR', 'DOWN', 'CALLBACKNAME', 'HREF', 'NUM', 'COMMA', 'NODE_STRING', 'BRKT', 'MINUS', 'MULT', 'UNICODE_TEXT', got 'CLICK'"
+  }
+}

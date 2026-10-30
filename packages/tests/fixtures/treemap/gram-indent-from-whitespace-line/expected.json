@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Can a whitespace-only line supply the next row indentation?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "R",
+        "children": [
+          {
+            "name": "A",
+            "value": 1
+          }
+        ]
+      }
+    ],
+    "classDefs": []
+  }
+}

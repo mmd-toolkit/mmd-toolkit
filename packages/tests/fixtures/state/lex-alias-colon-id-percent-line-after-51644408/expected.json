@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A state alias with a second description, then `%%` and `{` on the next line. mermaid.js reads the states \"A : x : y accDescr\", \"B\", \"}\"."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A : x : y accDescr",
+        "shape": "roundedWithTitle",
+        "label": "d",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "}",
+        "shape": "rect",
+        "label": "}",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

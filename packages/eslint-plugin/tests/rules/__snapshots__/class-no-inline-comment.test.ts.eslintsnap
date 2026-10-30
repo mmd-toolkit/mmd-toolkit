@@ -1,0 +1,518 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: class-no-inline-comment >> invalid >>> docs/rules/class-no-inline-comment.md incorrect 1
+Filename: class-no-inline-comment-incorrect-1.mmd
+
+Code:
+  1 | classDiagram
+  2 |   Animal <|-- Duck %% ducks
+    |                    ^~~~~~~~ [1]
+  3 |   Animal : +int age
+  4 |
+
+Output:
+  1 | classDiagram
+  2 |   %% ducks
+  3 |   Animal <|-- Duck
+  4 |   Animal : +int age
+  5 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---
+
+
+Test: class-no-inline-comment >> invalid >>> invalid/class/div-comment-after-click-string-then-statement
+Filename: tests/fixtures/rules/class-no-inline-comment/invalid/class/div-comment-after-click-string-then-statement-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | class A
+  3 | click A href "u" %% c
+    |                  ^~~~ [1]
+  4 | class Z
+  5 |
+
+Output:
+  1 | classDiagram
+  2 | class A
+  3 | %% c
+  4 | click A href "u"
+  5 | class Z
+  6 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---
+
+
+Test: class-no-inline-comment >> invalid >>> invalid/class/div-comment-after-header
+Filename: tests/fixtures/rules/class-no-inline-comment/invalid/class/div-comment-after-header-input.mmd
+
+Code:
+  1 | classDiagram %% animals
+    |              ^~~~~~~~~~ [1]
+  2 | class Animal
+  3 |
+
+Output:
+  1 | %% animals
+  2 | classDiagram
+  3 | class Animal
+  4 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---
+
+
+Test: class-no-inline-comment >> invalid >>> invalid/class/div-comment-after-name-then-statement
+Filename: tests/fixtures/rules/class-no-inline-comment/invalid/class/div-comment-after-name-then-statement-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | A %% c
+    |   ^~~~ [1]
+  3 | class Z
+  4 |
+
+Output:
+  1 | classDiagram
+  2 | %% c
+  3 | A
+  4 | class Z
+  5 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---
+
+
+Test: class-no-inline-comment >> invalid >>> invalid/class/div-comment-after-note-string-then-statement
+Filename: tests/fixtures/rules/class-no-inline-comment/invalid/class/div-comment-after-note-string-then-statement-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | note "x" %% c
+    |          ^~~~ [1]
+  3 | class Z
+  4 |
+
+Output:
+  1 | classDiagram
+  2 | %% c
+  3 | note "x"
+  4 | class Z
+  5 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---
+
+
+Test: class-no-inline-comment >> invalid >>> invalid/class/div-comment-before-statement-line
+Filename: tests/fixtures/rules/class-no-inline-comment/invalid/class/div-comment-before-statement-line-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | A --> B %% c
+    |         ^~~~ [1]
+  3 | class C
+  4 |
+
+Output:
+  1 | classDiagram
+  2 | %% c
+  3 | A --> B
+  4 | class C
+  5 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---
+
+
+Test: class-no-inline-comment >> invalid >>> invalid/class/div-comment-joins-lines
+Filename: tests/fixtures/rules/class-no-inline-comment/invalid/class/div-comment-joins-lines-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | A --> B %% c
+    |         ^~~~ [1]
+  3 | A : +int age
+  4 |
+
+Output:
+  1 | classDiagram
+  2 | %% c
+  3 | A --> B
+  4 | A : +int age
+  5 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---
+
+
+Test: class-no-inline-comment >> invalid >>> invalid/class/div-comment-joins-member
+Filename: tests/fixtures/rules/class-no-inline-comment/invalid/class/div-comment-joins-member-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | Animal <|-- Duck %% ducks
+    |                  ^~~~~~~~ [1]
+  3 | Animal : +int age
+  4 |
+
+Output:
+  1 | classDiagram
+  2 | %% ducks
+  3 | Animal <|-- Duck
+  4 | Animal : +int age
+  5 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---
+
+
+Test: class-no-inline-comment >> invalid >>> invalid/class/div-comment-on-header-line
+Filename: tests/fixtures/rules/class-no-inline-comment/invalid/class/div-comment-on-header-line-input.mmd
+
+Code:
+  1 | classDiagram %% c
+    |              ^~~~ [1]
+  2 | class A
+  3 |
+
+Output:
+  1 | %% c
+  2 | classDiagram
+  3 | class A
+  4 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---
+
+
+Test: class-no-inline-comment >> invalid >>> invalid/class/div-comment-then-directive-line
+Filename: tests/fixtures/rules/class-no-inline-comment/invalid/class/div-comment-then-directive-line-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | A <|-- B %% c
+    |          ^~~~ [1]
+  3 | %%{init: {}}%%
+  4 | class C
+  5 |
+
+Output:
+  1 | classDiagram
+  2 | %% c
+  3 | A <|-- B
+  4 | %%{init: {}}%%
+  5 | class C
+  6 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---
+
+
+Test: class-no-inline-comment >> invalid >>> invalid/class/div-comment-then-directive-line-sets-config
+Filename: tests/fixtures/rules/class-no-inline-comment/invalid/class/div-comment-then-directive-line-sets-config-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | Animal <|-- Duck %% ducks
+    |                  ^~~~~~~~ [1]
+  3 | %%{init: {"theme": "forest"}}%%
+  4 | class Fish
+  5 |
+
+Output:
+  1 | classDiagram
+  2 | %% ducks
+  3 | Animal <|-- Duck
+  4 | %%{init: {"theme": "forest"}}%%
+  5 | class Fish
+  6 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---
+
+
+Test: class-no-inline-comment >> invalid >>> invalid/class/div-comment-then-empty-line
+Filename: tests/fixtures/rules/class-no-inline-comment/invalid/class/div-comment-then-empty-line-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | Animal <|-- Duck %% ducks
+    |                  ^~~~~~~~ [1]
+  3 |
+  4 | class Fish
+  5 |
+
+Output:
+  1 | classDiagram
+  2 | %% ducks
+  3 | Animal <|-- Duck
+  4 |
+  5 | class Fish
+  6 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---
+
+
+Test: class-no-inline-comment >> invalid >>> invalid/class/div-comment-then-spaces-line-then-comment-line
+Filename: tests/fixtures/rules/class-no-inline-comment/invalid/class/div-comment-then-spaces-line-then-comment-line-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | A --> B %% c
+    |         ^~~~ [1]
+  3 |   
+  4 | %% x
+  5 | A : +int age
+  6 |
+
+Output:
+  1 | classDiagram
+  2 | %% c
+  3 | A --> B
+  4 |   
+  5 | %% x
+  6 | A : +int age
+  7 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---
+
+
+Test: class-no-inline-comment >> invalid >>> invalid/class/div-comment-then-statement
+Filename: tests/fixtures/rules/class-no-inline-comment/invalid/class/div-comment-then-statement-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | Animal <|-- Duck %% ducks
+    |                  ^~~~~~~~ [1]
+  3 | class Fish
+  4 |
+
+Output:
+  1 | classDiagram
+  2 | %% ducks
+  3 | Animal <|-- Duck
+  4 | class Fish
+  5 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---
+
+
+Test: class-no-inline-comment >> invalid >>> invalid/class/div-comment-then-statement-with-backquote-keyword
+Filename: tests/fixtures/rules/class-no-inline-comment/invalid/class/div-comment-then-statement-with-backquote-keyword-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | Animal <|-- Duck %% ducks
+    |                  ^~~~~~~~ [1]
+  3 | class `note x`
+  4 |
+
+Output:
+  1 | classDiagram
+  2 | %% ducks
+  3 | Animal <|-- Duck
+  4 | class `note x`
+  5 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---
+
+
+Test: class-no-inline-comment >> invalid >>> invalid/class/div-comment-then-two-spaces-lines-then-comment-line
+Filename: tests/fixtures/rules/class-no-inline-comment/invalid/class/div-comment-then-two-spaces-lines-then-comment-line-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | A --> B %% c
+    |         ^~~~ [1]
+  3 |   
+  4 |   
+  5 | %% x
+  6 | A : +int age
+  7 |
+
+Output:
+  1 | classDiagram
+  2 | %% c
+  3 | A --> B
+  4 |   
+  5 |   
+  6 | %% x
+  7 | A : +int age
+  8 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---
+
+
+Test: class-no-inline-comment >> invalid >>> invalid/class/lex-comment-blank-line-after
+Filename: tests/fixtures/rules/class-no-inline-comment/invalid/class/lex-comment-blank-line-after-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | A --> B %% c
+    |         ^~~~ [1]
+  3 |   
+  4 | A : +int age
+  5 |
+
+Output:
+  1 | classDiagram
+  2 | %% c
+  3 | A --> B
+  4 |   
+  5 | A : +int age
+  6 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---
+
+
+Test: class-no-inline-comment >> invalid >>> invalid/class/lex-comment-line-then-spaces-line
+Filename: tests/fixtures/rules/class-no-inline-comment/invalid/class/lex-comment-line-then-spaces-line-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | A --> B %% c
+    |         ^~~~ [1]
+  3 |   
+  4 | %% x
+  5 |   
+  6 | A : +int age
+  7 |
+
+Output:
+  1 | classDiagram
+  2 | %% c
+  3 | A --> B
+  4 |   
+  5 | %% x
+  6 |   
+  7 | A : +int age
+  8 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---
+
+
+Test: class-no-inline-comment >> invalid >>> invalid/class/lex-comment-then-indented-directive-line
+Filename: tests/fixtures/rules/class-no-inline-comment/invalid/class/lex-comment-then-indented-directive-line-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | A <|-- B %% c
+    |          ^~~~ [1]
+  3 |   %%{init: {}}%%
+  4 | class C
+  5 |
+
+Output:
+  1 | classDiagram
+  2 | %% c
+  3 | A <|-- B
+  4 |   %%{init: {}}%%
+  5 | class C
+  6 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---
+
+
+Test: class-no-inline-comment >> invalid >>> invalid/class/lex-comment-then-spaces-line-then-bare-comment
+Filename: tests/fixtures/rules/class-no-inline-comment/invalid/class/lex-comment-then-spaces-line-then-bare-comment-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | A --> B %% c
+    |         ^~~~ [1]
+  3 |   
+  4 | %%
+  5 | A : +int age
+  6 |
+
+Output:
+  1 | classDiagram
+  2 | %% c
+  3 | A --> B
+  4 |   
+  5 | %%
+  6 | A : +int age
+  7 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---
+
+
+Test: class-no-inline-comment >> invalid >>> invalid/class/lex-comment-then-spaces-line-then-directive-line
+Filename: tests/fixtures/rules/class-no-inline-comment/invalid/class/lex-comment-then-spaces-line-then-directive-line-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | A --> B %% c
+    |         ^~~~ [1]
+  3 |   
+  4 | %%{init: {}}%%
+  5 | A : +int age
+  6 |
+
+Output:
+  1 | classDiagram
+  2 | %% c
+  3 | A --> B
+  4 |   
+  5 | %%{init: {}}%%
+  6 | A : +int age
+  7 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---
+
+
+Test: class-no-inline-comment >> invalid >>> invalid/class/lex-comment-then-tab-line
+Filename: tests/fixtures/rules/class-no-inline-comment/invalid/class/lex-comment-then-tab-line-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | A --> B %% c
+    |         ^~~~ [1]
+  3 | 	
+  4 | A : +int age
+  5 |
+
+Output:
+  1 | classDiagram
+  2 | %% c
+  3 | A --> B
+  4 | 	
+  5 | A : +int age
+  6 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---
+
+
+Test: class-no-inline-comment >> invalid >>> invalid/class/move-indented-comment
+Filename: tests/fixtures/rules/class-no-inline-comment/invalid/class/move-indented-comment-input.mmd
+
+Code:
+  1 | classDiagram
+  2 |   A --> B %% c
+    |           ^~~~ [1]
+  3 |   class C
+  4 |
+
+Output:
+  1 | classDiagram
+  2 |   %% c
+  3 |   A --> B
+  4 |   class C
+  5 |
+
+[1] mermaid.js reads the line break after this comment as part of the comment, so that line break does not end the statement; put the comment on a line of its own.
+---

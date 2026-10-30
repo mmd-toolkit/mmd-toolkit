@@ -1,0 +1,57 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/xychart/parser/xychart.jison.spec.ts",
+    "line": 8,
+    "test": "Testing xychart jison file > accessibility > should handle both accTitle and accDescr"
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "Revenue Report",
+    "accTitle": "Sales Overview",
+    "accDescr": "Revenue report for Q1-Q4",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": [
+        "Q1",
+        "Q2",
+        "Q3",
+        "Q4"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 45,
+      "max": 89
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "Q1",
+            45
+          ],
+          [
+            "Q2",
+            67
+          ],
+          [
+            "Q3",
+            89
+          ],
+          [
+            "Q4",
+            55
+          ]
+        ]
+      }
+    ]
+  }
+}

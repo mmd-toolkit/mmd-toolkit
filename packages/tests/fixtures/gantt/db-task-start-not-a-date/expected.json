@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A start that is no date is accepted by the parser; drawing fails on it, and the summary has no date."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "YYYY-MM-DD",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "foo"
+          },
+          "endTime": {
+            "data": "3d"
+          }
+        },
+        "task": "A ",
+        "classes": [],
+        "id": "a",
+        "order": 0
+      }
+    ],
+    "links": []
+  }
+}

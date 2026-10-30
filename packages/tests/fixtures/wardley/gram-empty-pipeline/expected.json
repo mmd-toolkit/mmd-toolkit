@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a pipeline require at least one child?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 4, column 1: Expecting: expecting at least one iteration which starts with one of these possible Token sequences::\n  <[KW_COMPONENT]>\nbut found: '}'"
+  }
+}

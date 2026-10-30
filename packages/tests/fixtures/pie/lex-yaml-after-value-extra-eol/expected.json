@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Grammar: The end of the source supplies the common appended LF, without adding written text. Case: yaml-after-value-extra-eol."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      },
+      {
+        "label": "B",
+        "value": 2
+      }
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gitgraph.md Semantic acceptance conditions: Direction, common text, messages, tags and ignored forms do not alter branch-tip state."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "BT",
+    "title": "title",
+    "accTitle": "accessible",
+    "accDescr": "description",
+    "commits": [
+      {
+        "id": "A",
+        "seq": 0,
+        "type": 0,
+        "tags": [
+          "tag"
+        ],
+        "parents": [],
+        "branch": "main"
+      },
+      {
+        "id": "B",
+        "seq": 1,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "A"
+        ],
+        "branch": "b"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "b"
+      }
+    ]
+  }
+}

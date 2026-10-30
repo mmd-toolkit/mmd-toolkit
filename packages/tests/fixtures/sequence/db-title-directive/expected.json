@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The directive lies inside the text of the title, and mermaid.js reads the title without it: `ab`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "ab",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

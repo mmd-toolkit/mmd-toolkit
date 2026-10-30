@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Lexical structure, The note contexts: `right of` is a position, and `-` can start no note id."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...m-v2  note right of-A : x\n----------------------^"
+  }
+}

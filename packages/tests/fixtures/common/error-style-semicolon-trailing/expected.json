@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md ErrorDiagram and Tokens: the line matches the style line rule, so the rule ignores its last `;`; no character of the run follows it, so it is a `RawText` token of its own. The tokens are `error`, `%%`, `style:#f`, and `;`. Detection removes the `%%` run, and the text is the error pseudo-diagram."
+  },
+  "accepted": true,
+  "diagramType": "error",
+  "db": {}
+}

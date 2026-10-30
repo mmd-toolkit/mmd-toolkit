@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An attribute-like quote without a preceding tag opener remains a closing string quote."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 13: unexpected character: ->c<- at offset: 25, skipped 1 characters. "
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/treeView/parser.spec.ts",
+    "line": 16,
+    "test": "treeView parser integration > default icons > should not assign an icon without an annotation — defaults are resolved at render time"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "components",
+        "nodeType": "directory",
+        "children": []
+      }
+    ]
+  }
+}

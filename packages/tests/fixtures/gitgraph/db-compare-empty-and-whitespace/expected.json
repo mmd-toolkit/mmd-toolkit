@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gitgraph.md Semantic acceptance conditions: Empty, one-space, two-space and tab names remain distinct."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": ""
+      },
+      {
+        "name": " "
+      },
+      {
+        "name": "  "
+      },
+      {
+        "name": "\t"
+      }
+    ]
+  }
+}

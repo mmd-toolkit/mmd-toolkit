@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Known divergences: directives: a directive inside a keyword is removed, so the keyword is whole."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": []
+  }
+}

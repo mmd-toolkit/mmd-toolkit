@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The lex after text label directive form stores {\"texts\":[{\"sets\":[\"A\"],\"id\":\"item\",\"label\":\"L\"}]}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "item",
+        "label": "L"
+      }
+    ],
+    "styles": []
+  }
+}

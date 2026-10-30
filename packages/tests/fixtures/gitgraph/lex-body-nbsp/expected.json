@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "NBSP after a statement is not a hidden gap."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 7: unexpected character: -> <- at offset: 15, skipped 1 characters. "
+  }
+}

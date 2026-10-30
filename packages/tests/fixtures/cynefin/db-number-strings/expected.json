@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Numeric spellings in strings remain text with no double conversion."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "-0"
+          },
+          {
+            "label": "NaN"
+          },
+          {
+            "label": "Infinity"
+          },
+          {
+            "label": "1e400"
+          },
+          {
+            "label": "1x"
+          }
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear",
+        "label": "-0"
+      }
+    ]
+  }
+}

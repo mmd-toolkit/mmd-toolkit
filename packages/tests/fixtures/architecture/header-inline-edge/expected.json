@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Statement boundaries: the first statement may share the header line, but each completed statement requires EOL. Case: header-inline-edge."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service"
+      },
+      {
+        "id": "b",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [
+      {
+        "lhsId": "a",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "b",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false
+      }
+    ],
+    "layoutHints": []
+  }
+}

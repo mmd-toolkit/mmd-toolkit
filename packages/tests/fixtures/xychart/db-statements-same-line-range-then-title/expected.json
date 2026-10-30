@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Diagram and statements: a title follows a y-axis range on the same line; accepted."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": []
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 2
+    },
+    "plots": []
+  }
+}

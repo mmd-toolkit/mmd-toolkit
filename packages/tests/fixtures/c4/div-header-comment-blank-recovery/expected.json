@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md: An inline header comment takes consecutive line feeds in mermaid.js."
+  },
+  "knownDivergence": "comment-takes-line-break",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nC4Context %% cPerson(a,\"A\")\n--------------^\nExpecting 'NEWLINE', got 'PERSON'"
+  }
+}

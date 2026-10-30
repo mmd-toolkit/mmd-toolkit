@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Namespaces: a namespace holds class statements, notes, and namespaces only."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...agramnamespace A {C --> D}\n---------------------^\nExpecting 'NAMESPACE', 'CLASS', 'NOTE_FOR', 'NOTE', got 'ALPHA'"
+  }
+}

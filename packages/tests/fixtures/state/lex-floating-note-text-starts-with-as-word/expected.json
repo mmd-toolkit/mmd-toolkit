@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The note contexts, floating note context: rule 1 is tried before rule 3, so the `as` at the start of the text is an `as` unit, the floating note has no text, and the input is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ateDiagram-v2note \"as you like\" as NA\n----------------------^\nExpecting 'NOTE_TEXT', 'left_of', 'right_of', got 'AS'"
+  }
+}

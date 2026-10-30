@@ -1,0 +1,386 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: timeline-no-duplicate-description >> invalid >>> docs/rules/timeline-no-duplicate-description.md incorrect 1
+Filename: timeline-no-duplicate-description-incorrect-1.mmd
+
+Code:
+  1 | timeline
+  2 |   accDescr: first
+  3 |   accDescr { second }
+    |   ^~~~~~~~~~~~~~~~~~~ [1]
+  4 |   2020 : Launch
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | timeline
+          2 |   accDescr: first
+          3 |   2020 : Launch
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | timeline
+          2 |   accDescr { second }
+          3 |   2020 : Launch
+          4 |
+---
+
+
+Test: timeline-no-duplicate-description >> invalid >>> invalid/timeline/acc-descr-around-empty-block
+Filename: tests/fixtures/rules/timeline-no-duplicate-description/invalid/timeline/acc-descr-around-empty-block-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accDescr: a
+  3 |   accDescr {}
+  4 |   accDescr: b
+    |   ^~~~~~~~~~~ [1]
+  5 |   2020 : a
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | timeline
+          2 |   accDescr: a
+          3 |   accDescr {}
+          4 |   2020 : a
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | timeline
+          2 |   accDescr {}
+          3 |   accDescr: b
+          4 |   2020 : a
+          5 |
+---
+
+
+Test: timeline-no-duplicate-description >> invalid >>> invalid/timeline/acc-descr-around-whitespace-block
+Filename: tests/fixtures/rules/timeline-no-duplicate-description/invalid/timeline/acc-descr-around-whitespace-block-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accDescr: a
+  3 |   accDescr {   }
+  4 |   accDescr: b
+    |   ^~~~~~~~~~~ [1]
+  5 |   2020 : a
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | timeline
+          2 |   accDescr: a
+          3 |   accDescr {   }
+          4 |   2020 : a
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | timeline
+          2 |   accDescr {   }
+          3 |   accDescr: b
+          4 |   2020 : a
+          5 |
+---
+
+
+Test: timeline-no-duplicate-description >> invalid >>> invalid/timeline/acc-descr-back-to-first
+Filename: tests/fixtures/rules/timeline-no-duplicate-description/invalid/timeline/acc-descr-back-to-first-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accDescr: a
+  3 |   accDescr: b
+    |   ^~~~~~~~~~~ [1]
+  4 |   accDescr: a
+    |   ^~~~~~~~~~~ [2]
+  5 |   2020 : a
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | timeline
+          2 |   accDescr: a
+          3 |   accDescr: a
+          4 |   2020 : a
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | timeline
+          2 |   accDescr: b
+          3 |   accDescr: a
+          4 |   2020 : a
+          5 |
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | timeline
+          2 |   accDescr: a
+          3 |   accDescr: b
+          4 |   2020 : a
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | timeline
+          2 |   accDescr: a
+          3 |   accDescr: a
+          4 |   2020 : a
+          5 |
+---
+
+
+Test: timeline-no-duplicate-description >> invalid >>> invalid/timeline/acc-descr-twice
+Filename: tests/fixtures/rules/timeline-no-duplicate-description/invalid/timeline/acc-descr-twice-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accDescr: a
+  3 |   accDescr: b
+    |   ^~~~~~~~~~~ [1]
+  4 |   2020 : a
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | timeline
+          2 |   accDescr: a
+          3 |   2020 : a
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | timeline
+          2 |   accDescr: b
+          3 |   2020 : a
+          4 |
+---
+
+
+Test: timeline-no-duplicate-description >> invalid >>> invalid/timeline/acc-descr-upper-case-second
+Filename: tests/fixtures/rules/timeline-no-duplicate-description/invalid/timeline/acc-descr-upper-case-second-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accDescr: a
+  3 |   ACCDESCR { b }
+    |   ^~~~~~~~~~~~~~ [1]
+  4 |   2020 : a
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | timeline
+          2 |   accDescr: a
+          3 |   2020 : a
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | timeline
+          2 |   ACCDESCR { b }
+          3 |   2020 : a
+          4 |
+---
+
+
+Test: timeline-no-duplicate-description >> invalid >>> invalid/timeline/acc-descr-value-after-comment-line
+Filename: tests/fixtures/rules/timeline-no-duplicate-description/invalid/timeline/acc-descr-value-after-comment-line-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accDescr: a
+  3 |   accDescr:
+    |   ^~~~~~~~~\ [1]
+  4 |   %% c
+    | ~~~~~~\ [1]
+  5 |   b
+    | ~~~ [1]
+  6 |   2020 : a
+  7 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | timeline
+          2 |   accDescr: a
+          3 |   2020 : a
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | timeline
+          2 |   accDescr:
+          3 |   %% c
+          4 |   b
+          5 |   2020 : a
+          6 |
+---
+
+
+Test: timeline-no-duplicate-description >> invalid >>> invalid/timeline/acc-descr-value-after-directive-line
+Filename: tests/fixtures/rules/timeline-no-duplicate-description/invalid/timeline/acc-descr-value-after-directive-line-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accDescr: a
+  3 |   accDescr:
+    |   ^~~~~~~~~\ [1]
+  4 |   %%{init: {}}%%
+    | ~~~~~~~~~~~~~~~~\ [1]
+  5 |   b
+    | ~~~ [1]
+  6 |   2020 : a
+  7 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | timeline
+          2 |   accDescr:
+          3 |   %%{init: {}}%%
+          4 |   b
+          5 |   2020 : a
+          6 |
+---
+
+
+Test: timeline-no-duplicate-description >> invalid >>> invalid/timeline/acc-descr-value-after-empty-line
+Filename: tests/fixtures/rules/timeline-no-duplicate-description/invalid/timeline/acc-descr-value-after-empty-line-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accDescr: a
+  3 |   accDescr:
+    |   ^~~~~~~~~\ [1]
+  4 |
+    | ~\ [1]
+  5 |   b
+    | ~~~ [1]
+  6 |   2020 : a
+  7 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | timeline
+          2 |   accDescr: a
+          3 |   2020 : a
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | timeline
+          2 |   accDescr:
+          3 |
+          4 |   b
+          5 |   2020 : a
+          6 |
+---
+
+
+Test: timeline-no-duplicate-description >> invalid >>> invalid/timeline/db-acc-descr-block-then-line
+Filename: tests/fixtures/rules/timeline-no-duplicate-description/invalid/timeline/db-acc-descr-block-then-line-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accDescr {
+  3 |   E
+  4 |   }
+  5 |   accDescr: D
+    |   ^~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | timeline
+          2 |   accDescr {
+          3 |   E
+          4 |   }
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | timeline
+          2 |   accDescr: D
+          3 |
+---
+
+
+Test: timeline-no-duplicate-description >> invalid >>> invalid/timeline/db-acc-descr-line-then-block
+Filename: tests/fixtures/rules/timeline-no-duplicate-description/invalid/timeline/db-acc-descr-line-then-block-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accDescr: D
+  3 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  4 |   E
+    | ~~~\ [1]
+  5 |   }
+    | ~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | timeline
+          2 |   accDescr: D
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | timeline
+          2 |   accDescr {
+          3 |   E
+          4 |   }
+          5 |
+---
+
+
+Test: timeline-no-duplicate-description >> invalid >>> invalid/timeline/description-equal-predecessor
+Filename: tests/fixtures/rules/timeline-no-duplicate-description/invalid/timeline/description-equal-predecessor-input.mmd
+
+Code:
+  1 | timeline
+  2 | accDescr: A
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | timeline
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
+---
+
+
+Test: timeline-no-duplicate-description >> invalid >>> invalid/timeline/description-removal-shared-line
+Filename: tests/fixtures/rules/timeline-no-duplicate-description/invalid/timeline/description-removal-shared-line-input.mmd
+
+Code:
+  1 | timeline
+  2 | accDescr {style:#x} accDescr;{D}
+    |                     ^~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+---

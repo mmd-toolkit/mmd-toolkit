@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Other statements: the text of a note is a string that is not empty."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nclassDiagramnote \"\"\n-------------------^\nExpecting 'STR', got 'NEWLINE'"
+  }
+}

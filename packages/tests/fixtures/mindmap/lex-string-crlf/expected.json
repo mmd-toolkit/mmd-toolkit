@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, converted form: a CRLF inside a string is a line feed."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "r",
+      "level": 0,
+      "descr": "a\nb",
+      "type": 2,
+      "children": []
+    }
+  }
+}

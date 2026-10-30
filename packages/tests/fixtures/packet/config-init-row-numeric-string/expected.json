@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A JSON numeric string row width uses concatenation in the loop bound but numeric multiplication for row endpoints."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 7,
+          "label": "A"
+        }
+      ],
+      [
+        {
+          "start": 8,
+          "end": 9,
+          "label": "A"
+        }
+      ]
+    ]
+  },
+  "embedded": {
+    "config": {
+      "packet": {
+        "bitsPerRow": "8"
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The shared style-line rule also runs inside a multiline description block."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "style x:#f00",
+    "rules": []
+  }
+}

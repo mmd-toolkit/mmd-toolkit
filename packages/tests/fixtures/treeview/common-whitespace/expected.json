@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The diagram uses common conversion by terminal name, despite defining its own terminals."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "A A",
+    "accDescr": "B B\nC",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md: A closing brace after a top-level element without an open boundary is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...ntextPerson(a,\"A\")}\n---------------------^\nExpecting 'EOF', got 'RBRACE'"
+  }
+}

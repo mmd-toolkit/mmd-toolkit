@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An EBNF parse accepts railroad options that drawing would sanitize."
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "railroad": {
+        "fontSize": "bad",
+        "fontFamily": "serif",
+        "padding": -3
+      }
+    }
+  }
+}

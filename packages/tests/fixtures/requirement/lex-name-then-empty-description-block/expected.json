@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Empty description blocks: an unquoted name takes `accDescr `, so no block follows it and the `{` after the name is followed by `}`, which is no newline."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...irement r accDescr {} {}\n-----------------------^\nExpecting 'NEWLINE', got 'STRUCT_STOP'"
+  }
+}

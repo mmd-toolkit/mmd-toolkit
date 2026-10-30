@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P1] Which secure configuration keys can an init directive change?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "<a>R</a> = value",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "<a>R</a> = value",
+      "children": [
+        {
+          "text": "<b>A</b>",
+          "children": []
+        }
+      ]
+    }
+  }
+}

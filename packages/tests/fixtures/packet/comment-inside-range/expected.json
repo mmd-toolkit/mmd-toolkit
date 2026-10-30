@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A native comment cannot erase the LF inside a range."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 8: Expecting token of type ':' but found `\n`.\nParse error on line 3, column 1: Expecting token of type 'EOF' but found `-`."
+  }
+}

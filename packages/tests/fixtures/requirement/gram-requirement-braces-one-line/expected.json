@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Requirements: `{` must be followed by a newline unit."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...gramrequirement r {}\n----------------------^\nExpecting 'NEWLINE', got 'STRUCT_STOP'"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "diagrams/eventmodeling.md, Semantic acceptance conditions: two reset frames with the same name are duplicate frames, which setAst rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Duplicate event modeling frame ID \"01\" on line 3"
+  }
+}

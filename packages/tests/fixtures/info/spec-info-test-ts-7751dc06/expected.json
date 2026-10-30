@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/info.test.ts",
+    "line": 17,
+    "test": "info > should handle empty info"
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

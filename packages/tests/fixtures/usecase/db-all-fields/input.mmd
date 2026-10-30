@@ -1,0 +1,27 @@
+---
+title: Ordering
+---
+usecase-beta
+accTitle: Actors and orders
+accDescr {
+  First line
+  Second line
+}
+direction RL
+actor Clerk("`**Clerk**`")@{ type: hollow, business: true } <<Employee>>:::staff
+actor Icon@{ icon: "fa:user" }
+systemBoundary Shop[Order system]@{ type: package }:::group
+Checkout(Checkout)@{ business: true } <<Core>>:::hot
+Report[Report]
+end
+json Payload@{"2":"second","1":"first","a/b":{"~key":true},"items":[{},null]}:::data
+note for Checkout "Remember"
+Clerk opens@-- "orders" ---> Checkout
+Checkout includes@..> : include Report
+Checkout --> Payload
+classDef default fill:white
+classDef staff,hot stroke:#123
+class Shop,Payload group,data
+style Shop stroke:purple
+style opens stroke:red
+opens@{ animation: slow }

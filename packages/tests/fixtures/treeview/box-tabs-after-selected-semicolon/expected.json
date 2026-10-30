@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "After selected semicolons are removed, do tabs expand only on the rewritten branch line?"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": " a    style:#x",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "x\t─ style:#x",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

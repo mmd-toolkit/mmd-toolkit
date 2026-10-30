@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A primitive init value with wrap throws an input-caused TypeError before syntax parsing."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot create property 'wrap' on string '5'"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Detection: a passed unclosed percent-brace line is a shared Comment."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

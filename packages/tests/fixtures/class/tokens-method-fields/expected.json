@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/class.md ClassMethod: the visibility `+`, the name `foo`, the parameters `a: int`, the return type `List~T~`, and the classifier `$`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "$",
+            "id": "foo",
+            "parameters": "a: int",
+            "returnType": "List~T~"
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

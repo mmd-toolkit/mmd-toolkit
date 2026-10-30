@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A global directive is removed from every free text field."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "AB",
+    "accTitle": "CD",
+    "accDescr": "GH",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "IJ"
+          }
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear",
+        "label": "KL"
+      }
+    ]
+  }
+}

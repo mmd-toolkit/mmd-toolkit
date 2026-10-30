@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A title-looking statement tests an ordinary bare node."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "title Board",
+        "label": "title Board",
+        "isGroup": true
+      }
+    ]
+  }
+}

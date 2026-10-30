@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Line breaks: a directive glued to the title at the end of its line; the line feed is a line break, and the word on the next line is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\nxycharttitle AB\n--------------^\nExpecting 'XYCHART', 'title', 'X_AXIS', 'Y_AXIS', 'LINE', 'BAR', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'NEWLINE', 'SEMI', 'EOF', got 'ALPHA'"
+  }
+}

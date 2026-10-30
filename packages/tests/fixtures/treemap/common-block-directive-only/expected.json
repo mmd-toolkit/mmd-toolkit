@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/treemap.md TreemapAccDescrBlockStatement: A directive-only interior gives null after removing outer whitespace."
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": []
+  }
+}

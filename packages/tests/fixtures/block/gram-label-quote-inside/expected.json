@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, labels: a `\"` inside a string ends it: `A[\"a\"b\"]` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nblock-beta  A[\"a\"b\"]\n-----------------^"
+  }
+}

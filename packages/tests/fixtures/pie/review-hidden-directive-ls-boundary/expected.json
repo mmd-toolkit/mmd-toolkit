@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a hidden directive allow a JS-whitespace boundary but still leave unlexable U+2028?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 11: unexpected character: -> <- at offset: 10, skipped 1 characters. "
+  }
+}

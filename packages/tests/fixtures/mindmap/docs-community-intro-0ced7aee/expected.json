@@ -1,0 +1,107 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/community/intro.md",
+    "line": 12
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "Contributing",
+      "type": 4,
+      "children": [
+        {
+          "nodeId": "Development",
+          "level": 2,
+          "descr": "Development",
+          "type": 0,
+          "children": [
+            {
+              "nodeId": "Solving issues",
+              "level": 4,
+              "descr": "Solving issues",
+              "type": 0,
+              "children": []
+            },
+            {
+              "nodeId": "Adding new diagrams",
+              "level": 4,
+              "descr": "Adding new diagrams",
+              "type": 0,
+              "children": []
+            },
+            {
+              "nodeId": "Handling pull requests",
+              "level": 4,
+              "descr": "Handling pull requests",
+              "type": 0,
+              "children": []
+            },
+            {
+              "nodeId": "Updating tooling",
+              "level": 4,
+              "descr": "Updating tooling",
+              "type": 0,
+              "children": []
+            }
+          ]
+        },
+        {
+          "nodeId": "Testing",
+          "level": 2,
+          "descr": "Testing",
+          "type": 0,
+          "children": [
+            {
+              "nodeId": "Verification of fixed issues",
+              "level": 4,
+              "descr": "Verification of fixed issues",
+              "type": 0,
+              "children": []
+            },
+            {
+              "nodeId": "Regression testing in connection with releases",
+              "level": 4,
+              "descr": "Regression testing in connection with releases",
+              "type": 0,
+              "children": []
+            },
+            {
+              "nodeId": "Testing pull requests",
+              "level": 4,
+              "descr": "Testing pull requests",
+              "type": 0,
+              "children": []
+            }
+          ]
+        },
+        {
+          "nodeId": "Management",
+          "level": 2,
+          "descr": "Management",
+          "type": 0,
+          "children": [
+            {
+              "nodeId": "Coordinating the work",
+              "level": 4,
+              "descr": "Coordinating the work",
+              "type": 0,
+              "children": []
+            },
+            {
+              "nodeId": "Classification and monitoring of incoming issues",
+              "level": 4,
+              "descr": "Classification and monitoring of incoming issues",
+              "type": 0,
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

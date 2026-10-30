@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Configuration (reference) > Frontmatter configuration: a null `config` is empty, so `displayMode` goes into a new mapping and the input is accepted."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "config": {
+      "gantt": {
+        "displayMode": "compact"
+      }
+    }
+  }
+}

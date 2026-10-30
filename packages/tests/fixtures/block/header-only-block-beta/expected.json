@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, header: a header and nothing else is rejected: the diagram needs a statement."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nblock-beta\n----------^\nExpecting 'BLOCK_DIAGRAM_KEY', 'SPACE_BLOCK', 'COLUMNS', 'id-block', 'NODE_ID', 'classDef', 'class', 'style', got 'EOF'"
+  }
+}

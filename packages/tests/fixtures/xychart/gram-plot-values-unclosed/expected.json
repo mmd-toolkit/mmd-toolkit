@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, plot: brackets that are not closed are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...art-beta line [1, 2\n----------------------^\nExpecting 'SQUARE_BRACES_END', 'COMMA', 'STR', got 'NEWLINE'"
+  }
+}

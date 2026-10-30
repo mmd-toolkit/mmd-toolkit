@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Strings: a markdown string holds no quote."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...Chartquadrant-1 \"`a\"b`\"\n----------------------^"
+  }
+}

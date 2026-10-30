@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An entity in an accDescr block is its placeholder."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "aﬂ°amp¶ßb",
+    "entities": [],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

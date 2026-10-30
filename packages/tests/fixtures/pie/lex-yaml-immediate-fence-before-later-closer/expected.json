@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Hidden YAML: an immediate fence belongs to the body when a later qualifying closer supplies a body-present match."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      }
+    ]
+  }
+}

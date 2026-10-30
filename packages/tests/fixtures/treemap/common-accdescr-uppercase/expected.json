@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Is ACC_DESCR case sensitive?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 1: Expecting token of type 'EOF' but found `AccDescr`.\nParse error on line 2, column 11: Expecting: one of these possible Token sequences:\n  1. [STRING2]\n  2. [CLASS_DEF]\nbut found: 'T'"
+  }
+}

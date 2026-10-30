@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: Strings, label content, title content, and whole color units are text or string units that can contain directives. This input is accepted by mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "x": "rgb(1,2,3)"
+        }
+      }
+    ]
+  }
+}

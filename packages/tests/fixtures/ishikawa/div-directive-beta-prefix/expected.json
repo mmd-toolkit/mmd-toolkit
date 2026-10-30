@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Beta header split by a directive before dash."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": []
+    }
+  }
+}

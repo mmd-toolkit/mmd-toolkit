@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a semicolon on another line remain?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "style:#a",
+    "accTitle": "b;",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

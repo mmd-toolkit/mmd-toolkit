@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Common values: whitespace after a colon is an authored literal; whitespace-only block content is null. Case: acctitle-whitespace-literal."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

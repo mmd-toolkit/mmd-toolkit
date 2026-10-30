@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Detection: the direction `LR` and the period `TD`."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "TD",
+        "events": []
+      }
+    ]
+  }
+}

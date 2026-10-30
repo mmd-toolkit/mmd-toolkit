@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Hidden YAML is allowed in alignment direction and member gaps."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service"
+      },
+      {
+        "id": "db",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": [
+      {
+        "direction": "row",
+        "members": [
+          "api",
+          "db"
+        ]
+      }
+    ]
+  }
+}

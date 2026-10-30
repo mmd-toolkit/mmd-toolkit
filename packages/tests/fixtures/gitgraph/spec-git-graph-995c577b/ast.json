@@ -1,0 +1,474 @@
+{
+  "type": "Root",
+  "diagramType": "gitGraph",
+  "body": {
+    "type": "GitgraphDiagram",
+    "direction": null,
+    "textBeforeHeader": [],
+    "textBeforeDirection": [],
+    "textBeforeColon": [],
+    "body": [
+      {
+        "type": "GitgraphCommitStatement",
+        "options": [
+          {
+            "type": "GitgraphMessageOption",
+            "keyword": "msg",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": {
+              "type": "StringLiteral",
+              "value": "test msg",
+              "raw": "\"test msg\"",
+              "closed": true,
+              "range": [
+                29,
+                39
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 19
+                },
+                "end": {
+                  "line": 2,
+                  "column": 29
+                }
+              }
+            },
+            "range": [
+              25,
+              39
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 15
+              },
+              "end": {
+                "line": 2,
+                "column": 29
+              }
+            }
+          },
+          {
+            "type": "GitgraphIdOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": {
+              "type": "StringLiteral",
+              "value": "1111",
+              "raw": "\"1111\"",
+              "closed": true,
+              "range": [
+                43,
+                49
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 33
+                },
+                "end": {
+                  "line": 2,
+                  "column": 39
+                }
+              }
+            },
+            "range": [
+              40,
+              49
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 30
+              },
+              "end": {
+                "line": 2,
+                "column": 39
+              }
+            }
+          },
+          {
+            "type": "GitgraphTypeOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": "REVERSE",
+            "range": [
+              50,
+              62
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 40
+              },
+              "end": {
+                "line": 2,
+                "column": 52
+              }
+            }
+          },
+          {
+            "type": "GitgraphTagOption",
+            "textBefore": [],
+            "textBeforeValue": [],
+            "value": {
+              "type": "StringLiteral",
+              "value": "test tag",
+              "raw": "\"test tag\"",
+              "closed": true,
+              "range": [
+                68,
+                78
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 58
+                },
+                "end": {
+                  "line": 2,
+                  "column": 68
+                }
+              }
+            },
+            "range": [
+              63,
+              78
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 53
+              },
+              "end": {
+                "line": 2,
+                "column": 68
+              }
+            }
+          }
+        ],
+        "textAfter": [],
+        "range": [
+          18,
+          78
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 8
+          },
+          "end": {
+            "line": 2,
+            "column": 68
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      78
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 68
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "gitGraph",
+      "range": [
+        0,
+        8
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        8,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 8
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "commit",
+      "range": [
+        18,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "msg",
+      "range": [
+        25,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 15
+        },
+        "end": {
+          "line": 2,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        28,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 18
+        },
+        "end": {
+          "line": 2,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"test msg\"",
+      "range": [
+        29,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 19
+        },
+        "end": {
+          "line": 2,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "id",
+      "range": [
+        40,
+        42
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 30
+        },
+        "end": {
+          "line": 2,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        42,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 32
+        },
+        "end": {
+          "line": 2,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"1111\"",
+      "range": [
+        43,
+        49
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 33
+        },
+        "end": {
+          "line": 2,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "type",
+      "range": [
+        50,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 40
+        },
+        "end": {
+          "line": 2,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        54,
+        55
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 44
+        },
+        "end": {
+          "line": 2,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "REVERSE",
+      "range": [
+        55,
+        62
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 45
+        },
+        "end": {
+          "line": 2,
+          "column": 52
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "tag",
+      "range": [
+        63,
+        66
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 53
+        },
+        "end": {
+          "line": 2,
+          "column": 56
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        66,
+        67
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 56
+        },
+        "end": {
+          "line": 2,
+          "column": 57
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"test tag\"",
+      "range": [
+        68,
+        78
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 58
+        },
+        "end": {
+          "line": 2,
+          "column": 68
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    87
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 8
+    }
+  }
+}

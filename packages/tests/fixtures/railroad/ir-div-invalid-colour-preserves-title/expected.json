@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Omitting a rejected colour directive must keep the frontmatter title."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Unsupported color format: \"notacolor\""
+  }
+}

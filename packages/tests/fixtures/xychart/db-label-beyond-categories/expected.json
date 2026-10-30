@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-from-tree/xychart.md: the labels of a line are taken from all its values, also from those that a band axis cuts off of the pairs."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": [
+        "a"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 1
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "a",
+            1
+          ]
+        ],
+        "pointLabels": [
+          "p",
+          "q"
+        ]
+      }
+    ]
+  }
+}

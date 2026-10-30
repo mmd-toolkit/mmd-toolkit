@@ -1,0 +1,159 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/entityRelationshipDiagram.md",
+    "line": 281
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-CAR-0",
+        "attributes": [
+          {
+            "type": "string",
+            "name": "registrationNumber",
+            "keys": [
+              "PK"
+            ],
+            "comment": ""
+          },
+          {
+            "type": "string",
+            "name": "make",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "string",
+            "name": "model",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "string[]",
+            "name": "parts",
+            "keys": [],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "CAR",
+        "classes": []
+      },
+      {
+        "id": "entity-NAMED-DRIVER-1",
+        "attributes": [
+          {
+            "type": "string",
+            "name": "carRegistrationNumber",
+            "keys": [
+              "PK",
+              "FK"
+            ],
+            "comment": ""
+          },
+          {
+            "type": "string",
+            "name": "driverLicence",
+            "keys": [
+              "PK",
+              "FK"
+            ],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "NAMED-DRIVER",
+        "classes": []
+      },
+      {
+        "id": "entity-PERSON-2",
+        "attributes": [
+          {
+            "type": "string",
+            "name": "driversLicense",
+            "keys": [
+              "PK"
+            ],
+            "comment": "The license #"
+          },
+          {
+            "type": "string(99)",
+            "name": "firstName",
+            "keys": [],
+            "comment": "Only 99 characters are allowed"
+          },
+          {
+            "type": "string",
+            "name": "lastName",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "string",
+            "name": "phone",
+            "keys": [
+              "UK"
+            ],
+            "comment": ""
+          },
+          {
+            "type": "int",
+            "name": "age",
+            "keys": [],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "PERSON",
+        "classes": []
+      },
+      {
+        "id": "entity-MANUFACTURER-3",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "MANUFACTURER",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-CAR-0",
+        "roleA": "allows",
+        "entityB": "entity-NAMED-DRIVER-1",
+        "cardA": "ZERO_OR_MORE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      },
+      {
+        "entityA": "entity-PERSON-2",
+        "roleA": "is",
+        "entityB": "entity-NAMED-DRIVER-1",
+        "cardA": "ZERO_OR_MORE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      },
+      {
+        "entityA": "entity-MANUFACTURER-3",
+        "roleA": "makes",
+        "entityB": "entity-CAR-0",
+        "cardA": "ZERO_OR_MORE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": []
+  }
+}

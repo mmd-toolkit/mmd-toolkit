@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Units and contexts: a tab before the end of the text; the text ends in the style context; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...Astyle A fill:red\t\n---------------------^\nExpecting 'EOF', 'NEWLINE', 'COLON', 'STYLE_TEXT', 'COMMA', 'SEMI', 'NUM', 'BRKT', got '1'"
+  }
+}

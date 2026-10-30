@@ -1,0 +1,85 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, edges: edges are listed in the order of the text, composites included."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "type": "na"
+        },
+        {
+          "id": "G",
+          "label": "",
+          "type": "composite",
+          "widthInColumns": 1,
+          "children": [
+            {
+              "id": "C",
+              "label": "C",
+              "type": "na"
+            },
+            {
+              "id": "D",
+              "label": "D",
+              "type": "na"
+            }
+          ]
+        },
+        {
+          "id": "E",
+          "label": "E",
+          "type": "na"
+        },
+        {
+          "id": "F",
+          "label": "F",
+          "type": "na"
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "label": "",
+        "thickness": "normal",
+        "pattern": "solid",
+        "arrowTypeStart": "arrow_open",
+        "arrowTypeEnd": "arrow_point"
+      },
+      {
+        "start": "C",
+        "end": "D",
+        "label": "",
+        "thickness": "normal",
+        "pattern": "solid",
+        "arrowTypeStart": "arrow_open",
+        "arrowTypeEnd": "arrow_point"
+      },
+      {
+        "start": "E",
+        "end": "F",
+        "label": "",
+        "thickness": "normal",
+        "pattern": "solid",
+        "arrowTypeStart": "arrow_open",
+        "arrowTypeEnd": "arrow_point"
+      }
+    ],
+    "classes": []
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Member lines, item 5: the rest after `)` is spaces and `$`, so `$` is the classifier and there is no return type; the Db return type is empty."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "$",
+            "id": "foo",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

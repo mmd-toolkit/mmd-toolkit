@@ -1,0 +1,69 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/treeView.html",
+    "line": 68
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "docs",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "build",
+            "nodeType": "file",
+            "children": []
+          },
+          {
+            "name": "make.bat",
+            "nodeType": "file",
+            "children": []
+          },
+          {
+            "name": "Makefile",
+            "nodeType": "file",
+            "children": []
+          },
+          {
+            "name": "out",
+            "nodeType": "file",
+            "children": []
+          },
+          {
+            "name": "source",
+            "nodeType": "file",
+            "children": [
+              {
+                "name": "build",
+                "nodeType": "file",
+                "children": []
+              },
+              {
+                "name": "static",
+                "nodeType": "file",
+                "children": [
+                  {
+                    "name": "_templates",
+                    "nodeType": "file",
+                    "children": []
+                  },
+                  {
+                    "name": "div. Files",
+                    "nodeType": "file",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

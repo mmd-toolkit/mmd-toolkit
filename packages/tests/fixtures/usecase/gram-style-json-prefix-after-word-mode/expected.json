@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The JSON prefix is an earlier mode-changing rule even after an ordinary Word component in a CSS value."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting: one of these possible Token sequences:\n  1. [NEWLINE]\n  2. [EOF]\nbut found: 'json J@ ' at line 3, column 19 [33,41)"
+  }
+}

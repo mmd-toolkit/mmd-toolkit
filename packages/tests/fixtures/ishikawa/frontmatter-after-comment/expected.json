@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P4: frontmatter] Can frontmatter follow a comment before the header?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n---title: T---ish\n^\nExpecting 'SPACELINE', 'ISHIKAWA', got 'TEXT'"
+  }
+}

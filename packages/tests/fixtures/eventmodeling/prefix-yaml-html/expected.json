@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A retained prefix precedes an HTML-frontmatter value divergence."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "accTitle: x='y'>",
+    "accDescr": "",
+    "frames": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

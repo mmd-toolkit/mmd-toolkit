@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The block carryover kind quote in metadata-ticket-single tests the kanban reading at this text position."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 5:\n... I@{ticket: 'a\"b'}\n---------------------^\nExpecting 'SPACELINE', 'NL', 'EOF', 'SHAPE_DATA', got '1'"
+  }
+}

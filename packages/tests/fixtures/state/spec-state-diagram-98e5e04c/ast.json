@@ -1,0 +1,1340 @@
+{
+  "type": "Root",
+  "diagramType": "stateDiagram",
+  "body": {
+    "type": "StateDiagram",
+    "body": [
+      {
+        "type": "StateTransitionStatement",
+        "from": {
+          "type": "StateReference",
+          "state": {
+            "type": "StateTerminal",
+            "range": [
+              22,
+              25
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 8
+              },
+              "end": {
+                "line": 3,
+                "column": 11
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            22,
+            25
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 8
+            },
+            "end": {
+              "line": 3,
+              "column": 11
+            }
+          }
+        },
+        "to": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "NotShooting",
+            "range": [
+              30,
+              41
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 16
+              },
+              "end": {
+                "line": 3,
+                "column": 27
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            30,
+            41
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 16
+            },
+            "end": {
+              "line": 3,
+              "column": 27
+            }
+          }
+        },
+        "label": null,
+        "range": [
+          22,
+          41
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 8
+          },
+          "end": {
+            "line": 3,
+            "column": 27
+          }
+        }
+      },
+      {
+        "type": "StateAliasDefinitionStatement",
+        "textBeforeDescription": null,
+        "description": {
+          "type": "StringLiteral",
+          "value": "Not Shooting State",
+          "raw": "\"Not Shooting State\"",
+          "closed": true,
+          "range": [
+            57,
+            77
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 14
+            },
+            "end": {
+              "line": 5,
+              "column": 34
+            }
+          }
+        },
+        "textAfterDescription": null,
+        "id": {
+          "type": "StateLiteral",
+          "value": "NotShooting",
+          "range": [
+            81,
+            92
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 38
+            },
+            "end": {
+              "line": 5,
+              "column": 49
+            }
+          }
+        },
+        "secondDescription": null,
+        "textAfter": null,
+        "textBeforeBody": null,
+        "body": [
+          {
+            "type": "StateAliasDefinitionStatement",
+            "textBeforeDescription": null,
+            "description": {
+              "type": "StringLiteral",
+              "value": "Idle mode",
+              "raw": "\"Idle mode\"",
+              "closed": true,
+              "range": [
+                111,
+                122
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 16
+                },
+                "end": {
+                  "line": 6,
+                  "column": 27
+                }
+              }
+            },
+            "textAfterDescription": null,
+            "id": {
+              "type": "StateLiteral",
+              "value": "Idle",
+              "range": [
+                126,
+                130
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 31
+                },
+                "end": {
+                  "line": 6,
+                  "column": 35
+                }
+              }
+            },
+            "secondDescription": null,
+            "textAfter": null,
+            "textBeforeBody": null,
+            "body": null,
+            "range": [
+              105,
+              130
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 10
+              },
+              "end": {
+                "line": 6,
+                "column": 35
+              }
+            }
+          },
+          {
+            "type": "StateAliasDefinitionStatement",
+            "textBeforeDescription": null,
+            "description": {
+              "type": "StringLiteral",
+              "value": "Configuring mode",
+              "raw": "\"Configuring mode\"",
+              "closed": true,
+              "range": [
+                147,
+                165
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 16
+                },
+                "end": {
+                  "line": 7,
+                  "column": 34
+                }
+              }
+            },
+            "textAfterDescription": null,
+            "id": {
+              "type": "StateLiteral",
+              "value": "Configuring",
+              "range": [
+                169,
+                180
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 38
+                },
+                "end": {
+                  "line": 7,
+                  "column": 49
+                }
+              }
+            },
+            "secondDescription": null,
+            "textAfter": null,
+            "textBeforeBody": null,
+            "body": null,
+            "range": [
+              141,
+              180
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 10
+              },
+              "end": {
+                "line": 7,
+                "column": 49
+              }
+            }
+          },
+          {
+            "type": "StateTransitionStatement",
+            "from": {
+              "type": "StateReference",
+              "state": {
+                "type": "StateTerminal",
+                "range": [
+                  191,
+                  194
+                ],
+                "loc": {
+                  "start": {
+                    "line": 8,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 8,
+                    "column": 13
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                191,
+                194
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 10
+                },
+                "end": {
+                  "line": 8,
+                  "column": 13
+                }
+              }
+            },
+            "to": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "Idle",
+                "range": [
+                  199,
+                  203
+                ],
+                "loc": {
+                  "start": {
+                    "line": 8,
+                    "column": 18
+                  },
+                  "end": {
+                    "line": 8,
+                    "column": 22
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                199,
+                203
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 18
+                },
+                "end": {
+                  "line": 8,
+                  "column": 22
+                }
+              }
+            },
+            "label": null,
+            "range": [
+              191,
+              203
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 10
+              },
+              "end": {
+                "line": 8,
+                "column": 22
+              }
+            }
+          },
+          {
+            "type": "StateTransitionStatement",
+            "from": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "Idle",
+                "range": [
+                  214,
+                  218
+                ],
+                "loc": {
+                  "start": {
+                    "line": 9,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 9,
+                    "column": 14
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                214,
+                218
+              ],
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 10
+                },
+                "end": {
+                  "line": 9,
+                  "column": 14
+                }
+              }
+            },
+            "to": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "Configuring",
+                "range": [
+                  223,
+                  234
+                ],
+                "loc": {
+                  "start": {
+                    "line": 9,
+                    "column": 19
+                  },
+                  "end": {
+                    "line": 9,
+                    "column": 30
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                223,
+                234
+              ],
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 19
+                },
+                "end": {
+                  "line": 9,
+                  "column": 30
+                }
+              }
+            },
+            "label": {
+              "type": "StateLiteral",
+              "value": "EvConfig",
+              "range": [
+                237,
+                245
+              ],
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 33
+                },
+                "end": {
+                  "line": 9,
+                  "column": 41
+                }
+              }
+            },
+            "range": [
+              214,
+              245
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 10
+              },
+              "end": {
+                "line": 9,
+                "column": 41
+              }
+            }
+          },
+          {
+            "type": "StateTransitionStatement",
+            "from": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "Configuring",
+                "range": [
+                  256,
+                  267
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 21
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                256,
+                267
+              ],
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 10
+                },
+                "end": {
+                  "line": 10,
+                  "column": 21
+                }
+              }
+            },
+            "to": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "Idle",
+                "range": [
+                  272,
+                  276
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 26
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 30
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                272,
+                276
+              ],
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 26
+                },
+                "end": {
+                  "line": 10,
+                  "column": 30
+                }
+              }
+            },
+            "label": {
+              "type": "StateLiteral",
+              "value": "EvConfig",
+              "range": [
+                279,
+                287
+              ],
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 33
+                },
+                "end": {
+                  "line": 10,
+                  "column": 41
+                }
+              }
+            },
+            "range": [
+              256,
+              287
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 10
+              },
+              "end": {
+                "line": 10,
+                "column": 41
+              }
+            }
+          }
+        ],
+        "range": [
+          51,
+          297
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 8
+          },
+          "end": {
+            "line": 11,
+            "column": 9
+          }
+        }
+      },
+      {
+        "type": "StateNoteStatement",
+        "position": "right",
+        "textBeforeState": null,
+        "state": {
+          "type": "Identifier",
+          "name": "NotShooting",
+          "range": [
+            321,
+            332
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 22
+            },
+            "end": {
+              "line": 13,
+              "column": 33
+            }
+          }
+        },
+        "textBeforeText": null,
+        "text": {
+          "type": "StateLiteral",
+          "value": "This is a note on a composite state",
+          "range": [
+            335,
+            370
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 36
+            },
+            "end": {
+              "line": 13,
+              "column": 71
+            }
+          }
+        },
+        "range": [
+          307,
+          370
+        ],
+        "loc": {
+          "start": {
+            "line": 13,
+            "column": 8
+          },
+          "end": {
+            "line": 13,
+            "column": 71
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      370
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 13,
+        "column": 71
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "stateDiagram",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[*]",
+      "range": [
+        22,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        26,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 12
+        },
+        "end": {
+          "line": 3,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NotShooting",
+      "range": [
+        30,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 16
+        },
+        "end": {
+          "line": 3,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "state",
+      "range": [
+        51,
+        56
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 8
+        },
+        "end": {
+          "line": 5,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Not Shooting State\"",
+      "range": [
+        57,
+        77
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 14
+        },
+        "end": {
+          "line": 5,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "as",
+      "range": [
+        78,
+        80
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 35
+        },
+        "end": {
+          "line": 5,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "NotShooting",
+      "range": [
+        81,
+        92
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 38
+        },
+        "end": {
+          "line": 5,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        93,
+        94
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 50
+        },
+        "end": {
+          "line": 5,
+          "column": 51
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "state",
+      "range": [
+        105,
+        110
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 10
+        },
+        "end": {
+          "line": 6,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Idle mode\"",
+      "range": [
+        111,
+        122
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 16
+        },
+        "end": {
+          "line": 6,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "as",
+      "range": [
+        123,
+        125
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 28
+        },
+        "end": {
+          "line": 6,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Idle",
+      "range": [
+        126,
+        130
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 31
+        },
+        "end": {
+          "line": 6,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "state",
+      "range": [
+        141,
+        146
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 10
+        },
+        "end": {
+          "line": 7,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Configuring mode\"",
+      "range": [
+        147,
+        165
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 16
+        },
+        "end": {
+          "line": 7,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "as",
+      "range": [
+        166,
+        168
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 35
+        },
+        "end": {
+          "line": 7,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Configuring",
+      "range": [
+        169,
+        180
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 38
+        },
+        "end": {
+          "line": 7,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[*]",
+      "range": [
+        191,
+        194
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 10
+        },
+        "end": {
+          "line": 8,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        195,
+        198
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 14
+        },
+        "end": {
+          "line": 8,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Idle",
+      "range": [
+        199,
+        203
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 18
+        },
+        "end": {
+          "line": 8,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Idle",
+      "range": [
+        214,
+        218
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 10
+        },
+        "end": {
+          "line": 9,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        219,
+        222
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 15
+        },
+        "end": {
+          "line": 9,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Configuring",
+      "range": [
+        223,
+        234
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 19
+        },
+        "end": {
+          "line": 9,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        235,
+        236
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 31
+        },
+        "end": {
+          "line": 9,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "EvConfig",
+      "range": [
+        237,
+        245
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 33
+        },
+        "end": {
+          "line": 9,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Configuring",
+      "range": [
+        256,
+        267
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 10
+        },
+        "end": {
+          "line": 10,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        268,
+        271
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 22
+        },
+        "end": {
+          "line": 10,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Idle",
+      "range": [
+        272,
+        276
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 26
+        },
+        "end": {
+          "line": 10,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        277,
+        278
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 31
+        },
+        "end": {
+          "line": 10,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "EvConfig",
+      "range": [
+        279,
+        287
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 33
+        },
+        "end": {
+          "line": 10,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        296,
+        297
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 8
+        },
+        "end": {
+          "line": 11,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "note",
+      "range": [
+        307,
+        311
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 8
+        },
+        "end": {
+          "line": 13,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "right",
+      "range": [
+        312,
+        317
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 13
+        },
+        "end": {
+          "line": 13,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "of",
+      "range": [
+        318,
+        320
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 19
+        },
+        "end": {
+          "line": 13,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NotShooting",
+      "range": [
+        321,
+        332
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 22
+        },
+        "end": {
+          "line": 13,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        333,
+        334
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 34
+        },
+        "end": {
+          "line": 13,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "This is a note on a composite state",
+      "range": [
+        335,
+        370
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 36
+        },
+        "end": {
+          "line": 13,
+          "column": 71
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    377
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 14,
+      "column": 6
+    }
+  }
+}

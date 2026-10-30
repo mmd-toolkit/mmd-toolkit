@@ -1,0 +1,1259 @@
+{
+  "type": "Root",
+  "diagramType": "eventmodeling",
+  "body": {
+    "type": "EventmodelingDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "EventmodelingTimeFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "01",
+          "range": [
+            25,
+            27
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 10
+            },
+            "end": {
+              "line": 3,
+              "column": 12
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "ui",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "CartUI",
+            "range": [
+              31,
+              37
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 16
+              },
+              "end": {
+                "line": 3,
+                "column": 22
+              }
+            }
+          },
+          "tail": [],
+          "range": [
+            31,
+            37
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 16
+            },
+            "end": {
+              "line": 3,
+              "column": 22
+            }
+          }
+        },
+        "sourceFrames": [],
+        "dataReference": null,
+        "data": null,
+        "range": [
+          15,
+          37
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 22
+          }
+        }
+      },
+      {
+        "type": "EventmodelingTimeFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "02",
+          "range": [
+            48,
+            50
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 10
+            },
+            "end": {
+              "line": 4,
+              "column": 12
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "command",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "AddItem",
+            "range": [
+              59,
+              66
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 21
+              },
+              "end": {
+                "line": 4,
+                "column": 28
+              }
+            }
+          },
+          "tail": [],
+          "range": [
+            59,
+            66
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 21
+            },
+            "end": {
+              "line": 4,
+              "column": 28
+            }
+          }
+        },
+        "sourceFrames": [],
+        "dataReference": null,
+        "data": null,
+        "range": [
+          38,
+          66
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 28
+          }
+        }
+      },
+      {
+        "type": "EventmodelingTimeFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "03",
+          "range": [
+            77,
+            79
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 10
+            },
+            "end": {
+              "line": 5,
+              "column": 12
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "event",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "ItemAdded",
+            "range": [
+              86,
+              95
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 19
+              },
+              "end": {
+                "line": 5,
+                "column": 28
+              }
+            }
+          },
+          "tail": [],
+          "range": [
+            86,
+            95
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 19
+            },
+            "end": {
+              "line": 5,
+              "column": 28
+            }
+          }
+        },
+        "sourceFrames": [],
+        "dataReference": null,
+        "data": null,
+        "range": [
+          67,
+          95
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 28
+          }
+        }
+      },
+      {
+        "type": "EventmodelingResetFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "04",
+          "range": [
+            108,
+            110
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 11
+            },
+            "end": {
+              "line": 7,
+              "column": 13
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "event",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "External",
+            "range": [
+              117,
+              125
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 20
+              },
+              "end": {
+                "line": 7,
+                "column": 28
+              }
+            }
+          },
+          "tail": [
+            {
+              "type": "EventmodelingQualifiedNamePart",
+              "textBeforeDot": [],
+              "textBeforeName": [],
+              "name": {
+                "type": "Identifier",
+                "name": "InventoryChanged",
+                "range": [
+                  126,
+                  142
+                ],
+                "loc": {
+                  "start": {
+                    "line": 7,
+                    "column": 29
+                  },
+                  "end": {
+                    "line": 7,
+                    "column": 45
+                  }
+                }
+              },
+              "range": [
+                125,
+                142
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 28
+                },
+                "end": {
+                  "line": 7,
+                  "column": 45
+                }
+              }
+            }
+          ],
+          "range": [
+            117,
+            142
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 20
+            },
+            "end": {
+              "line": 7,
+              "column": 45
+            }
+          }
+        },
+        "sourceFrames": [],
+        "dataReference": null,
+        "data": null,
+        "range": [
+          97,
+          142
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 45
+          }
+        }
+      },
+      {
+        "type": "EventmodelingTimeFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "05",
+          "range": [
+            153,
+            155
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 10
+            },
+            "end": {
+              "line": 8,
+              "column": 12
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "processor",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "InventoryProcessor",
+            "range": [
+              166,
+              184
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 23
+              },
+              "end": {
+                "line": 8,
+                "column": 41
+              }
+            }
+          },
+          "tail": [],
+          "range": [
+            166,
+            184
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 23
+            },
+            "end": {
+              "line": 8,
+              "column": 41
+            }
+          }
+        },
+        "sourceFrames": [],
+        "dataReference": null,
+        "data": null,
+        "range": [
+          143,
+          184
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 0
+          },
+          "end": {
+            "line": 8,
+            "column": 41
+          }
+        }
+      },
+      {
+        "type": "EventmodelingTimeFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "06",
+          "range": [
+            195,
+            197
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 10
+            },
+            "end": {
+              "line": 9,
+              "column": 12
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "command",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "ChangeInventory",
+            "range": [
+              206,
+              221
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 21
+              },
+              "end": {
+                "line": 9,
+                "column": 36
+              }
+            }
+          },
+          "tail": [],
+          "range": [
+            206,
+            221
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 21
+            },
+            "end": {
+              "line": 9,
+              "column": 36
+            }
+          }
+        },
+        "sourceFrames": [],
+        "dataReference": null,
+        "data": null,
+        "range": [
+          185,
+          221
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 0
+          },
+          "end": {
+            "line": 9,
+            "column": 36
+          }
+        }
+      },
+      {
+        "type": "EventmodelingTimeFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "07",
+          "range": [
+            232,
+            234
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 10
+            },
+            "end": {
+              "line": 10,
+              "column": 12
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "event",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "Cart",
+            "range": [
+              241,
+              245
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 19
+              },
+              "end": {
+                "line": 10,
+                "column": 23
+              }
+            }
+          },
+          "tail": [
+            {
+              "type": "EventmodelingQualifiedNamePart",
+              "textBeforeDot": [],
+              "textBeforeName": [],
+              "name": {
+                "type": "Identifier",
+                "name": "InventoryChanged",
+                "range": [
+                  246,
+                  262
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 24
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 40
+                  }
+                }
+              },
+              "range": [
+                245,
+                262
+              ],
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 23
+                },
+                "end": {
+                  "line": 10,
+                  "column": 40
+                }
+              }
+            }
+          ],
+          "range": [
+            241,
+            262
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 19
+            },
+            "end": {
+              "line": 10,
+              "column": 40
+            }
+          }
+        },
+        "sourceFrames": [],
+        "dataReference": null,
+        "data": null,
+        "range": [
+          222,
+          262
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 0
+          },
+          "end": {
+            "line": 10,
+            "column": 40
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      262
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 10,
+        "column": 40
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "eventmodeling",
+      "range": [
+        0,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "timeframe",
+      "range": [
+        15,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "01",
+      "range": [
+        25,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 10
+        },
+        "end": {
+          "line": 3,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "ui",
+      "range": [
+        28,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 13
+        },
+        "end": {
+          "line": 3,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "CartUI",
+      "range": [
+        31,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 16
+        },
+        "end": {
+          "line": 3,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "timeframe",
+      "range": [
+        38,
+        47
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "02",
+      "range": [
+        48,
+        50
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 10
+        },
+        "end": {
+          "line": 4,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "command",
+      "range": [
+        51,
+        58
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 13
+        },
+        "end": {
+          "line": 4,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "AddItem",
+      "range": [
+        59,
+        66
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 21
+        },
+        "end": {
+          "line": 4,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "timeframe",
+      "range": [
+        67,
+        76
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "03",
+      "range": [
+        77,
+        79
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 10
+        },
+        "end": {
+          "line": 5,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "event",
+      "range": [
+        80,
+        85
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 13
+        },
+        "end": {
+          "line": 5,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "ItemAdded",
+      "range": [
+        86,
+        95
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 19
+        },
+        "end": {
+          "line": 5,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "resetframe",
+      "range": [
+        97,
+        107
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "04",
+      "range": [
+        108,
+        110
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 11
+        },
+        "end": {
+          "line": 7,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "event",
+      "range": [
+        111,
+        116
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 14
+        },
+        "end": {
+          "line": 7,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "External",
+      "range": [
+        117,
+        125
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 20
+        },
+        "end": {
+          "line": 7,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ".",
+      "range": [
+        125,
+        126
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 28
+        },
+        "end": {
+          "line": 7,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "InventoryChanged",
+      "range": [
+        126,
+        142
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 29
+        },
+        "end": {
+          "line": 7,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "timeframe",
+      "range": [
+        143,
+        152
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "05",
+      "range": [
+        153,
+        155
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 10
+        },
+        "end": {
+          "line": 8,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "processor",
+      "range": [
+        156,
+        165
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 13
+        },
+        "end": {
+          "line": 8,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "InventoryProcessor",
+      "range": [
+        166,
+        184
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 23
+        },
+        "end": {
+          "line": 8,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "timeframe",
+      "range": [
+        185,
+        194
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "06",
+      "range": [
+        195,
+        197
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 10
+        },
+        "end": {
+          "line": 9,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "command",
+      "range": [
+        198,
+        205
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 13
+        },
+        "end": {
+          "line": 9,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "ChangeInventory",
+      "range": [
+        206,
+        221
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 21
+        },
+        "end": {
+          "line": 9,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "timeframe",
+      "range": [
+        222,
+        231
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 0
+        },
+        "end": {
+          "line": 10,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "07",
+      "range": [
+        232,
+        234
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 10
+        },
+        "end": {
+          "line": 10,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "event",
+      "range": [
+        235,
+        240
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 13
+        },
+        "end": {
+          "line": 10,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Cart",
+      "range": [
+        241,
+        245
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 19
+        },
+        "end": {
+          "line": 10,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ".",
+      "range": [
+        245,
+        246
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 23
+        },
+        "end": {
+          "line": 10,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "InventoryChanged",
+      "range": [
+        246,
+        262
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 24
+        },
+        "end": {
+          "line": 10,
+          "column": 40
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    263
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 11,
+      "column": 0
+    }
+  }
+}

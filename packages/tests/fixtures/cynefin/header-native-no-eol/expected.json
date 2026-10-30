@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Detection: a native form glued to the bare header without any following LF fails detection."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: cynefin-beta%%{!x}%% complex \"A\""
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js",
+    "line": 932,
+    "test": "when parsing a sequenceDiagram > should handle fail parsing when activating an inactive participant"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Trying to inactivate an inactive participant (Server)"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Accessibility values: a second `}` after the block is a task text without data."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...rney  accDescr {d}}\n----------------------^\nExpecting 'taskData', got 'NEWLINE'"
+  }
+}

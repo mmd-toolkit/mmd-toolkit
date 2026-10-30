@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The block carryover kind close-round in section-label-bare tests the kanban reading at this text position."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nkanban S[a)b]   I\n-----------^\nExpecting 'SPACELINE', 'NL', 'EOF', 'SHAPE_DATA', got 'NODE_ID'"
+  }
+}

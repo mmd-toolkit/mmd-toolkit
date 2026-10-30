@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Known divergences: mermaid.js's comment takes the `1` before `%%`, so the range has no end and the input is rejected; here the range is 0 to 1."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n... y-axis 0 --> 1%% c\n----------------------^\nExpecting 'NUMBER_WITH_DECIMAL', got 'NEWLINE'"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A line `title My ER` is not a title: the grammar has no token for `title`, and the line makes the entities `title`, `My`, and `ER`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-title-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "title",
+        "classes": []
+      },
+      {
+        "id": "entity-My-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "My",
+        "classes": []
+      },
+      {
+        "id": "entity-ER-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "ER",
+        "classes": []
+      },
+      {
+        "id": "entity-A-3",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

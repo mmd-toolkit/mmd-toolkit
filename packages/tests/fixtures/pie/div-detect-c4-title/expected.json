@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The existing C4 detector can claim a keyword inside pie title text."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\npie title C4Componen\n^"
+  }
+}

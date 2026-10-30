@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Embedded architecture drawing settings are recorded outside the summary."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "icon": "server",
+        "title": "API"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  },
+  "embedded": {
+    "config": {
+      "architecture": {
+        "iconSize": 24,
+        "seed": 42
+      }
+    }
+  }
+}

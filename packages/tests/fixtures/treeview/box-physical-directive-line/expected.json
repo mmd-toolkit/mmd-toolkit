@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does removing a directive-only line precede decoration-line removal inside a block?"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "a\nb",
+    "nodes": [
+      {
+        "name": "x",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

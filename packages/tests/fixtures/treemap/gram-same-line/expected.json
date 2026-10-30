@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do adjacent rows on one line form distinct outer nodes?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "children": [
+          {
+            "name": "B",
+            "value": 1
+          },
+          {
+            "name": "C",
+            "value": 2
+          }
+        ]
+      }
+    ],
+    "classDefs": []
+  }
+}

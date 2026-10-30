@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Lexical structure, The note contexts: the note id ends before `%%`, also at its first character, and is then empty; the note text context then needs a `:` or `end note`, so the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...v2  note left of %%%%x : t\n----------------------^"
+  }
+}

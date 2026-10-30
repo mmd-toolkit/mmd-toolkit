@@ -1,0 +1,110 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-metadata-trailing-comma.spec.ts",
+    "line": 16,
+    "test": "trailing commas in multi-line @{ } metadata > parses a full diagram around a trailing-comma connector declaration"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "github",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "GitHub API",
+        "metadata": {
+          "protocol": "http",
+          "endpoint": "https://api.github.com",
+          "token_required": true
+        }
+      },
+      {
+        "id": "query",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "query",
+        "type": "lean-right",
+        "props": {},
+        "metadata": {
+          "shape": "lean-right"
+        }
+      },
+      {
+        "id": "fetch_issues",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "fetch_issues",
+        "type": "subroutine",
+        "props": {},
+        "metadata": {
+          "shape": "subroutine",
+          "connectorRef": "github.list_issues"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "start": "query",
+        "end": "fetch_issues",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_query_fetch_issues_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "github",
+        "set": {
+          "metadata": {
+            "protocol": "http",
+            "endpoint": "https://api.github.com",
+            "token_required": true
+          }
+        }
+      },
+      {
+        "id": "query",
+        "set": {
+          "type": "lean-right",
+          "metadata": {
+            "shape": "lean-right"
+          }
+        }
+      },
+      {
+        "id": "fetch_issues",
+        "set": {
+          "type": "subroutine",
+          "metadata": {
+            "shape": "subroutine",
+            "connectorRef": "github.list_issues"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/timeline.md",
+    "line": 319
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "History of Social Media Platform",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "2002 ",
+        "events": [
+          "LinkedIn"
+        ]
+      },
+      {
+        "section": "",
+        "task": "2004 ",
+        "events": [
+          "Facebook ",
+          "Google"
+        ]
+      },
+      {
+        "section": "",
+        "task": "2005 ",
+        "events": [
+          "YouTube"
+        ]
+      },
+      {
+        "section": "",
+        "task": "2006 ",
+        "events": [
+          "Twitter"
+        ]
+      },
+      {
+        "section": "",
+        "task": "2007 ",
+        "events": [
+          "Tumblr"
+        ]
+      },
+      {
+        "section": "",
+        "task": "2008 ",
+        "events": [
+          "Instagram"
+        ]
+      },
+      {
+        "section": "",
+        "task": "2010 ",
+        "events": [
+          "Pinterest"
+        ]
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "logLevel": "debug"
+    }
+  }
+}

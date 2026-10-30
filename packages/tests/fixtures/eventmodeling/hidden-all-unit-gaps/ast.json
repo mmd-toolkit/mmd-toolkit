@@ -1,0 +1,773 @@
+{
+  "type": "Root",
+  "diagramType": "eventmodeling",
+  "body": {
+    "type": "EventmodelingDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "EventmodelingTimeFrameStatement",
+        "textBeforeName": [],
+        "name": {
+          "type": "Identifier",
+          "name": "01",
+          "range": [
+            22,
+            24
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 8
+            },
+            "end": {
+              "line": 2,
+              "column": 10
+            }
+          }
+        },
+        "textBeforeModelEntityType": [],
+        "modelEntityType": "evt",
+        "textBeforeEntityIdentifier": [],
+        "entityIdentifier": {
+          "type": "EventmodelingQualifiedName",
+          "head": {
+            "type": "Identifier",
+            "name": "A",
+            "range": [
+              37,
+              38
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 23
+              },
+              "end": {
+                "line": 2,
+                "column": 24
+              }
+            }
+          },
+          "tail": [],
+          "range": [
+            37,
+            38
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 23
+            },
+            "end": {
+              "line": 2,
+              "column": 24
+            }
+          }
+        },
+        "sourceFrames": [
+          {
+            "type": "EventmodelingSourceReference",
+            "textBefore": [],
+            "arrow": {
+              "type": "EventmodelingArrow",
+              "value": "->>",
+              "startMarker": "none",
+              "line": "solid",
+              "endMarker": "arrow",
+              "range": [
+                43,
+                46
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 29
+                },
+                "end": {
+                  "line": 2,
+                  "column": 32
+                }
+              }
+            },
+            "textBeforeFrame": [],
+            "frame": {
+              "type": "Identifier",
+              "name": "02",
+              "range": [
+                51,
+                53
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 37
+                },
+                "end": {
+                  "line": 2,
+                  "column": 39
+                }
+              }
+            },
+            "range": [
+              43,
+              53
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 29
+              },
+              "end": {
+                "line": 2,
+                "column": 39
+              }
+            }
+          }
+        ],
+        "dataReference": {
+          "type": "EventmodelingDataReference",
+          "textBefore": [],
+          "textBeforeName": [],
+          "name": {
+            "type": "Identifier",
+            "name": "D",
+            "range": [
+              65,
+              66
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 51
+              },
+              "end": {
+                "line": 2,
+                "column": 52
+              }
+            }
+          },
+          "textBeforeClose": [],
+          "range": [
+            58,
+            73
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 44
+            },
+            "end": {
+              "line": 2,
+              "column": 59
+            }
+          }
+        },
+        "data": {
+          "type": "EventmodelingInlineData",
+          "textBefore": [],
+          "dataType": "json",
+          "textBeforeDataType": [],
+          "textBeforeTypeClose": [],
+          "textBeforeValue": [],
+          "value": {
+            "type": "EventmodelingLiteral",
+            "value": " x ",
+            "range": [
+              100,
+              103
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 86
+              },
+              "end": {
+                "line": 2,
+                "column": 89
+              }
+            }
+          },
+          "range": [
+            78,
+            104
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 64
+            },
+            "end": {
+              "line": 2,
+              "column": 90
+            }
+          }
+        },
+        "range": [
+          14,
+          104
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 90
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      104
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 90
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [
+    {
+      "type": "Comment",
+      "mark": "/*",
+      "value": "a",
+      "range": [
+        17,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 3
+        },
+        "end": {
+          "line": 2,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Comment",
+      "mark": "/*",
+      "value": "b",
+      "range": [
+        24,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Comment",
+      "mark": "/*",
+      "value": "c",
+      "range": [
+        32,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 18
+        },
+        "end": {
+          "line": 2,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Comment",
+      "mark": "/*",
+      "value": "d",
+      "range": [
+        38,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 24
+        },
+        "end": {
+          "line": 2,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Comment",
+      "mark": "/*",
+      "value": "e",
+      "range": [
+        46,
+        51
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 32
+        },
+        "end": {
+          "line": 2,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "Comment",
+      "mark": "/*",
+      "value": "f",
+      "range": [
+        53,
+        58
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 39
+        },
+        "end": {
+          "line": 2,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "Comment",
+      "mark": "/*",
+      "value": "g",
+      "range": [
+        60,
+        65
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 46
+        },
+        "end": {
+          "line": 2,
+          "column": 51
+        }
+      }
+    },
+    {
+      "type": "Comment",
+      "mark": "/*",
+      "value": "h",
+      "range": [
+        66,
+        71
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 52
+        },
+        "end": {
+          "line": 2,
+          "column": 57
+        }
+      }
+    },
+    {
+      "type": "Comment",
+      "mark": "/*",
+      "value": "i",
+      "range": [
+        73,
+        78
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 59
+        },
+        "end": {
+          "line": 2,
+          "column": 64
+        }
+      }
+    },
+    {
+      "type": "Comment",
+      "mark": "/*",
+      "value": "j",
+      "range": [
+        79,
+        84
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 65
+        },
+        "end": {
+          "line": 2,
+          "column": 70
+        }
+      }
+    },
+    {
+      "type": "Comment",
+      "mark": "/*",
+      "value": "k",
+      "range": [
+        88,
+        93
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 74
+        },
+        "end": {
+          "line": 2,
+          "column": 79
+        }
+      }
+    },
+    {
+      "type": "Comment",
+      "mark": "/*",
+      "value": "l",
+      "range": [
+        94,
+        99
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 80
+        },
+        "end": {
+          "line": 2,
+          "column": 85
+        }
+      }
+    }
+  ],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "eventmodeling",
+      "range": [
+        0,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "tf",
+      "range": [
+        14,
+        16
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "01",
+      "range": [
+        22,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "evt",
+      "range": [
+        29,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 15
+        },
+        "end": {
+          "line": 2,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        37,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 23
+        },
+        "end": {
+          "line": 2,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "->>",
+      "range": [
+        43,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 29
+        },
+        "end": {
+          "line": 2,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "02",
+      "range": [
+        51,
+        53
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 37
+        },
+        "end": {
+          "line": 2,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[[",
+      "range": [
+        58,
+        60
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 44
+        },
+        "end": {
+          "line": 2,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "D",
+      "range": [
+        65,
+        66
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 51
+        },
+        "end": {
+          "line": 2,
+          "column": 52
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]]",
+      "range": [
+        71,
+        73
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 57
+        },
+        "end": {
+          "line": 2,
+          "column": 59
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "`",
+      "range": [
+        78,
+        79
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 64
+        },
+        "end": {
+          "line": 2,
+          "column": 65
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "json",
+      "range": [
+        84,
+        88
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 70
+        },
+        "end": {
+          "line": 2,
+          "column": 74
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "`",
+      "range": [
+        93,
+        94
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 79
+        },
+        "end": {
+          "line": 2,
+          "column": 80
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        99,
+        100
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 85
+        },
+        "end": {
+          "line": 2,
+          "column": 86
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " x ",
+      "range": [
+        100,
+        103
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 86
+        },
+        "end": {
+          "line": 2,
+          "column": 89
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        103,
+        104
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 89
+        },
+        "end": {
+          "line": 2,
+          "column": 90
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    105
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 0
+    }
+  }
+}

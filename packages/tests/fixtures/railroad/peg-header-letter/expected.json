@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The PEG header rejects a glued letter."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 1: Expecting token of type 'railroad-peg-beta' but found `railroad-peg-betax`.\nParse error on line 2, column 1: Expecting token of type '<-' but found `r`.\nParse error on line 2, column 3: Expecting token of type ';' but found `<-`."
+  }
+}

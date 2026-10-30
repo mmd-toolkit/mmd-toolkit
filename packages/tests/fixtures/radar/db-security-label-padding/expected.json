@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Which common fields undergo text replacement while padded axis and curve labels keep their text?"
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": true
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "&lt;b&gt;T&lt;/b&gt;",
+    "accTitle": "&lt;i&gt;A&lt;/i&gt;",
+    "accDescr": "&lt;u&gt;D&lt;/u&gt;",
+    "axes": [
+      {
+        "label": "  <b>Axis</b>  "
+      }
+    ],
+    "curves": [
+      {
+        "label": "  <i>Curve</i>  ",
+        "entries": [
+          1
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

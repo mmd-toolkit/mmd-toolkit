@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does note visibility have a range gate?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Note \"N\" visibility must be between 0-1 (decimal) or 0-100 (percentage). Received: 101"
+  }
+}

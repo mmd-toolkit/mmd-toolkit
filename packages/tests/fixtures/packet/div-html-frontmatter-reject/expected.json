@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: Cross-frontmatter quote conversion can reject a body accepted in the isolated reading."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 10: unexpected character: ->c<- at offset: 16, skipped 5 characters. "
+  }
+}

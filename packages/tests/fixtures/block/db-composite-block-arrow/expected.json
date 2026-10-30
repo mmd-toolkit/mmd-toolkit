@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, composite blocks: a block arrow as a composite: the type stays `composite`."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "G",
+          "label": "x",
+          "type": "composite",
+          "widthInColumns": 1,
+          "directions": [
+            "right"
+          ],
+          "children": [
+            {
+              "id": "A",
+              "label": "A",
+              "type": "na",
+              "widthInColumns": 1
+            }
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

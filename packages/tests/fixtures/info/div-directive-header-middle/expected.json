@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Global directive removal rejoins a split header."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "info",
+  "db": {},
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

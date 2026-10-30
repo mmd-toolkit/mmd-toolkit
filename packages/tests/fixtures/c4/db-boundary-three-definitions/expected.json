@@ -1,0 +1,107 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Repeated boundaries update in place, keep omitted tags and links and use the third declaration parent."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "A"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "b"
+      },
+      {
+        "alias": "d",
+        "label": {
+          "text": "D"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "c"
+      },
+      {
+        "alias": "e",
+        "label": {
+          "text": "E"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "b"
+      },
+      {
+        "alias": "f",
+        "label": {
+          "text": "F"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "b"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      },
+      {
+        "alias": "b",
+        "label": {
+          "text": "Third"
+        },
+        "type": {
+          "text": "system"
+        },
+        "tags": "tags",
+        "link": "link",
+        "parentBoundary": "c"
+      },
+      {
+        "alias": "c",
+        "label": {
+          "text": "Other"
+        },
+        "type": {
+          "text": "system"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

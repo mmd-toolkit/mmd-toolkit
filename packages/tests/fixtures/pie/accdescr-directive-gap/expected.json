@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty description before a directive remains empty."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      }
+    ]
+  }
+}

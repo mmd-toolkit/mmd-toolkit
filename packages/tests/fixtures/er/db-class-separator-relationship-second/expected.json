@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`:::` on the second entity of a relationship."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-C-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "C",
+        "classes": []
+      },
+      {
+        "id": "entity-D-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "D",
+        "classes": [
+          "d"
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-C-0",
+        "roleA": "r",
+        "entityB": "entity-D-1",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": []
+  }
+}

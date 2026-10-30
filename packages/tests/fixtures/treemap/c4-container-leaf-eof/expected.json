@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a C4Container EOF leaf comment change detection?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\ntreemap\"A\":1 %% C4C\n^"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "U+2028 in a quoted title is kept, and it is not trimmed."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A"
+        ],
+        "title": "x y",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

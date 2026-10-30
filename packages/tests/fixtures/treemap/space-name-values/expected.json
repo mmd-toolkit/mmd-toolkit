@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are whitespace characters preserved in both quoted names?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": " \tA﻿ 　 ",
+        "children": [
+          {
+            "name": " \tB﻿ 　 ",
+            "value": 1
+          }
+        ]
+      }
+    ],
+    "classDefs": []
+  }
+}

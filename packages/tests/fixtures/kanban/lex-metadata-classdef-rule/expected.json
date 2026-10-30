@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "classdef-rule inside metadata tests preprocessing before tokenization."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "aclassDef:#xyb",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "label": "aclassDef:#xyb"
+        }
+      }
+    ]
+  }
+}

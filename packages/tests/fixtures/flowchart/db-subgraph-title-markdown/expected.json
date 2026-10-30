@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The title is a markdown string, so the label type of the subgraph is markdown and its title is the content x."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A"
+        ],
+        "title": "x",
+        "classes": [],
+        "labelType": "markdown"
+      }
+    ],
+    "tooltips": []
+  }
+}

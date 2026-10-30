@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does a entity space semicolon tail affect this statement?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 10: unexpected character: ->;<- at offset: 23, skipped 1 characters. "
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The statement context, rule 12, and Other statements: `,` with whitespace around it in a `class` statement; accepted."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": [
+          "a"
+        ]
+      },
+      {
+        "id": "entity-B-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B",
+        "classes": [
+          "a"
+        ]
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

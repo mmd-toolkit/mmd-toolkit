@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, definitions of the same id: a shape for an id, a composite with it, and another shape."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "G",
+          "label": "y",
+          "type": "circle",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [
+      {
+        "id": "A",
+        "label": "A",
+        "type": "na",
+        "widthInColumns": 1
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

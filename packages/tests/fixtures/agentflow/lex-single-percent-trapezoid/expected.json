@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The generated trap TEXT rule loses its single-percent alternative, so an unquoted trap label containing one is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...low-beta TBA[/first%second/]\n----------------------^"
+  }
+}

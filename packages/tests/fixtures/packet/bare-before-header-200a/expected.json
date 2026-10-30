@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "U+200A after a passed bare line is not native whitespace."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: -> <- at offset: 3, skipped 1 characters. "
+  }
+}

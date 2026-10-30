@@ -1,0 +1,74 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/radar.md",
+    "line": 42
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "Restaurant Comparison",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "Food Quality"
+      },
+      {
+        "label": "Service"
+      },
+      {
+        "label": "Price"
+      },
+      {
+        "label": "Ambiance"
+      }
+    ],
+    "curves": [
+      {
+        "label": "Restaurant A",
+        "entries": [
+          4,
+          3,
+          2,
+          4
+        ]
+      },
+      {
+        "label": "Restaurant B",
+        "entries": [
+          3,
+          4,
+          3,
+          3
+        ]
+      },
+      {
+        "label": "Restaurant C",
+        "entries": [
+          2,
+          3,
+          4,
+          2
+        ]
+      },
+      {
+        "label": "Restaurant D",
+        "entries": [
+          2,
+          2,
+          4,
+          3
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": 5,
+      "min": 0,
+      "graticule": "polygon"
+    }
+  }
+}

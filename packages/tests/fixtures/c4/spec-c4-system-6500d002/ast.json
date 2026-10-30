@@ -1,0 +1,355 @@
+{
+  "type": "Root",
+  "diagramType": "c4",
+  "body": {
+    "type": "C4Diagram",
+    "kind": "context",
+    "beforeBody": [],
+    "body": [
+      {
+        "type": "C4TitleStatement",
+        "value": {
+          "type": "C4Literal",
+          "value": "System Context diagram for Internet Banking System",
+          "range": [
+            16,
+            66
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 6
+            },
+            "end": {
+              "line": 2,
+              "column": 56
+            }
+          }
+        },
+        "range": [
+          10,
+          66
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 56
+          }
+        }
+      },
+      {
+        "type": "C4ElementStatement",
+        "keyword": "SystemQueue",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "SystemAA",
+            "range": [
+              79,
+              87
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 12
+              },
+              "end": {
+                "line": 3,
+                "column": 20
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Internet Banking System",
+            "raw": "\"Internet Banking System\"",
+            "closed": true,
+            "range": [
+              89,
+              114
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 22
+              },
+              "end": {
+                "line": 3,
+                "column": 47
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Allows customers to view information about their bank accounts, and make payments.",
+            "raw": "\"Allows customers to view information about their bank accounts, and make payments.\"",
+            "closed": true,
+            "range": [
+              116,
+              200
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 49
+              },
+              "end": {
+                "line": 3,
+                "column": 133
+              }
+            }
+          }
+        ],
+        "range": [
+          67,
+          201
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 134
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      201
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 134
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "C4Context",
+      "range": [
+        0,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        10,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "System Context diagram for Internet Banking System",
+      "range": [
+        16,
+        66
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 56
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "SystemQueue",
+      "range": [
+        67,
+        78
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        78,
+        79
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 11
+        },
+        "end": {
+          "line": 3,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "SystemAA",
+      "range": [
+        79,
+        87
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 12
+        },
+        "end": {
+          "line": 3,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        87,
+        88
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 20
+        },
+        "end": {
+          "line": 3,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Internet Banking System\"",
+      "range": [
+        89,
+        114
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 22
+        },
+        "end": {
+          "line": 3,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        114,
+        115
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 47
+        },
+        "end": {
+          "line": 3,
+          "column": 48
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Allows customers to view information about their bank accounts, and make payments.\"",
+      "range": [
+        116,
+        200
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 49
+        },
+        "end": {
+          "line": 3,
+          "column": 133
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        200,
+        201
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 133
+        },
+        "end": {
+          "line": 3,
+          "column": 134
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    201
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 134
+    }
+  }
+}

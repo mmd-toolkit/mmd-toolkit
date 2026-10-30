@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A valid Db text setting without the rejected frontmatter is the opaque reference control."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "description": "a<b>=c",
+        "children": []
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "htmlLabels": false
+    }
+  }
+}

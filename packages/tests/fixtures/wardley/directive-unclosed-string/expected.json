@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How far does unclosed directive removal extend inside a string?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 6: unexpected character: ->\"<- at offset: 18, skipped 1 characters. Parse error on line 2, column 7: Expecting token of type 'STRING' but found `A`.\nParse error on line 2, column 8: Expecting: one of these possible Token sequences:\n  1. [STRING]\n  2. [ID]\n  3. [NAME_WITH_SPACES]\nbut found: '['"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Backslash-escaped attribute quotes interact with preprocessing."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "<b class=\"x\">A</b>",
+        "value": 1
+      }
+    ]
+  }
+}

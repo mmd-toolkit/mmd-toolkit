@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The statement context: a direction line inside a body takes the field, which is then rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...ramrequirement r {text: direction TB}\n---------------------^\nExpecting 'NEWLINE', 'ID', 'TEXT', 'RISK', 'VERIFYMTHD', 'STRUCT_STOP', got 'direction_tb'"
+  }
+}

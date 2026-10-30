@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, style line: a `;` after the `#` of a line that has `style:` and a `#` is dropped from the source id."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "style:#xy",
+      "b"
+    ],
+    "links": [
+      {
+        "source": "style:#xy",
+        "target": "b",
+        "value": 1
+      }
+    ]
+  }
+}

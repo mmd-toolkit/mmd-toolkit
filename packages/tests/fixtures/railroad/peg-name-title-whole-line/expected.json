@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "TITLE consumes the entire apparent PEG rule, leaving no rules."
+  },
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": []
+  }
+}

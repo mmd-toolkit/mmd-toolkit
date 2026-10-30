@@ -1,0 +1,343 @@
+{
+  "type": "Root",
+  "diagramType": "railroadEbnf",
+  "body": {
+    "type": "RailroadDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "RailroadRule",
+        "name": {
+          "type": "Identifier",
+          "name": "r",
+          "range": [
+            19,
+            20
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 1
+            }
+          }
+        },
+        "textBeforeOperator": [],
+        "textBeforeDefinition": [],
+        "definition": {
+          "type": "RailroadSequenceExpression",
+          "elements": [
+            {
+              "type": "RailroadExpressionMember",
+              "textBefore": [],
+              "expression": {
+                "type": "StringLiteral",
+                "value": "a\\nb\\rc\\td\\q\\\\",
+                "raw": "\"a\\nb\\rc\\td\\q\\\\\"",
+                "closed": true,
+                "range": [
+                  23,
+                  39
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 20
+                  }
+                }
+              },
+              "textAfter": [],
+              "range": [
+                23,
+                39
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 4
+                },
+                "end": {
+                  "line": 2,
+                  "column": 20
+                }
+              }
+            },
+            {
+              "type": "RailroadExpressionMember",
+              "textBefore": [],
+              "expression": {
+                "type": "StringLiteral",
+                "value": "a\\'b",
+                "raw": "'a\\'b'",
+                "closed": true,
+                "range": [
+                  40,
+                  46
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 21
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 27
+                  }
+                }
+              },
+              "textAfter": [],
+              "range": [
+                40,
+                46
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 21
+                },
+                "end": {
+                  "line": 2,
+                  "column": 27
+                }
+              }
+            },
+            {
+              "type": "RailroadExpressionMember",
+              "textBefore": [],
+              "expression": {
+                "type": "StringLiteral",
+                "value": "a\\\"b",
+                "raw": "\"a\\\"b\"",
+                "closed": true,
+                "range": [
+                  47,
+                  53
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 28
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 34
+                  }
+                }
+              },
+              "textAfter": [],
+              "range": [
+                47,
+                53
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 28
+                },
+                "end": {
+                  "line": 2,
+                  "column": 34
+                }
+              }
+            }
+          ],
+          "range": [
+            23,
+            53
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 4
+            },
+            "end": {
+              "line": 2,
+              "column": 34
+            }
+          }
+        },
+        "textBeforeTerminator": [],
+        "range": [
+          19,
+          54
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 35
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      54
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 35
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "railroad-ebnf-beta",
+      "range": [
+        0,
+        18
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "r",
+      "range": [
+        19,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        21,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"a\\nb\\rc\\td\\q\\\\\"",
+      "range": [
+        23,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "'a\\'b'",
+      "range": [
+        40,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 21
+        },
+        "end": {
+          "line": 2,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"a\\\"b\"",
+      "range": [
+        47,
+        53
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 28
+        },
+        "end": {
+          "line": 2,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ";",
+      "range": [
+        53,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 34
+        },
+        "end": {
+          "line": 2,
+          "column": 35
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    54
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 35
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "States whose id the replacement does not change, with descriptions under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): the first description replaces the id as the label."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "x",
+        "description": [],
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "shape": "rectWithTitle",
+        "label": "y",
+        "description": [
+          "z"
+        ],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Known divergences, name-start-reads-unit: a generic type may start with a keyword; here the type is `note x`. mermaid.js reads the keyword `note` and rejects the input."
+  },
+  "knownDivergence": "name-start-reads-unit",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...lassDiagramclass A~note x~\n----------------------^\nExpecting 'NEWLINE', 'EOF', 'SQS', 'STR', 'DOT', 'GENERICTYPE', 'LABEL', 'STRUCT_START', 'STRUCT_STOP', 'STYLE_SEPARATOR', 'ANNOTATION_START', 'ANNOTATION_END', 'ALPHA', 'AGGREGATION', 'EXTENSION', 'COMPOSITION', 'DEPENDENCY', 'LOLLIPOP', 'LINE', 'DOTTED_LINE', 'CALLBACK_NAME', 'HREF', 'NUM', 'MINUS', 'UNICODE_TEXT', 'BQUOTE_STR', got 'NOTE'"
+  }
+}

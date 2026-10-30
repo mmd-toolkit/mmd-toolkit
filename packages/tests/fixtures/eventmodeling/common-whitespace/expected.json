@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "EM conversion is identity; common setters alone adjust accessibility whitespace."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "accTitle:  A\t B  ",
+    "accDescr": "\taccDescr {\nD\t E  \n}",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

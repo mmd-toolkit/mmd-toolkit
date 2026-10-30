@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "EOF satisfies TITLE EOL after hidden consumption."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  }
+}

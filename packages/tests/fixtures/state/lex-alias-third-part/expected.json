@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The alias id context: the text from a second : is not read."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rectWithTitle",
+        "label": "d",
+        "description": [
+          " x "
+        ],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

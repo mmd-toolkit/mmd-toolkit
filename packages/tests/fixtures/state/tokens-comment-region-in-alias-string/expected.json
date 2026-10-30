@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md, Comment: a comment region inside the string of an alias definition cuts the String token into two StringFragment tokens."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "a\n  b",
+        "description": [],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

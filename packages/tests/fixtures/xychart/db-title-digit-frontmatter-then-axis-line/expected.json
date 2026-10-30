@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md The axis context: a frontmatter, then `x-axis A` and a title with a digit; accepted by both."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "Q1",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "A",
+      "categories": []
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  },
+  "embedded": {
+    "title": "x"
+  }
+}

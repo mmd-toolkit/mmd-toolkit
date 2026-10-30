@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md G05 (Grammar and acceptance): Header followed by whitespace at end."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": []
+  }
+}

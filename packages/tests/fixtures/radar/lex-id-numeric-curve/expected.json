@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "NUMBER priority also prevents a digit-leading curve ID."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 3, column 7: Expecting token of type 'ID' but found `1`."
+  }
+}

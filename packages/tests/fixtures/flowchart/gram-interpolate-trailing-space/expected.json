@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Grammar, style statements: a space after the interpolate name must be followed by styles."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...0 interpolate basis \n-----------------------^\nExpecting 'SPACE', 'COLON', 'STYLE', 'NUM', 'NODE_STRING', 'UNIT', 'BRKT', 'PCT', got 'NEWLINE'"
+  }
+}

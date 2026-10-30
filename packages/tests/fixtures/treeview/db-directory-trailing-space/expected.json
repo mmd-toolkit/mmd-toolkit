@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Directory detection follows conversion: bare trailing whitespace is trimmed but quoted trailing whitespace remains."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "dir",
+        "nodeType": "directory",
+        "children": []
+      },
+      {
+        "name": "dir/ ",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "dir",
+        "nodeType": "directory",
+        "children": []
+      }
+    ]
+  }
+}

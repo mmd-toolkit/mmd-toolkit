@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/xychart.html",
+    "line": 52
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 4
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": -0.34,
+      "max": 2.4
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "1",
+            1.3
+          ],
+          [
+            "2",
+            0.6
+          ],
+          [
+            "3",
+            2.4
+          ],
+          [
+            "4",
+            -0.34
+          ]
+        ]
+      }
+    ]
+  }
+}

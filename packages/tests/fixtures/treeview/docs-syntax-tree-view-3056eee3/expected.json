@@ -1,0 +1,65 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/treeView.md",
+    "line": 63
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "packages",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "mermaid",
+            "nodeType": "directory",
+            "children": [
+              {
+                "name": "src",
+                "nodeType": "directory",
+                "children": [
+                  {
+                    "name": "parser.ts",
+                    "nodeType": "file",
+                    "children": []
+                  },
+                  {
+                    "name": "renderer.ts",
+                    "nodeType": "file",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "name": "package.json",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "parser",
+            "nodeType": "directory",
+            "children": [
+              {
+                "name": "src",
+                "nodeType": "directory",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "README.md",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does nonempty native metadata reject a JSON target?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Metadata property 'business' is invalid for json 'J' at line 3, column 4 [26,34)"
+  }
+}

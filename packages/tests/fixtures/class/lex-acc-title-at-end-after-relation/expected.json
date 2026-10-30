@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Lexical structure: with the header, an empty title at the end of the text is rejected by both."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 5:\n...- Duck  accTitle:\n--------------------^\nExpecting 'EOF', got '1'"
+  }
+}

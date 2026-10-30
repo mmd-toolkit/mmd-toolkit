@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check open-directive immediately after acctitle before a following node."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "A",
+    "accDescr": "",
+    "nodes": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md: Greedy direction outside a string leaves whole prefix and suffix."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "F",
+        "nodes": [],
+        "title": "",
+        "classes": [],
+        "dir": "LR",
+        "labelType": "text",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "PEG native YAML accepts closing space."
+  },
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

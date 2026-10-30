@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, styles: the styles must be on the line of the id: `fill:#f00` on the next line is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 4. Unrecognized text.\n...a  A  style Afill:#f00\n--------------------^"
+  }
+}

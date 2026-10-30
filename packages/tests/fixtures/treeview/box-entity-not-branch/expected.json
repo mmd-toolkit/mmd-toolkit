@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an encoded numeric reference stay distinct from a branch while literal dashes select box mode?"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "ﬂ°°9500¶ß── child",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

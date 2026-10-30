@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Strings: a string may span lines."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "text": "a\nb"
+      }
+    ],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

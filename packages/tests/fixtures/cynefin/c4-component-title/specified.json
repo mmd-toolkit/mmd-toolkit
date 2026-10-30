@@ -1,0 +1,11 @@
+{
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "C4Component",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  }
+}

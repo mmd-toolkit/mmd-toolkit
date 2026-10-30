@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Lexical structure, The classDef, class, and style contexts: after `,` and spaces, a word is another id, so `class A, c` applies the empty css class to A and c."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [
+          ""
+        ],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

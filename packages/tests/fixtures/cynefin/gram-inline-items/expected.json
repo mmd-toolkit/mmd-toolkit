@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Domains and items need no line separators."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "A"
+          },
+          {
+            "label": "B"
+          }
+        ]
+      },
+      {
+        "name": "clear",
+        "items": [
+          {
+            "label": "C"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

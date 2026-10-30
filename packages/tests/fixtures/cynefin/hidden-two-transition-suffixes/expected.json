@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Hidden forms: space-separated native directives are two independent suffix nodes."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear"
+      }
+    ]
+  }
+}

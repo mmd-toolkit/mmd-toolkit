@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does generated endpoint with classes require declaration syntax too?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Relationship endpoint 'Display_name' uses ::: without declaring the node at line 2, column 2 [14,26)"
+  }
+}

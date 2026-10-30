@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Authored components: global directives can split native directive opening and closing punctuation."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "A"
+          },
+          {
+            "label": "B"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

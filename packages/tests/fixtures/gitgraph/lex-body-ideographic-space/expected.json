@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "U+3000 is not a branch argument separator."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 7: unexpected character: ->　<- at offset: 15, skipped 1 characters. "
+  }
+}

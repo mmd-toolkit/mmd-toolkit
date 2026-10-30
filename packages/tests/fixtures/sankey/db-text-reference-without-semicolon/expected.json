@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, fields: a `#` and digits with no `;` are no character reference and stay as written."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a#35",
+      "b"
+    ],
+    "links": [
+      {
+        "source": "a#35",
+        "target": "b",
+        "value": 1
+      }
+    ]
+  }
+}

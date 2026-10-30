@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Accessibility values and Db normalization: after the separator `;`, a statement starts, so the empty description block is a description block statement without text, which changes nothing; the description stays `x`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "x",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A trailing SPACE after a bare callback requires another click argument."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...eta TBAclick A go ;B\n---------------------^\nExpecting 'STR', got 'SEMI'"
+  }
+}

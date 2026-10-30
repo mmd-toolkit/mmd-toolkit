@@ -1,0 +1,103 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-tool-validators.spec.ts",
+    "line": 81,
+    "test": "agentflow shape-based tool model > tool recognition by shape > `getTools()` returns all tool-shaped vertices"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a",
+        "type": "subroutine",
+        "props": {},
+        "metadata": {
+          "shape": "subroutine"
+        }
+      },
+      {
+        "id": "b",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "b",
+        "type": "subroutine",
+        "props": {},
+        "metadata": {
+          "shape": "subroutine"
+        }
+      },
+      {
+        "id": "c",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "c",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "d",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "d",
+        "type": "framed-rectangle",
+        "props": {},
+        "metadata": {
+          "shape": "framed-rectangle"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "a",
+        "set": {
+          "type": "subroutine",
+          "metadata": {
+            "shape": "subroutine"
+          }
+        }
+      },
+      {
+        "id": "b",
+        "set": {
+          "type": "subroutine",
+          "metadata": {
+            "shape": "subroutine"
+          }
+        }
+      },
+      {
+        "id": "d",
+        "set": {
+          "type": "framed-rectangle",
+          "metadata": {
+            "shape": "framed-rectangle"
+          }
+        }
+      }
+    ]
+  }
+}

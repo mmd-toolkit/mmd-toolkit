@@ -1,0 +1,398 @@
+{
+  "type": "Root",
+  "diagramType": "journey",
+  "body": {
+    "type": "JourneyDiagram",
+    "body": [
+      {
+        "type": "JourneyAccDescrBlockStatement",
+        "value": {
+          "type": "JourneyLiteral",
+          "value": "A user journey for\n        family shopping",
+          "range": [
+            27,
+            69
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 8
+            },
+            "end": {
+              "line": 4,
+              "column": 23
+            }
+          }
+        },
+        "range": [
+          8,
+          77
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 7
+          }
+        }
+      },
+      {
+        "type": "JourneyTitleStatement",
+        "value": {
+          "type": "JourneyLiteral",
+          "value": "Adding journey diagram functionality to mermaid",
+          "range": [
+            83,
+            130
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 13
+            },
+            "end": {
+              "line": 5,
+              "column": 60
+            }
+          }
+        },
+        "range": [
+          77,
+          130
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 7
+          },
+          "end": {
+            "line": 5,
+            "column": 60
+          }
+        }
+      },
+      {
+        "type": "JourneyAccTitleStatement",
+        "value": {
+          "type": "JourneyLiteral",
+          "value": "Adding acc journey diagram functionality to mermaid",
+          "range": [
+            141,
+            192
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 10
+            },
+            "end": {
+              "line": 6,
+              "column": 61
+            }
+          }
+        },
+        "range": [
+          131,
+          192
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 61
+          }
+        }
+      },
+      {
+        "type": "JourneySectionStatement",
+        "name": {
+          "type": "JourneyLiteral",
+          "value": "Order from website",
+          "range": [
+            201,
+            219
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 8
+            },
+            "end": {
+              "line": 7,
+              "column": 26
+            }
+          }
+        },
+        "range": [
+          193,
+          219
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 26
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      219
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 7,
+        "column": 26
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "journey",
+      "range": [
+        0,
+        7
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accDescr",
+      "range": [
+        8,
+        16
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        17,
+        18
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 9
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "A user journey for\n        family shopping",
+      "range": [
+        27,
+        69
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 4,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        76,
+        77
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 6
+        },
+        "end": {
+          "line": 5,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        77,
+        82
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 7
+        },
+        "end": {
+          "line": 5,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Adding journey diagram functionality to mermaid",
+      "range": [
+        83,
+        130
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 13
+        },
+        "end": {
+          "line": 5,
+          "column": 60
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accTitle",
+      "range": [
+        131,
+        139
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        139,
+        140
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 8
+        },
+        "end": {
+          "line": 6,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Adding acc journey diagram functionality to mermaid",
+      "range": [
+        141,
+        192
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 10
+        },
+        "end": {
+          "line": 6,
+          "column": 61
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "section",
+      "range": [
+        193,
+        200
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Order from website",
+      "range": [
+        201,
+        219
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 8
+        },
+        "end": {
+          "line": 7,
+          "column": 26
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    219
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 7,
+      "column": 26
+    }
+  }
+}

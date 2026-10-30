@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/er/parser/erDiagram.spec.js",
+    "line": 1020,
+    "test": "when parsing ER diagram it... > should be possible to define a class with styles"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "myClass",
+        "styles": [
+          "fill:#f9f",
+          "stroke:red",
+          "color:pink"
+        ]
+      }
+    ],
+    "subGraphs": []
+  }
+}

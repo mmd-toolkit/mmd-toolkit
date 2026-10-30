@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, plot: `1.5.2` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...chart-beta bar [1.5.2]\n----------------------^\nExpecting 'SQUARE_BRACES_END', 'COMMA', 'STR', got 'NUMBER_WITH_DECIMAL'"
+  }
+}

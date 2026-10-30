@@ -1,0 +1,84 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/wardley/wardleyParser.spec.ts",
+    "line": 193,
+    "test": "wardley parser > handles quoted identifiers, inline labels, and converts coordinates to percentages"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Coordinate Handling",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "Mobile App",
+        "label": "Mobile App",
+        "x": 40,
+        "y": 20,
+        "className": "component",
+        "inertia": true,
+        "sourceStrategy": "build"
+      },
+      {
+        "id": "API",
+        "label": "API",
+        "x": 50,
+        "y": 30,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [
+      {
+        "source": "Mobile App",
+        "target": "API",
+        "dashed": false,
+        "label": "constraint",
+        "flow": "bidirectional"
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [
+      {
+        "number": 1,
+        "coordinates": [
+          {
+            "x": 65,
+            "y": 60
+          }
+        ],
+        "text": "Critical component"
+      }
+    ],
+    "notes": [
+      {
+        "text": "Check dependencies",
+        "x": 45,
+        "y": 25
+      }
+    ],
+    "accelerators": [
+      {
+        "name": "Cloud Native",
+        "x": 85,
+        "y": 20
+      }
+    ],
+    "deaccelerators": [
+      {
+        "name": "Legacy Data",
+        "x": 35,
+        "y": 40
+      }
+    ],
+    "annotationsBox": {
+      "x": 90,
+      "y": 10
+    },
+    "axes": {}
+  }
+}

@@ -1,0 +1,212 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does the summary preserve every independently authored drawing input and exclude derived records?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "RL",
+    "title": "",
+    "accTitle": "Actors and orders",
+    "accDescr": "First line\nSecond line",
+    "actors": [
+      {
+        "id": "Clerk",
+        "label": "**Clerk**",
+        "labelType": "markdown",
+        "type": "hollow",
+        "business": true,
+        "stereotype": "Employee",
+        "classes": [
+          "staff"
+        ],
+        "styles": []
+      },
+      {
+        "id": "Icon",
+        "label": "Icon",
+        "labelType": "text",
+        "type": "icon",
+        "icon": "fa:user",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "Checkout",
+        "label": "Checkout",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": true,
+        "stereotype": "Core",
+        "parentId": "Shop",
+        "classes": [
+          "hot"
+        ],
+        "styles": []
+      },
+      {
+        "id": "Report",
+        "label": "Report",
+        "labelType": "text",
+        "shape": "rect",
+        "business": false,
+        "parentId": "Shop",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [
+      {
+        "id": "Shop",
+        "label": "Order system",
+        "labelType": "text",
+        "type": "package",
+        "classes": [
+          "group",
+          "data"
+        ],
+        "styles": [
+          "stroke:purple"
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "id": "opens",
+        "source": "Clerk",
+        "target": "Checkout",
+        "type": "association",
+        "arrowType": 0,
+        "label": "orders",
+        "labelType": "text",
+        "minlen": 2,
+        "classes": [],
+        "styles": [
+          "stroke:red"
+        ],
+        "animate": true,
+        "animation": "slow"
+      },
+      {
+        "id": "includes",
+        "source": "Checkout",
+        "target": "Report",
+        "type": "include",
+        "arrowType": 0,
+        "label": "include",
+        "labelType": "text",
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "Checkout",
+        "target": "Payload",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [
+      {
+        "target": "Checkout",
+        "label": "Remember",
+        "labelType": "text"
+      }
+    ],
+    "jsonNodes": [
+      {
+        "id": "Payload",
+        "value": {
+          "1": "first",
+          "2": "second",
+          "a/b": {
+            "~key": true
+          },
+          "items": [
+            {},
+            null
+          ]
+        },
+        "propertyOrder": {
+          "": [
+            "2",
+            "1",
+            "a/b",
+            "items"
+          ],
+          "/a~1b": [
+            "~key"
+          ],
+          "/items/0": []
+        },
+        "classes": [
+          "data",
+          "group"
+        ],
+        "styles": []
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "default",
+        "styles": [
+          "fill:white"
+        ]
+      },
+      {
+        "id": "staff",
+        "styles": [
+          "stroke:#123"
+        ]
+      },
+      {
+        "id": "hot",
+        "styles": [
+          "stroke:#123"
+        ]
+      }
+    ]
+  },
+  "embedded": {
+    "title": "Ordering",
+    "dataBlockEffects": [
+      {
+        "id": "Payload",
+        "set": {
+          "value": {
+            "1": "first",
+            "2": "second",
+            "a/b": {
+              "~key": true
+            },
+            "items": [
+              {},
+              null
+            ]
+          },
+          "propertyOrder": {
+            "": [
+              "2",
+              "1",
+              "a/b",
+              "items"
+            ],
+            "/a~1b": [
+              "~key"
+            ],
+            "/items/0": []
+          }
+        }
+      }
+    ]
+  }
+}

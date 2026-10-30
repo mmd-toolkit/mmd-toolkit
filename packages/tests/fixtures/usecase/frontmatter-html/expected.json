@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does shared preprocessing treat HTML inside frontmatter?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [
+      {
+        "id": "A",
+        "label": "<i>Label</i>",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  },
+  "embedded": {
+    "title": "<b>Title</b>"
+  }
+}

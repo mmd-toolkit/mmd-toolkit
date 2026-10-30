@@ -1,0 +1,65 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, settings: the settings of the chart other than the orientation, the theme, and the palette change nothing in the Db."
+  },
+  "config": {
+    "theme": "dark",
+    "xyChart": {
+      "width": 100,
+      "height": 50,
+      "showDataLabel": true,
+      "showTitle": false,
+      "titlePadding": 5,
+      "plotReservedSpacePercent": 20,
+      "xAxis": {
+        "showLabel": false,
+        "showTitle": false
+      },
+      "yAxis": {
+        "showTick": false
+      }
+    },
+    "themeVariables": {
+      "xyChart": {
+        "plotColorPalette": "#111, #222"
+      }
+    }
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 2
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 2
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "1",
+            1
+          ],
+          [
+            "2",
+            2
+          ]
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md The statement context: rule 7: whitespace before and after the colon."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "T",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

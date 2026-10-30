@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Detection: A passed bare line can carry an LS-only line between retained forms as trivia. Accepted by Mermaid."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": []
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

@@ -1,0 +1,15 @@
+railroad-beta
+  r = oneOrMore %%{!open}%%
+( %%{!element}%%
+zeroOrMore %%{!nested open}%%
+( %%{!nested element}%%
+choice %%{!choice open}%%
+(special %%{!special open}%%
+( %%{!text}%%
+"owned note" %%{!special close}%%
+), nonterminal %%{!reference open}%%
+( %%{!name}%%
+"ref" %%{!reference close}%%
+)) %%{!nested close}%%
+) %%{!close}%%
+);

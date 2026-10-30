@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does common trimming remove all whitespace at text ends?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "T",
+    "accTitle": "A",
+    "accDescr": "D",
+    "nodes": [],
+    "classDefs": []
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Subgraphs: the id of a subgraph as an entity before it; accepted."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-S-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "S",
+        "classes": []
+      },
+      {
+        "id": "entity-A-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A"
+        ],
+        "title": "S",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

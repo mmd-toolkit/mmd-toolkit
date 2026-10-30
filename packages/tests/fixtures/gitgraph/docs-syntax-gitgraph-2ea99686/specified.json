@@ -1,0 +1,7 @@
+{
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Trying to checkout branch which is not yet created. (Help try using \"branch MetroLine1\")"
+  }
+}

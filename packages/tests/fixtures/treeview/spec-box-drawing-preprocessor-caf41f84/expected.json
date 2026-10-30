@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/treeView/boxDrawingPreprocessor.spec.ts",
+    "line": 421,
+    "test": "boxDrawingPreprocessor > preprocessBoxDrawing > error cases > should include line number in empty-content error"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Line 4: Empty node — expected a filename or directory name after the box-drawing prefix"
+  }
+}

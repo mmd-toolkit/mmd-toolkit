@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The first closing brace ends the block."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 16: unexpected character: ->B<- at offset: 20, skipped 1 characters.\nLexer error on line 2, column 18: unexpected character: ->}<- at offset: 22, skipped 1 characters. "
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A doubled semicolon is one longer comment rather than two terminators."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line ?, column ?: Expecting token of type ';' but found ``."
+  }
+}

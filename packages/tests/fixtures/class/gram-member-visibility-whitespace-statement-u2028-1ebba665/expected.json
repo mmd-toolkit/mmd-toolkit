@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A class member written as `A : ` with a visibility mark and whitespace alone, with U+2028 in the text. mermaid.js reads the classes \"A\" with the members (visibility \"+\", text \"\")."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": ""
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

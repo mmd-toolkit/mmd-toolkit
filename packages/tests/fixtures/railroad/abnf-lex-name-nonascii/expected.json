@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: ABNF units: a name permits only ASCII letters, digits and hyphens."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 2: unexpected character: ->é<- at offset: 20, skipped 1 characters. "
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/venn.md",
+    "line": 77
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10,
+        "label": "Alpha"
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "size": 10,
+        "label": "Beta"
+      },
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "size": 2.5,
+        "label": "AB"
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

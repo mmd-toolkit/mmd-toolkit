@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: Repeat bounds and the star are separate authored components for common directive boundaries."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "repetition",
+          "element": {
+            "type": "terminal",
+            "value": "a"
+          },
+          "min": 2,
+          "max": 4
+        }
+      }
+    ]
+  }
+}

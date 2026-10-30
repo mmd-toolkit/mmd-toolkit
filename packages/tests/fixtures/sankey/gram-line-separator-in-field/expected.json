@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, fields: a U+2028 inside a field is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nsankeya b,c,1\n-------^\nExpecting 'NEWLINE', 'EOF', 'COMMA', got 'NON_ESCAPED_TEXT'"
+  }
+}

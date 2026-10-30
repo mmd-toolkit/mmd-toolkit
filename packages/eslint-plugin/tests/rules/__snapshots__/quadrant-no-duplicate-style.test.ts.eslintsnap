@@ -1,0 +1,228 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: quadrant-no-duplicate-style >> invalid >>> docs/rules/quadrant-no-duplicate-style.md incorrect 1
+Filename: quadrant-no-duplicate-style-incorrect-1.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   Campaign A: [0.3, 0.6] radius: 5, color: #f00, radius: 9
+    |                                                  ^~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js replaces the earlier `radius` with the value of this style.
+    Suggestions:
+      - Remove this style.
+        Output:
+          1 | quadrantChart
+          2 |   Campaign A: [0.3, 0.6] radius: 5, color: #f00
+          3 |
+      - Remove the earlier style.
+        Output:
+          1 | quadrantChart
+          2 |   Campaign A: [0.3, 0.6]  color: #f00, radius: 9
+          3 |
+---
+
+
+Test: quadrant-no-duplicate-style >> invalid >>> invalid/quadrant/classdef-radius-twice
+Filename: tests/fixtures/rules/quadrant-no-duplicate-style/invalid/quadrant/classdef-radius-twice-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   classDef c radius: 5, radius: 9
+    |                         ^~~~~~~~~ [1]
+  3 |   A:::c: [0.3, 0.6]
+  4 |
+
+[1] mermaid.js replaces the earlier `radius` with the value of this style.
+    Suggestions:
+      - Remove this style.
+        Output:
+          1 | quadrantChart
+          2 |   classDef c radius: 5
+          3 |   A:::c: [0.3, 0.6]
+          4 |
+      - Remove the earlier style.
+        Output:
+          1 | quadrantChart
+          2 |   classDef c  radius: 9
+          3 |   A:::c: [0.3, 0.6]
+          4 |
+---
+
+
+Test: quadrant-no-duplicate-style >> invalid >>> invalid/quadrant/point-color-twice-other-between
+Filename: tests/fixtures/rules/quadrant-no-duplicate-style/invalid/quadrant/point-color-twice-other-between-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   A: [0.3, 0.6] color: #f00, radius: 5, color: #00f
+    |                                         ^~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js replaces the earlier `color` with the value of this style.
+    Suggestions:
+      - Remove this style.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6] color: #f00, radius: 5
+          3 |
+      - Remove the earlier style.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6]  radius: 5, color: #00f
+          3 |
+---
+
+
+Test: quadrant-no-duplicate-style >> invalid >>> invalid/quadrant/point-radius-back-to-first
+Filename: tests/fixtures/rules/quadrant-no-duplicate-style/invalid/quadrant/point-radius-back-to-first-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   A: [0.3, 0.6] radius: 5, radius: 9, radius: 5
+    |                            ^~~~~~~~~  ^~~~~~~~~
+    |                            [1]        [2]
+  3 |
+
+[1] mermaid.js replaces the earlier `radius` with the value of this style.
+    Suggestions:
+      - Remove this style.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6] radius: 5, radius: 5
+          3 |
+      - Remove the earlier style.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6]  radius: 9, radius: 5
+          3 |
+[2] mermaid.js replaces the earlier `radius` with the value of this style.
+    Suggestions:
+      - Remove this style.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6] radius: 5, radius: 9
+          3 |
+      - Remove the earlier style.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6] radius: 5, radius: 5
+          3 |
+---
+
+
+Test: quadrant-no-duplicate-style >> invalid >>> invalid/quadrant/point-radius-space-before-colon
+Filename: tests/fixtures/rules/quadrant-no-duplicate-style/invalid/quadrant/point-radius-space-before-colon-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   A: [0.3, 0.6] radius : 5, radius: 9
+    |                             ^~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js replaces the earlier `radius` with the value of this style.
+    Suggestions:
+      - Remove this style.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6] radius : 5
+          3 |
+      - Remove the earlier style.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6]  radius: 9
+          3 |
+---
+
+
+Test: quadrant-no-duplicate-style >> invalid >>> invalid/quadrant/point-radius-twice
+Filename: tests/fixtures/rules/quadrant-no-duplicate-style/invalid/quadrant/point-radius-twice-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   A: [0.3, 0.6] radius: 5, radius: 9
+    |                            ^~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js replaces the earlier `radius` with the value of this style.
+    Suggestions:
+      - Remove this style.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6] radius: 5
+          3 |
+      - Remove the earlier style.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6]  radius: 9
+          3 |
+---
+
+
+Test: quadrant-no-duplicate-style >> invalid >>> invalid/quadrant/point-stroke-color-written-differently
+Filename: tests/fixtures/rules/quadrant-no-duplicate-style/invalid/quadrant/point-stroke-color-written-differently-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   A: [0.3, 0.6] stroke-color: #f00, stroke-color: f00
+    |                                     ^~~~~~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js replaces the earlier `stroke-color` with the value of this style.
+    Suggestions:
+      - Remove this style.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6] stroke-color: #f00
+          3 |
+      - Remove the earlier style.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6]  stroke-color: f00
+          3 |
+---
+
+
+Test: quadrant-no-duplicate-style >> invalid >>> invalid/quadrant/point-stroke-width-twice
+Filename: tests/fixtures/rules/quadrant-no-duplicate-style/invalid/quadrant/point-stroke-width-twice-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   A: [0.3, 0.6] stroke-width: 1px, stroke-width: 2px
+    |                                    ^~~~~~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js replaces the earlier `stroke-width` with the value of this style.
+    Suggestions:
+      - Remove this style.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6] stroke-width: 1px
+          3 |
+      - Remove the earlier style.
+        Output:
+          1 | quadrantChart
+          2 |   A: [0.3, 0.6]  stroke-width: 2px
+          3 |
+---
+
+
+Test: quadrant-no-duplicate-style >> invalid >>> invalid/quadrant/style-equal-predecessor
+Filename: tests/fixtures/rules/quadrant-no-duplicate-style/invalid/quadrant/style-equal-predecessor-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 | A: [0.3, 0.6] radius: 5, radius: 5, radius: 9
+    |                                     ^~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js replaces the earlier `radius` with the value of this style.
+    Suggestions:
+      - Remove this style.
+        Output:
+          1 | quadrantChart
+          2 | A: [0.3, 0.6] radius: 5, radius: 5
+          3 |
+---

@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md The statement context, rule 13, and ast/sequence.md SequenceTitleStatement: after `title` and a line break, the title is the next line with its indentation, `  A->>B: x`, and there is no message."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "  A->>B: x",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

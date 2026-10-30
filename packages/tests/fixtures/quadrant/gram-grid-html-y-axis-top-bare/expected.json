@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, tags: a tag with a quoted attribute in a bare top text of the y axis."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...tCharty-axis B --> <a b='c'>d\n----------------------^"
+  }
+}

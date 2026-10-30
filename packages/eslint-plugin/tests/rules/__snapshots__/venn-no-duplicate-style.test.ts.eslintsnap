@@ -1,0 +1,720 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: venn-no-duplicate-style >> invalid >>> docs/rules/venn-no-duplicate-style.md incorrect 1
+Filename: venn-no-duplicate-style-incorrect-1.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill:red, fill:blue
+    |                   ^~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:red
+          4 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A  fill:blue
+          4 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> docs/rules/venn-no-duplicate-style.md incorrect 2
+Filename: venn-no-duplicate-style-incorrect-2.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill:red, stroke:black
+  4 | style A fill:blue
+    |         ^~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:red, stroke:black
+          4 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A  stroke:black
+          4 | style A fill:blue
+          5 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/style-across-reversed-target
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/style-across-reversed-target-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | set B
+  4 | union A,B
+  5 | style A,B fill:red
+  6 | style B,A fill:blue
+    |           ^~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | set B
+          4 | union A,B
+          5 | style A,B fill:red
+          6 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | set B
+          4 | union A,B
+          5 | style B,A fill:blue
+          6 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/style-across-statements
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/style-across-statements-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill:red
+  4 | style A fill:blue
+    |         ^~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:red
+          4 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:blue
+          4 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/style-across-trivia
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/style-across-trivia-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill:red
+  4 |
+  5 | %% c
+  6 | %%{init: {}}%%
+  7 | style A fill:blue
+    |         ^~~~~~~~~ [1]
+  8 |
+
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:red
+          4 |
+          5 | %% c
+          6 | %%{init: {}}%%
+          7 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 |
+          4 | %% c
+          5 | %%{init: {}}%%
+          6 | style A fill:blue
+          7 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/style-comment-property
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/style-comment-property-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill:red,fill:"bl
+    |                  ^~~~~~~~\ [1]
+  4 | %% c
+    | ~~~~\ [1]
+  5 | ue"
+    | ~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
+    Suggestions:
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:"bl
+          4 | %% c
+          5 | ue"
+          6 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/style-conflict
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/style-conflict-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill:red,fill:blue
+    |                  ^~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:red
+          4 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:blue
+          4 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/style-directive
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/style-directive-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill:red,%%{init: {}}%%fill:blue
+    |                                ^~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
+    Suggestions:
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A %%{init: {}}%%fill:blue
+          4 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/style-empty
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/style-empty-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill:red,fill:""
+    |                  ^~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:red
+          4 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:""
+          4 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/style-empty-latest
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/style-empty-latest-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill:red,fill:"",fill:red
+    |                  ^~~~~~~ ^~~~~~~~
+    |                  [1]     [2]
+  4 |
+
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:red,fill:red
+          4 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:"",fill:red
+          4 |
+[2] mermaid.js replaces the `fill` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:red,fill:""
+          4 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:red,fill:red
+          4 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/style-multi-atom-spaces
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/style-multi-atom-spaces-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A color:red  blue,color:red blue
+    |                         ^~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the `color` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A color:red  blue
+          4 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A color:red blue
+          4 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/style-number
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/style-number-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A stroke-width:1,stroke-width:2
+    |                        ^~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the `stroke-width` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A stroke-width:1
+          4 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A stroke-width:2
+          4 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/style-opacity
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/style-opacity-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill-opacity:0.3,fill-opacity:0.7
+    |                          ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the `fill-opacity` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill-opacity:0.3
+          4 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill-opacity:0.7
+          4 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/style-overlap-with-undef
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/style-overlap-with-undef-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style Typo fill:red,fill:blue
+    |                     ^~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style Typo fill:red
+          4 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style Typo fill:blue
+          4 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/style-quoted-padding
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/style-quoted-padding-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill:" red ",fill:red
+    |                      ^~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:" red "
+          4 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:red
+          4 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/style-rgb
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/style-rgb-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill:rgb(1,2,3),fill:rgb(4,5,6)
+    |                         ^~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:rgb(1,2,3)
+          4 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:rgb(4,5,6)
+          4 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/style-rgba
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/style-rgba-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill:rgba(1,2,3,0.4),fill:rgba(4,5,6,0.7)
+    |                              ^~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:rgba(1,2,3,0.4)
+          4 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:rgba(4,5,6,0.7)
+          4 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/style-same-value-three
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/style-same-value-three-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill:red,fill:red,fill:blue
+    |                           ^~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:red,fill:red
+          4 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/style-selected-semicolon
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/style-selected-semicolon-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill:#f00,fill:#00f;
+    |                   ^~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:#f00;
+          4 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:#00f;
+          4 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/style-single-hex
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/style-single-hex-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill:#f00,fill:#00f
+    |                   ^~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:#f00
+          4 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:#00f
+          4 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/style-stroke
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/style-stroke-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A stroke:red,stroke:blue
+    |                    ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the `stroke` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A stroke:red
+          4 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A stroke:blue
+          4 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/style-three
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/style-three-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill:red,fill:blue,fill:red
+    |                  ^~~~~~~~~ ^~~~~~~~
+    |                  [1]       [2]
+  4 |
+
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:red,fill:red
+          4 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:blue,fill:red
+          4 |
+[2] mermaid.js replaces the `fill` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:red,fill:blue
+          4 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:red,fill:red
+          4 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/style-union-target
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/style-union-target-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | set B
+  4 | union A,B
+  5 | style B,A color:red,color:blue
+    |                     ^~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the `color` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | set B
+          4 | union A,B
+          5 | style B,A color:red
+          6 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | set B
+          4 | union A,B
+          5 | style B,A color:blue
+          6 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/style-unit-joined
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/style-unit-joined-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A stroke-width:2px, stroke-width:2 px
+    |                           ^~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the `stroke-width` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A stroke-width:2px
+          4 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A  stroke-width:2 px
+          4 |
+---
+
+
+Test: venn-no-duplicate-style >> invalid >>> invalid/venn/venn-html-value
+Filename: tests/fixtures/rules/venn-no-duplicate-style/invalid/venn/venn-html-value-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill:"<b x="a">Text</b>",fill:"<b x='a'>Text</b>"
+    |                                  ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the `fill` value given earlier for this target with this value.
+    Suggestions:
+      - Remove this property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:"<b x="a">Text</b>"
+          4 |
+      - Remove the earlier property.
+        Output:
+          1 | venn-beta
+          2 | set A
+          3 | style A fill:"<b x='a'>Text</b>"
+          4 |
+---

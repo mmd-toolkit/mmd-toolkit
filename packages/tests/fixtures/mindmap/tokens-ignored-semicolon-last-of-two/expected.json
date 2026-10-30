@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Directives inside units: only the last `;` of the line is ignored; `#x;` before it is an entity."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "style:ﬂ°x¶ßyz",
+          "level": 2,
+          "descr": "style:ﬂ°x¶ßyz",
+          "type": 0,
+          "children": []
+        }
+      ]
+    }
+  }
+}

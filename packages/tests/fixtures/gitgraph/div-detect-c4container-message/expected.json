@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4Container in a message redirects detection."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\ngitGraphcommit msg:\n^"
+  }
+}

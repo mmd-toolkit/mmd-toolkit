@@ -1,0 +1,59 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.2.0",
+    "path": "packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js",
+    "line": 1589,
+    "test": "when parsing a sequenceDiagram > should use LINK as an implicit message endpoint"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "LINK",
+        "description": "LINK",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "A"
+      },
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "prevActor": "LINK",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "LINK",
+        "to": "A",
+        "message": "message",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "A",
+        "to": "LINK",
+        "message": "reply",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

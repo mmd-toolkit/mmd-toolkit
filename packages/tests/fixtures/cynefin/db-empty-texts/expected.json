@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Empty items remain while empty transition labels are omitted and whitespace labels remain."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": ""
+          },
+          {
+            "label": ""
+          },
+          {
+            "label": " "
+          }
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear"
+      },
+      {
+        "from": "clear",
+        "to": "chaotic"
+      },
+      {
+        "from": "chaotic",
+        "to": "confusion",
+        "label": " "
+      }
+    ]
+  }
+}

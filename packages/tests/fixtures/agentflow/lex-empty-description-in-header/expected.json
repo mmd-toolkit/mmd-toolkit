@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty description block can be skipped between header direction and separator."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n...-beta TB accDescr {};A\n-----------------------^\nExpecting 'NEWLINE', got 'SEMI'"
+  }
+}

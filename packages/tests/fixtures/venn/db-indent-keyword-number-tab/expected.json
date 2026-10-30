@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A tab at this argument boundary retains all written arguments in one statement."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "2"
+      }
+    ],
+    "styles": []
+  }
+}

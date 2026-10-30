@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Style and classDef semicolon selection reaches quoted inline data and block data independently."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "\"style x:#x\""
+        }
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "evt",
+        "entityIdentifier": "B",
+        "sourceFrames": [],
+        "data": {
+          "kind": "block",
+          "value": "{\nstyle x:#x\n}\n"
+        }
+      },
+      {
+        "kind": "time",
+        "name": "03",
+        "modelEntityType": "evt",
+        "entityIdentifier": "C",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "\"classDef x:#x value\""
+        }
+      }
+    ]
+  }
+}

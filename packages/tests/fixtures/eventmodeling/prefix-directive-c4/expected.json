@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A retained second-scan directive precedes passed Unicode trivia and C4 detection."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 3. Unrecognized text.\n%%{wrap}%%%%　eventmodelingtf 01 \n-------------^"
+  }
+}

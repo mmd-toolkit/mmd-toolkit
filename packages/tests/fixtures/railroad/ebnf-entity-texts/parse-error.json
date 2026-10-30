@@ -1,0 +1,17 @@
+{
+  "message": "Unexpected character",
+  "range": [
+    108,
+    109
+  ],
+  "loc": {
+    "start": {
+      "line": 5,
+      "column": 22
+    },
+    "end": {
+      "line": 5,
+      "column": 23
+    }
+  }
+}

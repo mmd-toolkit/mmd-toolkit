@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Without spaces ampersands participate in ids."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A&B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A&B",
+        "props": {}
+      },
+      {
+        "id": "C&D",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "C&D",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A&B",
+        "end": "C&D",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A&B_C&D_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

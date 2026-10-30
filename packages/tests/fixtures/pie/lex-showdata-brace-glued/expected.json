@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Keyword boundaries: The words `pie` and `showData` are case-sensitive and must be followed immediately by common whitespace, the end of text, or `%%`. Case: showdata-brace-glued."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 5: unexpected character: ->s<- at offset: 4, skipped 9 characters. "
+  }
+}

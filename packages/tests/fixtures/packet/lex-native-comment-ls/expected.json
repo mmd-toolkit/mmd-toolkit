@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: LS is native comment content, including the apparent block after it."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 0,
+          "label": "B"
+        }
+      ]
+    ]
+  }
+}

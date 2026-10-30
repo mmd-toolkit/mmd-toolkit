@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The hidden terminal requires an unindented closing fence."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->-<- at offset: 9, skipped 3 characters.\nLexer error on line 4, column 2: unexpected character: ->-<- at offset: 19, skipped 3 characters. Parse error on line 3, column 1: Expecting token of type 'EOF' but found `x`."
+  }
+}

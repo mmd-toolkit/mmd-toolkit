@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Common statements: A preceding description-block terminal encloses YAML-looking lines as literal content. Accepted by Mermaid."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": " accDescr {\n---\nx\n---\n}",
+    "frames": []
+  }
+}

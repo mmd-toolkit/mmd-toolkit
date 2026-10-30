@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The third nonempty assignment of each common field wins."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "Third",
+    "accTitle": "Three",
+    "accDescr": "C",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4Deployment in service title is checked against global C4 detection."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "title": "C4Deployment"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

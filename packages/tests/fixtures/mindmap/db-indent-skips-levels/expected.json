@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, parent: a node may be indented by any number of characters more than its parent."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "far",
+          "level": 8,
+          "descr": "far",
+          "type": 0,
+          "children": []
+        }
+      ]
+    }
+  }
+}

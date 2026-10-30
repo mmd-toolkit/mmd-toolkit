@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does an unclosed directive affect evolution EOL?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {
+      "stages": [
+        "A",
+        "B"
+      ],
+      "stageBoundaries": []
+    }
+  }
+}

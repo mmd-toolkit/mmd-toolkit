@@ -1,0 +1,63 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can a previous pipeline child be a parent and an exact evolve target?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "P",
+        "label": "P",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "P_X",
+        "label": "X",
+        "x": 30,
+        "y": 10,
+        "className": "pipeline-component"
+      },
+      {
+        "id": "P_X_Y",
+        "label": "Y",
+        "x": 40,
+        "y": 10,
+        "className": "pipeline-component"
+      }
+    ],
+    "links": [],
+    "trends": [
+      {
+        "nodeId": "P_X_Y",
+        "targetX": 90
+      }
+    ],
+    "pipelines": [
+      {
+        "nodeId": "P",
+        "componentIds": [
+          "P_X"
+        ]
+      },
+      {
+        "nodeId": "P_X",
+        "componentIds": [
+          "P_X_Y"
+        ]
+      }
+    ],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

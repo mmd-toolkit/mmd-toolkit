@@ -1,0 +1,150 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/flowchart.md",
+    "line": 1041
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "top1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "top",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "bottom1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "bottom",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "top2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "top",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "bottom2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "bottom",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "outside",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "outside",
+        "props": {}
+      },
+      {
+        "id": "subgraph1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "subgraph1",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "top1",
+        "end": "bottom1",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_top1_bottom1_0"
+      },
+      {
+        "start": "top2",
+        "end": "bottom2",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_top2_bottom2_0"
+      },
+      {
+        "start": "outside",
+        "end": "subgraph1",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_outside_subgraph1_0"
+      },
+      {
+        "start": "outside",
+        "end": "top2",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 2,
+        "id": "L_outside_top2_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "subgraph1",
+        "nodes": [
+          "bottom1",
+          "top1"
+        ],
+        "title": "subgraph1",
+        "classes": [],
+        "dir": "TB",
+        "labelType": "text"
+      },
+      {
+        "id": "subgraph2",
+        "nodes": [
+          "bottom2",
+          "top2"
+        ],
+        "title": "subgraph2",
+        "classes": [],
+        "dir": "TB",
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

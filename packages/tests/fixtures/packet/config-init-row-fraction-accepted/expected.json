@@ -1,0 +1,50 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An accepted fractional JSON row width retains fractional start and end positions in the summary."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 1.5,
+          "label": "A"
+        }
+      ],
+      [
+        {
+          "start": 2.5,
+          "end": 4,
+          "label": "A"
+        }
+      ],
+      [
+        {
+          "start": 5,
+          "end": 6.5,
+          "label": "A"
+        }
+      ],
+      [
+        {
+          "start": 7.5,
+          "end": 9,
+          "label": "A"
+        }
+      ]
+    ]
+  },
+  "embedded": {
+    "config": {
+      "packet": {
+        "bitsPerRow": 2.5
+      }
+    }
+  }
+}

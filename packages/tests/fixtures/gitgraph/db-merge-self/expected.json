@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A populated branch cannot be merged into itself."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Cannot merge branch 'main' into itself."
+  }
+}

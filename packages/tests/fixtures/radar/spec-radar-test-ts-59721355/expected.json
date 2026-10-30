@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/radar.test.ts",
+    "line": 275,
+    "test": "radar > should handle curves > should not allow number and detailed entries in the same curve"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 3, column 27: Expecting token of type 'NUMBER' but found `ax1`."
+  }
+}

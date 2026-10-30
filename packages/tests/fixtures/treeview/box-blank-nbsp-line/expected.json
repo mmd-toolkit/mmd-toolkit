@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an NBSP-only line pass the blank-line branch instead of the nonblank-indentation rejection?"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": " ",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "b",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

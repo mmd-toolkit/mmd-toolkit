@@ -1,0 +1,420 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: eventmodeling-no-duplicate-description >> invalid >>> docs/rules/eventmodeling-no-duplicate-description.md incorrect 1
+Filename: eventmodeling-no-duplicate-description-incorrect-1.mmd
+
+Code:
+  1 | eventmodeling accDescr: First
+  2 |   tf 01 evt Bought accDescr: Second
+    |                    ^~~~~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | eventmodeling accDescr: First
+          2 |   tf 01 evt Bought
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | eventmodeling
+          2 |   tf 01 evt Bought accDescr: Second
+          3 |
+---
+
+
+Test: eventmodeling-no-duplicate-description >> invalid >>> invalid/eventmodeling/description-after-gwt
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-description/invalid/eventmodeling/description-after-gwt-input.mmd
+
+Code:
+  1 | eventmodeling accDescr: First
+  2 | gwt 99 given evt Bought then cmd Buy accDescr: Second
+    |                                      ^~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | eventmodeling accDescr: First
+          2 | gwt 99 given evt Bought then cmd Buy
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | eventmodeling
+          2 | gwt 99 given evt Bought then cmd Buy accDescr: Second
+---
+
+
+Test: eventmodeling-no-duplicate-description >> invalid >>> invalid/eventmodeling/description-change
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-description/invalid/eventmodeling/description-change-input.mmd
+
+Code:
+  1 | eventmodeling accDescr: First
+  2 | tf 01 evt Bought accDescr { Second }
+    |                  ^~~~~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | eventmodeling accDescr: First
+          2 | tf 01 evt Bought
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | eventmodeling
+          2 | tf 01 evt Bought accDescr { Second }
+---
+
+
+Test: eventmodeling-no-duplicate-description >> invalid >>> invalid/eventmodeling/description-comment-after-text
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-description/invalid/eventmodeling/description-comment-after-text-input.mmd
+
+Code:
+  1 | eventmodeling accDescr: First
+  2 | tf 01 evt Bought accDescr {
+    |                  ^~~~~~~~~~\ [1]
+  3 | %% TODO
+    | ~~~~~~~\ [1]
+  4 | }
+    | ~ [1]
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | eventmodeling accDescr: First
+          2 | tf 01 evt Bought
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | eventmodeling
+          2 | tf 01 evt Bought accDescr {
+          3 | %% TODO
+          4 | }
+---
+
+
+Test: eventmodeling-no-duplicate-description >> invalid >>> invalid/eventmodeling/description-comment-block-resets
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-description/invalid/eventmodeling/description-comment-block-resets-input.mmd
+
+Code:
+  1 | eventmodeling accDescr: First
+  2 | tf 01 evt A accDescr {
+    |             ^~~~~~~~~~\ [1]
+  3 | %% TODO
+    | ~~~~~~~\ [1]
+  4 | } tf 02 evt B accDescr: Second
+    | ~ [1]         ^~~~~~~~~~~~~~~~ [2]
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | eventmodeling accDescr: First
+          2 | tf 01 evt A tf 02 evt B accDescr: Second
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | eventmodeling
+          2 | tf 01 evt A accDescr {
+          3 | %% TODO
+          4 | } tf 02 evt B accDescr: Second
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | eventmodeling accDescr: First
+          2 | tf 01 evt A accDescr {
+          3 | %% TODO
+          4 | } tf 02 evt B
+---
+
+
+Test: eventmodeling-no-duplicate-description >> invalid >>> invalid/eventmodeling/description-comment-text-changed
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-description/invalid/eventmodeling/description-comment-text-changed-input.mmd
+
+Code:
+  1 | eventmodeling accDescr {
+  2 | %% TODO
+  3 | } tf 01 evt Bought accDescr {
+    |                    ^~~~~~~~~~\ [1]
+  4 | %% DONE
+    | ~~~~~~~\ [1]
+  5 | }
+    | ~ [1]
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | eventmodeling accDescr {
+          2 | %% TODO
+          3 | } tf 01 evt Bought
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | eventmodeling tf 01 evt Bought accDescr {
+          2 | %% DONE
+          3 | }
+          4 |
+---
+
+
+Test: eventmodeling-no-duplicate-description >> invalid >>> invalid/eventmodeling/description-empty-line-between
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-description/invalid/eventmodeling/description-empty-line-between-input.mmd
+
+Code:
+  1 | eventmodeling accDescr: First
+  2 | tf 01 evt A accDescr:
+    |             ^~~~~~~~~ [1]
+  3 | tf 02 evt B accDescr: Third
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | eventmodeling accDescr: First
+          2 | tf 01 evt A
+          3 | tf 02 evt B accDescr: Third
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | eventmodeling
+          2 | tf 01 evt A accDescr:
+          3 | tf 02 evt B accDescr: Third
+---
+
+
+Test: eventmodeling-no-duplicate-description >> invalid >>> invalid/eventmodeling/description-entity-same-block
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-description/invalid/eventmodeling/description-entity-same-block-input.mmd
+
+Code:
+  1 | eventmodeling accDescr { #35; } tf 01 evt Bought accDescr { # }
+    |                                                  ^~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | eventmodeling accDescr { #35; } tf 01 evt Bought
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | eventmodeling tf 01 evt Bought accDescr { # }
+---
+
+
+Test: eventmodeling-no-duplicate-description >> invalid >>> invalid/eventmodeling/description-equal-predecessor
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-description/invalid/eventmodeling/description-equal-predecessor-input.mmd
+
+Code:
+  1 | eventmodeling accDescr: A
+  2 | tf 01 evt Bought accDescr: A
+  3 | tf 02 evt Sent accDescr: B
+    |                ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | eventmodeling accDescr: A
+          2 | tf 01 evt Bought accDescr: A
+          3 | tf 02 evt Sent
+          4 |
+---
+
+
+Test: eventmodeling-no-duplicate-description >> invalid >>> invalid/eventmodeling/description-html-quotes-written
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-description/invalid/eventmodeling/description-html-quotes-written-input.mmd
+
+Code:
+  1 | eventmodeling accDescr: <b x="a">T</b>
+  2 | tf 01 evt Bought accDescr: <b x='a'>T</b>
+    |                  ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | eventmodeling accDescr: <b x="a">T</b>
+          2 | tf 01 evt Bought
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | eventmodeling
+          2 | tf 01 evt Bought accDescr: <b x='a'>T</b>
+---
+
+
+Test: eventmodeling-no-duplicate-description >> invalid >>> invalid/eventmodeling/description-opaque
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-description/invalid/eventmodeling/description-opaque-input.mmd
+
+Code:
+  1 | eventmodeling accDescr: #35;
+  2 | tf 01 evt Bought accDescr: #
+    |                  ^~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | eventmodeling accDescr: #35;
+          2 | tf 01 evt Bought
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | eventmodeling
+          2 | tf 01 evt Bought accDescr: #
+---
+
+
+Test: eventmodeling-no-duplicate-description >> invalid >>> invalid/eventmodeling/description-removal-empty-predecessor
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-description/invalid/eventmodeling/description-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | eventmodeling accDescr {}
+  2 | tf 01 evt A accDescr: A
+  3 | tf 02 evt B accDescr: B
+    |             ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | eventmodeling accDescr {}
+          2 | tf 01 evt A accDescr: A
+          3 | tf 02 evt B
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | eventmodeling accDescr {}
+          2 | tf 01 evt A
+          3 | tf 02 evt B accDescr: B
+          4 |
+---
+
+
+Test: eventmodeling-no-duplicate-description >> invalid >>> invalid/eventmodeling/description-triple
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-description/invalid/eventmodeling/description-triple-input.mmd
+
+Code:
+  1 | eventmodeling accDescr: First
+  2 | tf 01 evt A accDescr: Second
+    |             ^~~~~~~~~~~~~~~~ [1]
+  3 | tf 02 evt B accDescr: First
+    |             ^~~~~~~~~~~~~~~ [2]
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | eventmodeling accDescr: First
+          2 | tf 01 evt A
+          3 | tf 02 evt B accDescr: First
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | eventmodeling
+          2 | tf 01 evt A accDescr: Second
+          3 | tf 02 evt B accDescr: First
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | eventmodeling accDescr: First
+          2 | tf 01 evt A accDescr: Second
+          3 | tf 02 evt B
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | eventmodeling accDescr: First
+          2 | tf 01 evt A
+          3 | tf 02 evt B accDescr: First
+---
+
+
+Test: eventmodeling-no-duplicate-description >> invalid >>> invalid/eventmodeling/description-whitespace-line
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-description/invalid/eventmodeling/description-whitespace-line-input.mmd
+
+Code:
+  1 | eventmodeling accDescr: First
+  2 |   tf 01 evt Bought accDescr:   
+    |                    ^~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | eventmodeling accDescr: First
+          2 |   tf 01 evt Bought
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | eventmodeling
+          2 |   tf 01 evt Bought accDescr:   
+          3 |
+---
+
+
+Test: eventmodeling-no-duplicate-description >> invalid >>> invalid/eventmodeling/docs-incorrect-1
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-description/invalid/eventmodeling/docs-incorrect-1-input.mmd
+
+Code:
+  1 | eventmodeling accDescr: First
+  2 |   tf 01 evt Bought accDescr: Second
+    |                    ^~~~~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | eventmodeling accDescr: First
+          2 |   tf 01 evt Bought
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | eventmodeling
+          2 |   tf 01 evt Bought accDescr: Second
+          3 |
+---
+
+
+Test: eventmodeling-no-duplicate-description >> invalid >>> invalid/eventmodeling/inline-description-after-header
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-description/invalid/eventmodeling/inline-description-after-header-input.mmd
+
+Code:
+  1 | eventmodeling accDescr: First
+  2 | tf 01 evt Bought accDescr: Second
+    |                  ^~~~~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | eventmodeling accDescr: First
+          2 | tf 01 evt Bought
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | eventmodeling
+          2 | tf 01 evt Bought accDescr: Second
+          3 |
+---
+
+
+Test: eventmodeling-no-duplicate-description >> invalid >>> invalid/eventmodeling/inline-description-followed-by-comment
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-description/invalid/eventmodeling/inline-description-followed-by-comment-input.mmd
+
+Code:
+  1 | eventmodeling accDescr: First
+  2 | tf 01 evt Bought accDescr: Second %% note
+    |                  ^~~~~~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | eventmodeling
+          2 | tf 01 evt Bought accDescr: Second %% note
+          3 |
+---

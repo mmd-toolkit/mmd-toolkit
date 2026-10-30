@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Subgraphs: a name after the id before the line break; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...rDiagramsubgraph S xAend\n----------------------^\nExpecting 'EOF', 'NEWLINE', 'SQS', 'SEMI', got 'UNICODE_TEXT'"
+  }
+}

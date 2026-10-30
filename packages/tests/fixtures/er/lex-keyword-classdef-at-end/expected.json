@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The statement context, Keywords and what follows them: `classDef` at the end of the text; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nerDiagramclassDef\n-----------------^\nExpecting 'UNICODE_TEXT', 'STYLE_TEXT', got 'NEWLINE'"
+  }
+}

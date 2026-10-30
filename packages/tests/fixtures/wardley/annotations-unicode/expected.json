@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an annotations non-ASCII suffix reject?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 12: unexpected character: ->日<- at offset: 24, skipped 1 characters. "
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "U+2006 is not body WHITESPACE."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: -> <- at offset: 9, skipped 1 characters. "
+  }
+}

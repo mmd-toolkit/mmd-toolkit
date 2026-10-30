@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A connector cannot take its id across a remaining newline."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...w-beta TBconnector C\n----------------------^\nExpecting 'SPACE', 'GRAPH', 'DIR', 'flow', 'end', 'global', 'connector', 'AMP', 'COLON', 'START_LINK', 'STR', 'MD_STR', 'STYLE', 'LINKSTYLE', 'CLASSDEF', 'CLASS', 'CLICK', 'DOWN', 'UP', 'NUM', 'NODE_STRING', 'BRKT', 'MINUS', 'MULT', 'UNICODE_TEXT', got 'NEWLINE'"
+  }
+}

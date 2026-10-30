@@ -1,0 +1,309 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: eventmodeling-no-duplicate-title >> invalid >>> docs/rules/eventmodeling-no-duplicate-title.md incorrect 1
+Filename: eventmodeling-no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | eventmodeling accTitle: First
+  2 |   tf 01 evt Bought accTitle: Second
+    |                    ^~~~~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | eventmodeling accTitle: First
+          2 |   tf 01 evt Bought
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | eventmodeling
+          2 |   tf 01 evt Bought accTitle: Second
+          3 |
+---
+
+
+Test: eventmodeling-no-duplicate-title >> invalid >>> invalid/eventmodeling/acc-title-after-empty
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-title/invalid/eventmodeling/acc-title-after-empty-input.mmd
+
+Code:
+  1 | eventmodeling accTitle: First
+  2 | tf 01 evt A accTitle:
+    |             ^~~~~~~~~ [1]
+  3 | tf 02 evt B accTitle: Third
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | eventmodeling accTitle: First
+          2 | tf 01 evt A
+          3 | tf 02 evt B accTitle: Third
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | eventmodeling
+          2 | tf 01 evt A accTitle:
+          3 | tf 02 evt B accTitle: Third
+---
+
+
+Test: eventmodeling-no-duplicate-title >> invalid >>> invalid/eventmodeling/acc-title-change
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-title/invalid/eventmodeling/acc-title-change-input.mmd
+
+Code:
+  1 | eventmodeling accTitle: First
+  2 | tf 01 evt Bought accTitle: Second
+    |                  ^~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | eventmodeling accTitle: First
+          2 | tf 01 evt Bought
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | eventmodeling
+          2 | tf 01 evt Bought accTitle: Second
+---
+
+
+Test: eventmodeling-no-duplicate-title >> invalid >>> invalid/eventmodeling/acc-title-empty
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-title/invalid/eventmodeling/acc-title-empty-input.mmd
+
+Code:
+  1 | eventmodeling accTitle: First
+  2 | tf 01 evt Bought accTitle:
+    |                  ^~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | eventmodeling accTitle: First
+          2 | tf 01 evt Bought
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | eventmodeling
+          2 | tf 01 evt Bought accTitle:
+---
+
+
+Test: eventmodeling-no-duplicate-title >> invalid >>> invalid/eventmodeling/acc-title-html-quotes-written
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-title/invalid/eventmodeling/acc-title-html-quotes-written-input.mmd
+
+Code:
+  1 | eventmodeling accTitle: <b x="a">T</b>
+  2 | tf 01 evt Bought accTitle: <b x='a'>T</b>
+    |                  ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | eventmodeling accTitle: <b x="a">T</b>
+          2 | tf 01 evt Bought
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | eventmodeling
+          2 | tf 01 evt Bought accTitle: <b x='a'>T</b>
+---
+
+
+Test: eventmodeling-no-duplicate-title >> invalid >>> invalid/eventmodeling/acc-title-opaque
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-title/invalid/eventmodeling/acc-title-opaque-input.mmd
+
+Code:
+  1 | eventmodeling accTitle: #35;
+  2 | tf 01 evt Bought accTitle: #
+    |                  ^~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | eventmodeling accTitle: #35;
+          2 | tf 01 evt Bought
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | eventmodeling
+          2 | tf 01 evt Bought accTitle: #
+---
+
+
+Test: eventmodeling-no-duplicate-title >> invalid >>> invalid/eventmodeling/acc-title-triple
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-title/invalid/eventmodeling/acc-title-triple-input.mmd
+
+Code:
+  1 | eventmodeling accTitle: First
+  2 | tf 01 evt A accTitle: Second
+    |             ^~~~~~~~~~~~~~~~ [1]
+  3 | tf 02 evt B accTitle: First
+    |             ^~~~~~~~~~~~~~~ [2]
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | eventmodeling accTitle: First
+          2 | tf 01 evt A
+          3 | tf 02 evt B accTitle: First
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | eventmodeling
+          2 | tf 01 evt A accTitle: Second
+          3 | tf 02 evt B accTitle: First
+[2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | eventmodeling accTitle: First
+          2 | tf 01 evt A accTitle: Second
+          3 | tf 02 evt B
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | eventmodeling accTitle: First
+          2 | tf 01 evt A
+          3 | tf 02 evt B accTitle: First
+---
+
+
+Test: eventmodeling-no-duplicate-title >> invalid >>> invalid/eventmodeling/acc-title-whitespace
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-title/invalid/eventmodeling/acc-title-whitespace-input.mmd
+
+Code:
+  1 | eventmodeling accTitle: First
+  2 |   tf 01 evt Bought accTitle:   
+    |                    ^~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | eventmodeling accTitle: First
+          2 |   tf 01 evt Bought
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | eventmodeling
+          2 |   tf 01 evt Bought accTitle:   
+          3 |
+---
+
+
+Test: eventmodeling-no-duplicate-title >> invalid >>> invalid/eventmodeling/docs-incorrect-1
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-title/invalid/eventmodeling/docs-incorrect-1-input.mmd
+
+Code:
+  1 | eventmodeling accTitle: First
+  2 |   tf 01 evt Bought accTitle: Second
+    |                    ^~~~~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | eventmodeling accTitle: First
+          2 |   tf 01 evt Bought
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | eventmodeling
+          2 |   tf 01 evt Bought accTitle: Second
+          3 |
+---
+
+
+Test: eventmodeling-no-duplicate-title >> invalid >>> invalid/eventmodeling/inline-title-after-header
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-title/invalid/eventmodeling/inline-title-after-header-input.mmd
+
+Code:
+  1 | eventmodeling accTitle: First
+  2 | tf 01 evt Bought accTitle: Second
+    |                  ^~~~~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | eventmodeling accTitle: First
+          2 | tf 01 evt Bought
+          3 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | eventmodeling
+          2 | tf 01 evt Bought accTitle: Second
+          3 |
+---
+
+
+Test: eventmodeling-no-duplicate-title >> invalid >>> invalid/eventmodeling/inline-title-followed-by-comment
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-title/invalid/eventmodeling/inline-title-followed-by-comment-input.mmd
+
+Code:
+  1 | eventmodeling accTitle: First
+  2 | tf 01 evt Bought accTitle: Second %% note
+    |                  ^~~~~~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | eventmodeling
+          2 | tf 01 evt Bought accTitle: Second %% note
+          3 |
+---
+
+
+Test: eventmodeling-no-duplicate-title >> invalid >>> invalid/eventmodeling/title-equal-predecessor
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-title/invalid/eventmodeling/title-equal-predecessor-input.mmd
+
+Code:
+  1 | eventmodeling accTitle: A
+  2 | tf 01 evt Bought accTitle: A
+  3 | tf 02 evt Sent accTitle: B
+    |                ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | eventmodeling accTitle: A
+          2 | tf 01 evt Bought accTitle: A
+          3 | tf 02 evt Sent
+          4 |
+---
+
+
+Test: eventmodeling-no-duplicate-title >> invalid >>> invalid/eventmodeling/title-removal-empty-predecessor
+Filename: tests/fixtures/rules/eventmodeling-no-duplicate-title/invalid/eventmodeling/title-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | eventmodeling accTitle:
+  2 | tf 01 evt A accTitle: A
+  3 | tf 02 evt B accTitle: B
+    |             ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | eventmodeling accTitle:
+          2 | tf 01 evt A accTitle: A
+          3 | tf 02 evt B
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | eventmodeling accTitle:
+          2 | tf 01 evt A
+          3 | tf 02 evt B accTitle: B
+          4 |
+---

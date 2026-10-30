@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md: A bare percent line followed by a spaces-only line before the header is accepted by the specification."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n%% C4ContextPerson(a\n--^\nExpecting 'direction_tb', 'direction_bt', 'direction_rl', 'direction_lr', 'C4_CONTEXT', 'C4_CONTAINER', 'C4_COMPONENT', 'C4_DYNAMIC', 'C4_DEPLOYMENT', got 'NEWLINE'"
+  }
+}

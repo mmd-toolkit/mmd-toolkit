@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Known divergences: **[c4-keyword-anywhere](../known-divergences/c4-keyword-anywhere.md).** The pie header selects pie here despite a later C4 keyword in a label, title or body YAML. Case: yaml-body-c4-hidden."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\npie---x: C4Contain\n^"
+  }
+}

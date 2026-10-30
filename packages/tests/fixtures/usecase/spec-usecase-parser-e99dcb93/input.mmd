@@ -1,0 +1,9 @@
+usecase-beta
+actor Reviewer(*Reviewer*)
+Literal(**Literal markers**)
+Priced[Costs 19.95 EUR, incl. VAT!]
+Progress(Ärende — 50% klart)
+Reviewer -- opens **form** --> Literal
+Reviewer --> Priced
+Reviewer --> Progress
+note for Literal Read the guide; then sign off.

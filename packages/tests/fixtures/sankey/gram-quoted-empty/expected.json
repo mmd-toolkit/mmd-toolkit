@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, quotes: a pair of quotes with nothing between them is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nsankey\"\",c,1\n-------^\nExpecting 'ESCAPED_TEXT', got 'DQUOTE'"
+  }
+}

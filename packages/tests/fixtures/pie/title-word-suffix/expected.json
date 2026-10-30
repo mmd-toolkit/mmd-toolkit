@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A word-character suffix cannot become title text."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 6: unexpected character: ->_<- at offset: 9, skipped 1 characters.\nLexer error on line 2, column 8: unexpected character: ->A<- at offset: 11, skipped 1 characters. "
+  }
+}

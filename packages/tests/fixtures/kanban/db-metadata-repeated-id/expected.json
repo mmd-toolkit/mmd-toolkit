@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Repeated ids test metadata on new entries rather than updates."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "isGroup": false,
+        "parentId": "S",
+        "assigned": "Ada"
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "isGroup": false,
+        "parentId": "S",
+        "ticket": "TASK-1"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "assigned": "Ada"
+        }
+      },
+      {
+        "id": "A",
+        "set": {
+          "ticket": "TASK-1"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Lexical structure: a description block is read without U+3000 at its end."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "d",
+    "sections": [],
+    "tasks": []
+  }
+}

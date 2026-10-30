@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Known divergences: detection: the detector of the C4 diagrams reads `C4Container` anywhere in the text, so the text is not detected as a block diagram, and the C4 lexer rejects it."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nblock-beta  C4Conta\n^"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/eventmodeling.md",
+    "line": 234
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "03",
+        "modelEntityType": "evt",
+        "entityIdentifier": "External.InventoryChanged",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "pcr",
+        "entityIdentifier": "InventoryProcessor",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "04",
+        "modelEntityType": "cmd",
+        "entityIdentifier": "ChangeInventory",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "05",
+        "modelEntityType": "evt",
+        "entityIdentifier": "Cart.InventoryChanged",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

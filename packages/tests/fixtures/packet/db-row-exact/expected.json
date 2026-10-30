@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An exact row boundary starts a new row without an empty row."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 31,
+          "label": "row"
+        }
+      ],
+      [
+        {
+          "start": 32,
+          "end": 32,
+          "label": "next"
+        }
+      ]
+    ]
+  }
+}

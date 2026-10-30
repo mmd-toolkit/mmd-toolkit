@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, white space: a CR alone in the middle of the name of a class in `classDef`."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": []
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": [
+      {
+        "id": "a",
+        "styles": [
+          "b fill:red"
+        ]
+      }
+    ]
+  }
+}

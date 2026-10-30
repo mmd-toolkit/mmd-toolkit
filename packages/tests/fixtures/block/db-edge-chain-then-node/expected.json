@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, edges: a node used after a chain is a block of its own."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {},
+        {
+          "id": "C",
+          "label": "C",
+          "type": "na"
+        },
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [
+      {
+        "end": "C",
+        "label": "",
+        "thickness": "normal",
+        "pattern": "solid",
+        "arrowTypeStart": "arrow_open",
+        "arrowTypeEnd": "arrow_point"
+      }
+    ],
+    "classes": []
+  }
+}

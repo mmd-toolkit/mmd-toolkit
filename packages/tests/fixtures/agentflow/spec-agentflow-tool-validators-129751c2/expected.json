@@ -1,0 +1,73 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-tool-validators.spec.ts",
+    "line": 70,
+    "test": "agentflow shape-based tool model > tool recognition by shape > does NOT recognise an input / action node as a tool"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "i",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "i",
+        "type": "lean-right",
+        "props": {},
+        "metadata": {
+          "shape": "lean-right"
+        }
+      },
+      {
+        "id": "h",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "h",
+        "type": "hexagon",
+        "props": {},
+        "metadata": {
+          "shape": "hexagon"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "i",
+        "set": {
+          "type": "lean-right",
+          "metadata": {
+            "shape": "lean-right"
+          }
+        }
+      },
+      {
+        "id": "h",
+        "set": {
+          "type": "hexagon",
+          "metadata": {
+            "shape": "hexagon"
+          }
+        }
+      }
+    ]
+  }
+}

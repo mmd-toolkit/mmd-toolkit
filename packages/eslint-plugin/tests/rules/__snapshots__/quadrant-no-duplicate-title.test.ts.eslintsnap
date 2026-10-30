@@ -1,0 +1,535 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: quadrant-no-duplicate-title >> invalid >>> docs/rules/quadrant-no-duplicate-title.md incorrect 1
+Filename: quadrant-no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   title first
+  3 |   title second
+    |   ^~~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   title first
+          3 |   A: [0.3, 0.6]
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | quadrantChart
+          2 |   title second
+          3 |   A: [0.3, 0.6]
+          4 |
+---
+
+
+Test: quadrant-no-duplicate-title >> invalid >>> docs/rules/quadrant-no-duplicate-title.md incorrect 2
+Filename: quadrant-no-duplicate-title-incorrect-2.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accTitle: first
+  3 |   accTitle: second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | quadrantChart
+          2 |   accTitle: first
+          3 |   A: [0.3, 0.6]
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | quadrantChart
+          2 |   accTitle: second
+          3 |   A: [0.3, 0.6]
+          4 |
+---
+
+
+Test: quadrant-no-duplicate-title >> invalid >>> invalid/quadrant/acc-title-back-to-first
+Filename: tests/fixtures/rules/quadrant-no-duplicate-title/invalid/quadrant/acc-title-back-to-first-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accTitle: a
+  3 |   accTitle: b
+    |   ^~~~~~~~~~~ [1]
+  4 |   accTitle: a
+    |   ^~~~~~~~~~~ [2]
+  5 |   A: [0.3, 0.6]
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | quadrantChart
+          2 |   accTitle: a
+          3 |   accTitle: a
+          4 |   A: [0.3, 0.6]
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | quadrantChart
+          2 |   accTitle: b
+          3 |   accTitle: a
+          4 |   A: [0.3, 0.6]
+          5 |
+[2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | quadrantChart
+          2 |   accTitle: a
+          3 |   accTitle: b
+          4 |   A: [0.3, 0.6]
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | quadrantChart
+          2 |   accTitle: a
+          3 |   accTitle: a
+          4 |   A: [0.3, 0.6]
+          5 |
+---
+
+
+Test: quadrant-no-duplicate-title >> invalid >>> invalid/quadrant/acc-title-next-line-after-comment
+Filename: tests/fixtures/rules/quadrant-no-duplicate-title/invalid/quadrant/acc-title-next-line-after-comment-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accTitle: a
+  3 |   accTitle:
+    |   ^~~~~~~~~\ [1]
+  4 |   %% c
+    | ~~~~~~\ [1]
+  5 |   b
+    | ~~~ [1]
+  6 |   A: [0.3, 0.6]
+  7 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | quadrantChart
+          2 |   accTitle: a
+          3 |   A: [0.3, 0.6]
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | quadrantChart
+          2 |   accTitle:
+          3 |   %% c
+          4 |   b
+          5 |   A: [0.3, 0.6]
+          6 |
+---
+
+
+Test: quadrant-no-duplicate-title >> invalid >>> invalid/quadrant/acc-title-next-line-after-directive
+Filename: tests/fixtures/rules/quadrant-no-duplicate-title/invalid/quadrant/acc-title-next-line-after-directive-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accTitle: a
+  3 |   accTitle:
+    |   ^~~~~~~~~\ [1]
+  4 |   %%{init: {}}%%
+    | ~~~~~~~~~~~~~~~~\ [1]
+  5 |   b
+    | ~~~ [1]
+  6 |   A: [0.3, 0.6]
+  7 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | quadrantChart
+          2 |   accTitle:
+          3 |   %%{init: {}}%%
+          4 |   b
+          5 |   A: [0.3, 0.6]
+          6 |
+---
+
+
+Test: quadrant-no-duplicate-title >> invalid >>> invalid/quadrant/acc-title-next-line-after-empty-line
+Filename: tests/fixtures/rules/quadrant-no-duplicate-title/invalid/quadrant/acc-title-next-line-after-empty-line-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accTitle: a
+  3 |   accTitle:
+    |   ^~~~~~~~~\ [1]
+  4 |
+    | ~\ [1]
+  5 |   b
+    | ~~~ [1]
+  6 |   A: [0.3, 0.6]
+  7 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | quadrantChart
+          2 |   accTitle: a
+          3 |   A: [0.3, 0.6]
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | quadrantChart
+          2 |   accTitle:
+          3 |
+          4 |   b
+          5 |   A: [0.3, 0.6]
+          6 |
+---
+
+
+Test: quadrant-no-duplicate-title >> invalid >>> invalid/quadrant/acc-title-takes-title-line
+Filename: tests/fixtures/rules/quadrant-no-duplicate-title/invalid/quadrant/acc-title-takes-title-line-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   title T
+  3 |   accTitle: a
+  4 |   accTitle:
+    |   ^~~~~~~~~\ [1]
+  5 |   title U
+    | ~~~~~~~~~ [1]
+  6 |   A: [0.3, 0.6]
+  7 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | quadrantChart
+          2 |   title T
+          3 |   accTitle: a
+          4 |   A: [0.3, 0.6]
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | quadrantChart
+          2 |   title T
+          3 |   accTitle:
+          4 |   title U
+          5 |   A: [0.3, 0.6]
+          6 |
+---
+
+
+Test: quadrant-no-duplicate-title >> invalid >>> invalid/quadrant/acc-title-twice
+Filename: tests/fixtures/rules/quadrant-no-duplicate-title/invalid/quadrant/acc-title-twice-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accTitle: first
+  3 |   accTitle: second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | quadrantChart
+          2 |   accTitle: first
+          3 |   A: [0.3, 0.6]
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | quadrantChart
+          2 |   accTitle: second
+          3 |   A: [0.3, 0.6]
+          4 |
+---
+
+
+Test: quadrant-no-duplicate-title >> invalid >>> invalid/quadrant/acc-title-upper-case-second
+Filename: tests/fixtures/rules/quadrant-no-duplicate-title/invalid/quadrant/acc-title-upper-case-second-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accTitle: a
+  3 |   ACCTITLE: b
+    |   ^~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | quadrantChart
+          2 |   accTitle: a
+          3 |   A: [0.3, 0.6]
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | quadrantChart
+          2 |   ACCTITLE: b
+          3 |   A: [0.3, 0.6]
+          4 |
+---
+
+
+Test: quadrant-no-duplicate-title >> invalid >>> invalid/quadrant/title-back-to-first
+Filename: tests/fixtures/rules/quadrant-no-duplicate-title/invalid/quadrant/title-back-to-first-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   title a
+  3 |   title b
+    |   ^~~~~~~ [1]
+  4 |   title a
+    |   ^~~~~~~ [2]
+  5 |   A: [0.3, 0.6]
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   title a
+          3 |   title a
+          4 |   A: [0.3, 0.6]
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | quadrantChart
+          2 |   title b
+          3 |   title a
+          4 |   A: [0.3, 0.6]
+          5 |
+[2] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   title a
+          3 |   title b
+          4 |   A: [0.3, 0.6]
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | quadrantChart
+          2 |   title a
+          3 |   title a
+          4 |   A: [0.3, 0.6]
+          5 |
+---
+
+
+Test: quadrant-no-duplicate-title >> invalid >>> invalid/quadrant/title-comment-line-between
+Filename: tests/fixtures/rules/quadrant-no-duplicate-title/invalid/quadrant/title-comment-line-between-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   title a
+  3 |   %% c
+  4 |   title b
+    |   ^~~~~~~ [1]
+  5 |   A: [0.3, 0.6]
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   title a
+          3 |   %% c
+          4 |   A: [0.3, 0.6]
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | quadrantChart
+          2 |   %% c
+          3 |   title b
+          4 |   A: [0.3, 0.6]
+          5 |
+---
+
+
+Test: quadrant-no-duplicate-title >> invalid >>> invalid/quadrant/title-directive-between
+Filename: tests/fixtures/rules/quadrant-no-duplicate-title/invalid/quadrant/title-directive-between-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   title a
+  3 |   %%{init: {}}%%
+  4 |   title b
+    |   ^~~~~~~ [1]
+  5 |   A: [0.3, 0.6]
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   title a
+          3 |   %%{init: {}}%%
+          4 |   A: [0.3, 0.6]
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | quadrantChart
+          2 |   %%{init: {}}%%
+          3 |   title b
+          4 |   A: [0.3, 0.6]
+          5 |
+---
+
+
+Test: quadrant-no-duplicate-title >> invalid >>> invalid/quadrant/title-emptied
+Filename: tests/fixtures/rules/quadrant-no-duplicate-title/invalid/quadrant/title-emptied-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   title T
+  3 |   title
+    |   ^~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   title T
+          3 |   A: [0.3, 0.6]
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | quadrantChart
+          2 |   title
+          3 |   A: [0.3, 0.6]
+          4 |
+---
+
+
+Test: quadrant-no-duplicate-title >> invalid >>> invalid/quadrant/title-equal-predecessor
+Filename: tests/fixtures/rules/quadrant-no-duplicate-title/invalid/quadrant/title-equal-predecessor-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 | accTitle: A
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | quadrantChart
+          2 | accTitle: A
+          3 | accTitle: A
+          4 |
+---
+
+
+Test: quadrant-no-duplicate-title >> invalid >>> invalid/quadrant/title-quotes-are-text
+Filename: tests/fixtures/rules/quadrant-no-duplicate-title/invalid/quadrant/title-quotes-are-text-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   title Sales
+  3 |   title "Sales"
+    |   ^~~~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   title Sales
+          3 |   A: [0.3, 0.6]
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | quadrantChart
+          2 |   title "Sales"
+          3 |   A: [0.3, 0.6]
+          4 |
+---
+
+
+Test: quadrant-no-duplicate-title >> invalid >>> invalid/quadrant/title-twice
+Filename: tests/fixtures/rules/quadrant-no-duplicate-title/invalid/quadrant/title-twice-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   title first
+  3 |   title second
+    |   ^~~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   title first
+          3 |   A: [0.3, 0.6]
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | quadrantChart
+          2 |   title second
+          3 |   A: [0.3, 0.6]
+          4 |
+---
+
+
+Test: quadrant-no-duplicate-title >> invalid >>> invalid/quadrant/title-upper-case-second
+Filename: tests/fixtures/rules/quadrant-no-duplicate-title/invalid/quadrant/title-upper-case-second-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   title a
+  3 |   TITLE b
+    |   ^~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | quadrantChart
+          2 |   title a
+          3 |   A: [0.3, 0.6]
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | quadrantChart
+          2 |   TITLE b
+          3 |   A: [0.3, 0.6]
+          4 |
+---

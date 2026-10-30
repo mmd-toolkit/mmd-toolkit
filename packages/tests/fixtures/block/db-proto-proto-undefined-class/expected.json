@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, prototype names: `__proto__` as the id of a class statement with no block."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": []
+    },
+    "unplaced": [
+      {
+        "id": "__proto__",
+        "type": "na",
+        "classes": [
+          "c"
+        ]
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure: A selected semicolon in the HWS between -- and the following CSS property-name word is accepted trivia in classDef, which shares the property-name grammar with style."
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": [
+      {
+        "id": "theme",
+        "styles": [
+          "fill:#x",
+          "-- color:red"
+        ]
+      }
+    ]
+  }
+}

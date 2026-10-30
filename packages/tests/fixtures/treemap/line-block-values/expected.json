@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does the common block converter treat each line terminator?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A\nB\nC D E",
+    "nodes": [],
+    "classDefs": []
+  }
+}

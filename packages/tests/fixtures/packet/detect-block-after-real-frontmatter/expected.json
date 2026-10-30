@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Real frontmatter may precede the detection-skipped block."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "Front",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  },
+  "embedded": {
+    "title": "Front"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.2.0",
+    "path": "packages/mermaid/src/diagrams/usecase/usecase.parser.spec.ts",
+    "line": 87,
+    "test": "usecase parser publication and normalized AST > locates an unterminated edge at the end of input"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting: one of these possible Token sequences:\n  1. [IDENTIFIER]\n  2. [PLAIN_STRING]\n  3. [MARKDOWN_STRING]\nbut found: '\n' at line 2, column 6 [18,19)"
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, settings: `htmlLabels: false` changes nothing in the summary."
+  },
+  "config": {
+    "htmlLabels": false
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "<b>x</b> & <i>y</i>",
+          "type": "square",
+          "widthInColumns": 1,
+          "styles": [
+            "fill:<i>"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "<u>z</u>",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "right"
+          ]
+        },
+        {
+          "id": "G",
+          "label": "<s>g</s>",
+          "type": "composite",
+          "widthInColumns": 1,
+          "children": [
+            {
+              "id": "C",
+              "label": "C",
+              "type": "na",
+              "widthInColumns": 1
+            }
+          ]
+        },
+        {
+          "id": "D",
+          "label": "a<br>b",
+          "type": "square",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "label": "<b>e</b>",
+        "thickness": "normal",
+        "pattern": "solid",
+        "arrowTypeStart": "arrow_open",
+        "arrowTypeEnd": "arrow_point"
+      }
+    ],
+    "classes": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:<b>"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "TAB is hidden after a description block."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "D",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

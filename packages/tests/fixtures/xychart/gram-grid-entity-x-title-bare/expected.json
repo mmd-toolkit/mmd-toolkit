@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, text grid: a character reference (`a#35;b`) in the title of the x axis without quotes."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...chart-beta x-axis aﬂ°°35¶ßb\n----------------------^"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The ABNF header rejects adjacent punctuation."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 1: Expecting token of type 'railroad-abnf-beta' but found `railroad-abnf-beta`.\nParse error on line ?, column ?: Expecting token of type '=' but found ``."
+  }
+}

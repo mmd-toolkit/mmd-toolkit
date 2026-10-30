@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Known divergences: y-axis: an empty string after the arrow is dropped: the statement is the text and the arrow with nothing after them."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "B ⟶",
+      "top": ""
+    },
+    "points": [],
+    "classes": []
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md journey, tasks: `-0` is the number -0 in the Db, and JSON writes it as 0."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A",
+        "people": [
+          "x"
+        ],
+        "score": 0
+      }
+    ]
+  }
+}

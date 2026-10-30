@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A line accessibility title absorbs a glued YAML opener instead of starting a hidden block."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 1: unexpected character: ->-<- at offset: 31, skipped 3 characters. Parse error on line 3, column 1: Expecting token of type 'EOF' but found `body`."
+  }
+}

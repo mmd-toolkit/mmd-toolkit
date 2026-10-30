@@ -1,0 +1,179 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: journey-no-empty-description-block >> invalid >>> docs/rules/journey-no-empty-description-block.md incorrect 1
+Filename: journey-no-empty-description-block-incorrect-1.mmd
+
+Code:
+  1 | journey
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   section Work
+  4 |     Make tea: 5: Me
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | journey
+          2 |   section Work
+          3 |     Make tea: 5: Me
+          4 |
+---
+
+
+Test: journey-no-empty-description-block >> invalid >>> docs/rules/journey-no-empty-description-block.md incorrect 2
+Filename: journey-no-empty-description-block-incorrect-2.mmd
+
+Code:
+  1 | journey
+  2 |   accDescr { }
+    |   ^~~~~~~~~~~~ [1]
+  3 |   section Work
+  4 |     Make tea: 5: Me
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | journey
+          2 |   section Work
+          3 |     Make tea: 5: Me
+          4 |
+---
+
+
+Test: journey-no-empty-description-block >> invalid >>> invalid/journey/acc-descr-block-directive-only
+Filename: tests/fixtures/rules/journey-no-empty-description-block/invalid/journey/acc-descr-block-directive-only-input.mmd
+
+Code:
+  1 | journey
+  2 |   accDescr { %%{init: {}}%% }
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 |   A: 5: Me
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: journey-no-empty-description-block >> invalid >>> invalid/journey/acc-descr-then-empty-block
+Filename: tests/fixtures/rules/journey-no-empty-description-block/invalid/journey/acc-descr-then-empty-block-input.mmd
+
+Code:
+  1 | journey
+  2 |   accDescr: a
+  3 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  4 |   A: 5: Me
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | journey
+          2 |   accDescr: a
+          3 |   A: 5: Me
+          4 |
+---
+
+
+Test: journey-no-empty-description-block >> invalid >>> invalid/journey/gram-acc-descr-block-empty
+Filename: tests/fixtures/rules/journey-no-empty-description-block/invalid/journey/gram-acc-descr-block-empty-input.mmd
+
+Code:
+  1 | journey
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   A: 1
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | journey
+          2 |   A: 1
+          3 |
+---
+
+
+Test: journey-no-empty-description-block >> invalid >>> invalid/journey/gram-acc-descr-block-whitespace-only
+Filename: tests/fixtures/rules/journey-no-empty-description-block/invalid/journey/gram-acc-descr-block-whitespace-only-input.mmd
+
+Code:
+  1 | journey
+  2 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  3 |
+    | ~\ [1]
+  4 |    
+    | ~~~\ [1]
+  5 |   }
+    | ~~~ [1]
+  6 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | journey
+          2 |
+---
+
+
+Test: journey-no-empty-description-block >> invalid >>> invalid/journey/gram-empty-description-block-after-block
+Filename: tests/fixtures/rules/journey-no-empty-description-block/invalid/journey/gram-empty-description-block-after-block-input.mmd
+
+Code:
+  1 | journey
+  2 |   accDescr { d } accDescr {}
+    |                  ^~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: journey-no-empty-description-block >> invalid >>> invalid/journey/gram-empty-description-block-after-header
+Filename: tests/fixtures/rules/journey-no-empty-description-block/invalid/journey/gram-empty-description-block-after-header-input.mmd
+
+Code:
+  1 | journey accDescr {}
+    |         ^~~~~~~~~~~ [1]
+  2 |   A: 1
+  3 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: journey-no-empty-description-block >> invalid >>> invalid/journey/gram-empty-description-block-before-task-same-line
+Filename: tests/fixtures/rules/journey-no-empty-description-block/invalid/journey/gram-empty-description-block-before-task-same-line-input.mmd
+
+Code:
+  1 | journey
+  2 |   accDescr {} A: 5
+    |   ^~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: journey-no-empty-description-block >> invalid >>> invalid/journey/gram-empty-description-blocks-adjacent
+Filename: tests/fixtures/rules/journey-no-empty-description-block/invalid/journey/gram-empty-description-blocks-adjacent-input.mmd
+
+Code:
+  1 | journey
+  2 |   accDescr {}accDescr { }
+    |   ^~~~~~~~~~~ [1]
+    |              ^~~~~~~~~~~~ [2]
+  3 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+[2] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---

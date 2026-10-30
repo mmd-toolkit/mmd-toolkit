@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A custom merge id must not already exist."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Incorrect usage of \"merge\". Commit with id:A already exists, use different custom id"
+  }
+}

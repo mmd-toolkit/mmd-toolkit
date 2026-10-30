@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An EBNF group must contain a nonempty expression."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 6: Expecting: one of these possible Token sequences:\n  1. [EBNF_STRING]\n  2. [EBNF_SPECIAL_SEQUENCE]\n  3. [EBNF_ID]\n  4. [(]\n  5. [[]\n  6. [{]\nbut found: ')'"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does the class terminal stop at a semicolon inside quoted style text?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": [
+      {
+        "id": "styled",
+        "styles": [
+          "content:\"style:#a\""
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/wardley/wardleyParser.spec.ts",
+    "line": 259,
+    "test": "wardley parser > accepts hyphens in anchor names"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "on-call engineer",
+        "label": "on-call engineer",
+        "x": 95,
+        "y": 90,
+        "className": "anchor"
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

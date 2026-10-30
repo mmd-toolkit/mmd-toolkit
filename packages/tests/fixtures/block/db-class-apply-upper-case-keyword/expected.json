@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, classes: `CLASS` is not the keyword: the words are nodes."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "CLASS",
+          "label": "CLASS",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "c",
+          "label": "c",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Character references cannot extend identifiers."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 9: unexpected character: ->&<- at offset: 22, skipped 4 characters.\nLexer error on line 2, column 15: unexpected character: ->¶<- at offset: 28, skipped 2 characters. Parse error on line 2, column 13: Expecting token of type 'EOF' but found `35`."
+  }
+}

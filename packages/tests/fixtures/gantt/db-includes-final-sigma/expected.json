@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A capital sigma at the end of an item is lowered to the final sigma, and one inside an item to the plain sigma."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [
+      "ας",
+      "ασα"
+    ],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [],
+    "links": []
+  }
+}

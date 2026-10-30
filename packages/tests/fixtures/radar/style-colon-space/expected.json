@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A space after the hash prevents character-reference recognition."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "style A: # red;",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

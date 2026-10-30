@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md The statement context: rule 14: `;` on a line of its own is a `;` unit, which no rule takes."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\njourney  ;\n---------^\nExpecting 'EOF', 'SPACE', 'NEWLINE', 'title', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'section', 'taskName', got 'INVALID'"
+  }
+}

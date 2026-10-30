@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Strings: the direction line takes the whole line before the string rule, so two quotes before `direction` are text of it: the direction LR."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

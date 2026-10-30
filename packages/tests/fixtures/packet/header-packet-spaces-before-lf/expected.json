@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Spaces before the header LF satisfy the plain keyword boundary and leave the following block readable."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 0,
+          "label": "A"
+        }
+      ]
+    ]
+  }
+}

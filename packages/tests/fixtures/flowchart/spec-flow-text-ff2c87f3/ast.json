@@ -1,0 +1,559 @@
+{
+  "type": "Root",
+  "diagramType": "flowchart-v2",
+  "body": {
+    "type": "FlowchartDiagram",
+    "direction": "TD",
+    "body": [
+      {
+        "type": "FlowchartVertexStatement",
+        "first": {
+          "type": "FlowchartVertexGroup",
+          "vertices": [
+            {
+              "type": "FlowchartVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "A_flowchart-elk_node",
+                "range": [
+                  9,
+                  29
+                ],
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 9
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 29
+                  }
+                }
+              },
+              "shape": null,
+              "cssClass": null,
+              "data": [],
+              "range": [
+                9,
+                29
+              ],
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 9
+                },
+                "end": {
+                  "line": 1,
+                  "column": 29
+                }
+              }
+            }
+          ],
+          "range": [
+            9,
+            29
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 29
+            }
+          }
+        },
+        "links": [
+          {
+            "type": "FlowchartLink",
+            "id": null,
+            "opening": null,
+            "arrow": {
+              "type": "FlowchartArrow",
+              "value": "-->",
+              "startMarker": "none",
+              "line": "solid",
+              "length": 2,
+              "endMarker": "arrow",
+              "range": [
+                29,
+                32
+              ],
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 29
+                },
+                "end": {
+                  "line": 1,
+                  "column": 32
+                }
+              }
+            },
+            "label": null,
+            "target": {
+              "type": "FlowchartVertexGroup",
+              "vertices": [
+                {
+                  "type": "FlowchartVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "B",
+                    "range": [
+                      32,
+                      33
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 1,
+                        "column": 32
+                      },
+                      "end": {
+                        "line": 1,
+                        "column": 33
+                      }
+                    }
+                  },
+                  "shape": {
+                    "type": "FlowchartShape",
+                    "name": "rectangle",
+                    "property": {
+                      "type": "FlowchartShapeProperty",
+                      "name": {
+                        "type": "Identifier",
+                        "name": "borders",
+                        "range": [
+                          35,
+                          42
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 1,
+                            "column": 35
+                          },
+                          "end": {
+                            "line": 1,
+                            "column": 42
+                          }
+                        }
+                      },
+                      "value": {
+                        "type": "Identifier",
+                        "name": "lt",
+                        "range": [
+                          43,
+                          45
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 1,
+                            "column": 43
+                          },
+                          "end": {
+                            "line": 1,
+                            "column": 45
+                          }
+                        }
+                      },
+                      "range": [
+                        35,
+                        45
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 1,
+                          "column": 35
+                        },
+                        "end": {
+                          "line": 1,
+                          "column": 45
+                        }
+                      }
+                    },
+                    "label": {
+                      "type": "FlowchartLabel",
+                      "kind": "text",
+                      "value": "This node has a flowchart-elk as text",
+                      "range": [
+                        46,
+                        83
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 1,
+                          "column": 46
+                        },
+                        "end": {
+                          "line": 1,
+                          "column": 83
+                        }
+                      }
+                    },
+                    "range": [
+                      33,
+                      84
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 1,
+                        "column": 33
+                      },
+                      "end": {
+                        "line": 1,
+                        "column": 84
+                      }
+                    }
+                  },
+                  "cssClass": null,
+                  "data": [],
+                  "range": [
+                    32,
+                    84
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 1,
+                      "column": 32
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 84
+                    }
+                  }
+                }
+              ],
+              "range": [
+                32,
+                84
+              ],
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 32
+                },
+                "end": {
+                  "line": 1,
+                  "column": 84
+                }
+              }
+            },
+            "range": [
+              29,
+              84
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 29
+              },
+              "end": {
+                "line": 1,
+                "column": 84
+              }
+            }
+          }
+        ],
+        "range": [
+          9,
+          84
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 9
+          },
+          "end": {
+            "line": 1,
+            "column": 84
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      85
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 1,
+        "column": 85
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "graph",
+      "range": [
+        0,
+        5
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "TD",
+      "range": [
+        6,
+        8
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 6
+        },
+        "end": {
+          "line": 1,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ";",
+      "range": [
+        8,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 8
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A_flowchart-elk_node",
+      "range": [
+        9,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 9
+        },
+        "end": {
+          "line": 1,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        29,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 29
+        },
+        "end": {
+          "line": 1,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "B",
+      "range": [
+        32,
+        33
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 32
+        },
+        "end": {
+          "line": 1,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[|",
+      "range": [
+        33,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 33
+        },
+        "end": {
+          "line": 1,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "borders",
+      "range": [
+        35,
+        42
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 35
+        },
+        "end": {
+          "line": 1,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        42,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 42
+        },
+        "end": {
+          "line": 1,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "lt",
+      "range": [
+        43,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 43
+        },
+        "end": {
+          "line": 1,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "|",
+      "range": [
+        45,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 45
+        },
+        "end": {
+          "line": 1,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "This node has a flowchart-elk as text",
+      "range": [
+        46,
+        83
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 46
+        },
+        "end": {
+          "line": 1,
+          "column": 83
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        83,
+        84
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 83
+        },
+        "end": {
+          "line": 1,
+          "column": 84
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ";",
+      "range": [
+        84,
+        85
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 84
+        },
+        "end": {
+          "line": 1,
+          "column": 85
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    85
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 1,
+      "column": 85
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Units and contexts (Entities): after the placeholder, a `;` ends the data as usual and is a `;` unit, which no rule takes."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...urney  A: 5: pﬂ°x¶ß;q\n----------------------^\nExpecting 'EOF', 'SPACE', 'NEWLINE', 'title', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'section', 'taskName', got 'INVALID'"
+  }
+}

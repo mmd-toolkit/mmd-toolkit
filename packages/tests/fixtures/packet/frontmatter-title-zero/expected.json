@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty numeric frontmatter title supplies no diagram title."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  }
+}

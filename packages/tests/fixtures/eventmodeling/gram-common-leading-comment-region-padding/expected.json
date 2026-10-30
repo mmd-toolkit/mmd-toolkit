@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/eventmodeling.md Common statement values: Are the comment region and its indentation and terminating LF omitted while only the surviving space/tab run prefixes accDescr?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 6, column 11: unexpected character: ->:<- at offset: 44, skipped 1 characters. Parse error on line 6, column 3: Expecting token of type 'EOF' but found `accDescr`."
+  }
+}

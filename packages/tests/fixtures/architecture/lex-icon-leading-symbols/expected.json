@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Icons: the icon name permits a leading or trailing dash or colon, unlike a declaration ID. Case: icon-leading-symbols."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service",
+        "icon": ":-"
+      }
+    ],
+    "groups": [
+      {
+        "id": "g",
+        "icon": "-:A_"
+      }
+    ],
+    "edges": [],
+    "layoutHints": []
+  }
+}

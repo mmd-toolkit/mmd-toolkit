@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A retained native directive between two bare lines keeps the header detectable."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

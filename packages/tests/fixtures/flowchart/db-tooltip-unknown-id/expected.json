@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Db normalization, click: the tooltip is recorded for Z, which is no vertex, and no link is set."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [
+      {
+        "id": "Z",
+        "text": "t"
+      }
+    ]
+  }
+}

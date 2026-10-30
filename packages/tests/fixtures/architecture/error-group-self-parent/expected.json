@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A group cannot name itself as parent."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The group [g] cannot be placed within itself"
+  }
+}

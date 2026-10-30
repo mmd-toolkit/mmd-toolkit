@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/eventmodeling/eventmodeling.spec.ts",
+    "line": 54,
+    "test": "eventmodeling diagrams > should handle multiple source frames"
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "ui",
+        "entityIdentifier": "CartUI",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "cmd",
+        "entityIdentifier": "AddItem",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "03",
+        "modelEntityType": "cmd",
+        "entityIdentifier": "RemoveItem",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "04",
+        "modelEntityType": "evt",
+        "entityIdentifier": "ItemChanged",
+        "sourceFrames": [
+          "02",
+          "03"
+        ],
+        "data": null
+      }
+    ]
+  }
+}

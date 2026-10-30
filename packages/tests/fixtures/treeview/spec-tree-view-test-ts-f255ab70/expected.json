@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/treeView.test.ts",
+    "line": 12,
+    "test": "TreeView Parser > Basic Parsing > should parse empty treeView"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": []
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Equal branch orders preserve creation order."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "b"
+      },
+      {
+        "name": "c"
+      }
+    ]
+  }
+}

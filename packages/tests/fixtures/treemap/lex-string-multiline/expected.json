@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can both quote styles contain newlines?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A\n B",
+        "value": 1
+      },
+      {
+        "name": "C\nD",
+        "children": []
+      }
+    ],
+    "classDefs": []
+  }
+}

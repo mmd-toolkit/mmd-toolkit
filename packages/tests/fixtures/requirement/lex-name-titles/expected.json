@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Lexical structure: `titles` is a name, since no whitespace follows `title`."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [
+      {
+        "type": "satisfies",
+        "src": "titles",
+        "dst": "b"
+      }
+    ],
+    "classes": []
+  }
+}

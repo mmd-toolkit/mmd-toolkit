@@ -1,0 +1,63 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A third declaration of the same sorted union target list appends a third entry with its own size."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "C"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "size": 1
+      },
+      {
+        "sets": [
+          "B",
+          "C"
+        ],
+        "size": 2
+      },
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "size": 3
+      },
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "size": 4
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

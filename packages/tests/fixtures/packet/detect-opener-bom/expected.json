@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: Detection can pass a block whose Unicode opener padding the native rule rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 4: unexpected character: ->﻿<- at offset: 3, skipped 1 characters.\nLexer error on line 2, column 1: unexpected character: ->x<- at offset: 5, skipped 1 characters. Parse error on line 1, column 1: Expecting: one of these possible Token sequences:\n  1. [packet]\n  2. [packet-beta]\nbut found: '-'"
+  }
+}

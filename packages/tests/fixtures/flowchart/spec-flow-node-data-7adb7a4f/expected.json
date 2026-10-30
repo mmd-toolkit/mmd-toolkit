@@ -1,0 +1,128 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-node-data.spec.js",
+    "line": 96,
+    "test": "when parsing directions > should handle basic shape data statements with amp and edges 5, trailing space"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "D",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "D",
+        "props": {},
+        "type": "rounded"
+      },
+      {
+        "id": "E",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "E",
+        "props": {},
+        "type": "rounded"
+      },
+      {
+        "id": "F",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "shape: rounded",
+        "type": "diamond",
+        "props": {}
+      },
+      {
+        "id": "G",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "shape: rounded",
+        "type": "diamond",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "D",
+        "end": "F",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_D_F_0"
+      },
+      {
+        "start": "D",
+        "end": "G",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_D_G_0"
+      },
+      {
+        "start": "E",
+        "end": "F",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_E_F_0"
+      },
+      {
+        "start": "E",
+        "end": "G",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_E_G_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "D",
+        "set": {
+          "type": "rounded"
+        }
+      },
+      {
+        "id": "E",
+        "set": {
+          "type": "rounded"
+        }
+      }
+    ]
+  }
+}

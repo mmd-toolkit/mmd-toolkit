@@ -1,0 +1,162 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/swimlanes.md",
+    "line": 162
+  },
+  "accepted": true,
+  "diagramType": "swimlane",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "start",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Start",
+        "type": "stadium",
+        "props": {}
+      },
+      {
+        "id": "task",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Do work",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "fix",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Fix issues",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "decision",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Ready?",
+        "type": "diamond",
+        "props": {}
+      },
+      {
+        "id": "done",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Done",
+        "type": "circle",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "start",
+        "end": "task",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_start_task_0"
+      },
+      {
+        "start": "task",
+        "end": "decision",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_task_decision_0"
+      },
+      {
+        "start": "decision",
+        "end": "done",
+        "type": "arrow_point",
+        "text": "Yes",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_decision_done_0"
+      },
+      {
+        "start": "decision",
+        "end": "fix",
+        "type": "arrow_point",
+        "text": "No",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_decision_fix_0"
+      },
+      {
+        "start": "fix",
+        "end": "task",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_fix_task_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "Intake",
+        "nodes": [
+          "start",
+          "task",
+          "fix"
+        ],
+        "title": "Intake",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "Review",
+        "nodes": [
+          "decision"
+        ],
+        "title": "Review",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "Complete",
+        "nodes": [
+          "done"
+        ],
+        "title": "Complete",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

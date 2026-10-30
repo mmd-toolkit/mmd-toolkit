@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Whitespace-only frontmatter titles are held independently of grammar conversion."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "  ",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  },
+  "embedded": {
+    "title": "  "
+  }
+}

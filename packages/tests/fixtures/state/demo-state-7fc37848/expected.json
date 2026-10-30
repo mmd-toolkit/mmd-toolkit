@@ -1,0 +1,66 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/state.html",
+    "line": 198
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "S1",
+        "shape": "rect",
+        "label": "S1",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "S2",
+        "shape": "rect",
+        "label": "S2",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "S3",
+        "shape": "rect",
+        "label": "S3",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "S1",
+        "label": ""
+      },
+      {
+        "start": "S1",
+        "end": "S2",
+        "label": "This long line uses a br tag<br />to create multiple<br />lines."
+      },
+      {
+        "start": "S1",
+        "end": "S3",
+        "label": "This transition description uses \\na newline character\\nto create multiple\\nlines."
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

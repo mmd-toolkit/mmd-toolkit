@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Rejections outside the grammar: the second `deactivate` comes when the activations of A are not more than its deactivations, so it is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Trying to inactivate an inactive participant (A)"
+  }
+}

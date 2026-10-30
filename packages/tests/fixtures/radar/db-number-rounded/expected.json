@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "NUMBER conversion uses nearest double precision."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [],
+    "curves": [
+      {
+        "label": "c",
+        "entries": [
+          9007199254740992,
+          0.12345678901234568
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

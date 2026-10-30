@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A tag beginning in an earlier comment can change a later quote delimiter."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 3: unexpected character: ->'<- at offset: 9, skipped 2 characters. "
+  }
+}

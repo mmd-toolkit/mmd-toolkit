@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "diagrams/eventmodeling.md, Semantic acceptance conditions: a time frame with the name of an earlier reset frame is a duplicate frame, which setAst rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Duplicate event modeling frame ID \"01\" on line 3"
+  }
+}

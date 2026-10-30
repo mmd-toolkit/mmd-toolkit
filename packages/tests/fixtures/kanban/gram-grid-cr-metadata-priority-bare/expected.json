@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md Known divergences (embedded-data-opaque): The delimited embedded content is opaque; Mermaid rejects its content."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "can not read a block mapping entry; a multiline key may not be an implicit key (3:1)\n\n 1 | priority: a\n 2 | b\n 3 | \n-----^"
+  }
+}

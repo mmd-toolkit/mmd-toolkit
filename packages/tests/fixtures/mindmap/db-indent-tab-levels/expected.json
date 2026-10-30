@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, level: a tab is one character of indentation."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "child",
+          "level": 1,
+          "descr": "child",
+          "type": 0,
+          "children": [
+            {
+              "nodeId": "grand",
+              "level": 2,
+              "descr": "grand",
+              "type": 0,
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

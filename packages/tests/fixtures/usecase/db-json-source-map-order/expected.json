@@ -1,0 +1,107 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "JSON effects follow declaration order First, Second while the earlier relationship reference puts Second before First in the stored JSON map."
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [
+      {
+        "id": "A",
+        "label": "A",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [
+      {
+        "source": "A",
+        "target": "Second",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "Second",
+        "value": {
+          "b": true,
+          "a": null
+        },
+        "propertyOrder": {
+          "": [
+            "b",
+            "a"
+          ]
+        },
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "First",
+        "value": {
+          "1": 1,
+          "2": 2
+        },
+        "propertyOrder": {
+          "": [
+            "2",
+            "1"
+          ]
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "First",
+        "set": {
+          "value": {
+            "1": 1,
+            "2": 2
+          },
+          "propertyOrder": {
+            "": [
+              "2",
+              "1"
+            ]
+          }
+        }
+      },
+      {
+        "id": "Second",
+        "set": {
+          "value": {
+            "b": true,
+            "a": null
+          },
+          "propertyOrder": {
+            "": [
+              "b",
+              "a"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

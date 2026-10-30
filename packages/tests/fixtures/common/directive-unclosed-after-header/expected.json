@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Directives: a directive without its closing `}%%` extends to the end of the text, so the line after it is part of the directive, and the diagram has no vertices and no edges."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

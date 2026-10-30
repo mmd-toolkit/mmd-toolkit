@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: A metadata-shaped line inside a quoted name is excluded from box-mode detection."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "one\ntitle ├── two",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

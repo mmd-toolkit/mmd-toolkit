@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, empty texts: nothing in a text of a quadrant in quotes."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...tChartquadrant-2 \"\"\n----------------------^\nExpecting 'ALPHA', 'NUM', 'COMMA', 'AMP', 'BRKT', 'MULT', 'UNICODE_TEXT', 'STR', 'MD_STR', 'PUNCTUATION', 'PLUS', 'EQUALS', 'DOT', 'UNDERSCORE', got 'NEWLINE'"
+  }
+}

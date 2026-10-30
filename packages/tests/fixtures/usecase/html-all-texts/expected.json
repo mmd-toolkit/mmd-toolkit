@@ -1,0 +1,113 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "What markup reaches every stored text field before layout sanitization?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "<b>Accessible</b>",
+    "accDescr": "<i>Description</i>",
+    "actors": [
+      {
+        "id": "A",
+        "label": "<b>Actor</b>",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "stereotype": "Human &amp; role",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "B",
+        "label": "<i>Use case</i>",
+        "labelType": "text",
+        "shape": "rect",
+        "business": false,
+        "stereotype": "Core",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "C",
+        "label": "<em>Markdown</em>",
+        "labelType": "markdown",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "S",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [
+      {
+        "id": "S",
+        "label": "<b>System</b>",
+        "labelType": "text",
+        "type": "rect",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "relationships": [
+      {
+        "source": "A",
+        "target": "B",
+        "type": "association",
+        "arrowType": 0,
+        "label": "<b>Edge</b>",
+        "labelType": "text",
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [
+      {
+        "target": "B",
+        "label": "<br>Note",
+        "labelType": "text"
+      }
+    ],
+    "jsonNodes": [
+      {
+        "id": "J",
+        "value": {
+          "<b>key</b>": "<i>value</i>"
+        },
+        "propertyOrder": {
+          "": [
+            "<b>key</b>"
+          ]
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "title": "<b>Title</b>",
+    "dataBlockEffects": [
+      {
+        "id": "J",
+        "set": {
+          "value": {
+            "<b>key</b>": "<i>value</i>"
+          },
+          "propertyOrder": {
+            "": [
+              "<b>key</b>"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

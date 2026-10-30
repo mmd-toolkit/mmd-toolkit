@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The title of a subgraph under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): it is recorded with the characters replaced."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A"
+        ],
+        "title": "a&lt;b&gt;&equals;c<br/>d",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

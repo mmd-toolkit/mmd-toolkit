@@ -1,0 +1,149 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: c4-no-duplicate-title >> invalid >>> docs/rules/c4-no-duplicate-title.md incorrect 1
+Filename: c4-no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | C4Context
+  2 |   title Banking
+  3 |   title Payments
+    |   ^~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier title with this `title`.
+---
+
+
+Test: c4-no-duplicate-title >> invalid >>> invalid/c4/inside-boundary-title
+Filename: tests/fixtures/rules/c4-no-duplicate-title/invalid/c4/inside-boundary-title-input.mmd
+
+Code:
+  1 | C4Context
+  2 | title Banking
+  3 | Boundary(bank, "Bank") {
+  4 | Person(a, "A")
+  5 | title Payments
+    | ^~~~~~~~~~~~~~ [1]
+  6 | }
+  7 |
+
+[1] mermaid.js replaces the earlier title with this `title`.
+---
+
+
+Test: c4-no-duplicate-title >> invalid >>> invalid/c4/quoted-title-is-literal
+Filename: tests/fixtures/rules/c4-no-duplicate-title/invalid/c4/quoted-title-is-literal-input.mmd
+
+Code:
+  1 | C4Context
+  2 | title Banking
+  3 | title "Banking"
+    | ^~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier title with this `title`.
+---
+
+
+Test: c4-no-duplicate-title >> invalid >>> invalid/c4/three-titles
+Filename: tests/fixtures/rules/c4-no-duplicate-title/invalid/c4/three-titles-input.mmd
+
+Code:
+  1 | C4Context
+  2 | title First
+  3 | title Second
+    | ^~~~~~~~~~~~ [1]
+  4 | title First
+    | ^~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the earlier title with this `title`.
+[2] mermaid.js replaces the earlier title with this `title`.
+---
+
+
+Test: c4-no-duplicate-title >> invalid >>> invalid/c4/title-comment-between
+Filename: tests/fixtures/rules/c4-no-duplicate-title/invalid/c4/title-comment-between-input.mmd
+
+Code:
+  1 | C4Context
+  2 | title Banking
+  3 | %% note
+  4 | title Payments
+    | ^~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier title with this `title`.
+---
+
+
+Test: c4-no-duplicate-title >> invalid >>> invalid/c4/title-directive-between
+Filename: tests/fixtures/rules/c4-no-duplicate-title/invalid/c4/title-directive-between-input.mmd
+
+Code:
+  1 | C4Context
+  2 | title Banking
+  3 | %%{init: {}}%%
+  4 | title Payments
+    | ^~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier title with this `title`.
+---
+
+
+Test: c4-no-duplicate-title >> invalid >>> invalid/c4/title-empty-block-between
+Filename: tests/fixtures/rules/c4-no-duplicate-title/invalid/c4/title-empty-block-between-input.mmd
+
+Code:
+  1 | C4Context
+  2 | title Banking
+  3 | accDescr {}title Payments
+    |            ^~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier title with this `title`.
+---
+
+
+Test: c4-no-duplicate-title >> invalid >>> invalid/c4/title-trailing-space-differs
+Filename: tests/fixtures/rules/c4-no-duplicate-title/invalid/c4/title-trailing-space-differs-input.mmd
+
+Code:
+  1 | C4Context
+  2 | title A
+  3 | title A 
+    | ^~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier title with this `title`.
+---
+
+
+Test: c4-no-duplicate-title >> invalid >>> invalid/c4/title-value-whitespace
+Filename: tests/fixtures/rules/c4-no-duplicate-title/invalid/c4/title-value-whitespace-input.mmd
+
+Code:
+  1 | C4Context
+  2 | title Banking
+  3 | title  Banking 
+    | ^~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier title with this `title`.
+---
+
+
+Test: c4-no-duplicate-title >> invalid >>> invalid/c4/two-titles
+Filename: tests/fixtures/rules/c4-no-duplicate-title/invalid/c4/two-titles-input.mmd
+
+Code:
+  1 | C4Context
+  2 | title Banking
+  3 | title Payments
+    | ^~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier title with this `title`.
+---

@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Click statements: `&` alone can be written as a vertex id, so `click & B` is a click statement with the id `&` and the callback name `B`, as in mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [],
+    "clickCalls": [
+      {
+        "id": "&",
+        "name": "B",
+        "args": null
+      }
+    ]
+  }
+}

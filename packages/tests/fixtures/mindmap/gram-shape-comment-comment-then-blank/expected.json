@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Blank lines: two comments and a blank line, accepted by both."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "a",
+          "level": 2,
+          "descr": "x",
+          "type": 2,
+          "children": []
+        },
+        {
+          "nodeId": "b",
+          "level": 2,
+          "descr": "b",
+          "type": 0,
+          "children": []
+        }
+      ]
+    }
+  }
+}

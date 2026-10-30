@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokenless-empty-forms: the block keeps the rule of accTitle and : from matching, so mermaid.js reads accTitle as a state with a description; the block lies inside that statement, and the reference input, a title, is read otherwise."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "accTitle",
+        "shape": "rect",
+        "label": "t",
+        "description": [],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

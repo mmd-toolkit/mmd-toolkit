@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: Selected semicolons cannot divide the title fixed word."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  }
+}

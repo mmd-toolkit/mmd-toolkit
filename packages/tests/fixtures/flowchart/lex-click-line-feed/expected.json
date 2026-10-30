@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Lexical structure, click and callbacks: the one whitespace character after the click id is read with it, here a line feed, so `cb` is the callback."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "cb",
+        "args": null
+      }
+    ]
+  }
+}

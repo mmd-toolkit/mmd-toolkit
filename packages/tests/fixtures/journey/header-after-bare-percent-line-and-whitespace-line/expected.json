@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Detection: a bare `%%` line and a line of whitespace only before the header; mermaid.js rejects the input."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n%%  journey  A: 1\n--^\nExpecting 'journey', got 'NEWLINE'"
+  }
+}

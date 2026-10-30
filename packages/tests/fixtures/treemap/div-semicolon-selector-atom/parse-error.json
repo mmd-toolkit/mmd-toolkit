@@ -1,0 +1,17 @@
+{
+  "message": "Unexpected ; that the line rule ignores",
+  "range": [
+    22,
+    23
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 14
+    },
+    "end": {
+      "line": 2,
+      "column": 15
+    }
+  }
+}

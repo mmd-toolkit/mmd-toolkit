@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gitgraph.md Frontmatter tag can prevent body tag quote conversion."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 20: unexpected character: ->'<- at offset: 28, skipped 2 characters.\nLexer error on line 2, column 23: unexpected character: ->\"<- at offset: 31, skipped 1 characters. Parse error on line 2, column 19: Expecting: one of these possible Token sequences:\n  1. [NEWLINE]\n  2. [EOF]\nbut found: 'c'"
+  }
+}

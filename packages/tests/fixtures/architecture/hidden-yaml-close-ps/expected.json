@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "PS satisfies the YAML closing lookahead but remains visible to lexing."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 4: unexpected character: -> <- at offset: 33, skipped 1 characters. "
+  }
+}

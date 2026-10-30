@@ -1,0 +1,17 @@
+{
+  "message": "The data string has no closing \" before the end of the text",
+  "range": [
+    25,
+    26
+  ],
+  "loc": {
+    "start": {
+      "line": 4,
+      "column": 8
+    },
+    "end": {
+      "line": 4,
+      "column": 9
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Common statements: Without padding after a slash comment, identifier wins over the composite metadata terminal. Rejected by Mermaid."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 28: unexpected character: ->:<- at offset: 27, skipped 1 characters. Parse error on line 1, column 20: Expecting token of type 'EOF' but found `accTitle`."
+  }
+}

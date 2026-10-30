@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Which line terminators survive inside STRING2?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A\nB\nC D E",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md Name lists: explicit text and style accept repeated targets and retain every occurrence in their written lists."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [
+      {
+        "sets": [
+          "A",
+          "A",
+          "B"
+        ],
+        "id": "item"
+      }
+    ],
+    "styles": [
+      {
+        "targets": [
+          "A",
+          "A",
+          "B"
+        ],
+        "styles": {
+          "color": "red",
+          "fill": "blue"
+        }
+      }
+    ]
+  }
+}

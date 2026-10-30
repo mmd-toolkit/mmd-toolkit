@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Units and contexts (Whitespace): U+3000 before a task text is whitespace; U+3000 before the colon is a character of the text: the task `A` and U+3000."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A　",
+        "people": [],
+        "score": 5
+      }
+    ]
+  }
+}

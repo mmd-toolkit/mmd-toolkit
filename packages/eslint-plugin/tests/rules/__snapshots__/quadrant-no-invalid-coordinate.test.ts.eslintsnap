@@ -1,0 +1,204 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: quadrant-no-invalid-coordinate >> invalid >>> docs/rules/quadrant-no-invalid-coordinate.md incorrect 1
+Filename: quadrant-no-invalid-coordinate-incorrect-1.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   Campaign A: [0,3, 0,6]
+    |                ^~~  ^~~
+    |                [1]  [2]
+  3 |
+
+Output:
+  1 | quadrantChart
+  2 |   Campaign A: [0.3, 0.6]
+  3 |
+
+[1] mermaid.js does not place this point inside the chart: `0,3` is not read as a number from 0 to 1.
+[2] mermaid.js does not place this point inside the chart: `0,6` is not read as a number from 0 to 1.
+---
+
+
+Test: quadrant-no-invalid-coordinate >> invalid >>> invalid/quadrant/both-decimal-commas
+Filename: tests/fixtures/rules/quadrant-no-invalid-coordinate/invalid/quadrant/both-decimal-commas-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 | A: [0,3, 0,6]
+    |     ^~~  ^~~
+    |     [1]  [2]
+  3 |
+
+Output:
+  1 | quadrantChart
+  2 | A: [0.3, 0.6]
+  3 |
+
+[1] mermaid.js does not place this point inside the chart: `0,3` is not read as a number from 0 to 1.
+[2] mermaid.js does not place this point inside the chart: `0,6` is not read as a number from 0 to 1.
+---
+
+
+Test: quadrant-no-invalid-coordinate >> invalid >>> invalid/quadrant/coordinate-binary-no-number
+Filename: tests/fixtures/rules/quadrant-no-invalid-coordinate/invalid/quadrant/coordinate-binary-no-number-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   A: [0b2, 0.5]
+    |       ^~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js does not place this point inside the chart: `0b2` is not read as a number from 0 to 1.
+---
+
+
+Test: quadrant-no-invalid-coordinate >> invalid >>> invalid/quadrant/coordinate-binary-outside
+Filename: tests/fixtures/rules/quadrant-no-invalid-coordinate/invalid/quadrant/coordinate-binary-outside-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   A: [0b10, 0.5]
+    |       ^~~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js does not place this point inside the chart: `0b10` is not read as a number from 0 to 1.
+---
+
+
+Test: quadrant-no-invalid-coordinate >> invalid >>> invalid/quadrant/coordinate-hex
+Filename: tests/fixtures/rules/quadrant-no-invalid-coordinate/invalid/quadrant/coordinate-hex-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   A: [0x5, 0.5]
+    |       ^~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js does not place this point inside the chart: `0x5` is not read as a number from 0 to 1.
+---
+
+
+Test: quadrant-no-invalid-coordinate >> invalid >>> invalid/quadrant/coordinate-leading-zeros-outside
+Filename: tests/fixtures/rules/quadrant-no-invalid-coordinate/invalid/quadrant/coordinate-leading-zeros-outside-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   A: [003, 0.5]
+    |       ^~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js does not place this point inside the chart: `003` is not read as a number from 0 to 1.
+---
+
+
+Test: quadrant-no-invalid-coordinate >> invalid >>> invalid/quadrant/coordinate-non-ascii
+Filename: tests/fixtures/rules/quadrant-no-invalid-coordinate/invalid/quadrant/coordinate-non-ascii-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   A: [0é3, 0.5]
+    |       ^~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js does not place this point inside the chart: `0é3` is not read as a number from 0 to 1.
+---
+
+
+Test: quadrant-no-invalid-coordinate >> invalid >>> invalid/quadrant/coordinate-semicolon
+Filename: tests/fixtures/rules/quadrant-no-invalid-coordinate/invalid/quadrant/coordinate-semicolon-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   A: [0;3, 0.5]
+    |       ^~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js does not place this point inside the chart: `0;3` is not read as a number from 0 to 1.
+---
+
+
+Test: quadrant-no-invalid-coordinate >> invalid >>> invalid/quadrant/coordinate-space
+Filename: tests/fixtures/rules/quadrant-no-invalid-coordinate/invalid/quadrant/coordinate-space-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   A: [0 3, 0.5]
+    |       ^~~ [1]
+  3 |
+
+Output: unchanged
+
+[1] mermaid.js does not place this point inside the chart: `0 3` is not read as a number from 0 to 1.
+---
+
+
+Test: quadrant-no-invalid-coordinate >> invalid >>> invalid/quadrant/coordinate-with-class-and-styles
+Filename: tests/fixtures/rules/quadrant-no-invalid-coordinate/invalid/quadrant/coordinate-with-class-and-styles-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   A:::c: [0,3, 0.6] radius: 5
+    |           ^~~ [1]
+  3 |   classDef c color: #f00
+  4 |
+
+Output:
+  1 | quadrantChart
+  2 |   A:::c: [0.3, 0.6] radius: 5
+  3 |   classDef c color: #f00
+  4 |
+
+[1] mermaid.js does not place this point inside the chart: `0,3` is not read as a number from 0 to 1.
+---
+
+
+Test: quadrant-no-invalid-coordinate >> invalid >>> invalid/quadrant/coordinate-y-only
+Filename: tests/fixtures/rules/quadrant-no-invalid-coordinate/invalid/quadrant/coordinate-y-only-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   A: [0.3, 0,6]
+    |            ^~~ [1]
+  3 |
+
+Output:
+  1 | quadrantChart
+  2 |   A: [0.3, 0.6]
+  3 |
+
+[1] mermaid.js does not place this point inside the chart: `0,6` is not read as a number from 0 to 1.
+---
+
+
+Test: quadrant-no-invalid-coordinate >> invalid >>> invalid/quadrant/coordinates-decimal-comma
+Filename: tests/fixtures/rules/quadrant-no-invalid-coordinate/invalid/quadrant/coordinates-decimal-comma-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   A: [0,3, 0,6]
+    |       ^~~  ^~~
+    |       [1]  [2]
+  3 |
+
+Output:
+  1 | quadrantChart
+  2 |   A: [0.3, 0.6]
+  3 |
+
+[1] mermaid.js does not place this point inside the chart: `0,3` is not read as a number from 0 to 1.
+[2] mermaid.js does not place this point inside the chart: `0,6` is not read as a number from 0 to 1.
+---

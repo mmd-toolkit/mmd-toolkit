@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Input with arbitrary named keys in numeric relationship style slots is accepted; rels[0].custom is \"NaN\", and rels[0].unknown is -9."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [
+      {
+        "type": "rel",
+        "from": "a",
+        "to": "b",
+        "label": {
+          "text": "Uses"
+        },
+        "techn": {
+          "text": ""
+        },
+        "descr": {
+          "text": ""
+        },
+        "textColor": "red",
+        "lineColor": "blue",
+        "custom": "NaN",
+        "unknown": -9
+      }
+    ],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

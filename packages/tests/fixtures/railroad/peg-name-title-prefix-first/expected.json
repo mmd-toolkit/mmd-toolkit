@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The TITLE prefix leaves x as the first PEG rule name."
+  },
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "x",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

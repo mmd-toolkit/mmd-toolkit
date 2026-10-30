@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "style-rule-two-semicolons inside metadata tests preprocessing before tokenization."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "astyle:ﬂ°x¶ßyb",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "label": "astyle:ﬂ°x¶ßyb"
+        }
+      }
+    ]
+  }
+}

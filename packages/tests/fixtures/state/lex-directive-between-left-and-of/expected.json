@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The note context: `left` and `of` are two units with one space between them in the diagram text, so a directive between `left` and the space lies between two units; the note is left of A, as in mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [
+      {
+        "state": "A",
+        "position": "left of",
+        "text": "t"
+      }
+    ],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

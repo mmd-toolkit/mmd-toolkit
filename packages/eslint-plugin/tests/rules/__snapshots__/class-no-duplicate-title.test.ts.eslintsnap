@@ -1,0 +1,103 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: class-no-duplicate-title >> invalid >>> docs/rules/class-no-duplicate-title.md incorrect 1
+Filename: class-no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | classDiagram
+  2 |   accTitle: first
+  3 |   accTitle: second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   class A
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+---
+
+
+Test: class-no-duplicate-title >> invalid >>> invalid/class/acc-title-back-to-first
+Filename: tests/fixtures/rules/class-no-duplicate-title/invalid/class/acc-title-back-to-first-input.mmd
+
+Code:
+  1 | classDiagram
+  2 |   accTitle: a
+  3 |   accTitle: b
+    |   ^~~~~~~~~~~ [1]
+  4 |   accTitle: a
+    |   ^~~~~~~~~~~ [2]
+  5 |   class A
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+[2] mermaid.js replaces the earlier title with the one of this `accTitle`.
+---
+
+
+Test: class-no-duplicate-title >> invalid >>> invalid/class/db-acc-title-line-empty-takes-next-after-comment
+Filename: tests/fixtures/rules/class-no-duplicate-title/invalid/class/db-acc-title-line-empty-takes-next-after-comment-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | accTitle: t
+  3 | accTitle:
+    | ^~~~~~~~~\ [1]
+  4 | %% c
+    | ~~~~\ [1]
+  5 | class A
+    | ~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+---
+
+
+Test: class-no-duplicate-title >> invalid >>> invalid/class/db-acc-title-line-empty-takes-next-after-directive
+Filename: tests/fixtures/rules/class-no-duplicate-title/invalid/class/db-acc-title-line-empty-takes-next-after-directive-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | accTitle: t
+  3 | accTitle:
+    | ^~~~~~~~~\ [1]
+  4 | %%{init: {}}%%
+    | ~~~~~~~~~~~~~~\ [1]
+  5 | class A
+    | ~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+---
+
+
+Test: class-no-duplicate-title >> invalid >>> invalid/class/db-acc-title-replaces
+Filename: tests/fixtures/rules/class-no-duplicate-title/invalid/class/db-acc-title-replaces-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | accTitle: first
+  3 | accTitle: second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | class A
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+---
+
+
+Test: class-no-duplicate-title >> invalid >>> invalid/class/empty-title-takes-class-line-after-empty-line
+Filename: tests/fixtures/rules/class-no-duplicate-title/invalid/class/empty-title-takes-class-line-after-empty-line-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | accTitle: t
+  3 | accTitle:
+    | ^~~~~~~~~\ [1]
+  4 |
+    | ~\ [1]
+  5 | class A
+    | ~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `accTitle`.
+---

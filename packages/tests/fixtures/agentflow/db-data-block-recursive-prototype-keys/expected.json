@@ -1,0 +1,61 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Prototype-key stripping descends into mappings and arrays."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {},
+        "metadata": {
+          "safe": {
+            "keep": "ok"
+          },
+          "list": [
+            {
+              "keep": "yes"
+            }
+          ]
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "metadata": {
+            "safe": {
+              "keep": "ok"
+            },
+            "list": [
+              {
+                "keep": "yes"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

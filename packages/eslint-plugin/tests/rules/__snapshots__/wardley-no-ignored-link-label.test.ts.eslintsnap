@@ -1,0 +1,327 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: wardley-no-ignored-link-label >> invalid >>> docs/rules/wardley-no-ignored-link-label.md incorrect 1
+Filename: wardley-no-ignored-link-label-incorrect-1.mmd
+
+Code:
+  1 | wardley-beta
+  2 |   component API [0.6, 0.7]
+  3 |   component Database [0.3, 0.8]
+  4 |   API +'calls'> Database; storage
+    |                          ^~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js uses the label in the arrow of this link and drops this label after `;`.
+    Suggestions:
+      - Remove the label after `;`.
+        Output:
+          1 | wardley-beta
+          2 |   component API [0.6, 0.7]
+          3 |   component Database [0.3, 0.8]
+          4 |   API +'calls'> Database
+          5 |
+      - Remove the label in the arrow.
+        Output:
+          1 | wardley-beta
+          2 |   component API [0.6, 0.7]
+          3 |   component Database [0.3, 0.8]
+          4 |   API +> Database; storage
+          5 |
+---
+
+
+Test: wardley-no-ignored-link-label >> invalid >>> invalid/wardley/docs-incorrect-1
+Filename: tests/fixtures/rules/wardley-no-ignored-link-label/invalid/wardley/docs-incorrect-1-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 |   component API [0.6, 0.7]
+  3 |   component Database [0.3, 0.8]
+  4 |   API +'calls'> Database; storage
+    |                          ^~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js uses the label in the arrow of this link and drops this label after `;`.
+    Suggestions:
+      - Remove the label after `;`.
+        Output:
+          1 | wardley-beta
+          2 |   component API [0.6, 0.7]
+          3 |   component Database [0.3, 0.8]
+          4 |   API +'calls'> Database
+          5 |
+      - Remove the label in the arrow.
+        Output:
+          1 | wardley-beta
+          2 |   component API [0.6, 0.7]
+          3 |   component Database [0.3, 0.8]
+          4 |   API +> Database; storage
+          5 |
+---
+
+
+Test: wardley-no-ignored-link-label >> invalid >>> invalid/wardley/link-flow-whitespace-kept
+Filename: tests/fixtures/rules/wardley-no-ignored-link-label/invalid/wardley/link-flow-whitespace-kept-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component A [0.4,0.5]
+  3 | component B [0.6,0.7]
+  4 | A +' flow '> B; flow
+    |                ^~~~~ [1]
+
+[1] mermaid.js uses the label in the arrow of this link and drops this label after `;`.
+    Suggestions:
+      - Remove the label after `;`.
+        Output:
+          1 | wardley-beta
+          2 | component A [0.4,0.5]
+          3 | component B [0.6,0.7]
+          4 | A +' flow '> B
+      - Remove the label in the arrow.
+        Output:
+          1 | wardley-beta
+          2 | component A [0.4,0.5]
+          3 | component B [0.6,0.7]
+          4 | A +> B; flow
+---
+
+
+Test: wardley-no-ignored-link-label >> invalid >>> invalid/wardley/link-label-empty-flow
+Filename: tests/fixtures/rules/wardley-no-ignored-link-label/invalid/wardley/link-label-empty-flow-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component API [0.6,0.7]
+  3 | component Database [0.3,0.8]
+  4 | API +''> Database; storage
+    |                   ^~~~~~~~ [1]
+
+[1] mermaid.js uses the label in the arrow of this link and drops this label after `;`.
+    Suggestions:
+      - Remove the label after `;`.
+        Output:
+          1 | wardley-beta
+          2 | component API [0.6,0.7]
+          3 | component Database [0.3,0.8]
+          4 | API +''> Database
+      - Remove the label in the arrow.
+        Output:
+          1 | wardley-beta
+          2 | component API [0.6,0.7]
+          3 | component Database [0.3,0.8]
+          4 | API +> Database; storage
+---
+
+
+Test: wardley-no-ignored-link-label >> invalid >>> invalid/wardley/link-label-entity-same
+Filename: tests/fixtures/rules/wardley-no-ignored-link-label/invalid/wardley/link-label-entity-same-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component A [0.6,0.7]
+  3 | component B [0.3,0.8]
+  4 | A +'A'> B; #65;
+    |           ^~~~~ [1]
+
+[1] mermaid.js uses the label in the arrow of this link and drops this label after `;`.
+    Suggestions:
+      - Remove the label after `;`.
+        Output:
+          1 | wardley-beta
+          2 | component A [0.6,0.7]
+          3 | component B [0.3,0.8]
+          4 | A +'A'> B
+      - Remove the label in the arrow.
+        Output:
+          1 | wardley-beta
+          2 | component A [0.6,0.7]
+          3 | component B [0.3,0.8]
+          4 | A +> B; #65;
+---
+
+
+Test: wardley-no-ignored-link-label >> invalid >>> invalid/wardley/link-label-newline
+Filename: tests/fixtures/rules/wardley-no-ignored-link-label/invalid/wardley/link-label-newline-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component A [0.6,0.7]
+  3 | component B [0.3,0.8]
+  4 | A +'line
+  5 | break'> B; storage
+    |           ^~~~~~~~ [1]
+
+[1] mermaid.js uses the label in the arrow of this link and drops this label after `;`.
+    Suggestions:
+      - Remove the label after `;`.
+        Output:
+          1 | wardley-beta
+          2 | component A [0.6,0.7]
+          3 | component B [0.3,0.8]
+          4 | A +'line
+          5 | break'> B
+      - Remove the label in the arrow.
+        Output:
+          1 | wardley-beta
+          2 | component A [0.6,0.7]
+          3 | component B [0.3,0.8]
+          4 | A +> B; storage
+---
+
+
+Test: wardley-no-ignored-link-label >> invalid >>> invalid/wardley/link-label-semicolon-content
+Filename: tests/fixtures/rules/wardley-no-ignored-link-label/invalid/wardley/link-label-semicolon-content-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component A [0.6,0.7]
+  3 | component B [0.3,0.8]
+  4 | A +'calls'> B; storage;
+    |               ^~~~~~~~~ [1]
+
+[1] mermaid.js uses the label in the arrow of this link and drops this label after `;`.
+    Suggestions:
+      - Remove the label after `;`.
+        Output:
+          1 | wardley-beta
+          2 | component A [0.6,0.7]
+          3 | component B [0.3,0.8]
+          4 | A +'calls'> B
+      - Remove the label in the arrow.
+        Output:
+          1 | wardley-beta
+          2 | component A [0.6,0.7]
+          3 | component B [0.3,0.8]
+          4 | A +> B; storage;
+---
+
+
+Test: wardley-no-ignored-link-label >> invalid >>> invalid/wardley/link-old-child-to-parent
+Filename: tests/fixtures/rules/wardley-no-ignored-link-label/invalid/wardley/link-old-child-to-parent-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component P [0.4,0.8]
+  3 | pipeline P {
+  4 | component X [0.5]
+  5 | }
+  6 | pipeline P {
+  7 | component Y [0.6]
+  8 | }
+  9 | X +'flow'> P; tail
+    |              ^~~~~ [1]
+
+[1] mermaid.js uses the label in the arrow of this link and drops this label after `;`.
+    Suggestions:
+      - Remove the label after `;`.
+        Output:
+          1 | wardley-beta
+          2 | component P [0.4,0.8]
+          3 | pipeline P {
+          4 | component X [0.5]
+          5 | }
+          6 | pipeline P {
+          7 | component Y [0.6]
+          8 | }
+          9 | X +'flow'> P
+      - Remove the label in the arrow.
+        Output:
+          1 | wardley-beta
+          2 | component P [0.4,0.8]
+          3 | pipeline P {
+          4 | component X [0.5]
+          5 | }
+          6 | pipeline P {
+          7 | component Y [0.6]
+          8 | }
+          9 | X +> P; tail
+---
+
+
+Test: wardley-no-ignored-link-label >> invalid >>> invalid/wardley/link-parent-to-child-label
+Filename: tests/fixtures/rules/wardley-no-ignored-link-label/invalid/wardley/link-parent-to-child-label-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component P [0.4,0.8]
+  3 | pipeline P {
+  4 | component X [0.5]
+  5 | }
+  6 | P +'flow'> X; tail
+    |              ^~~~~ [1]
+
+[1] mermaid.js uses the label in the arrow of this link and drops this label after `;`.
+    Suggestions:
+      - Remove the label after `;`.
+        Output:
+          1 | wardley-beta
+          2 | component P [0.4,0.8]
+          3 | pipeline P {
+          4 | component X [0.5]
+          5 | }
+          6 | P +'flow'> X
+      - Remove the label in the arrow.
+        Output:
+          1 | wardley-beta
+          2 | component P [0.4,0.8]
+          3 | pipeline P {
+          4 | component X [0.5]
+          5 | }
+          6 | P +> X; tail
+---
+
+
+Test: wardley-no-ignored-link-label >> invalid >>> invalid/wardley/link-two-labels-definition-later
+Filename: tests/fixtures/rules/wardley-no-ignored-link-label/invalid/wardley/link-two-labels-definition-later-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | API +'calls'> Database; storage
+    |                        ^~~~~~~~ [1]
+  3 | component API [0.6,0.7]
+  4 | component Database [0.3,0.8]
+
+[1] mermaid.js uses the label in the arrow of this link and drops this label after `;`.
+    Suggestions:
+      - Remove the label after `;`.
+        Output:
+          1 | wardley-beta
+          2 | API +'calls'> Database
+          3 | component API [0.6,0.7]
+          4 | component Database [0.3,0.8]
+      - Remove the label in the arrow.
+        Output:
+          1 | wardley-beta
+          2 | API +> Database; storage
+          3 | component API [0.6,0.7]
+          4 | component Database [0.3,0.8]
+---
+
+
+Test: wardley-no-ignored-link-label >> invalid >>> invalid/wardley/link-two-labels
+Filename: tests/fixtures/rules/wardley-no-ignored-link-label/invalid/wardley/link-two-labels-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component API [0.6,0.7]
+  3 | component Database [0.3,0.8]
+  4 | API +'calls'> Database; storage
+    |                        ^~~~~~~~ [1]
+
+[1] mermaid.js uses the label in the arrow of this link and drops this label after `;`.
+    Suggestions:
+      - Remove the label after `;`.
+        Output:
+          1 | wardley-beta
+          2 | component API [0.6,0.7]
+          3 | component Database [0.3,0.8]
+          4 | API +'calls'> Database
+      - Remove the label in the arrow.
+        Output:
+          1 | wardley-beta
+          2 | component API [0.6,0.7]
+          3 | component Database [0.3,0.8]
+          4 | API +> Database; storage
+---

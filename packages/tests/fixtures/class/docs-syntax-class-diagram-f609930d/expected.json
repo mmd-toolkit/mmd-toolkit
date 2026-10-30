@@ -1,0 +1,165 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/classDiagram.md",
+    "line": 440
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "UserService",
+        "type": "",
+        "label": "UserService",
+        "text": "UserService",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "login",
+            "parameters": "",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "logout",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "Platform.Auth"
+      },
+      {
+        "id": "Repository",
+        "type": "",
+        "label": "Repository",
+        "text": "Repository",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "find",
+            "parameters": "",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "save",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "Platform.Data"
+      },
+      {
+        "id": "Gateway",
+        "type": "",
+        "label": "Gateway",
+        "text": "Gateway",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "route",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "Platform"
+      }
+    ],
+    "relations": [
+      {
+        "id1": "Gateway",
+        "id2": "UserService",
+        "relation": {
+          "type1": "none",
+          "type2": 3,
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none",
+        "title": "delegates"
+      },
+      {
+        "id1": "Gateway",
+        "id2": "Repository",
+        "relation": {
+          "type1": "none",
+          "type2": 3,
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none",
+        "title": "delegates"
+      }
+    ],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "Platform",
+        "label": "Platform",
+        "classes": [
+          "Gateway"
+        ],
+        "notes": [],
+        "children": [
+          "Platform.Auth",
+          "Platform.Data"
+        ],
+        "explicit": true
+      },
+      {
+        "id": "Platform.Auth",
+        "label": "Auth",
+        "classes": [
+          "UserService"
+        ],
+        "notes": [],
+        "children": [],
+        "parent": "Platform",
+        "explicit": true
+      },
+      {
+        "id": "Platform.Data",
+        "label": "Data",
+        "classes": [
+          "Repository"
+        ],
+        "notes": [],
+        "children": [],
+        "parent": "Platform",
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

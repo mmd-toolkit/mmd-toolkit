@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md F2: Blank case 2 control: an even count before a PS-started root is accepted."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": []
+    }
+  }
+}

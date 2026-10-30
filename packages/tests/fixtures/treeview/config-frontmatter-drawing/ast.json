@@ -1,0 +1,254 @@
+{
+  "type": "Root",
+  "diagramType": "treeView",
+  "body": {
+    "type": "TreeviewDiagram",
+    "body": [
+      {
+        "type": "TreeviewNode",
+        "indent": 0,
+        "textBefore": [],
+        "prefix": null,
+        "textBeforeName": [],
+        "name": {
+          "type": "TreeviewIdentifier",
+          "name": "a.ts",
+          "range": [
+            107,
+            111
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 0
+            },
+            "end": {
+              "line": 9,
+              "column": 4
+            }
+          }
+        },
+        "annotations": [],
+        "range": [
+          107,
+          118
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 0
+          },
+          "end": {
+            "line": 10,
+            "column": 6
+          }
+        },
+        "children": [
+          {
+            "type": "TreeviewNode",
+            "indent": 1,
+            "textBefore": [],
+            "prefix": null,
+            "textBeforeName": [],
+            "name": {
+              "type": "TreeviewIdentifier",
+              "name": "child",
+              "range": [
+                113,
+                118
+              ],
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 1
+                },
+                "end": {
+                  "line": 10,
+                  "column": 6
+                }
+              }
+            },
+            "annotations": [],
+            "range": [
+              113,
+              118
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 1
+              },
+              "end": {
+                "line": 10,
+                "column": 6
+              }
+            },
+            "children": []
+          }
+        ]
+      }
+    ],
+    "range": [
+      93,
+      118
+    ],
+    "loc": {
+      "start": {
+        "line": 8,
+        "column": 0
+      },
+      "end": {
+        "line": 10,
+        "column": 6
+      }
+    }
+  },
+  "frontmatter": {
+    "type": "Frontmatter",
+    "value": "config:\n  treeView:\n    showIcons: true\n    defaultIconPack: custom\n    rowIndent: 3",
+    "valueRange": [
+      4,
+      88
+    ],
+    "range": [
+      0,
+      92
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 7,
+        "column": 3
+      }
+    }
+  },
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        0,
+        3
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "config:\n  treeView:\n    showIcons: true\n    defaultIconPack: custom\n    rowIndent: 3",
+      "range": [
+        4,
+        88
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        89,
+        92
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "treeView-beta",
+      "range": [
+        93,
+        106
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "a.ts",
+      "range": [
+        107,
+        111
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "child",
+      "range": [
+        113,
+        118
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 1
+        },
+        "end": {
+          "line": 10,
+          "column": 6
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    118
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 10,
+      "column": 6
+    }
+  }
+}

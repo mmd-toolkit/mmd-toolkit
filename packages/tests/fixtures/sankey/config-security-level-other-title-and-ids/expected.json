@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, settings: under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled), the title and the ids of the nodes are recorded with the characters replaced."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "T&lt;b&gt;x&lt;/b&gt; & &lt;i&gt;z",
+    "nodes": [
+      "A&lt;b&gt;x&lt;/b&gt; & &lt;script&gt;y&lt;/script&gt;",
+      "B&lt;i&gt;z&lt;/i&gt; &amp; &lt;u&gt;"
+    ],
+    "links": [
+      {
+        "source": "A&lt;b&gt;x&lt;/b&gt; & &lt;script&gt;y&lt;/script&gt;",
+        "target": "B&lt;i&gt;z&lt;/i&gt; &amp; &lt;u&gt;",
+        "value": 1
+      }
+    ]
+  },
+  "embedded": {
+    "title": "T<b>x</b> & <i>z"
+  }
+}

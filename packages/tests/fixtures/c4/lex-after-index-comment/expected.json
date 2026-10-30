@@ -1,0 +1,50 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A index comment suffix after the call or boundary body is accepted; title is \"\", and shapes[0] is absent, and boundaries[1] is absent, and rels[0] is {\"type\":\"rel\",\"from\":\"a\",\"to\":\"b\",\"label\":{\"text\":\"Uses\"},\"techn\":{\"text\":\"HTTPS\"},\"descr\":{\"text\":\"D\"},\"sprite\":\"sprite\",\"tags\":\"tags\",\"link\":\"link\"}."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [
+      {
+        "type": "rel",
+        "from": "a",
+        "to": "b",
+        "label": {
+          "text": "Uses"
+        },
+        "techn": {
+          "text": "HTTPS"
+        },
+        "descr": {
+          "text": "D"
+        },
+        "sprite": "sprite",
+        "tags": "tags",
+        "link": "link"
+      }
+    ],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

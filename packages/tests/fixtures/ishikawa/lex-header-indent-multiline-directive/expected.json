@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md Indentation and Comments: Header-line indentation excludes the multiline directive; R has the two spaces outside it."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "A",
+          "children": []
+        }
+      ]
+    }
+  }
+}

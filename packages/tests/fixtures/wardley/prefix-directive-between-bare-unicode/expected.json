@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a native directive between passed bare lines retain their Unicode trivia in the comparison?"
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: -> <- at offset: 3, skipped 1 characters.\nLexer error on line 4, column 1: unexpected character: -> <- at offset: 19, skipped 1 characters. "
+  }
+}

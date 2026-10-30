@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Indentation and lines: Does removal of a selected semicolon leave ordinary tail indentation carrying across a decoration to b?"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "x",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "style:#x",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "b",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Click statements: a description block with text is no empty description block, so it may not come between a click statement and its newline; mermaid.js rejects it too."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...A \"u\" \"t\" accDescr {x}\n-----------------------^\nExpecting 'NL', got 'acc_descr_multiline_value'"
+  }
+}

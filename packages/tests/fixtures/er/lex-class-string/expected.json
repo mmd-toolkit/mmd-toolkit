@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Other statements: a quoted name in a `class` statement; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\nerDiagramAclass \"A\" a\n----------------^\nExpecting 'UNICODE_TEXT', 'STYLE_TEXT', got 'ENTITY_NAME'"
+  }
+}

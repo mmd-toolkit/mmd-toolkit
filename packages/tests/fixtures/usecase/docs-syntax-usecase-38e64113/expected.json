@@ -1,0 +1,69 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/usecase.md",
+    "line": 479
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "Customer",
+        "label": "Customer",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "Browse",
+        "label": "Browse catalog",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [
+      {
+        "source": "Customer",
+        "target": "Browse",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  },
+  "embedded": {
+    "config": {
+      "usecase": {
+        "useMaxWidth": false,
+        "actorFontSize": 16,
+        "actorFontFamily": "Arial",
+        "actorFontWeight": "bold",
+        "usecaseFontSize": 14,
+        "usecaseFontFamily": "Georgia",
+        "nodeSpacing": 60,
+        "rankSpacing": 70,
+        "diagramPadding": 24
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Hidden directives: source CR is retained inside the node and the consumed following CR is outside."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear"
+      }
+    ]
+  }
+}

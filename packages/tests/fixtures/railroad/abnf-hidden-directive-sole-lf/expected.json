@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ABNF retained directives are hidden on a separate line."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      },
+      {
+        "name": "s",
+        "definition": {
+          "type": "terminal",
+          "value": "b"
+        }
+      }
+    ]
+  }
+}

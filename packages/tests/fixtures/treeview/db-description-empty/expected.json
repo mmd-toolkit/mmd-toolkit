@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty converted description is unpublished."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

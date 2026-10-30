@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Sections precede their items, with source order within each list."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "Todo",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "First",
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "B",
+        "label": "Second",
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "T",
+        "label": "Done",
+        "isGroup": true
+      },
+      {
+        "id": "C",
+        "label": "Third",
+        "isGroup": false,
+        "parentId": "T"
+      }
+    ]
+  }
+}

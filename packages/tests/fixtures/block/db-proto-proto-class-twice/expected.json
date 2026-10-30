@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, prototype names: `__proto__` as a class defined twice."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": []
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": [
+      {
+        "id": "__proto__",
+        "styles": [
+          "fill:red",
+          "stroke:blue"
+        ]
+      }
+    ]
+  }
+}

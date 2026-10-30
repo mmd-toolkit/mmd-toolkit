@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A hash without a closing semicolon is not encoded."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "#35",
+    "accTitle": "&#65",
+    "accDescr": "#amp",
+    "showData": false,
+    "sections": [
+      {
+        "label": "#35",
+        "value": 1
+      }
+    ]
+  }
+}

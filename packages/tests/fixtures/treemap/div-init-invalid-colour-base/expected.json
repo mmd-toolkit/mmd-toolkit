@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does base-theme colour derivation reject only through opaque configuration?"
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Unsupported color format: \"notacolor\""
+  }
+}

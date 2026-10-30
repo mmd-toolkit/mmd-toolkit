@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, orientation: `horizontal` is no category."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ychart-betax-axis [horizontal]\n----------------------^\nExpecting 'STR', 'MD_STR', 'AMP', 'NUM', 'ALPHA', 'PLUS', 'EQUALS', 'MULT', 'DOT', 'BRKT', 'MINUS', 'UNDERSCORE', got 'CHART_ORIENTATION'"
+  }
+}

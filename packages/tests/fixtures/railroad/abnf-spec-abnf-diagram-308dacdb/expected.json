@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/railroad/parser/abnfDiagram.spec.ts",
+    "line": 80,
+    "test": "ABNF Parser > Basic Parsing > should parse optional group"
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "rule",
+        "definition": {
+          "type": "optional",
+          "element": {
+            "type": "terminal",
+            "value": "a"
+          }
+        }
+      }
+    ]
+  }
+}

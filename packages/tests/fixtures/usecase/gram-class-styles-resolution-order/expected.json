@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does class assignment order versus definition order choose compiled CSS, while direct styles remain separate?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [
+      {
+        "id": "A",
+        "label": "A",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [
+          "second",
+          "first"
+        ],
+        "styles": [
+          "color:green"
+        ]
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": [
+      {
+        "id": "first",
+        "styles": [
+          "color:red"
+        ]
+      },
+      {
+        "id": "second",
+        "styles": [
+          "color:blue"
+        ]
+      }
+    ]
+  }
+}

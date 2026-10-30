@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does usecase declaration metadata reject conflicting duplicate bools?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Use case 'A' has conflicting business metadata at line 2, column 25 [37,45); previous declaration at line 2, column 1 [13,14)"
+  }
+}

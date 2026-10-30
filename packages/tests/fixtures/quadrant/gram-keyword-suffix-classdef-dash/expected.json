@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, keywords: a dash and a letter glued after `classDef`."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...adrantChartclassDef-x c1 color: #f00\n----------------------^\nExpecting 'SPACE', got 'MINUS'"
+  }
+}

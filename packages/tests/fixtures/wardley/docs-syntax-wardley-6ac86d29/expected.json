@@ -1,0 +1,89 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/wardley.md",
+    "line": 154
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Sourcing Strategy",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "Customer",
+        "label": "Customer",
+        "x": 95,
+        "y": 80,
+        "className": "anchor"
+      },
+      {
+        "id": "Custom App",
+        "label": "Custom App",
+        "x": 85,
+        "y": 45,
+        "className": "component",
+        "inertia": false,
+        "sourceStrategy": "build"
+      },
+      {
+        "id": "Off-the-shelf Tool",
+        "label": "Off-the-shelf Tool",
+        "x": 65,
+        "y": 85,
+        "className": "component",
+        "inertia": false,
+        "sourceStrategy": "buy"
+      },
+      {
+        "id": "Managed Service",
+        "label": "Managed Service",
+        "x": 40,
+        "y": 60,
+        "className": "component",
+        "inertia": false,
+        "sourceStrategy": "outsource"
+      },
+      {
+        "id": "Cloud Platform",
+        "label": "Cloud Platform",
+        "x": 25,
+        "y": 95,
+        "className": "component",
+        "inertia": false,
+        "sourceStrategy": "market"
+      }
+    ],
+    "links": [
+      {
+        "source": "Customer",
+        "target": "Custom App",
+        "dashed": false
+      },
+      {
+        "source": "Custom App",
+        "target": "Off-the-shelf Tool",
+        "dashed": false
+      },
+      {
+        "source": "Custom App",
+        "target": "Managed Service",
+        "dashed": false
+      },
+      {
+        "source": "Off-the-shelf Tool",
+        "target": "Cloud Platform",
+        "dashed": false
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

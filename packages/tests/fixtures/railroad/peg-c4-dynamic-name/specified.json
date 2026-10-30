@@ -1,0 +1,17 @@
+{
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "C4Dynamic",
+        "definition": {
+          "type": "nonterminal",
+          "name": "other"
+        }
+      }
+    ]
+  }
+}

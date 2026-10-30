@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A valid HTML-label setting affecting Db text survives beside rejected frontmatter."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "unexpected end of the stream within a flow collection (2:1)\n\n 1 | title: [broken\n 2 | \n-----^"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mermaid.js rejects a number right before a comment; the specified reading is accepted and carries the effect of the data block in `embedded.dataBlockEffects`."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...actor\" }autonumber 10%% cA->>A: x\n----------------------^\nExpecting 'NEWLINE', 'NUM', 'off', got 'ACTOR'"
+  }
+}

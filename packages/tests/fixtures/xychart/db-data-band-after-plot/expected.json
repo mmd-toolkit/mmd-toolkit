@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, data: a band axis after a plot does not change the pairs of the plot."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": [
+        "a",
+        "b"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 2
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "1",
+            1
+          ],
+          [
+            "2",
+            2
+          ]
+        ]
+      }
+    ]
+  }
+}

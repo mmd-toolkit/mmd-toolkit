@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Grammar: the target of a transition is on the line of the arrow."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...teDiagram-v2  A -->  B\n----------------------^\nExpecting 'ID', 'EDGE_STATE', got 'NL'"
+  }
+}

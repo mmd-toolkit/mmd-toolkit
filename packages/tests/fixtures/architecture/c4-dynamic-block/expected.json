@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4Dynamic in block description is checked against global C4 detection."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "C4Dynamic",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

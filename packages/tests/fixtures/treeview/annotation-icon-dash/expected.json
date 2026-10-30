@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check annotation lexical priority and boundaries: icon-dash."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node icon-(file)",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

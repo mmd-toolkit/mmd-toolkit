@@ -1,0 +1,231 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: kanban-no-duplicate-section >> invalid >>> docs/rules/kanban-no-duplicate-section.md incorrect 1
+Filename: kanban-no-duplicate-section-incorrect-1.mmd
+
+Code:
+  1 | kanban
+  2 |   Todo[Backlog]
+  3 |     docs[Write docs]
+  4 |   Todo[Ready]
+    |   ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js lists every item belonging to `Todo` under each section with this id.
+---
+
+
+Test: kanban-no-duplicate-section >> invalid >>> invalid/kanban/db-section-three-definitions
+Filename: tests/fixtures/rules/kanban-no-duplicate-section/invalid/kanban/db-section-three-definitions-input.mmd
+
+Code:
+  1 | kanban
+  2 |  S[First]
+  3 |    A[One]
+  4 |  T[Other]
+  5 |    B[Two]
+  6 |  S[Second]
+    |  ^~~~~~~~~ [1]
+  7 |    C[Three]
+  8 |  S[Third]
+    |  ^~~~~~~~ [2]
+  9 |    D[Four]
+ 10 |
+
+[1] mermaid.js lists every item belonging to `S` under each section with this id.
+[2] mermaid.js lists every item belonging to `S` under each section with this id.
+---
+
+
+Test: kanban-no-duplicate-section >> invalid >>> invalid/kanban/section-bare-and-shape-identity
+Filename: tests/fixtures/rules/kanban-no-duplicate-section/invalid/kanban/section-bare-and-shape-identity-input.mmd
+
+Code:
+  1 | kanban
+  2 |   Todo
+  3 |     docs
+  4 |   [Todo]
+    |   ^~~~~~ [1]
+  5 |
+
+[1] mermaid.js lists every item belonging to `Todo` under each section with this id.
+---
+
+
+Test: kanban-no-duplicate-section >> invalid >>> invalid/kanban/section-directive-before-indent
+Filename: tests/fixtures/rules/kanban-no-duplicate-section/invalid/kanban/section-directive-before-indent-input.mmd
+
+Code:
+  1 | kanban
+  2 |  S
+  3 |    a
+  4 | %%{init: {}}%% S
+    |                ^ [1]
+  5 |
+
+[1] mermaid.js lists every item belonging to `S` under each section with this id.
+---
+
+
+Test: kanban-no-duplicate-section >> invalid >>> invalid/kanban/section-duplicate-before-later-items
+Filename: tests/fixtures/rules/kanban-no-duplicate-section/invalid/kanban/section-duplicate-before-later-items-input.mmd
+
+Code:
+  1 | kanban
+  2 |   Todo
+  3 |   Todo
+    |   ^~~~ [1]
+  4 |   Doing
+  5 |     review
+  6 |   Todo
+    |   ^~~~ [2]
+  7 |     docs
+  8 |
+
+[1] mermaid.js lists every item belonging to `Todo` under each section with this id.
+[2] mermaid.js lists every item belonging to `Todo` under each section with this id.
+---
+
+
+Test: kanban-no-duplicate-section >> invalid >>> invalid/kanban/section-header-line-first-node
+Filename: tests/fixtures/rules/kanban-no-duplicate-section/invalid/kanban/section-header-line-first-node-input.mmd
+
+Code:
+  1 | kanban S
+  2 |    a
+  3 |  S
+    |  ^ [1]
+  4 |
+
+[1] mermaid.js lists every item belonging to `S` under each section with this id.
+---
+
+
+Test: kanban-no-duplicate-section >> invalid >>> invalid/kanban/section-metadata-label-not-id
+Filename: tests/fixtures/rules/kanban-no-duplicate-section/invalid/kanban/section-metadata-label-not-id-input.mmd
+
+Code:
+  1 | kanban
+  2 |   Todo@{label: First}
+  3 |     docs
+  4 |   Todo@{label: Second}
+    |   ^~~~~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js lists every item belonging to `Todo` under each section with this id.
+---
+
+
+Test: kanban-no-duplicate-section >> invalid >>> invalid/kanban/section-no-id-repeat
+Filename: tests/fixtures/rules/kanban-no-duplicate-section/invalid/kanban/section-no-id-repeat-input.mmd
+
+Code:
+  1 | kanban
+  2 |   [Todo]
+  3 |     docs
+  4 |   [Todo]
+    |   ^~~~~~ [1]
+  5 |
+
+[1] mermaid.js lists every item belonging to `Todo` under each section with this id.
+---
+
+
+Test: kanban-no-duplicate-section >> invalid >>> invalid/kanban/section-repeated-items-after
+Filename: tests/fixtures/rules/kanban-no-duplicate-section/invalid/kanban/section-repeated-items-after-input.mmd
+
+Code:
+  1 | kanban
+  2 |   Todo[Backlog]
+  3 |   Todo[Ready]
+    |   ^~~~~~~~~~~ [1]
+  4 |     docs[Write docs]
+  5 |
+
+[1] mermaid.js lists every item belonging to `Todo` under each section with this id.
+---
+
+
+Test: kanban-no-duplicate-section >> invalid >>> invalid/kanban/section-repeated-items-before
+Filename: tests/fixtures/rules/kanban-no-duplicate-section/invalid/kanban/section-repeated-items-before-input.mmd
+
+Code:
+  1 | kanban
+  2 |   Todo[Backlog]
+  3 |     docs[Write docs]
+  4 |   Todo[Ready]
+    |   ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js lists every item belonging to `Todo` under each section with this id.
+---
+
+
+Test: kanban-no-duplicate-section >> invalid >>> invalid/kanban/section-shallower-final-item
+Filename: tests/fixtures/rules/kanban-no-duplicate-section/invalid/kanban/section-shallower-final-item-input.mmd
+
+Code:
+  1 | kanban
+  2 |   Todo
+  3 |   Todo
+    |   ^~~~ [1]
+  4 |  docs
+  5 |
+
+[1] mermaid.js lists every item belonging to `Todo` under each section with this id.
+---
+
+
+Test: kanban-no-duplicate-section >> invalid >>> invalid/kanban/section-third-occurrence
+Filename: tests/fixtures/rules/kanban-no-duplicate-section/invalid/kanban/section-third-occurrence-input.mmd
+
+Code:
+  1 | kanban
+  2 |   Todo[First]
+  3 |     docs
+  4 |   Todo[Second]
+    |   ^~~~~~~~~~~~ [1]
+  5 |   Todo[Third]
+    |   ^~~~~~~~~~~ [2]
+  6 |
+
+[1] mermaid.js lists every item belonging to `Todo` under each section with this id.
+[2] mermaid.js lists every item belonging to `Todo` under each section with this id.
+---
+
+
+Test: kanban-no-duplicate-section >> invalid >>> invalid/kanban/section-with-cards-own-data-range
+Filename: tests/fixtures/rules/kanban-no-duplicate-section/invalid/kanban/section-with-cards-own-data-range-input.mmd
+
+Code:
+  1 | kanban
+  2 |  S
+  3 |    a
+  4 |  S@{label: Ready}
+    |  ^~~~~~~~~~~~~~~~ [1]
+  5 |    b
+  6 |
+
+[1] mermaid.js lists every item belonging to `S` under each section with this id.
+---
+
+
+Test: kanban-no-duplicate-section >> invalid >>> invalid/kanban/section-with-cards-own-decoration-range
+Filename: tests/fixtures/rules/kanban-no-duplicate-section/invalid/kanban/section-with-cards-own-decoration-range-input.mmd
+
+Code:
+  1 | kanban
+  2 |  S[First]
+  3 |    a
+  4 |  S[Second]@{label: Ready}
+    |  ^~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+  5 |  ::icon(fa fa-book)
+    | ~~~~~~~~~~~~~~~~~~~\ [1]
+  6 |  :::highlight
+    | ~~~~~~~~~~~~~ [1]
+  7 |    b
+  8 |
+
+[1] mermaid.js lists every item belonging to `S` under each section with this id.
+---

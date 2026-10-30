@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Can a selector be one ASCII letter unlike a class definition name?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "classSelector": "a",
+        "children": []
+      }
+    ],
+    "classDefs": []
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-text.spec.js",
+    "line": 163,
+    "test": "[Text] when parsing > it should handle text on edges > should handle quoted text"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "V",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "V",
+        "props": {}
+      },
+      {
+        "id": "a",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "v",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "V",
+        "end": "a",
+        "type": "arrow_point",
+        "text": "test string()",
+        "labelType": "string",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_V_a_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

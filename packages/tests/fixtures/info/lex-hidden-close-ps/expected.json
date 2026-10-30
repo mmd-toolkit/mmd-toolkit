@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: PS qualifies closer but is unreadable gap"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 12: unexpected character: -> <- at offset: 11, skipped 1 characters. "
+  }
+}

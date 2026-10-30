@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A leading comment region is removed before detection."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

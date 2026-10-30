@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A common line title does not require paired quote delimiters."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "\"open",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

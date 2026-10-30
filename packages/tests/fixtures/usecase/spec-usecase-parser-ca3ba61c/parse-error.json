@@ -1,0 +1,17 @@
+{
+  "message": "An actor icon cannot coexist with a non-normal explicit type",
+  "range": [
+    19,
+    58
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 6
+    },
+    "end": {
+      "line": 2,
+      "column": 45
+    }
+  }
+}

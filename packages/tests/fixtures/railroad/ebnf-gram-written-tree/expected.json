@@ -1,0 +1,81 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md and ast/railroad.md: Authored EBNF example preserves group, choice, comma, exception, ordered postfixes, bracket and brace forms."
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "Rules",
+    "accDescr": "Details",
+    "rules": [
+      {
+        "name": "item",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "repetition",
+              "element": {
+                "type": "sequence",
+                "elements": [
+                  {
+                    "type": "sequence",
+                    "elements": [
+                      {
+                        "type": "terminal",
+                        "value": "a"
+                      },
+                      {
+                        "type": "nonterminal",
+                        "name": "name"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "terminal",
+                    "value": "-"
+                  },
+                  {
+                    "type": "terminal",
+                    "value": "b"
+                  }
+                ]
+              },
+              "min": 1,
+              "max": "Infinity"
+            },
+            {
+              "type": "sequence",
+              "elements": [
+                {
+                  "type": "optional",
+                  "element": {
+                    "type": "terminal",
+                    "value": "c"
+                  }
+                },
+                {
+                  "type": "repetition",
+                  "element": {
+                    "type": "special",
+                    "text": "special"
+                  },
+                  "min": 0,
+                  "max": "Infinity"
+                },
+                {
+                  "type": "optional",
+                  "element": {
+                    "type": "terminal",
+                    "value": "d"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

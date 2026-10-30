@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md: Closed empty description block before a semicolon after data."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n... TBA@{}accDescr {} ;B\n----------------------^\nExpecting 'AMP', got 'SEMI'"
+  }
+}

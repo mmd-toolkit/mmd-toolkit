@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The after style colon space boundary is rejected by the grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...tastyle A color:red: \n----------------------^\nExpecting 'EOF', 'NEWLINE', 'TITLE', 'SET', 'NUMERIC', 'UNION', 'TEXT', 'IDENTIFIER', 'INDENT_TEXT', 'STYLE', 'COMMA', 'HEXCOLOR', 'RGBCOLOR', 'RGBACOLOR', got 'COLON'"
+  }
+}

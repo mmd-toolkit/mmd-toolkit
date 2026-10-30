@@ -1,0 +1,78 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The name of a box, without a colour, with one, and after a wrap prefix under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): it is recorded with the characters replaced."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "B",
+        "box": 0
+      },
+      {
+        "name": "B",
+        "description": "B",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "C",
+        "box": 1
+      },
+      {
+        "name": "C",
+        "description": "C",
+        "wrap": false,
+        "prevActor": "B",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "box": 2
+      }
+    ],
+    "boxes": [
+      {
+        "name": "a&lt;b&gt;&equals;c<br/>d",
+        "wrap": false,
+        "fill": "transparent",
+        "actorKeys": [
+          "A"
+        ]
+      },
+      {
+        "name": "a&lt;b&gt;&equals;c<br/>d",
+        "wrap": false,
+        "fill": "rgb(1,2,3)",
+        "actorKeys": [
+          "B"
+        ]
+      },
+      {
+        "name": "a&lt;b&gt;&equals;c<br/>d",
+        "wrap": true,
+        "fill": "transparent",
+        "actorKeys": [
+          "C"
+        ]
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

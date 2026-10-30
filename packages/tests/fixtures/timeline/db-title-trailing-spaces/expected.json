@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, title: the whitespace at the end of the title stays."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "T   ",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

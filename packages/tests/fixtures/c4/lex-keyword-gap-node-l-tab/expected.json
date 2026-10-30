@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`Node_L` followed by a tab before `(` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nC4ContextNode_L\t(b, \"B\", \"type\", \"D\n---------------^"
+  }
+}

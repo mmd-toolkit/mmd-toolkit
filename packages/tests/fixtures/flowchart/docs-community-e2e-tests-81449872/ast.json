@@ -1,0 +1,2110 @@
+{
+  "type": "Root",
+  "diagramType": "flowchart-v2",
+  "body": {
+    "type": "FlowchartDiagram",
+    "direction": "TD",
+    "body": [
+      {
+        "type": "FlowchartSubgraphStatement",
+        "name": {
+          "type": "FlowchartLabel",
+          "kind": "text",
+          "value": "diagrams",
+          "range": [
+            24,
+            32
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 11
+            },
+            "end": {
+              "line": 2,
+              "column": 19
+            }
+          }
+        },
+        "title": {
+          "type": "FlowchartLabel",
+          "kind": "string",
+          "value": "e2e/diagrams/<diagram-type>/",
+          "range": [
+            33,
+            63
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 20
+            },
+            "end": {
+              "line": 2,
+              "column": 50
+            }
+          }
+        },
+        "body": [
+          {
+            "type": "FlowchartDirectionStatement",
+            "textBefore": null,
+            "direction": "LR",
+            "textAfter": null,
+            "range": [
+              69,
+              81
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 4
+              },
+              "end": {
+                "line": 3,
+                "column": 16
+              }
+            }
+          },
+          {
+            "type": "FlowchartVertexStatement",
+            "first": {
+              "type": "FlowchartVertexGroup",
+              "vertices": [
+                {
+                  "type": "FlowchartVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "d_pr",
+                    "range": [
+                      86,
+                      90
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 4,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 4,
+                        "column": 8
+                      }
+                    }
+                  },
+                  "shape": {
+                    "type": "FlowchartShape",
+                    "name": "rectangle",
+                    "property": null,
+                    "label": {
+                      "type": "FlowchartLabel",
+                      "kind": "string",
+                      "value": "pr-check/<br/>*.mmd fixtures",
+                      "range": [
+                        91,
+                        121
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 4,
+                          "column": 9
+                        },
+                        "end": {
+                          "line": 4,
+                          "column": 39
+                        }
+                      }
+                    },
+                    "range": [
+                      90,
+                      122
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 4,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 4,
+                        "column": 40
+                      }
+                    }
+                  },
+                  "cssClass": null,
+                  "data": [],
+                  "range": [
+                    86,
+                    122
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 4,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 4,
+                      "column": 40
+                    }
+                  }
+                }
+              ],
+              "range": [
+                86,
+                122
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 4
+                },
+                "end": {
+                  "line": 4,
+                  "column": 40
+                }
+              }
+            },
+            "links": [],
+            "range": [
+              86,
+              122
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 4
+              },
+              "end": {
+                "line": 4,
+                "column": 40
+              }
+            }
+          },
+          {
+            "type": "FlowchartVertexStatement",
+            "first": {
+              "type": "FlowchartVertexGroup",
+              "vertices": [
+                {
+                  "type": "FlowchartVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "d_nightly",
+                    "range": [
+                      127,
+                      136
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 5,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 5,
+                        "column": 13
+                      }
+                    }
+                  },
+                  "shape": {
+                    "type": "FlowchartShape",
+                    "name": "rectangle",
+                    "property": null,
+                    "label": {
+                      "type": "FlowchartLabel",
+                      "kind": "string",
+                      "value": "nightly-check/<br/>*.mmd fixtures",
+                      "range": [
+                        137,
+                        172
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 5,
+                          "column": 14
+                        },
+                        "end": {
+                          "line": 5,
+                          "column": 49
+                        }
+                      }
+                    },
+                    "range": [
+                      136,
+                      173
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 5,
+                        "column": 13
+                      },
+                      "end": {
+                        "line": 5,
+                        "column": 50
+                      }
+                    }
+                  },
+                  "cssClass": null,
+                  "data": [],
+                  "range": [
+                    127,
+                    173
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 5,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 50
+                    }
+                  }
+                }
+              ],
+              "range": [
+                127,
+                173
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 4
+                },
+                "end": {
+                  "line": 5,
+                  "column": 50
+                }
+              }
+            },
+            "links": [],
+            "range": [
+              127,
+              173
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 4
+              },
+              "end": {
+                "line": 5,
+                "column": 50
+              }
+            }
+          },
+          {
+            "type": "FlowchartVertexStatement",
+            "first": {
+              "type": "FlowchartVertexGroup",
+              "vertices": [
+                {
+                  "type": "FlowchartVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "d_visual",
+                    "range": [
+                      178,
+                      186
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 6,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 6,
+                        "column": 12
+                      }
+                    }
+                  },
+                  "shape": {
+                    "type": "FlowchartShape",
+                    "name": "rectangle",
+                    "property": null,
+                    "label": {
+                      "type": "FlowchartLabel",
+                      "kind": "string",
+                      "value": "visual-check/<br/>*.mmd fixtures",
+                      "range": [
+                        187,
+                        221
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 6,
+                          "column": 13
+                        },
+                        "end": {
+                          "line": 6,
+                          "column": 47
+                        }
+                      }
+                    },
+                    "range": [
+                      186,
+                      222
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 6,
+                        "column": 12
+                      },
+                      "end": {
+                        "line": 6,
+                        "column": 48
+                      }
+                    }
+                  },
+                  "cssClass": null,
+                  "data": [],
+                  "range": [
+                    178,
+                    222
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 6,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 6,
+                      "column": 48
+                    }
+                  }
+                }
+              ],
+              "range": [
+                178,
+                222
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 4
+                },
+                "end": {
+                  "line": 6,
+                  "column": 48
+                }
+              }
+            },
+            "links": [],
+            "range": [
+              178,
+              222
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 4
+              },
+              "end": {
+                "line": 6,
+                "column": 48
+              }
+            }
+          }
+        ],
+        "range": [
+          15,
+          228
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 2
+          },
+          "end": {
+            "line": 7,
+            "column": 5
+          }
+        }
+      },
+      {
+        "type": "FlowchartSubgraphStatement",
+        "name": {
+          "type": "FlowchartLabel",
+          "kind": "text",
+          "value": "rendering",
+          "range": [
+            240,
+            249
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 11
+            },
+            "end": {
+              "line": 8,
+              "column": 20
+            }
+          }
+        },
+        "title": {
+          "type": "FlowchartLabel",
+          "kind": "string",
+          "value": "e2e/rendering/<diagram-type>/",
+          "range": [
+            250,
+            281
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 21
+            },
+            "end": {
+              "line": 8,
+              "column": 52
+            }
+          }
+        },
+        "body": [
+          {
+            "type": "FlowchartDirectionStatement",
+            "textBefore": null,
+            "direction": "LR",
+            "textAfter": null,
+            "range": [
+              287,
+              299
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 4
+              },
+              "end": {
+                "line": 9,
+                "column": 16
+              }
+            }
+          },
+          {
+            "type": "FlowchartVertexStatement",
+            "first": {
+              "type": "FlowchartVertexGroup",
+              "vertices": [
+                {
+                  "type": "FlowchartVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "r_pr",
+                    "range": [
+                      304,
+                      308
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 10,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 10,
+                        "column": 8
+                      }
+                    }
+                  },
+                  "shape": {
+                    "type": "FlowchartShape",
+                    "name": "rectangle",
+                    "property": null,
+                    "label": {
+                      "type": "FlowchartLabel",
+                      "kind": "string",
+                      "value": "pr-check/<br/>*.spec.ts",
+                      "range": [
+                        309,
+                        334
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 10,
+                          "column": 9
+                        },
+                        "end": {
+                          "line": 10,
+                          "column": 34
+                        }
+                      }
+                    },
+                    "range": [
+                      308,
+                      335
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 10,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 10,
+                        "column": 35
+                      }
+                    }
+                  },
+                  "cssClass": null,
+                  "data": [],
+                  "range": [
+                    304,
+                    335
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 10,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 10,
+                      "column": 35
+                    }
+                  }
+                }
+              ],
+              "range": [
+                304,
+                335
+              ],
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 4
+                },
+                "end": {
+                  "line": 10,
+                  "column": 35
+                }
+              }
+            },
+            "links": [],
+            "range": [
+              304,
+              335
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 4
+              },
+              "end": {
+                "line": 10,
+                "column": 35
+              }
+            }
+          },
+          {
+            "type": "FlowchartVertexStatement",
+            "first": {
+              "type": "FlowchartVertexGroup",
+              "vertices": [
+                {
+                  "type": "FlowchartVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "r_nightly",
+                    "range": [
+                      340,
+                      349
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 11,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 11,
+                        "column": 13
+                      }
+                    }
+                  },
+                  "shape": {
+                    "type": "FlowchartShape",
+                    "name": "rectangle",
+                    "property": null,
+                    "label": {
+                      "type": "FlowchartLabel",
+                      "kind": "string",
+                      "value": "nightly-check/<br/>*.spec.ts",
+                      "range": [
+                        350,
+                        380
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 11,
+                          "column": 14
+                        },
+                        "end": {
+                          "line": 11,
+                          "column": 44
+                        }
+                      }
+                    },
+                    "range": [
+                      349,
+                      381
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 11,
+                        "column": 13
+                      },
+                      "end": {
+                        "line": 11,
+                        "column": 45
+                      }
+                    }
+                  },
+                  "cssClass": null,
+                  "data": [],
+                  "range": [
+                    340,
+                    381
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 11,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 11,
+                      "column": 45
+                    }
+                  }
+                }
+              ],
+              "range": [
+                340,
+                381
+              ],
+              "loc": {
+                "start": {
+                  "line": 11,
+                  "column": 4
+                },
+                "end": {
+                  "line": 11,
+                  "column": 45
+                }
+              }
+            },
+            "links": [],
+            "range": [
+              340,
+              381
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 4
+              },
+              "end": {
+                "line": 11,
+                "column": 45
+              }
+            }
+          },
+          {
+            "type": "FlowchartVertexStatement",
+            "first": {
+              "type": "FlowchartVertexGroup",
+              "vertices": [
+                {
+                  "type": "FlowchartVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "r_visual",
+                    "range": [
+                      386,
+                      394
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 12,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 12,
+                        "column": 12
+                      }
+                    }
+                  },
+                  "shape": {
+                    "type": "FlowchartShape",
+                    "name": "rectangle",
+                    "property": null,
+                    "label": {
+                      "type": "FlowchartLabel",
+                      "kind": "string",
+                      "value": "visual-check/<br/>*.spec.ts",
+                      "range": [
+                        395,
+                        424
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 12,
+                          "column": 13
+                        },
+                        "end": {
+                          "line": 12,
+                          "column": 42
+                        }
+                      }
+                    },
+                    "range": [
+                      394,
+                      425
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 12,
+                        "column": 12
+                      },
+                      "end": {
+                        "line": 12,
+                        "column": 43
+                      }
+                    }
+                  },
+                  "cssClass": null,
+                  "data": [],
+                  "range": [
+                    386,
+                    425
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 12,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 12,
+                      "column": 43
+                    }
+                  }
+                }
+              ],
+              "range": [
+                386,
+                425
+              ],
+              "loc": {
+                "start": {
+                  "line": 12,
+                  "column": 4
+                },
+                "end": {
+                  "line": 12,
+                  "column": 43
+                }
+              }
+            },
+            "links": [],
+            "range": [
+              386,
+              425
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 4
+              },
+              "end": {
+                "line": 12,
+                "column": 43
+              }
+            }
+          }
+        ],
+        "range": [
+          231,
+          431
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 2
+          },
+          "end": {
+            "line": 13,
+            "column": 5
+          }
+        }
+      },
+      {
+        "type": "FlowchartVertexStatement",
+        "first": {
+          "type": "FlowchartVertexGroup",
+          "vertices": [
+            {
+              "type": "FlowchartVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "runner",
+                "range": [
+                  434,
+                  440
+                ],
+                "loc": {
+                  "start": {
+                    "line": 14,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 14,
+                    "column": 8
+                  }
+                }
+              },
+              "shape": {
+                "type": "FlowchartShape",
+                "name": "rectangle",
+                "property": null,
+                "label": {
+                  "type": "FlowchartLabel",
+                  "kind": "string",
+                  "value": "e2e/rendering/mmd-snapshots.spec.ts<br/>(global fixture runner)",
+                  "range": [
+                    441,
+                    506
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 14,
+                      "column": 9
+                    },
+                    "end": {
+                      "line": 14,
+                      "column": 74
+                    }
+                  }
+                },
+                "range": [
+                  440,
+                  507
+                ],
+                "loc": {
+                  "start": {
+                    "line": 14,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 14,
+                    "column": 75
+                  }
+                }
+              },
+              "cssClass": null,
+              "data": [],
+              "range": [
+                434,
+                507
+              ],
+              "loc": {
+                "start": {
+                  "line": 14,
+                  "column": 2
+                },
+                "end": {
+                  "line": 14,
+                  "column": 75
+                }
+              }
+            }
+          ],
+          "range": [
+            434,
+            507
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 2
+            },
+            "end": {
+              "line": 14,
+              "column": 75
+            }
+          }
+        },
+        "links": [],
+        "range": [
+          434,
+          507
+        ],
+        "loc": {
+          "start": {
+            "line": 14,
+            "column": 2
+          },
+          "end": {
+            "line": 14,
+            "column": 75
+          }
+        }
+      },
+      {
+        "type": "FlowchartVertexStatement",
+        "first": {
+          "type": "FlowchartVertexGroup",
+          "vertices": [
+            {
+              "type": "FlowchartVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "diagrams",
+                "range": [
+                  510,
+                  518
+                ],
+                "loc": {
+                  "start": {
+                    "line": 15,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 15,
+                    "column": 10
+                  }
+                }
+              },
+              "shape": null,
+              "cssClass": null,
+              "data": [],
+              "range": [
+                510,
+                518
+              ],
+              "loc": {
+                "start": {
+                  "line": 15,
+                  "column": 2
+                },
+                "end": {
+                  "line": 15,
+                  "column": 10
+                }
+              }
+            }
+          ],
+          "range": [
+            510,
+            518
+          ],
+          "loc": {
+            "start": {
+              "line": 15,
+              "column": 2
+            },
+            "end": {
+              "line": 15,
+              "column": 10
+            }
+          }
+        },
+        "links": [
+          {
+            "type": "FlowchartLink",
+            "id": null,
+            "opening": null,
+            "arrow": {
+              "type": "FlowchartArrow",
+              "value": "-->",
+              "startMarker": "none",
+              "line": "solid",
+              "length": 2,
+              "endMarker": "arrow",
+              "range": [
+                519,
+                522
+              ],
+              "loc": {
+                "start": {
+                  "line": 15,
+                  "column": 11
+                },
+                "end": {
+                  "line": 15,
+                  "column": 14
+                }
+              }
+            },
+            "label": {
+              "type": "FlowchartLabel",
+              "kind": "text",
+              "value": "discovered & rendered by",
+              "range": [
+                523,
+                547
+              ],
+              "loc": {
+                "start": {
+                  "line": 15,
+                  "column": 15
+                },
+                "end": {
+                  "line": 15,
+                  "column": 39
+                }
+              }
+            },
+            "target": {
+              "type": "FlowchartVertexGroup",
+              "vertices": [
+                {
+                  "type": "FlowchartVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "runner",
+                    "range": [
+                      549,
+                      555
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 15,
+                        "column": 41
+                      },
+                      "end": {
+                        "line": 15,
+                        "column": 47
+                      }
+                    }
+                  },
+                  "shape": null,
+                  "cssClass": null,
+                  "data": [],
+                  "range": [
+                    549,
+                    555
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 15,
+                      "column": 41
+                    },
+                    "end": {
+                      "line": 15,
+                      "column": 47
+                    }
+                  }
+                }
+              ],
+              "range": [
+                549,
+                555
+              ],
+              "loc": {
+                "start": {
+                  "line": 15,
+                  "column": 41
+                },
+                "end": {
+                  "line": 15,
+                  "column": 47
+                }
+              }
+            },
+            "range": [
+              519,
+              555
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 11
+              },
+              "end": {
+                "line": 15,
+                "column": 47
+              }
+            }
+          }
+        ],
+        "range": [
+          510,
+          555
+        ],
+        "loc": {
+          "start": {
+            "line": 15,
+            "column": 2
+          },
+          "end": {
+            "line": 15,
+            "column": 47
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      555
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 15,
+        "column": 47
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "flowchart",
+      "range": [
+        0,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "TD",
+      "range": [
+        10,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 10
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "subgraph",
+      "range": [
+        15,
+        23
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "diagrams",
+      "range": [
+        24,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 11
+        },
+        "end": {
+          "line": 2,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        32,
+        33
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 19
+        },
+        "end": {
+          "line": 2,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"e2e/diagrams/<diagram-type>/\"",
+      "range": [
+        33,
+        63
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 20
+        },
+        "end": {
+          "line": 2,
+          "column": 50
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        63,
+        64
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 50
+        },
+        "end": {
+          "line": 2,
+          "column": 51
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "direction",
+      "range": [
+        69,
+        78
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 4
+        },
+        "end": {
+          "line": 3,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "LR",
+      "range": [
+        79,
+        81
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 14
+        },
+        "end": {
+          "line": 3,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "d_pr",
+      "range": [
+        86,
+        90
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 4
+        },
+        "end": {
+          "line": 4,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        90,
+        91
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 8
+        },
+        "end": {
+          "line": 4,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"pr-check/<br/>*.mmd fixtures\"",
+      "range": [
+        91,
+        121
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 9
+        },
+        "end": {
+          "line": 4,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        121,
+        122
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 39
+        },
+        "end": {
+          "line": 4,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "d_nightly",
+      "range": [
+        127,
+        136
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 4
+        },
+        "end": {
+          "line": 5,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        136,
+        137
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 13
+        },
+        "end": {
+          "line": 5,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"nightly-check/<br/>*.mmd fixtures\"",
+      "range": [
+        137,
+        172
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 14
+        },
+        "end": {
+          "line": 5,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        172,
+        173
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 49
+        },
+        "end": {
+          "line": 5,
+          "column": 50
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "d_visual",
+      "range": [
+        178,
+        186
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 4
+        },
+        "end": {
+          "line": 6,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        186,
+        187
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 12
+        },
+        "end": {
+          "line": 6,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"visual-check/<br/>*.mmd fixtures\"",
+      "range": [
+        187,
+        221
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 13
+        },
+        "end": {
+          "line": 6,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        221,
+        222
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 47
+        },
+        "end": {
+          "line": 6,
+          "column": 48
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "end",
+      "range": [
+        225,
+        228
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 2
+        },
+        "end": {
+          "line": 7,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "subgraph",
+      "range": [
+        231,
+        239
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 2
+        },
+        "end": {
+          "line": 8,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "rendering",
+      "range": [
+        240,
+        249
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 11
+        },
+        "end": {
+          "line": 8,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        249,
+        250
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 20
+        },
+        "end": {
+          "line": 8,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"e2e/rendering/<diagram-type>/\"",
+      "range": [
+        250,
+        281
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 21
+        },
+        "end": {
+          "line": 8,
+          "column": 52
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        281,
+        282
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 52
+        },
+        "end": {
+          "line": 8,
+          "column": 53
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "direction",
+      "range": [
+        287,
+        296
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 4
+        },
+        "end": {
+          "line": 9,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "LR",
+      "range": [
+        297,
+        299
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 14
+        },
+        "end": {
+          "line": 9,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "r_pr",
+      "range": [
+        304,
+        308
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 4
+        },
+        "end": {
+          "line": 10,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        308,
+        309
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 8
+        },
+        "end": {
+          "line": 10,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"pr-check/<br/>*.spec.ts\"",
+      "range": [
+        309,
+        334
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 9
+        },
+        "end": {
+          "line": 10,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        334,
+        335
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 34
+        },
+        "end": {
+          "line": 10,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "r_nightly",
+      "range": [
+        340,
+        349
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 4
+        },
+        "end": {
+          "line": 11,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        349,
+        350
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 13
+        },
+        "end": {
+          "line": 11,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"nightly-check/<br/>*.spec.ts\"",
+      "range": [
+        350,
+        380
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 14
+        },
+        "end": {
+          "line": 11,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        380,
+        381
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 44
+        },
+        "end": {
+          "line": 11,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "r_visual",
+      "range": [
+        386,
+        394
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 4
+        },
+        "end": {
+          "line": 12,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        394,
+        395
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 12
+        },
+        "end": {
+          "line": 12,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"visual-check/<br/>*.spec.ts\"",
+      "range": [
+        395,
+        424
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 13
+        },
+        "end": {
+          "line": 12,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        424,
+        425
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 42
+        },
+        "end": {
+          "line": 12,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "end",
+      "range": [
+        428,
+        431
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 2
+        },
+        "end": {
+          "line": 13,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "runner",
+      "range": [
+        434,
+        440
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 2
+        },
+        "end": {
+          "line": 14,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        440,
+        441
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 8
+        },
+        "end": {
+          "line": 14,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"e2e/rendering/mmd-snapshots.spec.ts<br/>(global fixture runner)\"",
+      "range": [
+        441,
+        506
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 9
+        },
+        "end": {
+          "line": 14,
+          "column": 74
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        506,
+        507
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 74
+        },
+        "end": {
+          "line": 14,
+          "column": 75
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "diagrams",
+      "range": [
+        510,
+        518
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 2
+        },
+        "end": {
+          "line": 15,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        519,
+        522
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 11
+        },
+        "end": {
+          "line": 15,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "|",
+      "range": [
+        522,
+        523
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 14
+        },
+        "end": {
+          "line": 15,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "discovered & rendered by",
+      "range": [
+        523,
+        547
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 15
+        },
+        "end": {
+          "line": 15,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "|",
+      "range": [
+        547,
+        548
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 39
+        },
+        "end": {
+          "line": 15,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "runner",
+      "range": [
+        549,
+        555
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 41
+        },
+        "end": {
+          "line": 15,
+          "column": 47
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    556
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 16,
+      "column": 0
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read removed shape type declaration?"
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "No such shape: typeDeclaration. Shape names should be lowercase."
+  }
+}

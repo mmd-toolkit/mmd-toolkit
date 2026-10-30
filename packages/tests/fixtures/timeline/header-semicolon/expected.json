@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Detection: `;` after the header is a period."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": ";",
+        "events": []
+      }
+    ]
+  }
+}

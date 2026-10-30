@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/treemap.test.ts",
+    "line": 12,
+    "test": "Treemap Parser > ClassDef and Class Statements > should parse a classDef statement"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": [
+      {
+        "id": "myClass",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A native directive begins where the title terminal stops at percent."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "A",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "B"
+      }
+    ],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

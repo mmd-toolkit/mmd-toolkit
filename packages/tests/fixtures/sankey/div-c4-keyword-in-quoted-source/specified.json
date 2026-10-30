@@ -1,0 +1,18 @@
+{
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "C4Component",
+      "b"
+    ],
+    "links": [
+      {
+        "source": "C4Component",
+        "target": "b",
+        "value": 1
+      }
+    ]
+  }
+}

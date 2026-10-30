@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Semantic acceptance conditions: Entity placeholder conversion is applied before exact name comparison without final entity decoding."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "Aﬂ°°65¶ß",
+        "label": "Aﬂ°°65¶ß",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Aﬂ°°65¶ß_X",
+        "label": "X",
+        "x": 30,
+        "y": 10,
+        "className": "pipeline-component"
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [
+      {
+        "nodeId": "Aﬂ°°65¶ß",
+        "componentIds": [
+          "Aﬂ°°65¶ß_X"
+        ]
+      }
+    ],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Exponents are not INT."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 3: unexpected character: ->e<- at offset: 9, skipped 1 characters. Parse error on line 2, column 4: Expecting token of type ':' but found `2`."
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty quoted named attribute value is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...on(a, \"A\", $tags=\"\")\n-----------------------^\nExpecting 'STR_VALUE', got 'NEWLINE'"
+  }
+}

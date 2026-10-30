@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "YAML can look at LS as a boundary but the subsequent whitespace lexer rejects it."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 4: unexpected character: -> <- at offset: 23, skipped 1 characters. "
+  }
+}

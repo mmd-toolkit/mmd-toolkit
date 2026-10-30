@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Building the summary, namespaces: a nested namespace has the qualified id `A.B`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "C",
+        "type": "",
+        "label": "C",
+        "text": "C",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "A.B"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "A",
+        "label": "A",
+        "classes": [],
+        "notes": [],
+        "children": [
+          "A.B"
+        ],
+        "explicit": true
+      },
+      {
+        "id": "A.B",
+        "label": "B",
+        "classes": [
+          "C"
+        ],
+        "notes": [],
+        "children": [],
+        "parent": "A",
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

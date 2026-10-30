@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Requirements: a second definition of a name adds no requirement, but its classes go to the requirement of that name, with their styles; its fields change nothing."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [
+          "fill:red"
+        ],
+        "classes": [
+          "c"
+        ]
+      }
+    ],
+    "elements": [],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do all INT fields share double rounding?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "A",
+        "label": "A",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "labelOffsetX": 9007199254740992,
+        "labelOffsetY": -9007199254740992,
+        "inertia": false
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [
+      {
+        "number": 9007199254740992,
+        "coordinates": [
+          {
+            "x": 2,
+            "y": 100
+          }
+        ],
+        "text": "N"
+      }
+    ],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {},
+    "size": {
+      "width": 9007199254740992,
+      "height": 1
+    }
+  }
+}

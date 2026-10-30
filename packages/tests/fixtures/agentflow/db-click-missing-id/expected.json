@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A callback and tooltip for an undeclared id are still recorded."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [
+      {
+        "id": "Missing",
+        "text": "tip"
+      }
+    ],
+    "clickCalls": [
+      {
+        "id": "Missing",
+        "name": "go",
+        "args": "1"
+      }
+    ]
+  }
+}

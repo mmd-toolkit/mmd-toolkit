@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/wardley.md",
+    "line": 51
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Your Map Title",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {},
+    "size": {
+      "width": 1100,
+      "height": 600
+    }
+  }
+}

@@ -1,0 +1,670 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> docs/rules/cynefin-no-redefined-domain.md incorrect 1
+Filename: cynefin-no-redefined-domain-incorrect-1.mmd
+
+Code:
+  1 | cynefin-beta
+  2 |   complex
+  3 |     "Investigate"
+  4 |   clear
+  5 |     "Restart"
+  6 |   complex
+    |   ^~~~~~~\ [1]
+  7 |     "Experiment"
+    | ~~~~~~~~~~~~~~~~ [1]
+  8 |
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 |   complex
+          3 |     "Investigate"
+          4 |   clear
+          5 |     "Restart"
+          6 |
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 |   clear
+          3 |     "Restart"
+          4 |   complex
+          5 |     "Experiment"
+          6 |
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/docs-incorrect-1
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/docs-incorrect-1-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 |   complex
+  3 |     "Investigate"
+  4 |   clear
+  5 |     "Restart"
+  6 |   complex
+    |   ^~~~~~~\ [1]
+  7 |     "Experiment"
+    | ~~~~~~~~~~~~~~~~ [1]
+  8 |
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 |   complex
+          3 |     "Investigate"
+          4 |   clear
+          5 |     "Restart"
+          6 |
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 |   clear
+          3 |     "Restart"
+          4 |   complex
+          5 |     "Experiment"
+          6 |
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-adjacent
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-adjacent-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | complex"Old"complex"New"
+    |             ^~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-after-empty-description
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-after-empty-description-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | complex "Old"
+  3 | accDescr {}
+  4 | complex "New"
+    | ^~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Old"
+          3 | accDescr {}
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | accDescr {}
+          3 | complex "New"
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-change
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-change-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | complex
+  3 | "Investigate"
+  4 | clear
+  5 | "Restart"
+  6 | complex
+    | ^~~~~~~\ [1]
+  7 | "Experiment"
+    | ~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex
+          3 | "Investigate"
+          4 | clear
+          5 | "Restart"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | clear
+          3 | "Restart"
+          4 | complex
+          5 | "Experiment"
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-change-reversed
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-change-reversed-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | complex "Experiment"
+  3 | clear "Restart"
+  4 | complex "Investigate"
+    | ^~~~~~~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Experiment"
+          3 | clear "Restart"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | clear "Restart"
+          3 | complex "Investigate"
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-colon-change
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-colon-change-input.mmd
+
+Code:
+  1 | cynefin-beta:
+  2 | complex "First"
+  3 | complex "Second"
+    | ^~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta:
+          2 | complex "First"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta:
+          2 | complex "Second"
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-cr-escape-different
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-cr-escape-different-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | complex "A\rB"
+  3 | complex "A\nB"
+    | ^~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A\rB"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A\nB"
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-empty-last
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-empty-last-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | complex "Investigate"
+  3 | complex
+    | ^~~~~~~ [1]
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Investigate"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-empty-middle
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-empty-middle-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | complex "A"
+  3 | complex
+    | ^~~~~~~ [1]
+  4 | complex "A"
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A"
+          3 | complex "A"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex
+          3 | complex "A"
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-empty-string-removed
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-empty-string-removed-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | complex ""
+  3 | complex
+    | ^~~~~~~ [1]
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex ""
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-equal-predecessor
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-equal-predecessor-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | complex "A"
+  3 | complex "A"
+  4 | complex "B"
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A"
+          3 | complex "A"
+          4 |
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-escaped-equivalence
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-escaped-equivalence-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | complex "In\qvestigate"
+  3 | complex "Inqvestigate"
+    | ^~~~~~~~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "In\qvestigate"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Inqvestigate"
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-html-quotes-written
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-html-quotes-written-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | complex "<b x="a">A</b>"
+  3 | complex "<b x='a'>A</b>"
+    | ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "<b x="a">A</b>"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "<b x='a'>A</b>"
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-item-padding-distinct
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-item-padding-distinct-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | complex " A "
+  3 | complex "A"
+    | ^~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex " A "
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A"
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-item-space-runs-distinct
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-item-space-runs-distinct-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | complex "A  B"
+  3 | complex "A B"
+    | ^~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A  B"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A B"
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-other-domains-independent
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-other-domains-independent-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | complicated "A"
+  3 | clear "A"
+  4 | chaotic "A"
+  5 | complicated "B"
+    | ^~~~~~~~~~~~~~~ [1]
+  6 | clear "B"
+    | ^~~~~~~~~ [2]
+  7 | chaotic "B"
+    | ^~~~~~~~~~~ [3]
+
+[1] mermaid.js replaces the items of the domain `complicated`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complicated "A"
+          3 | clear "A"
+          4 | chaotic "A"
+          5 | clear "B"
+          6 | chaotic "B"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | clear "A"
+          3 | chaotic "A"
+          4 | complicated "B"
+          5 | clear "B"
+          6 | chaotic "B"
+[2] mermaid.js replaces the items of the domain `clear`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complicated "A"
+          3 | clear "A"
+          4 | chaotic "A"
+          5 | complicated "B"
+          6 | chaotic "B"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complicated "A"
+          3 | chaotic "A"
+          4 | complicated "B"
+          5 | clear "B"
+          6 | chaotic "B"
+[3] mermaid.js replaces the items of the domain `chaotic`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complicated "A"
+          3 | clear "A"
+          4 | chaotic "A"
+          5 | complicated "B"
+          6 | clear "B"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complicated "A"
+          3 | clear "A"
+          4 | complicated "B"
+          5 | clear "B"
+          6 | chaotic "B"
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-previous-extended-list
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-previous-extended-list-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | complex "A"
+  3 | complex "A" "B"
+  4 | complex "A"
+    | ^~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A"
+          3 | complex "A" "B"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A"
+          3 | complex "A"
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-repeated-item-removed
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-repeated-item-removed-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | complex "Investigate" "Investigate"
+  3 | complex "Investigate"
+    | ^~~~~~~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Investigate" "Investigate"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Investigate"
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-shrunk-list
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-shrunk-list-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | complex "Investigate" "Experiment"
+  3 | complex "Experiment"
+    | ^~~~~~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Investigate" "Experiment"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Experiment"
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-three
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-three-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | complex "A"
+  3 | complex "B"
+    | ^~~~~~~~~~~ [1]
+  4 | complex "A"
+    | ^~~~~~~~~~~ [2]
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A"
+          3 | complex "A"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "B"
+          3 | complex "A"
+[2] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A"
+          3 | complex "B"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A"
+          3 | complex "A"
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-transition-after-definitions
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-transition-after-definitions-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | complex "Old"
+  3 | clear "Restart"
+  4 | complex "New"
+    | ^~~~~~~~~~~~~ [1]
+  5 | complex --> clear : "Move"
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "Old"
+          3 | clear "Restart"
+          4 | complex --> clear : "Move"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | clear "Restart"
+          3 | complex "New"
+          4 | complex --> clear : "Move"
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/domain-transition-before-definitions
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/domain-transition-before-definitions-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | complex --> clear : "Move"
+  3 | complex "Old"
+  4 | clear "Restart"
+  5 | complex "New"
+    | ^~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex --> clear : "Move"
+          3 | complex "Old"
+          4 | clear "Restart"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex --> clear : "Move"
+          3 | clear "Restart"
+          4 | complex "New"
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/limit-domain-entity
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/limit-domain-entity-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | complex "A"
+  3 | complex "#65;"
+    | ^~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the items of the domain `complex`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "A"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | complex "#65;"
+---
+
+
+Test: cynefin-no-redefined-domain >> invalid >>> invalid/cynefin/limit-domain-hidden-overflow-change
+Filename: tests/fixtures/rules/cynefin-no-redefined-domain/invalid/cynefin/limit-domain-hidden-overflow-change-input.mmd
+
+Code:
+  1 | cynefin-beta
+  2 | confusion "A" "B" "C" "D"
+  3 | confusion "A" "B" "C" "E"
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the items of the domain `confusion`, set earlier, with those of this statement.
+    Suggestions:
+      - Remove this domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | confusion "A" "B" "C" "D"
+      - Remove the earlier domain statement.
+        Output:
+          1 | cynefin-beta
+          2 | confusion "A" "B" "C" "E"
+---

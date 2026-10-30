@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A task with four items has no id, and a click statement finds it by the id undefined."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {},
+        "task": "a ",
+        "classes": [
+          "clickable"
+        ],
+        "order": 0
+      }
+    ],
+    "links": [
+      {
+        "id": "undefined",
+        "url": "u"
+      }
+    ]
+  }
+}

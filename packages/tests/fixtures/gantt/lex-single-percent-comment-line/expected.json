@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Comments: a line that starts with a single `%` is a diagram comment, not a comment line of common.md; the tasks a and c."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "a ",
+        "classes": [],
+        "id": "task1",
+        "order": 0
+      },
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd",
+            "id": "task1"
+          },
+          "endTime": {
+            "data": "3d"
+          }
+        },
+        "task": "c ",
+        "classes": [],
+        "id": "task2",
+        "order": 1
+      }
+    ],
+    "links": []
+  }
+}

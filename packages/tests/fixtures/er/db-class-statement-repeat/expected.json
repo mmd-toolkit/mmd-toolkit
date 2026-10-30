@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The classes of an entity are in the order the statements gave them, and a name given twice (`c`) is kept twice."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": [
+          "c",
+          "d",
+          "e",
+          "f",
+          "g",
+          "c"
+        ]
+      },
+      {
+        "id": "entity-B-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B",
+        "classes": [
+          "c"
+        ]
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

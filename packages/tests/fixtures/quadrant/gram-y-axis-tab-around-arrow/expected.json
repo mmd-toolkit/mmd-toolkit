@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, y-axis: tabs around the arrow are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ntCharty-axis B\t-->\tR\n----------------------^\nExpecting 'ALPHA', 'NUM', 'COMMA', 'AMP', 'BRKT', 'MULT', 'UNICODE_TEXT', 'NEWLINE', 'SEMI', 'EOF', 'STR', 'MD_STR', 'PUNCTUATION', 'PLUS', 'EQUALS', 'DOT', 'UNDERSCORE', got 'SPACE'"
+  }
+}

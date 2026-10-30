@@ -1,0 +1,68 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-style.spec.js",
+    "line": 254,
+    "test": "[Style] when parsing > should be possible to apply a class to a comma separated list of vertices"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "exClass"
+        ],
+        "text": "a",
+        "props": {}
+      },
+      {
+        "id": "b",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "exClass"
+        ],
+        "text": "b",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "a",
+        "end": "b",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_a_b_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "exClass",
+        "styles": [
+          "background:#bbb",
+          "border:1px solid red"
+        ]
+      }
+    ],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

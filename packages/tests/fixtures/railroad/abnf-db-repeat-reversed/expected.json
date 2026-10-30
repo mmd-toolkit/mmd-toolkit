@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The adapter does not reject a minimum larger than its maximum."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "repetition",
+          "element": {
+            "type": "terminal",
+            "value": "a"
+          },
+          "min": 4,
+          "max": 2
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Prototype names are ordinary EBNF rule names and references."
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "__proto__",
+        "definition": {
+          "type": "nonterminal",
+          "name": "constructor"
+        }
+      },
+      {
+        "name": "constructor",
+        "definition": {
+          "type": "terminal",
+          "value": "prototype"
+        }
+      }
+    ]
+  }
+}

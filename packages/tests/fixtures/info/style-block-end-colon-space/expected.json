@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Colon-space-hash keeps the rejecting block suffix semicolon."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 27: unexpected character: ->;<- at offset: 31, skipped 1 characters. "
+  }
+}

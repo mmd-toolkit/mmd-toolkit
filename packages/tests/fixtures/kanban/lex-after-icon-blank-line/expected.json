@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md Diagram and lines: a blank line may follow the line of the icon."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "isGroup": false,
+        "parentId": "S",
+        "icon": "star"
+      }
+    ]
+  }
+}

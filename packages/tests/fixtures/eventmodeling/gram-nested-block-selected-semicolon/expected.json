@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Grammar: A selected semicolon is omitted from block-data content by the common line rule. Accepted by Mermaid."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": {
+          "kind": "block",
+          "value": "{\nstyle:#x ab\n}\n"
+        }
+      }
+    ]
+  }
+}

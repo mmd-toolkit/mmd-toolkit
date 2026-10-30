@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/wardley.md",
+    "line": 135
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Inertia",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "Legacy System",
+        "label": "Legacy System",
+        "x": 40,
+        "y": 45,
+        "className": "component",
+        "inertia": true
+      },
+      {
+        "id": "New Platform",
+        "label": "New Platform",
+        "x": 45,
+        "y": 65,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [
+      {
+        "source": "Legacy System",
+        "target": "New Platform",
+        "dashed": false
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

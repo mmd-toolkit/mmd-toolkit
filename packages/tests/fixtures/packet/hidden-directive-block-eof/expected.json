@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "EOF satisfies block EOL after the hidden directive consumes the appended LF."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 0,
+          "label": "A"
+        }
+      ]
+    ]
+  }
+}

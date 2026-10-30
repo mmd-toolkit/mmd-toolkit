@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: Branch-line trailing Unicode whitespace is excluded from the reading before directory-suffix interpretation."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "dir",
+        "nodeType": "directory",
+        "children": []
+      }
+    ]
+  }
+}

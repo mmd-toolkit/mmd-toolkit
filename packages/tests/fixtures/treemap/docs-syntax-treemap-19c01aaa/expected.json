@@ -1,0 +1,60 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/treemap.md",
+    "line": 186
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "Budget",
+        "children": [
+          {
+            "name": "Operations",
+            "children": [
+              {
+                "name": "Salaries",
+                "value": 700000
+              },
+              {
+                "name": "Equipment",
+                "value": 200000
+              },
+              {
+                "name": "Supplies",
+                "value": 100000
+              }
+            ]
+          },
+          {
+            "name": "Marketing",
+            "children": [
+              {
+                "name": "Advertising",
+                "value": 400000
+              },
+              {
+                "name": "Events",
+                "value": 100000
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "config": {
+      "treemap": {
+        "valueFormat": "$0,0"
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Detection: A retained directive after a passed bare line still belongs to the diagram tree. Accepted by Mermaid."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": []
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

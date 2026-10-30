@@ -1,0 +1,3837 @@
+{
+  "type": "Root",
+  "diagramType": "gantt",
+  "body": {
+    "type": "GanttDiagram",
+    "body": [
+      {
+        "type": "GanttDateFormatStatement",
+        "value": {
+          "type": "GanttLiteral",
+          "value": "YYYY-MM-DD",
+          "range": [
+            17,
+            27
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 11
+            },
+            "end": {
+              "line": 2,
+              "column": 21
+            }
+          }
+        },
+        "range": [
+          6,
+          27
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 21
+          }
+        }
+      },
+      {
+        "type": "GanttAxisFormatStatement",
+        "value": {
+          "type": "GanttLiteral",
+          "value": "%d/%m",
+          "range": [
+            39,
+            44
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 11
+            },
+            "end": {
+              "line": 3,
+              "column": 16
+            }
+          }
+        },
+        "range": [
+          28,
+          44
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 16
+          }
+        }
+      },
+      {
+        "type": "GanttTitleStatement",
+        "value": {
+          "type": "GanttLiteral",
+          "value": "GANTT diagram with multiline section titles",
+          "range": [
+            51,
+            94
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 6
+            },
+            "end": {
+              "line": 4,
+              "column": 49
+            }
+          }
+        },
+        "range": [
+          45,
+          94
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 49
+          }
+        }
+      },
+      {
+        "type": "GanttExcludesStatement",
+        "items": [
+          {
+            "type": "Identifier",
+            "name": "weekdays",
+            "range": [
+              104,
+              112
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 9
+              },
+              "end": {
+                "line": 5,
+                "column": 17
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "2014-01-10",
+            "range": [
+              113,
+              123
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 18
+              },
+              "end": {
+                "line": 5,
+                "column": 28
+              }
+            }
+          }
+        ],
+        "range": [
+          95,
+          123
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 28
+          }
+        }
+      },
+      {
+        "type": "GanttSectionStatement",
+        "name": {
+          "type": "GanttLiteral",
+          "value": "A section<br>multiline",
+          "range": [
+            133,
+            155
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 8
+            },
+            "end": {
+              "line": 7,
+              "column": 30
+            }
+          }
+        },
+        "range": [
+          125,
+          155
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 30
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "Completed task ",
+          "range": [
+            156,
+            171
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 0
+            },
+            "end": {
+              "line": 8,
+              "column": 15
+            }
+          }
+        },
+        "tags": [
+          {
+            "type": "Identifier",
+            "name": "done",
+            "range": [
+              173,
+              177
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 17
+              },
+              "end": {
+                "line": 8,
+                "column": 21
+              }
+            }
+          }
+        ],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "des1",
+            "range": [
+              179,
+              183
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 23
+              },
+              "end": {
+                "line": 8,
+                "column": 27
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "2014-01-06",
+            "range": [
+              185,
+              195
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 29
+              },
+              "end": {
+                "line": 8,
+                "column": 39
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "2014-01-08",
+            "range": [
+              196,
+              206
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 40
+              },
+              "end": {
+                "line": 8,
+                "column": 50
+              }
+            }
+          }
+        ],
+        "range": [
+          156,
+          206
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 0
+          },
+          "end": {
+            "line": 8,
+            "column": 50
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "Active task ",
+          "range": [
+            207,
+            219
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 0
+            },
+            "end": {
+              "line": 9,
+              "column": 12
+            }
+          }
+        },
+        "tags": [
+          {
+            "type": "Identifier",
+            "name": "active",
+            "range": [
+              221,
+              227
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 14
+              },
+              "end": {
+                "line": 9,
+                "column": 20
+              }
+            }
+          }
+        ],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "des2",
+            "range": [
+              229,
+              233
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 22
+              },
+              "end": {
+                "line": 9,
+                "column": 26
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "2014-01-09",
+            "range": [
+              235,
+              245
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 28
+              },
+              "end": {
+                "line": 9,
+                "column": 38
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "3d",
+            "range": [
+              247,
+              249
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 40
+              },
+              "end": {
+                "line": 9,
+                "column": 42
+              }
+            }
+          }
+        ],
+        "range": [
+          207,
+          249
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 0
+          },
+          "end": {
+            "line": 9,
+            "column": 42
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "Future task ",
+          "range": [
+            250,
+            262
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 0
+            },
+            "end": {
+              "line": 10,
+              "column": 12
+            }
+          }
+        },
+        "tags": [],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "des3",
+            "range": [
+              264,
+              268
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 14
+              },
+              "end": {
+                "line": 10,
+                "column": 18
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "after des2",
+            "range": [
+              270,
+              280
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 20
+              },
+              "end": {
+                "line": 10,
+                "column": 30
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "5d",
+            "range": [
+              282,
+              284
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 32
+              },
+              "end": {
+                "line": 10,
+                "column": 34
+              }
+            }
+          }
+        ],
+        "range": [
+          250,
+          284
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 0
+          },
+          "end": {
+            "line": 10,
+            "column": 34
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "Future task2 ",
+          "range": [
+            285,
+            298
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 0
+            },
+            "end": {
+              "line": 11,
+              "column": 13
+            }
+          }
+        },
+        "tags": [],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "des4",
+            "range": [
+              300,
+              304
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 15
+              },
+              "end": {
+                "line": 11,
+                "column": 19
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "after des3",
+            "range": [
+              306,
+              316
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 21
+              },
+              "end": {
+                "line": 11,
+                "column": 31
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "5d",
+            "range": [
+              318,
+              320
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 33
+              },
+              "end": {
+                "line": 11,
+                "column": 35
+              }
+            }
+          }
+        ],
+        "range": [
+          285,
+          320
+        ],
+        "loc": {
+          "start": {
+            "line": 11,
+            "column": 0
+          },
+          "end": {
+            "line": 11,
+            "column": 35
+          }
+        }
+      },
+      {
+        "type": "GanttSectionStatement",
+        "name": {
+          "type": "GanttLiteral",
+          "value": "Critical tasks<br />multiline",
+          "range": [
+            330,
+            359
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 8
+            },
+            "end": {
+              "line": 13,
+              "column": 37
+            }
+          }
+        },
+        "range": [
+          322,
+          359
+        ],
+        "loc": {
+          "start": {
+            "line": 13,
+            "column": 0
+          },
+          "end": {
+            "line": 13,
+            "column": 37
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "Completed task in the critical line ",
+          "range": [
+            360,
+            396
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 0
+            },
+            "end": {
+              "line": 14,
+              "column": 36
+            }
+          }
+        },
+        "tags": [
+          {
+            "type": "Identifier",
+            "name": "crit",
+            "range": [
+              398,
+              402
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 38
+              },
+              "end": {
+                "line": 14,
+                "column": 42
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "done",
+            "range": [
+              404,
+              408
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 44
+              },
+              "end": {
+                "line": 14,
+                "column": 48
+              }
+            }
+          }
+        ],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "2014-01-06",
+            "range": [
+              410,
+              420
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 50
+              },
+              "end": {
+                "line": 14,
+                "column": 60
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "24h",
+            "range": [
+              422,
+              425
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 62
+              },
+              "end": {
+                "line": 14,
+                "column": 65
+              }
+            }
+          }
+        ],
+        "range": [
+          360,
+          425
+        ],
+        "loc": {
+          "start": {
+            "line": 14,
+            "column": 0
+          },
+          "end": {
+            "line": 14,
+            "column": 65
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "Implement parser and jison ",
+          "range": [
+            426,
+            453
+          ],
+          "loc": {
+            "start": {
+              "line": 15,
+              "column": 0
+            },
+            "end": {
+              "line": 15,
+              "column": 27
+            }
+          }
+        },
+        "tags": [
+          {
+            "type": "Identifier",
+            "name": "crit",
+            "range": [
+              455,
+              459
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 29
+              },
+              "end": {
+                "line": 15,
+                "column": 33
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "done",
+            "range": [
+              461,
+              465
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 35
+              },
+              "end": {
+                "line": 15,
+                "column": 39
+              }
+            }
+          }
+        ],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "after des1",
+            "range": [
+              467,
+              477
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 41
+              },
+              "end": {
+                "line": 15,
+                "column": 51
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "2d",
+            "range": [
+              479,
+              481
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 53
+              },
+              "end": {
+                "line": 15,
+                "column": 55
+              }
+            }
+          }
+        ],
+        "range": [
+          426,
+          481
+        ],
+        "loc": {
+          "start": {
+            "line": 15,
+            "column": 0
+          },
+          "end": {
+            "line": 15,
+            "column": 55
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "Create tests for parser ",
+          "range": [
+            482,
+            506
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 0
+            },
+            "end": {
+              "line": 16,
+              "column": 24
+            }
+          }
+        },
+        "tags": [
+          {
+            "type": "Identifier",
+            "name": "crit",
+            "range": [
+              508,
+              512
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 26
+              },
+              "end": {
+                "line": 16,
+                "column": 30
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "active",
+            "range": [
+              514,
+              520
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 32
+              },
+              "end": {
+                "line": 16,
+                "column": 38
+              }
+            }
+          }
+        ],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "3d",
+            "range": [
+              522,
+              524
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 40
+              },
+              "end": {
+                "line": 16,
+                "column": 42
+              }
+            }
+          }
+        ],
+        "range": [
+          482,
+          524
+        ],
+        "loc": {
+          "start": {
+            "line": 16,
+            "column": 0
+          },
+          "end": {
+            "line": 16,
+            "column": 42
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "Future task in critical line ",
+          "range": [
+            525,
+            554
+          ],
+          "loc": {
+            "start": {
+              "line": 17,
+              "column": 0
+            },
+            "end": {
+              "line": 17,
+              "column": 29
+            }
+          }
+        },
+        "tags": [
+          {
+            "type": "Identifier",
+            "name": "crit",
+            "range": [
+              556,
+              560
+            ],
+            "loc": {
+              "start": {
+                "line": 17,
+                "column": 31
+              },
+              "end": {
+                "line": 17,
+                "column": 35
+              }
+            }
+          }
+        ],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "5d",
+            "range": [
+              562,
+              564
+            ],
+            "loc": {
+              "start": {
+                "line": 17,
+                "column": 37
+              },
+              "end": {
+                "line": 17,
+                "column": 39
+              }
+            }
+          }
+        ],
+        "range": [
+          525,
+          564
+        ],
+        "loc": {
+          "start": {
+            "line": 17,
+            "column": 0
+          },
+          "end": {
+            "line": 17,
+            "column": 39
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "Create tests for renderer ",
+          "range": [
+            565,
+            591
+          ],
+          "loc": {
+            "start": {
+              "line": 18,
+              "column": 0
+            },
+            "end": {
+              "line": 18,
+              "column": 26
+            }
+          }
+        },
+        "tags": [],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "2d",
+            "range": [
+              593,
+              595
+            ],
+            "loc": {
+              "start": {
+                "line": 18,
+                "column": 28
+              },
+              "end": {
+                "line": 18,
+                "column": 30
+              }
+            }
+          }
+        ],
+        "range": [
+          565,
+          595
+        ],
+        "loc": {
+          "start": {
+            "line": 18,
+            "column": 0
+          },
+          "end": {
+            "line": 18,
+            "column": 30
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "Add to mermaid ",
+          "range": [
+            596,
+            611
+          ],
+          "loc": {
+            "start": {
+              "line": 19,
+              "column": 0
+            },
+            "end": {
+              "line": 19,
+              "column": 15
+            }
+          }
+        },
+        "tags": [],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "1d",
+            "range": [
+              613,
+              615
+            ],
+            "loc": {
+              "start": {
+                "line": 19,
+                "column": 17
+              },
+              "end": {
+                "line": 19,
+                "column": 19
+              }
+            }
+          }
+        ],
+        "range": [
+          596,
+          615
+        ],
+        "loc": {
+          "start": {
+            "line": 19,
+            "column": 0
+          },
+          "end": {
+            "line": 19,
+            "column": 19
+          }
+        }
+      },
+      {
+        "type": "GanttSectionStatement",
+        "name": {
+          "type": "GanttLiteral",
+          "value": "Documentation<br />multiline",
+          "range": [
+            625,
+            653
+          ],
+          "loc": {
+            "start": {
+              "line": 21,
+              "column": 8
+            },
+            "end": {
+              "line": 21,
+              "column": 36
+            }
+          }
+        },
+        "range": [
+          617,
+          653
+        ],
+        "loc": {
+          "start": {
+            "line": 21,
+            "column": 0
+          },
+          "end": {
+            "line": 21,
+            "column": 36
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "Describe gantt syntax ",
+          "range": [
+            654,
+            676
+          ],
+          "loc": {
+            "start": {
+              "line": 22,
+              "column": 0
+            },
+            "end": {
+              "line": 22,
+              "column": 22
+            }
+          }
+        },
+        "tags": [
+          {
+            "type": "Identifier",
+            "name": "active",
+            "range": [
+              678,
+              684
+            ],
+            "loc": {
+              "start": {
+                "line": 22,
+                "column": 24
+              },
+              "end": {
+                "line": 22,
+                "column": 30
+              }
+            }
+          }
+        ],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "a1",
+            "range": [
+              686,
+              688
+            ],
+            "loc": {
+              "start": {
+                "line": 22,
+                "column": 32
+              },
+              "end": {
+                "line": 22,
+                "column": 34
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "after des1",
+            "range": [
+              690,
+              700
+            ],
+            "loc": {
+              "start": {
+                "line": 22,
+                "column": 36
+              },
+              "end": {
+                "line": 22,
+                "column": 46
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "3d",
+            "range": [
+              702,
+              704
+            ],
+            "loc": {
+              "start": {
+                "line": 22,
+                "column": 48
+              },
+              "end": {
+                "line": 22,
+                "column": 50
+              }
+            }
+          }
+        ],
+        "range": [
+          654,
+          704
+        ],
+        "loc": {
+          "start": {
+            "line": 22,
+            "column": 0
+          },
+          "end": {
+            "line": 22,
+            "column": 50
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "Add gantt diagram to demo page ",
+          "range": [
+            705,
+            736
+          ],
+          "loc": {
+            "start": {
+              "line": 23,
+              "column": 0
+            },
+            "end": {
+              "line": 23,
+              "column": 31
+            }
+          }
+        },
+        "tags": [],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "after a1",
+            "range": [
+              738,
+              746
+            ],
+            "loc": {
+              "start": {
+                "line": 23,
+                "column": 33
+              },
+              "end": {
+                "line": 23,
+                "column": 41
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "20h",
+            "range": [
+              748,
+              751
+            ],
+            "loc": {
+              "start": {
+                "line": 23,
+                "column": 43
+              },
+              "end": {
+                "line": 23,
+                "column": 46
+              }
+            }
+          }
+        ],
+        "range": [
+          705,
+          751
+        ],
+        "loc": {
+          "start": {
+            "line": 23,
+            "column": 0
+          },
+          "end": {
+            "line": 23,
+            "column": 46
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "Add another diagram to demo page ",
+          "range": [
+            752,
+            785
+          ],
+          "loc": {
+            "start": {
+              "line": 24,
+              "column": 0
+            },
+            "end": {
+              "line": 24,
+              "column": 33
+            }
+          }
+        },
+        "tags": [],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "doc1",
+            "range": [
+              787,
+              791
+            ],
+            "loc": {
+              "start": {
+                "line": 24,
+                "column": 35
+              },
+              "end": {
+                "line": 24,
+                "column": 39
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "after a1",
+            "range": [
+              793,
+              801
+            ],
+            "loc": {
+              "start": {
+                "line": 24,
+                "column": 41
+              },
+              "end": {
+                "line": 24,
+                "column": 49
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "48h",
+            "range": [
+              803,
+              806
+            ],
+            "loc": {
+              "start": {
+                "line": 24,
+                "column": 51
+              },
+              "end": {
+                "line": 24,
+                "column": 54
+              }
+            }
+          }
+        ],
+        "range": [
+          752,
+          806
+        ],
+        "loc": {
+          "start": {
+            "line": 24,
+            "column": 0
+          },
+          "end": {
+            "line": 24,
+            "column": 54
+          }
+        }
+      },
+      {
+        "type": "GanttSectionStatement",
+        "name": {
+          "type": "GanttLiteral",
+          "value": "Last section<br />multiline",
+          "range": [
+            816,
+            843
+          ],
+          "loc": {
+            "start": {
+              "line": 26,
+              "column": 8
+            },
+            "end": {
+              "line": 26,
+              "column": 35
+            }
+          }
+        },
+        "range": [
+          808,
+          843
+        ],
+        "loc": {
+          "start": {
+            "line": 26,
+            "column": 0
+          },
+          "end": {
+            "line": 26,
+            "column": 35
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "Describe gantt syntax ",
+          "range": [
+            844,
+            866
+          ],
+          "loc": {
+            "start": {
+              "line": 27,
+              "column": 0
+            },
+            "end": {
+              "line": 27,
+              "column": 22
+            }
+          }
+        },
+        "tags": [],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "after doc1",
+            "range": [
+              868,
+              878
+            ],
+            "loc": {
+              "start": {
+                "line": 27,
+                "column": 24
+              },
+              "end": {
+                "line": 27,
+                "column": 34
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "3d",
+            "range": [
+              880,
+              882
+            ],
+            "loc": {
+              "start": {
+                "line": 27,
+                "column": 36
+              },
+              "end": {
+                "line": 27,
+                "column": 38
+              }
+            }
+          }
+        ],
+        "range": [
+          844,
+          882
+        ],
+        "loc": {
+          "start": {
+            "line": 27,
+            "column": 0
+          },
+          "end": {
+            "line": 27,
+            "column": 38
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "Add gantt diagram to demo page ",
+          "range": [
+            883,
+            914
+          ],
+          "loc": {
+            "start": {
+              "line": 28,
+              "column": 0
+            },
+            "end": {
+              "line": 28,
+              "column": 31
+            }
+          }
+        },
+        "tags": [],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "20h",
+            "range": [
+              916,
+              919
+            ],
+            "loc": {
+              "start": {
+                "line": 28,
+                "column": 33
+              },
+              "end": {
+                "line": 28,
+                "column": 36
+              }
+            }
+          }
+        ],
+        "range": [
+          883,
+          919
+        ],
+        "loc": {
+          "start": {
+            "line": 28,
+            "column": 0
+          },
+          "end": {
+            "line": 28,
+            "column": 36
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "Add another diagram to demo page ",
+          "range": [
+            920,
+            953
+          ],
+          "loc": {
+            "start": {
+              "line": 29,
+              "column": 0
+            },
+            "end": {
+              "line": 29,
+              "column": 33
+            }
+          }
+        },
+        "tags": [],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "48h",
+            "range": [
+              955,
+              958
+            ],
+            "loc": {
+              "start": {
+                "line": 29,
+                "column": 35
+              },
+              "end": {
+                "line": 29,
+                "column": 38
+              }
+            }
+          }
+        ],
+        "range": [
+          920,
+          958
+        ],
+        "loc": {
+          "start": {
+            "line": 29,
+            "column": 0
+          },
+          "end": {
+            "line": 29,
+            "column": 38
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      958
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 29,
+        "column": 38
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "gantt",
+      "range": [
+        0,
+        5
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "dateFormat",
+      "range": [
+        6,
+        16
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "YYYY-MM-DD",
+      "range": [
+        17,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 11
+        },
+        "end": {
+          "line": 2,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "axisFormat",
+      "range": [
+        28,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "%d/%m",
+      "range": [
+        39,
+        44
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 11
+        },
+        "end": {
+          "line": 3,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        45,
+        50
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "GANTT diagram with multiline section titles",
+      "range": [
+        51,
+        94
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 6
+        },
+        "end": {
+          "line": 4,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "excludes",
+      "range": [
+        95,
+        103
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "weekdays",
+      "range": [
+        104,
+        112
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 9
+        },
+        "end": {
+          "line": 5,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "2014-01-10",
+      "range": [
+        113,
+        123
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 18
+        },
+        "end": {
+          "line": 5,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "section",
+      "range": [
+        125,
+        132
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "A section<br>multiline",
+      "range": [
+        133,
+        155
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 8
+        },
+        "end": {
+          "line": 7,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Completed task ",
+      "range": [
+        156,
+        171
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        171,
+        172
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 15
+        },
+        "end": {
+          "line": 8,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "done",
+      "range": [
+        173,
+        177
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 17
+        },
+        "end": {
+          "line": 8,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        177,
+        178
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 21
+        },
+        "end": {
+          "line": 8,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "des1",
+      "range": [
+        179,
+        183
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 23
+        },
+        "end": {
+          "line": 8,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        183,
+        184
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 27
+        },
+        "end": {
+          "line": 8,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "2014-01-06",
+      "range": [
+        185,
+        195
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 29
+        },
+        "end": {
+          "line": 8,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        195,
+        196
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 39
+        },
+        "end": {
+          "line": 8,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "2014-01-08",
+      "range": [
+        196,
+        206
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 40
+        },
+        "end": {
+          "line": 8,
+          "column": 50
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Active task ",
+      "range": [
+        207,
+        219
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        219,
+        220
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 12
+        },
+        "end": {
+          "line": 9,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "active",
+      "range": [
+        221,
+        227
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 14
+        },
+        "end": {
+          "line": 9,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        227,
+        228
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 20
+        },
+        "end": {
+          "line": 9,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "des2",
+      "range": [
+        229,
+        233
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 22
+        },
+        "end": {
+          "line": 9,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        233,
+        234
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 26
+        },
+        "end": {
+          "line": 9,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "2014-01-09",
+      "range": [
+        235,
+        245
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 28
+        },
+        "end": {
+          "line": 9,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        245,
+        246
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 38
+        },
+        "end": {
+          "line": 9,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "3d",
+      "range": [
+        247,
+        249
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 40
+        },
+        "end": {
+          "line": 9,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Future task ",
+      "range": [
+        250,
+        262
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 0
+        },
+        "end": {
+          "line": 10,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        262,
+        263
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 12
+        },
+        "end": {
+          "line": 10,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "des3",
+      "range": [
+        264,
+        268
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 14
+        },
+        "end": {
+          "line": 10,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        268,
+        269
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 18
+        },
+        "end": {
+          "line": 10,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "after des2",
+      "range": [
+        270,
+        280
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 20
+        },
+        "end": {
+          "line": 10,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        280,
+        281
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 30
+        },
+        "end": {
+          "line": 10,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "5d",
+      "range": [
+        282,
+        284
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 32
+        },
+        "end": {
+          "line": 10,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Future task2 ",
+      "range": [
+        285,
+        298
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 0
+        },
+        "end": {
+          "line": 11,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        298,
+        299
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 13
+        },
+        "end": {
+          "line": 11,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "des4",
+      "range": [
+        300,
+        304
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 15
+        },
+        "end": {
+          "line": 11,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        304,
+        305
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 19
+        },
+        "end": {
+          "line": 11,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "after des3",
+      "range": [
+        306,
+        316
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 21
+        },
+        "end": {
+          "line": 11,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        316,
+        317
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 31
+        },
+        "end": {
+          "line": 11,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "5d",
+      "range": [
+        318,
+        320
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 33
+        },
+        "end": {
+          "line": 11,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "section",
+      "range": [
+        322,
+        329
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 0
+        },
+        "end": {
+          "line": 13,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Critical tasks<br />multiline",
+      "range": [
+        330,
+        359
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 8
+        },
+        "end": {
+          "line": 13,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Completed task in the critical line ",
+      "range": [
+        360,
+        396
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 0
+        },
+        "end": {
+          "line": 14,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        396,
+        397
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 36
+        },
+        "end": {
+          "line": 14,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "crit",
+      "range": [
+        398,
+        402
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 38
+        },
+        "end": {
+          "line": 14,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        402,
+        403
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 42
+        },
+        "end": {
+          "line": 14,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "done",
+      "range": [
+        404,
+        408
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 44
+        },
+        "end": {
+          "line": 14,
+          "column": 48
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        408,
+        409
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 48
+        },
+        "end": {
+          "line": 14,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "2014-01-06",
+      "range": [
+        410,
+        420
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 50
+        },
+        "end": {
+          "line": 14,
+          "column": 60
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        420,
+        421
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 60
+        },
+        "end": {
+          "line": 14,
+          "column": 61
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "24h",
+      "range": [
+        422,
+        425
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 62
+        },
+        "end": {
+          "line": 14,
+          "column": 65
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Implement parser and jison ",
+      "range": [
+        426,
+        453
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 0
+        },
+        "end": {
+          "line": 15,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        453,
+        454
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 27
+        },
+        "end": {
+          "line": 15,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "crit",
+      "range": [
+        455,
+        459
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 29
+        },
+        "end": {
+          "line": 15,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        459,
+        460
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 33
+        },
+        "end": {
+          "line": 15,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "done",
+      "range": [
+        461,
+        465
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 35
+        },
+        "end": {
+          "line": 15,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        465,
+        466
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 39
+        },
+        "end": {
+          "line": 15,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "after des1",
+      "range": [
+        467,
+        477
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 41
+        },
+        "end": {
+          "line": 15,
+          "column": 51
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        477,
+        478
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 51
+        },
+        "end": {
+          "line": 15,
+          "column": 52
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "2d",
+      "range": [
+        479,
+        481
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 53
+        },
+        "end": {
+          "line": 15,
+          "column": 55
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Create tests for parser ",
+      "range": [
+        482,
+        506
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 0
+        },
+        "end": {
+          "line": 16,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        506,
+        507
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 24
+        },
+        "end": {
+          "line": 16,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "crit",
+      "range": [
+        508,
+        512
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 26
+        },
+        "end": {
+          "line": 16,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        512,
+        513
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 30
+        },
+        "end": {
+          "line": 16,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "active",
+      "range": [
+        514,
+        520
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 32
+        },
+        "end": {
+          "line": 16,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        520,
+        521
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 38
+        },
+        "end": {
+          "line": 16,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "3d",
+      "range": [
+        522,
+        524
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 40
+        },
+        "end": {
+          "line": 16,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Future task in critical line ",
+      "range": [
+        525,
+        554
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 0
+        },
+        "end": {
+          "line": 17,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        554,
+        555
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 29
+        },
+        "end": {
+          "line": 17,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "crit",
+      "range": [
+        556,
+        560
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 31
+        },
+        "end": {
+          "line": 17,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        560,
+        561
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 35
+        },
+        "end": {
+          "line": 17,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "5d",
+      "range": [
+        562,
+        564
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 37
+        },
+        "end": {
+          "line": 17,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Create tests for renderer ",
+      "range": [
+        565,
+        591
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 0
+        },
+        "end": {
+          "line": 18,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        591,
+        592
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 26
+        },
+        "end": {
+          "line": 18,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "2d",
+      "range": [
+        593,
+        595
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 28
+        },
+        "end": {
+          "line": 18,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Add to mermaid ",
+      "range": [
+        596,
+        611
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 0
+        },
+        "end": {
+          "line": 19,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        611,
+        612
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 15
+        },
+        "end": {
+          "line": 19,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "1d",
+      "range": [
+        613,
+        615
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 17
+        },
+        "end": {
+          "line": 19,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "section",
+      "range": [
+        617,
+        624
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 0
+        },
+        "end": {
+          "line": 21,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Documentation<br />multiline",
+      "range": [
+        625,
+        653
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 8
+        },
+        "end": {
+          "line": 21,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Describe gantt syntax ",
+      "range": [
+        654,
+        676
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 0
+        },
+        "end": {
+          "line": 22,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        676,
+        677
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 22
+        },
+        "end": {
+          "line": 22,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "active",
+      "range": [
+        678,
+        684
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 24
+        },
+        "end": {
+          "line": 22,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        684,
+        685
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 30
+        },
+        "end": {
+          "line": 22,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "a1",
+      "range": [
+        686,
+        688
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 32
+        },
+        "end": {
+          "line": 22,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        688,
+        689
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 34
+        },
+        "end": {
+          "line": 22,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "after des1",
+      "range": [
+        690,
+        700
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 36
+        },
+        "end": {
+          "line": 22,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        700,
+        701
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 46
+        },
+        "end": {
+          "line": 22,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "3d",
+      "range": [
+        702,
+        704
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 48
+        },
+        "end": {
+          "line": 22,
+          "column": 50
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Add gantt diagram to demo page ",
+      "range": [
+        705,
+        736
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 0
+        },
+        "end": {
+          "line": 23,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        736,
+        737
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 31
+        },
+        "end": {
+          "line": 23,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "after a1",
+      "range": [
+        738,
+        746
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 33
+        },
+        "end": {
+          "line": 23,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        746,
+        747
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 41
+        },
+        "end": {
+          "line": 23,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "20h",
+      "range": [
+        748,
+        751
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 43
+        },
+        "end": {
+          "line": 23,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Add another diagram to demo page ",
+      "range": [
+        752,
+        785
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 0
+        },
+        "end": {
+          "line": 24,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        785,
+        786
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 33
+        },
+        "end": {
+          "line": 24,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "doc1",
+      "range": [
+        787,
+        791
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 35
+        },
+        "end": {
+          "line": 24,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        791,
+        792
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 39
+        },
+        "end": {
+          "line": 24,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "after a1",
+      "range": [
+        793,
+        801
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 41
+        },
+        "end": {
+          "line": 24,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        801,
+        802
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 49
+        },
+        "end": {
+          "line": 24,
+          "column": 50
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "48h",
+      "range": [
+        803,
+        806
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 51
+        },
+        "end": {
+          "line": 24,
+          "column": 54
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "section",
+      "range": [
+        808,
+        815
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 0
+        },
+        "end": {
+          "line": 26,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Last section<br />multiline",
+      "range": [
+        816,
+        843
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 8
+        },
+        "end": {
+          "line": 26,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Describe gantt syntax ",
+      "range": [
+        844,
+        866
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 0
+        },
+        "end": {
+          "line": 27,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        866,
+        867
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 22
+        },
+        "end": {
+          "line": 27,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "after doc1",
+      "range": [
+        868,
+        878
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 24
+        },
+        "end": {
+          "line": 27,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        878,
+        879
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 34
+        },
+        "end": {
+          "line": 27,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "3d",
+      "range": [
+        880,
+        882
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 36
+        },
+        "end": {
+          "line": 27,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Add gantt diagram to demo page ",
+      "range": [
+        883,
+        914
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 0
+        },
+        "end": {
+          "line": 28,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        914,
+        915
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 31
+        },
+        "end": {
+          "line": 28,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "20h",
+      "range": [
+        916,
+        919
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 33
+        },
+        "end": {
+          "line": 28,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Add another diagram to demo page ",
+      "range": [
+        920,
+        953
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 0
+        },
+        "end": {
+          "line": 29,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        953,
+        954
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 33
+        },
+        "end": {
+          "line": 29,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "48h",
+      "range": [
+        955,
+        958
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 35
+        },
+        "end": {
+          "line": 29,
+          "column": 38
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    958
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 29,
+      "column": 38
+    }
+  }
+}

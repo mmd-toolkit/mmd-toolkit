@@ -1,0 +1,60 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do JSON overflow and negative zero use the shared JSON summary number form?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "J",
+        "value": {
+          "large": "Infinity",
+          "negative": "-Infinity",
+          "zero": 0
+        },
+        "propertyOrder": {
+          "": [
+            "large",
+            "negative",
+            "zero"
+          ]
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "J",
+        "set": {
+          "value": {
+            "large": "Infinity",
+            "negative": "-Infinity",
+            "zero": 0
+          },
+          "propertyOrder": {
+            "": [
+              "large",
+              "negative",
+              "zero"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

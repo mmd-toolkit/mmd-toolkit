@@ -1,0 +1,9 @@
+usecase-beta
+  systemBoundary Room@{
+    type: package
+  }:::outer
+    actor Guest@{
+      type: hollow,
+      business: true
+    }:::inner
+  end

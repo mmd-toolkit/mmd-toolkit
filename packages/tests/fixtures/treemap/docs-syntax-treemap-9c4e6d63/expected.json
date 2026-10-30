@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/treemap.md",
+    "line": 205
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "Market Share",
+        "children": [
+          {
+            "name": "Company A",
+            "value": 0.35
+          },
+          {
+            "name": "Company B",
+            "value": 0.25
+          },
+          {
+            "name": "Company C",
+            "value": 0.15
+          },
+          {
+            "name": "Others",
+            "value": 0.25
+          }
+        ]
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "config": {
+      "treemap": {
+        "valueFormat": "$.1%"
+      }
+    }
+  }
+}

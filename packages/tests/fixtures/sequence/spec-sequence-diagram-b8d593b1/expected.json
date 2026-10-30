@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js",
+    "line": 2520,
+    "test": "sequence db class > when parsing extended participant syntax > should fail for malformed JSON in participant definition"
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "missed comma between flow collection entries (2:9)\n\n 1 | {\n 2 | \"type: \"entity\"\n-------------^\n 3 | }"
+  }
+}

@@ -1,0 +1,671 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: packet-no-duplicate-description >> invalid >>> docs/rules/packet-no-duplicate-description.md incorrect 1
+Filename: packet-no-duplicate-description-incorrect-1.mmd
+
+Code:
+  1 | packet
+  2 |   accDescr: First
+  3 |   accDescr: Second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   0-15: "Source Port"
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 |   accDescr: First
+          3 |   0-15: "Source Port"
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | packet
+          2 |   accDescr: Second
+          3 |   0-15: "Source Port"
+          4 |
+---
+
+
+Test: packet-no-duplicate-description >> invalid >>> invalid/packet/accdescr-block-repeat
+Filename: tests/fixtures/rules/packet-no-duplicate-description/invalid/packet/accdescr-block-repeat-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr: First
+  3 | accDescr { Second }
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  4 | accDescr {}
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | accDescr: First
+          3 | accDescr {}
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | packet
+          2 | accDescr { Second }
+          3 | accDescr {}
+          4 |
+---
+
+
+Test: packet-no-duplicate-description >> invalid >>> invalid/packet/accdescr-line-repeat
+Filename: tests/fixtures/rules/packet-no-duplicate-description/invalid/packet/accdescr-line-repeat-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr: First
+  3 | accDescr: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | accDescr: Third
+    | ^~~~~~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | accDescr: First
+          3 | accDescr: Third
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | packet
+          2 | accDescr: Second
+          3 | accDescr: Third
+          4 |
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | accDescr: First
+          3 | accDescr: Second
+          4 |
+---
+
+
+Test: packet-no-duplicate-description >> invalid >>> invalid/packet/beta-description-duplicate
+Filename: tests/fixtures/rules/packet-no-duplicate-description/invalid/packet/beta-description-duplicate-input.mmd
+
+Code:
+  1 | packet-beta
+  2 | accDescr: First
+  3 | accDescr { Second }
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  4 | 0: "Flag"
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet-beta
+          2 | accDescr: First
+          3 | 0: "Flag"
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | packet-beta
+          2 | accDescr { Second }
+          3 | 0: "Flag"
+          4 |
+---
+
+
+Test: packet-no-duplicate-description >> invalid >>> invalid/packet/description-block-block-different
+Filename: tests/fixtures/rules/packet-no-duplicate-description/invalid/packet/description-block-block-different-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr { First }
+  3 | accDescr { Second }
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | accDescr { First }
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | packet
+          2 | accDescr { Second }
+          3 |
+---
+
+
+Test: packet-no-duplicate-description >> invalid >>> invalid/packet/description-block-line-block-third
+Filename: tests/fixtures/rules/packet-no-duplicate-description/invalid/packet/description-block-line-block-third-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr { First }
+  3 | accDescr: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | accDescr { First }
+    | ^~~~~~~~~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | accDescr { First }
+          3 | accDescr { First }
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | packet
+          2 | accDescr: Second
+          3 | accDescr { First }
+          4 |
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | accDescr { First }
+          3 | accDescr: Second
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | packet
+          2 | accDescr { First }
+          3 | accDescr { First }
+          4 |
+---
+
+
+Test: packet-no-duplicate-description >> invalid >>> invalid/packet/description-block-line
+Filename: tests/fixtures/rules/packet-no-duplicate-description/invalid/packet/description-block-line-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr { First }
+  3 | accDescr: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | accDescr { First }
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | packet
+          2 | accDescr: Second
+          3 |
+---
+
+
+Test: packet-no-duplicate-description >> invalid >>> invalid/packet/description-comment-empty-line
+Filename: tests/fixtures/rules/packet-no-duplicate-description/invalid/packet/description-comment-empty-line-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr: First
+  3 | accDescr {
+    | ^~~~~~~~~~\ [1]
+  4 | %% TODO
+    | ~~~~~~~\ [1]
+  5 | }
+    | ~ [1]
+  6 | accDescr: Third
+  7 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | accDescr: First
+          3 | accDescr: Third
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | packet
+          2 | accDescr {
+          3 | %% TODO
+          4 | }
+          5 | accDescr: Third
+          6 |
+---
+
+
+Test: packet-no-duplicate-description >> invalid >>> invalid/packet/description-directive-between
+Filename: tests/fixtures/rules/packet-no-duplicate-description/invalid/packet/description-directive-between-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr: First
+  3 | %%{init: {}}%%
+  4 |
+  5 | %% note
+  6 | accDescr { Second }
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | accDescr: First
+          3 | %%{init: {}}%%
+          4 |
+          5 | %% note
+          6 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | packet
+          2 | %%{init: {}}%%
+          3 |
+          4 | %% note
+          5 | accDescr { Second }
+          6 |
+---
+
+
+Test: packet-no-duplicate-description >> invalid >>> invalid/packet/description-empty-no-next
+Filename: tests/fixtures/rules/packet-no-duplicate-description/invalid/packet/description-empty-no-next-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr: First
+  3 | accDescr:
+    | ^~~~~~~~~ [1]
+  4 | %% next
+  5 | 0: "Flag"
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | accDescr: First
+          3 | %% next
+          4 | 0: "Flag"
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | packet
+          2 | accDescr:
+          3 | %% next
+          4 | 0: "Flag"
+          5 |
+---
+
+
+Test: packet-no-duplicate-description >> invalid >>> invalid/packet/description-entity-equal
+Filename: tests/fixtures/rules/packet-no-duplicate-description/invalid/packet/description-entity-equal-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr: #35;
+  3 | accDescr: #
+    | ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | accDescr: #35;
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | packet
+          2 | accDescr: #
+          3 |
+---
+
+
+Test: packet-no-duplicate-description >> invalid >>> invalid/packet/description-equal-predecessor
+Filename: tests/fixtures/rules/packet-no-duplicate-description/invalid/packet/description-equal-predecessor-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr: A
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
+---
+
+
+Test: packet-no-duplicate-description >> invalid >>> invalid/packet/description-first-second
+Filename: tests/fixtures/rules/packet-no-duplicate-description/invalid/packet/description-first-second-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr: First
+  3 | accDescr: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | 0: "Flag"
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | accDescr: First
+          3 | 0: "Flag"
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | packet
+          2 | accDescr: Second
+          3 | 0: "Flag"
+          4 |
+---
+
+
+Test: packet-no-duplicate-description >> invalid >>> invalid/packet/description-frontmatter-hidden-between
+Filename: tests/fixtures/rules/packet-no-duplicate-description/invalid/packet/description-frontmatter-hidden-between-input.mmd
+
+Code:
+  1 | ---
+  2 | title: Front
+  3 | ---
+  4 | packet
+  5 | accDescr: First
+  6 | ---
+  7 | accDescr: Hidden
+  8 | ---
+  9 | %% note
+ 10 | %%{init: {}}%%
+ 11 | accDescr { Second }
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+ 12 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | ---
+          2 | title: Front
+          3 | ---
+          4 | packet
+          5 | accDescr: First
+          6 | ---
+          7 | accDescr: Hidden
+          8 | ---
+          9 | %% note
+         10 | %%{init: {}}%%
+         11 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | ---
+          2 | title: Front
+          3 | ---
+          4 | packet
+          5 | ---
+          6 | accDescr: Hidden
+          7 | ---
+          8 | %% note
+          9 | %%{init: {}}%%
+         10 | accDescr { Second }
+         11 |
+---
+
+
+Test: packet-no-duplicate-description >> invalid >>> invalid/packet/description-line-block
+Filename: tests/fixtures/rules/packet-no-duplicate-description/invalid/packet/description-line-block-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr: First
+  3 | accDescr { Second }
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | accDescr: First
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | packet
+          2 | accDescr { Second }
+          3 |
+---
+
+
+Test: packet-no-duplicate-description >> invalid >>> invalid/packet/description-line-empty-line
+Filename: tests/fixtures/rules/packet-no-duplicate-description/invalid/packet/description-line-empty-line-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr: First
+  3 | accDescr:
+    | ^~~~~~~~~ [1]
+  4 | accDescr: Third
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | accDescr: First
+          3 | accDescr: Third
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | packet
+          2 | accDescr:
+          3 | accDescr: Third
+          4 |
+---
+
+
+Test: packet-no-duplicate-description >> invalid >>> invalid/packet/description-line-whitespace-reset
+Filename: tests/fixtures/rules/packet-no-duplicate-description/invalid/packet/description-line-whitespace-reset-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr: First
+  3 | accDescr: 	 
+    | ^~~~~~~~~~~~ [1]
+  4 | accDescr: Second
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | accDescr: First
+          3 | accDescr: Second
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | packet
+          2 | accDescr: 	 
+          3 | accDescr: Second
+          4 |
+---
+
+
+Test: packet-no-duplicate-description >> invalid >>> invalid/packet/description-quote-conversion-written
+Filename: tests/fixtures/rules/packet-no-duplicate-description/invalid/packet/description-quote-conversion-written-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr: <b x="a">Text</b>
+  3 | accDescr: <b x='a'>Text</b>
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | accDescr: <b x="a">Text</b>
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | packet
+          2 | accDescr: <b x='a'>Text</b>
+          3 |
+---
+
+
+Test: packet-no-duplicate-description >> invalid >>> invalid/packet/description-removal-empty-predecessor
+Filename: tests/fixtures/rules/packet-no-duplicate-description/invalid/packet/description-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr {}
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | accDescr {}
+          3 | accDescr: A
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | packet
+          2 | accDescr {}
+          3 | accDescr: B
+          4 |
+---
+
+
+Test: packet-no-duplicate-description >> invalid >>> invalid/packet/description-then-comment
+Filename: tests/fixtures/rules/packet-no-duplicate-description/invalid/packet/description-then-comment-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr: First
+  3 | accDescr {
+    | ^~~~~~~~~~\ [1]
+  4 | %% TODO
+    | ~~~~~~~\ [1]
+  5 | }
+    | ~ [1]
+  6 | 0: "Flag"
+  7 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | accDescr: First
+          3 | 0: "Flag"
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | packet
+          2 | accDescr {
+          3 | %% TODO
+          4 | }
+          5 | 0: "Flag"
+          6 |
+---
+
+
+Test: packet-no-duplicate-description >> invalid >>> invalid/packet/description-three-lines
+Filename: tests/fixtures/rules/packet-no-duplicate-description/invalid/packet/description-three-lines-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr: First
+  3 | accDescr: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | accDescr: Third
+    | ^~~~~~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | accDescr: First
+          3 | accDescr: Third
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | packet
+          2 | accDescr: Second
+          3 | accDescr: Third
+          4 |
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 | accDescr: First
+          3 | accDescr: Second
+          4 |
+---
+
+
+Test: packet-no-duplicate-description >> invalid >>> invalid/packet/docs-incorrect-1
+Filename: tests/fixtures/rules/packet-no-duplicate-description/invalid/packet/docs-incorrect-1-input.mmd
+
+Code:
+  1 | packet
+  2 |   accDescr: First
+  3 |   accDescr: Second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   0-15: "Source Port"
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | packet
+          2 |   accDescr: First
+          3 |   0-15: "Source Port"
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | packet
+          2 |   accDescr: Second
+          3 |   0-15: "Source Port"
+          4 |
+---

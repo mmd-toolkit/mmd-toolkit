@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "After a style update changes the boundary alias, the old alias no longer matches and __proto__ is accepted."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      },
+      {
+        "alias": "b",
+        "label": {
+          "text": "A"
+        },
+        "type": {
+          "text": "system"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 1,
+    "c4BoundaryInRow": 2
+  }
+}

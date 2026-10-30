@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md StringLiteral: the tooltip is a StringLiteral whose value leaves out the quotes and the comment region, `one`, a line feed, and `two`, while its `raw` is the source text of its range, with the quotes and the comment line."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "A",
+        "props": {},
+        "link": "u"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [
+      {
+        "id": "A",
+        "text": "one\ntwo"
+      }
+    ]
+  }
+}

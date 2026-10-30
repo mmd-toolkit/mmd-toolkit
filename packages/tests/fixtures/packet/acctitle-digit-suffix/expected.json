@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A digit suffix cannot extend the accessibility keyword."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->a<- at offset: 7, skipped 8 characters.\nLexer error on line 2, column 12: unexpected character: ->T<- at offset: 18, skipped 1 characters. Parse error on line 2, column 13: Expecting token of type 'STRING' but found `\n`."
+  }
+}

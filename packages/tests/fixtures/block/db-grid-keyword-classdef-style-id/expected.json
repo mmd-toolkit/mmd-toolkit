@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, keywords: the words `classDef c fill:red` in the middle of the id of a `style` statement."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "a",
+          "label": "a",
+          "type": "na",
+          "widthInColumns": 1,
+          "styles": [
+            "classDef c fill:red b fill:red"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:red b"
+        ]
+      }
+    ]
+  }
+}

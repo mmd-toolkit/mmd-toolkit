@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Empty description blocks before a separator: the grammar reads the statement without its empty description blocks, so the spaces before, between, and after them are the whitespace at the end of the statement, which a class statement does not take, so the input is rejected, as is `class A c ;B`, in both."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...LRA --> Bclass A c accDescr {} ;B\n---------------------^\nExpecting 'SEMI', 'NEWLINE', 'EOF', 'AMP', 'COLON', 'DOWN', 'DEFAULT', 'NUM', 'COMMA', 'NODE_STRING', 'BRKT', 'MINUS', 'MULT', 'UNICODE_TEXT', got 'SPACE'"
+  }
+}

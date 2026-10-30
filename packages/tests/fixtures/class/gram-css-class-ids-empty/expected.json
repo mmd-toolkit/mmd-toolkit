@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Other statements: the ids of `cssClass` are a string that is not empty."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...class AcssClass \"\" foo\n----------------------^\nExpecting 'STR', got 'ALPHA'"
+  }
+}

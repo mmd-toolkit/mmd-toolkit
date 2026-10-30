@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check whether trailing space after description supplies the next node indentation."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "file",
+        "description": "d",
+        "children": []
+      },
+      {
+        "name": "child",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Directives (Where a directive is): `%%{wrap` followed by a line break and `A` takes `A` as its single-word argument, so the remaining `-->B` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nflowchart LR-->B\n------------^\nExpecting 'SEMI', 'NEWLINE', 'SPACE', got 'LINK'"
+  }
+}

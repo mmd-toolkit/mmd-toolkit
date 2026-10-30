@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Closing whitespace leaves description-block EOL visible."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "D",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 0,
+          "label": "A"
+        }
+      ]
+    ]
+  }
+}

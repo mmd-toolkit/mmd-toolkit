@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The beta header followed by LF accepts a document without a root."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "root": null
+  }
+}

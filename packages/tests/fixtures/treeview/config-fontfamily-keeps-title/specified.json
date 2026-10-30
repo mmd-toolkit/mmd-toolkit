@@ -1,0 +1,18 @@
+{
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  },
+  "embedded": {
+    "title": "Kept"
+  }
+}

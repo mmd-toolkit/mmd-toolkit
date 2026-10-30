@@ -1,0 +1,17 @@
+{
+  "message": "A union member must name an earlier set",
+  "range": [
+    24,
+    25
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 8
+    },
+    "end": {
+      "line": 3,
+      "column": 9
+    }
+  }
+}

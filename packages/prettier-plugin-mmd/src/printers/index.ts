@@ -1,0 +1,176 @@
+import type { AstPath, Doc, ParserOptions } from "prettier"
+import type { DiagramBody } from "@mmd-toolkit/parser"
+import type { MermaidAst } from "../parser.ts"
+import { printBlockDiagram } from "./block.ts"
+import { printError } from "./error.ts"
+import { printClass } from "./class.ts"
+import { printVenn } from "./venn.ts"
+import { printC4 } from "./c4.ts"
+import { printUsecase } from "./usecase.ts"
+import { printEr } from "./er.ts"
+import { printAgentflow } from "./agentflow.ts"
+import { printFlowchart } from "./flowchart.ts"
+import { printGantt } from "./gantt.ts"
+import { printJourney } from "./journey.ts"
+import { printIshikawa } from "./ishikawa.ts"
+import { printKanban } from "./kanban.ts"
+import { printMindmap } from "./mindmap.ts"
+import { printQuadrant } from "./quadrant.ts"
+import { printRequirement } from "./requirement.ts"
+import { printSankey } from "./sankey.ts"
+import { printSequence } from "./sequence.ts"
+import { printState } from "./state.ts"
+import { printTreeview } from "./treeview.ts"
+import { printTreemap } from "./treemap.ts"
+import { printTimeline } from "./timeline.ts"
+import { printXychart } from "./xychart.ts"
+import { gitgraphPrinter } from "./gitgraph.ts"
+import { piePrinter } from "./pie.ts"
+import { infoPrinter } from "./info.ts"
+import { architecturePrinter } from "./architecture.ts"
+import { radarPrinter } from "./radar.ts"
+import { eventmodelingPrinter } from "./eventmodeling.ts"
+import { cynefinPrinter } from "./cynefin.ts"
+import { wardleyPrinter } from "./wardley.ts"
+import { railroadPrinter } from "./railroad.ts"
+import { packetPrinter } from "./packet.ts"
+import type { Source } from "./source.ts"
+import type { RootTextPlan } from "./root.ts"
+import { defaultSizeTextPlan } from "./default-size.ts"
+
+/** Diagram-specific constraints on the source and the complete root layout. */
+export interface DiagramTextRules {
+  readonly keepsCommentLines: boolean
+  /**
+   * The diagram printer prints the text as written, so nothing before the body
+   * is formatted either: the text before it is kept as `keepsPrefix` keeps it,
+   * the frontmatter is not formatted as YAML, and a document embedded in
+   * Markdown is declined, because Prettier strips the trailing line breaks of
+   * every embedded document.
+   */
+  readonly printsAsWritten?: boolean
+  readonly keepsPrefix?: (source: Source) => boolean
+  readonly plan?: (
+    source: Source,
+    options: ParserOptions<MermaidAst>,
+  ) => RootTextPlan
+}
+
+/** Selected once alongside the diagram printer, rather than in shared scans. */
+export const diagramTextRules: Readonly<
+  Partial<Record<DiagramBody["type"], DiagramTextRules>>
+> = {
+  ErrorDiagram: {
+    // The `error` pseudo-diagram has nothing to format (printError).
+    keepsCommentLines: false,
+    printsAsWritten: true,
+  },
+  EventmodelingDiagram: {
+    // Like agentflow: comment lines are real text at normal size, and the size
+    // plan retains larger input whole (common.md, mermaid.js and this
+    // specification; docs/eventmodeling.md, Default size branches).
+    keepsCommentLines: true,
+    keepsPrefix: eventmodelingPrinter.keepsPrefix,
+    plan: defaultSizeTextPlan,
+  },
+  CynefinDiagram: {
+    keepsCommentLines: false,
+    keepsPrefix: cynefinPrinter.keepsPrefix,
+  },
+  WardleyDiagram: {
+    keepsCommentLines: false,
+    keepsPrefix: wardleyPrinter.keepsPrefix,
+  },
+  RailroadDiagram: {
+    keepsCommentLines: false,
+    keepsPrefix: railroadPrinter.keepsPrefix,
+  },
+  RadarDiagram: {
+    keepsCommentLines: false,
+    keepsPrefix: radarPrinter.keepsPrefix,
+  },
+  ArchitectureDiagram: {
+    keepsCommentLines: false,
+    keepsPrefix: architecturePrinter.keepsPrefix,
+  },
+  PacketDiagram: {
+    keepsCommentLines: false,
+    keepsPrefix: packetPrinter.keepsPrefix,
+  },
+  GitgraphDiagram: {
+    keepsCommentLines: false,
+    keepsPrefix: gitgraphPrinter.keepsPrefix,
+  },
+  PieDiagram: { keepsCommentLines: false, keepsPrefix: piePrinter.keepsPrefix },
+  InfoDiagram: {
+    keepsCommentLines: false,
+    keepsPrefix: infoPrinter.keepsPrefix,
+  },
+  AgentflowDiagram: {
+    // Normal-size comments are real text; the size plan retains larger input
+    // whole (diagrams/agentflow.md, Preserved comments and the default size limit).
+    keepsCommentLines: true,
+    plan: defaultSizeTextPlan,
+  },
+}
+
+/**
+ * Prints one diagram type. It is called for the diagram body and for every
+ * node below it, and recurses with `print`. What stands before the body is
+ * printed by `printRoot`, the same for every diagram type; the diagram
+ * printer prints from the body to the end of the text, including the line
+ * break at its end, because only it knows what its last line holds.
+ */
+export type DiagramPrinter = (
+  path: AstPath<MermaidAst>,
+  options: ParserOptions<MermaidAst>,
+  print: (path: AstPath<MermaidAst>) => Doc,
+  source: Source,
+) => Doc
+
+/**
+ * Printers by the type of the diagram body node (`Root.body.type`).
+ *
+ * The body type rather than the diagram type id is the key, because several
+ * ids share one grammar: `flowchart-v2`, `flowchart-elk`, and `swimlane` all
+ * have a `FlowchartDiagram` body. Every body type has an entry, and the type
+ * checker fails when one is missing, so a diagram type is added to the parser
+ * and to this table in the same change.
+ */
+export const diagramPrinters: Readonly<
+  Record<DiagramBody["type"], DiagramPrinter>
+> = {
+  ErrorDiagram: printError,
+  FlowchartDiagram: printFlowchart,
+  AgentflowDiagram: printAgentflow,
+  SequenceDiagram: printSequence,
+  ClassDiagram: printClass,
+  StateDiagram: printState,
+  ErDiagram: printEr,
+  BlockDiagram: printBlockDiagram,
+  GanttDiagram: printGantt,
+  JourneyDiagram: printJourney,
+  MindmapDiagram: printMindmap,
+  KanbanDiagram: printKanban,
+  C4Diagram: printC4,
+  UsecaseDiagram: printUsecase,
+  VennDiagram: printVenn,
+  IshikawaDiagram: printIshikawa,
+  QuadrantDiagram: printQuadrant,
+  RequirementDiagram: printRequirement,
+  SankeyDiagram: printSankey,
+  TimelineDiagram: printTimeline,
+  XychartDiagram: printXychart,
+  PieDiagram: piePrinter.print,
+  InfoDiagram: infoPrinter.print,
+  GitgraphDiagram: gitgraphPrinter.print,
+  PacketDiagram: packetPrinter.print,
+  ArchitectureDiagram: architecturePrinter.print,
+  RadarDiagram: radarPrinter.print,
+  TreemapDiagram: printTreemap,
+  TreeviewDiagram: printTreeview,
+  RailroadDiagram: railroadPrinter.print,
+  WardleyDiagram: wardleyPrinter.print,
+  CynefinDiagram: cynefinPrinter.print,
+  EventmodelingDiagram: eventmodelingPrinter.print,
+}

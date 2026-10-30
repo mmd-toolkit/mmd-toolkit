@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Semantic acceptance conditions: An invalid first annotations box is checked even when a later box is valid."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Annotations box visibility must be between 0-1 (decimal) or 0-100 (percentage). Received: 101"
+  }
+}

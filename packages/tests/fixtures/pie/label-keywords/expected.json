@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Keywords in quotes stay labels."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "pie",
+        "value": 1
+      },
+      {
+        "label": "showData",
+        "value": 2
+      },
+      {
+        "label": "title",
+        "value": 3
+      },
+      {
+        "label": "accTitle:",
+        "value": 4
+      },
+      {
+        "label": "accDescr {}",
+        "value": 5
+      }
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A BOM on the opener alone exposes retained YAML instead of real frontmatter."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

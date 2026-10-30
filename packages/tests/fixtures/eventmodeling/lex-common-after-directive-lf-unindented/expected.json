@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Common statements: After a genuine native directive consumes its closing LF, does unindented accTitle lose to identifier?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 3, column 9: unexpected character: ->:<- at offset: 32, skipped 1 characters. Parse error on line 3, column 1: Expecting token of type 'EOF' but found `accTitle`."
+  }
+}

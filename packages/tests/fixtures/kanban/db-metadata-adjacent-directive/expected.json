@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md L04, M05 (Common lexical rules): Directive between adjacent blocks."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true,
+        "ticket": "X"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "S",
+        "set": {
+          "ticket": "X"
+        }
+      }
+    ]
+  }
+}

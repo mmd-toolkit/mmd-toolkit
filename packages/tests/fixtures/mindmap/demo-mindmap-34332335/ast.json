@@ -1,0 +1,1324 @@
+{
+  "type": "Root",
+  "diagramType": "mindmap",
+  "body": {
+    "type": "MindmapDiagram",
+    "root": {
+      "type": "MindmapNode",
+      "indent": 0,
+      "id": {
+        "type": "MindmapLiteral",
+        "value": "root",
+        "range": [
+          8,
+          12
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 4
+          }
+        }
+      },
+      "shape": null,
+      "decorations": [],
+      "children": [
+        {
+          "type": "MindmapNode",
+          "indent": 4,
+          "id": {
+            "type": "MindmapLiteral",
+            "value": "child1",
+            "range": [
+              17,
+              23
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 4
+              },
+              "end": {
+                "line": 3,
+                "column": 10
+              }
+            }
+          },
+          "shape": {
+            "type": "MindmapShape",
+            "opener": "((",
+            "closer": "))",
+            "label": {
+              "type": "MindmapLabel",
+              "kind": "text",
+              "value": "Circle",
+              "range": [
+                25,
+                31
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 12
+                },
+                "end": {
+                  "line": 3,
+                  "column": 18
+                }
+              }
+            },
+            "range": [
+              23,
+              33
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 10
+              },
+              "end": {
+                "line": 3,
+                "column": 20
+              }
+            }
+          },
+          "decorations": [],
+          "children": [
+            {
+              "type": "MindmapNode",
+              "indent": 8,
+              "id": {
+                "type": "MindmapLiteral",
+                "value": "grandchild 1",
+                "range": [
+                  42,
+                  54
+                ],
+                "loc": {
+                  "start": {
+                    "line": 4,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 4,
+                    "column": 20
+                  }
+                }
+              },
+              "shape": null,
+              "decorations": [],
+              "children": [],
+              "range": [
+                42,
+                54
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 8
+                },
+                "end": {
+                  "line": 4,
+                  "column": 20
+                }
+              }
+            },
+            {
+              "type": "MindmapNode",
+              "indent": 8,
+              "id": {
+                "type": "MindmapLiteral",
+                "value": "grandchild 2",
+                "range": [
+                  63,
+                  75
+                ],
+                "loc": {
+                  "start": {
+                    "line": 5,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 20
+                  }
+                }
+              },
+              "shape": null,
+              "decorations": [],
+              "children": [],
+              "range": [
+                63,
+                75
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 8
+                },
+                "end": {
+                  "line": 5,
+                  "column": 20
+                }
+              }
+            }
+          ],
+          "range": [
+            17,
+            75
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 4
+            },
+            "end": {
+              "line": 5,
+              "column": 20
+            }
+          }
+        },
+        {
+          "type": "MindmapNode",
+          "indent": 4,
+          "id": {
+            "type": "MindmapLiteral",
+            "value": "child2",
+            "range": [
+              80,
+              86
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 4
+              },
+              "end": {
+                "line": 6,
+                "column": 10
+              }
+            }
+          },
+          "shape": {
+            "type": "MindmapShape",
+            "opener": "(",
+            "closer": ")",
+            "label": {
+              "type": "MindmapLabel",
+              "kind": "text",
+              "value": "Round rectangle",
+              "range": [
+                87,
+                102
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 11
+                },
+                "end": {
+                  "line": 6,
+                  "column": 26
+                }
+              }
+            },
+            "range": [
+              86,
+              103
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 10
+              },
+              "end": {
+                "line": 6,
+                "column": 27
+              }
+            }
+          },
+          "decorations": [],
+          "children": [
+            {
+              "type": "MindmapNode",
+              "indent": 8,
+              "id": {
+                "type": "MindmapLiteral",
+                "value": "grandchild 3",
+                "range": [
+                  112,
+                  124
+                ],
+                "loc": {
+                  "start": {
+                    "line": 7,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 7,
+                    "column": 20
+                  }
+                }
+              },
+              "shape": null,
+              "decorations": [],
+              "children": [],
+              "range": [
+                112,
+                124
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 8
+                },
+                "end": {
+                  "line": 7,
+                  "column": 20
+                }
+              }
+            },
+            {
+              "type": "MindmapNode",
+              "indent": 8,
+              "id": {
+                "type": "MindmapLiteral",
+                "value": "grandchild 4",
+                "range": [
+                  133,
+                  145
+                ],
+                "loc": {
+                  "start": {
+                    "line": 8,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 8,
+                    "column": 20
+                  }
+                }
+              },
+              "shape": null,
+              "decorations": [],
+              "children": [],
+              "range": [
+                133,
+                145
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 8
+                },
+                "end": {
+                  "line": 8,
+                  "column": 20
+                }
+              }
+            }
+          ],
+          "range": [
+            80,
+            145
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 4
+            },
+            "end": {
+              "line": 8,
+              "column": 20
+            }
+          }
+        },
+        {
+          "type": "MindmapNode",
+          "indent": 4,
+          "id": {
+            "type": "MindmapLiteral",
+            "value": "child3",
+            "range": [
+              150,
+              156
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 4
+              },
+              "end": {
+                "line": 9,
+                "column": 10
+              }
+            }
+          },
+          "shape": {
+            "type": "MindmapShape",
+            "opener": "[",
+            "closer": "]",
+            "label": {
+              "type": "MindmapLabel",
+              "kind": "text",
+              "value": "Square",
+              "range": [
+                157,
+                163
+              ],
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 11
+                },
+                "end": {
+                  "line": 9,
+                  "column": 17
+                }
+              }
+            },
+            "range": [
+              156,
+              164
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 10
+              },
+              "end": {
+                "line": 9,
+                "column": 18
+              }
+            }
+          },
+          "decorations": [],
+          "children": [
+            {
+              "type": "MindmapNode",
+              "indent": 8,
+              "id": {
+                "type": "MindmapLiteral",
+                "value": "grandchild 5",
+                "range": [
+                  173,
+                  185
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 20
+                  }
+                }
+              },
+              "shape": null,
+              "decorations": [
+                {
+                  "type": "MindmapIconStatement",
+                  "icon": {
+                    "type": "MindmapLiteral",
+                    "value": "mdi mdi-fire",
+                    "range": [
+                      201,
+                      213
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 11,
+                        "column": 15
+                      },
+                      "end": {
+                        "line": 11,
+                        "column": 27
+                      }
+                    }
+                  },
+                  "range": [
+                    194,
+                    214
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 11,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 11,
+                      "column": 28
+                    }
+                  }
+                }
+              ],
+              "children": [],
+              "range": [
+                173,
+                214
+              ],
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 8
+                },
+                "end": {
+                  "line": 11,
+                  "column": 28
+                }
+              }
+            },
+            {
+              "type": "MindmapNode",
+              "indent": 8,
+              "id": {
+                "type": "MindmapLiteral",
+                "value": "gc6",
+                "range": [
+                  223,
+                  226
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 11
+                  }
+                }
+              },
+              "shape": {
+                "type": "MindmapShape",
+                "opener": "((",
+                "closer": "))",
+                "label": {
+                  "type": "MindmapLabel",
+                  "kind": "text",
+                  "value": "grand<br/>child 6",
+                  "range": [
+                    228,
+                    245
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 12,
+                      "column": 13
+                    },
+                    "end": {
+                      "line": 12,
+                      "column": 30
+                    }
+                  }
+                },
+                "range": [
+                  226,
+                  247
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 32
+                  }
+                }
+              },
+              "decorations": [
+                {
+                  "type": "MindmapIconStatement",
+                  "icon": {
+                    "type": "MindmapLiteral",
+                    "value": "mdi mdi-fire",
+                    "range": [
+                      263,
+                      275
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 13,
+                        "column": 15
+                      },
+                      "end": {
+                        "line": 13,
+                        "column": 27
+                      }
+                    }
+                  },
+                  "range": [
+                    256,
+                    276
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 13,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 13,
+                      "column": 28
+                    }
+                  }
+                }
+              ],
+              "children": [],
+              "range": [
+                223,
+                276
+              ],
+              "loc": {
+                "start": {
+                  "line": 12,
+                  "column": 8
+                },
+                "end": {
+                  "line": 13,
+                  "column": 28
+                }
+              }
+            },
+            {
+              "type": "MindmapNode",
+              "indent": 8,
+              "id": {
+                "type": "MindmapLiteral",
+                "value": "gc7",
+                "range": [
+                  285,
+                  288
+                ],
+                "loc": {
+                  "start": {
+                    "line": 14,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 14,
+                    "column": 11
+                  }
+                }
+              },
+              "shape": {
+                "type": "MindmapShape",
+                "opener": "((",
+                "closer": "))",
+                "label": {
+                  "type": "MindmapLabel",
+                  "kind": "text",
+                  "value": "grand<br/>grand<br/>child 8",
+                  "range": [
+                    290,
+                    317
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 14,
+                      "column": 13
+                    },
+                    "end": {
+                      "line": 14,
+                      "column": 40
+                    }
+                  }
+                },
+                "range": [
+                  288,
+                  319
+                ],
+                "loc": {
+                  "start": {
+                    "line": 14,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 14,
+                    "column": 42
+                  }
+                }
+              },
+              "decorations": [],
+              "children": [],
+              "range": [
+                285,
+                319
+              ],
+              "loc": {
+                "start": {
+                  "line": 14,
+                  "column": 8
+                },
+                "end": {
+                  "line": 14,
+                  "column": 42
+                }
+              }
+            }
+          ],
+          "range": [
+            150,
+            319
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 4
+            },
+            "end": {
+              "line": 14,
+              "column": 42
+            }
+          }
+        }
+      ],
+      "range": [
+        8,
+        319
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 14,
+          "column": 42
+        }
+      }
+    },
+    "range": [
+      0,
+      319
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 14,
+        "column": 42
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "mindmap",
+      "range": [
+        0,
+        7
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "root",
+      "range": [
+        8,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "child1",
+      "range": [
+        17,
+        23
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 4
+        },
+        "end": {
+          "line": 3,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "((",
+      "range": [
+        23,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 10
+        },
+        "end": {
+          "line": 3,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Circle",
+      "range": [
+        25,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 12
+        },
+        "end": {
+          "line": 3,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "))",
+      "range": [
+        31,
+        33
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 18
+        },
+        "end": {
+          "line": 3,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "grandchild 1",
+      "range": [
+        42,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 8
+        },
+        "end": {
+          "line": 4,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "grandchild 2",
+      "range": [
+        63,
+        75
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 8
+        },
+        "end": {
+          "line": 5,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "child2",
+      "range": [
+        80,
+        86
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 4
+        },
+        "end": {
+          "line": 6,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        86,
+        87
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 10
+        },
+        "end": {
+          "line": 6,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Round rectangle",
+      "range": [
+        87,
+        102
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 11
+        },
+        "end": {
+          "line": 6,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        102,
+        103
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 26
+        },
+        "end": {
+          "line": 6,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "grandchild 3",
+      "range": [
+        112,
+        124
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 8
+        },
+        "end": {
+          "line": 7,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "grandchild 4",
+      "range": [
+        133,
+        145
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 8
+        },
+        "end": {
+          "line": 8,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "child3",
+      "range": [
+        150,
+        156
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 4
+        },
+        "end": {
+          "line": 9,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        156,
+        157
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 10
+        },
+        "end": {
+          "line": 9,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Square",
+      "range": [
+        157,
+        163
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 11
+        },
+        "end": {
+          "line": 9,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        163,
+        164
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 17
+        },
+        "end": {
+          "line": 9,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "grandchild 5",
+      "range": [
+        173,
+        185
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 8
+        },
+        "end": {
+          "line": 10,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "::icon(",
+      "range": [
+        194,
+        201
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 8
+        },
+        "end": {
+          "line": 11,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "mdi mdi-fire",
+      "range": [
+        201,
+        213
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 15
+        },
+        "end": {
+          "line": 11,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        213,
+        214
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 27
+        },
+        "end": {
+          "line": 11,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "gc6",
+      "range": [
+        223,
+        226
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 8
+        },
+        "end": {
+          "line": 12,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "((",
+      "range": [
+        226,
+        228
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 11
+        },
+        "end": {
+          "line": 12,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "grand<br/>child 6",
+      "range": [
+        228,
+        245
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 13
+        },
+        "end": {
+          "line": 12,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "))",
+      "range": [
+        245,
+        247
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 30
+        },
+        "end": {
+          "line": 12,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "::icon(",
+      "range": [
+        256,
+        263
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 8
+        },
+        "end": {
+          "line": 13,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "mdi mdi-fire",
+      "range": [
+        263,
+        275
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 15
+        },
+        "end": {
+          "line": 13,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        275,
+        276
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 27
+        },
+        "end": {
+          "line": 13,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "gc7",
+      "range": [
+        285,
+        288
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 8
+        },
+        "end": {
+          "line": 14,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "((",
+      "range": [
+        288,
+        290
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 11
+        },
+        "end": {
+          "line": 14,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "grand<br/>grand<br/>child 8",
+      "range": [
+        290,
+        317
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 13
+        },
+        "end": {
+          "line": 14,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "))",
+      "range": [
+        317,
+        319
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 40
+        },
+        "end": {
+          "line": 14,
+          "column": 42
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    319
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 14,
+      "column": 42
+    }
+  }
+}

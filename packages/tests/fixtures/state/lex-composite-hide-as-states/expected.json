@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The composite body context: hide empty description is three states here."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "roundedWithTitle",
+        "label": "A",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "hide",
+        "shape": "rect",
+        "label": "hide",
+        "classes": [],
+        "styles": [],
+        "parentId": "A"
+      },
+      {
+        "id": "empty",
+        "shape": "rect",
+        "label": "empty",
+        "classes": [],
+        "styles": [],
+        "parentId": "A"
+      },
+      {
+        "id": "description",
+        "shape": "rect",
+        "label": "description",
+        "classes": [],
+        "styles": [],
+        "parentId": "A"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Hidden DIRECTIVE: After common directive removal, at a unit position read `%%{` and arbitrary text, including LF, LS and PS, through the earliest `}%%` followed by a line break, common whitespace or end of text. Case: hidden-before-colon-lf."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      }
+    ]
+  }
+}

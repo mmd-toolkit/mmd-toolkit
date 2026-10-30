@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A retained block after real frontmatter remains available to the diagram lexer."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "A"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  },
+  "embedded": {
+    "title": "T"
+  }
+}

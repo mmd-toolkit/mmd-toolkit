@@ -1,0 +1,329 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: state-no-duplicate-description >> invalid >>> docs/rules/state-no-duplicate-description.md incorrect 1
+Filename: state-no-duplicate-description-incorrect-1.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   accDescr: first
+  3 |   accDescr: second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   A --> B
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accDescr: first
+          3 |   A --> B
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accDescr: second
+          3 |   A --> B
+          4 |
+---
+
+
+Test: state-no-duplicate-description >> invalid >>> docs/rules/state-no-duplicate-description.md incorrect 2
+Filename: state-no-duplicate-description-incorrect-2.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   accDescr { first }
+  3 |   accDescr: second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   A --> B
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accDescr { first }
+          3 |   A --> B
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accDescr: second
+          3 |   A --> B
+          4 |
+---
+
+
+Test: state-no-duplicate-description >> invalid >>> invalid/state/acc-descr-back-to-first
+Filename: tests/fixtures/rules/state-no-duplicate-description/invalid/state/acc-descr-back-to-first-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   accDescr: a
+  3 |   accDescr: b
+    |   ^~~~~~~~~~~ [1]
+  4 |   accDescr: a
+    |   ^~~~~~~~~~~ [2]
+  5 |   A --> B
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accDescr: a
+          3 |   accDescr: a
+          4 |   A --> B
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accDescr: b
+          3 |   accDescr: a
+          4 |   A --> B
+          5 |
+[2] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accDescr: a
+          3 |   accDescr: b
+          4 |   A --> B
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accDescr: a
+          3 |   accDescr: a
+          4 |   A --> B
+          5 |
+---
+
+
+Test: state-no-duplicate-description >> invalid >>> invalid/state/acc-descr-trailing-space-inside-block
+Filename: tests/fixtures/rules/state-no-duplicate-description/invalid/state/acc-descr-trailing-space-inside-block-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   accDescr {
+  3 |     d
+  4 |     e
+  5 |   }
+  6 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  7 |     d  
+    | ~~~~~~~\ [1]
+  8 |     e
+    | ~~~~~\ [1]
+  9 |   }
+    | ~~~ [1]
+ 10 |   A --> B
+ 11 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accDescr {
+          3 |     d
+          4 |     e
+          5 |   }
+          6 |   A --> B
+          7 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accDescr {
+          3 |     d  
+          4 |     e
+          5 |   }
+          6 |   A --> B
+          7 |
+---
+
+
+Test: state-no-duplicate-description >> invalid >>> invalid/state/db-acc-descr-block-replaces
+Filename: tests/fixtures/rules/state-no-duplicate-description/invalid/state/db-acc-descr-block-replaces-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   accDescr: x
+  3 |   accDescr { y }
+    |   ^~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accDescr: x
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accDescr { y }
+          3 |
+---
+
+
+Test: state-no-duplicate-description >> invalid >>> invalid/state/db-acc-descr-empty-replaces
+Filename: tests/fixtures/rules/state-no-duplicate-description/invalid/state/db-acc-descr-empty-replaces-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   accDescr: x
+  3 |   accDescr:
+    |   ^~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accDescr: x
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accDescr:
+---
+
+
+Test: state-no-duplicate-description >> invalid >>> invalid/state/db-acc-descr-line-replaces-block
+Filename: tests/fixtures/rules/state-no-duplicate-description/invalid/state/db-acc-descr-line-replaces-block-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   accDescr { x }
+  3 |   accDescr: y
+    |   ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accDescr { x }
+          3 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | stateDiagram-v2
+          2 |   accDescr: y
+          3 |
+---
+
+
+Test: state-no-duplicate-description >> invalid >>> invalid/state/db-acc-descr-then-comment-only
+Filename: tests/fixtures/rules/state-no-duplicate-description/invalid/state/db-acc-descr-then-comment-only-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | accDescr: d
+  3 | accDescr:
+    | ^~~~~~~~~ [1]
+  4 | %% c
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | stateDiagram-v2
+          2 | accDescr: d
+          3 | %% c
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | stateDiagram-v2
+          2 | accDescr:
+          3 | %% c
+          4 |
+---
+
+
+Test: state-no-duplicate-description >> invalid >>> invalid/state/db-acc-descr-then-directive-only
+Filename: tests/fixtures/rules/state-no-duplicate-description/invalid/state/db-acc-descr-then-directive-only-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | accDescr: d
+  3 | accDescr:
+    | ^~~~~~~~~ [1]
+  4 | %%{init: {}}%%
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | stateDiagram-v2
+          2 | accDescr: d
+          3 | %%{init: {}}%%
+          4 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | stateDiagram-v2
+          2 | accDescr:
+          3 | %%{init: {}}%%
+          4 |
+---
+
+
+Test: state-no-duplicate-description >> invalid >>> invalid/state/db-acc-descr-then-empty-lines-only
+Filename: tests/fixtures/rules/state-no-duplicate-description/invalid/state/db-acc-descr-then-empty-lines-only-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | accDescr: d
+  3 | accDescr:
+    | ^~~~~~~~~ [1]
+  4 |
+  5 |
+  6 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | stateDiagram-v2
+          2 | accDescr: d
+          3 |
+          4 |
+          5 |
+      - Remove the earlier statement that sets the description.
+        Output:
+          1 | stateDiagram-v2
+          2 | accDescr:
+          3 |
+          4 |
+          5 |
+---
+
+
+Test: state-no-duplicate-description >> invalid >>> invalid/state/description-equal-predecessor
+Filename: tests/fixtures/rules/state-no-duplicate-description/invalid/state/description-equal-predecessor-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | accDescr: A
+  3 | accDescr: A
+  4 | accDescr: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier description with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | stateDiagram-v2
+          2 | accDescr: A
+          3 | accDescr: A
+          4 |
+---

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A note keyword with no position and no text before the end of the text: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...teDiagram-v2Anote\n--------------------^\nExpecting 'NOTE_TEXT', 'left_of', 'right_of', got '1'"
+  }
+}

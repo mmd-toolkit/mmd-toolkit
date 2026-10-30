@@ -1,0 +1,71 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-inline-metadata-mapping.spec.ts",
+    "line": 15,
+    "test": "issue #60: inline metadata block mapping > inline block on an edge destination (a --> b[\"...\"]@{ ... }) spans the block"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "x",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "props": {}
+      },
+      {
+        "id": "b",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Beta",
+        "type": "square",
+        "props": {},
+        "metadata": {
+          "instruction": "hand off"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "start": "x",
+        "end": "b",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_x_b_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "b",
+        "set": {
+          "metadata": {
+            "instruction": "hand off"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are prototype names ordinary Map keys in nodes, links, trends and pipelines?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "__proto__",
+        "label": "__proto__",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "constructor",
+        "label": "constructor",
+        "x": 40,
+        "y": 30,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "constructor___proto__",
+        "label": "__proto__",
+        "x": 50,
+        "y": 30,
+        "className": "pipeline-component"
+      }
+    ],
+    "links": [
+      {
+        "source": "__proto__",
+        "target": "constructor",
+        "dashed": false
+      }
+    ],
+    "trends": [
+      {
+        "nodeId": "__proto__",
+        "targetX": 90
+      }
+    ],
+    "pipelines": [
+      {
+        "nodeId": "constructor",
+        "componentIds": [
+          "constructor___proto__"
+        ]
+      }
+    ],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

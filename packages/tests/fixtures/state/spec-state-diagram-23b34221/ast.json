@@ -1,0 +1,2041 @@
+{
+  "type": "Root",
+  "diagramType": "stateDiagram",
+  "body": {
+    "type": "StateDiagram",
+    "body": [
+      {
+        "type": "StateScaleStatement",
+        "width": {
+          "type": "NumericLiteral",
+          "value": 350,
+          "raw": "350",
+          "range": [
+            28,
+            31
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 14
+            },
+            "end": {
+              "line": 3,
+              "column": 17
+            }
+          }
+        },
+        "range": [
+          22,
+          37
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 8
+          },
+          "end": {
+            "line": 3,
+            "column": 23
+          }
+        }
+      },
+      {
+        "type": "StateTransitionStatement",
+        "from": {
+          "type": "StateReference",
+          "state": {
+            "type": "StateTerminal",
+            "range": [
+              46,
+              49
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 8
+              },
+              "end": {
+                "line": 4,
+                "column": 11
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            46,
+            49
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 8
+            },
+            "end": {
+              "line": 4,
+              "column": 11
+            }
+          }
+        },
+        "to": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "NotShooting",
+            "range": [
+              54,
+              65
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 16
+              },
+              "end": {
+                "line": 4,
+                "column": 27
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            54,
+            65
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 16
+            },
+            "end": {
+              "line": 4,
+              "column": 27
+            }
+          }
+        },
+        "label": null,
+        "range": [
+          46,
+          65
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 8
+          },
+          "end": {
+            "line": 4,
+            "column": 27
+          }
+        }
+      },
+      {
+        "type": "StateCompositeStatement",
+        "textBeforeId": null,
+        "id": {
+          "type": "Identifier",
+          "name": "NotShooting",
+          "range": [
+            81,
+            92
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 14
+            },
+            "end": {
+              "line": 6,
+              "column": 25
+            }
+          }
+        },
+        "textBeforeBody": null,
+        "body": [
+          {
+            "type": "StateTransitionStatement",
+            "from": {
+              "type": "StateReference",
+              "state": {
+                "type": "StateTerminal",
+                "range": [
+                  105,
+                  108
+                ],
+                "loc": {
+                  "start": {
+                    "line": 7,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 7,
+                    "column": 13
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                105,
+                108
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 10
+                },
+                "end": {
+                  "line": 7,
+                  "column": 13
+                }
+              }
+            },
+            "to": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "Idle",
+                "range": [
+                  113,
+                  117
+                ],
+                "loc": {
+                  "start": {
+                    "line": 7,
+                    "column": 18
+                  },
+                  "end": {
+                    "line": 7,
+                    "column": 22
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                113,
+                117
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 18
+                },
+                "end": {
+                  "line": 7,
+                  "column": 22
+                }
+              }
+            },
+            "label": null,
+            "range": [
+              105,
+              117
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 10
+              },
+              "end": {
+                "line": 7,
+                "column": 22
+              }
+            }
+          },
+          {
+            "type": "StateTransitionStatement",
+            "from": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "Idle",
+                "range": [
+                  128,
+                  132
+                ],
+                "loc": {
+                  "start": {
+                    "line": 8,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 8,
+                    "column": 14
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                128,
+                132
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 10
+                },
+                "end": {
+                  "line": 8,
+                  "column": 14
+                }
+              }
+            },
+            "to": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "Configuring",
+                "range": [
+                  137,
+                  148
+                ],
+                "loc": {
+                  "start": {
+                    "line": 8,
+                    "column": 19
+                  },
+                  "end": {
+                    "line": 8,
+                    "column": 30
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                137,
+                148
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 19
+                },
+                "end": {
+                  "line": 8,
+                  "column": 30
+                }
+              }
+            },
+            "label": {
+              "type": "StateLiteral",
+              "value": "EvConfig",
+              "range": [
+                151,
+                159
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 33
+                },
+                "end": {
+                  "line": 8,
+                  "column": 41
+                }
+              }
+            },
+            "range": [
+              128,
+              159
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 10
+              },
+              "end": {
+                "line": 8,
+                "column": 41
+              }
+            }
+          },
+          {
+            "type": "StateTransitionStatement",
+            "from": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "Configuring",
+                "range": [
+                  170,
+                  181
+                ],
+                "loc": {
+                  "start": {
+                    "line": 9,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 9,
+                    "column": 21
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                170,
+                181
+              ],
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 10
+                },
+                "end": {
+                  "line": 9,
+                  "column": 21
+                }
+              }
+            },
+            "to": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "Idle",
+                "range": [
+                  186,
+                  190
+                ],
+                "loc": {
+                  "start": {
+                    "line": 9,
+                    "column": 26
+                  },
+                  "end": {
+                    "line": 9,
+                    "column": 30
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                186,
+                190
+              ],
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 26
+                },
+                "end": {
+                  "line": 9,
+                  "column": 30
+                }
+              }
+            },
+            "label": {
+              "type": "StateLiteral",
+              "value": "EvConfig",
+              "range": [
+                193,
+                201
+              ],
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 33
+                },
+                "end": {
+                  "line": 9,
+                  "column": 41
+                }
+              }
+            },
+            "range": [
+              170,
+              201
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 10
+              },
+              "end": {
+                "line": 9,
+                "column": 41
+              }
+            }
+          }
+        ],
+        "range": [
+          75,
+          211
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 8
+          },
+          "end": {
+            "line": 10,
+            "column": 9
+          }
+        }
+      },
+      {
+        "type": "StateCompositeStatement",
+        "textBeforeId": null,
+        "id": {
+          "type": "Identifier",
+          "name": "Configuring",
+          "range": [
+            227,
+            238
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 14
+            },
+            "end": {
+              "line": 12,
+              "column": 25
+            }
+          }
+        },
+        "textBeforeBody": null,
+        "body": [
+          {
+            "type": "StateTransitionStatement",
+            "from": {
+              "type": "StateReference",
+              "state": {
+                "type": "StateTerminal",
+                "range": [
+                  251,
+                  254
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 13
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                251,
+                254
+              ],
+              "loc": {
+                "start": {
+                  "line": 13,
+                  "column": 10
+                },
+                "end": {
+                  "line": 13,
+                  "column": 13
+                }
+              }
+            },
+            "to": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "NewValueSelection",
+                "range": [
+                  259,
+                  276
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 18
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 35
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                259,
+                276
+              ],
+              "loc": {
+                "start": {
+                  "line": 13,
+                  "column": 18
+                },
+                "end": {
+                  "line": 13,
+                  "column": 35
+                }
+              }
+            },
+            "label": null,
+            "range": [
+              251,
+              276
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 10
+              },
+              "end": {
+                "line": 13,
+                "column": 35
+              }
+            }
+          },
+          {
+            "type": "StateTransitionStatement",
+            "from": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "NewValueSelection",
+                "range": [
+                  287,
+                  304
+                ],
+                "loc": {
+                  "start": {
+                    "line": 14,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 14,
+                    "column": 27
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                287,
+                304
+              ],
+              "loc": {
+                "start": {
+                  "line": 14,
+                  "column": 10
+                },
+                "end": {
+                  "line": 14,
+                  "column": 27
+                }
+              }
+            },
+            "to": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "NewValuePreview",
+                "range": [
+                  309,
+                  324
+                ],
+                "loc": {
+                  "start": {
+                    "line": 14,
+                    "column": 32
+                  },
+                  "end": {
+                    "line": 14,
+                    "column": 47
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                309,
+                324
+              ],
+              "loc": {
+                "start": {
+                  "line": 14,
+                  "column": 32
+                },
+                "end": {
+                  "line": 14,
+                  "column": 47
+                }
+              }
+            },
+            "label": {
+              "type": "StateLiteral",
+              "value": "EvNewValue",
+              "range": [
+                327,
+                337
+              ],
+              "loc": {
+                "start": {
+                  "line": 14,
+                  "column": 50
+                },
+                "end": {
+                  "line": 14,
+                  "column": 60
+                }
+              }
+            },
+            "range": [
+              287,
+              337
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 10
+              },
+              "end": {
+                "line": 14,
+                "column": 60
+              }
+            }
+          },
+          {
+            "type": "StateTransitionStatement",
+            "from": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "NewValuePreview",
+                "range": [
+                  348,
+                  363
+                ],
+                "loc": {
+                  "start": {
+                    "line": 15,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 15,
+                    "column": 25
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                348,
+                363
+              ],
+              "loc": {
+                "start": {
+                  "line": 15,
+                  "column": 10
+                },
+                "end": {
+                  "line": 15,
+                  "column": 25
+                }
+              }
+            },
+            "to": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "NewValueSelection",
+                "range": [
+                  368,
+                  385
+                ],
+                "loc": {
+                  "start": {
+                    "line": 15,
+                    "column": 30
+                  },
+                  "end": {
+                    "line": 15,
+                    "column": 47
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                368,
+                385
+              ],
+              "loc": {
+                "start": {
+                  "line": 15,
+                  "column": 30
+                },
+                "end": {
+                  "line": 15,
+                  "column": 47
+                }
+              }
+            },
+            "label": {
+              "type": "StateLiteral",
+              "value": "EvNewValueRejected",
+              "range": [
+                388,
+                406
+              ],
+              "loc": {
+                "start": {
+                  "line": 15,
+                  "column": 50
+                },
+                "end": {
+                  "line": 15,
+                  "column": 68
+                }
+              }
+            },
+            "range": [
+              348,
+              406
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 10
+              },
+              "end": {
+                "line": 15,
+                "column": 68
+              }
+            }
+          },
+          {
+            "type": "StateTransitionStatement",
+            "from": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "NewValuePreview",
+                "range": [
+                  417,
+                  432
+                ],
+                "loc": {
+                  "start": {
+                    "line": 16,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 16,
+                    "column": 25
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                417,
+                432
+              ],
+              "loc": {
+                "start": {
+                  "line": 16,
+                  "column": 10
+                },
+                "end": {
+                  "line": 16,
+                  "column": 25
+                }
+              }
+            },
+            "to": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "NewValueSelection",
+                "range": [
+                  437,
+                  454
+                ],
+                "loc": {
+                  "start": {
+                    "line": 16,
+                    "column": 30
+                  },
+                  "end": {
+                    "line": 16,
+                    "column": 47
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                437,
+                454
+              ],
+              "loc": {
+                "start": {
+                  "line": 16,
+                  "column": 30
+                },
+                "end": {
+                  "line": 16,
+                  "column": 47
+                }
+              }
+            },
+            "label": {
+              "type": "StateLiteral",
+              "value": "EvNewValueSaved",
+              "range": [
+                457,
+                472
+              ],
+              "loc": {
+                "start": {
+                  "line": 16,
+                  "column": 50
+                },
+                "end": {
+                  "line": 16,
+                  "column": 65
+                }
+              }
+            },
+            "range": [
+              417,
+              472
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 10
+              },
+              "end": {
+                "line": 16,
+                "column": 65
+              }
+            }
+          },
+          {
+            "type": "StateCompositeStatement",
+            "textBeforeId": null,
+            "id": {
+              "type": "Identifier",
+              "name": "NewValuePreview",
+              "range": [
+                490,
+                505
+              ],
+              "loc": {
+                "start": {
+                  "line": 18,
+                  "column": 16
+                },
+                "end": {
+                  "line": 18,
+                  "column": 31
+                }
+              }
+            },
+            "textBeforeBody": null,
+            "body": [
+              {
+                "type": "StateTransitionStatement",
+                "from": {
+                  "type": "StateReference",
+                  "state": {
+                    "type": "Identifier",
+                    "name": "State1",
+                    "range": [
+                      518,
+                      524
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 19,
+                        "column": 10
+                      },
+                      "end": {
+                        "line": 19,
+                        "column": 16
+                      }
+                    }
+                  },
+                  "cssClass": null,
+                  "range": [
+                    518,
+                    524
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 19,
+                      "column": 10
+                    },
+                    "end": {
+                      "line": 19,
+                      "column": 16
+                    }
+                  }
+                },
+                "to": {
+                  "type": "StateReference",
+                  "state": {
+                    "type": "Identifier",
+                    "name": "State2",
+                    "range": [
+                      529,
+                      535
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 19,
+                        "column": 21
+                      },
+                      "end": {
+                        "line": 19,
+                        "column": 27
+                      }
+                    }
+                  },
+                  "cssClass": null,
+                  "range": [
+                    529,
+                    535
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 19,
+                      "column": 21
+                    },
+                    "end": {
+                      "line": 19,
+                      "column": 27
+                    }
+                  }
+                },
+                "label": null,
+                "range": [
+                  518,
+                  535
+                ],
+                "loc": {
+                  "start": {
+                    "line": 19,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 19,
+                    "column": 27
+                  }
+                }
+              }
+            ],
+            "range": [
+              484,
+              547
+            ],
+            "loc": {
+              "start": {
+                "line": 18,
+                "column": 10
+              },
+              "end": {
+                "line": 20,
+                "column": 11
+              }
+            }
+          }
+        ],
+        "range": [
+          221,
+          557
+        ],
+        "loc": {
+          "start": {
+            "line": 12,
+            "column": 8
+          },
+          "end": {
+            "line": 21,
+            "column": 9
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      557
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 21,
+        "column": 9
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "stateDiagram",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "scale",
+      "range": [
+        22,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "350",
+      "range": [
+        28,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 14
+        },
+        "end": {
+          "line": 3,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "width",
+      "range": [
+        32,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 18
+        },
+        "end": {
+          "line": 3,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[*]",
+      "range": [
+        46,
+        49
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 8
+        },
+        "end": {
+          "line": 4,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        50,
+        53
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 12
+        },
+        "end": {
+          "line": 4,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NotShooting",
+      "range": [
+        54,
+        65
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 16
+        },
+        "end": {
+          "line": 4,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "state",
+      "range": [
+        75,
+        80
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 8
+        },
+        "end": {
+          "line": 6,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NotShooting",
+      "range": [
+        81,
+        92
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 14
+        },
+        "end": {
+          "line": 6,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        93,
+        94
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 26
+        },
+        "end": {
+          "line": 6,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[*]",
+      "range": [
+        105,
+        108
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 10
+        },
+        "end": {
+          "line": 7,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        109,
+        112
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 14
+        },
+        "end": {
+          "line": 7,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Idle",
+      "range": [
+        113,
+        117
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 18
+        },
+        "end": {
+          "line": 7,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Idle",
+      "range": [
+        128,
+        132
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 10
+        },
+        "end": {
+          "line": 8,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        133,
+        136
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 15
+        },
+        "end": {
+          "line": 8,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Configuring",
+      "range": [
+        137,
+        148
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 19
+        },
+        "end": {
+          "line": 8,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        149,
+        150
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 31
+        },
+        "end": {
+          "line": 8,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "EvConfig",
+      "range": [
+        151,
+        159
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 33
+        },
+        "end": {
+          "line": 8,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Configuring",
+      "range": [
+        170,
+        181
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 10
+        },
+        "end": {
+          "line": 9,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        182,
+        185
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 22
+        },
+        "end": {
+          "line": 9,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Idle",
+      "range": [
+        186,
+        190
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 26
+        },
+        "end": {
+          "line": 9,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        191,
+        192
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 31
+        },
+        "end": {
+          "line": 9,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "EvConfig",
+      "range": [
+        193,
+        201
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 33
+        },
+        "end": {
+          "line": 9,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        210,
+        211
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 8
+        },
+        "end": {
+          "line": 10,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "state",
+      "range": [
+        221,
+        226
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 8
+        },
+        "end": {
+          "line": 12,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Configuring",
+      "range": [
+        227,
+        238
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 14
+        },
+        "end": {
+          "line": 12,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        239,
+        240
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 26
+        },
+        "end": {
+          "line": 12,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[*]",
+      "range": [
+        251,
+        254
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 10
+        },
+        "end": {
+          "line": 13,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        255,
+        258
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 14
+        },
+        "end": {
+          "line": 13,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NewValueSelection",
+      "range": [
+        259,
+        276
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 18
+        },
+        "end": {
+          "line": 13,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NewValueSelection",
+      "range": [
+        287,
+        304
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 10
+        },
+        "end": {
+          "line": 14,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        305,
+        308
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 28
+        },
+        "end": {
+          "line": 14,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NewValuePreview",
+      "range": [
+        309,
+        324
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 32
+        },
+        "end": {
+          "line": 14,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        325,
+        326
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 48
+        },
+        "end": {
+          "line": 14,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "EvNewValue",
+      "range": [
+        327,
+        337
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 50
+        },
+        "end": {
+          "line": 14,
+          "column": 60
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NewValuePreview",
+      "range": [
+        348,
+        363
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 10
+        },
+        "end": {
+          "line": 15,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        364,
+        367
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 26
+        },
+        "end": {
+          "line": 15,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NewValueSelection",
+      "range": [
+        368,
+        385
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 30
+        },
+        "end": {
+          "line": 15,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        386,
+        387
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 48
+        },
+        "end": {
+          "line": 15,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "EvNewValueRejected",
+      "range": [
+        388,
+        406
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 50
+        },
+        "end": {
+          "line": 15,
+          "column": 68
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NewValuePreview",
+      "range": [
+        417,
+        432
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 10
+        },
+        "end": {
+          "line": 16,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        433,
+        436
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 26
+        },
+        "end": {
+          "line": 16,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NewValueSelection",
+      "range": [
+        437,
+        454
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 30
+        },
+        "end": {
+          "line": 16,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        455,
+        456
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 48
+        },
+        "end": {
+          "line": 16,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "EvNewValueSaved",
+      "range": [
+        457,
+        472
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 50
+        },
+        "end": {
+          "line": 16,
+          "column": 65
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "state",
+      "range": [
+        484,
+        489
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 10
+        },
+        "end": {
+          "line": 18,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "NewValuePreview",
+      "range": [
+        490,
+        505
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 16
+        },
+        "end": {
+          "line": 18,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        506,
+        507
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 32
+        },
+        "end": {
+          "line": 18,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "State1",
+      "range": [
+        518,
+        524
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 10
+        },
+        "end": {
+          "line": 19,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        525,
+        528
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 17
+        },
+        "end": {
+          "line": 19,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "State2",
+      "range": [
+        529,
+        535
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 21
+        },
+        "end": {
+          "line": 19,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        546,
+        547
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 10
+        },
+        "end": {
+          "line": 20,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        556,
+        557
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 8
+        },
+        "end": {
+          "line": 21,
+          "column": 9
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    564
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 22,
+      "column": 6
+    }
+  }
+}

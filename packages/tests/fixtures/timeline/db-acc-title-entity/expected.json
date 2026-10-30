@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, accessibility: a character reference is recorded as its placeholder."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "a ﬂ°°35¶ß b",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

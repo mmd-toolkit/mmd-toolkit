@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The site configuration has `wrap` false and `sequence.wrap` true. mermaid.js wraps the message and the participants, so a `wrap` that is false does not hide `sequence.wrap`."
+  },
+  "config": {
+    "wrap": false,
+    "sequence": {
+      "wrap": true
+    }
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Alice",
+        "description": "Alice",
+        "wrap": true,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "Bob"
+      },
+      {
+        "name": "Bob",
+        "description": "Bob",
+        "wrap": true,
+        "prevActor": "Alice",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "Alice",
+        "to": "Bob",
+        "message": "Hello",
+        "wrap": true,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

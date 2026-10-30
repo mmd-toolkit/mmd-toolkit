@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Services publish before junctions and cross-kind duplicates reject."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The junction id [same] is already in use by another node"
+  }
+}

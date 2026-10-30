@@ -1,0 +1,23 @@
+{
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "config": {
+      "treemap": {
+        "padding": 2
+      }
+    }
+  }
+}

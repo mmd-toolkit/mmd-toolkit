@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do unreachable BOOLEAN declarations leave these selectors as ID2?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "classSelector": "true",
+        "children": []
+      },
+      {
+        "name": "B",
+        "classSelector": "false",
+        "children": []
+      }
+    ],
+    "classDefs": []
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Trivia between units: the `;` is ignored, and the `#` ends the data of the first task; the tasks `a ` with the end `style:` and `#x b `."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd"
+          },
+          "endTime": {
+            "data": "style:"
+          }
+        },
+        "task": "a ",
+        "classes": [],
+        "id": "task1",
+        "order": 0
+      },
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd",
+            "id": "task1"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "#x b ",
+        "classes": [],
+        "id": "task2",
+        "order": 1
+      }
+    ],
+    "links": []
+  }
+}

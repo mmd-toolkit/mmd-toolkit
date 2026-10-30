@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Comments: `%` is a character of an accessibility title."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "% c",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

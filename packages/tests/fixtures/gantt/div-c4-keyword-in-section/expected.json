@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Known divergences: `C4Dynamic` in a section text; rejected by mermaid.js (c4-keyword-anywhere)."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nganttsection C4Dyna\n^"
+  }
+}

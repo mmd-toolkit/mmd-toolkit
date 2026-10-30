@@ -1,0 +1,278 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/agentflow.md",
+    "line": 295
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "llm",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "LLM API",
+        "props": {},
+        "metadata": {
+          "protocol": "http",
+          "endpoint": "https://api.example.com/chat"
+        }
+      },
+      {
+        "id": "city",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "city",
+        "type": "lean-right",
+        "props": {},
+        "metadata": {
+          "shape": "lean-right",
+          "value": "Stockholm"
+        }
+      },
+      {
+        "id": "research",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "research_location",
+        "type": "subroutine",
+        "props": {},
+        "metadata": {
+          "shape": "subroutine",
+          "params": "city :: String",
+          "returns": "Report"
+        }
+      },
+      {
+        "id": "write",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "write_copy",
+        "type": "subroutine",
+        "props": {},
+        "metadata": {
+          "shape": "subroutine",
+          "connectorRef": "llm.chat",
+          "returns": "CoffeeCopy"
+        }
+      },
+      {
+        "id": "researcher",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "researcher",
+        "props": {}
+      },
+      {
+        "id": "render",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "generate_html",
+        "type": "subroutine",
+        "props": {},
+        "metadata": {
+          "shape": "subroutine",
+          "connectorRef": "llm.chat",
+          "returns": "String"
+        }
+      },
+      {
+        "id": "brand",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Nordic Brand Guide",
+        "type": "lin-doc",
+        "props": {},
+        "metadata": {
+          "shape": "lin-doc"
+        }
+      },
+      {
+        "id": "designer",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "designer",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "city",
+        "end": "research",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_city_research_0"
+      },
+      {
+        "start": "research",
+        "end": "write",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_research_write_0"
+      },
+      {
+        "start": "render",
+        "end": "brand",
+        "type": "arrow_open",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "dotted",
+        "length": 1,
+        "id": "L_render_brand_0"
+      },
+      {
+        "start": "researcher",
+        "end": "designer",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_researcher_designer_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "researcher",
+        "nodes": [
+          "research",
+          "write",
+          "city"
+        ],
+        "title": "Researcher",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow",
+        "metadata": {
+          "instruction": "Research the city and draft English coffee copy citing sources."
+        }
+      },
+      {
+        "id": "designer",
+        "nodes": [
+          "render",
+          "brand"
+        ],
+        "title": "Designer",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      },
+      {
+        "id": "coffee_team",
+        "nodes": [
+          "researcher",
+          "designer"
+        ],
+        "title": "Coffee Team",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "llm",
+        "set": {
+          "metadata": {
+            "protocol": "http",
+            "endpoint": "https://api.example.com/chat"
+          }
+        }
+      },
+      {
+        "id": "city",
+        "set": {
+          "type": "lean-right",
+          "metadata": {
+            "shape": "lean-right",
+            "value": "Stockholm"
+          }
+        }
+      },
+      {
+        "id": "research",
+        "set": {
+          "type": "subroutine",
+          "metadata": {
+            "shape": "subroutine",
+            "params": "city :: String",
+            "returns": "Report"
+          }
+        }
+      },
+      {
+        "id": "write",
+        "set": {
+          "type": "subroutine",
+          "metadata": {
+            "shape": "subroutine",
+            "connectorRef": "llm.chat",
+            "returns": "CoffeeCopy"
+          }
+        }
+      },
+      {
+        "id": "researcher",
+        "set": {
+          "metadata": {
+            "instruction": "Research the city and draft English coffee copy citing sources."
+          }
+        }
+      },
+      {
+        "id": "render",
+        "set": {
+          "type": "subroutine",
+          "metadata": {
+            "shape": "subroutine",
+            "connectorRef": "llm.chat",
+            "returns": "String"
+          }
+        }
+      },
+      {
+        "id": "brand",
+        "set": {
+          "type": "lin-doc",
+          "metadata": {
+            "shape": "lin-doc"
+          }
+        }
+      }
+    ]
+  }
+}

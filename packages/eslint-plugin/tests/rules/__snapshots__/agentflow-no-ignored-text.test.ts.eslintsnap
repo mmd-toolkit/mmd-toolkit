@@ -1,0 +1,144 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: agentflow-no-ignored-text >> invalid >>> docs/rules/agentflow-no-ignored-text.md incorrect 1
+Filename: agentflow-no-ignored-text-incorrect-1.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow F
+  3 |     A --> B; direction LR
+    |     ^~~~~~~~ [1]
+  4 |   end
+  5 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: agentflow-no-ignored-text >> invalid >>> invalid/agentflow/direction-after
+Filename: tests/fixtures/rules/agentflow-no-ignored-text/invalid/agentflow/direction-after-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | flow F
+  3 | direction LR; A-->B
+    |             ^~~~~~~ [1]
+  4 | end
+  5 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: agentflow-no-ignored-text >> invalid >>> invalid/agentflow/direction-before
+Filename: tests/fixtures/rules/agentflow-no-ignored-text/invalid/agentflow/direction-before-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | flow F
+  3 | A-->B; direction LR
+    | ^~~~~~ [1]
+  4 | end
+  5 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: agentflow-no-ignored-text >> invalid >>> invalid/agentflow/direction-both
+Filename: tests/fixtures/rules/agentflow-no-ignored-text/invalid/agentflow/direction-both-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A; direction LR; B
+    | ^~ [1]         ^~~ [2]
+  3 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+[2] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: agentflow-no-ignored-text >> invalid >>> invalid/agentflow/direction-comment-after-text
+Filename: tests/fixtures/rules/agentflow-no-ignored-text/invalid/agentflow/direction-comment-after-text-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | flow F
+  3 |   direction TB; x %% c
+    |               ^~~~~~~~ [1]
+  4 |   A
+  5 | end
+  6 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: agentflow-no-ignored-text >> invalid >>> invalid/agentflow/direction-literal-bug
+Filename: tests/fixtures/rules/agentflow-no-ignored-text/invalid/agentflow/direction-literal-bug-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A["direction LR"]
+    | ^~~ [1]        ^~ [2]
+  3 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+[2] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: agentflow-no-ignored-text >> invalid >>> invalid/agentflow/direction-tail
+Filename: tests/fixtures/rules/agentflow-no-ignored-text/invalid/agentflow/direction-tail-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | direction LR trailing
+    |              ^~~~~~~~ [1]
+  3 | A
+  4 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: agentflow-no-ignored-text >> invalid >>> invalid/agentflow/direction-title-indented
+Filename: tests/fixtures/rules/agentflow-no-ignored-text/invalid/agentflow/direction-title-indented-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   accTitle: direction LR
+    |   ^~~~~~~~~ [1]
+  3 | A
+  4 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: agentflow-no-ignored-text >> invalid >>> invalid/agentflow/direction-top-level-link
+Filename: tests/fixtures/rules/agentflow-no-ignored-text/invalid/agentflow/direction-top-level-link-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A-->B direction TB
+    | ^~~~~ [1]
+  3 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: agentflow-no-ignored-text >> invalid >>> invalid/agentflow/ignored-description-indented
+Filename: tests/fixtures/rules/agentflow-no-ignored-text/invalid/agentflow/ignored-description-indented-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   accDescr: direction LR
+    |   ^~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+---

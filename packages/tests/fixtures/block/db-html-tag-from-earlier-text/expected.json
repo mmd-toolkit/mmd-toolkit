@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A tag opened in an earlier block label converts the attribute quotes in a later quoted block label; the later label is b='c'>d."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "a",
+          "label": "<a",
+          "type": "square",
+          "widthInColumns": 1
+        },
+        {
+          "id": "b",
+          "label": "b='c'>d",
+          "type": "square",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

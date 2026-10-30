@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D: addNode and common strings] Are node texts and the root title recorded before HTML sanitization?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "<b>R</b> = value",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "<b>R</b> = value",
+      "children": [
+        {
+          "text": "<i>A</i><br>next",
+          "children": []
+        }
+      ]
+    }
+  }
+}

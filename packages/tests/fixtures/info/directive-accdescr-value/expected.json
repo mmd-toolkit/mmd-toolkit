@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Directives at both edges of a line description value."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {},
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

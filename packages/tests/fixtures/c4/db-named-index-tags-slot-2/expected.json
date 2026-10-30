@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A named $tags in RelIndex argument 2 is accepted; rels[0].from is {\"tags\":\"V\"}."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [
+      {
+        "type": "rel",
+        "from": {
+          "tags": "V"
+        },
+        "to": "b",
+        "label": {
+          "text": "Uses"
+        },
+        "techn": {
+          "text": "HTTPS"
+        },
+        "descr": {
+          "text": "D"
+        },
+        "sprite": "sprite",
+        "tags": "tags",
+        "link": "link"
+      }
+    ],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

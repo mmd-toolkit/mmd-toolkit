@@ -1,0 +1,84 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "All ordinary label and common-text contexts are summarized before DOMPurify sanitization."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "<b>T</b>",
+    "accTitle": "<b>A</b>",
+    "accDescr": "<i>D</i>",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "string",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "<b class='x'>Task</b>",
+        "type": "square",
+        "props": {},
+        "link": "https://example.com"
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "<b>API</b>"
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "<i>Edge</i>",
+        "labelType": "string",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "F",
+        "nodes": [
+          "B",
+          "A"
+        ],
+        "title": "<b>Flow</b>",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      }
+    ],
+    "tooltips": [
+      {
+        "id": "A",
+        "text": "<i>tip</i>"
+      }
+    ]
+  },
+  "embedded": {
+    "title": "<b>T</b>"
+  }
+}

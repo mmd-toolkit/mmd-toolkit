@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md: Connector title whitespace before a newline."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ta TBconnector C[T] A\n----------------------^\nExpecting 'COMMENT', 'SEMI', 'NEWLINE', 'EOF', 'SHAPE_DATA', got 'SPACE'"
+  }
+}

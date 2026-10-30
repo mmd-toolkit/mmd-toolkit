@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, tasks: non-ASCII text stays in the title, a section, a period, and an event."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "日本語",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "見出し"
+    ],
+    "tasks": [
+      {
+        "section": "見出し",
+        "task": "二〇二四 ",
+        "events": [
+          "出来事"
+        ]
+      }
+    ]
+  }
+}

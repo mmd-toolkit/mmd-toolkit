@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Building the summary from the tree: each value is read in converted form, so the attribute quotes in a style of a classDef statement are `'`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default c",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [
+          "x:<a b='c'>y</a>"
+        ]
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

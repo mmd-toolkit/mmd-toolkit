@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Detection: the detector compares `journey` in exactly this case, so `JOURNEY` matches no detector."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: JOURNEY\n  A: 1\n"
+  }
+}

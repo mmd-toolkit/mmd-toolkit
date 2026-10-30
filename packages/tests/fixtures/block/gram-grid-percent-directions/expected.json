@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, punctuation: a `%` between two directions of a block arrow: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...eta  A<[\"x\"]>(right%down)\n----------------------^"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Common statements: Does unconsumed PS take the same whitespace path as LS before indented accTitle?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 12: unexpected character: ->:<- at offset: 36, skipped 1 characters. Parse error on line 4, column 4: Expecting token of type 'EOF' but found `accTitle`."
+  }
+}

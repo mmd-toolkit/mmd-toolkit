@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Dropping invalid frontmatter must retain valid init settings in the comparison reading."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "unexpected end of the stream within a flow collection (3:1)\n\n 1 | title: Kept\n 2 | config: [\n 3 | \n-----^"
+  }
+}

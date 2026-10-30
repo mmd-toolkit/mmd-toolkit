@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Body YAML-looking fences are ordinary bare nodes; this grammar imports no YAML terminal."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "---",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "x: y",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "---",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "next",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

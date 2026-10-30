@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Strings and link labels: A native-looking directive inside a semicolon label remains label text only to the physical line end."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [
+      {
+        "source": "A",
+        "target": "B",
+        "dashed": false,
+        "label": "%%{!x}%%"
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

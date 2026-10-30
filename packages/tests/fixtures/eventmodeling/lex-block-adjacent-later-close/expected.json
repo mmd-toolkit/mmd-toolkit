@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Data: An adjacent first closing line becomes content when the body-present alternative finds a later closer. Accepted by Mermaid."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": {
+          "kind": "block",
+          "value": "{\n}\ntf 99 evt Hidden\n}\n"
+        }
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "evt",
+        "entityIdentifier": "B",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

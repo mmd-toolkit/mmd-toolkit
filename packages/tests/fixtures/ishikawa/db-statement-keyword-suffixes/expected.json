@@ -1,0 +1,90 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D: addNode and common strings] Are other diagrams' keyword cases and glued suffixes ordinary labels?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "ACCTITLE: U",
+          "children": []
+        },
+        {
+          "text": "accTitleX: L",
+          "children": []
+        },
+        {
+          "text": "accTitle1: D",
+          "children": []
+        },
+        {
+          "text": "accTitle_: W",
+          "children": []
+        },
+        {
+          "text": "accTitle-: H",
+          "children": []
+        },
+        {
+          "text": "accTitle界: N",
+          "children": []
+        },
+        {
+          "text": "ACCDESCR: U",
+          "children": []
+        },
+        {
+          "text": "accDescrX: L",
+          "children": []
+        },
+        {
+          "text": "accDescr1: D",
+          "children": []
+        },
+        {
+          "text": "accDescr_: W",
+          "children": []
+        },
+        {
+          "text": "accDescr-: H",
+          "children": []
+        },
+        {
+          "text": "accDescr界: N",
+          "children": []
+        },
+        {
+          "text": "TITLE T",
+          "children": []
+        },
+        {
+          "text": "titleX T",
+          "children": []
+        },
+        {
+          "text": "title1 T",
+          "children": []
+        },
+        {
+          "text": "title_ T",
+          "children": []
+        },
+        {
+          "text": "title- T",
+          "children": []
+        },
+        {
+          "text": "title界 T",
+          "children": []
+        }
+      ]
+    }
+  }
+}

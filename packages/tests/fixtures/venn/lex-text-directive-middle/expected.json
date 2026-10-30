@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The lex text directive middle form stores {\"texts\":[{\"sets\":[\"A\"],\"id\":\"ab\"}]}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "ab"
+      }
+    ],
+    "styles": []
+  }
+}

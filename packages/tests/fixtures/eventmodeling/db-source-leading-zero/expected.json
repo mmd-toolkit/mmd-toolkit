@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Frame names retain leading zeroes and compare as strings."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "1",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "B",
+        "sourceFrames": [
+          "1"
+        ],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "001",
+        "modelEntityType": "evt",
+        "entityIdentifier": "C",
+        "sourceFrames": [
+          "01"
+        ],
+        "data": null
+      }
+    ]
+  }
+}

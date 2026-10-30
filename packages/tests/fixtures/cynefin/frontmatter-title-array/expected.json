@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A frontmatter title array is converted to text before publication."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "1,2",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  },
+  "embedded": {
+    "title": "1,2"
+  }
+}

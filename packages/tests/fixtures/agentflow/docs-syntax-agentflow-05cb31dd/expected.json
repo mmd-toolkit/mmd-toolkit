@@ -1,0 +1,159 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/agentflow.md",
+    "line": 152
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "check",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Tests pass?",
+        "type": "diamond",
+        "props": {},
+        "metadata": {
+          "shape": "diamond"
+        }
+      },
+      {
+        "id": "ship",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Ship it",
+        "type": "hexagon",
+        "props": {},
+        "metadata": {
+          "shape": "hexagon"
+        }
+      },
+      {
+        "id": "fix",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Fix the build",
+        "type": "roundedRect",
+        "props": {},
+        "metadata": {
+          "shape": "roundedRect"
+        }
+      },
+      {
+        "id": "logs",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Build logs",
+        "type": "lin-doc",
+        "props": {},
+        "metadata": {
+          "shape": "lin-doc"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "start": "check",
+        "end": "ship",
+        "type": "arrow_point",
+        "text": "yes",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_check_ship_0"
+      },
+      {
+        "start": "check",
+        "end": "fix",
+        "type": "arrow_point",
+        "text": "no",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_check_fix_0"
+      },
+      {
+        "start": "fix",
+        "end": "check",
+        "type": "arrow_cross",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_fix_check_0"
+      },
+      {
+        "start": "fix",
+        "end": "logs",
+        "type": "arrow_open",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "dotted",
+        "length": 1,
+        "id": "L_fix_logs_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "check",
+        "set": {
+          "type": "diamond",
+          "metadata": {
+            "shape": "diamond"
+          }
+        }
+      },
+      {
+        "id": "ship",
+        "set": {
+          "type": "hexagon",
+          "metadata": {
+            "shape": "hexagon"
+          }
+        }
+      },
+      {
+        "id": "fix",
+        "set": {
+          "type": "roundedRect",
+          "metadata": {
+            "shape": "roundedRect"
+          }
+        }
+      },
+      {
+        "id": "logs",
+        "set": {
+          "type": "lin-doc",
+          "metadata": {
+            "shape": "lin-doc"
+          }
+        }
+      }
+    ]
+  }
+}

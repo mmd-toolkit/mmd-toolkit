@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does style-line preprocessing affect an enclosed line in STRING2?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A\nstyle:#a\nB",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  }
+}

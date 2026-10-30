@@ -1,0 +1,95 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/wardley.md",
+    "line": 330
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Annotations",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "API",
+        "label": "API",
+        "x": 70,
+        "y": 60,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Cache",
+        "label": "Cache",
+        "x": 55.00000000000001,
+        "y": 50,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Database",
+        "label": "Database",
+        "x": 40,
+        "y": 40,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [
+      {
+        "source": "API",
+        "target": "Cache",
+        "dashed": false
+      },
+      {
+        "source": "Cache",
+        "target": "Database",
+        "dashed": false
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [
+      {
+        "number": 1,
+        "coordinates": [
+          {
+            "x": 65,
+            "y": 60
+          }
+        ],
+        "text": "Critical component"
+      },
+      {
+        "number": 2,
+        "coordinates": [
+          {
+            "x": 50,
+            "y": 50
+          }
+        ],
+        "text": "Performance layer"
+      },
+      {
+        "number": 3,
+        "coordinates": [
+          {
+            "x": 35,
+            "y": 40
+          }
+        ],
+        "text": "Data persistence"
+      }
+    ],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "annotationsBox": {
+      "x": 90,
+      "y": 10
+    },
+    "axes": {}
+  }
+}

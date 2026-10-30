@@ -1,0 +1,17 @@
+{
+  "message": "A cherry-pick requires a commit at the current branch tip",
+  "range": [
+    46,
+    64
+  ],
+  "loc": {
+    "start": {
+      "line": 5,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 18
+    }
+  }
+}

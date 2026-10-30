@@ -1,0 +1,2687 @@
+{
+  "type": "Root",
+  "diagramType": "usecase",
+  "body": {
+    "type": "UsecaseDiagram",
+    "body": [
+      {
+        "type": "UsecaseActorStatement",
+        "actors": [
+          {
+            "type": "UsecaseActor",
+            "id": {
+              "type": "Identifier",
+              "name": "Customer",
+              "range": [
+                19,
+                27
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 6
+                },
+                "end": {
+                  "line": 2,
+                  "column": 14
+                }
+              }
+            },
+            "label": null,
+            "metadata": null,
+            "stereotype": null,
+            "classes": [
+              {
+                "type": "Identifier",
+                "name": "external",
+                "range": [
+                  30,
+                  38
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 17
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 25
+                  }
+                }
+              }
+            ],
+            "range": [
+              19,
+              38
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 6
+              },
+              "end": {
+                "line": 2,
+                "column": 25
+              }
+            }
+          }
+        ],
+        "range": [
+          13,
+          38
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 25
+          }
+        }
+      },
+      {
+        "type": "UsecaseEntityStatement",
+        "entity": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Checkout",
+            "range": [
+              39,
+              47
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 8
+              }
+            }
+          },
+          "shape": "ellipse",
+          "label": {
+            "type": "UsecaseLabel",
+            "kind": "string",
+            "value": "Checkout",
+            "range": [
+              48,
+              58
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 9
+              },
+              "end": {
+                "line": 3,
+                "column": 19
+              }
+            }
+          },
+          "metadata": null,
+          "stereotype": null,
+          "classes": [
+            {
+              "type": "Identifier",
+              "name": "critical",
+              "range": [
+                62,
+                70
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 23
+                },
+                "end": {
+                  "line": 3,
+                  "column": 31
+                }
+              }
+            }
+          ],
+          "range": [
+            39,
+            70
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 3,
+              "column": 31
+            }
+          }
+        },
+        "range": [
+          39,
+          70
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 31
+          }
+        }
+      },
+      {
+        "type": "UsecaseSystemBoundaryStatement",
+        "id": {
+          "type": "Identifier",
+          "name": "Account",
+          "range": [
+            86,
+            93
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 15
+            },
+            "end": {
+              "line": 4,
+              "column": 22
+            }
+          }
+        },
+        "title": null,
+        "metadata": null,
+        "classes": [],
+        "body": [
+          {
+            "type": "UsecaseEntityStatement",
+            "entity": {
+              "type": "UsecaseEntity",
+              "id": {
+                "type": "Identifier",
+                "name": "Profile",
+                "range": [
+                  96,
+                  103
+                ],
+                "loc": {
+                  "start": {
+                    "line": 5,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 9
+                  }
+                }
+              },
+              "shape": "rectangle",
+              "label": {
+                "type": "UsecaseLabel",
+                "kind": "text",
+                "value": "Edit profile",
+                "range": [
+                  104,
+                  116
+                ],
+                "loc": {
+                  "start": {
+                    "line": 5,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 22
+                  }
+                }
+              },
+              "metadata": null,
+              "stereotype": null,
+              "classes": [],
+              "range": [
+                96,
+                117
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 2
+                },
+                "end": {
+                  "line": 5,
+                  "column": 23
+                }
+              }
+            },
+            "range": [
+              96,
+              117
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 2
+              },
+              "end": {
+                "line": 5,
+                "column": 23
+              }
+            }
+          }
+        ],
+        "range": [
+          71,
+          121
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "UsecaseJsonStatement",
+        "id": {
+          "type": "Identifier",
+          "name": "Session",
+          "range": [
+            127,
+            134
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 5
+            },
+            "end": {
+              "line": 7,
+              "column": 12
+            }
+          }
+        },
+        "data": {
+          "type": "UsecaseJsonDataBlock",
+          "value": " \"active\": true ",
+          "range": [
+            134,
+            153
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 12
+            },
+            "end": {
+              "line": 7,
+              "column": 31
+            }
+          }
+        },
+        "classes": [
+          {
+            "type": "Identifier",
+            "name": "data",
+            "range": [
+              156,
+              160
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 34
+              },
+              "end": {
+                "line": 7,
+                "column": 38
+              }
+            }
+          }
+        ],
+        "range": [
+          122,
+          160
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 38
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Customer",
+            "range": [
+              161,
+              169
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 0
+              },
+              "end": {
+                "line": 8,
+                "column": 8
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            161,
+            169
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 0
+            },
+            "end": {
+              "line": 8,
+              "column": 8
+            }
+          }
+        },
+        "id": null,
+        "kind": "association",
+        "opening": null,
+        "label": null,
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "-->",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            170,
+            173
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 9
+            },
+            "end": {
+              "line": 8,
+              "column": 12
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Checkout",
+            "range": [
+              174,
+              182
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 13
+              },
+              "end": {
+                "line": 8,
+                "column": 21
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            174,
+            182
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 13
+            },
+            "end": {
+              "line": 8,
+              "column": 21
+            }
+          }
+        },
+        "range": [
+          161,
+          182
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 0
+          },
+          "end": {
+            "line": 8,
+            "column": 21
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Checkout",
+            "range": [
+              183,
+              191
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 0
+              },
+              "end": {
+                "line": 9,
+                "column": 8
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            183,
+            191
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 0
+            },
+            "end": {
+              "line": 9,
+              "column": 8
+            }
+          }
+        },
+        "id": null,
+        "kind": "association",
+        "opening": null,
+        "label": null,
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "-->",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            192,
+            195
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 9
+            },
+            "end": {
+              "line": 9,
+              "column": 12
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Profile",
+            "range": [
+              196,
+              203
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 13
+              },
+              "end": {
+                "line": 9,
+                "column": 20
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            196,
+            203
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 13
+            },
+            "end": {
+              "line": 9,
+              "column": 20
+            }
+          }
+        },
+        "range": [
+          183,
+          203
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 0
+          },
+          "end": {
+            "line": 9,
+            "column": 20
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Profile",
+            "range": [
+              204,
+              211
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 0
+              },
+              "end": {
+                "line": 10,
+                "column": 7
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            204,
+            211
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 0
+            },
+            "end": {
+              "line": 10,
+              "column": 7
+            }
+          }
+        },
+        "id": null,
+        "kind": "association",
+        "opening": null,
+        "label": null,
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "-->",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            212,
+            215
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 8
+            },
+            "end": {
+              "line": 10,
+              "column": 11
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Session",
+            "range": [
+              216,
+              223
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 12
+              },
+              "end": {
+                "line": 10,
+                "column": 19
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            216,
+            223
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 12
+            },
+            "end": {
+              "line": 10,
+              "column": 19
+            }
+          }
+        },
+        "range": [
+          204,
+          223
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 0
+          },
+          "end": {
+            "line": 10,
+            "column": 19
+          }
+        }
+      },
+      {
+        "type": "UsecaseClassDefStatement",
+        "classes": [
+          {
+            "type": "Identifier",
+            "name": "default",
+            "range": [
+              233,
+              240
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 9
+              },
+              "end": {
+                "line": 11,
+                "column": 16
+              }
+            }
+          }
+        ],
+        "styles": [
+          {
+            "type": "UsecaseStyleDeclaration",
+            "name": {
+              "type": "UsecaseIdentifier",
+              "name": "stroke",
+              "range": [
+                241,
+                247
+              ],
+              "loc": {
+                "start": {
+                  "line": 11,
+                  "column": 17
+                },
+                "end": {
+                  "line": 11,
+                  "column": 23
+                }
+              }
+            },
+            "value": {
+              "type": "UsecaseLiteral",
+              "value": "#7f8ea3",
+              "range": [
+                248,
+                255
+              ],
+              "loc": {
+                "start": {
+                  "line": 11,
+                  "column": 24
+                },
+                "end": {
+                  "line": 11,
+                  "column": 31
+                }
+              }
+            },
+            "range": [
+              241,
+              255
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 17
+              },
+              "end": {
+                "line": 11,
+                "column": 31
+              }
+            }
+          }
+        ],
+        "range": [
+          224,
+          255
+        ],
+        "loc": {
+          "start": {
+            "line": 11,
+            "column": 0
+          },
+          "end": {
+            "line": 11,
+            "column": 31
+          }
+        }
+      },
+      {
+        "type": "UsecaseClassDefStatement",
+        "classes": [
+          {
+            "type": "Identifier",
+            "name": "external",
+            "range": [
+              265,
+              273
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 9
+              },
+              "end": {
+                "line": 12,
+                "column": 17
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "critical",
+            "range": [
+              274,
+              282
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 18
+              },
+              "end": {
+                "line": 12,
+                "column": 26
+              }
+            }
+          }
+        ],
+        "styles": [
+          {
+            "type": "UsecaseStyleDeclaration",
+            "name": {
+              "type": "UsecaseIdentifier",
+              "name": "stroke-width",
+              "range": [
+                283,
+                295
+              ],
+              "loc": {
+                "start": {
+                  "line": 12,
+                  "column": 27
+                },
+                "end": {
+                  "line": 12,
+                  "column": 39
+                }
+              }
+            },
+            "value": {
+              "type": "UsecaseLiteral",
+              "value": "3px",
+              "range": [
+                296,
+                299
+              ],
+              "loc": {
+                "start": {
+                  "line": 12,
+                  "column": 40
+                },
+                "end": {
+                  "line": 12,
+                  "column": 43
+                }
+              }
+            },
+            "range": [
+              283,
+              299
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 27
+              },
+              "end": {
+                "line": 12,
+                "column": 43
+              }
+            }
+          }
+        ],
+        "range": [
+          256,
+          299
+        ],
+        "loc": {
+          "start": {
+            "line": 12,
+            "column": 0
+          },
+          "end": {
+            "line": 12,
+            "column": 43
+          }
+        }
+      },
+      {
+        "type": "UsecaseClassStatement",
+        "targets": [
+          {
+            "type": "Identifier",
+            "name": "Customer",
+            "range": [
+              306,
+              314
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 6
+              },
+              "end": {
+                "line": 13,
+                "column": 14
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "Checkout",
+            "range": [
+              315,
+              323
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 15
+              },
+              "end": {
+                "line": 13,
+                "column": 23
+              }
+            }
+          }
+        ],
+        "classes": [
+          {
+            "type": "Identifier",
+            "name": "external",
+            "range": [
+              324,
+              332
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 24
+              },
+              "end": {
+                "line": 13,
+                "column": 32
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "critical",
+            "range": [
+              333,
+              341
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 33
+              },
+              "end": {
+                "line": 13,
+                "column": 41
+              }
+            }
+          }
+        ],
+        "range": [
+          300,
+          341
+        ],
+        "loc": {
+          "start": {
+            "line": 13,
+            "column": 0
+          },
+          "end": {
+            "line": 13,
+            "column": 41
+          }
+        }
+      },
+      {
+        "type": "UsecaseClassStatement",
+        "targets": [
+          {
+            "type": "Identifier",
+            "name": "Account",
+            "range": [
+              348,
+              355
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 6
+              },
+              "end": {
+                "line": 14,
+                "column": 13
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "Session",
+            "range": [
+              356,
+              363
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 14
+              },
+              "end": {
+                "line": 14,
+                "column": 21
+              }
+            }
+          }
+        ],
+        "classes": [
+          {
+            "type": "Identifier",
+            "name": "data",
+            "range": [
+              364,
+              368
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 22
+              },
+              "end": {
+                "line": 14,
+                "column": 26
+              }
+            }
+          }
+        ],
+        "range": [
+          342,
+          368
+        ],
+        "loc": {
+          "start": {
+            "line": 14,
+            "column": 0
+          },
+          "end": {
+            "line": 14,
+            "column": 26
+          }
+        }
+      },
+      {
+        "type": "UsecaseStyleStatement",
+        "target": {
+          "type": "Identifier",
+          "name": "Checkout",
+          "range": [
+            375,
+            383
+          ],
+          "loc": {
+            "start": {
+              "line": 15,
+              "column": 6
+            },
+            "end": {
+              "line": 15,
+              "column": 14
+            }
+          }
+        },
+        "styles": [
+          {
+            "type": "UsecaseStyleDeclaration",
+            "name": {
+              "type": "UsecaseIdentifier",
+              "name": "stroke",
+              "range": [
+                384,
+                390
+              ],
+              "loc": {
+                "start": {
+                  "line": 15,
+                  "column": 15
+                },
+                "end": {
+                  "line": 15,
+                  "column": 21
+                }
+              }
+            },
+            "value": {
+              "type": "UsecaseLiteral",
+              "value": "#c33",
+              "range": [
+                391,
+                395
+              ],
+              "loc": {
+                "start": {
+                  "line": 15,
+                  "column": 22
+                },
+                "end": {
+                  "line": 15,
+                  "column": 26
+                }
+              }
+            },
+            "range": [
+              384,
+              395
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 15
+              },
+              "end": {
+                "line": 15,
+                "column": 26
+              }
+            }
+          },
+          {
+            "type": "UsecaseStyleDeclaration",
+            "name": {
+              "type": "UsecaseIdentifier",
+              "name": "stroke-width",
+              "range": [
+                396,
+                408
+              ],
+              "loc": {
+                "start": {
+                  "line": 15,
+                  "column": 27
+                },
+                "end": {
+                  "line": 15,
+                  "column": 39
+                }
+              }
+            },
+            "value": {
+              "type": "UsecaseLiteral",
+              "value": "4px",
+              "range": [
+                409,
+                412
+              ],
+              "loc": {
+                "start": {
+                  "line": 15,
+                  "column": 40
+                },
+                "end": {
+                  "line": 15,
+                  "column": 43
+                }
+              }
+            },
+            "range": [
+              396,
+              412
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 27
+              },
+              "end": {
+                "line": 15,
+                "column": 43
+              }
+            }
+          }
+        ],
+        "range": [
+          369,
+          412
+        ],
+        "loc": {
+          "start": {
+            "line": 15,
+            "column": 0
+          },
+          "end": {
+            "line": 15,
+            "column": 43
+          }
+        }
+      },
+      {
+        "type": "UsecaseStyleStatement",
+        "target": {
+          "type": "Identifier",
+          "name": "Account",
+          "range": [
+            419,
+            426
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 6
+            },
+            "end": {
+              "line": 16,
+              "column": 13
+            }
+          }
+        },
+        "styles": [
+          {
+            "type": "UsecaseStyleDeclaration",
+            "name": {
+              "type": "UsecaseIdentifier",
+              "name": "stroke",
+              "range": [
+                427,
+                433
+              ],
+              "loc": {
+                "start": {
+                  "line": 16,
+                  "column": 14
+                },
+                "end": {
+                  "line": 16,
+                  "column": 20
+                }
+              }
+            },
+            "value": {
+              "type": "UsecaseLiteral",
+              "value": "#536878",
+              "range": [
+                434,
+                441
+              ],
+              "loc": {
+                "start": {
+                  "line": 16,
+                  "column": 21
+                },
+                "end": {
+                  "line": 16,
+                  "column": 28
+                }
+              }
+            },
+            "range": [
+              427,
+              441
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 14
+              },
+              "end": {
+                "line": 16,
+                "column": 28
+              }
+            }
+          }
+        ],
+        "range": [
+          413,
+          441
+        ],
+        "loc": {
+          "start": {
+            "line": 16,
+            "column": 0
+          },
+          "end": {
+            "line": 16,
+            "column": 28
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      441
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 16,
+        "column": 28
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "usecase-beta",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "actor",
+      "range": [
+        13,
+        18
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Customer",
+      "range": [
+        19,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":::",
+      "range": [
+        27,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 14
+        },
+        "end": {
+          "line": 2,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "external",
+      "range": [
+        30,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 17
+        },
+        "end": {
+          "line": 2,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Checkout",
+      "range": [
+        39,
+        47
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        47,
+        48
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Checkout\"",
+      "range": [
+        48,
+        58
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 9
+        },
+        "end": {
+          "line": 3,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        58,
+        59
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 19
+        },
+        "end": {
+          "line": 3,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":::",
+      "range": [
+        59,
+        62
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 20
+        },
+        "end": {
+          "line": 3,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "critical",
+      "range": [
+        62,
+        70
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 23
+        },
+        "end": {
+          "line": 3,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "systemBoundary",
+      "range": [
+        71,
+        85
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Account",
+      "range": [
+        86,
+        93
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 15
+        },
+        "end": {
+          "line": 4,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Profile",
+      "range": [
+        96,
+        103
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 2
+        },
+        "end": {
+          "line": 5,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        103,
+        104
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 9
+        },
+        "end": {
+          "line": 5,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Edit profile",
+      "range": [
+        104,
+        116
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 10
+        },
+        "end": {
+          "line": 5,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        116,
+        117
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 22
+        },
+        "end": {
+          "line": 5,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "end",
+      "range": [
+        118,
+        121
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "json",
+      "range": [
+        122,
+        126
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Session",
+      "range": [
+        127,
+        134
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 5
+        },
+        "end": {
+          "line": 7,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@",
+      "range": [
+        134,
+        135
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 12
+        },
+        "end": {
+          "line": 7,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        135,
+        136
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 13
+        },
+        "end": {
+          "line": 7,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " \"active\": true ",
+      "range": [
+        136,
+        152
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 14
+        },
+        "end": {
+          "line": 7,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        152,
+        153
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 30
+        },
+        "end": {
+          "line": 7,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":::",
+      "range": [
+        153,
+        156
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 31
+        },
+        "end": {
+          "line": 7,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "data",
+      "range": [
+        156,
+        160
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 34
+        },
+        "end": {
+          "line": 7,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Customer",
+      "range": [
+        161,
+        169
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        170,
+        173
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 9
+        },
+        "end": {
+          "line": 8,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Checkout",
+      "range": [
+        174,
+        182
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 13
+        },
+        "end": {
+          "line": 8,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Checkout",
+      "range": [
+        183,
+        191
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        192,
+        195
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 9
+        },
+        "end": {
+          "line": 9,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Profile",
+      "range": [
+        196,
+        203
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 13
+        },
+        "end": {
+          "line": 9,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Profile",
+      "range": [
+        204,
+        211
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 0
+        },
+        "end": {
+          "line": 10,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        212,
+        215
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 8
+        },
+        "end": {
+          "line": 10,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Session",
+      "range": [
+        216,
+        223
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 12
+        },
+        "end": {
+          "line": 10,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "classDef",
+      "range": [
+        224,
+        232
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 0
+        },
+        "end": {
+          "line": 11,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "default",
+      "range": [
+        233,
+        240
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 9
+        },
+        "end": {
+          "line": 11,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "stroke",
+      "range": [
+        241,
+        247
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 17
+        },
+        "end": {
+          "line": 11,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        247,
+        248
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 23
+        },
+        "end": {
+          "line": 11,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "#7f8ea3",
+      "range": [
+        248,
+        255
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 24
+        },
+        "end": {
+          "line": 11,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "classDef",
+      "range": [
+        256,
+        264
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 0
+        },
+        "end": {
+          "line": 12,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "external",
+      "range": [
+        265,
+        273
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 9
+        },
+        "end": {
+          "line": 12,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        273,
+        274
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 17
+        },
+        "end": {
+          "line": 12,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "critical",
+      "range": [
+        274,
+        282
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 18
+        },
+        "end": {
+          "line": 12,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "stroke-width",
+      "range": [
+        283,
+        295
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 27
+        },
+        "end": {
+          "line": 12,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        295,
+        296
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 39
+        },
+        "end": {
+          "line": 12,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "3px",
+      "range": [
+        296,
+        299
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 40
+        },
+        "end": {
+          "line": 12,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "class",
+      "range": [
+        300,
+        305
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 0
+        },
+        "end": {
+          "line": 13,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Customer",
+      "range": [
+        306,
+        314
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 6
+        },
+        "end": {
+          "line": 13,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        314,
+        315
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 14
+        },
+        "end": {
+          "line": 13,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Checkout",
+      "range": [
+        315,
+        323
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 15
+        },
+        "end": {
+          "line": 13,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "external",
+      "range": [
+        324,
+        332
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 24
+        },
+        "end": {
+          "line": 13,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        332,
+        333
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 32
+        },
+        "end": {
+          "line": 13,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "critical",
+      "range": [
+        333,
+        341
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 33
+        },
+        "end": {
+          "line": 13,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "class",
+      "range": [
+        342,
+        347
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 0
+        },
+        "end": {
+          "line": 14,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Account",
+      "range": [
+        348,
+        355
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 6
+        },
+        "end": {
+          "line": 14,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        355,
+        356
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 13
+        },
+        "end": {
+          "line": 14,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Session",
+      "range": [
+        356,
+        363
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 14
+        },
+        "end": {
+          "line": 14,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "data",
+      "range": [
+        364,
+        368
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 22
+        },
+        "end": {
+          "line": 14,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "style",
+      "range": [
+        369,
+        374
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 0
+        },
+        "end": {
+          "line": 15,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Checkout",
+      "range": [
+        375,
+        383
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 6
+        },
+        "end": {
+          "line": 15,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "stroke",
+      "range": [
+        384,
+        390
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 15
+        },
+        "end": {
+          "line": 15,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        390,
+        391
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 21
+        },
+        "end": {
+          "line": 15,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "#c33",
+      "range": [
+        391,
+        395
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 22
+        },
+        "end": {
+          "line": 15,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        395,
+        396
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 26
+        },
+        "end": {
+          "line": 15,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "stroke-width",
+      "range": [
+        396,
+        408
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 27
+        },
+        "end": {
+          "line": 15,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        408,
+        409
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 39
+        },
+        "end": {
+          "line": 15,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "4px",
+      "range": [
+        409,
+        412
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 40
+        },
+        "end": {
+          "line": 15,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "style",
+      "range": [
+        413,
+        418
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 0
+        },
+        "end": {
+          "line": 16,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Account",
+      "range": [
+        419,
+        426
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 6
+        },
+        "end": {
+          "line": 16,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "stroke",
+      "range": [
+        427,
+        433
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 14
+        },
+        "end": {
+          "line": 16,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        433,
+        434
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 20
+        },
+        "end": {
+          "line": 16,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "#536878",
+      "range": [
+        434,
+        441
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 21
+        },
+        "end": {
+          "line": 16,
+          "column": 28
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    442
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 17,
+      "column": 0
+    }
+  }
+}

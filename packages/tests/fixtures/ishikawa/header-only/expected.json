@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[H: detection and ISHIKAWA] Can the document be empty after the stable header?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nishikawa\n--------^\nExpecting 'SPACELINE', 'SPACELIST', 'TEXT', got 'EOF'"
+  }
+}

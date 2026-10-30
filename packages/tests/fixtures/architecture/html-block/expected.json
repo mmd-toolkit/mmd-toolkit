@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "HTML-looking block description text is checked independently of line values."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "<b>Block</b>",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

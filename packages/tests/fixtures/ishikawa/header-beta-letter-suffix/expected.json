@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[H: detection and ISHIKAWA] Does detection fall back to the stable header for a glued beta word?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "-betaX",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "-betaX",
+      "children": [
+        {
+          "text": "R",
+          "children": []
+        }
+      ]
+    }
+  }
+}

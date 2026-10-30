@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Click statements: the arguments end at the first `)`, also inside quotes; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...ck id1 call f(\"a)b\")\n-----------------------^\nExpecting 'taskData', got 'NL'"
+  }
+}

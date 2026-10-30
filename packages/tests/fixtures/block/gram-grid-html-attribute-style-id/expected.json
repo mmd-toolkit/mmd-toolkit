@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, HTML: a tag with a double-quoted attribute in the middle of the id of a `style` statement: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nblock-beta  a<a href='x'>b  styl\n-------------^"
+  }
+}

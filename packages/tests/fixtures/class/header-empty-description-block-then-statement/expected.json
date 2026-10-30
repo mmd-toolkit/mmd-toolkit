@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Empty description blocks before a separator: the header needs a line break after the blocks, so a statement on the same line is rejected by both."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n...Diagram accDescr {} class A\n-----------------------^\nExpecting 'NEWLINE', got 'CLASS'"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md, Whitespace and value units: Bare %% is not a common comment line; rule 2 swallows the preceding U+2028 after the header, and set A is accepted."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

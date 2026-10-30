@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Units and contexts: `]` is a character of a node text."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "a]b",
+          "level": 2,
+          "descr": "a]b",
+          "type": 0,
+          "children": []
+        }
+      ]
+    }
+  }
+}

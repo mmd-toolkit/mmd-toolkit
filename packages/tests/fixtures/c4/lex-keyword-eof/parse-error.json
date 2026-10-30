@@ -1,0 +1,17 @@
+{
+  "message": "The call keyword has no ( before the end of the text",
+  "range": [
+    10,
+    16
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 6
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A bare name may hold a hyphen, a dot, an asterisk, non-ASCII letters, and an underscore."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-a-b-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "a-b",
+        "classes": []
+      },
+      {
+        "id": "entity-a.b-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "a.b",
+        "classes": []
+      },
+      {
+        "id": "entity-a*b-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "a*b",
+        "classes": []
+      },
+      {
+        "id": "entity-日本-3",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "日本",
+        "classes": []
+      },
+      {
+        "id": "entity-_x-4",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "_x",
+        "classes": []
+      },
+      {
+        "id": "entity-A1-5",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A1",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

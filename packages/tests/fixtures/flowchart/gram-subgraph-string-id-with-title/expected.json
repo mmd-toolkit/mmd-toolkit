@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A subgraph header with a string followed by a bracketed title: the string is the id (click me) and the bracket text is the title (Title)."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "click me",
+        "nodes": [],
+        "title": "Title",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

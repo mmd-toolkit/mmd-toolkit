@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: A whitespace-and-vertical-bar decoration may contain NBSP and U+2028 and still disappears."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "other",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

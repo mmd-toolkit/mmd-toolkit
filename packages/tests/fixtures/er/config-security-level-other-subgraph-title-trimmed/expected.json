@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The title is trimmed after the characters are replaced: ` <br>x` is recorded as `<br/>x`."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A"
+        ],
+        "title": "<br/>x",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

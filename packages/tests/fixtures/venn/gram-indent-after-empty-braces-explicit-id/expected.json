@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md, Text and implicit text mode: The unindented %%{ }%% line after an empty line disables implicit text mode, so indented text A x is accepted as explicit text with target A and id x."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "x"
+      }
+    ],
+    "styles": []
+  }
+}

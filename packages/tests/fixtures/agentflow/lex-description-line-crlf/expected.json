@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read description line crlf?"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "first",
+    "vertices": [
+      {
+        "id": "second",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "second",
+        "props": {}
+      },
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

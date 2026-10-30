@@ -1,0 +1,193 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does longer_alt keep every keyword with an ASCII letter suffix as an identifier?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "actorx",
+        "label": "actorx",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "systemBoundaryx",
+        "label": "systemBoundaryx",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "endx",
+        "label": "endx",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "directionx",
+        "label": "directionx",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "TDx",
+        "label": "TDx",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "TBx",
+        "label": "TBx",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "BTx",
+        "label": "BTx",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "LRx",
+        "label": "LRx",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "RLx",
+        "label": "RLx",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "notex",
+        "label": "notex",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "forx",
+        "label": "forx",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "jsonx",
+        "label": "jsonx",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "classDefx",
+        "label": "classDefx",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "classx",
+        "label": "classx",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "stylex",
+        "label": "stylex",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "includex",
+        "label": "includex",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "extendx",
+        "label": "extendx",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "truex",
+        "label": "truex",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "falsex",
+        "label": "falsex",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

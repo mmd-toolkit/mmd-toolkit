@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Empty description blocks: inside a title text, `accDescr {}` is text."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "accDescr {} x",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

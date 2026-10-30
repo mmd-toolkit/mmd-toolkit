@@ -1,0 +1,75 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js",
+    "line": 2712,
+    "test": "sequence db class > participant type parsing > should parse participant with stereotype and alias"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Alice",
+        "description": "Public API",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "boundary",
+        "nextActor": "Bob"
+      },
+      {
+        "name": "Bob",
+        "description": "Controller",
+        "wrap": false,
+        "prevActor": "Alice",
+        "links": {},
+        "properties": {},
+        "type": "control"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "Alice",
+        "to": "Bob",
+        "message": "Request",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Bob",
+        "to": "Alice",
+        "message": "Response",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "Alice",
+        "set": {
+          "type": "boundary"
+        }
+      },
+      {
+        "id": "Bob",
+        "set": {
+          "type": "control"
+        }
+      }
+    ]
+  }
+}

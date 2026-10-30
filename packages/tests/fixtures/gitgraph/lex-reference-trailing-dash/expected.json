@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "REFERENCE permits a trailing dash in its actual terminal."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "a-"
+      }
+    ]
+  }
+}

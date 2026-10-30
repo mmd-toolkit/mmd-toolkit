@@ -1,0 +1,62 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/entityRelationshipDiagram.md",
+    "line": 220
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-CAR-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "CAR",
+        "classes": []
+      },
+      {
+        "id": "entity-NAMED-DRIVER-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "NAMED-DRIVER",
+        "classes": []
+      },
+      {
+        "id": "entity-PERSON-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "PERSON",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-CAR-0",
+        "roleA": "allows",
+        "entityB": "entity-NAMED-DRIVER-1",
+        "cardA": "ZERO_OR_MORE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      },
+      {
+        "entityA": "entity-PERSON-2",
+        "roleA": "is",
+        "entityB": "entity-NAMED-DRIVER-1",
+        "cardA": "ZERO_OR_MORE",
+        "cardB": "ZERO_OR_MORE",
+        "relType": "NON_IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, x-axis: a comment between the keyword and the categories ends the line."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...rt-beta x-axis %% c [a]\n----------------------^\nExpecting 'SQUARE_BRACES_START', 'NUMBER_WITH_DECIMAL', 'STR', 'MD_STR', 'AMP', 'NUM', 'ALPHA', 'PLUS', 'EQUALS', 'MULT', 'DOT', 'BRKT', 'MINUS', 'UNDERSCORE', got 'NEWLINE'"
+  }
+}

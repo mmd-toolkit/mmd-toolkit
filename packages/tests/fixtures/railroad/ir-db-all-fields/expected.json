@@ -1,0 +1,64 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Keeps all published metadata and seven recursive expression kinds."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "A",
+    "accDescr": "D\nE",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "terminal",
+              "value": "a"
+            },
+            {
+              "type": "nonterminal",
+              "name": "ref"
+            },
+            {
+              "type": "choice",
+              "alternatives": [
+                {
+                  "type": "special",
+                  "text": "s"
+                },
+                {
+                  "type": "optional",
+                  "element": {
+                    "type": "terminal",
+                    "value": "b"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "repetition",
+              "element": {
+                "type": "terminal",
+                "value": "c"
+              },
+              "min": 0,
+              "max": "Infinity"
+            },
+            {
+              "type": "repetition",
+              "element": {
+                "type": "terminal",
+                "value": "d"
+              },
+              "min": 1,
+              "max": "Infinity"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

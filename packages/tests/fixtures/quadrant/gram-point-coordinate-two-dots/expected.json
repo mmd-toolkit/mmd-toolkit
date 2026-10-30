@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md The point context: 0, any character, and digits; 0..5 is no coordinate."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nquadrantChartA: [0..5, 0.6]\n------------------^"
+  }
+}

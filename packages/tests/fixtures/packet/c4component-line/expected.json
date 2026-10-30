@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4Component in a line description activates global C4 detection."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\npacketaccDescr: C4C\n^"
+  }
+}

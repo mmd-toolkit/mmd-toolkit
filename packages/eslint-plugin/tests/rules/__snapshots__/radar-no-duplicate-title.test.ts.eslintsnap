@@ -1,0 +1,619 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: radar-no-duplicate-title >> invalid >>> docs/rules/radar-no-duplicate-title.md incorrect 1
+Filename: radar-no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | radar-beta
+  2 |   title First
+  3 |   title Second
+    |   ^~~~~~~~~~~~ [1]
+  4 |   axis A, B, C
+  5 |   curve sales{1, 2, 3}
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 |   title First
+          3 |   axis A, B, C
+          4 |   curve sales{1, 2, 3}
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | radar-beta
+          2 |   title Second
+          3 |   axis A, B, C
+          4 |   curve sales{1, 2, 3}
+          5 |
+---
+
+
+Test: radar-no-duplicate-title >> invalid >>> invalid/radar/acctitle-comment-next
+Filename: tests/fixtures/rules/radar-no-duplicate-title/invalid/radar/acctitle-comment-next-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | %% TODO
+  5 |
+  6 | %%{init: {}}%%
+  7 | axis A, B, C
+  8 | curve sales{1,2,3}
+  9 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle: First
+          3 | %% TODO
+          4 |
+          5 | %%{init: {}}%%
+          6 | axis A, B, C
+          7 | curve sales{1,2,3}
+          8 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle:
+          3 | %% TODO
+          4 |
+          5 | %%{init: {}}%%
+          6 | axis A, B, C
+          7 | curve sales{1,2,3}
+          8 |
+---
+
+
+Test: radar-no-duplicate-title >> invalid >>> invalid/radar/acctitle-empty
+Filename: tests/fixtures/rules/radar-no-duplicate-title/invalid/radar/acctitle-empty-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | axis A, B, C
+  5 | curve sales{1,2,3}
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle: First
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle:
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
+---
+
+
+Test: radar-no-duplicate-title >> invalid >>> invalid/radar/acctitle-three
+Filename: tests/fixtures/rules/radar-no-duplicate-title/invalid/radar/acctitle-three-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | accTitle: First
+  3 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | accTitle: First
+    | ^~~~~~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle: First
+          3 | accTitle: First
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle: Second
+          3 | accTitle: First
+          4 |
+[2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle: First
+          3 | accTitle: Second
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle: First
+          3 | accTitle: First
+          4 |
+---
+
+
+Test: radar-no-duplicate-title >> invalid >>> invalid/radar/acctitle-two
+Filename: tests/fixtures/rules/radar-no-duplicate-title/invalid/radar/acctitle-two-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | accTitle: First
+  3 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | axis A, B, C
+  5 | curve sales{1,2,3}
+  6 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle: First
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle: Second
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
+---
+
+
+Test: radar-no-duplicate-title >> invalid >>> invalid/radar/docs-incorrect-1
+Filename: tests/fixtures/rules/radar-no-duplicate-title/invalid/radar/docs-incorrect-1-input.mmd
+
+Code:
+  1 | radar-beta
+  2 |   title First
+  3 |   title Second
+    |   ^~~~~~~~~~~~ [1]
+  4 |   axis A, B, C
+  5 |   curve sales{1, 2, 3}
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 |   title First
+          3 |   axis A, B, C
+          4 |   curve sales{1, 2, 3}
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | radar-beta
+          2 |   title Second
+          3 |   axis A, B, C
+          4 |   curve sales{1, 2, 3}
+          5 |
+---
+
+
+Test: radar-no-duplicate-title >> invalid >>> invalid/radar/title-empty
+Filename: tests/fixtures/rules/radar-no-duplicate-title/invalid/radar/title-empty-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | title First
+  3 | title
+    | ^~~~~ [1]
+  4 | axis A, B, C
+  5 | curve sales{1,2,3}
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | title First
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | radar-beta
+          2 | title
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
+---
+
+
+Test: radar-no-duplicate-title >> invalid >>> invalid/radar/title-empty-resets
+Filename: tests/fixtures/rules/radar-no-duplicate-title/invalid/radar/title-empty-resets-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | title First
+  3 | title
+    | ^~~~~ [1]
+  4 | title Second
+  5 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | title First
+          3 | title Second
+          4 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | radar-beta
+          2 | title
+          3 | title Second
+          4 |
+---
+
+
+Test: radar-no-duplicate-title >> invalid >>> invalid/radar/title-entity-equivalent
+Filename: tests/fixtures/rules/radar-no-duplicate-title/invalid/radar/title-entity-equivalent-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | title #35;
+  3 | title #
+    | ^~~~~~~ [1]
+  4 | axis A, B, C
+  5 | curve sales{1,2,3}
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | title #35;
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | radar-beta
+          2 | title #
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
+---
+
+
+Test: radar-no-duplicate-title >> invalid >>> invalid/radar/title-equal-predecessor
+Filename: tests/fixtures/rules/radar-no-duplicate-title/invalid/radar/title-equal-predecessor-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | accTitle: A
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle: A
+          3 | accTitle: A
+          4 |
+---
+
+
+Test: radar-no-duplicate-title >> invalid >>> invalid/radar/title-front-empty
+Filename: tests/fixtures/rules/radar-no-duplicate-title/invalid/radar/title-front-empty-input.mmd
+
+Code:
+  1 | ---
+  2 | title: Front
+  3 | ---
+  4 | radar-beta
+  5 | title First
+  6 | title
+    | ^~~~~ [1]
+  7 | axis A, B, C
+  8 | curve sales{1,2,3}
+  9 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | ---
+          2 | title: Front
+          3 | ---
+          4 | radar-beta
+          5 | title First
+          6 | axis A, B, C
+          7 | curve sales{1,2,3}
+          8 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | ---
+          2 | title: Front
+          3 | ---
+          4 | radar-beta
+          5 | title
+          6 | axis A, B, C
+          7 | curve sales{1,2,3}
+          8 |
+---
+
+
+Test: radar-no-duplicate-title >> invalid >>> invalid/radar/title-front-same-empty
+Filename: tests/fixtures/rules/radar-no-duplicate-title/invalid/radar/title-front-same-empty-input.mmd
+
+Code:
+  1 | ---
+  2 | title: First
+  3 | ---
+  4 | radar-beta
+  5 | title First
+  6 | title
+    | ^~~~~ [1]
+  7 | axis A, B, C
+  8 | curve sales{1,2,3}
+  9 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | ---
+          2 | title: First
+          3 | ---
+          4 | radar-beta
+          5 | title First
+          6 | axis A, B, C
+          7 | curve sales{1,2,3}
+          8 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | ---
+          2 | title: First
+          3 | ---
+          4 | radar-beta
+          5 | title
+          6 | axis A, B, C
+          7 | curve sales{1,2,3}
+          8 |
+---
+
+
+Test: radar-no-duplicate-title >> invalid >>> invalid/radar/title-html-written
+Filename: tests/fixtures/rules/radar-no-duplicate-title/invalid/radar/title-html-written-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | title <b x="a">Text</b>
+  3 | title <b x='a'>Text</b>
+    | ^~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | title <b x="a">Text</b>
+          3 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | radar-beta
+          2 | title <b x='a'>Text</b>
+          3 |
+---
+
+
+Test: radar-no-duplicate-title >> invalid >>> invalid/radar/title-removal-empty-predecessor
+Filename: tests/fixtures/rules/radar-no-duplicate-title/invalid/radar/title-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | accTitle:
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle:
+          3 | accTitle: A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | accTitle:
+          3 | accTitle: B
+          4 |
+---
+
+
+Test: radar-no-duplicate-title >> invalid >>> invalid/radar/title-suffix-hidden
+Filename: tests/fixtures/rules/radar-no-duplicate-title/invalid/radar/title-suffix-hidden-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | title First
+  3 | title %%{}%%
+    | ^~~~~~~~~~~~ [1]
+  4 |
+  5 | axis A, B, C
+  6 | curve sales{1,2,3}
+  7 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | title First
+          3 |
+          4 | axis A, B, C
+          5 | curve sales{1,2,3}
+          6 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | radar-beta
+          2 | title %%{}%%
+          3 |
+          4 | axis A, B, C
+          5 | curve sales{1,2,3}
+          6 |
+---
+
+
+Test: radar-no-duplicate-title >> invalid >>> invalid/radar/title-three
+Filename: tests/fixtures/rules/radar-no-duplicate-title/invalid/radar/title-three-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | title First
+  3 | title Second
+    | ^~~~~~~~~~~~ [1]
+  4 | title First
+    | ^~~~~~~~~~~ [2]
+  5 | axis A, B, C
+  6 | curve sales{1,2,3}
+  7 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | title First
+          3 | title First
+          4 | axis A, B, C
+          5 | curve sales{1,2,3}
+          6 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | radar-beta
+          2 | title Second
+          3 | title First
+          4 | axis A, B, C
+          5 | curve sales{1,2,3}
+          6 |
+[2] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | title First
+          3 | title Second
+          4 | axis A, B, C
+          5 | curve sales{1,2,3}
+          6 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | radar-beta
+          2 | title First
+          3 | title First
+          4 | axis A, B, C
+          5 | curve sales{1,2,3}
+          6 |
+---
+
+
+Test: radar-no-duplicate-title >> invalid >>> invalid/radar/title-two
+Filename: tests/fixtures/rules/radar-no-duplicate-title/invalid/radar/title-two-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | title First
+  3 | title Second
+    | ^~~~~~~~~~~~ [1]
+  4 | axis A, B, C
+  5 | curve sales{1,2,3}
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | title First
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | radar-beta
+          2 | title Second
+          3 | axis A, B, C
+          4 | curve sales{1,2,3}
+          5 |
+---
+
+
+Test: radar-no-duplicate-title >> invalid >>> invalid/radar/title-whitespace-clears
+Filename: tests/fixtures/rules/radar-no-duplicate-title/invalid/radar/title-whitespace-clears-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | title First
+  3 | accTitle: First
+  4 | title   
+    | ^~~~~~~~ [1]
+  5 | accTitle:   
+    | ^~~~~~~~~~~~ [2]
+  6 |
+
+[1] mermaid.js replaces the earlier title with the one of this `title`.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | radar-beta
+          2 | title First
+          3 | accTitle: First
+          4 | accTitle:   
+          5 |
+      - Remove the earlier statement that sets the title.
+        Output:
+          1 | radar-beta
+          2 | accTitle: First
+          3 | title   
+          4 | accTitle:   
+          5 |
+[2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | title First
+          3 | accTitle: First
+          4 | title   
+          5 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | radar-beta
+          2 | title First
+          3 | title   
+          4 | accTitle:   
+          5 |
+---

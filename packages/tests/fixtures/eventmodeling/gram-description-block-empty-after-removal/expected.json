@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Common statements; ast/eventmodeling.md EventmodelingAccDescrBlockStatement: a global directive removes the entire payload, leaving an authored description-block statement with null value."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": " accDescr {}",
+    "frames": []
+  }
+}

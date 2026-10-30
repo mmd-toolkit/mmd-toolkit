@@ -1,0 +1,18 @@
+{
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "C4Container",
+          "children": []
+        }
+      ]
+    }
+  }
+}

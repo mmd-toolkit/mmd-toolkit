@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A percent-brace run excluded from COMMENT also fails the generated TEXT percent branch."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...low-beta TBA[first %%{} literal]\n----------------------^"
+  }
+}

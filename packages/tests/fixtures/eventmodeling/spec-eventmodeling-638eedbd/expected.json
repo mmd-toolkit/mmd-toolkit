@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/eventmodeling/eventmodeling.spec.ts",
+    "line": 18,
+    "test": "eventmodeling diagrams > should handle a simple eventmodeling definition"
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "ui",
+        "entityIdentifier": "UI",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "cmd",
+        "entityIdentifier": "RunAction",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "03",
+        "modelEntityType": "evt",
+        "entityIdentifier": "ActionExecuted",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

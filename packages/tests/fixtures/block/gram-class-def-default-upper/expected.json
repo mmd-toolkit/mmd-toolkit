@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, classes: `DEFAULT` is a keyword of the lexer that the grammar does not accept as a name: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ock-beta  classDef DEFAULT fill:#f00\n----------------------^\nExpecting 'CLASSDEF_ID', 'DEFAULT', got 'DEFAULT_CLASSDEF_ID'"
+  }
+}

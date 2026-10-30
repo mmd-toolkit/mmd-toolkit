@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Common statements: Does removing a selected semicolon leave the LF that makes native whitespace consume next-line metadata padding?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 3, column 10: unexpected character: ->:<- at offset: 42, skipped 1 characters. Parse error on line 3, column 2: Expecting token of type 'EOF' but found `accTitle`."
+  }
+}

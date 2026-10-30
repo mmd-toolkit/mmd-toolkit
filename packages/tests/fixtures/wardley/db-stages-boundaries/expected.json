@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are partial, reversed or out-of-range stage boundaries retained without coordinate validation?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {
+      "stages": [
+        "G / C",
+        "",
+        "P",
+        "P"
+      ],
+      "stageBoundaries": [
+        1.2,
+        0,
+        0.4
+      ]
+    }
+  }
+}

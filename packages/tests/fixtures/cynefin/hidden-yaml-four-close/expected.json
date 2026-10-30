@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Hidden YAML: four closing dashes are not a closer."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 9: unexpected character: ->-<- at offset: 21, skipped 3 characters.\nLexer error on line 3, column 1: unexpected character: ->a<- at offset: 25, skipped 1 characters.\nLexer error on line 4, column 1: unexpected character: ->-<- at offset: 27, skipped 4 characters. "
+  }
+}

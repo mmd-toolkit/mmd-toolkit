@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md The line context and ast/sequence.md SequenceBoxText: after the candidate `aqua`, the rest is a text unit, two spaces and U+2028; its remainder is the U+2028 alone, and the box has no name and the fill transparent."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [
+      {
+        "wrap": false,
+        "fill": "transparent",
+        "actorKeys": []
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

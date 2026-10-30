@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-tool-validators.spec.ts",
+    "line": 100,
+    "test": "agentflow shape-based tool model > semantic model surfaces vertexKind > tool nodes get vertexKind: \"tool\" in getSemanticModel()"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "search",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "search",
+        "type": "subroutine",
+        "props": {},
+        "metadata": {
+          "shape": "subroutine",
+          "returns": "Result"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "search",
+        "set": {
+          "type": "subroutine",
+          "metadata": {
+            "shape": "subroutine",
+            "returns": "Result"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Grammar, rejections outside the grammar: the index `00` names no edge, and mermaid.js rejects it with a TypeError."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot set properties of undefined (setting 'style')"
+  }
+}

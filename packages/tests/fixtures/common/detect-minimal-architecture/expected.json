@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md entry 5: minimal accepted example of `architecture`. The header line alone is accepted."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

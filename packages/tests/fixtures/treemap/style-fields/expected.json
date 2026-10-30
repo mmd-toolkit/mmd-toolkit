@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Where does global style-line semicolon removal reach?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "style:#a",
+    "accTitle": "classDef:#b",
+    "accDescr": "style:#c",
+    "nodes": [
+      {
+        "name": "style:#d",
+        "value": 1
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "styled",
+        "styles": [
+          "fill:#e"
+        ]
+      }
+    ]
+  }
+}

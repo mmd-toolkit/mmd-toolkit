@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: The selected semicolon has the same unit-boundary restriction as a directive, including inside bare style-value identifiers and numbers. This input is accepted by mermaid.js."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "X"
+        ],
+        "size": 10,
+        "label": "style:#abc"
+      }
+    ],
+    "texts": [
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "12"
+      }
+    ],
+    "styles": []
+  }
+}

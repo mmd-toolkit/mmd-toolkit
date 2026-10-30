@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Bracketed labels: quoted alternatives start immediately after the opening bracket; padding selects the bare alternative, which cannot contain brackets. Case: title-padded-quoted-brackets."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 10: unexpected character: ->[<- at offset: 27, skipped 1 characters.\nLexer error on line 2, column 18: unexpected character: ->]<- at offset: 35, skipped 1 characters. "
+  }
+}

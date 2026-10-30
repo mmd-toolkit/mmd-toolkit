@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Names, annotations and common forms: The complete icon reference, including its colon, is one atomic name and cannot contain a directive here."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "icon": "pack:file",
+        "children": []
+      }
+    ]
+  }
+}

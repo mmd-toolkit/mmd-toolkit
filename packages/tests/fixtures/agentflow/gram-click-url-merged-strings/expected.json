@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A click URL is one complete string unit; adjacent URL and tooltip strings without their required gap cannot be merged into one StringLiteral."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...-betaAclick A \"u\"\"v\"\n---------------------^\nExpecting 'COMMENT', 'SEMI', 'NEWLINE', 'SPACE', 'EOF', got 'STR'"
+  }
+}

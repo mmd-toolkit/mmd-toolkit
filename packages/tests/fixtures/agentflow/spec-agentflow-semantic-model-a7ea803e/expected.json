@@ -1,0 +1,110 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/agentflow-semantic-model.spec.ts",
+    "line": 25,
+    "test": "agentflow getSemanticModel() > semantic fields preserved > keeps edge type / stroke / label"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "a",
+        "props": {}
+      },
+      {
+        "id": "b",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "b",
+        "props": {}
+      },
+      {
+        "id": "c",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "c",
+        "props": {}
+      },
+      {
+        "id": "refdoc1",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "RefDoc",
+        "type": "lin-doc",
+        "props": {},
+        "metadata": {
+          "shape": "lin-doc"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "start": "a",
+        "end": "b",
+        "type": "arrow_point",
+        "text": "yes",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_a_b_0"
+      },
+      {
+        "start": "a",
+        "end": "c",
+        "type": "arrow_cross",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_a_c_0"
+      },
+      {
+        "start": "a",
+        "end": "refdoc1",
+        "type": "arrow_open",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "dotted",
+        "length": 1,
+        "id": "L_a_refdoc1_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "refdoc1",
+        "set": {
+          "type": "lin-doc",
+          "metadata": {
+            "shape": "lin-doc"
+          }
+        }
+      }
+    ]
+  }
+}

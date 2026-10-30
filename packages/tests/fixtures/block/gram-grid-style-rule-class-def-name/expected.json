@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, line rule: the text `style:#x;y` in the middle of the name of a class in `classDef`: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...ock-beta  classDef astyle:#xyb fill:red\n----------------------^"
+  }
+}

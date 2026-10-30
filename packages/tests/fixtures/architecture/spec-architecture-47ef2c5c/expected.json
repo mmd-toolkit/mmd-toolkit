@@ -1,0 +1,241 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/architecture/architecture.spec.ts",
+    "line": 154,
+    "test": "architecture diagrams > randomize config > should parse a complex deeply-nested diagram with randomize defaulting to false"
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "vm1",
+        "type": "service",
+        "in": "vnet1",
+        "icon": "server",
+        "title": "VM"
+      },
+      {
+        "id": "reg",
+        "type": "service",
+        "in": "shared",
+        "icon": "database",
+        "title": "Registry"
+      },
+      {
+        "id": "nsg",
+        "type": "service",
+        "in": "snet1",
+        "icon": "server",
+        "title": "NSG"
+      },
+      {
+        "id": "asp",
+        "type": "service",
+        "in": "snet1",
+        "icon": "server",
+        "title": "App Plan"
+      },
+      {
+        "id": "web",
+        "type": "service",
+        "in": "snet1",
+        "icon": "server",
+        "title": "Web App"
+      },
+      {
+        "id": "pe1",
+        "type": "service",
+        "in": "snet2",
+        "icon": "server",
+        "title": "PE Blob"
+      },
+      {
+        "id": "pe2",
+        "type": "service",
+        "in": "snet2",
+        "icon": "server",
+        "title": "PE Bus"
+      },
+      {
+        "id": "storage",
+        "type": "service",
+        "in": "env",
+        "icon": "disk",
+        "title": "Storage"
+      },
+      {
+        "id": "container",
+        "type": "service",
+        "in": "env",
+        "icon": "disk",
+        "title": "Container"
+      },
+      {
+        "id": "bus",
+        "type": "service",
+        "in": "env",
+        "icon": "server",
+        "title": "Service Bus"
+      },
+      {
+        "id": "dns",
+        "type": "service",
+        "in": "env",
+        "icon": "server",
+        "title": "DNS Zone"
+      },
+      {
+        "id": "client",
+        "type": "service",
+        "icon": "internet",
+        "title": "Client"
+      }
+    ],
+    "groups": [
+      {
+        "id": "sub1",
+        "icon": "cloud",
+        "title": "Subscription A"
+      },
+      {
+        "id": "vnet1",
+        "icon": "cloud",
+        "title": "VNet A",
+        "in": "sub1"
+      },
+      {
+        "id": "sub2",
+        "icon": "cloud",
+        "title": "Subscription B"
+      },
+      {
+        "id": "shared",
+        "icon": "cloud",
+        "title": "Shared",
+        "in": "sub2"
+      },
+      {
+        "id": "env",
+        "icon": "cloud",
+        "title": "Environment",
+        "in": "sub2"
+      },
+      {
+        "id": "vnet",
+        "icon": "cloud",
+        "title": "VNet",
+        "in": "env"
+      },
+      {
+        "id": "snet1",
+        "icon": "cloud",
+        "title": "App Subnet",
+        "in": "vnet"
+      },
+      {
+        "id": "snet2",
+        "icon": "cloud",
+        "title": "PE Subnet",
+        "in": "vnet"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "reg",
+        "lhsDir": "B",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "web",
+        "rhsDir": "T",
+        "rhsInto": true,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "nsg",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "asp",
+        "rhsDir": "L",
+        "rhsInto": true,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "asp",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "web",
+        "rhsDir": "L",
+        "rhsInto": true,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "web",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "pe1",
+        "rhsDir": "L",
+        "rhsInto": true,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "pe1",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "storage",
+        "rhsDir": "L",
+        "rhsInto": true,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "storage",
+        "lhsDir": "B",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "container",
+        "rhsDir": "T",
+        "rhsInto": true,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "web",
+        "lhsDir": "B",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "pe2",
+        "rhsDir": "T",
+        "rhsInto": true,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "pe2",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "bus",
+        "rhsDir": "L",
+        "rhsInto": true,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "vm1",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "pe2",
+        "rhsDir": "L",
+        "rhsInto": true,
+        "rhsGroup": false
+      }
+    ],
+    "layoutHints": []
+  }
+}

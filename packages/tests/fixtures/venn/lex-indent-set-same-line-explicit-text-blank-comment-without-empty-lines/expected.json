@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md, Text and implicit text mode (set-same-line-explicit-text-blank-comment-without-empty-lines): Blank, comment, and directive-only lines preserve implicit text mode; the indented text is accepted."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "explicit"
+      },
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "item"
+      }
+    ],
+    "styles": []
+  }
+}

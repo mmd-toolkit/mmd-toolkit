@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Bracketed labels: a missing closing quote can still form a bare label when the bracket closes. Case: title-unclosed-quote-with-close."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service",
+        "title": "\"open"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

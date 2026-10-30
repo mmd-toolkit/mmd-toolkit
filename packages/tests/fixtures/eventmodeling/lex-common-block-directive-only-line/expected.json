@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Common statements: Does a directive-only line leave an LF that prevents the following padding from enabling metadata after block-data?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 6, column 10: unexpected character: ->:<- at offset: 37, skipped 1 characters. Parse error on line 6, column 2: Expecting token of type 'EOF' but found `accTitle`."
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "All metadata keys distinguish section and item exposure."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "Todo",
+        "isGroup": true,
+        "ticket": "COL-1"
+      },
+      {
+        "id": "A",
+        "label": "Changed",
+        "isGroup": false,
+        "parentId": "S",
+        "ticket": "TASK-1",
+        "priority": "High",
+        "assigned": "Ada",
+        "icon": "star"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "S",
+        "set": {
+          "ticket": "COL-1"
+        }
+      },
+      {
+        "id": "A",
+        "set": {
+          "label": "Changed",
+          "ticket": "TASK-1",
+          "priority": "High",
+          "assigned": "Ada",
+          "icon": "star"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md Component boundaries: Without a colon or remaining gap, does removing a directive join the axis name and number into one ID?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 3, column 11: Expecting token of type 'NUMBER' but found `}`."
+  }
+}

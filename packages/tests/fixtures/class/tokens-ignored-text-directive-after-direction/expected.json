@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md Nodes: the written text of a node of text that mermaid.js does not read is the source text of its range without directives, comment regions, comments, and the ignored `;`; the text after the value is `x`, two spaces, and `y`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

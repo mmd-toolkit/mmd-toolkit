@@ -1,0 +1,286 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: venn-no-duplicate-subset >> invalid >>> docs/rules/venn-no-duplicate-subset.md incorrect 1
+Filename: venn-no-duplicate-subset-incorrect-1.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A[Alpha]:20
+  3 | set B[Beta]
+  4 | set A[Gamma]:5
+    | ^~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
+---
+
+
+Test: venn-no-duplicate-subset >> invalid >>> docs/rules/venn-no-duplicate-subset.md incorrect 2
+Filename: venn-no-duplicate-subset-incorrect-2.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | set B
+  4 | union A, B[Shared]
+  5 | union B, A[Both]
+    | ^~~~~~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
+---
+
+
+Test: venn-no-duplicate-subset >> invalid >>> docs/rules/venn-no-duplicate-subset.md incorrect 3
+Filename: venn-no-duplicate-subset-incorrect-3.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A["Frontend"]:20
+  3 |   text A1["React"]
+  4 | set B
+  5 | set A
+    | ^~~~~ [1]
+  6 |   text A3["Vue"]
+  7 |
+
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
+---
+
+
+Test: venn-no-duplicate-subset >> invalid >>> invalid/venn/later-absent-label
+Filename: tests/fixtures/rules/venn-no-duplicate-subset/invalid/venn/later-absent-label-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A[First]
+  3 | set A
+    | ^~~~~ [1]
+  4 |
+
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
+---
+
+
+Test: venn-no-duplicate-subset >> invalid >>> invalid/venn/later-blank-label
+Filename: tests/fixtures/rules/venn-no-duplicate-subset/invalid/venn/later-blank-label-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A[First]
+  3 | set A[" "]
+    | ^~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
+---
+
+
+Test: venn-no-duplicate-subset >> invalid >>> invalid/venn/later-empty-label
+Filename: tests/fixtures/rules/venn-no-duplicate-subset/invalid/venn/later-empty-label-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A[First]
+  3 | set A[""]
+    | ^~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
+---
+
+
+Test: venn-no-duplicate-subset >> invalid >>> invalid/venn/set-duplicate
+Filename: tests/fixtures/rules/venn-no-duplicate-subset/invalid/venn/set-duplicate-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A[Alpha]:20
+  3 | set A[Other]:12
+    | ^~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
+---
+
+
+Test: venn-no-duplicate-subset >> invalid >>> invalid/venn/set-duplicate-same
+Filename: tests/fixtures/rules/venn-no-duplicate-subset/invalid/venn/set-duplicate-same-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A:20
+  3 | set A:20
+    | ^~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
+---
+
+
+Test: venn-no-duplicate-subset >> invalid >>> invalid/venn/set-on-header-line
+Filename: tests/fixtures/rules/venn-no-duplicate-subset/invalid/venn/set-on-header-line-input.mmd
+
+Code:
+  1 | venn-beta set A
+  2 | set A
+    | ^~~~~ [1]
+  3 |
+
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
+---
+
+
+Test: venn-no-duplicate-subset >> invalid >>> invalid/venn/set-quoted-and-bare
+Filename: tests/fixtures/rules/venn-no-duplicate-subset/invalid/venn/set-quoted-and-bare-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set "A"
+  3 | set A
+    | ^~~~~ [1]
+  4 |
+
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
+---
+
+
+Test: venn-no-duplicate-subset >> invalid >>> invalid/venn/set-trivia
+Filename: tests/fixtures/rules/venn-no-duplicate-subset/invalid/venn/set-trivia-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 |
+  4 | %% c
+  5 | %%{init: {}}%%
+  6 | set A
+    | ^~~~~ [1]
+  7 |
+
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
+---
+
+
+Test: venn-no-duplicate-subset >> invalid >>> invalid/venn/subset-repeat-permutation
+Filename: tests/fixtures/rules/venn-no-duplicate-subset/invalid/venn/subset-repeat-permutation-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | set B
+  4 | union A,A,B
+  5 | union B,A,A
+    | ^~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
+---
+
+
+Test: venn-no-duplicate-subset >> invalid >>> invalid/venn/three-definitions
+Filename: tests/fixtures/rules/venn-no-duplicate-subset/invalid/venn/three-definitions-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A[First]:1
+  3 | set B:8
+  4 | set A[Second]:2
+    | ^~~~~~~~~~~~~~~ [1]
+  5 | union B,A:3
+  6 | set A[Third]:4
+    | ^~~~~~~~~~~~~~ [2]
+  7 | union A,B:5
+    | ^~~~~~~~~~~ [3]
+  8 |
+
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
+[2] mermaid.js draws this area again; an earlier declaration already has these names.
+[3] mermaid.js draws this area again; an earlier declaration already has these names.
+---
+
+
+Test: venn-no-duplicate-subset >> invalid >>> invalid/venn/union-absent-label
+Filename: tests/fixtures/rules/venn-no-duplicate-subset/invalid/venn/union-absent-label-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | set B
+  4 | union A,B[First]
+  5 | union A,B
+    | ^~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
+---
+
+
+Test: venn-no-duplicate-subset >> invalid >>> invalid/venn/union-blank-label
+Filename: tests/fixtures/rules/venn-no-duplicate-subset/invalid/venn/union-blank-label-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | set B
+  4 | union A,B[First]
+  5 | union A,B[" "]
+    | ^~~~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
+---
+
+
+Test: venn-no-duplicate-subset >> invalid >>> invalid/venn/union-duplicate-order
+Filename: tests/fixtures/rules/venn-no-duplicate-subset/invalid/venn/union-duplicate-order-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | set B
+  4 | union A,B[First]:2
+  5 | union B,A[Second]:3
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
+---
+
+
+Test: venn-no-duplicate-subset >> invalid >>> invalid/venn/union-empty-label
+Filename: tests/fixtures/rules/venn-no-duplicate-subset/invalid/venn/union-empty-label-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | set B
+  4 | union A,B[First]
+  5 | union A,B[""]
+    | ^~~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
+---
+
+
+Test: venn-no-duplicate-subset >> invalid >>> invalid/venn/union-three-definitions
+Filename: tests/fixtures/rules/venn-no-duplicate-subset/invalid/venn/union-three-definitions-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | set B
+  4 | set C
+  5 | union A,B:1
+  6 | union B,C:2
+  7 | union B,A:3
+    | ^~~~~~~~~~~ [1]
+  8 | union A,B:4
+    | ^~~~~~~~~~~ [2]
+  9 |
+
+[1] mermaid.js draws this area again; an earlier declaration already has these names.
+[2] mermaid.js draws this area again; an earlier declaration already has these names.
+---

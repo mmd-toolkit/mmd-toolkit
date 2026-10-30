@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: 18. `rgba(`, four nonempty runs of digits or dots separated by commas, and `)` make an `rgba-color` unit, with whitespace of Notation around each run. This input is rejected by mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...-betastyle A x:rgba(1,2,3,)\n----------------------^"
+  }
+}

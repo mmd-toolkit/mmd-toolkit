@@ -1,0 +1,310 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> docs/rules/agentflow-no-redefined-vertex.md incorrect 1
+Filename: agentflow-no-redefined-vertex-incorrect-1.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A[Start] --> B
+  3 |   C --> A[End]
+    |          ^~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the label of `A` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> docs/rules/agentflow-no-redefined-vertex.md incorrect 2
+Filename: agentflow-no-redefined-vertex-incorrect-2.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   connector github["GitHub API"]
+  3 |   github["create_issue"] --> done
+    |         ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the label of `github` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/chain-target-before-second-edge-created
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/chain-target-before-second-edge-created-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | L_B_C_0[First]
+  3 | A --> B --> L_B_C_0[Second]
+    |                    ^~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the label of `L_B_C_0` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/edge-target-before-edge-created
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/edge-target-before-edge-created-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | e[First]
+  3 | A e@--> e[Second]
+    |          ^~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the label of `e` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-after-connector-diamond
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-after-connector-diamond-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | connector C[API]
+  3 | C{API} --> B
+    |  ^~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the drawn shape of `C` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-after-connector
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-after-connector-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | connector C[API]
+  3 | C[Other] --> B
+    |  ^~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the label of `C` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-diamond-to-removed-circle
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-diamond-to-removed-circle-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A{Task}
+  3 | A((Task))
+    |  ^~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the drawn shape of `A` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-directive-between
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-directive-between-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A[First]
+  3 | %%{init: {}}%%
+  4 |
+  5 | %% comment
+  6 | A[Second]
+    |  ^~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the label of `A` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-distinct-shape
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-distinct-shape-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A[Task]
+  3 | A{Task}
+    |  ^~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the drawn shape of `A` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-entity-equivalent
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-entity-equivalent-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A["#65;"]
+  3 | A[A]
+    |  ^~~ [1]
+  4 |
+
+[1] mermaid.js replaces the label of `A` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-framed-to-hexagon
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-framed-to-hexagon-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A[[Task]]
+  3 | A{{Task}}
+    |  ^~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the drawn shape of `A` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-html-attribute-quotes
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-html-attribute-quotes-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A[<b class="x">t</b>]
+  3 | A[<b class='x'>t</b>]
+    |  ^~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the label of `A` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-kind-restored
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-kind-restored-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A[x]
+  3 | A[/x/]
+    |  ^~~~~ [1]
+  4 | A[x]
+    |  ^~~ [2]
+  5 |
+
+[1] mermaid.js replaces the kind of `A` written earlier with that of this vertex.
+[2] mermaid.js replaces the kind of `A` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-label
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-label-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A[Start] --> B
+  3 | C --> A[End]
+    |        ^~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the label of `A` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-metadata-intervening-other
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-metadata-intervening-other-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A[First]
+  3 | B@{label: Other}
+  4 | A[Second]
+    |  ^~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the label of `A` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-rounded-shape-excluded
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-rounded-shape-excluded-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A(Task)
+  3 | A{Task}
+    |  ^~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the drawn shape of `A` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-shape-history-after-connector-title
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-shape-history-after-connector-title-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | connector C[First]
+  3 | C{First}
+    |  ^~~~~~~ [1]
+  4 | connector C[Second]
+  5 | C[Second]
+    |  ^~~~~~~~ [2]
+  6 |
+
+[1] mermaid.js replaces the drawn shape of `C` written earlier with that of this vertex.
+[2] mermaid.js replaces the drawn shape of `C` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-task-to-input
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-task-to-input-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A[x]
+  3 | A[/x/]
+    |  ^~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the kind of `A` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-three
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-three-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A[First]
+  3 | A[Second]
+    |  ^~~~~~~~ [1]
+  4 | A[First]
+    |  ^~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the label of `A` written earlier with that of this vertex.
+[2] mermaid.js replaces the label of `A` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-three-same-latest
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-three-same-latest-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A[First]
+  3 | A[Second]
+    |  ^~~~~~~~ [1]
+  4 | A[Second]
+  5 |
+
+[1] mermaid.js replaces the label of `A` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-tool-to-task
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-tool-to-task-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A[[x]]
+  3 | A[x]
+    |  ^~~ [1]
+  4 |
+
+[1] mermaid.js replaces the drawn shape of `A` written earlier with that of this vertex.
+---

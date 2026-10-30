@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Other statements: the function name of `callback` is a string that is not empty."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...lass Acallback A \"\"\n----------------------^\nExpecting 'STR', got 'NEWLINE'"
+  }
+}

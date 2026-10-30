@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Repeated members of one alignment reject."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "align row lists [api] more than once"
+  }
+}

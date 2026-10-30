@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Semicolons inside line values and strings are ordinary text."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "A;;",
+    "accTitle": "B;",
+    "accDescr": "C;;",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 0,
+          "label": "D;"
+        }
+      ]
+    ]
+  }
+}

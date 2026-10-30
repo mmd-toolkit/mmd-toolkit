@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md G04 (Grammar and acceptance): One diagram comment and blank after header."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      }
+    ]
+  }
+}

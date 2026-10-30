@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A line feed and the whitespace after it, blank lines included, are one line feed, while the two spaces before the line feed after `b` stay: `a`, `b` and two spaces, `c`, each on its line."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "a\nb  \nc",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

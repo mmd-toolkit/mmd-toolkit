@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, columns: a line of two commas is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nsankey,,\n------^\nExpecting 'DQUOTE', 'NON_ESCAPED_TEXT', got 'COMMA'"
+  }
+}

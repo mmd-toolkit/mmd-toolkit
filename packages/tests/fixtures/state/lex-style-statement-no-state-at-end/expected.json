@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A style statement with no state before the end of the text: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...Diagram-v2Astyle \n--------------------^\nExpecting 'STYLE_IDS', got '1'"
+  }
+}

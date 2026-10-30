@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, accessibility: a directive line between `accTitle:` and the text changes nothing, since the whitespace after the colon takes the empty lines."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "A",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

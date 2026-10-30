@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A retained directive can stand in an EBNF choice gap."
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "terminal",
+              "value": "a"
+            },
+            {
+              "type": "terminal",
+              "value": "b"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

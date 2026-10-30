@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed global directive after an alignment is checked against the remaining source."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "align row references [dbother], which is not a service or junction"
+  }
+}

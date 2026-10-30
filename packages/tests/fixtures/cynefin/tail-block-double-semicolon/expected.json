@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A block description cannot end with two semicolons."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 13: unexpected character: ->;<- at offset: 25, skipped 2 characters. "
+  }
+}

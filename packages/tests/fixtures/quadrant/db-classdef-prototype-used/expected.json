@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, classDef: a class named `constructor` is defined and used like any other."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [
+      {
+        "text": "A",
+        "className": "constructor",
+        "x": "0.3",
+        "y": "0.6"
+      }
+    ],
+    "classes": [
+      {
+        "name": "constructor",
+        "color": "#f00"
+      }
+    ]
+  }
+}

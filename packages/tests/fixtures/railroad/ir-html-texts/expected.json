@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Shared sanitizer disabling retains HTML in every published IR text."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "<i>A</i>",
+    "accDescr": "<em>D</em>",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "terminal",
+              "value": "<b>x</b>"
+            },
+            {
+              "type": "nonterminal",
+              "name": "<i>y</i>"
+            },
+            {
+              "type": "special",
+              "text": "<em>z</em>"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

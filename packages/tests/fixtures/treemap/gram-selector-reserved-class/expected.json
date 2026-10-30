@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a CLASS_DEF prefix without whitespace remain ID2?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "classSelector": "classDefStyle",
+        "children": []
+      }
+    ],
+    "classDefs": []
+  }
+}

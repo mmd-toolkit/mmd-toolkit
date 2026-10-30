@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[G] Do quote characters keep a whitespace-only root label nonempty?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "\"   \"",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "\"   \"",
+      "children": []
+    }
+  }
+}

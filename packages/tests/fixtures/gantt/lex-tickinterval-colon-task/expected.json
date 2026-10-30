@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Keywords and what follows them: `tickInterval:1w` holds no keyword; the task `tickInterval` with the end `1w`."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd"
+          },
+          "endTime": {
+            "data": "1w"
+          }
+        },
+        "task": "tickInterval",
+        "classes": [],
+        "id": "task1",
+        "order": 0
+      }
+    ],
+    "links": []
+  }
+}

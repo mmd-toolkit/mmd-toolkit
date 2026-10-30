@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md: Does a description containing only a common comment remain an empty block statement?"
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

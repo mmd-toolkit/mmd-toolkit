@@ -1,0 +1,1513 @@
+{
+  "type": "Root",
+  "diagramType": "railroadEbnf",
+  "body": {
+    "type": "RailroadDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "RailroadTitleStatement",
+        "value": {
+          "type": "RailroadLiteral",
+          "value": "\"Optional Sign\"",
+          "range": [
+            25,
+            40
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 6
+            },
+            "end": {
+              "line": 2,
+              "column": 21
+            }
+          }
+        },
+        "range": [
+          19,
+          40
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 21
+          }
+        }
+      },
+      {
+        "type": "RailroadRule",
+        "name": {
+          "type": "Identifier",
+          "name": "sign",
+          "range": [
+            42,
+            46
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 4,
+              "column": 4
+            }
+          }
+        },
+        "textBeforeOperator": [],
+        "textBeforeDefinition": [],
+        "definition": {
+          "type": "RailroadChoiceExpression",
+          "alternatives": [
+            {
+              "type": "RailroadExpressionMember",
+              "textBefore": [],
+              "expression": {
+                "type": "StringLiteral",
+                "value": "+",
+                "raw": "\"+\"",
+                "closed": true,
+                "range": [
+                  49,
+                  52
+                ],
+                "loc": {
+                  "start": {
+                    "line": 4,
+                    "column": 7
+                  },
+                  "end": {
+                    "line": 4,
+                    "column": 10
+                  }
+                }
+              },
+              "textAfter": [],
+              "range": [
+                49,
+                52
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 7
+                },
+                "end": {
+                  "line": 4,
+                  "column": 10
+                }
+              }
+            },
+            {
+              "type": "RailroadExpressionMember",
+              "textBefore": [],
+              "expression": {
+                "type": "StringLiteral",
+                "value": "-",
+                "raw": "\"-\"",
+                "closed": true,
+                "range": [
+                  55,
+                  58
+                ],
+                "loc": {
+                  "start": {
+                    "line": 4,
+                    "column": 13
+                  },
+                  "end": {
+                    "line": 4,
+                    "column": 16
+                  }
+                }
+              },
+              "textAfter": [],
+              "range": [
+                55,
+                58
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 13
+                },
+                "end": {
+                  "line": 4,
+                  "column": 16
+                }
+              }
+            }
+          ],
+          "range": [
+            49,
+            58
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 7
+            },
+            "end": {
+              "line": 4,
+              "column": 16
+            }
+          }
+        },
+        "textBeforeTerminator": [],
+        "range": [
+          42,
+          60
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 18
+          }
+        }
+      },
+      {
+        "type": "RailroadRule",
+        "name": {
+          "type": "Identifier",
+          "name": "number",
+          "range": [
+            61,
+            67
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 5,
+              "column": 6
+            }
+          }
+        },
+        "textBeforeOperator": [],
+        "textBeforeDefinition": [],
+        "definition": {
+          "type": "RailroadSequenceExpression",
+          "elements": [
+            {
+              "type": "RailroadExpressionMember",
+              "textBefore": [],
+              "expression": {
+                "type": "RailroadPostfixExpression",
+                "element": {
+                  "type": "Identifier",
+                  "name": "sign",
+                  "range": [
+                    70,
+                    74
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 5,
+                      "column": 9
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 13
+                    }
+                  }
+                },
+                "textBeforeOperator": [],
+                "operator": "?",
+                "range": [
+                  70,
+                  75
+                ],
+                "loc": {
+                  "start": {
+                    "line": 5,
+                    "column": 9
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 14
+                  }
+                }
+              },
+              "textAfter": [],
+              "range": [
+                70,
+                75
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 9
+                },
+                "end": {
+                  "line": 5,
+                  "column": 14
+                }
+              }
+            },
+            {
+              "type": "RailroadExpressionMember",
+              "textBefore": [],
+              "expression": {
+                "type": "RailroadPostfixExpression",
+                "element": {
+                  "type": "Identifier",
+                  "name": "digit",
+                  "range": [
+                    76,
+                    81
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 5,
+                      "column": 15
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 20
+                    }
+                  }
+                },
+                "textBeforeOperator": [],
+                "operator": "+",
+                "range": [
+                  76,
+                  82
+                ],
+                "loc": {
+                  "start": {
+                    "line": 5,
+                    "column": 15
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 21
+                  }
+                }
+              },
+              "textAfter": [],
+              "range": [
+                76,
+                82
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 15
+                },
+                "end": {
+                  "line": 5,
+                  "column": 21
+                }
+              }
+            }
+          ],
+          "range": [
+            70,
+            82
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 9
+            },
+            "end": {
+              "line": 5,
+              "column": 21
+            }
+          }
+        },
+        "textBeforeTerminator": [],
+        "range": [
+          61,
+          84
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 23
+          }
+        }
+      },
+      {
+        "type": "RailroadRule",
+        "name": {
+          "type": "Identifier",
+          "name": "digit",
+          "range": [
+            85,
+            90
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 0
+            },
+            "end": {
+              "line": 6,
+              "column": 5
+            }
+          }
+        },
+        "textBeforeOperator": [],
+        "textBeforeDefinition": [],
+        "definition": {
+          "type": "RailroadChoiceExpression",
+          "alternatives": [
+            {
+              "type": "RailroadExpressionMember",
+              "textBefore": [],
+              "expression": {
+                "type": "StringLiteral",
+                "value": "0",
+                "raw": "\"0\"",
+                "closed": true,
+                "range": [
+                  93,
+                  96
+                ],
+                "loc": {
+                  "start": {
+                    "line": 6,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 11
+                  }
+                }
+              },
+              "textAfter": [],
+              "range": [
+                93,
+                96
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 8
+                },
+                "end": {
+                  "line": 6,
+                  "column": 11
+                }
+              }
+            },
+            {
+              "type": "RailroadExpressionMember",
+              "textBefore": [],
+              "expression": {
+                "type": "StringLiteral",
+                "value": "1",
+                "raw": "\"1\"",
+                "closed": true,
+                "range": [
+                  99,
+                  102
+                ],
+                "loc": {
+                  "start": {
+                    "line": 6,
+                    "column": 14
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 17
+                  }
+                }
+              },
+              "textAfter": [],
+              "range": [
+                99,
+                102
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 14
+                },
+                "end": {
+                  "line": 6,
+                  "column": 17
+                }
+              }
+            },
+            {
+              "type": "RailroadExpressionMember",
+              "textBefore": [],
+              "expression": {
+                "type": "StringLiteral",
+                "value": "2",
+                "raw": "\"2\"",
+                "closed": true,
+                "range": [
+                  105,
+                  108
+                ],
+                "loc": {
+                  "start": {
+                    "line": 6,
+                    "column": 20
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 23
+                  }
+                }
+              },
+              "textAfter": [],
+              "range": [
+                105,
+                108
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 20
+                },
+                "end": {
+                  "line": 6,
+                  "column": 23
+                }
+              }
+            },
+            {
+              "type": "RailroadExpressionMember",
+              "textBefore": [],
+              "expression": {
+                "type": "StringLiteral",
+                "value": "3",
+                "raw": "\"3\"",
+                "closed": true,
+                "range": [
+                  111,
+                  114
+                ],
+                "loc": {
+                  "start": {
+                    "line": 6,
+                    "column": 26
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 29
+                  }
+                }
+              },
+              "textAfter": [],
+              "range": [
+                111,
+                114
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 26
+                },
+                "end": {
+                  "line": 6,
+                  "column": 29
+                }
+              }
+            },
+            {
+              "type": "RailroadExpressionMember",
+              "textBefore": [],
+              "expression": {
+                "type": "StringLiteral",
+                "value": "4",
+                "raw": "\"4\"",
+                "closed": true,
+                "range": [
+                  117,
+                  120
+                ],
+                "loc": {
+                  "start": {
+                    "line": 6,
+                    "column": 32
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 35
+                  }
+                }
+              },
+              "textAfter": [],
+              "range": [
+                117,
+                120
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 32
+                },
+                "end": {
+                  "line": 6,
+                  "column": 35
+                }
+              }
+            },
+            {
+              "type": "RailroadExpressionMember",
+              "textBefore": [],
+              "expression": {
+                "type": "StringLiteral",
+                "value": "5",
+                "raw": "\"5\"",
+                "closed": true,
+                "range": [
+                  123,
+                  126
+                ],
+                "loc": {
+                  "start": {
+                    "line": 6,
+                    "column": 38
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 41
+                  }
+                }
+              },
+              "textAfter": [],
+              "range": [
+                123,
+                126
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 38
+                },
+                "end": {
+                  "line": 6,
+                  "column": 41
+                }
+              }
+            },
+            {
+              "type": "RailroadExpressionMember",
+              "textBefore": [],
+              "expression": {
+                "type": "StringLiteral",
+                "value": "6",
+                "raw": "\"6\"",
+                "closed": true,
+                "range": [
+                  129,
+                  132
+                ],
+                "loc": {
+                  "start": {
+                    "line": 6,
+                    "column": 44
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 47
+                  }
+                }
+              },
+              "textAfter": [],
+              "range": [
+                129,
+                132
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 44
+                },
+                "end": {
+                  "line": 6,
+                  "column": 47
+                }
+              }
+            },
+            {
+              "type": "RailroadExpressionMember",
+              "textBefore": [],
+              "expression": {
+                "type": "StringLiteral",
+                "value": "7",
+                "raw": "\"7\"",
+                "closed": true,
+                "range": [
+                  135,
+                  138
+                ],
+                "loc": {
+                  "start": {
+                    "line": 6,
+                    "column": 50
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 53
+                  }
+                }
+              },
+              "textAfter": [],
+              "range": [
+                135,
+                138
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 50
+                },
+                "end": {
+                  "line": 6,
+                  "column": 53
+                }
+              }
+            },
+            {
+              "type": "RailroadExpressionMember",
+              "textBefore": [],
+              "expression": {
+                "type": "StringLiteral",
+                "value": "8",
+                "raw": "\"8\"",
+                "closed": true,
+                "range": [
+                  141,
+                  144
+                ],
+                "loc": {
+                  "start": {
+                    "line": 6,
+                    "column": 56
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 59
+                  }
+                }
+              },
+              "textAfter": [],
+              "range": [
+                141,
+                144
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 56
+                },
+                "end": {
+                  "line": 6,
+                  "column": 59
+                }
+              }
+            },
+            {
+              "type": "RailroadExpressionMember",
+              "textBefore": [],
+              "expression": {
+                "type": "StringLiteral",
+                "value": "9",
+                "raw": "\"9\"",
+                "closed": true,
+                "range": [
+                  147,
+                  150
+                ],
+                "loc": {
+                  "start": {
+                    "line": 6,
+                    "column": 62
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 65
+                  }
+                }
+              },
+              "textAfter": [],
+              "range": [
+                147,
+                150
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 62
+                },
+                "end": {
+                  "line": 6,
+                  "column": 65
+                }
+              }
+            }
+          ],
+          "range": [
+            93,
+            150
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 8
+            },
+            "end": {
+              "line": 6,
+              "column": 65
+            }
+          }
+        },
+        "textBeforeTerminator": [],
+        "range": [
+          85,
+          152
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 67
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      152
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 6,
+        "column": 67
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "railroad-ebnf-beta",
+      "range": [
+        0,
+        18
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        19,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "\"Optional Sign\"",
+      "range": [
+        25,
+        40
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "sign",
+      "range": [
+        42,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        47,
+        48
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 5
+        },
+        "end": {
+          "line": 4,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"+\"",
+      "range": [
+        49,
+        52
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 7
+        },
+        "end": {
+          "line": 4,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "|",
+      "range": [
+        53,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 11
+        },
+        "end": {
+          "line": 4,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"-\"",
+      "range": [
+        55,
+        58
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 13
+        },
+        "end": {
+          "line": 4,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ";",
+      "range": [
+        59,
+        60
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 17
+        },
+        "end": {
+          "line": 4,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "number",
+      "range": [
+        61,
+        67
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        68,
+        69
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 7
+        },
+        "end": {
+          "line": 5,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "sign",
+      "range": [
+        70,
+        74
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 9
+        },
+        "end": {
+          "line": 5,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "?",
+      "range": [
+        74,
+        75
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 13
+        },
+        "end": {
+          "line": 5,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "digit",
+      "range": [
+        76,
+        81
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 15
+        },
+        "end": {
+          "line": 5,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "+",
+      "range": [
+        81,
+        82
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 20
+        },
+        "end": {
+          "line": 5,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ";",
+      "range": [
+        83,
+        84
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 22
+        },
+        "end": {
+          "line": 5,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "digit",
+      "range": [
+        85,
+        90
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        91,
+        92
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 6
+        },
+        "end": {
+          "line": 6,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"0\"",
+      "range": [
+        93,
+        96
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 8
+        },
+        "end": {
+          "line": 6,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "|",
+      "range": [
+        97,
+        98
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 12
+        },
+        "end": {
+          "line": 6,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"1\"",
+      "range": [
+        99,
+        102
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 14
+        },
+        "end": {
+          "line": 6,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "|",
+      "range": [
+        103,
+        104
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 18
+        },
+        "end": {
+          "line": 6,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"2\"",
+      "range": [
+        105,
+        108
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 20
+        },
+        "end": {
+          "line": 6,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "|",
+      "range": [
+        109,
+        110
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 24
+        },
+        "end": {
+          "line": 6,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"3\"",
+      "range": [
+        111,
+        114
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 26
+        },
+        "end": {
+          "line": 6,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "|",
+      "range": [
+        115,
+        116
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 30
+        },
+        "end": {
+          "line": 6,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"4\"",
+      "range": [
+        117,
+        120
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 32
+        },
+        "end": {
+          "line": 6,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "|",
+      "range": [
+        121,
+        122
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 36
+        },
+        "end": {
+          "line": 6,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"5\"",
+      "range": [
+        123,
+        126
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 38
+        },
+        "end": {
+          "line": 6,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "|",
+      "range": [
+        127,
+        128
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 42
+        },
+        "end": {
+          "line": 6,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"6\"",
+      "range": [
+        129,
+        132
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 44
+        },
+        "end": {
+          "line": 6,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "|",
+      "range": [
+        133,
+        134
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 48
+        },
+        "end": {
+          "line": 6,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"7\"",
+      "range": [
+        135,
+        138
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 50
+        },
+        "end": {
+          "line": 6,
+          "column": 53
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "|",
+      "range": [
+        139,
+        140
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 54
+        },
+        "end": {
+          "line": 6,
+          "column": 55
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"8\"",
+      "range": [
+        141,
+        144
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 56
+        },
+        "end": {
+          "line": 6,
+          "column": 59
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "|",
+      "range": [
+        145,
+        146
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 60
+        },
+        "end": {
+          "line": 6,
+          "column": 61
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"9\"",
+      "range": [
+        147,
+        150
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 62
+        },
+        "end": {
+          "line": 6,
+          "column": 65
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ";",
+      "range": [
+        151,
+        152
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 66
+        },
+        "end": {
+          "line": 6,
+          "column": 67
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    153
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 7,
+      "column": 0
+    }
+  }
+}

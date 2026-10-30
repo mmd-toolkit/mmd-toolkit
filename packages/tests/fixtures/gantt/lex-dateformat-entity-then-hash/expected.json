@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md The statement context: after the placeholder of an entity, a `#` ends the setting text; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...dateFormat Xﬂ°y¶ß#z\n----------------------^\nExpecting 'taskData', got 'NL'"
+  }
+}

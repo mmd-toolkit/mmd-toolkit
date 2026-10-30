@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a block passed by the common frontmatter shape guarantee pie acceptance when a further fence remains? Pie closes its YAML earlier and rejects the remaining fence."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 1: unexpected character: ->-<- at offset: 10, skipped 3 characters. "
+  }
+}

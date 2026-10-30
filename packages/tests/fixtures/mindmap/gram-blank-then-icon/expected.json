@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Blank lines: a blank line before an icon line, accepted by both."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "a",
+          "level": 2,
+          "descr": "a",
+          "type": 0,
+          "icon": "x",
+          "children": []
+        }
+      ]
+    }
+  }
+}

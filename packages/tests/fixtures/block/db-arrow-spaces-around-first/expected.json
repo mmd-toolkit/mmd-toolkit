@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/block.md BlockArrowShape: the first direction keeps the whitespace after ( and after it, and the whitespace after a , belongs to no direction; the directions are right with a space on each side, and down."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "x",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            " right ",
+            "down"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

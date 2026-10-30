@@ -1,0 +1,819 @@
+{
+  "type": "Root",
+  "diagramType": "ishikawa",
+  "body": {
+    "type": "IshikawaDiagram",
+    "root": {
+      "type": "IshikawaNode",
+      "indent": 2,
+      "text": {
+        "type": "IshikawaLiteral",
+        "value": "Blurry Photo",
+        "range": [
+          73,
+          85
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 2
+          },
+          "end": {
+            "line": 3,
+            "column": 14
+          }
+        }
+      },
+      "children": [
+        {
+          "type": "IshikawaNode",
+          "indent": 2,
+          "text": {
+            "type": "IshikawaLiteral",
+            "value": "Process",
+            "range": [
+              88,
+              95
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 2
+              },
+              "end": {
+                "line": 4,
+                "column": 9
+              }
+            }
+          },
+          "children": [
+            {
+              "type": "IshikawaNode",
+              "indent": 4,
+              "text": {
+                "type": "IshikawaLiteral",
+                "value": "Out of focus",
+                "range": [
+                  100,
+                  112
+                ],
+                "loc": {
+                  "start": {
+                    "line": 5,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 16
+                  }
+                }
+              },
+              "children": [],
+              "range": [
+                100,
+                112
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 4
+                },
+                "end": {
+                  "line": 5,
+                  "column": 16
+                }
+              }
+            },
+            {
+              "type": "IshikawaNode",
+              "indent": 4,
+              "text": {
+                "type": "IshikawaLiteral",
+                "value": "Shutter speed too slow",
+                "range": [
+                  117,
+                  139
+                ],
+                "loc": {
+                  "start": {
+                    "line": 6,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 26
+                  }
+                }
+              },
+              "children": [],
+              "range": [
+                117,
+                139
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 4
+                },
+                "end": {
+                  "line": 6,
+                  "column": 26
+                }
+              }
+            }
+          ],
+          "range": [
+            88,
+            139
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 2
+            },
+            "end": {
+              "line": 6,
+              "column": 26
+            }
+          }
+        },
+        {
+          "type": "IshikawaNode",
+          "indent": 2,
+          "text": {
+            "type": "IshikawaLiteral",
+            "value": "User",
+            "range": [
+              142,
+              146
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 2
+              },
+              "end": {
+                "line": 7,
+                "column": 6
+              }
+            }
+          },
+          "children": [
+            {
+              "type": "IshikawaNode",
+              "indent": 4,
+              "text": {
+                "type": "IshikawaLiteral",
+                "value": "Shaky hands",
+                "range": [
+                  151,
+                  162
+                ],
+                "loc": {
+                  "start": {
+                    "line": 8,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 8,
+                    "column": 15
+                  }
+                }
+              },
+              "children": [],
+              "range": [
+                151,
+                162
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 4
+                },
+                "end": {
+                  "line": 8,
+                  "column": 15
+                }
+              }
+            }
+          ],
+          "range": [
+            142,
+            162
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 2
+            },
+            "end": {
+              "line": 8,
+              "column": 15
+            }
+          }
+        },
+        {
+          "type": "IshikawaNode",
+          "indent": 2,
+          "text": {
+            "type": "IshikawaLiteral",
+            "value": "Equipment",
+            "range": [
+              165,
+              174
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 2
+              },
+              "end": {
+                "line": 9,
+                "column": 11
+              }
+            }
+          },
+          "children": [
+            {
+              "type": "IshikawaNode",
+              "indent": 4,
+              "text": {
+                "type": "IshikawaLiteral",
+                "value": "LENS",
+                "range": [
+                  179,
+                  183
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 8
+                  }
+                }
+              },
+              "children": [
+                {
+                  "type": "IshikawaNode",
+                  "indent": 6,
+                  "text": {
+                    "type": "IshikawaLiteral",
+                    "value": "Dirty lens",
+                    "range": [
+                      190,
+                      200
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 11,
+                        "column": 6
+                      },
+                      "end": {
+                        "line": 11,
+                        "column": 16
+                      }
+                    }
+                  },
+                  "children": [],
+                  "range": [
+                    190,
+                    200
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 11,
+                      "column": 6
+                    },
+                    "end": {
+                      "line": 11,
+                      "column": 16
+                    }
+                  }
+                }
+              ],
+              "range": [
+                179,
+                200
+              ],
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 4
+                },
+                "end": {
+                  "line": 11,
+                  "column": 16
+                }
+              }
+            },
+            {
+              "type": "IshikawaNode",
+              "indent": 4,
+              "text": {
+                "type": "IshikawaLiteral",
+                "value": "SENSOR",
+                "range": [
+                  205,
+                  211
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 10
+                  }
+                }
+              },
+              "children": [
+                {
+                  "type": "IshikawaNode",
+                  "indent": 6,
+                  "text": {
+                    "type": "IshikawaLiteral",
+                    "value": "Damaged sensor",
+                    "range": [
+                      218,
+                      232
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 13,
+                        "column": 6
+                      },
+                      "end": {
+                        "line": 13,
+                        "column": 20
+                      }
+                    }
+                  },
+                  "children": [],
+                  "range": [
+                    218,
+                    232
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 13,
+                      "column": 6
+                    },
+                    "end": {
+                      "line": 13,
+                      "column": 20
+                    }
+                  }
+                }
+              ],
+              "range": [
+                205,
+                232
+              ],
+              "loc": {
+                "start": {
+                  "line": 12,
+                  "column": 4
+                },
+                "end": {
+                  "line": 13,
+                  "column": 20
+                }
+              }
+            }
+          ],
+          "range": [
+            165,
+            232
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 2
+            },
+            "end": {
+              "line": 13,
+              "column": 20
+            }
+          }
+        },
+        {
+          "type": "IshikawaNode",
+          "indent": 2,
+          "text": {
+            "type": "IshikawaLiteral",
+            "value": "Environment",
+            "range": [
+              235,
+              246
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 2
+              },
+              "end": {
+                "line": 14,
+                "column": 13
+              }
+            }
+          },
+          "children": [
+            {
+              "type": "IshikawaNode",
+              "indent": 4,
+              "text": {
+                "type": "IshikawaLiteral",
+                "value": "Too dark",
+                "range": [
+                  251,
+                  259
+                ],
+                "loc": {
+                  "start": {
+                    "line": 15,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 15,
+                    "column": 12
+                  }
+                }
+              },
+              "children": [],
+              "range": [
+                251,
+                259
+              ],
+              "loc": {
+                "start": {
+                  "line": 15,
+                  "column": 4
+                },
+                "end": {
+                  "line": 15,
+                  "column": 12
+                }
+              }
+            }
+          ],
+          "range": [
+            235,
+            259
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 2
+            },
+            "end": {
+              "line": 15,
+              "column": 12
+            }
+          }
+        }
+      ],
+      "range": [
+        73,
+        259
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 15,
+          "column": 12
+        }
+      }
+    },
+    "range": [
+      57,
+      259
+    ],
+    "loc": {
+      "start": {
+        "line": 2,
+        "column": 0
+      },
+      "end": {
+        "line": 15,
+        "column": 12
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [
+    {
+      "type": "Directive",
+      "name": "init",
+      "value": "init: { 'look': 'handDrawn', 'handDrawnSeed': 1 } ",
+      "closed": true,
+      "range": [
+        0,
+        56
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 56
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "Directive",
+      "value": "%%{init: { 'look': 'handDrawn', 'handDrawnSeed': 1 } }%%",
+      "range": [
+        0,
+        56
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 56
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "ishikawa-beta",
+      "range": [
+        57,
+        70
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Blurry Photo",
+      "range": [
+        73,
+        85
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 3,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Process",
+      "range": [
+        88,
+        95
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 2
+        },
+        "end": {
+          "line": 4,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Out of focus",
+      "range": [
+        100,
+        112
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 4
+        },
+        "end": {
+          "line": 5,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Shutter speed too slow",
+      "range": [
+        117,
+        139
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 4
+        },
+        "end": {
+          "line": 6,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "User",
+      "range": [
+        142,
+        146
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 2
+        },
+        "end": {
+          "line": 7,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Shaky hands",
+      "range": [
+        151,
+        162
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 4
+        },
+        "end": {
+          "line": 8,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Equipment",
+      "range": [
+        165,
+        174
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 2
+        },
+        "end": {
+          "line": 9,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "LENS",
+      "range": [
+        179,
+        183
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 4
+        },
+        "end": {
+          "line": 10,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Dirty lens",
+      "range": [
+        190,
+        200
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 6
+        },
+        "end": {
+          "line": 11,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "SENSOR",
+      "range": [
+        205,
+        211
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 4
+        },
+        "end": {
+          "line": 12,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Damaged sensor",
+      "range": [
+        218,
+        232
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 6
+        },
+        "end": {
+          "line": 13,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Environment",
+      "range": [
+        235,
+        246
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 2
+        },
+        "end": {
+          "line": 14,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Too dark",
+      "range": [
+        251,
+        259
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 4
+        },
+        "end": {
+          "line": 15,
+          "column": 12
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    259
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 15,
+      "column": 12
+    }
+  }
+}

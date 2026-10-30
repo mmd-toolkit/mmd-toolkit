@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Site securityLevel replaces PEG text after grouped and nested predicate labels are formed."
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": true
+  },
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "a&lt;b&gt;&equals;c",
+    "accDescr": "d<br/>e&equals;f",
+    "rules": [
+      {
+        "name": "r_1",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "special",
+              "text": "&\"a&equals;b\""
+            },
+            {
+              "type": "special",
+              "text": "!&\"x<br/>y&equals;z\""
+            },
+            {
+              "type": "special",
+              "text": "."
+            },
+            {
+              "type": "optional",
+              "element": {
+                "type": "choice",
+                "alternatives": [
+                  {
+                    "type": "terminal",
+                    "value": "c&lt;d&gt;"
+                  },
+                  {
+                    "type": "nonterminal",
+                    "name": "name"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

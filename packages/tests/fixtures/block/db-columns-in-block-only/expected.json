@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, columns: a composite with only `columns` has no children and the columns."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "G",
+          "label": "",
+          "type": "composite",
+          "widthInColumns": 1,
+          "columns": 2,
+          "children": []
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

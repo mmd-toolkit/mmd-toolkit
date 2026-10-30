@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The last title statement wins."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "Third",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": []
+  }
+}

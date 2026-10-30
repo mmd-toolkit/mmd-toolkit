@@ -1,0 +1,92 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Which link arrows, ports and labels determine dashed, flow and label?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [
+      {
+        "source": "A",
+        "target": "B",
+        "dashed": false
+      },
+      {
+        "source": "A",
+        "target": "B",
+        "dashed": false
+      },
+      {
+        "source": "A",
+        "target": "B",
+        "dashed": false
+      },
+      {
+        "source": "A",
+        "target": "B",
+        "dashed": true
+      },
+      {
+        "source": "A",
+        "target": "B",
+        "dashed": false
+      },
+      {
+        "source": "A",
+        "target": "B",
+        "dashed": false,
+        "flow": "forward"
+      },
+      {
+        "source": "A",
+        "target": "B",
+        "dashed": false,
+        "flow": "backward"
+      },
+      {
+        "source": "A",
+        "target": "B",
+        "dashed": false,
+        "flow": "bidirectional"
+      },
+      {
+        "source": "A",
+        "target": "B",
+        "dashed": false,
+        "flow": "forward"
+      },
+      {
+        "source": "A",
+        "target": "B",
+        "dashed": false,
+        "label": "flow",
+        "flow": "bidirectional"
+      },
+      {
+        "source": "A",
+        "target": "B",
+        "dashed": false,
+        "label": "",
+        "flow": "forward"
+      },
+      {
+        "source": "A",
+        "target": "B",
+        "dashed": false,
+        "flow": "backward"
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

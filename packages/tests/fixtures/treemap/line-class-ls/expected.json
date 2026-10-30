@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does CLASS_DEF retain LS inside style text?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "classSelector": "styled",
+        "children": []
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "styled",
+        "styles": [
+          "fill:red color:blue"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: Triple percent is a percent-pair mark with one percent of value."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 0,
+          "label": "A"
+        }
+      ]
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Repeated names are separate ordered nodes, including under different parents."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "same",
+            "nodeType": "file",
+            "children": []
+          },
+          {
+            "name": "same",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "other",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "same",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "same",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

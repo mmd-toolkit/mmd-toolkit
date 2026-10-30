@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A title statement replaces the title of the frontmatter."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "Statement title",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  },
+  "embedded": {
+    "title": "Frontmatter title"
+  }
+}

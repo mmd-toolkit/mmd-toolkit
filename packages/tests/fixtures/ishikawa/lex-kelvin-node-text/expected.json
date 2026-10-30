@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md Units: U+212A in the header-looking spelling is ordinary node text; it does not fold to ASCII k for keyword matching."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "ishiKawa",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "ishiKawa",
+      "children": []
+    }
+  }
+}

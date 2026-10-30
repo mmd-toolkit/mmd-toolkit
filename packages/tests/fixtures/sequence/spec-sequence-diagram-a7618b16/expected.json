@@ -1,0 +1,106 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js",
+    "line": 1683,
+    "test": "when parsing a sequenceDiagram > should handle simple actor creation"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "a",
+        "description": "Alice",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "b"
+      },
+      {
+        "name": "b",
+        "description": "b",
+        "wrap": false,
+        "prevActor": "a",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "c"
+      },
+      {
+        "name": "c",
+        "description": "c",
+        "wrap": false,
+        "prevActor": "b",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "d"
+      },
+      {
+        "name": "d",
+        "description": "Donald",
+        "wrap": false,
+        "prevActor": "c",
+        "links": {},
+        "properties": {},
+        "type": "actor"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [
+      {
+        "id": "c",
+        "messageIndex": 1
+      },
+      {
+        "id": "d",
+        "messageIndex": 3
+      }
+    ],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "a",
+        "to": "b",
+        "message": "Hello Bob?",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "b",
+        "to": "c",
+        "message": "Hello c!",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "c",
+        "to": "b",
+        "message": "Hello b?",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "a",
+        "to": "d",
+        "message": "Hello Donald?",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

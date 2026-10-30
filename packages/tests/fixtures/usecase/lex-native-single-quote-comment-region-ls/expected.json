@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure: A common comment region removes the physical newline from a single-quoted native string while keeping U+2028."
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "A",
+        "label": "A",
+        "labelType": "text",
+        "type": "icon",
+        "icon": "first last",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md Headers and indentation: Does a retained native comment absorb its trailing tab before the following unindented leaf?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "children": []
+      },
+      {
+        "name": "b",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4Deployment in the diagram title is checked against global C4 detection."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

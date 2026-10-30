@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "What published tree, values, classes and common texts does drawing read?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "T",
+    "accTitle": "A",
+    "accDescr": "D\nE",
+    "nodes": [
+      {
+        "name": "Root",
+        "classSelector": "sectionClass",
+        "children": [
+          {
+            "name": "Branch",
+            "children": [
+              {
+                "name": "Leaf",
+                "value": 1234.5,
+                "classSelector": "leafClass"
+              }
+            ]
+          },
+          {
+            "name": "Empty",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "Other",
+        "value": 0
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "sectionClass",
+        "styles": [
+          "fill:red",
+          "color:blue"
+        ]
+      },
+      {
+        "id": "leafClass",
+        "styles": [
+          "stroke:#abc"
+        ]
+      }
+    ]
+  }
+}

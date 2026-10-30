@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences/tokenless-empty-forms.md What it means for an author: the input of flowchart/db-style-empty-strings-one-space without its empty strings; the two spaces before the style are one run, so the style is `fill:red`, not a space and `fill:red`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [
+          "fill:red"
+        ],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

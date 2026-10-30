@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ABNF repetition conversion is decimal parseInt."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "repetition",
+          "element": {
+            "type": "terminal",
+            "value": "a"
+          },
+          "min": 2,
+          "max": 4
+        }
+      }
+    ]
+  }
+}

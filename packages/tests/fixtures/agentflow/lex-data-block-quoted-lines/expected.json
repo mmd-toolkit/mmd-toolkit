@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The shapeData string state rewrites newline and indentation as br tags."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "first<br/>second",
+        "props": {},
+        "metadata": {
+          "label": "first<br/>second"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "labelType": "markdown",
+          "text": "first<br/>second",
+          "metadata": {
+            "label": "first<br/>second"
+          }
+        }
+      }
+    ]
+  }
+}

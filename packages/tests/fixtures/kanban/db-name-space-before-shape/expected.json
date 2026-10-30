@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Spaces before shapes test the end of an id."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S ",
+        "label": "Todo",
+        "isGroup": true
+      },
+      {
+        "id": "A ",
+        "label": "Work",
+        "isGroup": false,
+        "parentId": "S "
+      }
+    ]
+  }
+}

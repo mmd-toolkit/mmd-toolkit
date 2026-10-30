@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How do percent-comment removal and native slash-comment text interact inside a note block?"
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": []
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a third evolve replace the first target without moving its slot?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "A",
+        "label": "A",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "B",
+        "label": "B",
+        "x": 40,
+        "y": 30,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [],
+    "trends": [
+      {
+        "nodeId": "A",
+        "targetX": 80
+      },
+      {
+        "nodeId": "B",
+        "targetX": 60
+      }
+    ],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

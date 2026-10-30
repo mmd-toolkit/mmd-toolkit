@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The inserted fragments remain literal in this value (comment in title)."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "a%% cb",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": []
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, header: the header follows the frontmatter."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": []
+  },
+  "embedded": {
+    "title": "T"
+  }
+}

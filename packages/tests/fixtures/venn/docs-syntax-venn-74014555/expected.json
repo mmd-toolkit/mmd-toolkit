@@ -1,0 +1,70 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/venn.md",
+    "line": 36
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "What makes a good feature",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "Desirable"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "Feasible"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "Viable"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "Desirable",
+          "Feasible"
+        ],
+        "size": 2.5,
+        "label": "Buildable"
+      },
+      {
+        "sets": [
+          "Feasible",
+          "Viable"
+        ],
+        "size": 2.5,
+        "label": "Sustainable"
+      },
+      {
+        "sets": [
+          "Desirable",
+          "Viable"
+        ],
+        "size": 2.5,
+        "label": "Marketable"
+      },
+      {
+        "sets": [
+          "Desirable",
+          "Feasible",
+          "Viable"
+        ],
+        "size": 1.1111111111111112,
+        "label": "Ship it"
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

@@ -1,0 +1,301 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> docs/rules/flowchart-no-redefined-vertex.md incorrect 1
+Filename: flowchart-no-redefined-vertex-incorrect-1.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A[Start] --> B
+  3 |   C --> A[End]
+    |          ^~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the shape and the label of `A` written earlier with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-props-merge
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-props-merge-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A[|borders:lt|x]
+  3 | A[|b:r|y]
+    |  ^~~~~~~~ [1]
+
+[1] mermaid.js replaces the shape and the label of `A` written earlier with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-redefined-vertex-data-block-between-two-shapes
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-redefined-vertex-data-block-between-two-shapes-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A[x]
+  3 |   A@{ shape: rect }
+  4 |   A[y]
+    |    ^~~ [1]
+  5 |
+
+[1] mermaid.js replaces the shape and the label of `A` written earlier with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-redefined-vertex-empty-description-block-between
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-redefined-vertex-empty-description-block-between-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A[x]
+  3 |   accDescr {}
+  4 |   A[y]
+    |    ^~~ [1]
+  5 |
+
+[1] mermaid.js replaces the shape and the label of `A` written earlier with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-redefined-vertex-header-flowchart-elk
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-redefined-vertex-header-flowchart-elk-input.mmd
+
+Code:
+  1 | flowchart-elk LR
+  2 |   A[Start] --> B
+  3 |   C --> A[End]
+    |          ^~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the shape and the label of `A` written earlier with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-redefined-vertex-header-graph
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-redefined-vertex-header-graph-input.mmd
+
+Code:
+  1 | graph LR
+  2 |   A[Start] --> B
+  3 |   C --> A[End]
+    |          ^~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the shape and the label of `A` written earlier with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-redefined-vertex-header-swimlane-beta
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-redefined-vertex-header-swimlane-beta-input.mmd
+
+Code:
+  1 | swimlane-beta LR
+  2 |   A[Start] --> B
+  3 |   C --> A[End]
+    |          ^~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the shape and the label of `A` written earlier with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-redefined-vertex-label-differs-by-a-directive-part
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-redefined-vertex-label-differs-by-a-directive-part-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A["x"]
+  3 |   A["x %%{init: {}}%% y"]
+    |    ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the shape and the label of `A` written earlier with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-redefined-vertex-label-differs-by-a-line-break
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-redefined-vertex-label-differs-by-a-line-break-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A["a
+  3 | b"]
+  4 |   A["a b"]
+    |    ^~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the shape and the label of `A` written earlier with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-redefined-vertex-label-differs-by-html-attribute-quotes
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-redefined-vertex-label-differs-by-html-attribute-quotes-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A[<a href='x'>y</a>]
+  3 |   A[<a href="x">y</a>]
+    |    ^~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the shape and the label of `A` written earlier with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-redefined-vertex-label-differs-inside
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-redefined-vertex-label-differs-inside-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A["x y"]
+  3 |   A["x  y"]
+    |    ^~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the shape and the label of `A` written earlier with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-redefined-vertex-redefined-after-a-write-without-shape
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-redefined-vertex-redefined-after-a-write-without-shape-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A[x]
+  3 |   A
+  4 |   A[y]
+    |    ^~~ [1]
+  5 |
+
+[1] mermaid.js replaces the shape and the label of `A` written earlier with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-redefined-vertex-redefined-after-subgraph
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-redefined-vertex-redefined-after-subgraph-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph S
+  3 |     A[x]
+  4 |   end
+  5 |   A[y]
+    |    ^~~ [1]
+  6 |
+
+[1] mermaid.js replaces the shape and the label of `A` written earlier with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-redefined-vertex-redefined-in-one-link
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-redefined-vertex-redefined-in-one-link-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A[x] --> A[y]
+    |             ^~~ [1]
+  3 |
+
+[1] mermaid.js replaces the shape and the label of `A` written earlier with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-redefined-vertex-shape-and-label-differ
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-redefined-vertex-shape-and-label-differ-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A[x]
+  3 |   A(y)
+    |    ^~~ [1]
+  4 |
+
+[1] mermaid.js replaces the shape and the label of `A` written earlier with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-redefined-vertex-shape-differs
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-redefined-vertex-shape-differs-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A[x]
+  3 |   A(x)
+    |    ^~~ [1]
+  4 |
+
+[1] mermaid.js replaces the shape and the label of `A` written earlier with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-redefined-vertex-third-write-equals-the-second
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-redefined-vertex-third-write-equals-the-second-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A[x]
+  3 |   A[y]
+    |    ^~~ [1]
+  4 |   A[y]
+  5 |
+
+[1] mermaid.js replaces the shape and the label of `A` written earlier with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-vertex-label-redefined
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-vertex-label-redefined-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A[Start]-->B
+  3 | C-->A[End]
+    |      ^~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the shape and the label of `A` written earlier with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/label-attribute-quotes
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/label-attribute-quotes-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A[<b class="x">t</b>] --> B
+  3 |   C --> A[<b class='x'>t</b>]
+    |          ^~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the shape and the label of `A` written earlier with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/link-id-declared-later-keeps-replacements
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/link-id-declared-later-keeps-replacements-input.mmd
+
+Code:
+  1 | flowchart TB
+  2 | e[First]
+  3 | e[Second]
+    |  ^~~~~~~~ [1]
+  4 | A e@--> B
+  5 |
+
+[1] mermaid.js replaces the shape and the label of `e` written earlier with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/link-target-before-link-created
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/link-target-before-link-created-input.mmd
+
+Code:
+  1 | flowchart TB
+  2 | e[First]
+  3 | A e@--> e[Second]
+    |          ^~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the shape and the label of `e` written earlier with these.
+---

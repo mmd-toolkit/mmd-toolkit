@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Empty hrefs and empty calls: a click id followed only by `href \"\"`; rejected in both, the click statement has no part."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...1dclick id1 href \"\"\n----------------------^\nExpecting 'callbackname', 'href', got 'NL'"
+  }
+}

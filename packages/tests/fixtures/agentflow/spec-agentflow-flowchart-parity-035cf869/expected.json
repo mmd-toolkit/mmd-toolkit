@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-flowchart-parity.spec.ts",
+    "line": 23,
+    "test": "agentflow / flowchart lexer parity > agrees on whether to accept %j"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...ta TB  A@{ label: a^b }\n----------------------^"
+  }
+}

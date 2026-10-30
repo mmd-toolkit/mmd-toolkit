@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unknown metadata shape throws before a Db can be summarized."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "No such shape: nonexistent."
+  }
+}

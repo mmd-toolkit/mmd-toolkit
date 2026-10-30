@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Grammar: a domain block has no braces around its items."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 9: unexpected character: ->{<- at offset: 21, skipped 1 characters.\nLexer error on line 2, column 13: unexpected character: ->}<- at offset: 25, skipped 1 characters. "
+  }
+}

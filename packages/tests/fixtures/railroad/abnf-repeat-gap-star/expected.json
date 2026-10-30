@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: Ordinary whitespace cannot split a repeat count and star into one repeat."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 7: Expecting: one of these possible Token sequences:\n  1. [ABNF_STRING]\n  2. [ABNF_NUMVAL]\n  3. [ABNF_RULENAME]\n  4. [(]\n  5. [[]\nbut found: '*4'"
+  }
+}

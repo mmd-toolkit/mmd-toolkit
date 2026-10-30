@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: one separator and no written content is null"
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

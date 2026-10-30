@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.spec.js",
+    "line": 596,
+    "test": "when parsing requirement diagram it... > will accept __proto__ as element id"
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [
+      {
+        "name": "__proto__",
+        "type": "simulation",
+        "docRef": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": []
+  }
+}

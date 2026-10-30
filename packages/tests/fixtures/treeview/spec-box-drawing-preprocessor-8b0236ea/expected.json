@@ -1,0 +1,60 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/treeView/boxDrawingPreprocessor.spec.ts",
+    "line": 439,
+    "test": "boxDrawingPreprocessor > preprocessBoxDrawing > real-world tree command output > should handle typical Linux tree output"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "my-project",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "src",
+            "nodeType": "directory",
+            "children": [
+              {
+                "name": "components",
+                "nodeType": "directory",
+                "children": [
+                  {
+                    "name": "MyComponent.js",
+                    "nodeType": "file",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "name": "index.css",
+                "nodeType": "file",
+                "children": []
+              },
+              {
+                "name": "index.js",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "package.json",
+            "nodeType": "file",
+            "children": []
+          },
+          {
+            "name": "README.md",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

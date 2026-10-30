@@ -1,0 +1,1430 @@
+{
+  "type": "Root",
+  "diagramType": "quadrantChart",
+  "body": {
+    "type": "QuadrantDiagram",
+    "body": [
+      {
+        "type": "QuadrantTitleStatement",
+        "value": {
+          "type": "QuadrantLiteral",
+          "value": "Analytics and Business Intelligence Platforms",
+          "range": [
+            95,
+            140
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 8
+            },
+            "end": {
+              "line": 3,
+              "column": 53
+            }
+          }
+        },
+        "range": [
+          89,
+          140
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 2
+          },
+          "end": {
+            "line": 3,
+            "column": 53
+          }
+        }
+      },
+      {
+        "type": "QuadrantAxisStatement",
+        "axis": "x",
+        "start": {
+          "type": "QuadrantLabel",
+          "kind": "string",
+          "value": "Completeness of Vision ❤",
+          "range": [
+            150,
+            176
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 9
+            },
+            "end": {
+              "line": 4,
+              "column": 35
+            }
+          }
+        },
+        "arrow": true,
+        "end": null,
+        "range": [
+          143,
+          180
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 2
+          },
+          "end": {
+            "line": 4,
+            "column": 39
+          }
+        }
+      },
+      {
+        "type": "QuadrantAxisStatement",
+        "axis": "y",
+        "start": {
+          "type": "QuadrantLabel",
+          "kind": "text",
+          "value": "Ability to Execute",
+          "range": [
+            190,
+            208
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 9
+            },
+            "end": {
+              "line": 5,
+              "column": 27
+            }
+          }
+        },
+        "arrow": false,
+        "end": null,
+        "range": [
+          183,
+          208
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 2
+          },
+          "end": {
+            "line": 5,
+            "column": 27
+          }
+        }
+      },
+      {
+        "type": "QuadrantQuadrantStatement",
+        "quadrant": 1,
+        "text": {
+          "type": "QuadrantLabel",
+          "kind": "text",
+          "value": "Leaders",
+          "range": [
+            222,
+            229
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 13
+            },
+            "end": {
+              "line": 6,
+              "column": 20
+            }
+          }
+        },
+        "range": [
+          211,
+          229
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 2
+          },
+          "end": {
+            "line": 6,
+            "column": 20
+          }
+        }
+      },
+      {
+        "type": "QuadrantQuadrantStatement",
+        "quadrant": 2,
+        "text": {
+          "type": "QuadrantLabel",
+          "kind": "text",
+          "value": "Challengers",
+          "range": [
+            243,
+            254
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 13
+            },
+            "end": {
+              "line": 7,
+              "column": 24
+            }
+          }
+        },
+        "range": [
+          232,
+          254
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 2
+          },
+          "end": {
+            "line": 7,
+            "column": 24
+          }
+        }
+      },
+      {
+        "type": "QuadrantQuadrantStatement",
+        "quadrant": 3,
+        "text": {
+          "type": "QuadrantLabel",
+          "kind": "text",
+          "value": "Niche",
+          "range": [
+            268,
+            273
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 13
+            },
+            "end": {
+              "line": 8,
+              "column": 18
+            }
+          }
+        },
+        "range": [
+          257,
+          273
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 2
+          },
+          "end": {
+            "line": 8,
+            "column": 18
+          }
+        }
+      },
+      {
+        "type": "QuadrantQuadrantStatement",
+        "quadrant": 4,
+        "text": {
+          "type": "QuadrantLabel",
+          "kind": "text",
+          "value": "Visionaries",
+          "range": [
+            287,
+            298
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 13
+            },
+            "end": {
+              "line": 9,
+              "column": 24
+            }
+          }
+        },
+        "range": [
+          276,
+          298
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 2
+          },
+          "end": {
+            "line": 9,
+            "column": 24
+          }
+        }
+      },
+      {
+        "type": "QuadrantPointStatement",
+        "name": {
+          "type": "QuadrantLabel",
+          "kind": "text",
+          "value": "Microsoft",
+          "range": [
+            301,
+            310
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 2
+            },
+            "end": {
+              "line": 10,
+              "column": 11
+            }
+          }
+        },
+        "className": null,
+        "x": {
+          "type": "QuadrantLiteral",
+          "value": "0.75",
+          "range": [
+            313,
+            317
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 14
+            },
+            "end": {
+              "line": 10,
+              "column": 18
+            }
+          }
+        },
+        "y": {
+          "type": "QuadrantLiteral",
+          "value": "0.75",
+          "range": [
+            319,
+            323
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 20
+            },
+            "end": {
+              "line": 10,
+              "column": 24
+            }
+          }
+        },
+        "styles": [],
+        "range": [
+          301,
+          324
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 2
+          },
+          "end": {
+            "line": 10,
+            "column": 25
+          }
+        }
+      },
+      {
+        "type": "QuadrantPointStatement",
+        "name": {
+          "type": "QuadrantLabel",
+          "kind": "text",
+          "value": "Salesforce",
+          "range": [
+            327,
+            337
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 2
+            },
+            "end": {
+              "line": 11,
+              "column": 12
+            }
+          }
+        },
+        "className": null,
+        "x": {
+          "type": "QuadrantLiteral",
+          "value": "0.55",
+          "range": [
+            340,
+            344
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 15
+            },
+            "end": {
+              "line": 11,
+              "column": 19
+            }
+          }
+        },
+        "y": {
+          "type": "QuadrantLiteral",
+          "value": "0.60",
+          "range": [
+            346,
+            350
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 21
+            },
+            "end": {
+              "line": 11,
+              "column": 25
+            }
+          }
+        },
+        "styles": [],
+        "range": [
+          327,
+          351
+        ],
+        "loc": {
+          "start": {
+            "line": 11,
+            "column": 2
+          },
+          "end": {
+            "line": 11,
+            "column": 26
+          }
+        }
+      },
+      {
+        "type": "QuadrantPointStatement",
+        "name": {
+          "type": "QuadrantLabel",
+          "kind": "text",
+          "value": "IBM",
+          "range": [
+            354,
+            357
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 2
+            },
+            "end": {
+              "line": 12,
+              "column": 5
+            }
+          }
+        },
+        "className": null,
+        "x": {
+          "type": "QuadrantLiteral",
+          "value": "0.51",
+          "range": [
+            360,
+            364
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 8
+            },
+            "end": {
+              "line": 12,
+              "column": 12
+            }
+          }
+        },
+        "y": {
+          "type": "QuadrantLiteral",
+          "value": "0.40",
+          "range": [
+            366,
+            370
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 14
+            },
+            "end": {
+              "line": 12,
+              "column": 18
+            }
+          }
+        },
+        "styles": [],
+        "range": [
+          354,
+          371
+        ],
+        "loc": {
+          "start": {
+            "line": 12,
+            "column": 2
+          },
+          "end": {
+            "line": 12,
+            "column": 19
+          }
+        }
+      },
+      {
+        "type": "QuadrantPointStatement",
+        "name": {
+          "type": "QuadrantLabel",
+          "kind": "text",
+          "value": "Incorta",
+          "range": [
+            374,
+            381
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 2
+            },
+            "end": {
+              "line": 13,
+              "column": 9
+            }
+          }
+        },
+        "className": null,
+        "x": {
+          "type": "QuadrantLiteral",
+          "value": "0.20",
+          "range": [
+            384,
+            388
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 12
+            },
+            "end": {
+              "line": 13,
+              "column": 16
+            }
+          }
+        },
+        "y": {
+          "type": "QuadrantLiteral",
+          "value": "0.30",
+          "range": [
+            390,
+            394
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 18
+            },
+            "end": {
+              "line": 13,
+              "column": 22
+            }
+          }
+        },
+        "styles": [],
+        "range": [
+          374,
+          395
+        ],
+        "loc": {
+          "start": {
+            "line": 13,
+            "column": 2
+          },
+          "end": {
+            "line": 13,
+            "column": 23
+          }
+        }
+      }
+    ],
+    "range": [
+      73,
+      395
+    ],
+    "loc": {
+      "start": {
+        "line": 2,
+        "column": 0
+      },
+      "end": {
+        "line": 13,
+        "column": 23
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [
+    {
+      "type": "Directive",
+      "name": "init",
+      "value": "init: {\"quadrantChart\": {\"chartWidth\": 600, \"chartHeight\": 600} } ",
+      "closed": true,
+      "range": [
+        0,
+        72
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 72
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "Directive",
+      "value": "%%{init: {\"quadrantChart\": {\"chartWidth\": 600, \"chartHeight\": 600} } }%%",
+      "range": [
+        0,
+        72
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 72
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "quadrantChart",
+      "range": [
+        73,
+        86
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        89,
+        94
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 3,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Analytics and Business Intelligence Platforms",
+      "range": [
+        95,
+        140
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 53
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "x-axis",
+      "range": [
+        143,
+        149
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 2
+        },
+        "end": {
+          "line": 4,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Completeness of Vision ❤\"",
+      "range": [
+        150,
+        176
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 9
+        },
+        "end": {
+          "line": 4,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        177,
+        180
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 36
+        },
+        "end": {
+          "line": 4,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "y-axis",
+      "range": [
+        183,
+        189
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 2
+        },
+        "end": {
+          "line": 5,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Ability to Execute",
+      "range": [
+        190,
+        208
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 9
+        },
+        "end": {
+          "line": 5,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "quadrant-1",
+      "range": [
+        211,
+        221
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 2
+        },
+        "end": {
+          "line": 6,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Leaders",
+      "range": [
+        222,
+        229
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 13
+        },
+        "end": {
+          "line": 6,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "quadrant-2",
+      "range": [
+        232,
+        242
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 2
+        },
+        "end": {
+          "line": 7,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Challengers",
+      "range": [
+        243,
+        254
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 13
+        },
+        "end": {
+          "line": 7,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "quadrant-3",
+      "range": [
+        257,
+        267
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 2
+        },
+        "end": {
+          "line": 8,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Niche",
+      "range": [
+        268,
+        273
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 13
+        },
+        "end": {
+          "line": 8,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "quadrant-4",
+      "range": [
+        276,
+        286
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 2
+        },
+        "end": {
+          "line": 9,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Visionaries",
+      "range": [
+        287,
+        298
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 13
+        },
+        "end": {
+          "line": 9,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Microsoft",
+      "range": [
+        301,
+        310
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 2
+        },
+        "end": {
+          "line": 10,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        310,
+        311
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 11
+        },
+        "end": {
+          "line": 10,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        312,
+        313
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 13
+        },
+        "end": {
+          "line": 10,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "0.75",
+      "range": [
+        313,
+        317
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 14
+        },
+        "end": {
+          "line": 10,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        317,
+        318
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 18
+        },
+        "end": {
+          "line": 10,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "0.75",
+      "range": [
+        319,
+        323
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 20
+        },
+        "end": {
+          "line": 10,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        323,
+        324
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 24
+        },
+        "end": {
+          "line": 10,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Salesforce",
+      "range": [
+        327,
+        337
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 2
+        },
+        "end": {
+          "line": 11,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        337,
+        338
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 12
+        },
+        "end": {
+          "line": 11,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        339,
+        340
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 14
+        },
+        "end": {
+          "line": 11,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "0.55",
+      "range": [
+        340,
+        344
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 15
+        },
+        "end": {
+          "line": 11,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        344,
+        345
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 19
+        },
+        "end": {
+          "line": 11,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "0.60",
+      "range": [
+        346,
+        350
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 21
+        },
+        "end": {
+          "line": 11,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        350,
+        351
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 25
+        },
+        "end": {
+          "line": 11,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "IBM",
+      "range": [
+        354,
+        357
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 2
+        },
+        "end": {
+          "line": 12,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        357,
+        358
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 5
+        },
+        "end": {
+          "line": 12,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        359,
+        360
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 7
+        },
+        "end": {
+          "line": 12,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "0.51",
+      "range": [
+        360,
+        364
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 8
+        },
+        "end": {
+          "line": 12,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        364,
+        365
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 12
+        },
+        "end": {
+          "line": 12,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "0.40",
+      "range": [
+        366,
+        370
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 14
+        },
+        "end": {
+          "line": 12,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        370,
+        371
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 18
+        },
+        "end": {
+          "line": 12,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Incorta",
+      "range": [
+        374,
+        381
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 2
+        },
+        "end": {
+          "line": 13,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        381,
+        382
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 9
+        },
+        "end": {
+          "line": 13,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        383,
+        384
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 11
+        },
+        "end": {
+          "line": 13,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "0.20",
+      "range": [
+        384,
+        388
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 12
+        },
+        "end": {
+          "line": 13,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        388,
+        389
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 16
+        },
+        "end": {
+          "line": 13,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "0.30",
+      "range": [
+        390,
+        394
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 18
+        },
+        "end": {
+          "line": 13,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        394,
+        395
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 22
+        },
+        "end": {
+          "line": 13,
+          "column": 23
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    395
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 13,
+      "column": 23
+    }
+  }
+}

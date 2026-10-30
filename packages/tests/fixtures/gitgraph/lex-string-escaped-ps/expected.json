@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An escaped PS does not match STRING escape dot."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 12: unexpected character: ->\"<- at offset: 20, skipped 1 characters.\nLexer error on line 2, column 14: unexpected character: ->\\<- at offset: 22, skipped 2 characters.\nLexer error on line 2, column 17: unexpected character: ->\"<- at offset: 25, skipped 1 characters. Parse error on line 2, column 13: Expecting token of type 'STRING' but found `A`."
+  }
+}

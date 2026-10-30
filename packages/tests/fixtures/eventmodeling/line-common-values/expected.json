@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "EM common line terminals include LS/PS and block values preserve normalized line breaks."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "accTitle: a b c",
+    "accDescr": " accDescr { a\nb\nc d e }",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

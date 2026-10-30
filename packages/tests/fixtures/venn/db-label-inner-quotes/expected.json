@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Bracket labels trim outer whitespace while single quotes remain literal."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10,
+        "label": "'x'"
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "size": 10,
+        "label": "'x'"
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md Component boundaries: Can a global directive stand between accTitle and its colon?"
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "A",
+    "accDescr": "",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

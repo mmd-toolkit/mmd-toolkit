@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The unused BOOLEAN terminal does not capture true or false; both remain string reference names."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "true"
+      },
+      {
+        "name": "false"
+      }
+    ]
+  }
+}

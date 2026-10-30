@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A longer special sequence can consume the apparent chain of question-mark postfixes."
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "terminal",
+              "value": "a"
+            },
+            {
+              "type": "special",
+              "text": "*+ - \"b\""
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/sequenceDiagram.md",
+    "line": 590
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Service",
+        "description": "Service",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "DB"
+      },
+      {
+        "name": "DB",
+        "description": "DB",
+        "wrap": false,
+        "prevActor": "Service",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "message": "Establish a connection to the DB",
+        "wrap": false,
+        "type": 27,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Service",
+        "to": "DB",
+        "message": "connect",
+        "wrap": false,
+        "type": 6,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "Network timeout",
+        "wrap": false,
+        "type": 28,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Service",
+        "to": "Service",
+        "message": "Log error",
+        "wrap": false,
+        "type": 6,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "Credentials rejected",
+        "wrap": false,
+        "type": 28,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Service",
+        "to": "Service",
+        "message": "Log different error",
+        "wrap": false,
+        "type": 6,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 29,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

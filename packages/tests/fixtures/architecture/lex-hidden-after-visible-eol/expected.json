@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Hidden ownership: a form after a visible EOL belongs to the diagram body. Case: hidden-after-visible-eol."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service"
+      },
+      {
+        "id": "b",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

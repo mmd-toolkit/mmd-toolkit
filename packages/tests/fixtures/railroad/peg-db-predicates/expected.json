@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Predicate labels retain simple operands and replace compound operands with (...)."
+  },
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "special",
+              "text": "&\"a\""
+            },
+            {
+              "type": "special",
+              "text": "!ref"
+            },
+            {
+              "type": "special",
+              "text": "&."
+            },
+            {
+              "type": "special",
+              "text": "!(...)"
+            },
+            {
+              "type": "special",
+              "text": "&(...)"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

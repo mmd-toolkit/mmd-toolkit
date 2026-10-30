@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does ML_COMMENT stop at LF rather than at a directive closer?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 5, column 1: unexpected character: ->}<- at offset: 21, skipped 1 characters. Parse error on line 4, column 1: Expecting token of type 'EOF' but found `x`."
+  }
+}

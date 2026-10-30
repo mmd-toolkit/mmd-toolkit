@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, classDef: a `;` and a statement after the styles are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...classDef c1 color: ﬂ°f00¶ß A:::c1: [0.3\n----------------------^\nExpecting 'ALPHA', 'NUM', 'NODE_STRING', 'MINUS', 'COMMA', 'COLON', 'BRKT', 'UNIT', 'SPACE', 'STYLE', 'PCT', 'NEWLINE', 'SEMI', 'EOF', got 'UNICODE_TEXT'"
+  }
+}

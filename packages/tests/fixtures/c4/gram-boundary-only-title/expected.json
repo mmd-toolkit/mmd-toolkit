@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A Boundary body containing only a title is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...Boundary(b, \"B\") {title T}\n---------------------^\nExpecting 'ENTERPRISE_BOUNDARY', 'SYSTEM_BOUNDARY', 'BOUNDARY', 'CONTAINER_BOUNDARY', 'NODE', 'NODE_L', 'NODE_R', 'PERSON', 'PERSON_EXT', 'SYSTEM', 'SYSTEM_DB', 'SYSTEM_QUEUE', 'SYSTEM_EXT', 'SYSTEM_EXT_DB', 'SYSTEM_EXT_QUEUE', 'CONTAINER', 'CONTAINER_DB', 'CONTAINER_QUEUE', 'CONTAINER_EXT', 'CONTAINER_EXT_DB', 'CONTAINER_EXT_QUEUE', 'COMPONENT', 'COMPONENT_DB', 'COMPONENT_QUEUE', 'COMPONENT_EXT', 'COMPONENT_EXT_DB', 'COMPONENT_EXT_QUEUE', 'REL', 'BIREL', 'REL_U', 'REL_D', 'REL_L', 'REL_R', 'REL_B', 'REL_INDEX', 'UPDATE_EL_STYLE', 'UPDATE_REL_STYLE', 'UPDATE_LAYOUT_CONFIG', got 'title'"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Frontmatter supplies the diagram title."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "Front",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 0,
+          "label": "A"
+        }
+      ]
+    ]
+  },
+  "embedded": {
+    "title": "Front"
+  }
+}

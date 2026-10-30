@@ -1,0 +1,4855 @@
+{
+  "type": "Root",
+  "diagramType": "usecase",
+  "body": {
+    "type": "UsecaseDiagram",
+    "body": [
+      {
+        "type": "UsecaseDirectionStatement",
+        "direction": "LR",
+        "range": [
+          13,
+          25
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 12
+          }
+        }
+      },
+      {
+        "type": "UsecaseAccTitleStatement",
+        "value": {
+          "type": "UsecaseLiteral",
+          "value": " Online ordering use cases",
+          "range": [
+            35,
+            61
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 9
+            },
+            "end": {
+              "line": 3,
+              "column": 35
+            }
+          }
+        },
+        "range": [
+          26,
+          61
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 35
+          }
+        }
+      },
+      {
+        "type": "UsecaseAccDescrBlockStatement",
+        "value": {
+          "type": "UsecaseLiteral",
+          "value": "\n  A customer places an order through the storefront.\n  Staff review the order and inspect its data.\n",
+          "range": [
+            72,
+            173
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 10
+            },
+            "end": {
+              "line": 7,
+              "column": 0
+            }
+          }
+        },
+        "range": [
+          62,
+          174
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 1
+          }
+        }
+      },
+      {
+        "type": "UsecaseActorStatement",
+        "actors": [
+          {
+            "type": "UsecaseActor",
+            "id": {
+              "type": "Identifier",
+              "name": "Customer",
+              "range": [
+                181,
+                189
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 6
+                },
+                "end": {
+                  "line": 8,
+                  "column": 14
+                }
+              }
+            },
+            "label": {
+              "type": "UsecaseLabel",
+              "kind": "string",
+              "value": "Customer",
+              "range": [
+                190,
+                200
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 15
+                },
+                "end": {
+                  "line": 8,
+                  "column": 25
+                }
+              }
+            },
+            "metadata": null,
+            "stereotype": null,
+            "classes": [],
+            "range": [
+              181,
+              201
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 6
+              },
+              "end": {
+                "line": 8,
+                "column": 26
+              }
+            }
+          }
+        ],
+        "range": [
+          175,
+          201
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 0
+          },
+          "end": {
+            "line": 8,
+            "column": 26
+          }
+        }
+      },
+      {
+        "type": "UsecaseActorStatement",
+        "actors": [
+          {
+            "type": "UsecaseActor",
+            "id": {
+              "type": "Identifier",
+              "name": "Staff",
+              "range": [
+                208,
+                213
+              ],
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 6
+                },
+                "end": {
+                  "line": 9,
+                  "column": 11
+                }
+              }
+            },
+            "label": {
+              "type": "UsecaseLabel",
+              "kind": "string",
+              "value": "Order staff",
+              "range": [
+                214,
+                227
+              ],
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 12
+                },
+                "end": {
+                  "line": 9,
+                  "column": 25
+                }
+              }
+            },
+            "metadata": {
+              "type": "UsecaseMetadata",
+              "properties": [
+                {
+                  "type": "UsecaseMetadataProperty",
+                  "key": {
+                    "type": "Identifier",
+                    "name": "type",
+                    "range": [
+                      231,
+                      235
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 9,
+                        "column": 29
+                      },
+                      "end": {
+                        "line": 9,
+                        "column": 33
+                      }
+                    }
+                  },
+                  "value": {
+                    "type": "Identifier",
+                    "name": "hollow",
+                    "range": [
+                      237,
+                      243
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 9,
+                        "column": 35
+                      },
+                      "end": {
+                        "line": 9,
+                        "column": 41
+                      }
+                    }
+                  },
+                  "range": [
+                    231,
+                    243
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 9,
+                      "column": 29
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 41
+                    }
+                  }
+                },
+                {
+                  "type": "UsecaseMetadataProperty",
+                  "key": {
+                    "type": "Identifier",
+                    "name": "business",
+                    "range": [
+                      245,
+                      253
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 9,
+                        "column": 43
+                      },
+                      "end": {
+                        "line": 9,
+                        "column": 51
+                      }
+                    }
+                  },
+                  "value": {
+                    "type": "Identifier",
+                    "name": "true",
+                    "range": [
+                      255,
+                      259
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 9,
+                        "column": 53
+                      },
+                      "end": {
+                        "line": 9,
+                        "column": 57
+                      }
+                    }
+                  },
+                  "range": [
+                    245,
+                    259
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 9,
+                      "column": 43
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 57
+                    }
+                  }
+                }
+              ],
+              "range": [
+                228,
+                261
+              ],
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 26
+                },
+                "end": {
+                  "line": 9,
+                  "column": 59
+                }
+              }
+            },
+            "stereotype": {
+              "type": "UsecaseLiteral",
+              "value": "Employee",
+              "range": [
+                264,
+                272
+              ],
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 62
+                },
+                "end": {
+                  "line": 9,
+                  "column": 70
+                }
+              }
+            },
+            "classes": [],
+            "range": [
+              208,
+              274
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 6
+              },
+              "end": {
+                "line": 9,
+                "column": 72
+              }
+            }
+          }
+        ],
+        "range": [
+          202,
+          274
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 0
+          },
+          "end": {
+            "line": 9,
+            "column": 72
+          }
+        }
+      },
+      {
+        "type": "UsecaseSystemBoundaryStatement",
+        "id": {
+          "type": "Identifier",
+          "name": "ordering",
+          "range": [
+            290,
+            298
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 15
+            },
+            "end": {
+              "line": 10,
+              "column": 23
+            }
+          }
+        },
+        "title": {
+          "type": "UsecaseLabel",
+          "kind": "string",
+          "value": "Ordering System",
+          "range": [
+            299,
+            316
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 24
+            },
+            "end": {
+              "line": 10,
+              "column": 41
+            }
+          }
+        },
+        "metadata": {
+          "type": "UsecaseMetadata",
+          "properties": [
+            {
+              "type": "UsecaseMetadataProperty",
+              "key": {
+                "type": "Identifier",
+                "name": "type",
+                "range": [
+                  320,
+                  324
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 45
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 49
+                  }
+                }
+              },
+              "value": {
+                "type": "Identifier",
+                "name": "package",
+                "range": [
+                  326,
+                  333
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 51
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 58
+                  }
+                }
+              },
+              "range": [
+                320,
+                333
+              ],
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 45
+                },
+                "end": {
+                  "line": 10,
+                  "column": 58
+                }
+              }
+            }
+          ],
+          "range": [
+            317,
+            335
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 42
+            },
+            "end": {
+              "line": 10,
+              "column": 60
+            }
+          }
+        },
+        "classes": [
+          {
+            "type": "Identifier",
+            "name": "system",
+            "range": [
+              338,
+              344
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 63
+              },
+              "end": {
+                "line": 10,
+                "column": 69
+              }
+            }
+          }
+        ],
+        "body": [
+          {
+            "type": "UsecaseEntityStatement",
+            "entity": {
+              "type": "UsecaseEntity",
+              "id": {
+                "type": "Identifier",
+                "name": "Browse",
+                "range": [
+                  347,
+                  353
+                ],
+                "loc": {
+                  "start": {
+                    "line": 11,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 11,
+                    "column": 8
+                  }
+                }
+              },
+              "shape": "ellipse",
+              "label": {
+                "type": "UsecaseLabel",
+                "kind": "string",
+                "value": "Browse products",
+                "range": [
+                  354,
+                  371
+                ],
+                "loc": {
+                  "start": {
+                    "line": 11,
+                    "column": 9
+                  },
+                  "end": {
+                    "line": 11,
+                    "column": 26
+                  }
+                }
+              },
+              "metadata": null,
+              "stereotype": null,
+              "classes": [],
+              "range": [
+                347,
+                372
+              ],
+              "loc": {
+                "start": {
+                  "line": 11,
+                  "column": 2
+                },
+                "end": {
+                  "line": 11,
+                  "column": 27
+                }
+              }
+            },
+            "range": [
+              347,
+              372
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 2
+              },
+              "end": {
+                "line": 11,
+                "column": 27
+              }
+            }
+          },
+          {
+            "type": "UsecaseEntityStatement",
+            "entity": {
+              "type": "UsecaseEntity",
+              "id": {
+                "type": "Identifier",
+                "name": "Checkout",
+                "range": [
+                  375,
+                  383
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 10
+                  }
+                }
+              },
+              "shape": "ellipse",
+              "label": {
+                "type": "UsecaseLabel",
+                "kind": "string",
+                "value": "Checkout",
+                "range": [
+                  384,
+                  394
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 21
+                  }
+                }
+              },
+              "metadata": null,
+              "stereotype": {
+                "type": "UsecaseLiteral",
+                "value": "Core",
+                "range": [
+                  398,
+                  402
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 25
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 29
+                  }
+                }
+              },
+              "classes": [
+                {
+                  "type": "Identifier",
+                  "name": "critical",
+                  "range": [
+                    407,
+                    415
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 12,
+                      "column": 34
+                    },
+                    "end": {
+                      "line": 12,
+                      "column": 42
+                    }
+                  }
+                }
+              ],
+              "range": [
+                375,
+                415
+              ],
+              "loc": {
+                "start": {
+                  "line": 12,
+                  "column": 2
+                },
+                "end": {
+                  "line": 12,
+                  "column": 42
+                }
+              }
+            },
+            "range": [
+              375,
+              415
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 2
+              },
+              "end": {
+                "line": 12,
+                "column": 42
+              }
+            }
+          },
+          {
+            "type": "UsecaseEntityStatement",
+            "entity": {
+              "type": "UsecaseEntity",
+              "id": {
+                "type": "Identifier",
+                "name": "Payment",
+                "range": [
+                  418,
+                  425
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 9
+                  }
+                }
+              },
+              "shape": "ellipse",
+              "label": {
+                "type": "UsecaseLabel",
+                "kind": "string",
+                "value": "Process payment",
+                "range": [
+                  426,
+                  443
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 27
+                  }
+                }
+              },
+              "metadata": null,
+              "stereotype": null,
+              "classes": [],
+              "range": [
+                418,
+                444
+              ],
+              "loc": {
+                "start": {
+                  "line": 13,
+                  "column": 2
+                },
+                "end": {
+                  "line": 13,
+                  "column": 28
+                }
+              }
+            },
+            "range": [
+              418,
+              444
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 2
+              },
+              "end": {
+                "line": 13,
+                "column": 28
+              }
+            }
+          },
+          {
+            "type": "UsecaseEntityStatement",
+            "entity": {
+              "type": "UsecaseEntity",
+              "id": {
+                "type": "Identifier",
+                "name": "Review",
+                "range": [
+                  447,
+                  453
+                ],
+                "loc": {
+                  "start": {
+                    "line": 14,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 14,
+                    "column": 8
+                  }
+                }
+              },
+              "shape": "rectangle",
+              "label": {
+                "type": "UsecaseLabel",
+                "kind": "text",
+                "value": "Review order",
+                "range": [
+                  454,
+                  466
+                ],
+                "loc": {
+                  "start": {
+                    "line": 14,
+                    "column": 9
+                  },
+                  "end": {
+                    "line": 14,
+                    "column": 21
+                  }
+                }
+              },
+              "metadata": null,
+              "stereotype": null,
+              "classes": [],
+              "range": [
+                447,
+                467
+              ],
+              "loc": {
+                "start": {
+                  "line": 14,
+                  "column": 2
+                },
+                "end": {
+                  "line": 14,
+                  "column": 22
+                }
+              }
+            },
+            "range": [
+              447,
+              467
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 2
+              },
+              "end": {
+                "line": 14,
+                "column": 22
+              }
+            }
+          }
+        ],
+        "range": [
+          275,
+          471
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 0
+          },
+          "end": {
+            "line": 15,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "UsecaseJsonStatement",
+        "id": {
+          "type": "Identifier",
+          "name": "OrderData",
+          "range": [
+            477,
+            486
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 5
+            },
+            "end": {
+              "line": 16,
+              "column": 14
+            }
+          }
+        },
+        "data": {
+          "type": "UsecaseJsonDataBlock",
+          "value": "\n  \"status\": \"pending\",\n  \"items\": [{ \"name\": \"Book\", \"quantity\": 1 }],\n  \"total\": 29.95\n",
+          "range": [
+            486,
+            578
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 14
+            },
+            "end": {
+              "line": 20,
+              "column": 1
+            }
+          }
+        },
+        "classes": [
+          {
+            "type": "Identifier",
+            "name": "data",
+            "range": [
+              581,
+              585
+            ],
+            "loc": {
+              "start": {
+                "line": 20,
+                "column": 4
+              },
+              "end": {
+                "line": 20,
+                "column": 8
+              }
+            }
+          }
+        ],
+        "range": [
+          472,
+          585
+        ],
+        "loc": {
+          "start": {
+            "line": 16,
+            "column": 0
+          },
+          "end": {
+            "line": 20,
+            "column": 8
+          }
+        }
+      },
+      {
+        "type": "UsecaseNoteStatement",
+        "target": {
+          "type": "Identifier",
+          "name": "Checkout",
+          "range": [
+            595,
+            603
+          ],
+          "loc": {
+            "start": {
+              "line": 21,
+              "column": 9
+            },
+            "end": {
+              "line": 21,
+              "column": 17
+            }
+          }
+        },
+        "label": {
+          "type": "UsecaseLabel",
+          "kind": "markdown",
+          "value": "Validates the **cart** before payment",
+          "range": [
+            604,
+            645
+          ],
+          "loc": {
+            "start": {
+              "line": 21,
+              "column": 18
+            },
+            "end": {
+              "line": 21,
+              "column": 59
+            }
+          }
+        },
+        "range": [
+          586,
+          645
+        ],
+        "loc": {
+          "start": {
+            "line": 21,
+            "column": 0
+          },
+          "end": {
+            "line": 21,
+            "column": 59
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Customer",
+            "range": [
+              646,
+              654
+            ],
+            "loc": {
+              "start": {
+                "line": 22,
+                "column": 0
+              },
+              "end": {
+                "line": 22,
+                "column": 8
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            646,
+            654
+          ],
+          "loc": {
+            "start": {
+              "line": 22,
+              "column": 0
+            },
+            "end": {
+              "line": 22,
+              "column": 8
+            }
+          }
+        },
+        "id": {
+          "type": "Identifier",
+          "name": "starts",
+          "range": [
+            655,
+            661
+          ],
+          "loc": {
+            "start": {
+              "line": 22,
+              "column": 9
+            },
+            "end": {
+              "line": 22,
+              "column": 15
+            }
+          }
+        },
+        "kind": "association",
+        "opening": {
+          "type": "UsecaseOpeningArrow",
+          "value": "--",
+          "startMarker": "none",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            662,
+            664
+          ],
+          "loc": {
+            "start": {
+              "line": 22,
+              "column": 16
+            },
+            "end": {
+              "line": 22,
+              "column": 18
+            }
+          }
+        },
+        "label": {
+          "type": "UsecaseLabel",
+          "kind": "string",
+          "value": "places order",
+          "range": [
+            665,
+            679
+          ],
+          "loc": {
+            "start": {
+              "line": 22,
+              "column": 19
+            },
+            "end": {
+              "line": 22,
+              "column": 33
+            }
+          }
+        },
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "--->",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "solid",
+          "length": 3,
+          "range": [
+            680,
+            684
+          ],
+          "loc": {
+            "start": {
+              "line": 22,
+              "column": 34
+            },
+            "end": {
+              "line": 22,
+              "column": 38
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Checkout",
+            "range": [
+              685,
+              693
+            ],
+            "loc": {
+              "start": {
+                "line": 22,
+                "column": 39
+              },
+              "end": {
+                "line": 22,
+                "column": 47
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            685,
+            693
+          ],
+          "loc": {
+            "start": {
+              "line": 22,
+              "column": 39
+            },
+            "end": {
+              "line": 22,
+              "column": 47
+            }
+          }
+        },
+        "range": [
+          646,
+          693
+        ],
+        "loc": {
+          "start": {
+            "line": 22,
+            "column": 0
+          },
+          "end": {
+            "line": 22,
+            "column": 47
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Customer",
+            "range": [
+              694,
+              702
+            ],
+            "loc": {
+              "start": {
+                "line": 23,
+                "column": 0
+              },
+              "end": {
+                "line": 23,
+                "column": 8
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            694,
+            702
+          ],
+          "loc": {
+            "start": {
+              "line": 23,
+              "column": 0
+            },
+            "end": {
+              "line": 23,
+              "column": 8
+            }
+          }
+        },
+        "id": null,
+        "kind": "association",
+        "opening": null,
+        "label": null,
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "-->",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            703,
+            706
+          ],
+          "loc": {
+            "start": {
+              "line": 23,
+              "column": 9
+            },
+            "end": {
+              "line": 23,
+              "column": 12
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Browse",
+            "range": [
+              707,
+              713
+            ],
+            "loc": {
+              "start": {
+                "line": 23,
+                "column": 13
+              },
+              "end": {
+                "line": 23,
+                "column": 19
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            707,
+            713
+          ],
+          "loc": {
+            "start": {
+              "line": 23,
+              "column": 13
+            },
+            "end": {
+              "line": 23,
+              "column": 19
+            }
+          }
+        },
+        "range": [
+          694,
+          713
+        ],
+        "loc": {
+          "start": {
+            "line": 23,
+            "column": 0
+          },
+          "end": {
+            "line": 23,
+            "column": 19
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Checkout",
+            "range": [
+              714,
+              722
+            ],
+            "loc": {
+              "start": {
+                "line": 24,
+                "column": 0
+              },
+              "end": {
+                "line": 24,
+                "column": 8
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            714,
+            722
+          ],
+          "loc": {
+            "start": {
+              "line": 24,
+              "column": 0
+            },
+            "end": {
+              "line": 24,
+              "column": 8
+            }
+          }
+        },
+        "id": {
+          "type": "Identifier",
+          "name": "pays",
+          "range": [
+            723,
+            727
+          ],
+          "loc": {
+            "start": {
+              "line": 24,
+              "column": 9
+            },
+            "end": {
+              "line": 24,
+              "column": 13
+            }
+          }
+        },
+        "kind": "include",
+        "opening": null,
+        "label": null,
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "..>",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "dotted",
+          "length": 2,
+          "range": [
+            728,
+            731
+          ],
+          "loc": {
+            "start": {
+              "line": 24,
+              "column": 14
+            },
+            "end": {
+              "line": 24,
+              "column": 17
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Payment",
+            "range": [
+              742,
+              749
+            ],
+            "loc": {
+              "start": {
+                "line": 24,
+                "column": 28
+              },
+              "end": {
+                "line": 24,
+                "column": 35
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            742,
+            749
+          ],
+          "loc": {
+            "start": {
+              "line": 24,
+              "column": 28
+            },
+            "end": {
+              "line": 24,
+              "column": 35
+            }
+          }
+        },
+        "range": [
+          714,
+          749
+        ],
+        "loc": {
+          "start": {
+            "line": 24,
+            "column": 0
+          },
+          "end": {
+            "line": 24,
+            "column": 35
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Staff",
+            "range": [
+              750,
+              755
+            ],
+            "loc": {
+              "start": {
+                "line": 25,
+                "column": 0
+              },
+              "end": {
+                "line": 25,
+                "column": 5
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            750,
+            755
+          ],
+          "loc": {
+            "start": {
+              "line": 25,
+              "column": 0
+            },
+            "end": {
+              "line": 25,
+              "column": 5
+            }
+          }
+        },
+        "id": null,
+        "kind": "association",
+        "opening": null,
+        "label": null,
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "-->",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            756,
+            759
+          ],
+          "loc": {
+            "start": {
+              "line": 25,
+              "column": 6
+            },
+            "end": {
+              "line": 25,
+              "column": 9
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Review",
+            "range": [
+              760,
+              766
+            ],
+            "loc": {
+              "start": {
+                "line": 25,
+                "column": 10
+              },
+              "end": {
+                "line": 25,
+                "column": 16
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            760,
+            766
+          ],
+          "loc": {
+            "start": {
+              "line": 25,
+              "column": 10
+            },
+            "end": {
+              "line": 25,
+              "column": 16
+            }
+          }
+        },
+        "range": [
+          750,
+          766
+        ],
+        "loc": {
+          "start": {
+            "line": 25,
+            "column": 0
+          },
+          "end": {
+            "line": 25,
+            "column": 16
+          }
+        }
+      },
+      {
+        "type": "UsecaseRelationshipStatement",
+        "source": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "Review",
+            "range": [
+              767,
+              773
+            ],
+            "loc": {
+              "start": {
+                "line": 26,
+                "column": 0
+              },
+              "end": {
+                "line": 26,
+                "column": 6
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            767,
+            773
+          ],
+          "loc": {
+            "start": {
+              "line": 26,
+              "column": 0
+            },
+            "end": {
+              "line": 26,
+              "column": 6
+            }
+          }
+        },
+        "id": null,
+        "kind": "association",
+        "opening": null,
+        "label": null,
+        "arrow": {
+          "type": "UsecaseArrow",
+          "value": "-->",
+          "startMarker": "none",
+          "endMarker": "arrow",
+          "line": "solid",
+          "length": 2,
+          "range": [
+            774,
+            777
+          ],
+          "loc": {
+            "start": {
+              "line": 26,
+              "column": 7
+            },
+            "end": {
+              "line": 26,
+              "column": 10
+            }
+          }
+        },
+        "target": {
+          "type": "UsecaseEntity",
+          "id": {
+            "type": "Identifier",
+            "name": "OrderData",
+            "range": [
+              778,
+              787
+            ],
+            "loc": {
+              "start": {
+                "line": 26,
+                "column": 11
+              },
+              "end": {
+                "line": 26,
+                "column": 20
+              }
+            }
+          },
+          "shape": null,
+          "label": null,
+          "metadata": null,
+          "stereotype": null,
+          "classes": [],
+          "range": [
+            778,
+            787
+          ],
+          "loc": {
+            "start": {
+              "line": 26,
+              "column": 11
+            },
+            "end": {
+              "line": 26,
+              "column": 20
+            }
+          }
+        },
+        "range": [
+          767,
+          787
+        ],
+        "loc": {
+          "start": {
+            "line": 26,
+            "column": 0
+          },
+          "end": {
+            "line": 26,
+            "column": 20
+          }
+        }
+      },
+      {
+        "type": "UsecaseClassDefStatement",
+        "classes": [
+          {
+            "type": "Identifier",
+            "name": "system",
+            "range": [
+              797,
+              803
+            ],
+            "loc": {
+              "start": {
+                "line": 27,
+                "column": 9
+              },
+              "end": {
+                "line": 27,
+                "column": 15
+              }
+            }
+          }
+        ],
+        "styles": [
+          {
+            "type": "UsecaseStyleDeclaration",
+            "name": {
+              "type": "UsecaseIdentifier",
+              "name": "stroke",
+              "range": [
+                804,
+                810
+              ],
+              "loc": {
+                "start": {
+                  "line": 27,
+                  "column": 16
+                },
+                "end": {
+                  "line": 27,
+                  "column": 22
+                }
+              }
+            },
+            "value": {
+              "type": "UsecaseLiteral",
+              "value": "#c8a02a",
+              "range": [
+                811,
+                818
+              ],
+              "loc": {
+                "start": {
+                  "line": 27,
+                  "column": 23
+                },
+                "end": {
+                  "line": 27,
+                  "column": 30
+                }
+              }
+            },
+            "range": [
+              804,
+              818
+            ],
+            "loc": {
+              "start": {
+                "line": 27,
+                "column": 16
+              },
+              "end": {
+                "line": 27,
+                "column": 30
+              }
+            }
+          },
+          {
+            "type": "UsecaseStyleDeclaration",
+            "name": {
+              "type": "UsecaseIdentifier",
+              "name": "stroke-width",
+              "range": [
+                819,
+                831
+              ],
+              "loc": {
+                "start": {
+                  "line": 27,
+                  "column": 31
+                },
+                "end": {
+                  "line": 27,
+                  "column": 43
+                }
+              }
+            },
+            "value": {
+              "type": "UsecaseLiteral",
+              "value": "2px",
+              "range": [
+                832,
+                835
+              ],
+              "loc": {
+                "start": {
+                  "line": 27,
+                  "column": 44
+                },
+                "end": {
+                  "line": 27,
+                  "column": 47
+                }
+              }
+            },
+            "range": [
+              819,
+              835
+            ],
+            "loc": {
+              "start": {
+                "line": 27,
+                "column": 31
+              },
+              "end": {
+                "line": 27,
+                "column": 47
+              }
+            }
+          }
+        ],
+        "range": [
+          788,
+          835
+        ],
+        "loc": {
+          "start": {
+            "line": 27,
+            "column": 0
+          },
+          "end": {
+            "line": 27,
+            "column": 47
+          }
+        }
+      },
+      {
+        "type": "UsecaseClassDefStatement",
+        "classes": [
+          {
+            "type": "Identifier",
+            "name": "critical",
+            "range": [
+              845,
+              853
+            ],
+            "loc": {
+              "start": {
+                "line": 28,
+                "column": 9
+              },
+              "end": {
+                "line": 28,
+                "column": 17
+              }
+            }
+          }
+        ],
+        "styles": [
+          {
+            "type": "UsecaseStyleDeclaration",
+            "name": {
+              "type": "UsecaseIdentifier",
+              "name": "stroke",
+              "range": [
+                854,
+                860
+              ],
+              "loc": {
+                "start": {
+                  "line": 28,
+                  "column": 18
+                },
+                "end": {
+                  "line": 28,
+                  "column": 24
+                }
+              }
+            },
+            "value": {
+              "type": "UsecaseLiteral",
+              "value": "#c33",
+              "range": [
+                861,
+                865
+              ],
+              "loc": {
+                "start": {
+                  "line": 28,
+                  "column": 25
+                },
+                "end": {
+                  "line": 28,
+                  "column": 29
+                }
+              }
+            },
+            "range": [
+              854,
+              865
+            ],
+            "loc": {
+              "start": {
+                "line": 28,
+                "column": 18
+              },
+              "end": {
+                "line": 28,
+                "column": 29
+              }
+            }
+          },
+          {
+            "type": "UsecaseStyleDeclaration",
+            "name": {
+              "type": "UsecaseIdentifier",
+              "name": "stroke-width",
+              "range": [
+                866,
+                878
+              ],
+              "loc": {
+                "start": {
+                  "line": 28,
+                  "column": 30
+                },
+                "end": {
+                  "line": 28,
+                  "column": 42
+                }
+              }
+            },
+            "value": {
+              "type": "UsecaseLiteral",
+              "value": "3px",
+              "range": [
+                879,
+                882
+              ],
+              "loc": {
+                "start": {
+                  "line": 28,
+                  "column": 43
+                },
+                "end": {
+                  "line": 28,
+                  "column": 46
+                }
+              }
+            },
+            "range": [
+              866,
+              882
+            ],
+            "loc": {
+              "start": {
+                "line": 28,
+                "column": 30
+              },
+              "end": {
+                "line": 28,
+                "column": 46
+              }
+            }
+          }
+        ],
+        "range": [
+          836,
+          882
+        ],
+        "loc": {
+          "start": {
+            "line": 28,
+            "column": 0
+          },
+          "end": {
+            "line": 28,
+            "column": 46
+          }
+        }
+      },
+      {
+        "type": "UsecaseClassDefStatement",
+        "classes": [
+          {
+            "type": "Identifier",
+            "name": "data",
+            "range": [
+              892,
+              896
+            ],
+            "loc": {
+              "start": {
+                "line": 29,
+                "column": 9
+              },
+              "end": {
+                "line": 29,
+                "column": 13
+              }
+            }
+          }
+        ],
+        "styles": [
+          {
+            "type": "UsecaseStyleDeclaration",
+            "name": {
+              "type": "UsecaseIdentifier",
+              "name": "stroke",
+              "range": [
+                897,
+                903
+              ],
+              "loc": {
+                "start": {
+                  "line": 29,
+                  "column": 14
+                },
+                "end": {
+                  "line": 29,
+                  "column": 20
+                }
+              }
+            },
+            "value": {
+              "type": "UsecaseLiteral",
+              "value": "#3572a5",
+              "range": [
+                904,
+                911
+              ],
+              "loc": {
+                "start": {
+                  "line": 29,
+                  "column": 21
+                },
+                "end": {
+                  "line": 29,
+                  "column": 28
+                }
+              }
+            },
+            "range": [
+              897,
+              911
+            ],
+            "loc": {
+              "start": {
+                "line": 29,
+                "column": 14
+              },
+              "end": {
+                "line": 29,
+                "column": 28
+              }
+            }
+          }
+        ],
+        "range": [
+          883,
+          911
+        ],
+        "loc": {
+          "start": {
+            "line": 29,
+            "column": 0
+          },
+          "end": {
+            "line": 29,
+            "column": 28
+          }
+        }
+      },
+      {
+        "type": "UsecaseMetadataAssignmentStatement",
+        "target": {
+          "type": "Identifier",
+          "name": "starts",
+          "range": [
+            912,
+            918
+          ],
+          "loc": {
+            "start": {
+              "line": 30,
+              "column": 0
+            },
+            "end": {
+              "line": 30,
+              "column": 6
+            }
+          }
+        },
+        "metadata": {
+          "type": "UsecaseMetadata",
+          "properties": [
+            {
+              "type": "UsecaseMetadataProperty",
+              "key": {
+                "type": "Identifier",
+                "name": "animation",
+                "range": [
+                  921,
+                  930
+                ],
+                "loc": {
+                  "start": {
+                    "line": 30,
+                    "column": 9
+                  },
+                  "end": {
+                    "line": 30,
+                    "column": 18
+                  }
+                }
+              },
+              "value": {
+                "type": "Identifier",
+                "name": "fast",
+                "range": [
+                  932,
+                  936
+                ],
+                "loc": {
+                  "start": {
+                    "line": 30,
+                    "column": 20
+                  },
+                  "end": {
+                    "line": 30,
+                    "column": 24
+                  }
+                }
+              },
+              "range": [
+                921,
+                936
+              ],
+              "loc": {
+                "start": {
+                  "line": 30,
+                  "column": 9
+                },
+                "end": {
+                  "line": 30,
+                  "column": 24
+                }
+              }
+            }
+          ],
+          "range": [
+            918,
+            938
+          ],
+          "loc": {
+            "start": {
+              "line": 30,
+              "column": 6
+            },
+            "end": {
+              "line": 30,
+              "column": 26
+            }
+          }
+        },
+        "range": [
+          912,
+          938
+        ],
+        "loc": {
+          "start": {
+            "line": 30,
+            "column": 0
+          },
+          "end": {
+            "line": 30,
+            "column": 26
+          }
+        }
+      },
+      {
+        "type": "UsecaseStyleStatement",
+        "target": {
+          "type": "Identifier",
+          "name": "pays",
+          "range": [
+            945,
+            949
+          ],
+          "loc": {
+            "start": {
+              "line": 31,
+              "column": 6
+            },
+            "end": {
+              "line": 31,
+              "column": 10
+            }
+          }
+        },
+        "styles": [
+          {
+            "type": "UsecaseStyleDeclaration",
+            "name": {
+              "type": "UsecaseIdentifier",
+              "name": "stroke",
+              "range": [
+                950,
+                956
+              ],
+              "loc": {
+                "start": {
+                  "line": 31,
+                  "column": 11
+                },
+                "end": {
+                  "line": 31,
+                  "column": 17
+                }
+              }
+            },
+            "value": {
+              "type": "UsecaseLiteral",
+              "value": "#6b46c1",
+              "range": [
+                957,
+                964
+              ],
+              "loc": {
+                "start": {
+                  "line": 31,
+                  "column": 18
+                },
+                "end": {
+                  "line": 31,
+                  "column": 25
+                }
+              }
+            },
+            "range": [
+              950,
+              964
+            ],
+            "loc": {
+              "start": {
+                "line": 31,
+                "column": 11
+              },
+              "end": {
+                "line": 31,
+                "column": 25
+              }
+            }
+          },
+          {
+            "type": "UsecaseStyleDeclaration",
+            "name": {
+              "type": "UsecaseIdentifier",
+              "name": "stroke-width",
+              "range": [
+                965,
+                977
+              ],
+              "loc": {
+                "start": {
+                  "line": 31,
+                  "column": 26
+                },
+                "end": {
+                  "line": 31,
+                  "column": 38
+                }
+              }
+            },
+            "value": {
+              "type": "UsecaseLiteral",
+              "value": "2px",
+              "range": [
+                978,
+                981
+              ],
+              "loc": {
+                "start": {
+                  "line": 31,
+                  "column": 39
+                },
+                "end": {
+                  "line": 31,
+                  "column": 42
+                }
+              }
+            },
+            "range": [
+              965,
+              981
+            ],
+            "loc": {
+              "start": {
+                "line": 31,
+                "column": 26
+              },
+              "end": {
+                "line": 31,
+                "column": 42
+              }
+            }
+          }
+        ],
+        "range": [
+          939,
+          981
+        ],
+        "loc": {
+          "start": {
+            "line": 31,
+            "column": 0
+          },
+          "end": {
+            "line": 31,
+            "column": 42
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      981
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 31,
+        "column": 42
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "usecase-beta",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "direction",
+      "range": [
+        13,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "LR",
+      "range": [
+        23,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accTitle",
+      "range": [
+        26,
+        34
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        34,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " Online ordering use cases",
+      "range": [
+        35,
+        61
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 9
+        },
+        "end": {
+          "line": 3,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accDescr",
+      "range": [
+        62,
+        70
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        71,
+        72
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 9
+        },
+        "end": {
+          "line": 4,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "\n  A customer places an order through the storefront.\n  Staff review the order and inspect its data.\n",
+      "range": [
+        72,
+        173
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 10
+        },
+        "end": {
+          "line": 7,
+          "column": 0
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        173,
+        174
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "actor",
+      "range": [
+        175,
+        180
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Customer",
+      "range": [
+        181,
+        189
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 6
+        },
+        "end": {
+          "line": 8,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        189,
+        190
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 14
+        },
+        "end": {
+          "line": 8,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Customer\"",
+      "range": [
+        190,
+        200
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 15
+        },
+        "end": {
+          "line": 8,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        200,
+        201
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 25
+        },
+        "end": {
+          "line": 8,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "actor",
+      "range": [
+        202,
+        207
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Staff",
+      "range": [
+        208,
+        213
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 6
+        },
+        "end": {
+          "line": 9,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        213,
+        214
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 11
+        },
+        "end": {
+          "line": 9,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Order staff\"",
+      "range": [
+        214,
+        227
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 12
+        },
+        "end": {
+          "line": 9,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        227,
+        228
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 25
+        },
+        "end": {
+          "line": 9,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        228,
+        230
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 26
+        },
+        "end": {
+          "line": 9,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "type",
+      "range": [
+        231,
+        235
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 29
+        },
+        "end": {
+          "line": 9,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        235,
+        236
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 33
+        },
+        "end": {
+          "line": 9,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "hollow",
+      "range": [
+        237,
+        243
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 35
+        },
+        "end": {
+          "line": 9,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        243,
+        244
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 41
+        },
+        "end": {
+          "line": 9,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "business",
+      "range": [
+        245,
+        253
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 43
+        },
+        "end": {
+          "line": 9,
+          "column": 51
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        253,
+        254
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 51
+        },
+        "end": {
+          "line": 9,
+          "column": 52
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "true",
+      "range": [
+        255,
+        259
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 53
+        },
+        "end": {
+          "line": 9,
+          "column": 57
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        260,
+        261
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 58
+        },
+        "end": {
+          "line": 9,
+          "column": 59
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "<<",
+      "range": [
+        262,
+        264
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 60
+        },
+        "end": {
+          "line": 9,
+          "column": 62
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Employee",
+      "range": [
+        264,
+        272
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 62
+        },
+        "end": {
+          "line": 9,
+          "column": 70
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ">>",
+      "range": [
+        272,
+        274
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 70
+        },
+        "end": {
+          "line": 9,
+          "column": 72
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "systemBoundary",
+      "range": [
+        275,
+        289
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 0
+        },
+        "end": {
+          "line": 10,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "ordering",
+      "range": [
+        290,
+        298
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 15
+        },
+        "end": {
+          "line": 10,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        298,
+        299
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 23
+        },
+        "end": {
+          "line": 10,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Ordering System\"",
+      "range": [
+        299,
+        316
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 24
+        },
+        "end": {
+          "line": 10,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        316,
+        317
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 41
+        },
+        "end": {
+          "line": 10,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        317,
+        319
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 42
+        },
+        "end": {
+          "line": 10,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "type",
+      "range": [
+        320,
+        324
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 45
+        },
+        "end": {
+          "line": 10,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        324,
+        325
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 49
+        },
+        "end": {
+          "line": 10,
+          "column": 50
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "package",
+      "range": [
+        326,
+        333
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 51
+        },
+        "end": {
+          "line": 10,
+          "column": 58
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        334,
+        335
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 59
+        },
+        "end": {
+          "line": 10,
+          "column": 60
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":::",
+      "range": [
+        335,
+        338
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 60
+        },
+        "end": {
+          "line": 10,
+          "column": 63
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "system",
+      "range": [
+        338,
+        344
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 63
+        },
+        "end": {
+          "line": 10,
+          "column": 69
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Browse",
+      "range": [
+        347,
+        353
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 2
+        },
+        "end": {
+          "line": 11,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        353,
+        354
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 8
+        },
+        "end": {
+          "line": 11,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Browse products\"",
+      "range": [
+        354,
+        371
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 9
+        },
+        "end": {
+          "line": 11,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        371,
+        372
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 26
+        },
+        "end": {
+          "line": 11,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Checkout",
+      "range": [
+        375,
+        383
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 2
+        },
+        "end": {
+          "line": 12,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        383,
+        384
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 10
+        },
+        "end": {
+          "line": 12,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Checkout\"",
+      "range": [
+        384,
+        394
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 11
+        },
+        "end": {
+          "line": 12,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        394,
+        395
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 21
+        },
+        "end": {
+          "line": 12,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "<<",
+      "range": [
+        396,
+        398
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 23
+        },
+        "end": {
+          "line": 12,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Core",
+      "range": [
+        398,
+        402
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 25
+        },
+        "end": {
+          "line": 12,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ">>",
+      "range": [
+        402,
+        404
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 29
+        },
+        "end": {
+          "line": 12,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":::",
+      "range": [
+        404,
+        407
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 31
+        },
+        "end": {
+          "line": 12,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "critical",
+      "range": [
+        407,
+        415
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 34
+        },
+        "end": {
+          "line": 12,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Payment",
+      "range": [
+        418,
+        425
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 2
+        },
+        "end": {
+          "line": 13,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        425,
+        426
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 9
+        },
+        "end": {
+          "line": 13,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Process payment\"",
+      "range": [
+        426,
+        443
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 10
+        },
+        "end": {
+          "line": 13,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        443,
+        444
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 27
+        },
+        "end": {
+          "line": 13,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Review",
+      "range": [
+        447,
+        453
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 2
+        },
+        "end": {
+          "line": 14,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        453,
+        454
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 8
+        },
+        "end": {
+          "line": 14,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Review order",
+      "range": [
+        454,
+        466
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 9
+        },
+        "end": {
+          "line": 14,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        466,
+        467
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 21
+        },
+        "end": {
+          "line": 14,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "end",
+      "range": [
+        468,
+        471
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 0
+        },
+        "end": {
+          "line": 15,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "json",
+      "range": [
+        472,
+        476
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 0
+        },
+        "end": {
+          "line": 16,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "OrderData",
+      "range": [
+        477,
+        486
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 5
+        },
+        "end": {
+          "line": 16,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@",
+      "range": [
+        486,
+        487
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 14
+        },
+        "end": {
+          "line": 16,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        487,
+        488
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 15
+        },
+        "end": {
+          "line": 16,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "\n  \"status\": \"pending\",\n  \"items\": [{ \"name\": \"Book\", \"quantity\": 1 }],\n  \"total\": 29.95\n",
+      "range": [
+        488,
+        577
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 16
+        },
+        "end": {
+          "line": 20,
+          "column": 0
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        577,
+        578
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 0
+        },
+        "end": {
+          "line": 20,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":::",
+      "range": [
+        578,
+        581
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 1
+        },
+        "end": {
+          "line": 20,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "data",
+      "range": [
+        581,
+        585
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 4
+        },
+        "end": {
+          "line": 20,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "note",
+      "range": [
+        586,
+        590
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 0
+        },
+        "end": {
+          "line": 21,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "for",
+      "range": [
+        591,
+        594
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 5
+        },
+        "end": {
+          "line": 21,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Checkout",
+      "range": [
+        595,
+        603
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 9
+        },
+        "end": {
+          "line": 21,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"`Validates the **cart** before payment`\"",
+      "range": [
+        604,
+        645
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 18
+        },
+        "end": {
+          "line": 21,
+          "column": 59
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Customer",
+      "range": [
+        646,
+        654
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 0
+        },
+        "end": {
+          "line": 22,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "starts",
+      "range": [
+        655,
+        661
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 9
+        },
+        "end": {
+          "line": 22,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@",
+      "range": [
+        661,
+        662
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 15
+        },
+        "end": {
+          "line": 22,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        662,
+        664
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 16
+        },
+        "end": {
+          "line": 22,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"places order\"",
+      "range": [
+        665,
+        679
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 19
+        },
+        "end": {
+          "line": 22,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--->",
+      "range": [
+        680,
+        684
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 34
+        },
+        "end": {
+          "line": 22,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Checkout",
+      "range": [
+        685,
+        693
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 39
+        },
+        "end": {
+          "line": 22,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Customer",
+      "range": [
+        694,
+        702
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 0
+        },
+        "end": {
+          "line": 23,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        703,
+        706
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 9
+        },
+        "end": {
+          "line": 23,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Browse",
+      "range": [
+        707,
+        713
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 13
+        },
+        "end": {
+          "line": 23,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Checkout",
+      "range": [
+        714,
+        722
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 0
+        },
+        "end": {
+          "line": 24,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "pays",
+      "range": [
+        723,
+        727
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 9
+        },
+        "end": {
+          "line": 24,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@",
+      "range": [
+        727,
+        728
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 13
+        },
+        "end": {
+          "line": 24,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "..>",
+      "range": [
+        728,
+        731
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 14
+        },
+        "end": {
+          "line": 24,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        732,
+        733
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 18
+        },
+        "end": {
+          "line": 24,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "include",
+      "range": [
+        734,
+        741
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 20
+        },
+        "end": {
+          "line": 24,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Payment",
+      "range": [
+        742,
+        749
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 28
+        },
+        "end": {
+          "line": 24,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Staff",
+      "range": [
+        750,
+        755
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 0
+        },
+        "end": {
+          "line": 25,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        756,
+        759
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 6
+        },
+        "end": {
+          "line": 25,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Review",
+      "range": [
+        760,
+        766
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 10
+        },
+        "end": {
+          "line": 25,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Review",
+      "range": [
+        767,
+        773
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 0
+        },
+        "end": {
+          "line": 26,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        774,
+        777
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 7
+        },
+        "end": {
+          "line": 26,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "OrderData",
+      "range": [
+        778,
+        787
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 11
+        },
+        "end": {
+          "line": 26,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "classDef",
+      "range": [
+        788,
+        796
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 0
+        },
+        "end": {
+          "line": 27,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "system",
+      "range": [
+        797,
+        803
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 9
+        },
+        "end": {
+          "line": 27,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "stroke",
+      "range": [
+        804,
+        810
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 16
+        },
+        "end": {
+          "line": 27,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        810,
+        811
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 22
+        },
+        "end": {
+          "line": 27,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "#c8a02a",
+      "range": [
+        811,
+        818
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 23
+        },
+        "end": {
+          "line": 27,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        818,
+        819
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 30
+        },
+        "end": {
+          "line": 27,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "stroke-width",
+      "range": [
+        819,
+        831
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 31
+        },
+        "end": {
+          "line": 27,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        831,
+        832
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 43
+        },
+        "end": {
+          "line": 27,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "2px",
+      "range": [
+        832,
+        835
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 44
+        },
+        "end": {
+          "line": 27,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "classDef",
+      "range": [
+        836,
+        844
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 0
+        },
+        "end": {
+          "line": 28,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "critical",
+      "range": [
+        845,
+        853
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 9
+        },
+        "end": {
+          "line": 28,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "stroke",
+      "range": [
+        854,
+        860
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 18
+        },
+        "end": {
+          "line": 28,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        860,
+        861
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 24
+        },
+        "end": {
+          "line": 28,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "#c33",
+      "range": [
+        861,
+        865
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 25
+        },
+        "end": {
+          "line": 28,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        865,
+        866
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 29
+        },
+        "end": {
+          "line": 28,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "stroke-width",
+      "range": [
+        866,
+        878
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 30
+        },
+        "end": {
+          "line": 28,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        878,
+        879
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 42
+        },
+        "end": {
+          "line": 28,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "3px",
+      "range": [
+        879,
+        882
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 43
+        },
+        "end": {
+          "line": 28,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "classDef",
+      "range": [
+        883,
+        891
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 0
+        },
+        "end": {
+          "line": 29,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "data",
+      "range": [
+        892,
+        896
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 9
+        },
+        "end": {
+          "line": 29,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "stroke",
+      "range": [
+        897,
+        903
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 14
+        },
+        "end": {
+          "line": 29,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        903,
+        904
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 20
+        },
+        "end": {
+          "line": 29,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "#3572a5",
+      "range": [
+        904,
+        911
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 21
+        },
+        "end": {
+          "line": 29,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "starts",
+      "range": [
+        912,
+        918
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 0
+        },
+        "end": {
+          "line": 30,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        918,
+        920
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 6
+        },
+        "end": {
+          "line": 30,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "animation",
+      "range": [
+        921,
+        930
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 9
+        },
+        "end": {
+          "line": 30,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        930,
+        931
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 18
+        },
+        "end": {
+          "line": 30,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "fast",
+      "range": [
+        932,
+        936
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 20
+        },
+        "end": {
+          "line": 30,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        937,
+        938
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 25
+        },
+        "end": {
+          "line": 30,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "style",
+      "range": [
+        939,
+        944
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 0
+        },
+        "end": {
+          "line": 31,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "pays",
+      "range": [
+        945,
+        949
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 6
+        },
+        "end": {
+          "line": 31,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "stroke",
+      "range": [
+        950,
+        956
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 11
+        },
+        "end": {
+          "line": 31,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        956,
+        957
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 17
+        },
+        "end": {
+          "line": 31,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "#6b46c1",
+      "range": [
+        957,
+        964
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 18
+        },
+        "end": {
+          "line": 31,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        964,
+        965
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 25
+        },
+        "end": {
+          "line": 31,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "stroke-width",
+      "range": [
+        965,
+        977
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 26
+        },
+        "end": {
+          "line": 31,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        977,
+        978
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 38
+        },
+        "end": {
+          "line": 31,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "2px",
+      "range": [
+        978,
+        981
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 39
+        },
+        "end": {
+          "line": 31,
+          "column": 42
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    982
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 32,
+      "column": 0
+    }
+  }
+}

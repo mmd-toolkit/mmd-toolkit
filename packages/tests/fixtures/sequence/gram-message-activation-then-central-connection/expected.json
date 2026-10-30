@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An activation mark and a central connection together: not a message of the grammar, and rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...equenceDiagramA->>+()B: x\n----------------------^\nExpecting 'link', 'ACTOR', got '()'"
+  }
+}

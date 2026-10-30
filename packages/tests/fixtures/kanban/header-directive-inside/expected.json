@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md Known divergences (directive-as-token-boundary): A directive may not split this complete unit."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, text: a string between the delimiters holds delimiter characters."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "r",
+      "level": 0,
+      "descr": "text with ( paren",
+      "type": 2,
+      "children": []
+    }
+  }
+}

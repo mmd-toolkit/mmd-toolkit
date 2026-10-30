@@ -1,0 +1,678 @@
+{
+  "type": "Root",
+  "diagramType": "usecase",
+  "body": {
+    "type": "UsecaseDiagram",
+    "body": [
+      {
+        "type": "UsecaseSystemBoundaryStatement",
+        "id": null,
+        "title": {
+          "type": "UsecaseLabel",
+          "kind": "string",
+          "value": "Payment service",
+          "range": [
+            28,
+            45
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 15
+            },
+            "end": {
+              "line": 2,
+              "column": 32
+            }
+          }
+        },
+        "metadata": {
+          "type": "UsecaseMetadata",
+          "properties": [
+            {
+              "type": "UsecaseMetadataProperty",
+              "key": {
+                "type": "Identifier",
+                "name": "type",
+                "range": [
+                  48,
+                  52
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 35
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 39
+                  }
+                }
+              },
+              "value": {
+                "type": "Identifier",
+                "name": "package",
+                "range": [
+                  54,
+                  61
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 41
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 48
+                  }
+                }
+              },
+              "range": [
+                48,
+                61
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 35
+                },
+                "end": {
+                  "line": 2,
+                  "column": 48
+                }
+              }
+            }
+          ],
+          "range": [
+            45,
+            63
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 32
+            },
+            "end": {
+              "line": 2,
+              "column": 50
+            }
+          }
+        },
+        "classes": [],
+        "body": [
+          {
+            "type": "UsecaseEntityStatement",
+            "entity": {
+              "type": "UsecaseEntity",
+              "id": {
+                "type": "Identifier",
+                "name": "Authorize",
+                "range": [
+                  66,
+                  75
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 11
+                  }
+                }
+              },
+              "shape": "ellipse",
+              "label": {
+                "type": "UsecaseLabel",
+                "kind": "string",
+                "value": "Authorize payment",
+                "range": [
+                  76,
+                  95
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 12
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 31
+                  }
+                }
+              },
+              "metadata": null,
+              "stereotype": null,
+              "classes": [],
+              "range": [
+                66,
+                96
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 2
+                },
+                "end": {
+                  "line": 3,
+                  "column": 32
+                }
+              }
+            },
+            "range": [
+              66,
+              96
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 2
+              },
+              "end": {
+                "line": 3,
+                "column": 32
+              }
+            }
+          }
+        ],
+        "range": [
+          13,
+          100
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "UsecaseMetadataAssignmentStatement",
+        "target": {
+          "type": "Identifier",
+          "name": "Payment_service",
+          "range": [
+            101,
+            116
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 5,
+              "column": 15
+            }
+          }
+        },
+        "metadata": {
+          "type": "UsecaseMetadata",
+          "properties": [
+            {
+              "type": "UsecaseMetadataProperty",
+              "key": {
+                "type": "Identifier",
+                "name": "type",
+                "range": [
+                  119,
+                  123
+                ],
+                "loc": {
+                  "start": {
+                    "line": 5,
+                    "column": 18
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 22
+                  }
+                }
+              },
+              "value": {
+                "type": "Identifier",
+                "name": "rect",
+                "range": [
+                  125,
+                  129
+                ],
+                "loc": {
+                  "start": {
+                    "line": 5,
+                    "column": 24
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 28
+                  }
+                }
+              },
+              "range": [
+                119,
+                129
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 18
+                },
+                "end": {
+                  "line": 5,
+                  "column": 28
+                }
+              }
+            }
+          ],
+          "range": [
+            116,
+            131
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 15
+            },
+            "end": {
+              "line": 5,
+              "column": 30
+            }
+          }
+        },
+        "range": [
+          101,
+          131
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 30
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      131
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 5,
+        "column": 30
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "usecase-beta",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "systemBoundary",
+      "range": [
+        13,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Payment service\"",
+      "range": [
+        28,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 15
+        },
+        "end": {
+          "line": 2,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        45,
+        47
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 32
+        },
+        "end": {
+          "line": 2,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "type",
+      "range": [
+        48,
+        52
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 35
+        },
+        "end": {
+          "line": 2,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        52,
+        53
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 39
+        },
+        "end": {
+          "line": 2,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "package",
+      "range": [
+        54,
+        61
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 41
+        },
+        "end": {
+          "line": 2,
+          "column": 48
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        62,
+        63
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 49
+        },
+        "end": {
+          "line": 2,
+          "column": 50
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Authorize",
+      "range": [
+        66,
+        75
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 3,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        75,
+        76
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 11
+        },
+        "end": {
+          "line": 3,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Authorize payment\"",
+      "range": [
+        76,
+        95
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 12
+        },
+        "end": {
+          "line": 3,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        95,
+        96
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 31
+        },
+        "end": {
+          "line": 3,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "end",
+      "range": [
+        97,
+        100
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Payment_service",
+      "range": [
+        101,
+        116
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        116,
+        118
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 15
+        },
+        "end": {
+          "line": 5,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "type",
+      "range": [
+        119,
+        123
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 18
+        },
+        "end": {
+          "line": 5,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        123,
+        124
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 22
+        },
+        "end": {
+          "line": 5,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "rect",
+      "range": [
+        125,
+        129
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 24
+        },
+        "end": {
+          "line": 5,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        130,
+        131
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 29
+        },
+        "end": {
+          "line": 5,
+          "column": 30
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    131
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 30
+    }
+  }
+}

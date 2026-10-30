@@ -1,0 +1,344 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: packet-no-empty-description-block >> invalid >>> docs/rules/packet-no-empty-description-block.md incorrect 1
+Filename: packet-no-empty-description-block-incorrect-1.mmd
+
+Code:
+  1 | packet
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   0-15: "Source Port"
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet
+          2 |   0-15: "Source Port"
+          3 |
+---
+
+
+Test: packet-no-empty-description-block >> invalid >>> invalid/packet/accdescr-block-repeat
+Filename: tests/fixtures/rules/packet-no-empty-description-block/invalid/packet/accdescr-block-repeat-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr: First
+  3 | accDescr { Second }
+  4 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet
+          2 | accDescr: First
+          3 | accDescr { Second }
+          4 |
+---
+
+
+Test: packet-no-empty-description-block >> invalid >>> invalid/packet/beta-empty-description
+Filename: tests/fixtures/rules/packet-no-empty-description-block/invalid/packet/beta-empty-description-input.mmd
+
+Code:
+  1 | packet-beta
+  2 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  3 | 0: "Flag"
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet-beta
+          2 | 0: "Flag"
+          3 |
+---
+
+
+Test: packet-no-empty-description-block >> invalid >>> invalid/packet/description-block-empty-line
+Filename: tests/fixtures/rules/packet-no-empty-description-block/invalid/packet/description-block-empty-line-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr: First
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  4 | accDescr: Third
+  5 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet
+          2 | accDescr: First
+          3 | accDescr: Third
+          4 |
+---
+
+
+Test: packet-no-empty-description-block >> invalid >>> invalid/packet/description-directive-empty-line
+Filename: tests/fixtures/rules/packet-no-empty-description-block/invalid/packet/description-directive-empty-line-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr: First
+  3 | accDescr {%%{init: {"packet": {"showBits": false}}}%%}
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 | accDescr: Third
+  5 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: packet-no-empty-description-block >> invalid >>> invalid/packet/description-then-empty
+Filename: tests/fixtures/rules/packet-no-empty-description-block/invalid/packet/description-then-empty-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr: First
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  4 | 0: "Flag"
+  5 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet
+          2 | accDescr: First
+          3 | 0: "Flag"
+          4 |
+---
+
+
+Test: packet-no-empty-description-block >> invalid >>> invalid/packet/docs-incorrect-1
+Filename: tests/fixtures/rules/packet-no-empty-description-block/invalid/packet/docs-incorrect-1-input.mmd
+
+Code:
+  1 | packet
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   0-15: "Source Port"
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet
+          2 |   0-15: "Source Port"
+          3 |
+---
+
+
+Test: packet-no-empty-description-block >> invalid >>> invalid/packet/empty-block-after-header
+Filename: tests/fixtures/rules/packet-no-empty-description-block/invalid/packet/empty-block-after-header-input.mmd
+
+Code:
+  1 | packet accDescr {}
+    |        ^~~~~~~~~~~ [1]
+  2 | 0-7: "Byte"
+  3 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: packet-no-empty-description-block >> invalid >>> invalid/packet/empty-comment-after
+Filename: tests/fixtures/rules/packet-no-empty-description-block/invalid/packet/empty-comment-after-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr {} %% TODO
+    | ^~~~~~~~~~~ [1]
+  3 | 0: "Flag"
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: packet-no-empty-description-block >> invalid >>> invalid/packet/empty-comment-before
+Filename: tests/fixtures/rules/packet-no-empty-description-block/invalid/packet/empty-comment-before-input.mmd
+
+Code:
+  1 | packet
+  2 | %% TODO
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  4 | 0: "Flag"
+  5 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet
+          2 | %% TODO
+          3 | 0: "Flag"
+          4 |
+---
+
+
+Test: packet-no-empty-description-block >> invalid >>> invalid/packet/empty-comment-opening-gap
+Filename: tests/fixtures/rules/packet-no-empty-description-block/invalid/packet/empty-comment-opening-gap-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr
+    | ^~~~~~~~\ [1]
+  3 | %% TODO
+    | ~~~~~~~\ [1]
+  4 | {}
+    | ~~ [1]
+  5 | 0: "Flag"
+  6 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet
+          2 | 0: "Flag"
+          3 |
+---
+
+
+Test: packet-no-empty-description-block >> invalid >>> invalid/packet/empty-directive-opening-gap
+Filename: tests/fixtures/rules/packet-no-empty-description-block/invalid/packet/empty-directive-opening-gap-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr %%{init: {}}%%{}
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 | 0: "Flag"
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: packet-no-empty-description-block >> invalid >>> invalid/packet/empty-directive-with-braces
+Filename: tests/fixtures/rules/packet-no-empty-description-block/invalid/packet/empty-directive-with-braces-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr {%%{init: {"packet": {"showBits": false}}}%%}
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 | 0: "Flag"
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: packet-no-empty-description-block >> invalid >>> invalid/packet/empty-hidden-suffix-comment
+Filename: tests/fixtures/rules/packet-no-empty-description-block/invalid/packet/empty-hidden-suffix-comment-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr {}%%{!
+    | ^~~~~~~~~~~~~~~\ [1]
+  3 | %% outside
+    | ~~~~~~~~~~\ [1]
+  4 | }%%
+    | ~~~ [1]
+  5 |
+  6 | 0: "Flag"
+  7 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet
+          2 |
+          3 | 0: "Flag"
+          4 |
+---
+
+
+Test: packet-no-empty-description-block >> invalid >>> invalid/packet/empty-hidden-suffix
+Filename: tests/fixtures/rules/packet-no-empty-description-block/invalid/packet/empty-hidden-suffix-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr {}%%{!}%%
+    | ^~~~~~~~~~~~~~~~~~ [1]
+  3 |
+  4 | 0: "Flag"
+  5 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet
+          2 |
+          3 | 0: "Flag"
+          4 |
+---
+
+
+Test: packet-no-empty-description-block >> invalid >>> invalid/packet/gram-empty-description
+Filename: tests/fixtures/rules/packet-no-empty-description-block/invalid/packet/gram-empty-description-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  3 | 0:"A"
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet
+          2 | 0:"A"
+          3 |
+---
+
+
+Test: packet-no-empty-description-block >> invalid >>> invalid/packet/lex-description-directive-only
+Filename: tests/fixtures/rules/packet-no-empty-description-block/invalid/packet/lex-description-directive-only-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr {%%{wrap}%%}
+    | ^~~~~~~~~~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: packet-no-empty-description-block >> invalid >>> invalid/packet/lex-description-whitespace-only
+Filename: tests/fixtures/rules/packet-no-empty-description-block/invalid/packet/lex-description-whitespace-only-input.mmd
+
+Code:
+  1 | packet
+  2 | accDescr { 	
+    | ^~~~~~~~~~~~\ [1]
+  3 |  }
+    | ~~ [1]
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+    Suggestions:
+      - Remove the empty block.
+        Output:
+          1 | packet
+          2 |
+---

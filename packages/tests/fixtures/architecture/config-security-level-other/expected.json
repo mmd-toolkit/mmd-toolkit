@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Site securityLevel replaces architecture accessibility text but leaves group and service titles unchanged."
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": true
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "a&lt;b&gt;&equals;c",
+    "accDescr": "d<br/>e&equals;f",
+    "nodes": [
+      {
+        "id": "s",
+        "type": "service",
+        "in": "g",
+        "icon": "server",
+        "title": "Node<br>=y"
+      }
+    ],
+    "groups": [
+      {
+        "id": "g",
+        "icon": "cloud",
+        "title": "Root<b>=x"
+      }
+    ],
+    "edges": [],
+    "layoutHints": []
+  }
+}

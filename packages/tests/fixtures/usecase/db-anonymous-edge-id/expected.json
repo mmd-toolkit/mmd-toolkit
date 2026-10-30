@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a generated-looking but unwritten edge id fail as a class target?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Class/style target 'edge_0' is unresolved or anonymous at line 3, column 7 [27,33)"
+  }
+}

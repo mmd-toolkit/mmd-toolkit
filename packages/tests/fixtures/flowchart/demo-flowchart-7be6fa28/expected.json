@@ -1,0 +1,162 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/flowchart.html",
+    "line": 858
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [
+          "color:red"
+        ],
+        "classes": [],
+        "text": "red<br>text",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [
+          "color:blue"
+        ],
+        "classes": [
+          "clickable"
+        ],
+        "text": "blue<br>text",
+        "type": "round",
+        "props": {},
+        "link": "flowchart.html#link-clicked"
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [
+          "stroke:#ff0000",
+          "fill:#ffcccc",
+          "color:#ff0000"
+        ],
+        "classes": [],
+        "text": "red<br/>text",
+        "type": "lean_right",
+        "props": {}
+      },
+      {
+        "id": "D",
+        "labelType": "text",
+        "styles": [
+          "stroke:#0000ff",
+          "fill:#ccccff",
+          "color:#0000ff"
+        ],
+        "classes": [
+          "clickable"
+        ],
+        "text": "blue<br/>text",
+        "type": "diamond",
+        "props": {}
+      },
+      {
+        "id": "E",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "default<br />style",
+        "type": "hexagon",
+        "props": {}
+      },
+      {
+        "id": "F",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "default<br />style",
+        "type": "stadium",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "red<br>text",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B_0",
+        "style": [
+          "color:red",
+          "fill:none"
+        ]
+      },
+      {
+        "start": "C",
+        "end": "D",
+        "type": "arrow_point",
+        "text": "blue<br/>text",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_C_D_0",
+        "style": [
+          "stroke:DarkGray",
+          "stroke-width:2px",
+          "color:#0000ff",
+          "fill:none"
+        ]
+      },
+      {
+        "start": "E",
+        "end": "F",
+        "type": "arrow_point",
+        "text": "default<br />style",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_E_F_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": [
+        "color:Sienna"
+      ]
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [
+      {
+        "id": "B",
+        "text": "link test"
+      },
+      {
+        "id": "D",
+        "text": "click test"
+      }
+    ],
+    "clickCalls": [
+      {
+        "id": "D",
+        "name": "testClick",
+        "args": null
+      }
+    ]
+  }
+}

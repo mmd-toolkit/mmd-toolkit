@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Known divergences: html-tag-in-frontmatter: mermaid.js reads the quotes of the title as `'`; here they stay."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "b='c'>d",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

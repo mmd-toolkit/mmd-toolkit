@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ASCII space after a passed bare line is lexer whitespace."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

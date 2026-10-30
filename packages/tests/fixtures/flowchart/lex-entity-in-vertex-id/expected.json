@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md The statement context: the letter rule reads U+FB02, the first character of the placeholder, but it would not read the degree sign after it, so the placeholder is not read as one unit; no rule reads the degree sign, and the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nflowchart LRAﬂ°x¶ß-->B\n--------------^"
+  }
+}

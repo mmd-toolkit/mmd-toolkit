@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a terminated class definition without trailing whitespace leave the next leaf outside the preceding section?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "children": []
+      },
+      {
+        "name": "b",
+        "value": 1
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "styled",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An optionless cherry-pick parses but Db rejects the absent source."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Incorrect usage of \"cherryPick\". Source commit id should exist and provided"
+  }
+}

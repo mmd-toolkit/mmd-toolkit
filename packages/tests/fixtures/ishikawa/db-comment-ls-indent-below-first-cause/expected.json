@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Diagram comment indents a newly exposed child from LS."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "A",
+          "children": []
+        },
+        {
+          "text": "B",
+          "children": []
+        },
+        {
+          "text": "C",
+          "children": []
+        }
+      ]
+    }
+  }
+}

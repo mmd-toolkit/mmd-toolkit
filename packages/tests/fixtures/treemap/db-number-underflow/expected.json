@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a decimal below the smallest subnormal underflow to zero?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "Tiny",
+        "value": 0
+      }
+    ],
+    "classDefs": []
+  }
+}

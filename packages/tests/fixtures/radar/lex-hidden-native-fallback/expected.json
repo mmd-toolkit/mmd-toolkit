@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md: Does a failed native directive boundary fall back to a comment that consumes the attached axis?"
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "B"
+      }
+    ],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/c4/parser/c4System.spec.ts",
+    "line": 24,
+    "test": "parsing a C4 System_Ext > should parse a C4 diagram with one System correctly"
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "System Context diagram for Internet Banking System",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "SystemAA",
+        "label": {
+          "text": "Internet Banking System"
+        },
+        "descr": {
+          "text": "Allows customers to view information about their bank accounts, and make payments."
+        },
+        "typeC4Shape": {
+          "text": "external_system"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

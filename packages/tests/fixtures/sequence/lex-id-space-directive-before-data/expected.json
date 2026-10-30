@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "diagrams/sequence.md, The id context, rule 4: a space and a directive between the id and `@{`; the participant A."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "queue"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "type": "queue"
+        }
+      }
+    ]
+  }
+}

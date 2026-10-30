@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A space before the beta header line feed becomes a whitespace statement, so the next-line root is rejected."
+  },
+  "knownDivergence": "blank-line-after-header-or-comments",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nishikawa-beta R\n--------------^\nExpecting 'SPACELINE', 'NL', 'EOF', got 'TEXT'"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A tiny decimal rejects lexically instead of underflowing through FLOAT."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 3: unexpected character: ->.<- at offset: 9, skipped 1 characters. Parse error on line 2, column 4: Expecting token of type ':' but found `0`.\nParse error on line 2, column 5: Expecting token of type ':' but found `0`.\nParse error on line 2, column 6: Expecting token of type ':' but found `0`.\nParse error on line 2, column 7: Expecting token of type ':' but found `0`.\nParse error on line 2, column 8: Expecting token of type ':' but found `0`.\nParse error on line 2, column 9: Expecting token of type ':' but found `0`.\nParse error on line 2, column 10: Expecting token of type ':' but found `0`.\nParse error on line 2, column 11: Expecting token of type ':' but found `0`.\nParse error on line 2, column 12: Expecting token of type ':' but found `0`.\nParse error on line 2, column 13: Expecting token of type ':' but found `0`.\nParse error on line 2, column 14: Expecting token of type ':' but found `0`.\nParse error on line 2, column 15: Expecting token of type ':' but found `0`.\nParse error on line 2, column 16: Expecting token of type ':' but found `0`.\nParse error on line 2, column 17: Expecting token of type ':' but found `0`.\nParse error on line 2, column 18: Expecting token of type ':' but found `0`.\nParse error on line 2, column 19: Expecting token of type ':' but found `0`.\nParse error on line 2, column 20: Expecting token of type ':' but found `0`.\nParse error on line 2, column 21: Expecting token of type ':' but found `0`.\nParse error on line 2, column 22: Expecting token of type ':' but found `0`.\nParse error on line 2, column 23: Expecting token of type ':' but found `1`."
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Line break tags with whitespace and case variants under a securityLevel that is not one of mermaid.js's values: whitespace between `br` and `/` and between `/` and `>` is allowed, whitespace elsewhere is not, and the case of `br` is free."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a<br/>b",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a&lt; br&gt;b",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a&lt;br / &gt;b",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "D",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a&lt;b r&gt;b",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "E",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a<br/>b",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "F",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a<br/>b",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

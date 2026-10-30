@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md, comment-takes-character: mermaid.js reads `.%% c5` as a comment, and autonumber has no start; here `.` followed by `%%` is no number but an id run, and the input is rejected."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "B"
+      },
+      {
+        "name": "B",
+        "description": "B",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "message": {
+          "visible": true
+        },
+        "wrap": false,
+        "type": 26
+      },
+      {
+        "from": "A",
+        "to": "B",
+        "message": "x",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "SystemQueue keyword with a glued underscore is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nC4ContextSystemQueue_(a, \"A\",\n---------^"
+  }
+}

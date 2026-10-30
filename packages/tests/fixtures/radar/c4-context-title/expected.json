@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4-keyword-anywhere.md Radar: Does C4Context in a radar title keep radar detection?"
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "C4Context",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

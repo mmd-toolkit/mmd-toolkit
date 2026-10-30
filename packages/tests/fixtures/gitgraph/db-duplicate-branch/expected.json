@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Creating an existing branch is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Trying to create an existing branch. (Help: Either use a new name if you want create a new branch or try using \"checkout b\")"
+  }
+}

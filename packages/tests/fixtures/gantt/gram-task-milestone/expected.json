@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Tasks: the tag milestone with an id, a start, and an end."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-01-01"
+          },
+          "endTime": {
+            "data": "0d"
+          }
+        },
+        "task": "a ",
+        "classes": [],
+        "id": "m1",
+        "milestone": true,
+        "order": 0
+      }
+    ],
+    "links": []
+  }
+}

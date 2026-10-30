@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A click statement applies the class step with the class clickable, which reaches the subgraph S, and the call is recorded for the id S although no vertex has it."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A"
+        ],
+        "title": "S",
+        "classes": [
+          "clickable"
+        ],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": [],
+    "clickCalls": [
+      {
+        "id": "S",
+        "name": "cb",
+        "args": null
+      }
+    ]
+  }
+}

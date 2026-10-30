@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/eventmodeling/eventmodeling.spec.ts",
+    "line": 37,
+    "test": "eventmodeling diagrams > should handle data block references"
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "cmd",
+        "entityIdentifier": "AddItem",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "evt",
+        "entityIdentifier": "ItemAdded",
+        "sourceFrames": [],
+        "data": {
+          "kind": "block",
+          "value": "{\n  productId: 7\n}\n"
+        }
+      }
+    ]
+  }
+}

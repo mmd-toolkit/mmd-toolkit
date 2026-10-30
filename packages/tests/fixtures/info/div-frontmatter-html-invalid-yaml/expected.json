@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Attribute quote cleanup can invalidate otherwise valid written YAML."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "bad indentation of a mapping entry (1:19)\n\n 1 | title: '<b class='x'>Front</b>'\n-----------------------^"
+  }
+}

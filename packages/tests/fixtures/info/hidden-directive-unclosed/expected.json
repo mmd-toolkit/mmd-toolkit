@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed non-global form is a native comment, retaining its LF."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

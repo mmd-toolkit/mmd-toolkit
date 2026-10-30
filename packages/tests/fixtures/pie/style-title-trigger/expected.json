@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The global style line rule can remove the last semicolon of title text."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "style fill:#f00",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

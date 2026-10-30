@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/kanban/kanban.spec.ts",
+    "line": 19,
+    "test": "when parsing a kanban  > hierarchy > KNBN-1 should handle a simple root definition abc122"
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "root",
+        "label": "root",
+        "isGroup": true
+      }
+    ]
+  }
+}

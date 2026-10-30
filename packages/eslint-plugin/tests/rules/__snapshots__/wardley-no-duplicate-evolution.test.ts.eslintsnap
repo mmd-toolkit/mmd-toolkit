@@ -1,0 +1,268 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: wardley-no-duplicate-evolution >> invalid >>> docs/rules/wardley-no-duplicate-evolution.md incorrect 1
+Filename: wardley-no-duplicate-evolution-incorrect-1.mmd
+
+Code:
+  1 | wardley-beta
+  2 |   evolution Genesis -> Custom
+  3 |   evolution Early -> Late
+    |   ^~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 |   evolution Genesis -> Custom
+          3 |
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 |   evolution Early -> Late
+          3 |
+---
+
+
+Test: wardley-no-duplicate-evolution >> invalid >>> invalid/wardley/docs-incorrect-1
+Filename: tests/fixtures/rules/wardley-no-duplicate-evolution/invalid/wardley/docs-incorrect-1-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 |   evolution Genesis -> Custom
+  3 |   evolution Early -> Late
+    |   ^~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 |   evolution Genesis -> Custom
+          3 |
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 |   evolution Early -> Late
+          3 |
+---
+
+
+Test: wardley-no-duplicate-evolution >> invalid >>> invalid/wardley/evolution-boundaries-replaced
+Filename: tests/fixtures/rules/wardley-no-duplicate-evolution/invalid/wardley/evolution-boundaries-replaced-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | evolution Early@0.2 -> Late@1.0
+  3 | evolution Early -> Late
+    | ^~~~~~~~~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution Early@0.2 -> Late@1.0
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution Early -> Late
+---
+
+
+Test: wardley-no-duplicate-evolution >> invalid >>> invalid/wardley/evolution-duplicate
+Filename: tests/fixtures/rules/wardley-no-duplicate-evolution/invalid/wardley/evolution-duplicate-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | evolution Genesis -> Custom
+  3 | evolution Early -> Late
+    | ^~~~~~~~~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution Genesis -> Custom
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution Early -> Late
+---
+
+
+Test: wardley-no-duplicate-evolution >> invalid >>> invalid/wardley/evolution-entity-same
+Filename: tests/fixtures/rules/wardley-no-duplicate-evolution/invalid/wardley/evolution-entity-same-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | evolution A -> B
+  3 | evolution "#65;" -> B
+    | ^~~~~~~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution A -> B
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution "#65;" -> B
+---
+
+
+Test: wardley-no-duplicate-evolution >> invalid >>> invalid/wardley/evolution-html-quotes-written
+Filename: tests/fixtures/rules/wardley-no-duplicate-evolution/invalid/wardley/evolution-html-quotes-written-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | evolution "<b x="a">T</b>" -> B
+  3 | evolution "<b x='a'>T</b>" -> B
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution "<b x="a">T</b>" -> B
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution "<b x='a'>T</b>" -> B
+---
+
+
+Test: wardley-no-duplicate-evolution >> invalid >>> invalid/wardley/evolution-quoted-slash-name-replaced
+Filename: tests/fixtures/rules/wardley-no-duplicate-evolution/invalid/wardley/evolution-quoted-slash-name-replaced-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | evolution a -> "b/c" -> d
+  3 | evolution a -> b / c -> d
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution a -> "b/c" -> d
+          3 |
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution a -> b / c -> d
+          3 |
+---
+
+
+Test: wardley-no-duplicate-evolution >> invalid >>> invalid/wardley/evolution-stage-count-change
+Filename: tests/fixtures/rules/wardley-no-duplicate-evolution/invalid/wardley/evolution-stage-count-change-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | evolution A -> B
+  3 | evolution A -> B -> C
+    | ^~~~~~~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution A -> B
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution A -> B -> C
+---
+
+
+Test: wardley-no-duplicate-evolution >> invalid >>> invalid/wardley/evolution-triple
+Filename: tests/fixtures/rules/wardley-no-duplicate-evolution/invalid/wardley/evolution-triple-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | evolution A -> B
+  3 | evolution C -> D
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | evolution A -> B
+    | ^~~~~~~~~~~~~~~~ [2]
+
+[1] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution A -> B
+          3 | evolution A -> B
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution C -> D
+          3 | evolution A -> B
+[2] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution A -> B
+          3 | evolution C -> D
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution A -> B
+          3 | evolution A -> B
+---
+
+
+Test: wardley-no-duplicate-evolution >> invalid >>> invalid/wardley/evolution-whitespace-secondary
+Filename: tests/fixtures/rules/wardley-no-duplicate-evolution/invalid/wardley/evolution-whitespace-secondary-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | evolution A / " " -> B
+  3 | evolution A -> B
+    | ^~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution A / " " -> B
+      - Remove the earlier statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution A -> B
+---
+
+
+Test: wardley-no-duplicate-evolution >> invalid >>> invalid/wardley/stages-equal-predecessor
+Filename: tests/fixtures/rules/wardley-no-duplicate-evolution/invalid/wardley/stages-equal-predecessor-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | evolution Early -> Late
+  3 | evolution Early -> Late
+  4 | evolution Start -> End
+    | ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier evolution stages with these stages.
+    Suggestions:
+      - Remove this statement.
+        Output:
+          1 | wardley-beta
+          2 | evolution Early -> Late
+          3 | evolution Early -> Late
+          4 |
+---

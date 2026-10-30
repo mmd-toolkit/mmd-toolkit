@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do line common values retain LS and PS?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "A B C",
+    "accTitle": "A B C",
+    "accDescr": "A B C",
+    "nodes": [],
+    "classDefs": []
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The annotations of a statement under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): a name has none of the characters that the replacement changes, so they are as written."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [
+          "interface"
+        ],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "type": "",
+        "label": "B",
+        "text": "B",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [
+          "service"
+        ],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

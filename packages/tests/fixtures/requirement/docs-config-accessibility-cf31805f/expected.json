@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/config/accessibility.md",
+    "line": 231
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "My Requirement Diagram",
+    "accDescr": "My Requirement Diagram Description",
+    "requirements": [
+      {
+        "name": "test_req",
+        "type": "Requirement",
+        "requirementId": "1",
+        "text": "the test text.",
+        "risk": "High",
+        "verifyMethod": "Test",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "elements": [
+      {
+        "name": "test_entity",
+        "type": "simulation",
+        "docRef": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "type": "satisfies",
+        "src": "test_entity",
+        "dst": "test_req"
+      }
+    ],
+    "classes": []
+  }
+}

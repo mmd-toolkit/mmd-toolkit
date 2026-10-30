@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: An empty accessibility block cannot interrupt an already-started box node list."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 4, column 1: Expecting token of type 'EOF' but found `accDescr {}`."
+  }
+}

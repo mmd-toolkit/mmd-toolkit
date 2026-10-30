@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check a trailing indentation token followed by a separate next-line indentation after class."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 3, column 1: Expecting: one of these possible Token sequences:\n  1. [QUOTED_NAME]\n  2. [BARE_NAME]\nbut found: ' '"
+  }
+}

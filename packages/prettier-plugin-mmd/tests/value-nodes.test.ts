@@ -1,0 +1,357 @@
+/**
+ * Ties each diagram printer's list of value node types to the parser's node
+ * types, so that a node type added to the tree of a diagram type is placed
+ * on purpose.
+ */
+import { visitorKeys } from "@mmd-toolkit/parser"
+import { describe, expect, it } from "vitest"
+import { agentflowValueNodeTypes } from "../src/printers/agentflow-layout.ts"
+import { valueNodeTypes } from "../src/printers/flowchart-layout.ts"
+import { blockValueNodeTypes } from "../src/printers/block-layout.ts"
+import { classValueNodeTypes } from "../src/printers/class-layout.ts"
+import { ishikawaValueNodeTypes } from "../src/printers/ishikawa-layout.ts"
+import { vennValueNodeTypes } from "../src/printers/venn-layout.ts"
+import { c4ValueNodeTypes } from "../src/printers/c4-layout.ts"
+import { usecaseValueNodeTypes } from "../src/printers/usecase-layout.ts"
+import { erValueNodeTypes } from "../src/printers/er-layout.ts"
+import { ganttValueNodeTypes } from "../src/printers/gantt-layout.ts"
+import { journeyValueNodeTypes } from "../src/printers/journey-layout.ts"
+import { kanbanValueNodeTypes } from "../src/printers/kanban-layout.ts"
+import { mindmapValueNodeTypes } from "../src/printers/mindmap-layout.ts"
+import { quadrantValueNodeTypes } from "../src/printers/quadrant-layout.ts"
+import { requirementValueNodeTypes } from "../src/printers/requirement-layout.ts"
+import { sankeyValueNodeTypes } from "../src/printers/sankey-layout.ts"
+import { sequenceValueNodeTypes } from "../src/printers/sequence-layout.ts"
+import { stateValueNodeTypes } from "../src/printers/state-layout.ts"
+import { timelineValueNodeTypes } from "../src/printers/timeline-layout.ts"
+import { gitgraphValueNodeTypes } from "../src/printers/gitgraph-layout.ts"
+import { pieValueNodeTypes } from "../src/printers/pie-layout.ts"
+import { infoValueNodeTypes } from "../src/printers/info-layout.ts"
+import { architectureValueNodeTypes } from "../src/printers/architecture-layout.ts"
+import { treeviewValueNodeTypes } from "../src/printers/treeview-layout.ts"
+import { treemapValueNodeTypes } from "../src/printers/treemap-layout.ts"
+import { radarValueNodeTypes } from "../src/printers/radar-layout.ts"
+import { eventmodelingValueNodeTypes } from "../src/printers/eventmodeling-layout.ts"
+import { cynefinValueNodeTypes } from "../src/printers/cynefin-layout.ts"
+import { wardleyValueNodeTypes } from "../src/printers/wardley-layout.ts"
+import { railroadValueNodeTypes } from "../src/printers/railroad-layout.ts"
+import { packetValueNodeTypes } from "../src/printers/packet-layout.ts"
+import { xychartValueNodeTypes } from "../src/printers/xychart-layout.ts"
+
+/** The leaf node types that every diagram type shares (ast.md, Shared leaf nodes). */
+const sharedLeafTypes = new Set([
+  "Identifier",
+  "StringLiteral",
+  "NumericLiteral",
+])
+
+const leafTypes = Object.entries(visitorKeys)
+  .filter(([, keys]) => keys.length === 0)
+  .map(([type]) => type)
+
+/** A diagram printer's value node types, and its leaf types that are not values. */
+interface DiagramValues {
+  /** The name that the node types of the diagram type start with. */
+  readonly prefix: string
+  readonly values: ReadonlySet<string>
+  /** The leaf node types that are not values, and how they are printed instead. */
+  readonly notValues: ReadonlySet<string>
+}
+
+const diagrams: readonly DiagramValues[] = [
+  {
+    prefix: "Eventmodeling",
+    values: eventmodelingValueNodeTypes,
+    // Arrows are complete punctuation tokens; frame names are identifiers.
+    notValues: new Set(["NumericLiteral", "EventmodelingArrow"]),
+  },
+  {
+    prefix: "Cynefin",
+    values: cynefinValueNodeTypes,
+    // Endpoints are keyword tokens; the whole arrow is structural punctuation.
+    notValues: new Set(["Identifier", "NumericLiteral", "CynefinArrow"]),
+  },
+  {
+    prefix: "Wardley",
+    values: wardleyValueNodeTypes,
+    // Bare names use WardleyIdentifier rather than the shared Identifier.
+    notValues: new Set(["Identifier"]),
+  },
+  {
+    prefix: "Railroad",
+    values: railroadValueNodeTypes,
+    // PEG's dot is printed as its structural punctuation token.
+    notValues: new Set(["RailroadAnyExpression"]),
+  },
+  {
+    prefix: "Treeview",
+    values: treeviewValueNodeTypes,
+    notValues: new Set(["NumericLiteral"]),
+  },
+  { prefix: "Treemap", values: treemapValueNodeTypes, notValues: new Set() },
+  { prefix: "Radar", values: radarValueNodeTypes, notValues: new Set() },
+  {
+    prefix: "Architecture",
+    values: architectureValueNodeTypes,
+    notValues: new Set(["NumericLiteral"]),
+  },
+  {
+    prefix: "Packet",
+    values: packetValueNodeTypes,
+    notValues: new Set(["Identifier"]),
+  },
+  {
+    prefix: "Info",
+    values: infoValueNodeTypes,
+    notValues: new Set(["Identifier", "StringLiteral", "NumericLiteral"]),
+  },
+  { prefix: "Gitgraph", values: gitgraphValueNodeTypes, notValues: new Set() },
+  {
+    prefix: "Pie",
+    values: pieValueNodeTypes,
+    notValues: new Set(["Identifier"]),
+  },
+  {
+    prefix: "Usecase",
+    values: usecaseValueNodeTypes,
+    notValues: new Set([
+      "NumericLiteral",
+      "UsecaseArrow",
+      "UsecaseOpeningArrow",
+      "UsecaseDirectionStatement",
+    ]),
+  },
+  {
+    prefix: "Agentflow",
+    values: agentflowValueNodeTypes,
+    notValues: new Set([
+      "AgentflowEmptyStatement",
+      "AgentflowArrow",
+      "AgentflowOpeningArrow",
+    ]),
+  },
+  {
+    prefix: "Ishikawa",
+    values: ishikawaValueNodeTypes,
+    // Every value, including quotes and numbers, is an IshikawaLiteral.
+    notValues: new Set(["Identifier", "StringLiteral", "NumericLiteral"]),
+  },
+  {
+    prefix: "Venn",
+    values: vennValueNodeTypes,
+    notValues: new Set(),
+  },
+  {
+    prefix: "C4",
+    values: c4ValueNodeTypes,
+    notValues: new Set([
+      // C4 numbers and identifiers are C4Literal text.
+      "Identifier",
+      "NumericLiteral",
+    ]),
+  },
+  {
+    prefix: "Flowchart",
+    values: valueNodeTypes,
+    notValues: new Set([
+      // A `;` of its own, printed as its token or dropped.
+      "FlowchartEmptyStatement",
+      // Arrows, whose range is the range of one token, printed as the token.
+      "FlowchartArrow",
+      "FlowchartOpeningArrow",
+    ]),
+  },
+  {
+    prefix: "Sequence",
+    values: sequenceValueNodeTypes,
+    notValues: new Set([
+      // An arrow, whose range is the range of one token, printed as the token.
+      "SequenceArrow",
+    ]),
+  },
+  {
+    prefix: "Class",
+    values: classValueNodeTypes,
+    notValues: new Set([
+      // A name without whitespace, printed as its token.
+      "Identifier",
+      // A class name of several name parts, printed as its tokens.
+      "ClassIdentifier",
+      // An arrow, printed as its tokens, which touch.
+      "ClassArrow",
+    ]),
+  },
+  {
+    prefix: "State",
+    values: stateValueNodeTypes,
+    notValues: new Set([
+      // `[*]`, a divider `--`, and `hide empty description`, each printed
+      // as its token.
+      "StateTerminal",
+      "StateDividerStatement",
+      "StateHideEmptyDescriptionStatement",
+    ]),
+  },
+  {
+    prefix: "Er",
+    values: erValueNodeTypes,
+    notValues: new Set([
+      // The three units of a relationship, printed as their tokens.
+      "ErRelationship",
+      // The node of the diagram type that fails to parse, which has no
+      // statement and is no node of an ER diagram, though its name starts
+      // with `Er`.
+      "ErrorDiagram",
+    ]),
+  },
+  {
+    prefix: "Gantt",
+    values: ganttValueNodeTypes,
+    notValues: new Set([
+      // Statements whose tokens are all the statement has, printed as the
+      // tokens: the keyword, and the keyword and the day.
+      "GanttInclusiveEndDatesStatement",
+      "GanttWeekdayStatement",
+      "GanttWeekendStatement",
+      // A number is no node of a Gantt chart: its numbers are the text of
+      // an item.
+      "NumericLiteral",
+    ]),
+  },
+  {
+    prefix: "Journey",
+    values: journeyValueNodeTypes,
+    notValues: new Set([
+      // The shared leaf nodes are no nodes of a user journey: its ids, names,
+      // and numbers are the text of a score or a person.
+      "Identifier",
+      "StringLiteral",
+      "NumericLiteral",
+    ]),
+  },
+  {
+    prefix: "Requirement",
+    values: requirementValueNodeTypes,
+    notValues: new Set([
+      // A risk and a verification method, which are keywords: printed as
+      // their tokens.
+      "RequirementRiskField",
+      "RequirementVerifyMethodField",
+      // The shared leaf nodes that are no nodes of a requirement diagram:
+      // its ids and numbers are the text of a name or a value.
+      "Identifier",
+      "NumericLiteral",
+    ]),
+  },
+  {
+    prefix: "Kanban",
+    values: kanbanValueNodeTypes,
+    notValues: new Set([
+      // Kanban values use KanbanLiteral and KanbanLabel, not shared leaves.
+      "Identifier",
+      "StringLiteral",
+      "NumericLiteral",
+    ]),
+  },
+  {
+    prefix: "Mindmap",
+    values: mindmapValueNodeTypes,
+    notValues: new Set([
+      // The shared leaf nodes are no nodes of a mindmap: its ids, strings,
+      // and numbers are the text of a node, a label, an icon, or a class.
+      "Identifier",
+      "StringLiteral",
+      "NumericLiteral",
+    ]),
+  },
+  {
+    prefix: "Sankey",
+    values: sankeyValueNodeTypes,
+    notValues: new Set([
+      // The shared leaf nodes that are no nodes of a sankey diagram: its ids
+      // and numbers are the text of a SankeyIdentifier or a SankeyLiteral.
+      "Identifier",
+      "NumericLiteral",
+    ]),
+  },
+  {
+    prefix: "Timeline",
+    values: timelineValueNodeTypes,
+    notValues: new Set([
+      // The shared leaf nodes are no nodes of a timeline: its periods, events,
+      // and titles are the text of a TimelineLiteral.
+      "Identifier",
+      "StringLiteral",
+      "NumericLiteral",
+    ]),
+  },
+  {
+    prefix: "Quadrant",
+    values: quadrantValueNodeTypes,
+    notValues: new Set([
+      // The shared leaf nodes that are no nodes of a quadrant chart: its
+      // strings and numbers are the text of a QuadrantLabel or a
+      // QuadrantLiteral.
+      "StringLiteral",
+      "NumericLiteral",
+    ]),
+  },
+  {
+    prefix: "Block",
+    values: blockValueNodeTypes,
+    notValues: new Set([
+      // Arrows, whose range is the range of one token, printed as the token.
+      "BlockArrow",
+      "BlockOpeningArrow",
+      // An empty description block, laid out as a whole.
+      "BlockAccDescrBlockStatement",
+    ]),
+  },
+  {
+    prefix: "Xychart",
+    values: xychartValueNodeTypes,
+    notValues: new Set([
+      // The header keyword and the orientation, printed as their tokens.
+      "XychartHeader",
+      // A text without quotes has a token for each of its words, printed as
+      // tokens; the text of an accessibility statement is one token, which
+      // the layout of the statement prints as written.
+      "XychartLiteral",
+      // The shared leaf node that is no node of an XY chart: its names are
+      // the text of an XychartLiteral.
+      "Identifier",
+    ]),
+  },
+]
+
+it("the shared leaf node types are defined by the parser", () => {
+  for (const type of sharedLeafTypes) expect(leafTypes).toContain(type)
+})
+
+describe.each(diagrams)(
+  "the value node types of $prefix",
+  ({ prefix, values, notValues }) => {
+    /**
+     * The leaf node types of the diagram type: its own, whose names start
+     * with the name of the diagram type (`.claude/skills/spec/SKILL.md`,
+     * Policies and criteria), and the shared ones.
+     */
+    const ownLeafTypes = leafTypes.filter(
+      (type) => type.startsWith(prefix) || sharedLeafTypes.has(type),
+    )
+
+    it("are node types of the diagram type without child fields", () => {
+      for (const type of values) expect(ownLeafTypes).toContain(type)
+    })
+
+    it("leave out only node types of the diagram type without child fields", () => {
+      for (const type of notValues) expect(ownLeafTypes).toContain(type)
+    })
+
+    it("are, with the listed exceptions, every such node type", () => {
+      expect(
+        ownLeafTypes.filter((type) => !notValues.has(type)).sort(),
+      ).toEqual([...values].sort())
+    })
+  },
+)

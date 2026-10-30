@@ -1,0 +1,155 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js",
+    "line": 2419,
+    "test": "sequence db class > when parsing extended participant syntax > should parse participants with different quote styles and whitespace"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Alice",
+        "description": "Alice",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "database",
+        "nextActor": "Bob"
+      },
+      {
+        "name": "Bob",
+        "description": "Bob",
+        "wrap": false,
+        "prevActor": "Alice",
+        "links": {},
+        "properties": {},
+        "type": "database",
+        "nextActor": "Carl"
+      },
+      {
+        "name": "Carl",
+        "description": "Carl",
+        "wrap": false,
+        "prevActor": "Bob",
+        "links": {},
+        "properties": {},
+        "type": "database",
+        "nextActor": "David"
+      },
+      {
+        "name": "David",
+        "description": "David",
+        "wrap": false,
+        "prevActor": "Carl",
+        "links": {},
+        "properties": {},
+        "type": "database",
+        "nextActor": "Eve"
+      },
+      {
+        "name": "Eve",
+        "description": "Eve",
+        "wrap": false,
+        "prevActor": "David",
+        "links": {},
+        "properties": {},
+        "type": "database",
+        "nextActor": "Favela"
+      },
+      {
+        "name": "Favela",
+        "description": "Favela",
+        "wrap": false,
+        "prevActor": "Eve",
+        "links": {},
+        "properties": {},
+        "type": "database"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "Bob",
+        "to": "Alice",
+        "message": "Hi Alice",
+        "wrap": false,
+        "type": 0,
+        "activate": true,
+        "centralConnection": 0
+      },
+      {
+        "from": "Alice",
+        "message": "",
+        "wrap": false,
+        "type": 17,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Alice",
+        "to": "Bob",
+        "message": "Hi Bob",
+        "wrap": false,
+        "type": 0,
+        "activate": true,
+        "centralConnection": 0
+      },
+      {
+        "from": "Bob",
+        "message": "",
+        "wrap": false,
+        "type": 17,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "Alice",
+        "set": {
+          "type": "database"
+        }
+      },
+      {
+        "id": "Bob",
+        "set": {
+          "type": "database"
+        }
+      },
+      {
+        "id": "Carl",
+        "set": {
+          "type": "database"
+        }
+      },
+      {
+        "id": "David",
+        "set": {
+          "type": "database"
+        }
+      },
+      {
+        "id": "Eve",
+        "set": {
+          "type": "database"
+        }
+      },
+      {
+        "id": "Favela",
+        "set": {
+          "type": "database"
+        }
+      }
+    ]
+  }
+}

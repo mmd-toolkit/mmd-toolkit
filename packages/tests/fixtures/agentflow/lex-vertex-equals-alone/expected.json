@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Equals has no statement-context unit and cannot form a vertex Identifier."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nagentflow-beta=\n--------------^"
+  }
+}

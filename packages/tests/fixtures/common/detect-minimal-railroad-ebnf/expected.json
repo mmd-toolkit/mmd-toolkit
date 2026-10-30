@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md entry 33: minimal accepted example of `railroadEbnf`. The header line alone is accepted."
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": []
+  }
+}

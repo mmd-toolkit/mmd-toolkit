@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Quotes do not shield a description closer."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 28: unexpected character: ->\"<- at offset: 27, skipped 1 characters.\nLexer error on line 1, column 30: unexpected character: ->}<- at offset: 29, skipped 1 characters. "
+  }
+}

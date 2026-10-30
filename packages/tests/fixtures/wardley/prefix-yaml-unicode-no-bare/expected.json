@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does ordinary Unicode trivia after retained YAML differ from passed bare-line trivia?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 1: unexpected character: -> <- at offset: 13, skipped 1 characters. "
+  }
+}

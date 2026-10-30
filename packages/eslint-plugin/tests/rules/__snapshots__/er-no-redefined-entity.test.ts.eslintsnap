@@ -1,0 +1,94 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: er-no-redefined-entity >> invalid >>> docs/rules/er-no-redefined-entity.md incorrect 1
+Filename: er-no-redefined-entity-incorrect-1.mmd
+
+Code:
+  1 | erDiagram
+  2 |   p[Person]
+  3 |   p[Human]
+    |   ^~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js keeps the first alias `Person` of the entity `p` and ignores this alias.
+---
+
+
+Test: er-no-redefined-entity >> invalid >>> invalid/er/alias-inside-subgraph-and-outside
+Filename: tests/fixtures/rules/er-no-redefined-entity/invalid/er/alias-inside-subgraph-and-outside-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | subgraph S
+  3 | p[Person]
+  4 | end
+  5 | p[Human]
+    | ^~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js keeps the first alias `Person` of the entity `p` and ignores this alias.
+---
+
+
+Test: er-no-redefined-entity >> invalid >>> invalid/er/alias-with-class-and-attributes
+Filename: tests/fixtures/rules/er-no-redefined-entity/invalid/er/alias-with-class-and-attributes-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | p[P]
+  3 | p[Q]:::c {
+    | ^~~~~~~~~~\ [1]
+  4 | string n
+    | ~~~~~~~~\ [1]
+  5 | }
+    | ~ [1]
+  6 |
+
+[1] mermaid.js keeps the first alias `P` of the entity `p` and ignores this alias.
+---
+
+
+Test: er-no-redefined-entity >> invalid >>> invalid/er/db-alias-first-kept
+Filename: tests/fixtures/rules/er-no-redefined-entity/invalid/er/db-alias-first-kept-input.mmd
+
+Code:
+  1 | erDiagram
+  2 |   A[first]
+  3 |   A[second]
+    |   ^~~~~~~~~ [1]
+  4 |   A
+  5 |
+
+[1] mermaid.js keeps the first alias `first` of the entity `A` and ignores this alias.
+---
+
+
+Test: er-no-redefined-entity >> invalid >>> invalid/er/db-alias-second-ignored
+Filename: tests/fixtures/rules/er-no-redefined-entity/invalid/er/db-alias-second-ignored-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | p[P]
+  3 | p[Q]
+    | ^~~~ [1]
+
+[1] mermaid.js keeps the first alias `P` of the entity `p` and ignores this alias.
+---
+
+
+Test: er-no-redefined-entity >> invalid >>> invalid/er/third-alias
+Filename: tests/fixtures/rules/er-no-redefined-entity/invalid/er/third-alias-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | p[P]
+  3 | p[Q]
+    | ^~~~ [1]
+  4 | p[R]
+    | ^~~~ [2]
+  5 |
+
+[1] mermaid.js keeps the first alias `P` of the entity `p` and ignores this alias.
+[2] mermaid.js keeps the first alias `P` of the entity `p` and ignores this alias.
+---

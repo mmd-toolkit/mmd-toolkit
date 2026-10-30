@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The style pass is case sensitive."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 0,
+          "label": "Style x fill:ﬂ°f00¶ß"
+        }
+      ]
+    ]
+  }
+}

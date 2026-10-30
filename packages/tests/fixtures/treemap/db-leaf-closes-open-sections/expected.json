@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Does a shallow leaf close earlier sections before a later deeper row?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "children": [
+          {
+            "name": "B",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "L",
+        "value": 1
+      },
+      {
+        "name": "C",
+        "value": 2
+      }
+    ],
+    "classDefs": []
+  }
+}

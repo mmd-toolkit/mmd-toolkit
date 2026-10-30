@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The colon form takes one whitespace character and keeps the rest: the title is a space, `x`, and two spaces."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": " x  ",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

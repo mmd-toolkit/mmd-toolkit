@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do common values retain their quote and escape spelling?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "\"a\\n\\q\"",
+    "accTitle": "'b\\n\\q'",
+    "accDescr": "\"d\\n\\q\"",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

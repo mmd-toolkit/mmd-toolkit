@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md The axis context: `accTitle:` after the title of an axis, then a title with a digit on the next line; accepted."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "Q1",
+    "accTitle": "d",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "A",
+      "categories": []
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}

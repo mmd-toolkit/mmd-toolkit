@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/gitGraph.test.ts",
+    "line": 209,
+    "test": "Parsing CherryPicking Statements > Error Handling for Invalid Syntax > should report errors for invalid branch order"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 24: Expecting token of type 'INT' but found `xyz`."
+  }
+}

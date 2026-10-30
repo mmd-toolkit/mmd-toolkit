@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The configuration {\"securityLevel\":\"other\",\"htmlLabels\":true,\"flowchart\":{\"htmlLabels\":false}} keeps title \"&lt;b&gt;T&lt;/b&gt; &equals; value\", accDescr \"&lt;i&gt;D&lt;/i&gt; &equals; value\" and label.text \"A\"."
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": true,
+    "flowchart": {
+      "htmlLabels": false
+    }
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "&lt;b&gt;T&lt;/b&gt; &equals; value",
+    "accTitle": "",
+    "accDescr": "&lt;i&gt;D&lt;/i&gt; &equals; value",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "A"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

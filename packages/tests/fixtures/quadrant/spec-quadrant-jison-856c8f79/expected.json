@@ -1,0 +1,66 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison.spec.ts",
+    "line": 8,
+    "test": "Testing quadrantChart jison file > should be able to parse the whole chart with point styling with params in a random order + class names"
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "Analytics and Business Intelligence Platforms",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "Leaders",
+      "Challengers",
+      "Niche",
+      "Visionaries"
+    ],
+    "xAxis": {
+      "left": "Completeness of Vision ❤",
+      "right": "x-axis-2"
+    },
+    "yAxis": {
+      "bottom": "Ability to Execute",
+      "top": "y-axis-2"
+    },
+    "points": [
+      {
+        "text": "Incorta",
+        "className": "",
+        "x": "0.20",
+        "y": "0.30",
+        "strokeWidth": "10px"
+      },
+      {
+        "text": "IBM",
+        "className": "",
+        "x": "0.51",
+        "y": "0.40",
+        "strokeColor": "#ff00ff",
+        "strokeWidth": "10px"
+      },
+      {
+        "text": "Salesforce",
+        "className": "class1",
+        "x": "0.55",
+        "y": "0.60",
+        "radius": 10,
+        "color": "#ff0000"
+      },
+      {
+        "text": "Microsoft",
+        "className": "",
+        "x": "0.75",
+        "y": "0.75",
+        "strokeColor": "#ff00ff",
+        "strokeWidth": "10px",
+        "color": "#ff0000",
+        "radius": 10
+      }
+    ],
+    "classes": []
+  }
+}

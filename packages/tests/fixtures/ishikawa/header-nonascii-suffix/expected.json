@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[H: detection and ISHIKAWA] Does the ASCII word boundary allow a non-ASCII suffix?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "界",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "界",
+      "children": [
+        {
+          "text": "R",
+          "children": []
+        }
+      ]
+    }
+  }
+}

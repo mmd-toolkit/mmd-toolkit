@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md Case: entry 30 is case-insensitive, so IsHiKaWa selects ishikawa."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "Problem",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "Problem",
+      "children": [
+        {
+          "text": "Cause",
+          "children": []
+        }
+      ]
+    }
+  }
+}

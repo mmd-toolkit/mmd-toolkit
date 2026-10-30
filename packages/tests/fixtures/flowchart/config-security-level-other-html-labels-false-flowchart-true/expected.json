@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The input of config-security-level-other-label-characters with the root htmlLabels false and flowchart.htmlLabels true: the root value decides, htmlLabels is disabled and the label is not changed."
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": false,
+    "flowchart": {
+      "htmlLabels": true
+    }
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a<b>=c",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

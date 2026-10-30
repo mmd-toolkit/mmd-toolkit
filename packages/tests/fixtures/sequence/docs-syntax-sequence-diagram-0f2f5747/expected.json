@@ -1,0 +1,73 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/sequenceDiagram.md",
+    "line": 776
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Alice",
+        "description": "Alice",
+        "wrap": false,
+        "links": {
+          "Dashboard": "https://dashboard.contoso.com/alice",
+          "Wiki": "https://wiki.contoso.com/alice"
+        },
+        "properties": {},
+        "type": "participant",
+        "nextActor": "John"
+      },
+      {
+        "name": "John",
+        "description": "John",
+        "wrap": false,
+        "prevActor": "Alice",
+        "links": {
+          "Dashboard": "https://dashboard.contoso.com/john",
+          "Wiki": "https://wiki.contoso.com/john"
+        },
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "Alice",
+        "to": "John",
+        "message": "Hello John, how are you?",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "John",
+        "to": "Alice",
+        "message": "Great!",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Alice",
+        "to": "John",
+        "message": "See you later!",
+        "wrap": false,
+        "type": 24,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

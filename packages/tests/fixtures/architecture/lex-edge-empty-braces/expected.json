@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Directions and modifiers: empty braces are not the group modifier. Case: edge-empty-braces."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 2: unexpected character: ->{<- at offset: 39, skipped 2 characters. "
+  }
+}

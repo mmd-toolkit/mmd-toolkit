@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A non-ASCII suffix fails the header boundary."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 11: unexpected character: ->é<- at offset: 10, skipped 1 characters. Parse error on line 1, column 1: Expecting: one of these possible Token sequences:\n  1. [radar-beta]\n  2. [radar-beta:]\n  3. [radar-beta, :]\nbut found: 'radar-beta'"
+  }
+}

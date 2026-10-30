@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/eventmodeling.md Common statement values: Does padding after a selected semicolon become the adjacent leading run of accDescr?"
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": " accDescr: D",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "00",
+        "modelEntityType": "evt",
+        "entityIdentifier": "M",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "\"style:#x\""
+        }
+      }
+    ]
+  }
+}

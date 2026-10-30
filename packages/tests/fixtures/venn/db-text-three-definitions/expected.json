@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Repeated text ids remain separate entries with their own targets and labels."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "item",
+        "label": "First"
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "id": "other",
+        "label": "Partner"
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "id": "item",
+        "label": "Second"
+      },
+      {
+        "sets": [
+          "C"
+        ],
+        "id": "item",
+        "label": "Third"
+      }
+    ],
+    "styles": []
+  }
+}

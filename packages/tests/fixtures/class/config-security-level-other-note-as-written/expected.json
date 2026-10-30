@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The text of a note under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): mermaid.js does not replace the characters of it, and the notes are recorded as written."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "class": "A",
+        "text": "a<b>=c<br>d"
+      },
+      {
+        "id": "note1",
+        "text": "a<b>=c<br>d"
+      }
+    ],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

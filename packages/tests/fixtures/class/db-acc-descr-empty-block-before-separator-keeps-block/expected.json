@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The description `x` comes from a block, and the empty block after the note changes nothing."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "x",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "class": "A",
+        "text": "n"
+      }
+    ],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

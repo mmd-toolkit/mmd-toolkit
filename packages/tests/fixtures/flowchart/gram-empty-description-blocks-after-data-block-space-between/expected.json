@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Empty description blocks before a separator: the grammar reads the statement without its empty description blocks, so the spaces before, between, and after them are the whitespace at the end of the statement, which the grammar does not take after a data block, so the space between the blocks makes the input rejected, in both."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...Descr {} accDescr {}\n-----------------------^\nExpecting 'AMP', got 'NEWLINE'"
+  }
+}

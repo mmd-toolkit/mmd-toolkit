@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md The ellipse context: the placeholder before `-)` is one unit, and `-)` ends the ellipse; the label is `t` and the placeholder."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "tﬂ°x¶ß",
+        "type": "ellipse",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

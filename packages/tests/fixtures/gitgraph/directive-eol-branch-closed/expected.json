@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A globally removed closed directive preserves branch EOL."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "generated-commit-1",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "b"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "b"
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Does a synthesized one-line form inside the body remain a Comment?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "value": 1
+      },
+      {
+        "name": "C",
+        "value": 3
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

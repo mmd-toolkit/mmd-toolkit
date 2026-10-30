@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Quoted names preserve leading, internal and trailing whitespace."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": " A  B\t C  ",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

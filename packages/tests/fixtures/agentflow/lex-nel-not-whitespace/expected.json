@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "NEL is outside the lexer SPACE and Unicode letter tables."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nagentflow-beta TBA\n-----------------^"
+  }
+}

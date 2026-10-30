@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The final nonempty common metadata assignment is published."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "last",
+    "accDescr": "last",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

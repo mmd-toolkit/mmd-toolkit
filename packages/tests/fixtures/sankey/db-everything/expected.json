@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, all fields: the title, the nodes in the order of their first mention, and links with a quoted id, a decimal value, and a value that is no number."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "T",
+    "nodes": [
+      "A",
+      "B, \"C\"",
+      "B"
+    ],
+    "links": [
+      {
+        "source": "A",
+        "target": "B, \"C\"",
+        "value": 12.5
+      },
+      {
+        "source": "B",
+        "target": "A",
+        "value": 3
+      },
+      {
+        "source": "A",
+        "target": "B, \"C\"",
+        "value": "NaN"
+      }
+    ]
+  },
+  "embedded": {
+    "title": "T"
+  }
+}

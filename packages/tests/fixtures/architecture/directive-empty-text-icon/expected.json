@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Empty values: removing a global directive can leave a valid empty text icon or an invalid empty bare label. Case: string-global-only-empty."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service",
+        "iconText": ""
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

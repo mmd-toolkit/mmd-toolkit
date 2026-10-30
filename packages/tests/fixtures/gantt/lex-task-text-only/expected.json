@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Tasks: a task text without a colon and data; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\ngantta\n------^\nExpecting 'taskData', got 'NL'"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Units and contexts (Entities): a person may hold a placeholder."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A",
+        "people": [
+          "p ﬂ°amp¶ß q"
+        ],
+        "score": 5
+      }
+    ]
+  }
+}

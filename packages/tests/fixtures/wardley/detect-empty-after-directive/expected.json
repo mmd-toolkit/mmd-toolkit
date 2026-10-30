@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an adjacent-fence block exposed after directive removal fail the one-block skip?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Diagrams beginning with --- are not valid. If you were trying to use a YAML front-matter, please ensure that you've correctly opened and closed the YAML front-matter with un-indented `---` blocks"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The next line is part of the accessibility title, and there is no message."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "x A->>B: y",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

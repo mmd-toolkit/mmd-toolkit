@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Nonfinite embedded configuration uses configuration tags."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "eventmodeling": {
+        "padding": {
+          "nonFinite": "Infinity"
+        }
+      }
+    }
+  }
+}

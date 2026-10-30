@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "diagrams/sequence.md, The id context, rule 4: an id before `@{` cannot contain whitespace, and no other rule reads `A B@{`; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...Diagramparticipant A B@{ \"type\": \"queue...\n----------------------^\nExpecting 'link', 'ACTOR', got 'INVALID'"
+  }
+}

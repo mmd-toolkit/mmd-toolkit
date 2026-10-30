@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, widths: two widths on a node are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nblock-beta  A:2:3\n---------------^\nExpecting 'EOF', 'BLOCK_DIAGRAM_KEY', 'LINK', 'START_LINK', 'SPACE_BLOCK', 'COLUMNS', 'id-block', 'end', 'NODE_ID', 'classDef', 'class', 'style', got 'SIZE'"
+  }
+}

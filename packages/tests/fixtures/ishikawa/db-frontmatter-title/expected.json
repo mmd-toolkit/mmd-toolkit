@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D: addNode and common strings] Does frontmatter replace the title the root initially sets?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "Effect",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "Effect",
+      "children": []
+    }
+  },
+  "embedded": {
+    "title": "Frontmatter title"
+  }
+}

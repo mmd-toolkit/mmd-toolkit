@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "PEG strings can contain literal line endings."
+  },
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a\nb\nc d e"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Directive within node text that becomes a reserved keyword."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nishikawaishikawa\n--------^\nExpecting 'SPACELINE', 'SPACELIST', 'TEXT', got 'ISHIKAWA'"
+  }
+}

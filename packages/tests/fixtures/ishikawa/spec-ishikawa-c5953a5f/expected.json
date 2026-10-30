@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/ishikawa/ishikawa.spec.ts",
+    "line": 57,
+    "test": "when parsing an Ishikawa diagram > should handle effect indented more than causes"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "Problem",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "Problem",
+      "children": [
+        {
+          "text": "Cause A",
+          "children": [
+            {
+              "text": "Subcause A1",
+              "children": []
+            }
+          ]
+        },
+        {
+          "text": "Cause B",
+          "children": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Known divergences (directive-as-token-boundary): mermaid.js reads a transition from `Foo`; here the directive lies inside the id, a name, and the input is rejected."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "Foo",
+        "shape": "rect",
+        "label": "Foo",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "Foo",
+        "end": "B",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

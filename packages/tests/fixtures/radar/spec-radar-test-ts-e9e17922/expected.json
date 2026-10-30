@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/radar.test.ts",
+    "line": 401,
+    "test": "radar > error messages with line and column numbers > should handle lexer errors with line and column numbers"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 10: unexpected character: ->@<- at offset: 42, skipped 1 characters. Parse error on line 4, column 3: Expecting token of type 'EOF' but found `invalid`."
+  }
+}

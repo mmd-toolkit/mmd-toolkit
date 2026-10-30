@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "NaN is a rule reference followed by a terminal, not a numeric bound."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "nonterminal",
+              "name": "NaN"
+            },
+            {
+              "type": "terminal",
+              "value": "a"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

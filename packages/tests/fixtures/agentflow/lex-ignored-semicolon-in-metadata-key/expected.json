@@ -1,0 +1,48 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The style line rule removes a semicolon inside a metadata key before YAML."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "style:#x",
+        "type": "square",
+        "props": {},
+        "metadata": {
+          "custom": "value"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "metadata": {
+            "custom": "value"
+          }
+        }
+      }
+    ]
+  }
+}

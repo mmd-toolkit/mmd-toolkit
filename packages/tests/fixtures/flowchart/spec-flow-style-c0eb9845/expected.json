@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-style.spec.js",
+    "line": 108,
+    "test": "[Style] when parsing > should be possible to declare multiple classes"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "firstClass",
+        "styles": [
+          "background:#bbb",
+          "border:1px solid red"
+        ]
+      },
+      {
+        "id": "secondClass",
+        "styles": [
+          "background:#bbb",
+          "border:1px solid red"
+        ]
+      }
+    ],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

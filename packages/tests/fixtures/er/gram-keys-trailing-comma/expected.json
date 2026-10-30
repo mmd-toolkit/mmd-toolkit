@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Attributes: `PK,` with nothing after it; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...ramA { int id PK,}\n--------------------^\nExpecting 'ATTRIBUTE_KEY', got 'BLOCK_STOP'"
+  }
+}

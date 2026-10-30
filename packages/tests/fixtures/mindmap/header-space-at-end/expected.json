@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Detection: the header may not end the diagram text; a space follows it, a diagram without nodes."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": null
+  }
+}

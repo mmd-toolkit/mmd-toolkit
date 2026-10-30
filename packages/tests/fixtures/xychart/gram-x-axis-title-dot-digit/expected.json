@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md The axis context: `.5` is a number, so `a.5` is a title and a number without an arrow; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nxychartx-axis a.5\n-----------------^\nExpecting 'ARROW_DELIMITER', got 'NEWLINE'"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How is a class with no style text stored?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": [
+      {
+        "id": "empty",
+        "styles": [
+          ""
+        ]
+      }
+    ]
+  }
+}

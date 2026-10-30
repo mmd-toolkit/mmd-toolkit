@@ -1,0 +1,73 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/agentflow-semantic-model.spec.ts",
+    "line": 25,
+    "test": "agentflow getSemanticModel() > styled-vs-unstyled equivalence > produces identical models for styled and unstyled variants of the same diagram"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "text",
+        "styles": [
+          "fill:#0f0"
+        ],
+        "classes": [
+          "highlight"
+        ],
+        "text": "a",
+        "props": {}
+      },
+      {
+        "id": "b",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "b",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "a",
+        "end": "b",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_a_b_0",
+        "style": [
+          "stroke:red",
+          "stroke-width:3px",
+          "fill:none"
+        ]
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "highlight",
+        "styles": [
+          "fill:#f9f",
+          "stroke:#333",
+          "stroke-width:2px"
+        ]
+      }
+    ],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

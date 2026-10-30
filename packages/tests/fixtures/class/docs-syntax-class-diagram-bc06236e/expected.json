@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/classDiagram.md",
+    "line": 363
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "foo",
+        "type": "",
+        "label": "foo",
+        "text": "foo",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [
+      {
+        "id1": "interface0",
+        "id2": "foo",
+        "relation": {
+          "type1": 4,
+          "type2": "none",
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none"
+      }
+    ],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": [
+      {
+        "id": "interface0",
+        "label": "bar",
+        "classId": "foo"
+      }
+    ]
+  }
+}

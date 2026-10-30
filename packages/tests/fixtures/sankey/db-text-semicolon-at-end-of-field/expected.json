@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, fields: a `;` at the end of an id is a character of it."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a",
+      "b;"
+    ],
+    "links": [
+      {
+        "source": "a",
+        "target": "b;",
+        "value": 1
+      }
+    ]
+  }
+}

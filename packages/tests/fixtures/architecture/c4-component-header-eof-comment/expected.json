@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4Component in a header EOF comment can affect detection."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

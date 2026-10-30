@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4 detector words removed with a comment or frontmatter do not select C4."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

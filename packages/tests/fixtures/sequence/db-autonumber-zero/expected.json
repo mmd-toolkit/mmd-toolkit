@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The start 0 and the step 0 are numbers like any other: the entry has `start` 0 and `step` 0, and the step is not replaced by 1."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "B"
+      },
+      {
+        "name": "B",
+        "description": "B",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "message": {
+          "start": 0,
+          "step": 0,
+          "visible": true
+        },
+        "wrap": false,
+        "type": 26
+      },
+      {
+        "from": "A",
+        "to": "B",
+        "message": "x",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

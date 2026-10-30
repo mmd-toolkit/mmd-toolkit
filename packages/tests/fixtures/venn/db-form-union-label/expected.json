@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The db form union label form stores {\"subsets\":[{\"sets\":[\"A\"],\"size\":10},{\"sets\":[\"B\"],\"size\":10},{\"sets\":[\"A\",\"B\"],\"size\":2.5,\"label\":\"Overlap\"}]}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "size": 2.5,
+        "label": "Overlap"
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

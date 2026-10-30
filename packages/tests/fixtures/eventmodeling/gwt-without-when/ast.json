@@ -1,0 +1,360 @@
+{
+  "type": "Root",
+  "diagramType": "eventmodeling",
+  "body": {
+    "type": "EventmodelingDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "EventmodelingGwtStatement",
+        "textBeforeSourceFrame": [],
+        "sourceFrame": {
+          "type": "Identifier",
+          "name": "99",
+          "range": [
+            18,
+            20
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 4
+            },
+            "end": {
+              "line": 2,
+              "column": 6
+            }
+          }
+        },
+        "given": {
+          "type": "EventmodelingGwtClause",
+          "textBefore": [],
+          "kind": "given",
+          "body": [
+            {
+              "type": "EventmodelingGwtItem",
+              "textBefore": [],
+              "modelEntityType": "evt",
+              "textBeforeEntityIdentifier": [],
+              "entityIdentifier": {
+                "type": "Identifier",
+                "name": "Missing",
+                "range": [
+                  31,
+                  38
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 17
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 24
+                  }
+                }
+              },
+              "range": [
+                27,
+                38
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 13
+                },
+                "end": {
+                  "line": 2,
+                  "column": 24
+                }
+              }
+            }
+          ],
+          "range": [
+            21,
+            38
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 24
+            }
+          }
+        },
+        "when": null,
+        "then": {
+          "type": "EventmodelingGwtClause",
+          "textBefore": [],
+          "kind": "then",
+          "body": [
+            {
+              "type": "EventmodelingGwtItem",
+              "textBefore": [],
+              "modelEntityType": "cmd",
+              "textBeforeEntityIdentifier": [],
+              "entityIdentifier": {
+                "type": "Identifier",
+                "name": "Missing",
+                "range": [
+                  48,
+                  55
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 34
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 41
+                  }
+                }
+              },
+              "range": [
+                44,
+                55
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 30
+                },
+                "end": {
+                  "line": 2,
+                  "column": 41
+                }
+              }
+            }
+          ],
+          "range": [
+            39,
+            55
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 25
+            },
+            "end": {
+              "line": 2,
+              "column": 41
+            }
+          }
+        },
+        "range": [
+          14,
+          55
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 41
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      55
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 41
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "eventmodeling",
+      "range": [
+        0,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "gwt",
+      "range": [
+        14,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "99",
+      "range": [
+        18,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "given",
+      "range": [
+        21,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 7
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "evt",
+      "range": [
+        27,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 13
+        },
+        "end": {
+          "line": 2,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Missing",
+      "range": [
+        31,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 17
+        },
+        "end": {
+          "line": 2,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "then",
+      "range": [
+        39,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 25
+        },
+        "end": {
+          "line": 2,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "cmd",
+      "range": [
+        44,
+        47
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 30
+        },
+        "end": {
+          "line": 2,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Missing",
+      "range": [
+        48,
+        55
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 34
+        },
+        "end": {
+          "line": 2,
+          "column": 41
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    56
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 0
+    }
+  }
+}

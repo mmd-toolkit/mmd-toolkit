@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The attribute block context, rule 4: U+2028 inside a word is part of it; rejected, a type without a name."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...agramA { string a}\n--------------------^\nExpecting 'ATTRIBUTE_WORD', '?', got 'BLOCK_STOP'"
+  }
+}

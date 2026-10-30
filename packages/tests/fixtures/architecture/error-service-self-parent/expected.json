@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A service cannot name itself as parent."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The service [api] cannot be placed within itself"
+  }
+}

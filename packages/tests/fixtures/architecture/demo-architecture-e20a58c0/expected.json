@@ -1,0 +1,90 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/architecture.html",
+    "line": 68
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "db",
+        "type": "service",
+        "icon": "database",
+        "title": "Database"
+      },
+      {
+        "id": "s3",
+        "type": "service",
+        "icon": "disk",
+        "title": "Storage"
+      },
+      {
+        "id": "serv1",
+        "type": "service",
+        "icon": "server",
+        "title": "Server 1"
+      },
+      {
+        "id": "serv2",
+        "type": "service",
+        "icon": "server",
+        "title": "Server 2"
+      },
+      {
+        "id": "disk",
+        "type": "service",
+        "icon": "disk",
+        "title": "Disk"
+      }
+    ],
+    "groups": [],
+    "edges": [
+      {
+        "lhsId": "db",
+        "lhsDir": "L",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "s3",
+        "rhsDir": "R",
+        "rhsInto": false,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "serv1",
+        "lhsDir": "L",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "s3",
+        "rhsDir": "T",
+        "rhsInto": false,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "serv2",
+        "lhsDir": "L",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "s3",
+        "rhsDir": "B",
+        "rhsInto": false,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "serv1",
+        "lhsDir": "T",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "disk",
+        "rhsDir": "B",
+        "rhsInto": false,
+        "rhsGroup": false
+      }
+    ],
+    "layoutHints": []
+  }
+}

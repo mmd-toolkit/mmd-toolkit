@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check annotation lexical priority and boundaries: class-punctuation."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "cssClass": "a",
+        "children": []
+      },
+      {
+        "name": ".b",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

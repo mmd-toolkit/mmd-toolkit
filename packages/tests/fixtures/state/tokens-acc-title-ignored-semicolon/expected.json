@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/state.md Tokens: the ignored `;` after the title is a RawText token; the accessible title is `style:#x`."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "style:#x",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

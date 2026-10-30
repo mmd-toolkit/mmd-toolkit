@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/treeview.md TreeviewIconAnnotation: a directive-only reference leaves null name and explicit icon suppression."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "icon": "none",
+        "children": []
+      }
+    ]
+  }
+}

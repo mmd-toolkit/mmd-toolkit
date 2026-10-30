@@ -1,0 +1,17 @@
+{
+  "message": "Unexpected end of text",
+  "range": [
+    22,
+    22
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 10
+    },
+    "end": {
+      "line": 3,
+      "column": 10
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A subgraph header that is only a string containing the word click: click inside a string is no click statement, the string is the title (click me), and the subgraph gets the generated id subGraph0."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "subGraph0",
+        "nodes": [],
+        "title": "click me",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

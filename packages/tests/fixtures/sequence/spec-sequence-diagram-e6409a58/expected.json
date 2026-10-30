@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js",
+    "line": 512,
+    "test": "when parsing a sequenceDiagram > should not allow sequence numbers to have decimals to the thousandths place or greater"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...am      autonumber 10.001      Alice->\n----------------------^\nExpecting 'NEWLINE', 'NUM', 'off', got 'ACTOR'"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[G] Does a final U+2029 supply a rootless document?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "root": null
+  }
+}

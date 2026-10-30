@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "PS within a percent line does not become a lexer NEWLINE."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: "
+  }
+}

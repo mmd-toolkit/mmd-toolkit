@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Diagram detection: the first `%%{` is not a directive in the source, but once `%%{wrap}%%` is left out, the second directive scan finds `%%{` followed by whitespace and `error`, and removes it; nothing is left for the detectors."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: "
+  }
+}

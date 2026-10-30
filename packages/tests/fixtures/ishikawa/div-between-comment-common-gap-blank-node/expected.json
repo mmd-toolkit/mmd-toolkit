@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md F2: Blank case 3: a removed common comment before the blank does not change the count."
+  },
+  "knownDivergence": "blank-line-after-header-or-comments",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 5:\nishikawaR%% A\n-----------^\nExpecting 'SPACELINE', 'NL', 'EOF', got 'SPACELIST'"
+  }
+}

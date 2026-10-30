@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Rejections outside the grammar: a bare standalone declaration compares its id as its label, so it conflicts with a previous explicit display label."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "ID 'A' has conflicting labels at line 3, column 1 [22,23); previous declaration at line 2, column 1 [13,14)"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Init settings cannot make incomplete named entries acceptable."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Missing entry for axis B"
+  }
+}

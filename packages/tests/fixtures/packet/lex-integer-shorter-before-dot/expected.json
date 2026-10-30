@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: A nonzero integer match may shorten before a dot, without accepting the leftover text."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 3: unexpected character: ->2<- at offset: 9, skipped 2 characters. Parse error on line 2, column 5: Expecting token of type ':' but found `3`."
+  }
+}

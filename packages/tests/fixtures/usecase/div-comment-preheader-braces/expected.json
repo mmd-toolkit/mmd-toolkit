@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: Mermaid rejects a non-directive percent-brace line before its header; the proposed shared direct rule accepts it."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> USECASE <-- but found --> '%%{}%%' <-- at line 1, column 1 [0,6)"
+  }
+}

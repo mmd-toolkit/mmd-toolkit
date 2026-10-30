@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Grammar, subgraphs: only the separator may follow the closing `]`."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...art LRsubgraph S[t] Aend\n----------------------^\nExpecting 'SEMI', 'NEWLINE', 'EOF', got 'SPACE'"
+  }
+}

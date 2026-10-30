@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does exactly one scale to 100 while a value just above one stays unscaled?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "A",
+        "label": "A",
+        "x": 100,
+        "y": 0,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "B",
+        "label": "B",
+        "x": 100,
+        "y": 1.01,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [
+      {
+        "number": 1,
+        "coordinates": [
+          {
+            "x": 100,
+            "y": 0
+          }
+        ],
+        "text": "N"
+      }
+    ],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "annotationsBox": {
+      "x": 100,
+      "y": 100
+    },
+    "axes": {}
+  }
+}

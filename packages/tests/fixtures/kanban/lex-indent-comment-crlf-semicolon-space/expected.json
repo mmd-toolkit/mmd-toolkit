@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md Units and contexts, Comments and Indentation and parents; ast/kanban.md indent: CRLF has the common LF reading and does not add its CR or LF to indentation. Mermaid accepts; the Db is recorded for column/card or parent/child comparison."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "x",
+        "isGroup": true
+      },
+      {
+        "id": "T;x",
+        "label": "T;x",
+        "isGroup": true
+      },
+      {
+        "id": "A;b",
+        "label": "A;b",
+        "isGroup": false,
+        "parentId": "T;x"
+      }
+    ]
+  }
+}

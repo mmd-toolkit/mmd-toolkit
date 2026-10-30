@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: comment-only block has null value"
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

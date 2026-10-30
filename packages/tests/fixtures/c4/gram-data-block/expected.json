@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4 has no data block production; an at-brace suffix after an element is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...ntextPerson(a, \"A\")@{ label: Changed }\n----------------------^"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Quotes protect common terminal names as branch names."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "title"
+      },
+      {
+        "name": "accTitle"
+      },
+      {
+        "name": "accDescr"
+      }
+    ]
+  }
+}

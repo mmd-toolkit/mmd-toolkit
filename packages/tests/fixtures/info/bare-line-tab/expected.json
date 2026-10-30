@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A tab-only line after a bare percent line."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

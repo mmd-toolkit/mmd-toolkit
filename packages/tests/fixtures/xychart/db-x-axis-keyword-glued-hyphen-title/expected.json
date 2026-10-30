@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md The statement context: a keyword followed by a character that is no word character is the keyword; `x-axis-foo` is the x-axis keyword and the title `-foo`; accepted."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "-foo",
+      "categories": [
+        "a"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}

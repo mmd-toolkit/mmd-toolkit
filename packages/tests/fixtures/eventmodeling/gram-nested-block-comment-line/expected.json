@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Grammar: The common comment-region rule applies to a percent comment line inside block data. Accepted by Mermaid."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": {
+          "kind": "block",
+          "value": "{\na\n%% comment\nb\n}\n"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The cardinalities, numbers, and lines: `0+x` is `zero-or-more` and the name `x`; accepted."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      },
+      {
+        "id": "entity-x-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "x",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-A-0",
+        "roleA": "x",
+        "entityB": "entity-x-1",
+        "cardA": "ZERO_OR_MORE",
+        "cardB": "ONE_OR_MORE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": []
+  }
+}

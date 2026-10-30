@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The colon form keeps braces as line text rather than opening a description block."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "{ text }",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

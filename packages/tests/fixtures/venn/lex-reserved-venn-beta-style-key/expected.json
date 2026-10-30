@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The lex reserved venn beta style key form is rejected by the grammar or its validation."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nvenn-betastyle A venn-beta:red\n-----------------^\nExpecting 'EOF', 'NEWLINE', 'TITLE', 'SET', 'BRACKET_LABEL', 'COLON', 'NUMERIC', 'UNION', 'TEXT', 'IDENTIFIER', 'STRING', 'INDENT_TEXT', 'STYLE', 'COMMA', got 'VENN'"
+  }
+}

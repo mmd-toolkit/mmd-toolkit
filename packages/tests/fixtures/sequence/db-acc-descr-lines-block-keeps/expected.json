@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "After `accDescr: x`, the block with a line break between its braces has no text and changes nothing, so the description stays `x`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "x",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

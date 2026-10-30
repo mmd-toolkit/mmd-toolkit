@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Units and contexts (Entities): quotes outside a tag stay quotes: the task `A \"x\"`."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A \"x\"",
+        "people": [],
+        "score": 5
+      }
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The statement context: a keyword followed by a word character is part of an id."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "clickable",
+        "shape": "rect",
+        "label": "clickable",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "notes",
+        "shape": "rect",
+        "label": "notes",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "clickable",
+        "end": "notes",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

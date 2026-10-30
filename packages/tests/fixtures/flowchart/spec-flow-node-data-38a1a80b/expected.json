@@ -1,0 +1,131 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-node-data.spec.js",
+    "line": 307,
+    "test": "when parsing directions > should be possible to use @  syntax to add labels on multi nodes with edge/link"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "for B",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "for c",
+        "props": {}
+      },
+      {
+        "id": "E",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "for E",
+        "props": {}
+      },
+      {
+        "id": "D",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "for D",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B_0"
+      },
+      {
+        "start": "A",
+        "end": "C",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_C_0"
+      },
+      {
+        "start": "A",
+        "end": "E",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_E_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "C",
+        "set": {
+          "labelType": "markdown",
+          "text": "for c"
+        }
+      },
+      {
+        "id": "E",
+        "set": {
+          "labelType": "markdown",
+          "text": "for E"
+        }
+      },
+      {
+        "id": "D",
+        "set": {
+          "labelType": "markdown",
+          "text": "for D"
+        }
+      }
+    ]
+  }
+}

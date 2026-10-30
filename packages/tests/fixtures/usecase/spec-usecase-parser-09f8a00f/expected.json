@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/usecase.parser.spec.ts",
+    "line": 1133,
+    "test": "usecase parser publication and normalized AST > preserves the separators inside multi-word style and classDef values"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [
+      {
+        "id": "Checkout",
+        "label": "Place order",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": [
+          "border:1px solid red",
+          "fill:#eee"
+        ]
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": [
+      {
+        "id": "big",
+        "styles": [
+          "font-family:Arial Black"
+        ]
+      }
+    ]
+  }
+}

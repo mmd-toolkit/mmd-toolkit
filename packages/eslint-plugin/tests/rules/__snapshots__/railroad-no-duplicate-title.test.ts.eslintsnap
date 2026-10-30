@@ -1,0 +1,466 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: railroad-no-duplicate-title >> invalid >>> docs/rules/railroad-no-duplicate-title.md incorrect 1
+Filename: railroad-no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | railroad-ebnf-beta
+  2 |   accTitle: First
+  3 |   accTitle: Second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   word = "a";
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 |   accTitle: First
+          3 |   word = "a";
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 |   accTitle: Second
+          3 |   word = "a";
+          4 |
+---
+
+
+Test: railroad-no-duplicate-title >> invalid >>> invalid/railroad/abnf-title-after-directive
+Filename: tests/fixtures/rules/railroad-no-duplicate-title/invalid/railroad/abnf-title-after-directive-input.mmd
+
+Code:
+  1 | railroad-abnf-beta
+  2 | accTitle: First
+  3 | accTitle: %%{init: {}}%%
+    | ^~~~~~~~~~ [1]
+  4 | word="a";
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-abnf-beta
+          2 | accTitle: %%{init: {}}%%
+          3 | word="a";
+---
+
+
+Test: railroad-no-duplicate-title >> invalid >>> invalid/railroad/abnf-title-change
+Filename: tests/fixtures/rules/railroad-no-duplicate-title/invalid/railroad/abnf-title-change-input.mmd
+
+Code:
+  1 | railroad-abnf-beta
+  2 | accTitle: First
+  3 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | word="a";
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-abnf-beta
+          2 | accTitle: First
+          3 | word="a";
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-abnf-beta
+          2 | accTitle: Second
+          3 | word="a";
+---
+
+
+Test: railroad-no-duplicate-title >> invalid >>> invalid/railroad/abnf-title-empty-reset
+Filename: tests/fixtures/rules/railroad-no-duplicate-title/invalid/railroad/abnf-title-empty-reset-input.mmd
+
+Code:
+  1 | railroad-abnf-beta
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | word="a";
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-abnf-beta
+          2 | accTitle: First
+          3 | word="a";
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-abnf-beta
+          2 | accTitle:
+          3 | word="a";
+---
+
+
+Test: railroad-no-duplicate-title >> invalid >>> invalid/railroad/docs-incorrect-1
+Filename: tests/fixtures/rules/railroad-no-duplicate-title/invalid/railroad/docs-incorrect-1-input.mmd
+
+Code:
+  1 | railroad-ebnf-beta
+  2 |   accTitle: First
+  3 |   accTitle: Second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   word = "a";
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 |   accTitle: First
+          3 |   word = "a";
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 |   accTitle: Second
+          3 |   word = "a";
+          4 |
+---
+
+
+Test: railroad-no-duplicate-title >> invalid >>> invalid/railroad/ebnf-title-after-comment
+Filename: tests/fixtures/rules/railroad-no-duplicate-title/invalid/railroad/ebnf-title-after-comment-input.mmd
+
+Code:
+  1 | railroad-ebnf-beta
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | %% comment
+  5 | word="a";
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 | accTitle: First
+          3 | %% comment
+          4 | word="a";
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 | accTitle:
+          3 | %% comment
+          4 | word="a";
+---
+
+
+Test: railroad-no-duplicate-title >> invalid >>> invalid/railroad/ebnf-title-change
+Filename: tests/fixtures/rules/railroad-no-duplicate-title/invalid/railroad/ebnf-title-change-input.mmd
+
+Code:
+  1 | railroad-ebnf-beta
+  2 | accTitle: First
+  3 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | word="a";
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 | accTitle: First
+          3 | word="a";
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 | accTitle: Second
+          3 | word="a";
+---
+
+
+Test: railroad-no-duplicate-title >> invalid >>> invalid/railroad/ebnf-title-third-empty
+Filename: tests/fixtures/rules/railroad-no-duplicate-title/invalid/railroad/ebnf-title-third-empty-input.mmd
+
+Code:
+  1 | railroad-ebnf-beta
+  2 | accTitle: A
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | accTitle: A
+  5 | word="a";
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 | accTitle: A
+          3 | accTitle: A
+          4 | word="a";
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-ebnf-beta
+          2 | accTitle:
+          3 | accTitle: A
+          4 | word="a";
+---
+
+
+Test: railroad-no-duplicate-title >> invalid >>> invalid/railroad/ir-title-change
+Filename: tests/fixtures/rules/railroad-no-duplicate-title/invalid/railroad/ir-title-change-input.mmd
+
+Code:
+  1 | railroad-beta
+  2 | accTitle: First
+  3 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | word=terminal("a");
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-beta
+          2 | accTitle: First
+          3 | word=terminal("a");
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-beta
+          2 | accTitle: Second
+          3 | word=terminal("a");
+---
+
+
+Test: railroad-no-duplicate-title >> invalid >>> invalid/railroad/ir-title-empty-before-blank
+Filename: tests/fixtures/rules/railroad-no-duplicate-title/invalid/railroad/ir-title-empty-before-blank-input.mmd
+
+Code:
+  1 | railroad-beta
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 |
+  5 | word=terminal("a");
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-beta
+          2 | accTitle: First
+          3 |
+          4 | word=terminal("a");
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-beta
+          2 | accTitle:
+          3 |
+          4 | word=terminal("a");
+---
+
+
+Test: railroad-no-duplicate-title >> invalid >>> invalid/railroad/ir-title-entity-same
+Filename: tests/fixtures/rules/railroad-no-duplicate-title/invalid/railroad/ir-title-entity-same-input.mmd
+
+Code:
+  1 | railroad-beta
+  2 | accTitle: A
+  3 | accTitle: #65;
+    | ^~~~~~~~~~~~~~ [1]
+  4 | word=terminal("a");
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-beta
+          2 | accTitle: A
+          3 | word=terminal("a");
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-beta
+          2 | accTitle: #65;
+          3 | word=terminal("a");
+---
+
+
+Test: railroad-no-duplicate-title >> invalid >>> invalid/railroad/ir-title-html-quotes-written
+Filename: tests/fixtures/rules/railroad-no-duplicate-title/invalid/railroad/ir-title-html-quotes-written-input.mmd
+
+Code:
+  1 | railroad-beta
+  2 | accTitle: <b x="a">Text</b>
+  3 | accTitle: <b x='a'>Text</b>
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 | word=terminal("a");
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-beta
+          2 | accTitle: <b x="a">Text</b>
+          3 | word=terminal("a");
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-beta
+          2 | accTitle: <b x='a'>Text</b>
+          3 | word=terminal("a");
+---
+
+
+Test: railroad-no-duplicate-title >> invalid >>> invalid/railroad/peg-title-change
+Filename: tests/fixtures/rules/railroad-no-duplicate-title/invalid/railroad/peg-title-change-input.mmd
+
+Code:
+  1 | railroad-peg-beta
+  2 | accTitle: First
+  3 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | word<-"a";
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-peg-beta
+          2 | accTitle: First
+          3 | word<-"a";
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-peg-beta
+          2 | accTitle: Second
+          3 | word<-"a";
+---
+
+
+Test: railroad-no-duplicate-title >> invalid >>> invalid/railroad/peg-title-third
+Filename: tests/fixtures/rules/railroad-no-duplicate-title/invalid/railroad/peg-title-third-input.mmd
+
+Code:
+  1 | railroad-peg-beta
+  2 | accTitle: A
+  3 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  4 | accTitle: A
+    | ^~~~~~~~~~~ [2]
+  5 | word<-"a";
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-peg-beta
+          2 | accTitle: A
+          3 | accTitle: A
+          4 | word<-"a";
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-peg-beta
+          2 | accTitle: B
+          3 | accTitle: A
+          4 | word<-"a";
+[2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-peg-beta
+          2 | accTitle: A
+          3 | accTitle: B
+          4 | word<-"a";
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-peg-beta
+          2 | accTitle: A
+          3 | accTitle: A
+          4 | word<-"a";
+---
+
+
+Test: railroad-no-duplicate-title >> invalid >>> invalid/railroad/peg-title-three-changes
+Filename: tests/fixtures/rules/railroad-no-duplicate-title/invalid/railroad/peg-title-three-changes-input.mmd
+
+Code:
+  1 | railroad-peg-beta
+  2 | accTitle: First
+  3 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | accTitle: Third
+    | ^~~~~~~~~~~~~~~ [2]
+  5 | word<-"a";
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-peg-beta
+          2 | accTitle: First
+          3 | accTitle: Third
+          4 | word<-"a";
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-peg-beta
+          2 | accTitle: Second
+          3 | accTitle: Third
+          4 | word<-"a";
+[2] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-peg-beta
+          2 | accTitle: First
+          3 | accTitle: Second
+          4 | word<-"a";
+---
+
+
+Test: railroad-no-duplicate-title >> invalid >>> invalid/railroad/title-equal-predecessor
+Filename: tests/fixtures/rules/railroad-no-duplicate-title/invalid/railroad/title-equal-predecessor-input.mmd
+
+Code:
+  1 | railroad-beta
+  2 | accTitle: A
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-beta
+          2 | accTitle: A
+          3 | accTitle: A
+          4 |
+---
+
+
+Test: railroad-no-duplicate-title >> invalid >>> invalid/railroad/title-removal-empty-predecessor
+Filename: tests/fixtures/rules/railroad-no-duplicate-title/invalid/railroad/title-removal-empty-predecessor-input.mmd
+
+Code:
+  1 | railroad-beta
+  2 | accTitle:
+  3 | accTitle: A
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement.
+        Output:
+          1 | railroad-beta
+          2 | accTitle:
+          3 | accTitle: A
+          4 |
+      - Remove the earlier `accTitle` statement.
+        Output:
+          1 | railroad-beta
+          2 | accTitle:
+          3 | accTitle: B
+          4 |
+---

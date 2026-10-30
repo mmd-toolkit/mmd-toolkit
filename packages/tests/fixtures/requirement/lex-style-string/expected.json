@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The style context: a string is no unit of a style."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...tyle r fill:\"red x\"\n----------------------^\nExpecting 'STYLE_SEPARATOR', 'END_ARROW_L', 'LINE', got 'NEWLINE'"
+  }
+}

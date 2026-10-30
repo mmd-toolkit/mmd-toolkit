@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Known divergences: detection: the word `C4Component` in a text of a quadrant is detected too."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nquadrantChartquadra\n^"
+  }
+}

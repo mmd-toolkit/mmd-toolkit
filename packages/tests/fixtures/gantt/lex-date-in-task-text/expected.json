@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md The statement context: a date inside a task text is text; the task `a 2024-01-01 `."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd"
+          },
+          "endTime": {
+            "data": "x"
+          }
+        },
+        "task": "a 2024-01-01 ",
+        "classes": [],
+        "id": "task1",
+        "order": 0
+      }
+    ],
+    "links": []
+  }
+}

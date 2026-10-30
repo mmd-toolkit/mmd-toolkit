@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Db normalization, subgraphs: a markdown name gives the label type markdown."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "**a**",
+        "nodes": [
+          "A"
+        ],
+        "title": "**a**",
+        "classes": [],
+        "labelType": "markdown"
+      }
+    ],
+    "tooltips": []
+  }
+}

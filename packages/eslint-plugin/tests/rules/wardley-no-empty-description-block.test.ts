@@ -1,0 +1,123 @@
+/** The rule on its document examples and fixtures, with escaped whitespace. */
+import { RuleTester } from "eslint"
+import { wardleyNoEmptyDescriptionBlock } from "../../src/rules/wardley-no-empty-description-block.ts"
+import { LANGUAGE_CONFIG } from "../helpers.ts"
+import { testRule } from "../rule-test.ts"
+
+testRule("wardley-no-empty-description-block", wardleyNoEmptyDescriptionBlock)
+
+new RuleTester(LANGUAGE_CONFIG).run(
+  "wardley-no-empty-description-block",
+  wardleyNoEmptyDescriptionBlock,
+  {
+    valid: [],
+    invalid: [
+      {
+        name: "invalid/wardley/description-empty-ps",
+        filename: "description-empty-ps.mmd",
+        code: `wardley-beta
+accDescr { \u2029 }`,
+        errors: [
+          {
+            message:
+              "mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.",
+            line: 2,
+            column: 1,
+            endLine: 2,
+            endColumn: 15,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `wardley-beta`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/wardley/empty-nbsp",
+        filename: "empty-nbsp.mmd",
+        code: `wardley-beta
+accDescr {\u00a0}`,
+        errors: [
+          {
+            message:
+              "mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.",
+            line: 2,
+            column: 1,
+            endLine: 2,
+            endColumn: 13,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `wardley-beta`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/wardley/empty-lone-cr",
+        filename: "empty-lone-cr.mmd",
+        code: `wardley-beta\raccDescr { \r }`,
+        errors: [
+          {
+            message:
+              "mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.",
+            line: 2,
+            column: 1,
+            endLine: 3,
+            endColumn: 3,
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `wardley-beta`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "invalid/wardley/removal-crlf-with-tab",
+        filename: "input.mmd",
+        code: `wardley-beta\r
+accDescr {\t}\r
+`,
+        errors: [
+          {
+            messageId: "empty",
+            suggestions: [
+              {
+                desc: "Remove the empty block.",
+                output: `wardley-beta\r
+`,
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        name: "invalid/wardley/empty-block-crlf",
+        filename:
+          "tests/fixtures/rules/wardley-no-empty-description-block/invalid/wardley/empty-block-crlf-input.mmd",
+        code: `wardley-beta\r
+accDescr { \r
+ }`,
+        errors: [
+          {
+            message:
+              "mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.",
+            line: 2,
+            column: 1,
+            endLine: 3,
+            endColumn: 3,
+            suggestions: [
+              { desc: "Remove the empty block.", output: `wardley-beta` },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+)

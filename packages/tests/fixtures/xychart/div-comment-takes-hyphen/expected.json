@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Known divergences: mermaid.js's comment takes the `-` before `%%`, so the title is `a`; here it is `a-`."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "a",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": []
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}

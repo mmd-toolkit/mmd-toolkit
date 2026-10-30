@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/state.md StateDefinitionStatement: a description of only whitespace, whatever its amount, gives no description; mermaid.js does not read it, so it has no token."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

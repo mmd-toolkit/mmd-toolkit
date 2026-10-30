@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Semantic acceptance: a junction may carry the group modifier. Case: edge-group-junction."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "b",
+        "type": "service"
+      },
+      {
+        "id": "a",
+        "type": "junction",
+        "in": "g"
+      }
+    ],
+    "groups": [
+      {
+        "id": "g"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "a",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": true,
+        "rhsId": "b",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false
+      }
+    ],
+    "layoutHints": []
+  }
+}

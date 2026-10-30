@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Strings, backquoted names, and generic types: the directive after the last character of the unclosed name that is not whitespace cuts the name, so the input is accepted; the class is `x` followed by three line feeds."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "x\n\n\n",
+        "type": "",
+        "label": "x\n\n\n",
+        "text": "x\n\n\n",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

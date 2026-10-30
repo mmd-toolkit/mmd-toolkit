@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md The link text contexts: after the placeholder, `--` that does not close the link is rejected, as without the entity."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...lowchart LRA--ﬂ°x¶ß--ﬂ°y¶ß-->B\n----------------------^"
+  }
+}

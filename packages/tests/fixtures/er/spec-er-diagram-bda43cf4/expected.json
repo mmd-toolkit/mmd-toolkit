@@ -1,0 +1,71 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/er/parser/erDiagram.spec.js",
+    "line": 373,
+    "test": "when parsing ER diagram it... > should allow an entity with attributes that have many constraints and comments"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-CUSTOMER-0",
+        "attributes": [
+          {
+            "type": "int",
+            "name": "customer_number",
+            "keys": [
+              "PK",
+              "FK"
+            ],
+            "comment": "comment1"
+          },
+          {
+            "type": "datetime",
+            "name": "customer_status_start_datetime",
+            "keys": [
+              "PK",
+              "UK",
+              "FK"
+            ],
+            "comment": ""
+          },
+          {
+            "type": "datetime",
+            "name": "customer_status_end_datetime",
+            "keys": [
+              "PK",
+              "UK"
+            ],
+            "comment": "comment3"
+          },
+          {
+            "type": "string",
+            "name": "customer_firstname",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "string",
+            "name": "customer_lastname",
+            "keys": [],
+            "comment": "comment5"
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "CUSTOMER",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

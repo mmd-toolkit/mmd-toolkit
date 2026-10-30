@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/xychart/parser/xychart.jison.spec.ts",
+    "line": 8,
+    "test": "Testing xychart jison file > parse y-axis throw error for invalid number in range data"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ame    45.5   -->   abc   \n-----------------------^\nExpecting 'NUMBER_WITH_DECIMAL', got 'ALPHA'"
+  }
+}

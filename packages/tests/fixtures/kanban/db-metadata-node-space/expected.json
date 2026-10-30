@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md M06 (Data context): Space before metadata is part of bare id."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S ",
+        "label": "S ",
+        "isGroup": true,
+        "ticket": "X"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "S ",
+        "set": {
+          "ticket": "X"
+        }
+      }
+    ]
+  }
+}

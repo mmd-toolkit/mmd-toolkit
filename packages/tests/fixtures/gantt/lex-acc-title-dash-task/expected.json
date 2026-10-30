@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Keywords and what follows them: `accTitle-:` holds no keyword; the task `accTitle-` with the end `T`."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd"
+          },
+          "endTime": {
+            "data": "T"
+          }
+        },
+        "task": "accTitle-",
+        "classes": [],
+        "id": "task1",
+        "order": 0
+      }
+    ],
+    "links": []
+  }
+}

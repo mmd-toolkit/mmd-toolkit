@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The shared classDef pass reaches ACC_TITLE."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "classDef x fill:#f00",
+    "accDescr": "",
+    "packet": []
+  }
+}

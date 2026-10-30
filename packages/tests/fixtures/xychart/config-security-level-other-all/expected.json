@@ -1,0 +1,68 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, settings: under a securityLevel that is not one of mermaid.js's values with htmlLabels unset, the titles, the categories, and the labels hold the replaced characters."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "T&lt;b&gt;x&lt;/b&gt;",
+    "accTitle": "A&lt;i&gt;",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "X&lt;i&gt;",
+      "categories": [
+        "c&lt;b&gt;",
+        "d"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "Y&lt;u&gt;",
+      "min": 0,
+      "max": 5
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "L&lt;b&gt;",
+        "data": [
+          [
+            "c&lt;b&gt;",
+            1
+          ],
+          [
+            "d",
+            2
+          ]
+        ],
+        "pointLabels": [
+          "p&lt;i&gt;",
+          ""
+        ]
+      },
+      {
+        "type": "bar",
+        "title": "B&lt;u&gt;",
+        "data": [
+          [
+            "c&lt;b&gt;",
+            3
+          ],
+          [
+            "d",
+            4
+          ]
+        ]
+      }
+    ]
+  },
+  "embedded": {
+    "title": "FM<b>"
+  }
+}

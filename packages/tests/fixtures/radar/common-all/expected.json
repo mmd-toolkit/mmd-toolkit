@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Common values use the injected converter and shared publication helper."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "T",
+    "accTitle": "A",
+    "accDescr": "D\nE",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

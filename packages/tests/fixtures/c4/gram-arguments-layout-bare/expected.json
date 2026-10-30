@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`UpdateLayoutConfig` with bare arguments is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...LayoutConfig(3, 1)\n---------------------^\nExpecting 'NEWLINE', 'EOF', 'LBRACE', 'RBRACE', 'STR', 'STR_KEY', 'ATTRIBUTE', 'ATTRIBUTE_EMPTY', got '1'"
+  }
+}

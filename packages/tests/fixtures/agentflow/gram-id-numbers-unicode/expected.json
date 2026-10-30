@@ -1,0 +1,90 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Numeric, Unicode, hyphenated and v ids are accepted id token sequences."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "123",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "123",
+        "props": {}
+      },
+      {
+        "id": "猫",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "猫",
+        "props": {}
+      },
+      {
+        "id": "a-b",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "a-b",
+        "props": {}
+      },
+      {
+        "id": "v",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "v",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "123",
+        "end": "猫",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_123_猫_0"
+      },
+      {
+        "start": "猫",
+        "end": "a-b",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_猫_a-b_0"
+      },
+      {
+        "start": "a-b",
+        "end": "v",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_a-b_v_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

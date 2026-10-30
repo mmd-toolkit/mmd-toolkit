@@ -1,0 +1,17 @@
+{
+  "message": "Unexpected directive",
+  "range": [
+    28,
+    42
+  ],
+  "loc": {
+    "start": {
+      "line": 4,
+      "column": 1
+    },
+    "end": {
+      "line": 4,
+      "column": 15
+    }
+  }
+}

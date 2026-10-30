@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, header: `block2` is detected as a block diagram and read as a node: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nblock2  A\n^\nExpecting 'BLOCK_DIAGRAM_KEY', got 'NODE_ID'"
+  }
+}

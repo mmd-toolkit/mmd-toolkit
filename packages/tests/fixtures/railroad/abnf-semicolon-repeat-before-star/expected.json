@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md Common directive and semicolon boundaries: Can a selected semicolon between a repeat minimum and star preserve the 2*4 repeat?"
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "style:#x",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "repetition",
+          "element": {
+            "type": "terminal",
+            "value": "a"
+          },
+          "min": 2,
+          "max": 4
+        }
+      }
+    ]
+  }
+}

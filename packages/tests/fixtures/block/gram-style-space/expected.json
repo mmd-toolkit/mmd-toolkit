@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, styles: a style for `space` as an id is rejected: no block has that id."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot set properties of undefined (setting 'styles')"
+  }
+}

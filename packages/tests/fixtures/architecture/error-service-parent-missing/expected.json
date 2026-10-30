@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A service parent must exist."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The service [api]'s parent does not exist. Please make sure the parent is created before this service"
+  }
+}

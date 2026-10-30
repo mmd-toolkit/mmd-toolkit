@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The common converter trims and collapses runs of ASCII spaces and tabs."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "A B C",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      }
+    ]
+  }
+}

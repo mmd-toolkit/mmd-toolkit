@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Imported number terminals are not reachable units."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->0<- at offset: 5, skipped 1 characters.\nLexer error on line 2, column 3: unexpected character: ->1<- at offset: 7, skipped 1 characters.\nLexer error on line 2, column 5: unexpected character: ->1<- at offset: 9, skipped 3 characters.\nLexer error on line 2, column 9: unexpected character: ->+<- at offset: 13, skipped 2 characters.\nLexer error on line 2, column 12: unexpected character: ->-<- at offset: 16, skipped 2 characters.\nLexer error on line 2, column 15: unexpected character: ->1<- at offset: 19, skipped 3 characters.\nLexer error on line 2, column 19: unexpected character: ->I<- at offset: 23, skipped 8 characters.\nLexer error on line 2, column 28: unexpected character: ->N<- at offset: 32, skipped 3 characters. "
+  }
+}

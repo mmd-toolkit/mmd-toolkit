@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does keyword order prevent a CSS property beginning with actor-?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> COLON <-- but found --> '-' <-- at line 3, column 14 [28,29)"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md: Click before a callback tooltip is erased."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [
+      {
+        "id": "A",
+        "text": "tip"
+      }
+    ],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "go",
+        "args": null
+      }
+    ]
+  }
+}

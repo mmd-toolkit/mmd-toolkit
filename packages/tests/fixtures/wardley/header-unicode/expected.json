@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "What follows a header terminal with an attached non-ASCII character?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 13: unexpected character: ->日<- at offset: 12, skipped 1 characters. "
+  }
+}

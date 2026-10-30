@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A glued percent pair and its text remain in the root at EOF."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R%% tail",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R%% tail",
+      "children": []
+    }
+  }
+}

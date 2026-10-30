@@ -1,0 +1,17 @@
+{
+  "message": "A node cannot be as indented as the root or less",
+  "range": [
+    21,
+    29
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 4
+    },
+    "end": {
+      "line": 3,
+      "column": 12
+    }
+  }
+}

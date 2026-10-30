@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Rejections outside the grammar, the participant awaiting creation and the participant awaiting destruction: the message that satisfies a create must go to the created participant; one from it is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The created participant undefined does not have an associated creating message after its declaration. Please check the sequence diagram."
+  }
+}

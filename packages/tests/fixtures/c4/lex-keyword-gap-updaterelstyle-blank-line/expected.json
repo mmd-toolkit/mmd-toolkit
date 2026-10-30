@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`UpdateRelStyle` followed by a blank line before `(` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 3. Unrecognized text.\n...ses\")UpdateRelStyle(a, b, \"red\", \"blu\n----------------------^"
+  }
+}

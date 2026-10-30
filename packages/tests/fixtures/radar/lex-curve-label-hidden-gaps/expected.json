@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md RadarCurve: Can a curve retain native forms in its label gaps separately from the gap before entries?"
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [],
+    "curves": [
+      {
+        "label": "C",
+        "entries": [
+          1
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

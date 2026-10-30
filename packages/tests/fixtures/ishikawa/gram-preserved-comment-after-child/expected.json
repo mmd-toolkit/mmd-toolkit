@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[G] Does a preserved comment separator leave the indentation stack intact?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "A",
+          "children": [
+            {
+              "text": "B",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
