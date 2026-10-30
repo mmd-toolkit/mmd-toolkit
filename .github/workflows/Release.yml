@@ -30,6 +30,10 @@ jobs:
           node-version: "lts/*"
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
+      # The version step regenerates the linter documents, which import the
+      # built parser; the publish step builds again through `prerelease`.
+      - name: Build
+        run: pnpm run build
       - name: Create Release Pull Request or Publish to npm
         uses: changesets/action@v1
         with:
