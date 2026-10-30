@@ -224,16 +224,15 @@ pnpm run -s lint:docs
 pnpm run -s lint:chars
 ```
 
-`pnpm run lint:docs` は、次のときに失敗する。
-仕様、parser、tests の文書のリンク、アンカー、fixture の引用が、
-何も指さないとき。
-これは `[fixture:` の後で折り返された引用も読む。
-行ごとの検索はそれを取りこぼす。
-mermaid.js へのリンクが、
-`packages/spec/docs/index.md` に記録した commit を指さないとき。
-英語の原本のない `.ja.md`。
+`pnpm run lint:docs` は、仕様、parser、tests の文書のリンク、アンカー、
+fixture の引用が何も指さないとき、
+mermaid.js へのリンクが pin した commit を指さないとき、
+英語の原本のない `.ja.md` があるときに失敗する。
+pin した commit は `packages/spec/docs/index.md` に記録してある。
 検査は、順に `scripts/check-doc-citations.mjs`、
 `scripts/check-mermaid-links.mjs`、`scripts/check-ja-docs.mjs` にある。
+引用の検査は `[fixture:` の後で折り返された引用も読み、
+行ごとの検索はそれを取りこぼす。
 日本語版が無い文書、英語版より古い日本語版、
 引用か見出しの構造が違う日本語版（behind）は、一覧するだけである。
 仕様の文書がそうなら、そのとき日本語版を、同じ引用と見出しの構造で書く。
