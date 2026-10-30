@@ -160,12 +160,11 @@ AGENTS.md は、それぞれを 1 行で述べ、守らせる検査の名前を�
   入力を生成するテストは持たず、生成するコマンドも持たない。
 - parser とフォーマッターのテストは、生成した入力を回さず、
   mermaid.js も動かさない。
-  入力と期待する結果は適合コーパス（`packages/tests/fixtures/`）から取る。
-  コーパスは入力ごとに、mermaid.js が受理するかと何を読むかを記録し、
-  どの言語の parser も同じ fixture で確かめる。
-  mermaid.js が何を読むかの主張は、記録された Db と照らす。
-  木の Db は `packages/tests` の `dbFromTree` が作り、
-  フォーマッターは整形前後の Db を比べる。
+  parser の入力と期待する結果は、コーパス（`packages/tests/fixtures/`）にある。
+  どの言語の parser も同じ fixture で確かめるためである。
+  フォーマッターは自分の fixture（入力と出力の対）とコーパスの入力を使い、
+  整形前後の木の Db を比べ、コーパスの入力では記録された Db とも比べる。
+  木の Db は `packages/tests` の `dbFromTree` が作る。
   fixture の記録が mermaid.js の振る舞いと同じかは `packages/tests` が確かめ、
   mermaid.js を動かすのはそこだけである。
 - リンターのテストは mermaid.js を動かさず、規則の fixture と文書の例で、
