@@ -1,3 +1,4 @@
+import { sameJsonValue } from "../utils/json.ts"
 import { canCompactRange } from "../utils/compact-range.ts"
 import type { MermaidSourceCode } from "../source-code.ts"
 
@@ -17,7 +18,7 @@ function memberRemovals(
     messageId: "removeThis" | "removePrevious"
   }[] = [{ range: member.current.removalRange, messageId: "removeThis" }]
   const before = member.previous.previous
-  if (before === undefined || before.value === member.current.value)
+  if (before === undefined || sameJsonValue(before.value, member.current.value))
     choices.push({
       range: member.previous.removalRange,
       messageId: "removePrevious",
@@ -58,7 +59,14 @@ export const noDuplicateInitKey: MermaidRuleDefinition<{
         for (const directive of root.directives) {
           for (const member of duplicateInitMembers(directive)) {
             context.report({
-              loc: directive.loc,
+              loc: {
+                start: context.sourceCode.getLocFromIndex(
+                  member.current.keyRange[0],
+                ),
+                end: context.sourceCode.getLocFromIndex(
+                  member.current.keyRange[1],
+                ),
+              },
               messageId: "duplicate",
               data: { key: member.current.key },
               suggest: memberRemovals(context.sourceCode, member),

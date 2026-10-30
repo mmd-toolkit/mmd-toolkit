@@ -62,6 +62,10 @@ parser が変わったら、
   編集が 2 つの場所の間の行をつなげてよいかを答える。
   間の行が空白だけならよく、
   コメントやテキストが飲まれたり動いたりするならよくない。
+- `tests/json.test.ts`: `src/utils/json.ts` の JSON の読み、問題の範囲、
+  値の比較。
+- `tests/directive-arguments.test.ts`: mermaid.js の引用符の読みに従う、
+  括弧で囲んだ引数の終わり。
 - `tests/removal.test.ts`: `src/utils/removal.ts` の `removalRange`、
   つまり要素を消す行全体。
   どの規則が消すかによらず、1 行目の行末、1 行のテキスト、最終行の前の行末、

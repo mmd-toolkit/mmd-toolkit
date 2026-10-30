@@ -1,54 +1,53 @@
 import type { RuleFixer } from "@eslint/core"
 import type { Directive } from "@mmd-toolkit/parser"
-import type { MermaidSourceCode } from "../source-code.ts"
-import {
-  directiveArgumentRange,
-  directiveArgumentText,
-  parsesAsJson,
-} from "../utils/directive-arguments.ts"
-import { trailingJsonCommas } from "../utils/json-commas.ts"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
-import { invalidInitReason } from "../utils/directive-arguments.ts"
+import {
+  directiveNameRange,
+  initNameCase,
+  initArgumentJson,
+} from "../utils/directive-arguments.ts"
+import type {
+  JsonProblemKind,
+  JsonProblem,
+  JsonReading,
+} from "../utils/json.ts"
+import { mermaidReadsJson } from "../utils/json.ts"
 
-/** Only valid Mermaid JSON may follow a corrected name or a trailing-comma edit. */
-function initFix(
-  sourceCode: MermaidSourceCode,
+/** A corrected name must not make invalid JSON discard the other init settings. */
+function nameFix(
   directive: Directive,
-  reason: "nameCase" | "invalid",
+  parsed: JsonReading | null,
 ): RuleFixer | null {
-  const text = directiveArgumentText(directive).replaceAll("'", '"')
-  if (reason === "nameCase") {
-    if (!parsesAsJson(text)) return null
-    let start = directive.range[0] + 3
-    while (sourceCode.text[start]?.trim() === "") start++
-
-    return (fixer) =>
-      fixer.replaceTextRange(
-        [start, start + directive.name.length],
-        directive.name.toLowerCase(),
-      )
-  }
-  const commas = trailingJsonCommas(text)
-  if (commas.length === 0) return null
-  const positions = new Set(commas)
-  const cleaned = text
-    .split("")
-    .filter((_, at) => !positions.has(at))
-    .join("")
-  if (!parsesAsJson(cleaned)) return null
-  const start = directiveArgumentRange(directive)[0]
-
+  if (parsed !== null && !mermaidReadsJson(parsed)) return null
   return (fixer) =>
-    commas.map((at) => fixer.removeRange([start + at, start + at + 1]))
+    fixer.replaceTextRange(
+      directiveNameRange(directive),
+      directive.name.toLowerCase(),
+    )
 }
 
-/**
- * Check the root's written directives, including ones on closing-marker lines.
- */
+/** Edits use written token ranges so adjacent escapes keep their meaning. */
+function problemFix(problem: JsonProblem): RuleFixer {
+  switch (problem.kind) {
+    case "trailingComma":
+      return (fixer) => fixer.removeRange(problem.range)
+    case "apostropheInDoubleQuotedString":
+    case "escapedApostrophe":
+      return (fixer) => fixer.replaceTextRange(problem.range, "\\u0027")
+    case "quoteInSingleQuotedString":
+      return (fixer) => fixer.replaceTextRange(problem.range, '\\"')
+    default: {
+      const unreachable: never = problem.kind
+      throw new Error(`Unexpected JSON problem: ${String(unreachable)}`)
+    }
+  }
+}
+
+/** Read the embedded JSON from every written directive, including comment lines. */
 export const noInvalidInitDirective: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "nameCase" | "invalid"
+  MessageIds: "nameCase" | "invalid" | JsonProblemKind
 }> = {
   meta: {
     type: "problem",
@@ -65,19 +64,56 @@ export const noInvalidInitDirective: MermaidRuleDefinition<{
         "mermaid.js reads no settings from `{{name}}`; init directive names are case-sensitive.",
       invalid:
         "mermaid.js reads no settings from this init directive because its JSON argument is invalid.",
+      trailingComma:
+        "mermaid.js reads no settings from this init directive because of this trailing comma.",
+      apostropheInDoubleQuotedString:
+        "mermaid.js turns this ' into \" before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \\u0027.",
+      escapedApostrophe:
+        "mermaid.js turns this \\' into \\\" and reads \" instead of '. Write \\u0027.",
+      quoteInSingleQuotedString:
+        'mermaid.js turns the \' around this string into ", so this " breaks the JSON and it reads no settings from this init directive. Write \\".',
     },
   },
   create(context) {
     return {
       Root(root) {
         for (const directive of root.directives) {
-          const reason = invalidInitReason(directive)
-          if (reason !== null) {
+          const nameCase = initNameCase(directive)
+          if (nameCase === "notInit") continue
+          if (nameCase === "wrongCase") {
+            const range = directiveNameRange(directive)
+            const parsed = initArgumentJson(directive)
             context.report({
-              loc: directive.loc,
-              messageId: reason,
+              loc: {
+                start: context.sourceCode.getLocFromIndex(range[0]),
+                end: context.sourceCode.getLocFromIndex(range[1]),
+              },
+              messageId: "nameCase",
               data: { name: directive.name },
-              fix: initFix(context.sourceCode, directive, reason),
+              fix: nameFix(directive, parsed),
+            })
+            continue
+          }
+          const parsed = initArgumentJson(directive)
+          if (parsed === null) continue
+          if (parsed.invalid) {
+            context.report({
+              loc: {
+                start: context.sourceCode.getLocFromIndex(parsed.range[0]),
+                end: context.sourceCode.getLocFromIndex(parsed.range[1]),
+              },
+              messageId: "invalid",
+            })
+            continue
+          }
+          for (const problem of parsed.problems) {
+            context.report({
+              loc: {
+                start: context.sourceCode.getLocFromIndex(problem.range[0]),
+                end: context.sourceCode.getLocFromIndex(problem.range[1]),
+              },
+              messageId: problem.kind,
+              fix: problemFix(problem),
             })
           }
         }

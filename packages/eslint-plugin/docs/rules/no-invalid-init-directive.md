@@ -24,16 +24,20 @@ all.
 
 This rule applies to every diagram type. It reports invalid JSON in an init
 directive and a directive name ending in `init` or `initialize` with different
-letter case, such as `INIT` or `myINIT`.
+letter case, such as `INIT` or `myINIT` (a lowercase suffix such as `myinit`
+gives settings).
 
-Names ending in lowercase `init` or `initialize`, including `myinit`, give
-settings. mermaid.js replaces every `'` with `"` before reading the JSON, so
-`{'theme': 'dark'}` is valid and is not reported. Trailing commas, unquoted
-keys, missing values, and unclosed strings or objects make the JSON invalid.
+mermaid.js turns every `'` into `"` before reading the JSON, so
+`{'theme': 'dark'}` is valid, as is a string opened with one quote and closed
+with the other, but a `'` inside a `"`-quoted string, an unescaped `"` inside a
+`'`-quoted string, and `\'` are read as something else. A `\'` is always
+reported; the other two are reported when they are all that keeps mermaid.js
+from reading the JSON. Each report comes with a fix that writes `\u0027` or
+`\"`; a trailing comma is removed too. Any other error is reported once per
+directive, without a fix.
 
-JSON valid as written is not reported even if replacing `'` with `"` breaks it,
-as in `{"fontFamily": "O'Brien"}`. A word argument, such as `%%{init: dark}%%`,
-or no argument gives no settings and is not reported.
+A word argument, such as `%%{init: dark}%%`, or no argument gives no settings
+and is not reported.
 
 The examples are flowcharts.
 
@@ -49,6 +53,13 @@ flowchart LR
 ```mmd
 %% eslint @mmd-toolkit/no-invalid-init-directive: error
 %%{INIT: {"theme": "dark"}}%%
+flowchart LR
+  A --> B
+```
+
+```mmd
+%% eslint @mmd-toolkit/no-invalid-init-directive: error
+%%{init: {"fontFamily": "O'Brien"}}%%
 flowchart LR
   A --> B
 ```

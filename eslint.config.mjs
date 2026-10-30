@@ -134,6 +134,31 @@ export default [
           skipJSXText: false,
         },
       ],
+      // The rules that carry the conventions of this repository are not
+      // disabled by a comment: a place that cannot follow one is a decision
+      // for this configuration, not for the line. A comment that names no
+      // rule is reported too. What to do instead, rule by rule:
+      "@eslint-community/eslint-comments/no-restricted-disable": [
+        "error",
+        // Write the JSDoc: one sentence on what the function does, and the
+        // reason where one matters.
+        "jsdoc/*",
+        // Give the regular expression the u flag (and never the i flag); keep
+        // the original flags when rebuilding one.
+        "regexp/require-unicode-regexp",
+        // Append or compare with the helpers of the package (`appendItems`,
+        // `minOf`, `maxOf`) or a loop instead of spreading into a call.
+        "no-restricted-syntax",
+        // Write the input as a fixture that answers a sentence; no random
+        // source.
+        "no-restricted-properties",
+        // Import only the types of mermaid.js and of the module that runs it
+        // in the tests of the parser; the fixtures hold what mermaid.js does.
+        "@typescript-eslint/no-restricted-imports",
+        // Write the character as an escape; only the fixtures of the corpus
+        // hold it literally.
+        "no-irregular-whitespace",
+      ],
     },
     settings: {
       n: {

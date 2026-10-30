@@ -25,16 +25,19 @@ JSON が正しくないと、mermaid.js はエラーなしに、
 
 この規則は、すべての図種に当てる。
 init のディレクティブの正しくない JSON と、`INIT` や `myINIT` のように、
-別の大文字小文字の `init` か `initialize` で終わる名前を報告する。
+別の大文字小文字の `init` か `initialize` で終わる名前を報告する（`myinit`
+のような小文字の接尾辞は設定を与える）。
 
-`myinit` も含め、小文字の `init` か `initialize` で終わる名前が設定を与える。
 mermaid.js は JSON を読む前に各 `'` を `"` に変えるので、
-`{'theme': 'dark'}` は正しく、報告しない。
-末尾のカンマ、引用符のないキー、欠けた値、閉じない文字列やオブジェクトは、
-JSON を不正にする。
+`{'theme': 'dark'}` も、一方の引用符で開いて他方で閉じる文字列も正しいが、
+`"` で囲んだ文字列内の `'` と、
+`'` で囲んだ文字列内のエスケープしていない `"` と、
+`\'` は別のものとして読まれる。
+`\'` は常に報告する。
+ほかの 2 つは、それらだけが mermaid.js が JSON を読む妨げであるときに報告する。
+それぞれの報告には `\u0027` か `\"` と書く修正が付き、末尾のカンマも削除する。
+それ以外のエラーはディレクティブごとに一度、修正なしで報告する。
 
-書いたとおりで正しい JSON は、`{"fontFamily": "O'Brien"}` のように、
-`'` を `"` に変えると壊れても報告しない。
 `%%{init: dark}%%` のような語の引数や、引数のないものは設定を与えず、
 報告しない。
 
@@ -52,6 +55,13 @@ flowchart LR
 ```mmd
 %% eslint @mmd-toolkit/no-invalid-init-directive: error
 %%{INIT: {"theme": "dark"}}%%
+flowchart LR
+  A --> B
+```
+
+```mmd
+%% eslint @mmd-toolkit/no-invalid-init-directive: error
+%%{init: {"fontFamily": "O'Brien"}}%%
 flowchart LR
   A --> B
 ```

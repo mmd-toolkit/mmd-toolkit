@@ -22,10 +22,12 @@ that starts its argument. Such a directive is reported both when it has no `}%%`
 and when a `}%%` written later, as that of a later directive, closes it.
 
 Multiline JSON objects and arrays are not reported; when the object is not
-closed, the rest of the directive is part of it and is not reported. A directive
-at the end of the text that takes no statement is not reported, even without
-`}%%`. `%%{wrap` at the end of a line takes the first word of the next line as
-its argument, and that word disappears; the rule reports it.
+closed, the rest of the directive is part of it and is not reported. Brackets
+and quotes are counted as mermaid.js reads them: `'` and `"` each close a
+string. A directive at the end of the text that takes no statement is not
+reported, even without `}%%`. `%%{wrap` at the end of a line takes the first
+word of the next line as its argument, and that word disappears; the rule
+reports it.
 
 When the text without what a directive takes is no valid diagram, as when the
 directive takes the header, mermaid.js gives an error and the rule does not

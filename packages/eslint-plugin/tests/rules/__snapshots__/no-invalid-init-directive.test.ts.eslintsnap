@@ -6,7 +6,7 @@ Filename: no-invalid-init-directive-incorrect-1.mmd
 
 Code:
   1 | %%{init: {"theme": "dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                          ^ [1]
   2 | flowchart LR
   3 |   A --> B
   4 |
@@ -17,7 +17,7 @@ Output:
   3 |   A --> B
   4 |
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -26,7 +26,7 @@ Filename: no-invalid-init-directive-incorrect-2.mmd
 
 Code:
   1 | %%{INIT: {"theme": "dark"}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |    ^~~~ [1]
   2 | flowchart LR
   3 |   A --> B
   4 |
@@ -41,6 +41,26 @@ Output:
 ---
 
 
+Test: no-invalid-init-directive >> invalid >>> docs/rules/no-invalid-init-directive.md incorrect 3
+Filename: no-invalid-init-directive-incorrect-3.mmd
+
+Code:
+  1 | %%{init: {"fontFamily": "O'Brien"}}%%
+    |                           ^ [1]
+  2 | flowchart LR
+  3 |   A --> B
+  4 |
+
+Output:
+  1 | %%{init: {"fontFamily": "O\u0027Brien"}}%%
+  2 | flowchart LR
+  3 |   A --> B
+  4 |
+
+[1] mermaid.js turns this ' into " before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \u0027.
+---
+
+
 Test: no-invalid-init-directive >> invalid >>> invalid/agentflow/agentflow-beta-closed-by-later-directive
 Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/agentflow/agentflow-beta-closed-by-later-directive-input.mmd
 
@@ -48,11 +68,11 @@ Code:
   1 | agentflow-beta
   2 | A --> B
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | C --> D
     | ~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -65,7 +85,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/agentflow/agent
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | agentflow-beta
   3 | A --> B
 
@@ -74,7 +94,7 @@ Output:
   2 | agentflow-beta
   3 | A --> B
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -85,9 +105,8 @@ Code:
   1 | agentflow-beta
   2 | A --> B
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | C --> D
-    | ~~~~~~~ [1]
+    | ^~~~~~~ [1]
 
 Output: unchanged
 
@@ -102,11 +121,11 @@ Code:
   1 | architecture-beta
   2 | service a(server)[A]
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | service b(server)[B]
     | ~~~~~~~~~~~~~~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -119,7 +138,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/architecture/ar
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | architecture-beta
   3 | service a(server)[A]
 
@@ -128,7 +147,7 @@ Output:
   2 | architecture-beta
   3 | service a(server)[A]
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -139,9 +158,8 @@ Code:
   1 | architecture-beta
   2 | service a(server)[A]
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | service b(server)[B]
-    | ~~~~~~~~~~~~~~~~~~~~ [1]
+    | ^~~~~~~~~~~~~~~~~~~~ [1]
 
 Output: unchanged
 
@@ -156,11 +174,11 @@ Code:
   1 | block
   2 | A
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | B
     | ~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -173,7 +191,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/block/block-ini
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | block
   3 | A
 
@@ -182,7 +200,7 @@ Output:
   2 | block
   3 | A
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -193,9 +211,8 @@ Code:
   1 | block
   2 | A
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | B
-    | ~ [1]
+    | ^ [1]
 
 Output: unchanged
 
@@ -210,11 +227,11 @@ Code:
   1 | C4Component
   2 | Component(a, "A")
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | Component(b, "B")
     | ~~~~~~~~~~~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -227,7 +244,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/c4/C4Component-
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | C4Component
   3 | Component(a, "A")
 
@@ -236,7 +253,7 @@ Output:
   2 | C4Component
   3 | Component(a, "A")
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -247,9 +264,8 @@ Code:
   1 | C4Component
   2 | Component(a, "A")
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | Component(b, "B")
-    | ~~~~~~~~~~~~~~~~~ [1]
+    | ^~~~~~~~~~~~~~~~~ [1]
 
 Output: unchanged
 
@@ -264,11 +280,11 @@ Code:
   1 | C4Container
   2 | Container(a, "A")
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | Container(b, "B")
     | ~~~~~~~~~~~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -281,7 +297,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/c4/C4Container-
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | C4Container
   3 | Container(a, "A")
 
@@ -290,7 +306,7 @@ Output:
   2 | C4Container
   3 | Container(a, "A")
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -301,9 +317,8 @@ Code:
   1 | C4Container
   2 | Container(a, "A")
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | Container(b, "B")
-    | ~~~~~~~~~~~~~~~~~ [1]
+    | ^~~~~~~~~~~~~~~~~ [1]
 
 Output: unchanged
 
@@ -318,11 +333,11 @@ Code:
   1 | C4Context
   2 | Person(a, "A")
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | Person(b, "B")
     | ~~~~~~~~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -335,7 +350,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/c4/C4Context-in
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | C4Context
   3 | Person(a, "A")
 
@@ -344,7 +359,7 @@ Output:
   2 | C4Context
   3 | Person(a, "A")
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -355,9 +370,8 @@ Code:
   1 | C4Context
   2 | Person(a, "A")
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | Person(b, "B")
-    | ~~~~~~~~~~~~~~ [1]
+    | ^~~~~~~~~~~~~~ [1]
 
 Output: unchanged
 
@@ -372,11 +386,11 @@ Code:
   1 | C4Deployment
   2 | Container(a, "A")
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | Container(b, "B")
     | ~~~~~~~~~~~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -389,7 +403,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/c4/C4Deployment
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | C4Deployment
   3 | Container(a, "A")
 
@@ -398,7 +412,7 @@ Output:
   2 | C4Deployment
   3 | Container(a, "A")
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -409,9 +423,8 @@ Code:
   1 | C4Deployment
   2 | Container(a, "A")
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | Container(b, "B")
-    | ~~~~~~~~~~~~~~~~~ [1]
+    | ^~~~~~~~~~~~~~~~~ [1]
 
 Output: unchanged
 
@@ -426,11 +439,11 @@ Code:
   1 | C4Dynamic
   2 | Container(a, "A")
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | Container(b, "B")
     | ~~~~~~~~~~~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -443,7 +456,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/c4/C4Dynamic-in
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | C4Dynamic
   3 | Container(a, "A")
 
@@ -452,7 +465,7 @@ Output:
   2 | C4Dynamic
   3 | Container(a, "A")
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -463,9 +476,8 @@ Code:
   1 | C4Dynamic
   2 | Container(a, "A")
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | Container(b, "B")
-    | ~~~~~~~~~~~~~~~~~ [1]
+    | ^~~~~~~~~~~~~~~~~ [1]
 
 Output: unchanged
 
@@ -480,11 +492,11 @@ Code:
   1 | classDiagram
   2 | class A
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | class B
     | ~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -497,7 +509,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/class/classDiag
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | classDiagram
   3 | class A
 
@@ -506,7 +518,7 @@ Output:
   2 | classDiagram
   3 | class A
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -517,9 +529,8 @@ Code:
   1 | classDiagram
   2 | class A
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | class B
-    | ~~~~~~~ [1]
+    | ^~~~~~~ [1]
 
 Output: unchanged
 
@@ -533,11 +544,11 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/common/error-cl
 Code:
   1 | error
   2 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   3 |
     | ~\ [1]
   4 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -550,14 +561,14 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/common/error-in
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | error
 
 Output:
   1 | %%{init: {"theme":"dark"}}%%
   2 | error
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -568,11 +579,11 @@ Code:
   1 | cynefin-beta
   2 | clear "A"
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | complex "B"
     | ~~~~~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -585,7 +596,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/cynefin/cynefin
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | cynefin-beta
   3 | clear "A"
 
@@ -594,7 +605,7 @@ Output:
   2 | cynefin-beta
   3 | clear "A"
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -605,9 +616,8 @@ Code:
   1 | cynefin-beta
   2 | clear "A"
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | complex "B"
-    | ~~~~~~~~~~~ [1]
+    | ^~~~~~~~~~~ [1]
 
 Output: unchanged
 
@@ -622,11 +632,11 @@ Code:
   1 | erDiagram
   2 | A ||--o{ B : has
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | C ||--o{ D : has
     | ~~~~~~~~~~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -639,7 +649,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/er/erDiagram-in
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | erDiagram
   3 | A ||--o{ B : has
 
@@ -648,7 +658,7 @@ Output:
   2 | erDiagram
   3 | A ||--o{ B : has
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -659,9 +669,8 @@ Code:
   1 | erDiagram
   2 | A ||--o{ B : has
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | C ||--o{ D : has
-    | ~~~~~~~~~~~~~~~~ [1]
+    | ^~~~~~~~~~~~~~~~ [1]
 
 Output: unchanged
 
@@ -676,11 +685,11 @@ Code:
   1 | eventmodeling
   2 | entity Shop.Buy
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | entity Shop.Sell
     | ~~~~~~~~~~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -693,7 +702,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/eventmodeling/e
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | eventmodeling
   3 | entity Shop.Buy
 
@@ -702,7 +711,7 @@ Output:
   2 | eventmodeling
   3 | entity Shop.Buy
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -713,13 +722,351 @@ Code:
   1 | eventmodeling
   2 | entity Shop.Buy
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | entity Shop.Sell
-    | ~~~~~~~~~~~~~~~~ [1]
+    | ^~~~~~~~~~~~~~~~ [1]
 
 Output: unchanged
 
 [1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/apostrophe-after-comment-line
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/apostrophe-after-comment-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   %% A comment before the directive
+  3 |   %%{init: {"fontFamily": "O'Brien"}}%%
+    |                             ^ [1]
+  4 |   A --> B
+  5 |
+
+Output:
+  1 | flowchart LR
+  2 |   %% A comment before the directive
+  3 |   %%{init: {"fontFamily": "O\u0027Brien"}}%%
+  4 |   A --> B
+  5 |
+
+[1] mermaid.js turns this ' into " before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \u0027.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/apostrophe-after-empty-line
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/apostrophe-after-empty-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |
+  3 |   %%{init: {"fontFamily": "O'Brien"}}%%
+    |                             ^ [1]
+  4 |   A --> B
+  5 |
+
+Output:
+  1 | flowchart LR
+  2 |
+  3 |   %%{init: {"fontFamily": "O\u0027Brien"}}%%
+  4 |   A --> B
+  5 |
+
+[1] mermaid.js turns this ' into " before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \u0027.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/apostrophe-after-semicolon
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/apostrophe-after-semicolon-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A --> B; %%{init: {"fontFamily":"O'Brien"}}%%
+    |                                   ^ [1]
+  3 |
+
+Output:
+  1 | flowchart LR
+  2 | A --> B; %%{init: {"fontFamily":"O\u0027Brien"}}%%
+  3 |
+
+[1] mermaid.js turns this ' into " before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \u0027.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/apostrophe-and-escaped-apostrophe
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/apostrophe-and-escaped-apostrophe-input.mmd
+
+Code:
+  1 | %%{init: {"fontFamily": "O'Brien", "theme": "x\'y"}}%%
+    |                           ^ [1]               ^~ [2]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+Output:
+  1 | %%{init: {"fontFamily": "O\u0027Brien", "theme": "x\u0027y"}}%%
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+[1] mermaid.js turns this ' into " before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \u0027.
+[2] mermaid.js turns this \' into \" and reads " instead of '. Write \u0027.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/apostrophe-and-trailing-comma
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/apostrophe-and-trailing-comma-input.mmd
+
+Code:
+  1 | %%{init: {"fontFamily":"O'Brien",}}%%
+    |                          ^ [1]  ^ [2]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+Output:
+  1 | %%{init: {"fontFamily":"O\u0027Brien"}}%%
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+[1] mermaid.js turns this ' into " before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \u0027.
+[2] mermaid.js reads no settings from this init directive because of this trailing comma.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/apostrophe-and-unclosed-object
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/apostrophe-and-unclosed-object-input.mmd
+
+Code:
+  1 | %%{init: {"fontFamily":"O'Brien"}%%
+    |                           ^ [1]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/apostrophe-before-missing-value
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/apostrophe-before-missing-value-input.mmd
+
+Code:
+  1 | %%{init: {"a":"O'B","b":}}%%
+    |                  ^ [1]
+  2 | flowchart LR
+  3 |   A --> B
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/apostrophe-before-valid-directive
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/apostrophe-before-valid-directive-input.mmd
+
+Code:
+  1 | %%{init: {"fontFamily": "O'Brien"}}%%
+    |                           ^ [1]
+  2 | %%{init: {"theme": "dark"}}%%
+  3 | flowchart LR
+  4 |   A --> B
+  5 |
+
+Output:
+  1 | %%{init: {"fontFamily": "O\u0027Brien"}}%%
+  2 | %%{init: {"theme": "dark"}}%%
+  3 | flowchart LR
+  4 |   A --> B
+  5 |
+
+[1] mermaid.js turns this ' into " before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \u0027.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/apostrophe-graph-header
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/apostrophe-graph-header-input.mmd
+
+Code:
+  1 | %%{init: {"fontFamily": "O'Brien"}}%%
+    |                           ^ [1]
+  2 | graph LR
+  3 |   A --> B
+  4 |
+
+Output:
+  1 | %%{init: {"fontFamily": "O\u0027Brien"}}%%
+  2 | graph LR
+  3 |   A --> B
+  4 |
+
+[1] mermaid.js turns this ' into " before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \u0027.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/apostrophe-in-comment
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/apostrophe-in-comment-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | %% disabled %%{init: {"fontFamily":"O'Brien"}}%%
+    |                                      ^ [1]
+  3 | A --> B
+  4 |
+
+Output:
+  1 | flowchart LR
+  2 | %% disabled %%{init: {"fontFamily":"O\u0027Brien"}}%%
+  3 | A --> B
+  4 |
+
+[1] mermaid.js turns this ' into " before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \u0027.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/apostrophe-in-key
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/apostrophe-in-key-input.mmd
+
+Code:
+  1 | %%{init: {"O'Brien": 1}}%%
+    |             ^ [1]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+Output:
+  1 | %%{init: {"O\u0027Brien": 1}}%%
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+[1] mermaid.js turns this ' into " before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \u0027.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/apostrophe-last-line
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/apostrophe-last-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A --> B
+  3 | %%{init: {"fontFamily":"O'Brien"}}%%
+    |                          ^ [1]
+
+Output:
+  1 | flowchart LR
+  2 | A --> B
+  3 | %%{init: {"fontFamily":"O\u0027Brien"}}%%
+
+[1] mermaid.js turns this ' into " before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \u0027.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/apostrophe-multiline-lf
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/apostrophe-multiline-lf-input.mmd
+
+Code:
+  1 | %%{init: {"fontFamily":
+  2 | "O'Brien"}}%%
+    |   ^ [1]
+  3 | flowchart LR
+  4 | A --> B
+  5 |
+
+Output:
+  1 | %%{init: {"fontFamily":
+  2 | "O\u0027Brien"}}%%
+  3 | flowchart LR
+  4 | A --> B
+  5 |
+
+[1] mermaid.js turns this ' into " before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \u0027.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/apostrophe-swimlane-header
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/apostrophe-swimlane-header-input.mmd
+
+Code:
+  1 | %%{init: {"fontFamily": "O'Brien"}}%%
+    |                           ^ [1]
+  2 | swimlane-beta LR
+  3 |   A --> B
+  4 |
+
+Output:
+  1 | %%{init: {"fontFamily": "O\u0027Brien"}}%%
+  2 | swimlane-beta LR
+  3 |   A --> B
+  4 |
+
+[1] mermaid.js turns this ' into " before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \u0027.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/apostrophes-in-one-string
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/apostrophes-in-one-string-input.mmd
+
+Code:
+  1 | %%{init: {"fontFamily":"O'Brien's"}}%%
+    |                          ^ [1] ^ [2]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+Output:
+  1 | %%{init: {"fontFamily":"O\u0027Brien\u0027s"}}%%
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+[1] mermaid.js turns this ' into " before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \u0027.
+[2] mermaid.js turns this ' into " before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \u0027.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/apostrophes-in-two-strings
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/apostrophes-in-two-strings-input.mmd
+
+Code:
+  1 | %%{init: {"fontFamily":"O'Brien's", "other":"D'Arcy"}}%%
+    |                          ^ [1] ^ [2]          ^ [3]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+Output:
+  1 | %%{init: {"fontFamily":"O\u0027Brien\u0027s", "other":"D\u0027Arcy"}}%%
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+[1] mermaid.js turns this ' into " before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \u0027.
+[2] mermaid.js turns this ' into " before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \u0027.
+[3] mermaid.js turns this ' into " before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \u0027.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/boundary-duplicate-with-valid-written-apostrophe
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/boundary-duplicate-with-valid-written-apostrophe-input.mmd
+
+Code:
+  1 | %%{init: {"fontFamily":"O'Brien","fontFamily":"Other"}}%%
+    |                          ^ [1]
+  2 | flowchart LR
+  3 | A --> B
+
+Output:
+  1 | %%{init: {"fontFamily":"O\u0027Brien","fontFamily":"Other"}}%%
+  2 | flowchart LR
+  3 | A --> B
+
+[1] mermaid.js turns this ' into " before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \u0027.
 ---
 
 
@@ -730,7 +1077,7 @@ Code:
   1 | flowchart LR
   2 | A --> B
   3 | %%{init: {"theme": "dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                           ^ [1]
 
 Output: unchanged
 
@@ -743,7 +1090,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/bound
 
 Code:
   1 | %%{Initialize: {"theme":"dark"}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |    ^~~~~~~~~~ [1]
   2 | flowchart LR
   3 | A --> B
 
@@ -756,12 +1103,30 @@ Output:
 ---
 
 
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/control-line-break-in-string
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/control-line-break-in-string-input.mmd
+
+Code:
+  1 | %%{init: {"fontFamily":"bad
+    |                            ^\ [1]
+  2 | value"}}%%
+    | ~ [1]
+  3 | flowchart LR
+  4 | A --> B
+  5 |
+
+Output: unchanged
+
+[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+---
+
+
 Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/docs-no-invalid-init-directive-incorrect-1
 Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/docs-no-invalid-init-directive-incorrect-1-input.mmd
 
 Code:
   1 | %%{init: {"theme": "dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                          ^ [1]
   2 | flowchart LR
   3 |   A --> B
   4 |
@@ -772,7 +1137,7 @@ Output:
   3 |   A --> B
   4 |
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -781,7 +1146,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/docs-
 
 Code:
   1 | %%{INIT: {"theme": "dark"}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |    ^~~~ [1]
   2 | flowchart LR
   3 |   A --> B
   4 |
@@ -803,10 +1168,128 @@ Code:
   1 | flowchart LR
   2 |   A --> B
   3 |   %%{init: {"theme": "dark"}}
-    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                             ^\ [1]
   4 |   C --> D
     | ~~~~~~~~~ [1]
   5 |
+
+Output: unchanged
+
+[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/double-quote-in-single-quotes
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/double-quote-in-single-quotes-input.mmd
+
+Code:
+  1 | %%{init: {'fontFamily':'say "hi"'}}%%
+    |                             ^  ^
+    |                            [1] [2]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+Output:
+  1 | %%{init: {'fontFamily':'say \"hi\"'}}%%
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+[1] mermaid.js turns the ' around this string into ", so this " breaks the JSON and it reads no settings from this init directive. Write \".
+[2] mermaid.js turns the ' around this string into ", so this " breaks the JSON and it reads no settings from this init directive. Write \".
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/escaped-apostrophe-double-quotes
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/escaped-apostrophe-double-quotes-input.mmd
+
+Code:
+  1 | %%{init: {"fontFamily":"it\'s"}}%%
+    |                           ^~ [1]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+Output:
+  1 | %%{init: {"fontFamily":"it\u0027s"}}%%
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+[1] mermaid.js turns this \' into \" and reads " instead of '. Write \u0027.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/escaped-apostrophe-single-quotes
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/escaped-apostrophe-single-quotes-input.mmd
+
+Code:
+  1 | %%{init: {'fontFamily':'it\'s'}}%%
+    |                           ^~ [1]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+Output:
+  1 | %%{init: {'fontFamily':'it\u0027s'}}%%
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+[1] mermaid.js turns this \' into \" and reads " instead of '. Write \u0027.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/escaped-backslash-before-apostrophe
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/escaped-backslash-before-apostrophe-input.mmd
+
+Code:
+  1 | %%{init: {"fontFamily":"O\\'Brien"}}%%
+    |                            ^ [1]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+Output:
+  1 | %%{init: {"fontFamily":"O\\\u0027Brien"}}%%
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+[1] mermaid.js turns this ' into " before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \u0027.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/escaped-quote-next-to-apostrophe
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/escaped-quote-next-to-apostrophe-input.mmd
+
+Code:
+  1 | %%{init: {"fontFamily":"say \"O'Brien\""}}%%
+    |                                ^ [1]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+Output:
+  1 | %%{init: {"fontFamily":"say \"O\u0027Brien\""}}%%
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+[1] mermaid.js turns this ' into " before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \u0027.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/extra-text-after-value
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/extra-text-after-value-input.mmd
+
+Code:
+  1 | %%{init: {} next}%%
+    |             ^~~~ [1]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
 
 Output: unchanged
 
@@ -821,11 +1304,11 @@ Code:
   1 | flowchart LR
   2 | A --> B
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | C --> D
     | ~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -838,7 +1321,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/flowc
 
 Code:
   1 | %%{init: {"theme":"dark","theme":"forest",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                                          ^ [1]
   2 | flowchart LR
   3 | A --> B
 
@@ -847,7 +1330,7 @@ Output:
   2 | flowchart LR
   3 | A --> B
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -858,11 +1341,11 @@ Code:
   1 | flowchart-elk LR
   2 | A --> B
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | C --> D
     | ~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -875,7 +1358,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/flowc
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | flowchart-elk LR
   3 | A --> B
 
@@ -884,7 +1367,7 @@ Output:
   2 | flowchart-elk LR
   3 | A --> B
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -895,9 +1378,8 @@ Code:
   1 | flowchart-elk LR
   2 | A --> B
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | C --> D
-    | ~~~~~~~ [1]
+    | ^~~~~~~ [1]
 
 Output: unchanged
 
@@ -910,7 +1392,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/flowc
 
 Code:
   1 | %%{init: {"fontSize":22,}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                        ^ [1]
   2 | %%{init: {"theme":"dark"}}%%
   3 | flowchart LR
   4 | A --> B
@@ -921,7 +1403,7 @@ Output:
   3 | flowchart LR
   4 | A --> B
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -930,7 +1412,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/flowc
 
 Code:
   1 | %%{Init: {"theme":"dark"}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |    ^~~~ [1]
   2 | flowchart LR
   3 | A --> B
 
@@ -948,7 +1430,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/flowc
 
 Code:
   1 | %%{initialize: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                               ^ [1]
   2 | flowchart LR
   3 | A --> B
 
@@ -957,7 +1439,7 @@ Output:
   2 | flowchart LR
   3 | A --> B
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -966,7 +1448,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/flowc
 
 Code:
   1 | %%{init: {"theme":"dark"}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |          ^ [1]
   2 | flowchart LR
   3 | A --> B
 
@@ -981,7 +1463,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/flowc
 
 Code:
   1 | %%{init: {"theme":}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                   ^ [1]
   2 | flowchart LR
   3 | A --> B
 
@@ -996,7 +1478,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/flowc
 
 Code:
   1 | %%{init: {"flowchart":{"inheritDir":true,}}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                                         ^ [1]
   2 | flowchart LR
   3 | A --> B
 
@@ -1005,7 +1487,7 @@ Output:
   2 | flowchart LR
   3 | A --> B
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -1014,7 +1496,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/flowc
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | flowchart LR
   3 | A --> B
 
@@ -1023,7 +1505,7 @@ Output:
   2 | flowchart LR
   3 | A --> B
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -1032,7 +1514,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/flowc
 
 Code:
   1 | %%{init: {theme:"dark"}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |           ^ [1]
   2 | flowchart LR
   3 | A --> B
 
@@ -1047,7 +1529,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/flowc
 
 Code:
   1 | %%{init: {"theme":"dark}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                   ^~~~~~ [1]
   2 | flowchart LR
   3 | A --> B
 
@@ -1062,7 +1544,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/flowc
 
 Code:
   1 | %%{INIT: {"theme":"dark"}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |    ^~~~ [1]
   2 | flowchart LR
   3 | A --> B
 
@@ -1080,7 +1562,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/flowc
 
 Code:
   1 | %%{myINIT: {"theme":"dark"}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |    ^~~~~~ [1]
   2 | flowchart LR
   3 | A --> B
 
@@ -1099,7 +1581,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/flowc
 Code:
   1 | %%{init: {"theme":"dark"}}%%
   2 | %%{init: {"fontSize":22,}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                        ^ [1]
   3 | flowchart LR
   4 | A --> B
 
@@ -1109,7 +1591,7 @@ Output:
   3 | flowchart LR
   4 | A --> B
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -1120,7 +1602,7 @@ Code:
   1 | flowchart LR
   2 | A --> B
   3 | %%{init: {"theme":"dark",}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   4 |
 
 Output:
@@ -1129,7 +1611,7 @@ Output:
   3 | %%{init: {"theme":"dark"}
   4 |
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -1140,9 +1622,8 @@ Code:
   1 | flowchart LR
   2 | A --> B
   3 | %% disabled %%{init: {"theme":"dark"}
-    |             ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | A --> B
-    | ~~~~~~~ [1]
+    | ^~~~~~~ [1]
 
 Output: unchanged
 
@@ -1157,9 +1638,8 @@ Code:
   1 | flowchart LR
   2 | A --> B
   3 | %%{init: {"theme": "dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | A --> B
-    | ~~~~~~~ [1]
+    | ^~~~~~~ [1]
 
 Output: unchanged
 
@@ -1174,9 +1654,8 @@ Code:
   1 | flowchart LR
   2 | A --> B
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | C --> D
-    | ~~~~~~~ [1]
+    | ^~~~~~~ [1]
 
 Output: unchanged
 
@@ -1190,7 +1669,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/flowc
 Code:
   1 | flowchart LR
   2 | %%{init: {"theme": "dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                           ^\ [1]
   3 | A --> B
     | ~~~~~~~ [1]
 
@@ -1207,9 +1686,8 @@ Code:
   1 | flowchart LR
   2 | A --> B
   3 | %%{init: {"theme":"dark"
-    | ^~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | C --> D
-    | ~~~~~~~ [1]
+    | ^ [1]
 
 Output: unchanged
 
@@ -1223,13 +1701,31 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/flowc
 Code:
   1 | %%{init: {"theme":"forest"}}%%
   2 | %%{INIT: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |    ^~~~ [1]
   3 | flowchart LR
   4 | A --> B
 
 Output: unchanged
 
 [1] mermaid.js reads no settings from `INIT`; init directive names are case-sensitive.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/flowchart-valid-json-apostrophe
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/flowchart-valid-json-apostrophe-input.mmd
+
+Code:
+  1 | %%{init: {"fontFamily":"O'Brien"}}%%
+    |                          ^ [1]
+  2 | flowchart LR
+  3 | A --> B
+
+Output:
+  1 | %%{init: {"fontFamily":"O\u0027Brien"}}%%
+  2 | flowchart LR
+  3 | A --> B
+
+[1] mermaid.js turns this ' into " before reading the JSON, which breaks it, so it reads no settings from this init directive. Write \u0027.
 ---
 
 
@@ -1240,11 +1736,11 @@ Code:
   1 | graph LR
   2 | A --> B
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | C --> D
     | ~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -1257,7 +1753,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/graph
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | graph LR
   3 | A --> B
 
@@ -1266,7 +1762,7 @@ Output:
   2 | graph LR
   3 | A --> B
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -1277,9 +1773,24 @@ Code:
   1 | graph LR
   2 | A --> B
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | C --> D
-    | ~~~~~~~ [1]
+    | ^~~~~~~ [1]
+
+Output: unchanged
+
+[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/invalid-escape
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/invalid-escape-input.mmd
+
+Code:
+  1 | %%{init: {"fontFamily":"bad\x"}}%%
+    |                            ^~ [1]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
 
 Output: unchanged
 
@@ -1292,7 +1803,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/json-
 
 Code:
   1 | %%{init: {"fontFamily":"😀",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                            ^ [1]
   2 | flowchart LR
   3 | A --> B
   4 |
@@ -1303,7 +1814,95 @@ Output:
   3 | A --> B
   4 |
 
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/missing-colon
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/missing-colon-input.mmd
+
+Code:
+  1 | %%{init: {"theme" "dark"}}%%
+    |                   ^ [1]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+Output: unchanged
+
 [1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/missing-comma
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/missing-comma-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark" "fontSize":12}}%%
+    |                          ^ [1]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/mixed-quotes-before-missing-value
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/mixed-quotes-before-missing-value-input.mmd
+
+Code:
+  1 | %%{init: {'a": "b", "c":}}%%
+    |                         ^ [1]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/mixed-quotes-escaped-apostrophe
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/mixed-quotes-escaped-apostrophe-input.mmd
+
+Code:
+  1 | %%{init: {'a": "it\'s"}}%%
+    |                   ^~ [1]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+Output:
+  1 | %%{init: {'a": "it\u0027s"}}%%
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+[1] mermaid.js turns this \' into \" and reads " instead of '. Write \u0027.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/mixed-quotes-trailing-comma
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/mixed-quotes-trailing-comma-input.mmd
+
+Code:
+  1 | %%{init: {'a": "b",}}%%
+    |                   ^ [1]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+Output:
+  1 | %%{init: {'a": "b"}}%%
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -1314,11 +1913,11 @@ Code:
   1 | swimlane-beta LR
   2 | A --> B
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | C --> D
     | ~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -1331,7 +1930,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/swiml
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | swimlane-beta LR
   3 | A --> B
 
@@ -1340,7 +1939,7 @@ Output:
   2 | swimlane-beta LR
   3 | A --> B
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -1351,9 +1950,8 @@ Code:
   1 | swimlane-beta LR
   2 | A --> B
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | C --> D
-    | ~~~~~~~ [1]
+    | ^~~~~~~ [1]
 
 Output: unchanged
 
@@ -1366,7 +1964,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/targe
 
 Code:
   1 | %%}%% %%{init: {"theme":"dark",}}%%
-    |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                               ^ [1]
   2 | %%{init: {"theme":"forest"}}%%
   3 | flowchart LR
   4 | A --> B
@@ -1377,7 +1975,7 @@ Output:
   3 | flowchart LR
   4 | A --> B
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -1389,7 +1987,7 @@ Code:
   2 | flowchart LR
   3 | A --> B
   4 | %%}%% %%{init: {bad}}%%
-    |       ^~~~~~~~~~~~~~~~~ [1]
+    |                 ^ [1]
   5 |
 
 Output: unchanged
@@ -1406,13 +2004,89 @@ Code:
   2 | flowchart LR
   3 | A --> B
   4 | %%}%% %%{init: {bad}}%%
-    |       ^~~~~~~~~~~~~~~~~ [1]
+    |                 ^ [1]
   5 | C --> D
   6 |
 
 Output: unchanged
 
 [1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/uppercase-with-apostrophe
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/uppercase-with-apostrophe-input.mmd
+
+Code:
+  1 | %%{INIT: {"fontFamily":"O'Brien"}}%%
+    |    ^~~~ [1]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js reads no settings from `INIT`; init directive names are case-sensitive.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/uppercase-with-mixed-quotes
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/uppercase-with-mixed-quotes-input.mmd
+
+Code:
+  1 | %%{INIT: {'a": 1}}%%
+    |    ^~~~ [1]
+  2 | flowchart LR
+  3 |   A --> B
+  4 |
+
+Output:
+  1 | %%{init: {'a": 1}}%%
+  2 | flowchart LR
+  3 |   A --> B
+  4 |
+
+[1] mermaid.js reads no settings from `INIT`; init directive names are case-sensitive.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/uppercase-without-argument
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/uppercase-without-argument-input.mmd
+
+Code:
+  1 | %%{INIT}%%
+    |    ^~~~ [1]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+Output:
+  1 | %%{init}%%
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+[1] mermaid.js reads no settings from `INIT`; init directive names are case-sensitive.
+---
+
+
+Test: no-invalid-init-directive >> invalid >>> invalid/flowchart/uppercase-word-argument
+Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/flowchart/uppercase-word-argument-input.mmd
+
+Code:
+  1 | %%{INIT: dark}%%
+    |    ^~~~ [1]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+Output:
+  1 | %%{init: dark}%%
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+[1] mermaid.js reads no settings from `INIT`; init directive names are case-sensitive.
 ---
 
 
@@ -1424,11 +2098,11 @@ Code:
   2 | section S
   3 | Task :a1, 2024-01-01, 1d
   4 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   5 | Second :a2, 2024-01-02, 1d
     | ~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   6 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -1441,7 +2115,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/gantt/gantt-ini
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | gantt
   3 | section S
   4 | Task :a1, 2024-01-01, 1d
@@ -1452,7 +2126,7 @@ Output:
   3 | section S
   4 | Task :a1, 2024-01-01, 1d
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -1464,9 +2138,8 @@ Code:
   2 | section S
   3 | Task :a1, 2024-01-01, 1d
   4 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   5 | Second :a2, 2024-01-02, 1d
-    | ~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
 
 Output: unchanged
 
@@ -1481,11 +2154,11 @@ Code:
   1 | gitGraph
   2 | commit
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | commit id: "Second"
     | ~~~~~~~~~~~~~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -1498,7 +2171,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/gitgraph/gitGra
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | gitGraph
   3 | commit
 
@@ -1507,7 +2180,7 @@ Output:
   2 | gitGraph
   3 | commit
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -1518,9 +2191,8 @@ Code:
   1 | gitGraph
   2 | commit
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | commit id: "Second"
-    | ~~~~~~~~~~~~~~~~~~~ [1]
+    | ^~~~~~~~~~~~~~~~~~~ [1]
 
 Output: unchanged
 
@@ -1534,11 +2206,11 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/info/info-close
 Code:
   1 | info
   2 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   3 |
     | ~\ [1]
   4 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -1551,14 +2223,14 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/info/info-init-
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | info
 
 Output:
   1 | %%{init: {"theme":"dark"}}%%
   2 | info
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -1569,11 +2241,11 @@ Code:
   1 | ishikawa
   2 | Problem
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 |   Cause
     | ~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -1586,7 +2258,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/ishikawa/ishika
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | ishikawa
   3 | Problem
 
@@ -1595,7 +2267,7 @@ Output:
   2 | ishikawa
   3 | Problem
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -1606,9 +2278,8 @@ Code:
   1 | ishikawa
   2 | Problem
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 |   Cause
-    | ~~~~~~~ [1]
+    |   ^~~~~ [1]
 
 Output: unchanged
 
@@ -1624,11 +2295,11 @@ Code:
   2 | section S
   3 | Task: 5: Me
   4 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   5 | Second: 3: Me
     | ~~~~~~~~~~~~~\ [1]
   6 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -1641,7 +2312,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/journey/journey
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | journey
   3 | section S
   4 | Task: 5: Me
@@ -1652,7 +2323,7 @@ Output:
   3 | section S
   4 | Task: 5: Me
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -1664,9 +2335,8 @@ Code:
   2 | section S
   3 | Task: 5: Me
   4 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   5 | Second: 3: Me
-    | ~~~~~~~~~~~~~ [1]
+    | ^~~~~~~~~~~~~ [1]
 
 Output: unchanged
 
@@ -1682,11 +2352,11 @@ Code:
   2 | todo
   3 |   a
   4 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   5 |   b
     | ~~~\ [1]
   6 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -1699,7 +2369,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/kanban/kanban-i
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | kanban
   3 | todo
   4 |   a
@@ -1710,7 +2380,7 @@ Output:
   3 | todo
   4 |   a
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -1722,9 +2392,8 @@ Code:
   2 | todo
   3 |   a
   4 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   5 |   b
-    | ~~~ [1]
+    |   ^ [1]
 
 Output: unchanged
 
@@ -1740,11 +2409,11 @@ Code:
   2 | root
   3 |   A
   4 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   5 |   B
     | ~~~\ [1]
   6 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -1757,7 +2426,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/mindmap/mindmap
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | mindmap
   3 | root
   4 |   A
@@ -1768,7 +2437,7 @@ Output:
   3 | root
   4 |   A
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -1780,9 +2449,8 @@ Code:
   2 | root
   3 |   A
   4 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   5 |   B
-    | ~~~ [1]
+    |   ^ [1]
 
 Output: unchanged
 
@@ -1797,11 +2465,11 @@ Code:
   1 | packet
   2 | 0-15: "A"
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | 16-31: "B"
     | ~~~~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -1814,7 +2482,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/packet/packet-i
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | packet
   3 | 0-15: "A"
 
@@ -1823,7 +2491,7 @@ Output:
   2 | packet
   3 | 0-15: "A"
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -1834,9 +2502,8 @@ Code:
   1 | packet
   2 | 0-15: "A"
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | 16-31: "B"
-    | ~~~~~~~~~~ [1]
+    | ^~~~~~~~~~ [1]
 
 Output: unchanged
 
@@ -1851,11 +2518,11 @@ Code:
   1 | pie
   2 | "A" : 1
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | "B" : 2
     | ~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -1868,7 +2535,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/pie/pie-init-tr
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | pie
   3 | "A" : 1
 
@@ -1877,7 +2544,7 @@ Output:
   2 | pie
   3 | "A" : 1
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -1888,9 +2555,8 @@ Code:
   1 | pie
   2 | "A" : 1
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | "B" : 2
-    | ~~~~~~~ [1]
+    | ^~~~~~~ [1]
 
 Output: unchanged
 
@@ -1905,11 +2571,11 @@ Code:
   1 | quadrantChart
   2 | A: [0.2, 0.3]
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | B: [0.6, 0.7]
     | ~~~~~~~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -1922,7 +2588,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/quadrant/quadra
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | quadrantChart
   3 | A: [0.2, 0.3]
 
@@ -1931,7 +2597,7 @@ Output:
   2 | quadrantChart
   3 | A: [0.2, 0.3]
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -1942,9 +2608,8 @@ Code:
   1 | quadrantChart
   2 | A: [0.2, 0.3]
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | B: [0.6, 0.7]
-    | ~~~~~~~~~~~~~ [1]
+    | ^~~~~~~~~~~~~ [1]
 
 Output: unchanged
 
@@ -1960,11 +2625,11 @@ Code:
   2 | axis a, b, c
   3 | curve c1{1,2,3}
   4 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   5 | curve c2{3,2,1}
     | ~~~~~~~~~~~~~~~\ [1]
   6 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -1977,7 +2642,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/radar/radar-bet
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | radar-beta
   3 | axis a, b, c
   4 | curve c1{1,2,3}
@@ -1988,7 +2653,7 @@ Output:
   3 | axis a, b, c
   4 | curve c1{1,2,3}
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -2000,9 +2665,8 @@ Code:
   2 | axis a, b, c
   3 | curve c1{1,2,3}
   4 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   5 | curve c2{3,2,1}
-    | ~~~~~~~~~~~~~~~ [1]
+    | ^~~~~~~~~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2017,11 +2681,11 @@ Code:
   1 | railroad-abnf-beta
   2 | r = "a";
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | s = "b";
     | ~~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2034,7 +2698,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/railroad/railro
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | railroad-abnf-beta
   3 | r = "a";
 
@@ -2043,7 +2707,7 @@ Output:
   2 | railroad-abnf-beta
   3 | r = "a";
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -2054,9 +2718,8 @@ Code:
   1 | railroad-abnf-beta
   2 | r = "a";
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | s = "b";
-    | ~~~~~~~~ [1]
+    | ^~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2071,11 +2734,11 @@ Code:
   1 | railroad-beta
   2 | r = terminal("a");
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | s = terminal("b");
     | ~~~~~~~~~~~~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2088,7 +2751,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/railroad/railro
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | railroad-beta
   3 | r = terminal("a");
 
@@ -2097,7 +2760,7 @@ Output:
   2 | railroad-beta
   3 | r = terminal("a");
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -2108,9 +2771,8 @@ Code:
   1 | railroad-beta
   2 | r = terminal("a");
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | s = terminal("b");
-    | ~~~~~~~~~~~~~~~~~~ [1]
+    | ^~~~~~~~~~~~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2125,11 +2787,11 @@ Code:
   1 | railroad-ebnf-beta
   2 | r = "a";
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | s = "b";
     | ~~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2142,7 +2804,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/railroad/railro
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | railroad-ebnf-beta
   3 | r = "a";
 
@@ -2151,7 +2813,7 @@ Output:
   2 | railroad-ebnf-beta
   3 | r = "a";
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -2162,9 +2824,8 @@ Code:
   1 | railroad-ebnf-beta
   2 | r = "a";
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | s = "b";
-    | ~~~~~~~~ [1]
+    | ^~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2179,11 +2840,11 @@ Code:
   1 | railroad-peg-beta
   2 | r <- "a";
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | s <- "b";
     | ~~~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2196,7 +2857,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/railroad/railro
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | railroad-peg-beta
   3 | r <- "a";
 
@@ -2205,7 +2866,7 @@ Output:
   2 | railroad-peg-beta
   3 | r <- "a";
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -2216,9 +2877,8 @@ Code:
   1 | railroad-peg-beta
   2 | r <- "a";
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | s <- "b";
-    | ~~~~~~~~~ [1]
+    | ^~~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2235,7 +2895,7 @@ Code:
   3 | id: 1
   4 | }
   5 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   6 | requirement q {
     | ~~~~~~~~~~~~~~~\ [1]
   7 | id: 2
@@ -2243,7 +2903,7 @@ Code:
   8 | }
     | ~\ [1]
   9 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2256,7 +2916,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/requirement/req
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | requirementDiagram
   3 | requirement r {
   4 | id: 1
@@ -2269,7 +2929,7 @@ Output:
   4 | id: 1
   5 | }
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -2282,9 +2942,8 @@ Code:
   3 | id: 1
   4 | }
   5 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   6 | requirement q {
-    | ~~~~~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~~~~\ [1]
   7 | id: 2
     | ~~~~~\ [1]
   8 | }
@@ -2303,11 +2962,11 @@ Code:
   1 | sankey
   2 | A,B,1
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | B,C,2
     | ~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2320,7 +2979,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/sankey/sankey-i
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | sankey
   3 | A,B,1
 
@@ -2329,7 +2988,7 @@ Output:
   2 | sankey
   3 | A,B,1
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -2340,9 +2999,8 @@ Code:
   1 | sankey
   2 | A,B,1
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | B,C,2
-    | ~~~~~ [1]
+    | ^~~~~ [1]
 
 Output: unchanged
 
@@ -2357,11 +3015,11 @@ Code:
   1 | sequenceDiagram
   2 | A->>B: hi
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | B->>A: bye
     | ~~~~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2374,7 +3032,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/sequence/sequen
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | sequenceDiagram
   3 | A->>B: hi
 
@@ -2383,7 +3041,7 @@ Output:
   2 | sequenceDiagram
   3 | A->>B: hi
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -2394,9 +3052,8 @@ Code:
   1 | sequenceDiagram
   2 | A->>B: hi
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | B->>A: bye
-    | ~~~~~~~~~~ [1]
+    | ^~~~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2411,11 +3068,11 @@ Code:
   1 | stateDiagram
   2 | A --> B
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | B --> C
     | ~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2428,7 +3085,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/state/stateDiag
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | stateDiagram
   3 | A --> B
 
@@ -2437,7 +3094,7 @@ Output:
   2 | stateDiagram
   3 | A --> B
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -2448,9 +3105,8 @@ Code:
   1 | stateDiagram
   2 | A --> B
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | B --> C
-    | ~~~~~~~ [1]
+    | ^~~~~~~ [1]
 
 Output: unchanged
 
@@ -2465,11 +3121,11 @@ Code:
   1 | timeline
   2 | 2020 : A
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | 2021 : B
     | ~~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2482,7 +3138,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/timeline/timeli
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | timeline
   3 | 2020 : A
 
@@ -2491,7 +3147,7 @@ Output:
   2 | timeline
   3 | 2020 : A
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -2502,9 +3158,8 @@ Code:
   1 | timeline
   2 | 2020 : A
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | 2021 : B
-    | ~~~~~~~~ [1]
+    | ^~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2520,11 +3175,11 @@ Code:
   2 | "A"
   3 |   "B": 1
   4 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   5 |   "C": 2
     | ~~~~~~~~\ [1]
   6 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2537,7 +3192,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/treemap/treemap
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | treemap
   3 | "A"
   4 |   "B": 1
@@ -2548,7 +3203,7 @@ Output:
   3 | "A"
   4 |   "B": 1
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -2560,9 +3215,8 @@ Code:
   2 | "A"
   3 |   "B": 1
   4 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   5 |   "C": 2
-    | ~~~~~~~~ [1]
+    |   ^~~~~~ [1]
 
 Output: unchanged
 
@@ -2577,11 +3231,11 @@ Code:
   1 | treeView-beta
   2 | root
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 |   child
     | ~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2594,7 +3248,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/treeview/treeVi
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | treeView-beta
   3 | root
 
@@ -2603,7 +3257,7 @@ Output:
   2 | treeView-beta
   3 | root
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -2614,9 +3268,8 @@ Code:
   1 | treeView-beta
   2 | root
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 |   child
-    | ~~~~~~~ [1]
+    |   ^~~~~ [1]
 
 Output: unchanged
 
@@ -2631,11 +3284,11 @@ Code:
   1 | usecase-beta
   2 | actor A
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | actor B
     | ~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2648,7 +3301,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/usecase/usecase
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | usecase-beta
   3 | actor A
 
@@ -2657,7 +3310,7 @@ Output:
   2 | usecase-beta
   3 | actor A
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -2668,9 +3321,8 @@ Code:
   1 | usecase-beta
   2 | actor A
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | actor B
-    | ~~~~~~~ [1]
+    | ^~~~~~~ [1]
 
 Output: unchanged
 
@@ -2685,11 +3337,11 @@ Code:
   1 | venn-beta
   2 | set A
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | set B
     | ~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2702,7 +3354,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/venn/venn-beta-
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | venn-beta
   3 | set A
 
@@ -2711,7 +3363,7 @@ Output:
   2 | venn-beta
   3 | set A
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -2722,9 +3374,8 @@ Code:
   1 | venn-beta
   2 | set A
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | set B
-    | ~~~~~ [1]
+    | ^~~~~ [1]
 
 Output: unchanged
 
@@ -2739,11 +3390,11 @@ Code:
   1 | wardley-beta
   2 | component A [0.5, 0.5]
   3 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   4 | component B [0.3, 0.4]
     | ~~~~~~~~~~~~~~~~~~~~~~\ [1]
   5 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2756,7 +3407,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/wardley/wardley
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | wardley-beta
   3 | component A [0.5, 0.5]
 
@@ -2765,7 +3416,7 @@ Output:
   2 | wardley-beta
   3 | component A [0.5, 0.5]
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -2776,9 +3427,8 @@ Code:
   1 | wardley-beta
   2 | component A [0.5, 0.5]
   3 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   4 | component B [0.3, 0.4]
-    | ~~~~~~~~~~~~~~~~~~~~~~ [1]
+    | ^~~~~~~~~~~~~~~~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2794,11 +3444,11 @@ Code:
   2 | x-axis [a, b]
   3 | bar [1, 2]
   4 | %%{init: {"theme":"dark"}}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    |                          ^\ [1]
   5 | line [2, 1]
     | ~~~~~~~~~~~\ [1]
   6 | %%{wrap}%%
-    | ~~~~~~~~~~ [1]
+    | ~~~~~~~ [1]
 
 Output: unchanged
 
@@ -2811,7 +3461,7 @@ Filename: tests/fixtures/rules/no-invalid-init-directive/invalid/xychart/xychart
 
 Code:
   1 | %%{init: {"theme":"dark",}}%%
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                         ^ [1]
   2 | xychart
   3 | x-axis [a, b]
   4 | bar [1, 2]
@@ -2822,7 +3472,7 @@ Output:
   3 | x-axis [a, b]
   4 | bar [1, 2]
 
-[1] mermaid.js reads no settings from this init directive because its JSON argument is invalid.
+[1] mermaid.js reads no settings from this init directive because of this trailing comma.
 ---
 
 
@@ -2834,9 +3484,8 @@ Code:
   2 | x-axis [a, b]
   3 | bar [1, 2]
   4 | %%{init: {"theme":"dark"}
-    | ^~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   5 | line [2, 1]
-    | ~~~~~~~~~~~ [1]
+    | ^~~~~~~~~~~ [1]
 
 Output: unchanged
 
