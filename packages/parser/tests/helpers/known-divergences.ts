@@ -9,12 +9,7 @@ import { checkPacketBlocks } from "../../src/diagrams/packet/acceptance.ts"
  */
 import type { MermaidConfig } from "@mmd-toolkit/tests"
 import type { Range, Root, TokenKind } from "../../src/index.ts"
-import {
-  ParseError,
-  UnsupportedDiagramError,
-  parse,
-  traverseNodes,
-} from "../../src/index.ts"
+import { ParseError, parse, traverseNodes } from "../../src/index.ts"
 import { isWhitespace } from "../../src/character-classes.ts"
 import { findDirectives } from "../../src/directives.ts"
 import { exceedsMaxEdges } from "@mmd-toolkit/tests"
@@ -44,7 +39,6 @@ import {
 /** What `parse()` does with a text. */
 export type Outcome =
   | { readonly kind: "tree"; readonly text: string; readonly root: Root }
-  | { readonly kind: "unsupported"; readonly diagramType: string }
   | {
       readonly kind: "reject"
       /** Where `parse()` rejects the text; null for a rejection by the site configuration. */
@@ -55,7 +49,6 @@ export type Outcome =
 export type Parsed =
   | { readonly kind: "tree"; readonly root: Root }
   | { readonly kind: "error"; readonly error: ParseError }
-  | { readonly kind: "unsupported"; readonly error: UnsupportedDiagramError }
 
 /** What `parse()` under its defaults gives for `text`. */
 export function parsedOf(text: string): Parsed {
@@ -63,9 +56,6 @@ export function parsedOf(text: string): Parsed {
     return { kind: "tree", root: parse(text) }
   } catch (error) {
     if (error instanceof ParseError) return { kind: "error", error }
-    if (error instanceof UnsupportedDiagramError) {
-      return { kind: "unsupported", error }
-    }
     throw error
   }
 }
@@ -94,8 +84,6 @@ export function outcomeOf(
         : { kind: "tree", text, root: result.root }
     case "error":
       return { kind: "reject", at: result.error.range }
-    case "unsupported":
-      return { kind: "unsupported", diagramType: result.error.diagramType }
     default:
       throw new Error(
         `unknown parse result ${JSON.stringify(result satisfies never)}`,
@@ -176,7 +164,7 @@ function configuredGitgraphOutcome(
 function rejectsForDirective(
   text: string,
   config: MermaidConfig | undefined,
-  outcome: Exclude<Outcome, { readonly kind: "unsupported" }>,
+  outcome: Outcome,
 ): boolean {
   return cutsInsideTokens(text, config).directives.some((directive) =>
     rejectsAt(outcome, directive),
@@ -193,7 +181,7 @@ function rejectsForDirective(
 function rejectsForIgnoredSemicolon(
   text: string,
   config: MermaidConfig | undefined,
-  outcome: Exclude<Outcome, { readonly kind: "unsupported" }>,
+  outcome: Outcome,
 ): boolean {
   return cutsInsideTokens(text, config).semicolons.some((semicolon) =>
     rejectsAt(outcome, semicolon),
@@ -317,10 +305,7 @@ function holdsNonWhitespace(text: string, start: number, end: number): boolean {
 }
 
 /** Whether the rejection `outcome` is at the range `range`. */
-function rejectsAt(
-  outcome: Exclude<Outcome, { readonly kind: "unsupported" }>,
-  range: Range,
-): boolean {
+function rejectsAt(outcome: Outcome, range: Range): boolean {
   return (
     outcome.kind === "reject" &&
     outcome.at !== null &&
@@ -336,10 +321,7 @@ function rejectsAt(
  * what mermaid.js accepts. A rejection elsewhere in a text with such a unit
  * is no rejection for it.
  */
-function rejectsForReservedClick(
-  text: string,
-  outcome: Exclude<Outcome, { readonly kind: "unsupported" }>,
-): boolean {
+function rejectsForReservedClick(text: string, outcome: Outcome): boolean {
   return (reservedClicksIn(text) ?? []).some((click) =>
     rejectsAt(outcome, click.significantRange ?? [click.start, click.end]),
   )
@@ -352,10 +334,7 @@ function rejectsForReservedClick(
  * what mermaid.js accepts. A rejection elsewhere in a text with such a form
  * is no rejection for it.
  */
-function rejectsForEmptyForm(
-  text: string,
-  outcome: Exclude<Outcome, { readonly kind: "unsupported" }>,
-): boolean {
+function rejectsForEmptyForm(text: string, outcome: Outcome): boolean {
   return (removedEmptyFormsIn(text) ?? []).some((form) =>
     rejectsAt(outcome, form.range),
   )
@@ -486,7 +465,7 @@ export function oneWayDivergencesIn(
 export function declaredDivergence(
   text: string,
   config: MermaidConfig | undefined,
-  outcome: Exclude<Outcome, { readonly kind: "unsupported" }>,
+  outcome: Outcome,
 ): string | undefined {
   const root = outcome.kind === "tree" ? outcome.root : null
   if (rejectsForDirective(text, config, outcome)) {

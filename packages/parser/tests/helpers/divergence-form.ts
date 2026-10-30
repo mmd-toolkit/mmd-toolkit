@@ -20,7 +20,7 @@ import {
 /** Check a declared divergence's form independently of acceptance, and its token-cut reference reading. */
 export function expectDivergenceForm(fixture: Fixture, outcome: Outcome): void {
   const { knownDivergence, expected } = fixture
-  if (knownDivergence === undefined || outcome.kind === "unsupported") return
+  if (knownDivergence === undefined) return
   if (knownDivergence === "tokenless-empty-forms") {
     const lexing = agentflowLexingOf(fixture.input)
     if (lexing !== null) {

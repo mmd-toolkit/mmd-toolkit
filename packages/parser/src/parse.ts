@@ -35,7 +35,7 @@ import { parseC4Diagram } from "./diagrams/c4/index.ts"
 import { parseVennDiagram } from "./diagrams/venn/index.ts"
 import { parseIshikawaDiagram } from "./diagrams/ishikawa/index.ts"
 import { parseRequirementDiagram } from "./diagrams/requirement/index.ts"
-import { ParseError, UnsupportedDiagramError } from "./errors.ts"
+import { ParseError } from "./errors.ts"
 import { readFrontmatterTrivia } from "./frontmatter.ts"
 import { LineIndex } from "./positions.ts"
 import { SourceLexer } from "./source-lexer.ts"
@@ -124,8 +124,7 @@ export function diagramInputOf(
 
 /**
  * Parses Mermaid text into the tree of ast.md. Throws `ParseError` when the
- * input is rejected and `UnsupportedDiagramError` when the diagram type is
- * detected but not implemented yet.
+ * input is rejected.
  */
 export function parse(text: string): Root {
   const opened = openSource(text)
@@ -241,6 +240,8 @@ export function parse(text: string): Root {
     case "ishikawa":
       return parseIshikawaDiagram(input)
     default:
-      throw new UnsupportedDiagramError(detected)
+      throw new Error(
+        `mmd-toolkit parser bug: no parser for the diagram type ${JSON.stringify(detected satisfies never)}`,
+      )
   }
 }

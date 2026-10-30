@@ -34,22 +34,9 @@
 - テキストの終わり
 - 図種の検出（mermaid.js 12.2.0 のすべての図種）
 
-図の本体は、今のところ `error` 疑似図種と、 flowchart（`flowchart-v2`、
-`flowchart-elk`、`swimlane`）と、シーケンス図（`sequence`）と、
-クラス図（`classDiagram`）と、状態図（`stateDiagram`）と、ER 図（`er`）と、
-Gantt チャート（`gantt`）と、 journey 図（`journey`）と、
-要求図（`requirement`）と、 mindmap（`mindmap`）と、timeline（`timeline`）と、
-sankey 図（`sankey`）と、XY チャート（`xychart`）と、
-四象限チャート（`quadrantChart`）と、ブロック図（`block`）と、
-kanban 図（`kanban`）と、C4 図（`c4`）と、venn 図（`venn`）と、
-Ishikawa 図（`ishikawa`）と、agentflow（`agentflow`）と、
-usecase 図（`usecase`）、円グラフ（`pie`）、gitgraph 図（`gitGraph`）、
-info 図（`info`）、packet 図（`packet`）、 architecture 図（`architecture`）、
-radar 図（`radar`）、 treemap 図（`treemap`）、railroad の 4 方言（`railroad`、
-`railroadEbnf`、 `railroadAbnf`、`railroadPeg`）、 Wardley（`wardley`）、
-Cynefin（`cynefin`）、 eventmodeling（`eventmodeling`）、
-treeview（`treeView`）です。
-検出するすべての図種を実装しています。
+図の本体は、
+mermaid.js 12.2.0 のすべての図種と `error` 疑似図種について実装しています。
+その一覧は README の[対応している図](../README.ja.md#対応している図)にあります。
 
 ## 図のパーサーの作り
 

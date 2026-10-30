@@ -11,21 +11,22 @@ mermaid-js.
 `mmd` refers to the `.mmd` file extension used for Mermaid diagram text. It is
 unrelated to MultiMarkdown and MikuMikuDance, which also use the abbreviation.
 
-Flowchart, sequence, class, state, ER, Gantt, user journey, requirement,
-mindmap, timeline, sankey, XY chart, quadrant chart, block, kanban, C4, Venn,
-Ishikawa, agentflow, pie, usecase, gitgraph, and info diagrams are supported so
-far; the other diagram types follow. The formatter, the linter, and the parser
-are not published to npm yet: they will be released once every diagram type of
-mermaid.js is supported. The specification and the tests are used from this
-repository and are not published.
+Every diagram type of mermaid.js is supported. The formatter, the linter, and
+the parser are published to npm. The specification and the tests are used from
+this repository and are not published.
+
+## Documentation
+
+The [documentation site](https://mmd-toolkit.github.io/mmd-toolkit/) has the
+guides for the formatter, the linter, and the parser, the compatibility
+reference, and the documents of the lint rules.
 
 ## Playground
 
 The Playground lets you edit Mermaid text, inspect its syntax tree and tokens,
 and preview Prettier formatting in your browser.
 
-Planned public URL:
-[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
+Public URL: [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
 
 Choose a sample from **Examples** or paste text into **Source**. The **AST** and
 **Formatted** tabs update as you edit. Choose **Share**, then **Copy Link**, to
@@ -43,6 +44,8 @@ formatting options, and applying the formatted result.
 | [`@mmd-toolkit/parser`](./packages/parser)               | Parse Mermaid text into a syntax tree with positions, for linters and other tools.     |
 | [`@mmd-toolkit/spec`](./packages/spec)                   | Read how Mermaid text is parsed, as a specification independent of any implementation. |
 | [`@mmd-toolkit/tests`](./packages/tests)                 | Test an implementation of the syntax against what mermaid.js does.                     |
+| [`@mmd-toolkit/docs`](./packages/docs)                   | Build the documentation site: the guides and the documents of the lint rules.          |
+| [`@mmd-toolkit/playground`](./packages/playground)       | Try the parser and the formatter in the browser.                                       |
 
 ## What you can rely on
 

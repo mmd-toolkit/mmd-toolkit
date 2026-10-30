@@ -1155,12 +1155,17 @@ In the blocks the plugin formats, whitespace at the end of the other lines is
 kept. The blocks it does not format are left to Prettier, which removes
 whitespace at the end of every line.
 
-## Diagram types without a printer
+## The error pseudo-diagram
 
-A diagram type that the plugin does not format yet is printed as written in a
-standalone file. Only the line endings may change: they follow Prettier's
+The `error` pseudo-diagram that mermaid.js accepts, a text of the word `error`
+with only comments, directives, and line breaks around it, has nothing to
+format: its printer prints the whole text as written, the frontmatter included,
+in a standalone file. Only the line endings may change: they follow Prettier's
 `endOfLine` option, as for every other language. In Markdown, the code block is
-left to Prettier.
+left to Prettier. [fixture: error/as-written/frontmatter-kept] [fixture:
+error/as-written/trailing-whitespace-and-comment-kept] [fixture:
+error/as-written/directive-kept] [corpus fixture: common/error-pseudo-diagram]
+[corpus fixture: common/error-comment-inside]
 
 ## Kanban indentation, opaque suffixes, and kept lines
 

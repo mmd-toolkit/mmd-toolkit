@@ -238,10 +238,12 @@ flowchart のファイルが手本になる。
 5. `src/parse.ts`: 図種 ID の `case` から、その図種のパーサーを呼ぶ。
    1 つのパーサーを複数の図種 ID が使うことがある（flowchart は `flowchart-v2`、
    `flowchart-elk`、`swimlane`）。
-   これ以後、テストがその図種を未対応の図種として扱っていた所でも、
-   図種が parse される。
-   `tests/parse.test.ts` の未対応の図種の例は、まだ未対応の別の図種に替える。
-   その図種の fixture は、木として記録される（4.7 節）。
+   その `switch` の `default` は、
+   `DiagramType` のどの ID にも `case` があることを `satisfies never`
+   で確かめる。
+   そのため、図種 ID を `DiagramType` に足すこと（7 節の手順 3）は、
+   その `case` と同じ変更で行う。
+   その後、図種の fixture を記録する（4.7 節）。
 
 ### 4.4 字句解析器
 

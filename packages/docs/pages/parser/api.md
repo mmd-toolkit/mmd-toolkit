@@ -89,28 +89,19 @@ its `message` describes the failure.
 The [error position rules on GitHub][error-positions] explain how the parser
 chooses the reported range for each kind of failure.
 
-### `UnsupportedDiagramError`
-
-`UnsupportedDiagramError` extends `Error`. It is thrown when a diagram type is
-recognized but the parser does not implement it. Its `name` is
-`"UnsupportedDiagramError"`, its `diagramType` is the detected `DiagramType`,
-and its `message` describes the failure.
-
 ### Handling errors
 
-Use the exported classes to distinguish the errors. This incomplete flowchart
-reaches the `ParseError` branch:
+Use the exported class to tell a parse error from other errors. This incomplete
+flowchart reaches the `ParseError` branch:
 
 ```ts
-import { parse, ParseError, UnsupportedDiagramError } from "@mmd-toolkit/parser"
+import { parse, ParseError } from "@mmd-toolkit/parser"
 
 try {
   parse("flowchart LR\n  A -->\n")
 } catch (error) {
   if (error instanceof ParseError) {
     console.error(error.message, error.range)
-  } else if (error instanceof UnsupportedDiagramError) {
-    console.error(error.message, error.diagramType)
   } else {
     throw error
   }

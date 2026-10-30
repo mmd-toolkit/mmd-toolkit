@@ -12,8 +12,7 @@
  * The files: for an input that the parser accepts, the tree, as
  * `JSON.stringify(root, null, 2)`, locations included, in `ast.json`; for an
  * input that it rejects, the `message`, `range`, and `loc` of the
- * `ParseError`, in `parse-error.json`; for a diagram type that it does not
- * support yet, neither. A missing file fails the test (`update: "none"` in
+ * `ParseError`, in `parse-error.json`. A missing file fails the test (`update: "none"` in
  * `vitest.config.ts`); `vitest --update=new` (`pnpm run test:record`) writes
  * the missing files, and `vitest -u` (`pnpm run test:update`) writes the
  * files anew. Only this test writes these two files; the other files of a
@@ -98,10 +97,11 @@ interface ParseErrorRecord {
   readonly loc: Location
 }
 
-/** The file that records `result`, and its content; null for an unsupported diagram type. */
-function recordOf(
-  result: Parsed,
-): { readonly file: string; readonly content: string } | null {
+/** The file that records `result`, and its content. */
+function recordOf(result: Parsed): {
+  readonly file: string
+  readonly content: string
+} {
   switch (result.kind) {
     case "tree":
       return {
@@ -116,8 +116,6 @@ function recordOf(
         content: `${JSON.stringify(error, null, 2)}\n`,
       }
     }
-    case "unsupported":
-      return null
     default:
       throw new Error(
         `unknown parse result ${JSON.stringify(result satisfies never)}`,
@@ -144,27 +142,16 @@ function fixturesWithBothRecords(directory: string): string[] {
 /**
  * Asserts that `outcome` has the acceptance that mermaid.js had in
  * `mermaid`, a result that the fixture records, and, for an accepted input,
- * the same diagram type. When the diagram type is not supported yet and
- * mermaid.js rejected the input, the rejection must come from the diagram's
- * own parser: no diagram type, and the `---` pseudo-diagram, are decided by
- * the rules this parser implements.
+ * the same diagram type.
  */
 function expectSameAcceptance(outcome: Outcome, mermaid: Expectation): void {
   if (mermaid.accepted) {
     expect(outcome.kind).not.toBe("reject")
     if (outcome.kind === "tree") {
       expect(outcome.root.diagramType).toBe(mermaid.diagramType)
-    } else if (outcome.kind === "unsupported") {
-      expect(outcome.diagramType).toBe(mermaid.diagramType)
     }
   } else {
     expect(outcome.kind).not.toBe("tree")
-    if (outcome.kind === "unsupported") {
-      expect(mermaid.error.name).not.toBe("UnknownDiagramError")
-      expect(
-        mermaid.error.message.startsWith("Diagrams beginning with ---"),
-      ).toBe(false)
-    }
   }
 }
 
@@ -242,20 +229,14 @@ function emptyFormReferenceReadingOf(fixture: Fixture): ReferenceReading {
   const outcome = outcomeOf(reference, fixture.config)
   if (outcome.kind !== "tree") {
     throw new Error(
-      `${fixture.diagram}/${fixture.name}: the parser rejects the reference input ${JSON.stringify(reference)}: ${rejectionOf(reference, outcome)}`,
+      `${fixture.diagram}/${fixture.name}: the parser rejects the reference input ${JSON.stringify(reference)}: ${rejectionOf(reference)}`,
     )
   }
   return { kind: "compared", outcome }
 }
 
 /** Why `parse()`, with the site configuration, rejects `text`: its error, or the configuration. */
-function rejectionOf(
-  text: string,
-  outcome: Exclude<Outcome, { kind: "tree" }>,
-): string {
-  if (outcome.kind === "unsupported") {
-    return `the diagram type ${outcome.diagramType} is not supported`
-  }
+function rejectionOf(text: string): string {
   const parsed = parsedOf(text)
   return parsed.kind === "error"
     ? `${parsed.error.message} at ${JSON.stringify(parsed.error.range)}`
@@ -269,16 +250,7 @@ function rejectionOf(
  */
 function checkAcceptance(fixture: Fixture, outcome: Outcome): void {
   const accepted = fixtureAccepts(fixture)
-  const { expected, knownDivergence } = fixture
-  if (outcome.kind === "unsupported") {
-    if (knownDivergence === undefined) {
-      expectSameAcceptance(outcome, expected)
-    } else if (expected.accepted) {
-      // A diagram's own divergence is checked once its parser is supported.
-      expect(outcome.diagramType).toBe(expected.diagramType)
-    }
-    return
-  }
+  const { expected } = fixture
   expect(outcome.kind === "tree").toBe(accepted)
   const reading = fixture.specified ?? expected
   if (outcome.kind === "tree" && reading.accepted) {
@@ -313,13 +285,11 @@ for (const diagram of RECORDED_DIAGRAMS) {
     for (const fixture of fixtures) {
       const parsed = parsedOf(fixture.input)
       const record = recordOf(parsed)
-      if (record !== null) recordedFiles.set(fixture.name, record.file)
+      recordedFiles.set(fixture.name, record.file)
       it(fixture.name, async () => {
-        if (record !== null) {
-          await expect(record.content).toMatchFileSnapshot(
-            path.join(directory, fixture.name, record.file),
-          )
-        }
+        await expect(record.content).toMatchFileSnapshot(
+          path.join(directory, fixture.name, record.file),
+        )
         checkAcceptance(
           fixture,
           outcomeOf(fixture.input, fixture.config, parsed),

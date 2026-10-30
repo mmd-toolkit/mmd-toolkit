@@ -218,10 +218,10 @@ Add them in this order; the flowchart files are the model.
    eslint-plugin build on them.
 5. `src/parse.ts`: the `case` of the diagram type ids, calling the diagram's
    parser. Several ids can share one parser (the flowchart has `flowchart-v2`,
-   `flowchart-elk`, and `swimlane`). From then on, the diagram type is parsed
-   wherever the tests met it as an unsupported type: an example of an
-   unsupported type in `tests/parse.test.ts` changes to another type that is
-   still unsupported, and the fixtures of this type are recorded as trees (4.7).
+   `flowchart-elk`, and `swimlane`). The `default` of that `switch` checks with
+   `satisfies never` that every id of `DiagramType` has a `case`, so an id is
+   added to `DiagramType` (section 7, step 3) in the same change as its `case`.
+   The fixtures of the type are then recorded (4.7).
 
 ### 4.4 The lexer
 

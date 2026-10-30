@@ -13,8 +13,7 @@ Inspect the AST, tokens, comments, directives, and frontmatter returned by this
 parser in the browser. Selecting a tree entry highlights its source range, and
 moving the source cursor selects the corresponding entry.
 
-Planned public URL:
-[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
+Public URL: [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
 
 For usage, see the [Playground guide](../playground/README.md).
 
@@ -23,9 +22,6 @@ For usage, see the [Playground guide](../playground/README.md).
 ```sh
 npm install @mmd-toolkit/parser
 ```
-
-The package is not published to npm yet: it will be released once every diagram
-type of mermaid.js is supported.
 
 It is an ES module and needs Node.js `^20.19.0 || ^22.13.0 || >=24`.
 
@@ -120,34 +116,43 @@ The eight tokens are `flowchart`, `LR`, `A`, `[`, `Start`, `]`, `-->`, and `B`.
 
 ## Supported diagrams
 
-- Flowcharts: `flowchart-v2` (`flowchart` and `graph`), `flowchart-elk`, and
-  `swimlane` (`swimlane-beta`).
-- Sequence diagrams: `sequence` (`sequenceDiagram`).
-- Class diagrams: `classDiagram` (`classDiagram` and `classDiagram-v2`).
-- State diagrams: `stateDiagram` (`stateDiagram` and `stateDiagram-v2`).
-- Entity relationship diagrams: `er` (`erDiagram`).
-- Gantt charts: `gantt` (`gantt`).
-- User journey diagrams: `journey` (`journey`).
-- Requirement diagrams: `requirement` (`requirementDiagram`).
-- Mindmaps: `mindmap` (`mindmap`).
-- Timelines: `timeline` (`timeline`).
-- Sankey diagrams: `sankey` (`sankey` and `sankey-beta`).
-- XY charts: `xychart` (`xychart` and `xychart-beta`).
-- Quadrant charts: `quadrantChart` (`quadrantChart`).
-- Block diagrams: `block` (`block-beta` and `block`).
-- Kanban diagrams: `kanban` (`kanban`).
-- C4 diagrams: `C4Context`, `C4Container`, `C4Component`, `C4Dynamic`, and
-  `C4Deployment` (`c4`).
-- Venn diagrams: `venn` (`venn-beta`).
-- Ishikawa diagrams: `ishikawa` (`ishikawa` and `ishikawa-beta`).
-- Agentflow diagrams: `agentflow` (`agentflow-beta`).
-- Usecase diagrams: `usecase` (`usecase-beta`);
-  [node types](../spec/docs/ast/usecase.md).
-- Pie charts: `pie` (`pie`); [node types](../spec/docs/ast/pie.md).
-- The `error` pseudo-diagram of mermaid.js.
+| Diagram                                  | Type ids (headers)                                                                                                                              | Nodes                                                       |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| Flowcharts                               | `flowchart-v2` (`flowchart`, `graph`), `flowchart-elk` (`flowchart-elk`), `swimlane` (`swimlane-beta`)                                          | [`ast/flowchart.md`](../spec/docs/ast/flowchart.md)         |
+| Sequence diagrams                        | `sequence` (`sequenceDiagram`)                                                                                                                  | [`ast/sequence.md`](../spec/docs/ast/sequence.md)           |
+| Class diagrams                           | `classDiagram` (`classDiagram`, `classDiagram-v2`)                                                                                              | [`ast/class.md`](../spec/docs/ast/class.md)                 |
+| State diagrams                           | `stateDiagram` (`stateDiagram`, `stateDiagram-v2`)                                                                                              | [`ast/state.md`](../spec/docs/ast/state.md)                 |
+| Entity relationship diagrams             | `er` (`erDiagram`)                                                                                                                              | [`ast/er.md`](../spec/docs/ast/er.md)                       |
+| Gantt charts                             | `gantt` (`gantt`)                                                                                                                               | [`ast/gantt.md`](../spec/docs/ast/gantt.md)                 |
+| User journey diagrams                    | `journey` (`journey`)                                                                                                                           | [`ast/journey.md`](../spec/docs/ast/journey.md)             |
+| Requirement diagrams                     | `requirement` (`requirementDiagram`)                                                                                                            | [`ast/requirement.md`](../spec/docs/ast/requirement.md)     |
+| Mindmaps                                 | `mindmap` (`mindmap`)                                                                                                                           | [`ast/mindmap.md`](../spec/docs/ast/mindmap.md)             |
+| Timelines                                | `timeline` (`timeline`)                                                                                                                         | [`ast/timeline.md`](../spec/docs/ast/timeline.md)           |
+| Sankey diagrams                          | `sankey` (`sankey`, `sankey-beta`)                                                                                                              | [`ast/sankey.md`](../spec/docs/ast/sankey.md)               |
+| XY charts                                | `xychart` (`xychart`, `xychart-beta`)                                                                                                           | [`ast/xychart.md`](../spec/docs/ast/xychart.md)             |
+| Quadrant charts                          | `quadrantChart` (`quadrantChart`)                                                                                                               | [`ast/quadrant.md`](../spec/docs/ast/quadrant.md)           |
+| Block diagrams                           | `block` (`block-beta`, `block`)                                                                                                                 | [`ast/block.md`](../spec/docs/ast/block.md)                 |
+| Kanban diagrams                          | `kanban` (`kanban`)                                                                                                                             | [`ast/kanban.md`](../spec/docs/ast/kanban.md)               |
+| C4 diagrams                              | `c4` (`C4Context`, `C4Container`, `C4Component`, `C4Dynamic`, `C4Deployment`)                                                                   | [`ast/c4.md`](../spec/docs/ast/c4.md)                       |
+| Venn diagrams                            | `venn` (`venn-beta`)                                                                                                                            | [`ast/venn.md`](../spec/docs/ast/venn.md)                   |
+| Ishikawa diagrams                        | `ishikawa` (`ishikawa`, `ishikawa-beta`)                                                                                                        | [`ast/ishikawa.md`](../spec/docs/ast/ishikawa.md)           |
+| Agentflow diagrams                       | `agentflow` (`agentflow-beta`)                                                                                                                  | [`ast/agentflow.md`](../spec/docs/ast/agentflow.md)         |
+| Usecase diagrams                         | `usecase` (`usecase-beta`)                                                                                                                      | [`ast/usecase.md`](../spec/docs/ast/usecase.md)             |
+| Pie charts                               | `pie` (`pie`)                                                                                                                                   | [`ast/pie.md`](../spec/docs/ast/pie.md)                     |
+| Gitgraph diagrams                        | `gitGraph` (`gitGraph`)                                                                                                                         | [`ast/gitgraph.md`](../spec/docs/ast/gitgraph.md)           |
+| Info diagrams                            | `info` (`info`)                                                                                                                                 | [`ast/info.md`](../spec/docs/ast/info.md)                   |
+| Packet diagrams                          | `packet` (`packet`, `packet-beta`)                                                                                                              | [`ast/packet.md`](../spec/docs/ast/packet.md)               |
+| Architecture diagrams                    | `architecture` (`architecture-beta`)                                                                                                            | [`ast/architecture.md`](../spec/docs/ast/architecture.md)   |
+| Radar charts                             | `radar` (`radar-beta`)                                                                                                                          | [`ast/radar.md`](../spec/docs/ast/radar.md)                 |
+| Treemaps                                 | `treemap` (`treemap`, `treemap-beta`)                                                                                                           | [`ast/treemap.md`](../spec/docs/ast/treemap.md)             |
+| Railroad diagrams                        | `railroad` (`railroad-beta`), `railroadEbnf` (`railroad-ebnf-beta`), `railroadAbnf` (`railroad-abnf-beta`), `railroadPeg` (`railroad-peg-beta`) | [`ast/railroad.md`](../spec/docs/ast/railroad.md)           |
+| Wardley maps                             | `wardley` (`wardley-beta`)                                                                                                                      | [`ast/wardley.md`](../spec/docs/ast/wardley.md)             |
+| Cynefin diagrams                         | `cynefin` (`cynefin-beta`)                                                                                                                      | [`ast/cynefin.md`](../spec/docs/ast/cynefin.md)             |
+| Event modeling diagrams                  | `eventmodeling` (`eventmodeling`)                                                                                                               | [`ast/eventmodeling.md`](../spec/docs/ast/eventmodeling.md) |
+| Tree views                               | `treeView` (`treeView-beta`)                                                                                                                    | [`ast/treeview.md`](../spec/docs/ast/treeview.md)           |
+| The `error` pseudo-diagram of mermaid.js | `error` (`error`)                                                                                                                               | [`ErrorDiagram`](../spec/docs/ast.md#errordiagram)          |
 
-`parse()` recognizes every other diagram type of mermaid.js 12.2.0, and throws
-`UnsupportedDiagramError` for it.
+These are all the diagram types of mermaid.js 12.2.0.
 
 ## API
 
@@ -207,10 +212,8 @@ Every node, token, comment, directive, and the frontmatter has a `range` and a
 - `ParseError` is thrown when the input is rejected. It is a `SyntaxError` with
   `index`, `range`, and `loc`. How the position is chosen:
   [`docs/error-positions.md`](./docs/error-positions.md).
-- `UnsupportedDiagramError` is thrown when the diagram type is recognized but
-  not supported yet. Its `diagramType` is that type.
 
-Both set `name`, so you can tell them apart without `instanceof`.
+`ParseError` sets `name`, so you can tell it apart without `instanceof`.
 
 ```ts
 import { parse, ParseError } from "@mmd-toolkit/parser"
@@ -232,27 +235,8 @@ try {
 The package exports a TypeScript type for every node, such as `Root`,
 `FlowchartVertex`, and `Identifier`, and `DiagramType`, the union of the diagram
 type ids. The names and fields are those of the specification's
-[`ast.md`](../spec/docs/ast.md),
-[`ast/flowchart.md`](../spec/docs/ast/flowchart.md),
-[`ast/sequence.md`](../spec/docs/ast/sequence.md),
-[`ast/class.md`](../spec/docs/ast/class.md),
-[`ast/state.md`](../spec/docs/ast/state.md),
-[`ast/er.md`](../spec/docs/ast/er.md),
-[`ast/gantt.md`](../spec/docs/ast/gantt.md),
-[`ast/journey.md`](../spec/docs/ast/journey.md),
-[`ast/requirement.md`](../spec/docs/ast/requirement.md),
-[`ast/mindmap.md`](../spec/docs/ast/mindmap.md),
-[`ast/timeline.md`](../spec/docs/ast/timeline.md),
-[`ast/sankey.md`](../spec/docs/ast/sankey.md),
-[`ast/xychart.md`](../spec/docs/ast/xychart.md),
-[`ast/quadrant.md`](../spec/docs/ast/quadrant.md),
-[`ast/block.md`](../spec/docs/ast/block.md),
-[`ast/kanban.md`](../spec/docs/ast/kanban.md),
-[`ast/c4.md`](../spec/docs/ast/c4.md),
-[`ast/venn.md`](../spec/docs/ast/venn.md),
-[`ast/ishikawa.md`](../spec/docs/ast/ishikawa.md),
-[`ast/agentflow.md`](../spec/docs/ast/agentflow.md), and
-[`ast/pie.md`](../spec/docs/ast/pie.md).
+[`ast.md`](../spec/docs/ast.md) and of the node document of each diagram, linked
+from [Supported diagrams](#supported-diagrams).
 
 ## Walking the tree
 
@@ -411,27 +395,9 @@ these differences:
 
 ## Documentation
 
-- The specification: [`ast.md`](../spec/docs/ast.md) (the tree),
-  [`ast/flowchart.md`](../spec/docs/ast/flowchart.md) (the flowchart nodes),
-  [`ast/sequence.md`](../spec/docs/ast/sequence.md) (the sequence nodes),
-  [`ast/class.md`](../spec/docs/ast/class.md) (the class nodes),
-  [`ast/state.md`](../spec/docs/ast/state.md) (the state nodes),
-  [`ast/er.md`](../spec/docs/ast/er.md) (the ER nodes),
-  [`ast/gantt.md`](../spec/docs/ast/gantt.md) (the Gantt nodes),
-  [`ast/journey.md`](../spec/docs/ast/journey.md) (the journey nodes),
-  [`ast/requirement.md`](../spec/docs/ast/requirement.md) (the requirement
-  nodes), [`ast/mindmap.md`](../spec/docs/ast/mindmap.md) (the mindmap nodes),
-  [`ast/timeline.md`](../spec/docs/ast/timeline.md) (the timeline nodes),
-  [`ast/sankey.md`](../spec/docs/ast/sankey.md) (the sankey nodes),
-  [`ast/xychart.md`](../spec/docs/ast/xychart.md) (the XY chart nodes),
-  [`ast/quadrant.md`](../spec/docs/ast/quadrant.md) (the quadrant chart nodes),
-  [`ast/block.md`](../spec/docs/ast/block.md) (the block diagram nodes),
-  [`ast/kanban.md`](../spec/docs/ast/kanban.md) (the kanban nodes),
-  [`ast/c4.md`](../spec/docs/ast/c4.md) (the C4 nodes),
-  [`ast/venn.md`](../spec/docs/ast/venn.md) (the venn nodes),
-  [`ast/ishikawa.md`](../spec/docs/ast/ishikawa.md) (the Ishikawa nodes),
-  [`ast/agentflow.md`](../spec/docs/ast/agentflow.md) (the Agentflow nodes),
-  [`ast/pie.md`](../spec/docs/ast/pie.md) (the pie nodes), and
+- The specification: [`ast.md`](../spec/docs/ast.md) (the tree), the node
+  document of each diagram (linked from
+  [Supported diagrams](#supported-diagrams)), and
   [`common.md`](../spec/docs/common.md) (the rules shared by every diagram).
 - [`docs/tokens.md`](./docs/tokens.md): the tokens and the lists of the root,
   and [`docs/positions.md`](./docs/positions.md): positions, the ranges of

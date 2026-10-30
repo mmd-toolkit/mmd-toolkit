@@ -93,21 +93,19 @@ fixture は 1 件ごとに、
   にある。
 
 fixture には、`ast.json` と `parse-error.json` のどちらか一方までがあります。
-参照実装がまだ扱わない図種の入力（`UnsupportedDiagramError`）には、
-どちらもありません。
 
 `expected.json` の欄:
 
-| 欄                | 意味                                                                                                                                                                                  |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `source`          | 入力の出どころ。`{ kind: "mermaid", ref, path, line?, test? }`、またはここで書いた入力なら `{ kind: "authored", note }`。                                                             |
-| `config`          | 省略可能。入力を実行するときのサイト設定。`mermaid.initialize()` に渡す形。                                                                                                           |
-| `knownDivergence` | 省略可能。この入力では、仕様が意図して mermaid.js と違う。ファイルの残りは mermaid.js の結果のまま。                                                                                  |
-| `accepted`        | mermaid.js が入力を受理するか。                                                                                                                                                       |
-| `diagramType`     | 受理する入力で、mermaid.js が検出する図種 ID。例: `flowchart-v2`。                                                                                                                    |
-| `db`              | 受理する入力で、mermaid.js の Db の要約（素の JSON）。`null` になるのは `common/` だけで、要約がまだない図種のとき。                                                                  |
-| `error`           | 拒否する入力で、mermaid.js のエラーの `name` と `message`。message は人が読むためのもので、実装が合わせる必要はない。                                                                 |
-| `embedded`        | 省略可能。受理する入力で、埋め込みのデータから mermaid.js が導く、Db が頼る値。`config`、`title`、`dataBlockEffects`。[docs/embedded-data.ja.md](./docs/embedded-data.ja.md) を参照。 |
+| 欄                | 意味                                                                                                                                                                                                                     |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `source`          | 入力の出どころ。`{ kind: "mermaid", ref, path, line?, test? }`、またはここで書いた入力なら `{ kind: "authored", note }`。                                                                                                |
+| `config`          | 省略可能。入力を実行するときのサイト設定。`mermaid.initialize()` に渡す形。                                                                                                                                              |
+| `knownDivergence` | 省略可能。この入力では、仕様が意図して mermaid.js と違う。ファイルの残りは mermaid.js の結果のまま。                                                                                                                     |
+| `accepted`        | mermaid.js が入力を受理するか。                                                                                                                                                                                          |
+| `diagramType`     | 受理する入力で、mermaid.js が検出する図種 ID。例: `flowchart-v2`。                                                                                                                                                       |
+| `db`              | 受理する入力で、mermaid.js の Db の要約（素の JSON）。pin した mermaid.js のどの図種にも要約があるので、`null` の `expected.json` はない。loader が `null` を許すのは `common/` だけで、要約を持たない図種の入力のとき。 |
+| `error`           | 拒否する入力で、mermaid.js のエラーの `name` と `message`。message は人が読むためのもので、実装が合わせる必要はない。                                                                                                    |
+| `embedded`        | 省略可能。受理する入力で、埋め込みのデータから mermaid.js が導く、Db が頼る値。`config`、`title`、`dataBlockEffects`。[docs/embedded-data.ja.md](./docs/embedded-data.ja.md) を参照。                                    |
 
 例として `fixtures/flowchart/config-inherit-dir-site/expected.json`
 を示します（Db は短くしています）。
@@ -314,7 +312,9 @@ pin した mermaid.js を Node で動かします。
   要約は同じです。
 - mermaid.js が埋め込まれたデータから導く値は、mermaid.js 自身から受け取ります。
   それと比べても、実装がその値をどう導くかは検査されません。
-- `common/` では、要約がまだない図種の `db` は `null` です。
+- `expected.json` の `db` は、どの fixture でも要約です。
+  `embedded-data-opaque` の指定読み（`specified.json`）は、
+  不透明なデータから比較の Db を導けないとき、 `db` が `null` です。
   Db の要約は、`db` が `null` でないところだけで比べてください。
 - mermaid.js の呼び出しは 1 つずつ実行し、
   どの呼び出しも mermaid.js の既定の設定と、渡したサイト設定から始まります。

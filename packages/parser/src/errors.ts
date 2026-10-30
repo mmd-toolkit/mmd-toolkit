@@ -1,4 +1,4 @@
-import type { DiagramType, Location, Range } from "./ast.ts"
+import type { Location, Range } from "./ast.ts"
 
 /** Thrown by `parse()` when the input is rejected. */
 export class ParseError extends SyntaxError {
@@ -18,21 +18,5 @@ export class ParseError extends SyntaxError {
     this.index = range[0]
     this.range = range
     this.loc = loc
-  }
-}
-
-/**
- * Thrown by `parse()` when the diagram type was detected but this parser
- * does not implement it yet.
- */
-export class UnsupportedDiagramError extends Error {
-  public override readonly name: string = "UnsupportedDiagramError"
-
-  /** The detected diagram type. */
-  public readonly diagramType: DiagramType
-
-  public constructor(diagramType: DiagramType) {
-    super(`Diagram type "${diagramType}" is not supported yet`)
-    this.diagramType = diagramType
   }
 }

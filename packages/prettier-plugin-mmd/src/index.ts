@@ -3,12 +3,7 @@ import type { MermaidAst } from "./parser.ts"
 import { mermaidParser } from "./parser.ts"
 import { mermaidPrinter } from "./printer.ts"
 
-export type {
-  FormattedDocument,
-  MermaidAst,
-  MermaidDocument,
-  VerbatimDocument,
-} from "./parser.ts"
+export type { FormattedDocument, MermaidAst } from "./parser.ts"
 
 export const languages: SupportLanguage[] = [
   {

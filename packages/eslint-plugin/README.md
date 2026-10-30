@@ -16,8 +16,8 @@ the Mermaid diagram syntax, not MultiMarkdown or MikuMikuDance.
 
 ## Installation
 
-The package is not published to npm yet. Once it is, install it next to
-ESLint 10. It is an ES module and needs Node.js `^20.19.0 || ^22.13.0 || >=24`.
+Install the package next to ESLint 10. It is an ES module and needs Node.js
+`^20.19.0 || ^22.13.0 || >=24`.
 
 ```sh
 npm install --save-dev eslint @mmd-toolkit/eslint-plugin

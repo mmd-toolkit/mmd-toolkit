@@ -31,12 +31,8 @@ console.log(root.diagramType) // "flowchart-v2"
 
 ## エラー
 
-解析できない場合、`parse()`は次の公開エラークラスのいずれかをthrowします。
-
-- `ParseError`: 入力が拒否された場合。
-  図の種類を認識できなかった場合も含みます。
-- `UnsupportedDiagramError`: 図の種類は認識できたものの、
-  パーサーがその種類に対応していない場合。
+解析できない場合、`parse()`は公開エラークラス`ParseError`をthrowします。
+入力が拒否された場合で、図の種類を認識できなかった場合も含みます。
 
 ## 次に読むページ
 

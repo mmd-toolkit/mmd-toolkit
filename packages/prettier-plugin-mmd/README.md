@@ -14,15 +14,13 @@ Preview this plugin's formatting in the browser. The **Formatted** tab updates
 as you edit, with **Indent** and **Use tabs** controls. Use **Apply to source**
 to replace the input with the result.
 
-Planned public URL:
-[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
+Public URL: [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
 
 For usage, see the [Playground guide](../playground/README.md).
 
 ## Installation
 
-The package is not published to npm yet. Once it is, install it next to
-Prettier 3. It needs Node.js `^20.19.0 || ^22.13.0 || >=24`.
+Install it next to Prettier 3. It needs Node.js `^20.19.0 || ^22.13.0 || >=24`.
 
 ```sh
 npm install --save-dev prettier prettier-plugin-mmd
@@ -143,8 +141,6 @@ flowchart LR
   formatting rules, with examples, are in [docs/block.md](./docs/block.md).
 - The YAML frontmatter of these diagrams, with Prettier's YAML formatter.
 
-Other diagram types are not formatted yet (see below).
-
 ## Options
 
 - `useTabs` and `tabWidth` set the indentation. The default is two spaces.
@@ -162,12 +158,9 @@ Other diagram types are not formatted yet (see below).
   `subgraph Handle click events`: in flowchart, `click` is a reserved word. An
   empty string between tokens, as in `A-->|x""|B`, is reported too. The full
   list is in [docs/compatibility.md](./docs/compatibility.md).
-- A diagram type other than flowchart, agentflow, sequence, class, state, ER,
-  Gantt, user journey, requirement, mindmap, timeline, sankey, XY chart,
-  quadrant chart, kanban, C4, Venn, Ishikawa, usecase, pie, info, gitgraph,
-  architecture, treemap, treeview, radar, wardley, railroad, cynefin,
-  eventmodeling, packet, and block diagram is not changed, except that line
-  endings follow `endOfLine`. In Markdown, it is left to Prettier.
+- The `error` pseudo-diagram of mermaid.js, a text of the word `error` with only
+  comments, directives, and line breaks around it, is not changed, except that
+  line endings follow `endOfLine`. In Markdown, it is left to Prettier.
 
 ## Guarantees and limitations
 

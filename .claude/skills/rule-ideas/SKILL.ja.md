@@ -28,16 +28,18 @@ description:
   同じ人が続けて行ってよい。
   - 規則の文書（`packages/eslint-plugin/docs/rules/`）は、
     eslint-plugin の SKILL の手順で書く。
-    文書はそれぞれ、
-    `packages/eslint-plugin/src/rules/` の規則のファイルに属する。
-    規則は、eslint-plugin の SKILL のとおり、文書と一緒に足し、名前を変え、
+    規則（`packages/eslint-plugin/src/rules/`）は、
+    eslint-plugin-rules の SKILL の手順で実装する。
+    文書はそれぞれ、規則のファイルに属する。
+    規則は、これらの SKILL のとおり、文書と一緒に 1 つの変更で足し、名前を変え、
     消す。
-    落とした規則の文書が既にあれば、同じ手順で、規則のファイルと一緒に削除する。
+    落とした規則が既にあれば、同じ手順で、規則のファイルと文書を一緒に削除する。
   - 根拠の fixture が足りなければ、最小の入力と、
     その fixture が答える主張を添えて、tests パッケージに頼む。
     tests パッケージが足して mermaid.js
-    の結果を記録し（`packages/tests/docs/maintaining-fixtures.md`）、
-    届いた名前を規則の覚え書きに載せる。
+    の結果を記録する（`packages/tests/docs/maintaining-fixtures.md`）。
+    届いた fixture は、規則の文書の例と規則のテストに使う。
+    使い方は、eslint-plugin の SKILL の 4 節の手順 4 にある。
 - 主張ごとに、【実行】（動かして確かめた）、【読解】（読んで確かめた）、
   未確認を区別して示す。
   誤りと分かったら、その言葉で撤回する。

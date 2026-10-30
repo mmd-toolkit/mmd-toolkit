@@ -150,8 +150,7 @@ test-results/
 # per-session git worktrees created by the Claude app
 .claude/worktrees/
 
-# the pinned mermaid.js checkout that the tools read (.work/mermaid), not committed
-.work/
-
 # copies of the root LICENSE that scripts/copy-license.mjs makes for publishing
 packages/*/LICENSE
+
+tmp/

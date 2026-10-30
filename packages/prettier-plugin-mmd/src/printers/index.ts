@@ -1,6 +1,8 @@
 import type { AstPath, Doc, ParserOptions } from "prettier"
+import type { DiagramBody } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import { printBlockDiagram } from "./block.ts"
+import { printError } from "./error.ts"
 import { printClass } from "./class.ts"
 import { printVenn } from "./venn.ts"
 import { printC4 } from "./c4.ts"
@@ -39,6 +41,14 @@ import { defaultSizeTextPlan } from "./default-size.ts"
 /** Diagram-specific constraints on the source and the complete root layout. */
 export interface DiagramTextRules {
   readonly keepsCommentLines: boolean
+  /**
+   * The diagram printer prints the text as written, so nothing before the body
+   * is formatted either: the text before it is kept as `keepsPrefix` keeps it,
+   * the frontmatter is not formatted as YAML, and a document embedded in
+   * Markdown is declined, because Prettier strips the trailing line breaks of
+   * every embedded document.
+   */
+  readonly printsAsWritten?: boolean
   readonly keepsPrefix?: (source: Source) => boolean
   readonly plan?: (
     source: Source,
@@ -48,8 +58,13 @@ export interface DiagramTextRules {
 
 /** Selected once alongside the diagram printer, rather than in shared scans. */
 export const diagramTextRules: Readonly<
-  Partial<Record<string, DiagramTextRules>>
+  Partial<Record<DiagramBody["type"], DiagramTextRules>>
 > = {
+  ErrorDiagram: {
+    // The `error` pseudo-diagram has nothing to format (printError).
+    keepsCommentLines: false,
+    printsAsWritten: true,
+  },
   EventmodelingDiagram: {
     // Like agentflow: comment lines are real text at normal size, and the size
     // plan retains larger input whole (common.md, mermaid.js and this
@@ -118,12 +133,14 @@ export type DiagramPrinter = (
  *
  * The body type rather than the diagram type id is the key, because several
  * ids share one grammar: `flowchart-v2`, `flowchart-elk`, and `swimlane` all
- * have a `FlowchartDiagram` body. A body type without an entry is printed
- * unchanged.
+ * have a `FlowchartDiagram` body. Every body type has an entry, and the type
+ * checker fails when one is missing, so a diagram type is added to the parser
+ * and to this table in the same change.
  */
 export const diagramPrinters: Readonly<
-  Partial<Record<string, DiagramPrinter>>
+  Record<DiagramBody["type"], DiagramPrinter>
 > = {
+  ErrorDiagram: printError,
   FlowchartDiagram: printFlowchart,
   AgentflowDiagram: printAgentflow,
   SequenceDiagram: printSequence,

@@ -48,7 +48,7 @@ parser が変わったら、
 | `tests/rule-cases.test.ts`         | 規則の文書の例                              |
 | `tests/rule-docs.test.ts`          | 規則の文書の検査                            |
 | `tests/rules-index.test.ts`        | 規則の一覧                                  |
-| `tests/rules/<規則>.test.ts`       | 実装した規則ごと                            |
+| `tests/rules/<規則>.test.ts`       | 各規則                                      |
 
 - `tests/language.test.ts`: `tests/language-inputs.ts`（下を参照）の入力、
   つまり `@mmd-toolkit/tests` の適合コーパスの fixture を ESLint に掛ける。
@@ -96,10 +96,11 @@ parser が変わったら、
   `tools/rule-docs.ts` の検査。
   一覧の図種の順が文書サイトのサイドバーの順であること、
   名前が図種の名前で始まる規則がその図種の組にあること、
-  英日の例の `mmd` コードブロックがどれも規則を有効にする指示で始まること。
+  英日の例の `mmd` コードブロックがどれも規則を有効にする指示で始まること、
+  テストのファイルのない規則を報告すること。
 - `tests/rules-index.test.ts`: `src/rules/index.ts` が `tools/update-rules.ts`
   の書いたとおりであり、プラグインがそれらの規則を ESLint に渡すこと。
-- `tests/rules/<規則>.test.ts`: 実装した規則ごとに、
+- `tests/rules/<規則>.test.ts`: 各規則について、
   `tests/rule-test.ts` の `testRule(name, rule)` で検査する。
   eslint-snapshot-rule-tester へ、英語の文書の例と、
   規則の fixture のディレクトリの入力を渡す。
@@ -231,9 +232,6 @@ vitest は `globals: true` でそれを用意します。
 - 列は、木と同じく 0 から数え、言語は `columnStart: 0` でそれを示します。
   ESLint はこれをパースのエラーには当てないので、 `ParseError` の列は、
   報告するときに 1 から数えます。
-- parser がまだ対応していない図種は、
-  ファイルの始まりでパースのエラーとして報告します。
-  `UnsupportedDiagramError` は位置を持たないからです。
 - 言語はオプションを持たず、
   ほかの道具が `languageOptions` に入れたものを無視します。
   eslint-snapshot-rule-tester は JavaScript のオプションをそこに入れ、
@@ -274,21 +272,6 @@ vitest は `globals: true` でそれを用意します。
 id は、名前空間の後にその名前を続けたものです。
 たとえば `@mmd-toolkit/flowchart-no-ignored-text` です。
 文書は `docs/rules/<名前>.md` と `docs/rules/<名前>.ja.md` です。
-規則を実装するための覚え書き（報告するものを木がどう示すかと、
-それを記録する fixture）は、利用者向けの文書と分けて、
-`docs/rule-notes/<名前>.md` と `docs/rule-notes/<名前>.ja.md` に置きます。
-
-規則は、実装済みか骨組みのどちらかで、次の 3 つの事実がそれを示します。
-3 つは、規則を実装するときに一緒に変わります。
-
-| 事実                         | 実装済み   | 骨組み           |
-| ---------------------------- | ---------- | ---------------- |
-| `meta.messages`              | 空でない   | 空               |
-| `tests/rules/<名前>.test.ts` | ある       | ない             |
-| `docs/rule-notes/<名前>.md`  | 消してある | 英日の両方がある |
-
-どれか 1 つで決まるのではありません。
-規則の事実が食い違うと、`check:docs` は失敗します。
 
 規則が `recommended` の設定に入るのは、
 報告がほぼいつも直すべき誤りであるときです。
@@ -330,7 +313,7 @@ pnpm --filter @mmd-toolkit/eslint-plugin run check:docs
   共通の規則と図種ごとの規則の表で、説明と、
   `recommended` の設定が有効にする規則の ✅ と、
   自動修正を持つ規則（`meta.fixable`）の 🔧 と、
-  提案を出す規則（`meta.hasSuggestions`）の 💡 と、骨組みの 🚧 を持ちます。
+  提案を出す規則（`meta.hasSuggestions`）の 💡 を持ちます。
   英語の説明は `meta.docs.description`、
   日本語の説明は日本語の文書の最初の段落です。
 - 各規則の文書（英日）の、題（`# @mmd-toolkit/<名前>`）と、
@@ -338,11 +321,10 @@ pnpm --filter @mmd-toolkit/eslint-plugin run check:docs
   `<!-- end auto-generated rule notice -->` まで。
   `recommended` の設定がその規則を有効にするかどうかと、
   自動修正を持つかどうかと、提案を出すかどうかを書きます。
-- 実装した規則の文書（英日）の、
+- 各規則の文書（英日）の、
   末尾の `<!-- begin auto-generated rule resources -->` から
   `<!-- end auto-generated rule resources -->` まで。
   リソースの節で、規則のソースとテストへのリンクを書きます。
-  骨組みの文書にはありません。
 
 規則の文書のすべての `mmd` コードブロックは、
 `%% eslint @mmd-toolkit/<名前>: error` で始めます。
@@ -363,12 +345,11 @@ fixture 自体には、このコメントを足しません。
 文書のほかの部分は手で書きます。
 `check:docs` は何も書かず、次のときに失敗します。
 `src/rules/index.ts` か生成する部分が最新でないとき、
-規則にどちらかの言語の文書がないとき、
-どの規則のものでもない文書か覚え書きがあるとき、英語の文書の最初の段落が、
+規則にどちらかの言語の文書かテストのファイルがないとき、
+どの規則のものでもない文書があるとき、英語の文書の最初の段落が、
 その規則の `meta.docs.description` でないとき、
 日本語の文書の `mmd` のコードブロックが、英語の文書と同じ順に同じでないとき、
-コードブロックが、その規則を有効にするコメントで始まっていないとき、
-規則が実装済みでも骨組みでもないときです。
+コードブロックが、その規則を有効にするコメントで始まっていないときです。
 最初の段落の中の改行は問いません。
 
 規則と文書がこのように食い違うと、 `update` は `src/rules/index.ts` だけを書き、
@@ -380,24 +361,19 @@ fixture 自体には、このコメントを足しません。
 規則を足すには、次のようにします。
 
 1. `src/rules/` の下に、規則のファイルを足す。
-   まだ実装していない規則は骨組みにする。
-   骨組みは、`meta`（`type`、`docs.description`、`docs.recommended`、
-   `docs.url`、`schema`、`messages`）と、ハンドラーを返さない `create` を持つ。
+   ファイルは、`meta`（`type`、`docs.description`、`docs.recommended`、
+   `docs.url`、`schema`、`messages`）とハンドラーを持つ。
 2. 英日の文書を書く。
    英語の文書の最初の段落は、`meta.docs.description` と一字一句同じにする。
    すべての `mmd` の例を、上記の規則を有効にするコメントで始める。
-3. 英日の覚え書きを書く。
+3. テスト `tests/rules/<名前>.test.ts` と fixture を足す。
 4. `update` を実行し、続けて `check:docs` を実行する。
-
-規則を実装するには、メッセージとハンドラーを持たせ、テストを足し、
-覚え書きを消すことを、1 つの変更で行います。
-覚え書きの fixture は、規則の fixture のディレクトリに移します。
-続けて `update` を実行すると、文書のリソースの節を書き、索引の 🚧 を外します。
+   `update` は、文書のリソースの節と、索引のその規則の行を書く。
 
 規則の名前を変えるには、ファイル、その中の `ruleDocsUrl` の引数、文書、
-覚え書きかテストを一緒に変え、各例の ESLint コメントにある規則の id も更新して、
+テストを一緒に変え、各例の ESLint コメントにある規則の id も更新して、
 `update` を実行します。
-規則を消すには、ファイル、文書、覚え書きかテストを消し、`update` を実行します。
+規則を消すには、ファイル、文書、テストを消し、`update` を実行します。
 規則の説明を変えるには、
 `meta.docs.description` と英語の文書の最初の段落を同じ文に変え、
 日本語の文書の最初の段落も変えて、`update` を実行します。

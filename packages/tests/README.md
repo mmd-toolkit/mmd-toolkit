@@ -86,22 +86,20 @@ shares (frontmatter, directives, comments, diagram detection).
   reference implementation chooses it, by the rules in
   [error-positions.md](../parser/docs/error-positions.md).
 
-A fixture has at most one of `ast.json` and `parse-error.json`. An input of a
-diagram type that the reference implementation does not support yet
-(`UnsupportedDiagramError`) has neither.
+A fixture has at most one of `ast.json` and `parse-error.json`.
 
 The fields of `expected.json`:
 
-| Field             | Meaning                                                                                                                                                                                                  |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `source`          | Where the input came from: `{ kind: "mermaid", ref, path, line?, test? }`, or `{ kind: "authored", note }` for one written here.                                                                         |
-| `config`          | Optional. The site configuration to run the input with, as passed to `mermaid.initialize()`.                                                                                                             |
-| `knownDivergence` | Optional. The specification deliberately differs from mermaid.js on this input. The rest of the file is still what mermaid.js does.                                                                      |
-| `accepted`        | Whether mermaid.js accepts the input.                                                                                                                                                                    |
-| `diagramType`     | For accepted inputs: the diagram id mermaid.js detects, such as `flowchart-v2`.                                                                                                                          |
-| `db`              | For accepted inputs: a summary of mermaid.js's Db, as plain JSON. `null` only in `common/`, for diagram types without a summary yet.                                                                     |
-| `error`           | For rejected inputs: the `name` and `message` of mermaid.js's error. The message is for people; implementations need not match it.                                                                       |
-| `embedded`        | Optional, for accepted inputs. The values mermaid.js derives from the embedded data that the Db depends on: `config`, `title`, `dataBlockEffects`. See [docs/embedded-data.md](./docs/embedded-data.md). |
+| Field             | Meaning                                                                                                                                                                                                                                                        |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `source`          | Where the input came from: `{ kind: "mermaid", ref, path, line?, test? }`, or `{ kind: "authored", note }` for one written here.                                                                                                                               |
+| `config`          | Optional. The site configuration to run the input with, as passed to `mermaid.initialize()`.                                                                                                                                                                   |
+| `knownDivergence` | Optional. The specification deliberately differs from mermaid.js on this input. The rest of the file is still what mermaid.js does.                                                                                                                            |
+| `accepted`        | Whether mermaid.js accepts the input.                                                                                                                                                                                                                          |
+| `diagramType`     | For accepted inputs: the diagram id mermaid.js detects, such as `flowchart-v2`.                                                                                                                                                                                |
+| `db`              | For accepted inputs: a summary of mermaid.js's Db, as plain JSON. Every diagram type of the pinned mermaid.js has a summary, so no `expected.json` has `null`; the loader allows `null` only in `common/`, for an input of a diagram type that has no summary. |
+| `error`           | For rejected inputs: the `name` and `message` of mermaid.js's error. The message is for people; implementations need not match it.                                                                                                                             |
+| `embedded`        | Optional, for accepted inputs. The values mermaid.js derives from the embedded data that the Db depends on: `config`, `title`, `dataBlockEffects`. See [docs/embedded-data.md](./docs/embedded-data.md).                                                       |
 
 For example, `fixtures/flowchart/config-inherit-dir-site/expected.json`, with
 the Db shortened:
@@ -278,8 +276,10 @@ they are listed in
   summary is the same for all four.
 - Values that mermaid.js derives from embedded data come from mermaid.js itself.
   Comparing with them does not test how an implementation would derive them.
-- In `common/`, `db` is `null` for diagram types without a summary yet. Compare
-  Db summaries only where `db` is not `null`.
+- The `db` of an `expected.json` is a summary in every fixture. The `db` of a
+  `specified.json` reading of `embedded-data-opaque` is `null` where no
+  comparison Db can be derived from the opaque data. Compare Db summaries only
+  where `db` is not `null`.
 - Calls to mermaid.js run one at a time, and each starts from mermaid.js's
   default configuration plus the site configuration you pass.
 - When mermaid.js needs a browser feature that Node lacks, the call throws

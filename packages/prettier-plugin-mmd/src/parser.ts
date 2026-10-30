@@ -42,24 +42,12 @@ export interface FormattedDocument {
   readonly textRules: DiagramTextRules | undefined
 }
 
-/**
- * A document printed as written: the parser does not support its diagram
- * type yet, or the diagram type has no printer yet.
- */
-export interface VerbatimDocument {
-  readonly type: "VerbatimDocument"
-  readonly range: Range
-}
-
-/** The node Prettier receives from the parser. */
-export type MermaidDocument = FormattedDocument | VerbatimDocument
-
 /** Every node Prettier walks through. */
-export type MermaidAst = MermaidDocument | Node
+export type MermaidAst = FormattedDocument | Node
 
 /**
  * Thrown when a document embedded in another language (a code block in
- * Markdown) would be printed as written.
+ * Markdown) would be printed as written (`DiagramTextRules.printsAsWritten`).
  *
  * An embedded document cannot be printed as written: Prettier strips trailing
  * line breaks from the result of every embed. Throwing is the only way to
@@ -72,27 +60,22 @@ export class NotFormattedError extends Error {
 }
 
 /**
- * Parses Mermaid text and decides, once, whether the document is formatted
- * or printed as written.
+ * Parses Mermaid text and chooses, once, the printer of its diagram type.
  *
  * A `ParseError` is rethrown with its position in the shape Prettier uses
  * for its code frame. Any other error, such as a bug in the parser, is
  * rethrown unchanged.
  */
-export function parseDocument(text: string): MermaidDocument {
+export function parseDocument(text: string): FormattedDocument {
   const range: Range = [0, text.length]
   let root: Root
   try {
     root = parse(text)
   } catch (error) {
-    if (isUnsupportedDiagramError(error)) {
-      return { type: "VerbatimDocument", range }
-    }
     if (isParseError(error)) throw toPrettierError(error, text)
     throw error
   }
-  const printDiagram = findDiagramPrinter(root.body.type)
-  if (!printDiagram) return { type: "VerbatimDocument", range }
+  const printDiagram = diagramPrinters[root.body.type]
   const textRules = diagramTextRules[root.body.type]
   return {
     type: "FormattedDocument",
@@ -111,38 +94,22 @@ export function parseDocument(text: string): MermaidDocument {
 function parseForHost(
   text: string,
   options: ParserOptions<MermaidAst>,
-): MermaidDocument {
+): FormattedDocument {
   const document = parseDocument(text)
   if (
-    document.type === "VerbatimDocument" &&
+    document.textRules?.printsAsWritten &&
     options.parentParser !== undefined
   ) {
     throw new NotFormattedError(
-      "prettier-plugin-mmd: this diagram type is not formatted yet",
+      "prettier-plugin-mmd: this diagram type is not formatted",
     )
   }
   return document
 }
 
 /**
- * Returns the printer registered for a diagram body type. Only the table's
- * own entries count, so a body type such as `toString` finds nothing.
- */
-function findDiagramPrinter(bodyType: string): DiagramPrinter | undefined {
-  if (!Object.hasOwn(diagramPrinters, bodyType)) return undefined
-  return diagramPrinters[bodyType]
-}
-
-/**
  * Checks by name rather than with `instanceof`, so that the check also holds
  * when two copies of the parser are installed.
- */
-function isUnsupportedDiagramError(error: unknown): boolean {
-  return error instanceof Error && error.name === "UnsupportedDiagramError"
-}
-
-/**
- * Checks by name, for the same reason as {@link isUnsupportedDiagramError}.
  */
 function isParseError(error: unknown): error is ParseError {
   return error instanceof Error && error.name === "ParseError"

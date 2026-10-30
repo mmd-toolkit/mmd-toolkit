@@ -3,7 +3,7 @@
  * plugin: the list of the rules in `docs/rules/index.md` and `index.ja.md`,
  * and in each rule document its title and whether the `recommended`
  * configuration enables the rule. The rest of the documents is written by
- * hand. `update-docs.ts` writes the result, and `tests/docs.test.ts` checks
+ * hand. `update-docs.ts` writes the result, and `update-docs.ts --check` checks
  * that the documents hold it.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs"
@@ -24,14 +24,6 @@ export const RULE_DOCS_DIR: string = fileURLToPath(
   new URL("../docs/rules/", import.meta.url),
 )
 
-/**
- * The directory of the notes for implementing the rules: a rule's notes are at
- * the same relative path as its document.
- */
-export const RULE_NOTES_DIR: string = fileURLToPath(
-  new URL("../docs/rule-notes/", import.meta.url),
-)
-
 /** The directory of the tests of the rules: `<name>.test.ts` tests the rule `name`. */
 export const RULE_TESTS_DIR: string = fileURLToPath(
   new URL("../tests/rules/", import.meta.url),
@@ -50,7 +42,7 @@ const NOTICE_END = "<!-- end auto-generated rule notice -->"
 
 /**
  * The markers around the generated section of a rule document that links to
- * the source and the test of an implemented rule.
+ * the source and the test of a rule.
  */
 const RESOURCES_BEGIN = "<!-- begin auto-generated rule resources -->"
 const RESOURCES_END = "<!-- end auto-generated rule resources -->"
@@ -79,7 +71,6 @@ const WORDS: Record<
     readonly legend: string
     readonly fixLegend: string
     readonly suggestionsLegend: string
-    readonly skeletonLegend: string
     readonly enabled: string
     readonly notEnabled: string
     readonly fix: string
@@ -96,7 +87,6 @@ const WORDS: Record<
     legend: "✅ The `recommended` configuration enables the rule.",
     fixLegend: `🔧 Automatically fixable by the [\`--fix\` CLI option](${FIX_URL}).`,
     suggestionsLegend: `💡 Manually fixable by [editor suggestions](${SUGGESTIONS_URL}).`,
-    skeletonLegend: "🚧 The rule is not implemented yet: it reports nothing.",
     enabled: "✅ The `recommended` configuration enables this rule.",
     notEnabled: "The `recommended` configuration does not enable this rule.",
     fix: `🔧 This rule is automatically fixable by the [\`--fix\` CLI option](${FIX_URL}).`,
@@ -112,7 +102,6 @@ const WORDS: Record<
     legend: "✅ は、`recommended` の設定が有効にする規則。",
     fixLegend: `🔧 は、\n[\`--fix\` オプション](${FIX_URL})\nで自動修正できる規則。`,
     suggestionsLegend: `💡 は、\n[エディターの修正候補](${SUGGESTIONS_URL})\nがある規則。`,
-    skeletonLegend: "🚧 は、まだ実装していない規則。\n何も報告しない。",
     enabled: "✅ `recommended` の設定は、この規則を有効にする。",
     notEnabled: "`recommended` の設定は、この規則を有効にしない。",
     fix: `🔧\n[\`--fix\` オプション](${FIX_URL})\nで自動修正できる。`,
@@ -311,15 +300,8 @@ function ruleOf(name: string): RuleDefinition {
   return rule
 }
 
-/**
- * The generated list of the rules, between its markers, before formatting.
- * `skeletons` are the rules that are not implemented yet.
- */
-function renderList(
-  docsDir: string,
-  language: DocumentLanguage,
-  skeletons: ReadonlySet<string>,
-): string {
+/** The generated list of the rules, between its markers, before formatting. */
+function renderList(docsDir: string, language: DocumentLanguage): string {
   const words = WORDS[language]
   const lines = [
     LIST_BEGIN,
@@ -329,14 +311,12 @@ function renderList(
     words.fixLegend,
     "",
     words.suggestionsLegend,
-    "",
-    words.skeletonLegend,
   ]
   for (const [diagram, names] of groupsOf()) {
     lines.push("", `## ${diagram ?? words.commonRules}`, "")
     lines.push(
-      `| ${words.rule} | ${words.description} | ✅ | 🔧 | 💡 | 🚧 |`,
-      "| --- | --- | --- | --- | --- | --- |",
+      `| ${words.rule} | ${words.description} | ✅ | 🔧 | 💡 |`,
+      "| --- | --- | --- | --- | --- |",
     )
     for (const name of names) {
       const rule = ruleOf(name)
@@ -344,9 +324,8 @@ function renderList(
       const recommended = isRecommended(rule) ? "✅" : ""
       const fix = hasFix(rule) ? "🔧" : ""
       const suggestions = hasSuggestions(rule) ? "💡" : ""
-      const skeleton = skeletons.has(name) ? "🚧" : ""
       lines.push(
-        `| ${link} | ${descriptionOf(docsDir, name, rule, language)} | ${recommended} | ${fix} | ${suggestions} | ${skeleton} |`,
+        `| ${link} | ${descriptionOf(docsDir, name, rule, language)} | ${recommended} | ${fix} | ${suggestions} |`,
       )
     }
   }
@@ -371,9 +350,9 @@ function renderNotice(name: string, language: DocumentLanguage): string {
 }
 
 /**
- * The generated section of an implemented rule's document, between its
- * markers: links to the source and the test of the rule, relative to the
- * document, which is `docs/rules/<name>.md`.
+ * The generated section of a rule document, between its markers: links to the
+ * source and the test of the rule, relative to the document, which is
+ * `docs/rules/<name>.md`.
  */
 function renderResources(name: string, language: DocumentLanguage): string {
   const words = WORDS[language]
@@ -408,17 +387,14 @@ function replaceBetween(
 
 /**
  * A rule document with its generated parts: the title, which is the rule id;
- * the notice, which follows the first paragraph; and, for an implemented
- * rule, the resources at the end. A document without the markers of the
- * notice gets them after its first paragraph, and the document of an
- * implemented rule without the markers of the resources gets them at its end;
- * the document of a skeleton has no resources.
+ * the notice, which follows the first paragraph; and the resources at the end.
+ * A document without the markers of the notice gets them after its first
+ * paragraph, and one without the markers of the resources gets them at its end.
  */
 function renderRuleDocument(
   docsDir: string,
   name: string,
   language: DocumentLanguage,
-  implemented: boolean,
 ): string {
   const path = ruleDocumentPath(docsDir, name, language)
   const document = readFileSync(path, "utf8")
@@ -439,7 +415,7 @@ function renderRuleDocument(
     const paragraphEnd = withTitle.indexOf(paragraph) + paragraph.length
     withNotice = `${withTitle.slice(0, paragraphEnd)}\n\n${notice}${withTitle.slice(paragraphEnd)}`
   }
-  const resources = implemented ? renderResources(name, language) : ""
+  const resources = renderResources(name, language)
   if (withNotice.includes(RESOURCES_BEGIN)) {
     return replaceBetween(
       withNotice,
@@ -449,7 +425,7 @@ function renderRuleDocument(
       path,
     )
   }
-  return implemented ? `${withNotice.trimEnd()}\n\n${resources}\n` : withNotice
+  return `${withNotice.trimEnd()}\n\n${resources}\n`
 }
 
 /** `text` formatted as Prettier formats the Markdown file at `path`. */
@@ -460,24 +436,12 @@ async function formatMarkdown(text: string, path: string): Promise<string> {
 
 /**
  * Every document with generated parts, by its path, as it should be: the
- * index and every rule document under `docsDir`, in both languages. Whether a
- * rule is implemented comes from its facts (see `ImplementationFacts`), with
- * its notes under `notesDir` and its test under `testsDir`; render only when
- * `mismatches` finds nothing, so that every rule is implemented or a
- * skeleton.
+ * index and every rule document under `docsDir`, in both languages. Render
+ * only when `mismatches` finds nothing.
  */
 export async function renderDocuments(
   docsDir: string = RULE_DOCS_DIR,
-  notesDir: string = RULE_NOTES_DIR,
-  testsDir: string = RULE_TESTS_DIR,
 ): Promise<Map<string, string>> {
-  const skeletons = new Set(
-    Object.keys(rules).filter(
-      (name) =>
-        implementationOf(implementationFacts(name, notesDir, testsDir)) ===
-        "skeleton",
-    ),
-  )
   const documents = new Map<string, string>()
   for (const language of ["en", "ja"] as const) {
     const path = indexPath(docsDir, language)
@@ -485,7 +449,7 @@ export async function renderDocuments(
       readFileSync(path, "utf8"),
       LIST_BEGIN,
       LIST_END,
-      renderList(docsDir, language, skeletons),
+      renderList(docsDir, language),
       path,
     )
     documents.set(path, await formatMarkdown(index, path))
@@ -494,7 +458,7 @@ export async function renderDocuments(
       documents.set(
         rulePath,
         await formatMarkdown(
-          renderRuleDocument(docsDir, name, language, !skeletons.has(name)),
+          renderRuleDocument(docsDir, name, language),
           rulePath,
         ),
       )
@@ -530,72 +494,23 @@ function documentsUnder(
 }
 
 /**
- * The three facts that change together when a rule is implemented: an
- * implemented rule has messages to report with, a test under the tests
- * directory, and no notes; a skeleton has no messages, no test, and notes in
- * both languages. No one of the facts decides alone: a rule whose facts
- * disagree is neither, and `mismatches` reports it.
- */
-interface ImplementationFacts {
-  /** Whether `meta.messages` is not empty. */
-  readonly hasMessages: boolean
-  /** Whether `<name>.test.ts` is in the tests directory. */
-  readonly hasTest: boolean
-  /** Whether the English notes are in the notes directory. */
-  readonly hasEnglishNotes: boolean
-  /** Whether the Japanese notes are in the notes directory. */
-  readonly hasJapaneseNotes: boolean
-}
-
-/** The facts of the rule `name`, with its notes under `notesDir` and its test under `testsDir`. */
-function implementationFacts(
-  name: string,
-  notesDir: string,
-  testsDir: string,
-): ImplementationFacts {
-  return {
-    hasMessages: Object.keys(ruleOf(name).meta?.messages ?? {}).length > 0,
-    hasTest: existsSync(`${testsDir}${name}.test.ts`),
-    hasEnglishNotes: existsSync(ruleDocumentPath(notesDir, name, "en")),
-    hasJapaneseNotes: existsSync(ruleDocumentPath(notesDir, name, "ja")),
-  }
-}
-
-/** Whether `facts` are those of an implemented rule, of a skeleton, or of neither. */
-function implementationOf(
-  facts: ImplementationFacts,
-): "implemented" | "skeleton" | "neither" {
-  const { hasMessages, hasTest, hasEnglishNotes, hasJapaneseNotes } = facts
-  if (hasMessages && hasTest && !hasEnglishNotes && !hasJapaneseNotes) {
-    return "implemented"
-  }
-  if (!hasMessages && !hasTest && hasEnglishNotes && hasJapaneseNotes) {
-    return "skeleton"
-  }
-  return "neither"
-}
-
-/**
- * What does not match between the rules, their documents under `docsDir`,
- * their notes under `notesDir`, and their tests under `testsDir`: a rule
- * without a document in each language, a document or notes without a rule,
- * an English document whose first paragraph is not the rule's
- * `meta.docs.description`, a Japanese document whose Mermaid code blocks are
- * not those of the English one, an example without its rule-enabling comment,
- * and a rule that is neither implemented nor a skeleton (see `ImplementationFacts`).
+ * What does not match between the rules and their documents under `docsDir`
+ * and their tests under `testsDir`: a rule without a test, which the generated
+ * link to it would miss, a rule without a document in each language, a
+ * document without a rule, an English document whose first paragraph is not
+ * the rule's `meta.docs.description`, a Japanese document whose Mermaid code
+ * blocks are not those of the English one, and an example without its
+ * rule-enabling comment.
  */
 export function mismatches(
   docsDir: string = RULE_DOCS_DIR,
-  notesDir: string = RULE_NOTES_DIR,
   testsDir: string = RULE_TESTS_DIR,
 ): string[] {
   const problems: string[] = []
   for (const name of Object.keys(rules)) {
-    const facts = implementationFacts(name, notesDir, testsDir)
-    if (implementationOf(facts) === "neither") {
-      problems.push(
-        `The rule ${name} is neither implemented nor a skeleton: meta.messages ${facts.hasMessages ? "is not empty" : "is empty"}, ${name}.test.ts ${facts.hasTest ? "exists" : "does not exist"}, the English notes ${facts.hasEnglishNotes ? "exist" : "do not exist"}, the Japanese notes ${facts.hasJapaneseNotes ? "exist" : "do not exist"}`,
-      )
+    const testPath = `${testsDir}${name}.test.ts`
+    if (!existsSync(testPath)) {
+      problems.push(`The rule ${name} has no ${testPath}`)
     }
     for (const language of ["en", "ja"] as const) {
       const path = ruleDocumentPath(docsDir, name, language)
@@ -644,15 +559,6 @@ export function mismatches(
       problems.push(
         `${ruleDocumentPath(docsDir, name, language)} is the document of no rule`,
       )
-    }
-  }
-  if (existsSync(notesDir)) {
-    for (const { name, language } of documentsUnder(notesDir)) {
-      if (!(name in rules)) {
-        problems.push(
-          `${ruleDocumentPath(notesDir, name, language)} is the notes document of no rule`,
-        )
-      }
     }
   }
   return problems

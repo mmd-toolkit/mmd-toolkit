@@ -5,8 +5,7 @@ Japanese version: [README.ja.md](./README.ja.md)
 Edit Mermaid text, inspect the syntax tree produced by mmd-toolkit, and preview
 Prettier formatting in your browser.
 
-Planned public URL:
-[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
+Public URL: [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
 
 The interface is in English and is intended for desktop browsers.
 
@@ -14,8 +13,7 @@ The interface is in English and is intended for desktop browsers.
 
 Open **Examples**, open a diagram type's submenu, then choose a sample, or paste
 your Mermaid text into **Source**. Samples come from the same collection as the
-[Mermaid Live Editor](https://mermaid.ai/live/edit), including diagram types the
-parser does not yet support.
+[Mermaid Live Editor](https://mermaid.ai/live/edit).
 
 The parser updates the result as you edit. Source stays editable alongside the
 **AST** and **Formatted** tabs.
@@ -47,7 +45,7 @@ sample is also undoable.
 
 Choose **Share**, then **Copy Link**, or copy the displayed URL manually. The
 link contains the source and indentation settings, including input that the
-parser rejects or does not yet support.
+parser rejects.
 
 The address bar also updates automatically as you edit. Reloading or opening the
 URL restores the saved source and indentation settings.

@@ -24,8 +24,8 @@ const mainDiagrams = [
 
 /**
  * Use the Live Editor's official data so every example within a family is
- * available, including types the toolkit does not implement yet. The upstream
- * MIT notice is distributed in public/licenses/mermaid-examples.txt.
+ * available. The upstream MIT notice is distributed in
+ * public/licenses/mermaid-examples.txt.
  */
 export const exampleGroups: ExampleGroup[] = diagramData
   .map((diagram) => ({

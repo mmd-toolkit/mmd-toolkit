@@ -7,12 +7,7 @@ import type {
   ParseResult,
 } from "@eslint/core"
 import type { Node, Root } from "@mmd-toolkit/parser"
-import {
-  parse,
-  ParseError,
-  UnsupportedDiagramError,
-  visitorKeys,
-} from "@mmd-toolkit/parser"
+import { parse, ParseError, visitorKeys } from "@mmd-toolkit/parser"
 import { MermaidSourceCode } from "./source-code.ts"
 
 /** The type parameters of the Mermaid language. */
@@ -75,13 +70,6 @@ export const mermaidLanguage: Language<MermaidLanguageTypes> = {
     } catch (error) {
       if (error instanceof ParseError) {
         return { ok: false, errors: [fileErrorOf(error)] }
-      }
-      if (error instanceof UnsupportedDiagramError) {
-        // The error has no position: it is reported at the start of the file.
-        return {
-          ok: false,
-          errors: [{ message: error.message, line: 1, column: 1 }],
-        }
       }
       throw error
     }

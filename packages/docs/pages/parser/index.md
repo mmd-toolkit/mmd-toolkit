@@ -32,12 +32,8 @@ example, `diagramType` identifies the parsed diagram as a flowchart.
 
 ## Errors
 
-When parsing fails, `parse()` throws one of these exported error classes:
-
-- `ParseError`: the input is rejected, including when no diagram type is
-  recognized.
-- `UnsupportedDiagramError`: the diagram type is recognized, but the parser does
-  not implement it.
+When parsing fails, `parse()` throws the exported error class `ParseError`: the
+input is rejected, including when no diagram type is recognized.
 
 ## Next steps
 

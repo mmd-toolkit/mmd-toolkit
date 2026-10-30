@@ -276,25 +276,16 @@ function tabKey(event: KeyboardEvent): void {
             role="status"
           >
             <span class="empty-symbol" aria-hidden="true">{{
-              parseStatus === "pending"
-                ? "…"
-                : parseStatus === "unsupported"
-                  ? "◌"
-                  : "!"
+              parseStatus === "pending" ? "…" : "!"
             }}</span>
             <h3>
               {{
                 parseStatus === "pending"
                   ? "Reading your source"
-                  : parseStatus === "unsupported"
-                    ? "Not supported yet"
-                    : "Unable to parse"
+                  : "Unable to parse"
               }}
             </h3>
             <pre v-if="parseMessage">{{ parseMessage }}</pre>
-            <p v-if="parseStatus === 'unsupported'">
-              You can still edit and share this source.
-            </p>
           </div>
           <template v-else>
             <CodeEditor

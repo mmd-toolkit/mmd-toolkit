@@ -5,8 +5,7 @@ English version: [README.md](./README.md)
 ブラウザーでMermaidのテキストを編集し、 mmd-toolkitが生成する構文木と、
 Prettierによる整形結果を確認できます。
 
-公開予定URL:
-[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。
+公開URL: [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。
 
 画面は英語で、デスクトップブラウザーを対象にしています。
 
@@ -14,9 +13,8 @@ Prettierによる整形結果を確認できます。
 
 **Examples**で図種のサブメニューを開いてサンプルを選ぶか、
 **Source**にMermaidのテキストを貼り付けます。
-サンプルは、
-[Mermaid Live Editor](https://mermaid.ai/live/edit)と同じデータから読み込み、
-パーサーが未対応の図種も含みます。
+サンプルのデータは、
+[Mermaid Live Editor](https://mermaid.ai/live/edit)と同じです。
 
 編集すると、パーサーの結果が自動で更新されます。
 **AST**と**Formatted**のタブを切り替えても、Sourceは編集できます。
@@ -50,7 +48,7 @@ Sourceの編集や、**Indent**・**Use tabs**の変更に合わせて更新さ�
 **Share**を選び、**Copy Link**でコピーするか、
 表示されたURLを手動でコピーします。
 リンクには入力と字下げ設定が含まれます。
-パーサーが拒否する入力や、未対応の図も共有できます。
+パーサーが拒否する入力も共有できます。
 
 編集するとアドレスバーのURLも自動で更新されます。
 再読み込みやURLを開く操作で、保存された入力と字下げ設定を復元できます。

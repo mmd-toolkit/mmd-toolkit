@@ -43,7 +43,7 @@ parser from its build in `lib/`: rebuild it with
 | `tests/rule-cases.test.ts`         | Examples of the rule documents            |
 | `tests/rule-docs.test.ts`          | Checks of the rule documents              |
 | `tests/rules-index.test.ts`        | The list of the rules                     |
-| `tests/rules/<rule>.test.ts`       | Each implemented rule                     |
+| `tests/rules/<rule>.test.ts`       | Each rule                                 |
 
 - `tests/language.test.ts`: The inputs of `tests/language-inputs.ts` (see
   below), fixtures of the conformance corpus of `@mmd-toolkit/tests`, run
@@ -87,20 +87,21 @@ parser from its build in `lib/`: rebuild it with
 - `tests/rule-docs.test.ts`: The checks of `tools/rule-docs.ts` behind
   `pnpm run check:docs`: the order of the diagrams in the list is that of the
   sidebar of the documentation site, a rule whose name starts with a diagram
-  name is in the group of that diagram, and every `mmd` code block of the
-  examples, in both languages, starts with the directive that enables the rule.
+  name is in the group of that diagram, every `mmd` code block of the examples,
+  in both languages, starts with the directive that enables the rule, and a rule
+  without a test file is reported.
 - `tests/rules-index.test.ts`: `src/rules/index.ts` is as
   `tools/update-rules.ts` writes it, and the plugin gives ESLint those rules.
-- `tests/rules/<rule>.test.ts`: Each implemented rule, through
-  `testRule(name, rule)` of `tests/rule-test.ts`: eslint-snapshot-rule-tester on
-  the examples of its English document and the inputs of its fixture directory.
-  Incorrect examples and `invalid/` inputs must report; correct examples and
-  `valid/` inputs must not. The snapshots record each report and the text that
-  each fix and each suggestion produces. Inputs with a carriage return or with a
-  character that `pnpm run lint:chars` checks for (U+2028, U+2029, U+00A0, and
-  the like) use ESLint's `RuleTester`, with the input, the expected output of
-  the fix, and each suggestion's expected output written as template literals
-  with escapes in the test source.
+- `tests/rules/<rule>.test.ts`: Each rule, through `testRule(name, rule)` of
+  `tests/rule-test.ts`: eslint-snapshot-rule-tester on the examples of its
+  English document and the inputs of its fixture directory. Incorrect examples
+  and `invalid/` inputs must report; correct examples and `valid/` inputs must
+  not. The snapshots record each report and the text that each fix and each
+  suggestion produces. Inputs with a carriage return or with a character that
+  `pnpm run lint:chars` checks for (U+2028, U+2029, U+00A0, and the like) use
+  ESLint's `RuleTester`, with the input, the expected output of the fix, and
+  each suggestion's expected output written as template literals with escapes in
+  the test source.
 
 The tests of the language do not run on the whole corpus, which holds one input
 for each claim of the specification and is tested one by one by the parser and
@@ -200,8 +201,6 @@ The tester has three more limits, which decide where an input is tested:
 - Columns are counted from 0, as in the tree, and the language says so with
   `columnStart: 0`. ESLint does not apply that to parse errors, so the column of
   a `ParseError` is counted from 1 when it is reported.
-- A diagram type that the parser does not support yet is reported as a parse
-  error at the start of the file: `UnsupportedDiagramError` has no position.
 - The language has no options and ignores what other tools put into
   `languageOptions`: eslint-snapshot-rule-tester puts the options of JavaScript
   there, and so does the `processor` configuration of `@eslint/markdown` for
@@ -235,22 +234,7 @@ rule, named after the file in camel case (`flowchartNoIgnoredText` in
 `flowchart-no-ignored-text.ts`). Its name in the plugin is the name of its file
 without `.ts`, its id is that name after the namespace
 (`@mmd-toolkit/flowchart-no-ignored-text`), and its documents are
-`docs/rules/<name>.md` and `docs/rules/<name>.ja.md`. The notes for implementing
-a rule, how the tree shows what it reports and the fixtures that record it, are
-kept apart from the documents for its users, in `docs/rule-notes/<name>.md` and
-`docs/rule-notes/<name>.ja.md`.
-
-A rule is either implemented or a skeleton, and three facts say which; they
-change together when the rule is implemented:
-
-| Fact                         | Implemented | Skeleton                 |
-| ---------------------------- | ----------- | ------------------------ |
-| `meta.messages`              | not empty   | empty                    |
-| `tests/rules/<name>.test.ts` | exists      | does not exist           |
-| `docs/rule-notes/<name>.md`  | removed     | exists in both languages |
-
-No one of them decides alone: `check:docs` fails when the facts of a rule
-disagree.
+`docs/rules/<name>.md` and `docs/rules/<name>.ja.md`.
 
 A rule is in the `recommended` configuration when its reports are nearly always
 mistakes to fix: wherever it reports, mermaid.js reads the text differently from
@@ -289,19 +273,17 @@ pnpm --filter @mmd-toolkit/eslint-plugin run check:docs
   rules and for each diagram type, with the description, a ✅ for the rules that
   the `recommended` configuration enables, a 🔧 for the rules that have a fix
   (`meta.fixable`), a 💡 for the rules that offer suggestions
-  (`meta.hasSuggestions`), and a 🚧 for the skeletons. The English description
-  is `meta.docs.description`; the Japanese one is the first paragraph of the
-  Japanese document.
+  (`meta.hasSuggestions`). The English description is `meta.docs.description`;
+  the Japanese one is the first paragraph of the Japanese document.
 - In each rule document, in both languages, the title (`# @mmd-toolkit/<name>`),
   and everything between `<!-- begin auto-generated rule notice -->` and
   `<!-- end auto-generated rule notice -->` after the first paragraph: whether
   the `recommended` configuration enables the rule, whether it has a fix, and
   whether it offers suggestions.
-- In the document of an implemented rule, in both languages, everything between
+- In each rule document, in both languages, everything between
   `<!-- begin auto-generated rule resources -->` and
   `<!-- end auto-generated rule resources -->` at its end: the Resources
-  section, with links to the source and the test of the rule. The document of a
-  skeleton has none.
+  section, with links to the source and the test of the rule.
 
 Every `mmd` code block in a rule document starts with
 `%% eslint @mmd-toolkit/<name>: error`, where `<name>` is the name of the rule,
@@ -317,12 +299,12 @@ not add it to the fixture itself.
 
 The rest of the documents is written by hand. `check:docs` writes nothing and
 fails when `src/rules/index.ts` or a generated part is out of date, when a rule
-has no document in one of the languages, when a document or notes belong to no
-rule, when the first paragraph of an English document is not
+has no document in one of the languages or no test file, when a document belongs
+to no rule, when the first paragraph of an English document is not
 `meta.docs.description` of its rule, when the `mmd` code blocks of a Japanese
 document are not those of the English one, in the same order, when a code block
-does not start with its rule's enabling comment, or when a rule is neither
-implemented nor a skeleton. Line breaks inside a first paragraph do not matter.
+does not start with its rule's enabling comment. Line breaks inside a first
+paragraph do not matter.
 
 When the rules and the documents do not match in one of these ways, `update`
 writes `src/rules/index.ts` but none of the generated parts of the documents,
@@ -332,27 +314,22 @@ and run `update` again.
 
 To add a rule:
 
-1. Add its file under `src/rules/`. A rule that is not implemented yet is a
-   skeleton: its `meta` (`type`, `docs.description`, `docs.recommended`,
-   `docs.url`, `schema`, `messages`), and a `create` that returns no handler.
+1. Add its file under `src/rules/`, with its `meta` (`type`, `docs.description`,
+   `docs.recommended`, `docs.url`, `schema`, `messages`) and its handlers.
 2. Write its documents in both languages. The first paragraph of the English
    document is `meta.docs.description`, word for word. Begin every `mmd` example
    with the rule-enabling comment described above.
-3. Write its notes in both languages.
-4. Run `update`, then `check:docs`.
-
-To implement a rule, give it its messages and its handlers, add its test, and
-remove its notes, in the same change; the fixtures of the notes go into the
-fixture directory of the rule. Then run `update`: it writes the Resources
-section of its documents and removes its 🚧 from the index.
+3. Add its test, `tests/rules/<name>.test.ts`, and its fixtures.
+4. Run `update`, then `check:docs`: `update` writes the Resources section of its
+   documents and its row in the index.
 
 To rename a rule, rename its file, the argument of `ruleDocsUrl` in it, its
-documents, and its notes or its test together, update its id in every example's
-ESLint comment, and run `update`. To remove a rule, remove its file, its
-documents, and its notes or its test, and run `update`. To change the
-description of a rule, change `meta.docs.description` and the first paragraph of
-the English document to the same sentence, change the first paragraph of the
-Japanese document, and run `update`.
+documents, and its test together, update its id in every example's ESLint
+comment, and run `update`. To remove a rule, remove its file, its documents, and
+its test, and run `update`. To change the description of a rule, change
+`meta.docs.description` and the first paragraph of the English document to the
+same sentence, change the first paragraph of the Japanese document, and run
+`update`.
 
 ## Writing a rule
 

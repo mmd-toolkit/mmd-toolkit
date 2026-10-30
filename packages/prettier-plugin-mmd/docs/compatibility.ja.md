@@ -1238,12 +1238,20 @@ mermaid.js はそれを名前 `%%` の頂点として読みます。
 整形しないブロックは Prettier に任せ、
 Prettier はすべての行の末尾の空白を取り除きます。
 
-## printer のない図種
+## error 擬似図
 
-このプラグインがまだ整形しない図種は、単独のファイルでは書かれたまま印字します。
-変わりうるのは改行コードだけで、
+mermaid.js が受理する `error` 擬似図は、`error` という語と、
+その周りのコメント・ディレクティブ・改行だけでできたテキストで、
+整形するものがありません。
+printer は、フロントマターを含め、テキスト全体を書かれたまま印字します。
+単独のファイルで変わりうるのは改行コードだけで、
 他の言語と同じく Prettier の `endOfLine` オプションに従います。
 Markdown では、コードブロックを Prettier に任せます。
+[fixture: error/as-written/frontmatter-kept]
+[fixture: error/as-written/trailing-whitespace-and-comment-kept]
+[fixture: error/as-written/directive-kept]
+[corpus fixture: common/error-pseudo-diagram]
+[corpus fixture: common/error-comment-inside]
 
 ## Kanban の字下げ、不透明な末尾、保持行
 

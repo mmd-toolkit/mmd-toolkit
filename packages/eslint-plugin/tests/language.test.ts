@@ -18,7 +18,6 @@ import {
   parse,
   ParseError,
   traverseNodes,
-  UnsupportedDiagramError,
   visitorKeys,
 } from "@mmd-toolkit/parser"
 import { mermaidLanguage } from "../src/index.ts"
@@ -30,7 +29,6 @@ import { loadLanguageInputs } from "./language-inputs.ts"
 type ParserOutcome =
   | { readonly kind: "parsed"; readonly root: Root }
   | { readonly kind: "rejected"; readonly error: ParseError }
-  | { readonly kind: "unsupported"; readonly error: UnsupportedDiagramError }
 
 /** Parses `text` with the parser, as the reference for what ESLint reports. */
 function parserOutcome(text: string): ParserOutcome {
@@ -38,9 +36,6 @@ function parserOutcome(text: string): ParserOutcome {
     return { kind: "parsed", root: parse(text) }
   } catch (error) {
     if (error instanceof ParseError) return { kind: "rejected", error }
-    if (error instanceof UnsupportedDiagramError) {
-      return { kind: "unsupported", error }
-    }
     throw error
   }
 }
@@ -120,18 +115,6 @@ describe("the inputs of the language", () => {
           message: `Parsing error: ${outcome.error.message}`,
           line: outcome.error.loc.start.line,
           column: outcome.error.loc.start.column + 1,
-        }),
-      ])
-      return
-    }
-    if (outcome.kind === "unsupported") {
-      expect(observation.messages).toEqual([
-        expect.objectContaining({
-          ruleId: null,
-          fatal: true,
-          message: `Parsing error: ${outcome.error.message}`,
-          line: 1,
-          column: 1,
         }),
       ])
       return

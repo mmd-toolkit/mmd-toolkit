@@ -52,7 +52,6 @@ Prettier standaloneとMermaid・YAMLプラグインは、
 Formattedが選択されたときに読み込みます。
 整形は入力と字下げの変更に追従し、古くなった結果は破棄します。
 Applyは一度のUndoで戻せる編集で、改行をLFにします。
-未対応の種類は、プラグインが入力のまま出力することもあります。
 
 初回のテーマはシステム設定に従い、明示的な選択は現在のページで維持します。
 動きを減らす設定では、テーマスイッチのアニメーションを無効にします。
@@ -96,7 +95,7 @@ HMRのテストはパーサーとフォーマッターの隔離したコピー�
 
 ## GitHub Pages
 
-公開先の予定は
+公開先は
 [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)です。
 Viteのbaseは`/mmd-toolkit/playground/`で、エディターワーカー、 ShikiのWASM、
 遅延読み込みする整形資産もこのパスに従います。

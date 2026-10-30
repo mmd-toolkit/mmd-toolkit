@@ -17,15 +17,13 @@ MultiMarkdown や MikuMikuDance ではありません。
 **Indent**と**Use tabs**で字下げを設定できます。
 **Apply to source**で、入力を整形結果に置き換えられます。
 
-公開予定URL:
-[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。
+公開URL: [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。
 
 操作方法は[Playgroundの使い方](../playground/README.ja.md)を参照してください。
 
 ## 導入
 
-このパッケージは、まだ npm に公開していません。
-公開後は、Prettier 3 と一緒に入れます。
+Prettier 3 と一緒に入れます。
 Node.js `^20.19.0 || ^22.13.0 || >=24` が必要です。
 
 ```sh
@@ -181,8 +179,6 @@ flowchart LR
 - これらの図の YAML のフロントマター。
   Prettier の YAML 整形で整形します。
 
-ほかの図種は、まだ整形しません（下を参照）。
-
 ## オプション
 
 - `useTabs` と `tabWidth` で字下げを決めます。
@@ -205,11 +201,9 @@ flowchart LR
   flowchart では、`click` は予約語です。
   `A-->|x""|B` のように、トークンの間に空の文字列がある場合もそうです。
   一覧は [docs/compatibility.ja.md](./docs/compatibility.ja.md) にあります。
-- flowchart、agentflow、sequence、class、state、ER、Gantt、journey、
-  requirement、mindmap、timeline、sankey、XY チャート、象限チャート、 kanban、
-  C4、Venn、Ishikawa、usecase、pie、info、gitgraph、 architecture、treemap、
-  treeview、radar、wardley、railroad、cynefin、 eventmodeling、packet、
-  ブロック図以外の図種は変えません。
+- mermaid.js の `error` 擬似図は変えません。
+  `error` という語と、
+  その周りのコメント・ディレクティブ・改行だけでできたテキストです。
   ただし、改行コードは `endOfLine` に従います。
   Markdown では、Prettier に任せます。
 

@@ -44,7 +44,6 @@ can reveal more, including the path to a source selection.
 Prettier standalone and the Mermaid and YAML plugins load on demand when
 Formatted is selected. Formatting follows source and indentation changes; stale
 results are discarded. Apply is one undoable edit and uses LF line endings.
-Unsupported diagram types may be printed as written by the plugin.
 
 The system preference sets the initial theme; an explicit choice lasts for the
 current page. Reduced motion preferences disable the theme switch animation.
@@ -86,7 +85,7 @@ formatter sources; it never changes the working library files.
 
 ## GitHub Pages
 
-The intended public URL is
+The public URL is
 [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/). Vite's base
 is `/mmd-toolkit/playground/`, including local editor workers, Shiki WASM and
 lazy formatter assets. Build output is `lib/`.

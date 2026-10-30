@@ -38,24 +38,40 @@ mermaid-js とは関係のない、第三者のプロジェクトです。
 
 ## 図種
 
-| 図種         | テキストの読み方                                                         | 木のノード                                                     |
-| ------------ | ------------------------------------------------------------------------ | -------------------------------------------------------------- |
-| flowchart    | [`docs/diagrams/flowchart.ja.md`](./docs/diagrams/flowchart.ja.md)       | [`docs/ast/flowchart.ja.md`](./docs/ast/flowchart.ja.md)       |
-| sequence     | [`docs/diagrams/sequence.ja.md`](./docs/diagrams/sequence.ja.md)         | [`docs/ast/sequence.ja.md`](./docs/ast/sequence.ja.md)         |
-| class        | [`docs/diagrams/class.ja.md`](./docs/diagrams/class.ja.md)               | [`docs/ast/class.ja.md`](./docs/ast/class.ja.md)               |
-| state        | [`docs/diagrams/state.ja.md`](./docs/diagrams/state.ja.md)               | [`docs/ast/state.ja.md`](./docs/ast/state.ja.md)               |
-| er           | [`docs/diagrams/er.ja.md`](./docs/diagrams/er.ja.md)                     | [`docs/ast/er.ja.md`](./docs/ast/er.ja.md)                     |
-| venn         | [`docs/diagrams/venn.ja.md`](./docs/diagrams/venn.ja.md)                 | [`docs/ast/venn.ja.md`](./docs/ast/venn.ja.md)                 |
-| ishikawa     | [`docs/diagrams/ishikawa.ja.md`](./docs/diagrams/ishikawa.ja.md)         | [`docs/ast/ishikawa.ja.md`](./docs/ast/ishikawa.ja.md)         |
-| agentflow    | [`docs/diagrams/agentflow.ja.md`](./docs/diagrams/agentflow.ja.md)       | [`docs/ast/agentflow.ja.md`](./docs/ast/agentflow.ja.md)       |
-| pie          | [`docs/diagrams/pie.ja.md`](./docs/diagrams/pie.ja.md)                   | [`docs/ast/pie.ja.md`](./docs/ast/pie.ja.md)                   |
-| gitgraph     | [`docs/diagrams/gitgraph.ja.md`](./docs/diagrams/gitgraph.ja.md)         | [`docs/ast/gitgraph.ja.md`](./docs/ast/gitgraph.ja.md)         |
-| info         | [`docs/diagrams/info.ja.md`](./docs/diagrams/info.ja.md)                 | [`docs/ast/info.ja.md`](./docs/ast/info.ja.md)                 |
-| packet       | [`docs/diagrams/packet.ja.md`](./docs/diagrams/packet.ja.md)             | [`docs/ast/packet.ja.md`](./docs/ast/packet.ja.md)             |
-| architecture | [`docs/diagrams/architecture.ja.md`](./docs/diagrams/architecture.ja.md) | [`docs/ast/architecture.ja.md`](./docs/ast/architecture.ja.md) |
-| radar        | [`docs/diagrams/radar.ja.md`](./docs/diagrams/radar.ja.md)               | [`docs/ast/radar.ja.md`](./docs/ast/radar.ja.md)               |
-
-mermaid.js のほかの図種は、まだ定めていません。
+| 図種          | テキストの読み方                                                           | 木のノード                                                       |
+| ------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| flowchart     | [`docs/diagrams/flowchart.ja.md`](./docs/diagrams/flowchart.ja.md)         | [`docs/ast/flowchart.ja.md`](./docs/ast/flowchart.ja.md)         |
+| sequence      | [`docs/diagrams/sequence.ja.md`](./docs/diagrams/sequence.ja.md)           | [`docs/ast/sequence.ja.md`](./docs/ast/sequence.ja.md)           |
+| class         | [`docs/diagrams/class.ja.md`](./docs/diagrams/class.ja.md)                 | [`docs/ast/class.ja.md`](./docs/ast/class.ja.md)                 |
+| state         | [`docs/diagrams/state.ja.md`](./docs/diagrams/state.ja.md)                 | [`docs/ast/state.ja.md`](./docs/ast/state.ja.md)                 |
+| er            | [`docs/diagrams/er.ja.md`](./docs/diagrams/er.ja.md)                       | [`docs/ast/er.ja.md`](./docs/ast/er.ja.md)                       |
+| journey       | [`docs/diagrams/journey.ja.md`](./docs/diagrams/journey.ja.md)             | [`docs/ast/journey.ja.md`](./docs/ast/journey.ja.md)             |
+| gantt         | [`docs/diagrams/gantt.ja.md`](./docs/diagrams/gantt.ja.md)                 | [`docs/ast/gantt.ja.md`](./docs/ast/gantt.ja.md)                 |
+| pie           | [`docs/diagrams/pie.ja.md`](./docs/diagrams/pie.ja.md)                     | [`docs/ast/pie.ja.md`](./docs/ast/pie.ja.md)                     |
+| quadrant      | [`docs/diagrams/quadrant.ja.md`](./docs/diagrams/quadrant.ja.md)           | [`docs/ast/quadrant.ja.md`](./docs/ast/quadrant.ja.md)           |
+| requirement   | [`docs/diagrams/requirement.ja.md`](./docs/diagrams/requirement.ja.md)     | [`docs/ast/requirement.ja.md`](./docs/ast/requirement.ja.md)     |
+| usecase       | [`docs/diagrams/usecase.ja.md`](./docs/diagrams/usecase.ja.md)             | [`docs/ast/usecase.ja.md`](./docs/ast/usecase.ja.md)             |
+| gitgraph      | [`docs/diagrams/gitgraph.ja.md`](./docs/diagrams/gitgraph.ja.md)           | [`docs/ast/gitgraph.ja.md`](./docs/ast/gitgraph.ja.md)           |
+| c4            | [`docs/diagrams/c4.ja.md`](./docs/diagrams/c4.ja.md)                       | [`docs/ast/c4.ja.md`](./docs/ast/c4.ja.md)                       |
+| mindmap       | [`docs/diagrams/mindmap.ja.md`](./docs/diagrams/mindmap.ja.md)             | [`docs/ast/mindmap.ja.md`](./docs/ast/mindmap.ja.md)             |
+| timeline      | [`docs/diagrams/timeline.ja.md`](./docs/diagrams/timeline.ja.md)           | [`docs/ast/timeline.ja.md`](./docs/ast/timeline.ja.md)           |
+| sankey        | [`docs/diagrams/sankey.ja.md`](./docs/diagrams/sankey.ja.md)               | [`docs/ast/sankey.ja.md`](./docs/ast/sankey.ja.md)               |
+| xychart       | [`docs/diagrams/xychart.ja.md`](./docs/diagrams/xychart.ja.md)             | [`docs/ast/xychart.ja.md`](./docs/ast/xychart.ja.md)             |
+| block         | [`docs/diagrams/block.ja.md`](./docs/diagrams/block.ja.md)                 | [`docs/ast/block.ja.md`](./docs/ast/block.ja.md)                 |
+| packet        | [`docs/diagrams/packet.ja.md`](./docs/diagrams/packet.ja.md)               | [`docs/ast/packet.ja.md`](./docs/ast/packet.ja.md)               |
+| kanban        | [`docs/diagrams/kanban.ja.md`](./docs/diagrams/kanban.ja.md)               | [`docs/ast/kanban.ja.md`](./docs/ast/kanban.ja.md)               |
+| architecture  | [`docs/diagrams/architecture.ja.md`](./docs/diagrams/architecture.ja.md)   | [`docs/ast/architecture.ja.md`](./docs/ast/architecture.ja.md)   |
+| radar         | [`docs/diagrams/radar.ja.md`](./docs/diagrams/radar.ja.md)                 | [`docs/ast/radar.ja.md`](./docs/ast/radar.ja.md)                 |
+| eventmodeling | [`docs/diagrams/eventmodeling.ja.md`](./docs/diagrams/eventmodeling.ja.md) | [`docs/ast/eventmodeling.ja.md`](./docs/ast/eventmodeling.ja.md) |
+| treemap       | [`docs/diagrams/treemap.ja.md`](./docs/diagrams/treemap.ja.md)             | [`docs/ast/treemap.ja.md`](./docs/ast/treemap.ja.md)             |
+| venn          | [`docs/diagrams/venn.ja.md`](./docs/diagrams/venn.ja.md)                   | [`docs/ast/venn.ja.md`](./docs/ast/venn.ja.md)                   |
+| ishikawa      | [`docs/diagrams/ishikawa.ja.md`](./docs/diagrams/ishikawa.ja.md)           | [`docs/ast/ishikawa.ja.md`](./docs/ast/ishikawa.ja.md)           |
+| wardley       | [`docs/diagrams/wardley.ja.md`](./docs/diagrams/wardley.ja.md)             | [`docs/ast/wardley.ja.md`](./docs/ast/wardley.ja.md)             |
+| cynefin       | [`docs/diagrams/cynefin.ja.md`](./docs/diagrams/cynefin.ja.md)             | [`docs/ast/cynefin.ja.md`](./docs/ast/cynefin.ja.md)             |
+| treeview      | [`docs/diagrams/treeview.ja.md`](./docs/diagrams/treeview.ja.md)           | [`docs/ast/treeview.ja.md`](./docs/ast/treeview.ja.md)           |
+| agentflow     | [`docs/diagrams/agentflow.ja.md`](./docs/diagrams/agentflow.ja.md)         | [`docs/ast/agentflow.ja.md`](./docs/ast/agentflow.ja.md)         |
+| info          | [`docs/diagrams/info.ja.md`](./docs/diagrams/info.ja.md)                   | [`docs/ast/info.ja.md`](./docs/ast/info.ja.md)                   |
+| railroad      | [`docs/diagrams/railroad.ja.md`](./docs/diagrams/railroad.ja.md)           | [`docs/ast/railroad.ja.md`](./docs/ast/railroad.ja.md)           |
 
 ## 例
 

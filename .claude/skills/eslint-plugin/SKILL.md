@@ -22,24 +22,17 @@ in the skill `eslint-plugin-rules`; each document belongs to a rule file under
 
 What holds for the package `packages/eslint-plugin`:
 
-- Its rules are implemented one diagram type at a time, once the tree of that
-  diagram type has settled, and all of them before the release. Implementing a
-  rule tests the tree as a tool uses it; what a rule cannot read from the tree
-  is settled then, by changing the tree or the parser and not by reading the
-  text again in the rule. Besides the rules, the package holds what does not
-  depend on a rule (the package, the language that gives ESLint the tree, their
-  tests).
+- Writing a rule tests the tree as a tool uses it; what a rule cannot read from
+  the tree is settled then, by changing the tree or the parser and not by
+  reading the text again in the rule. Besides the rules, the package holds what
+  does not depend on a rule (the package, the language that gives ESLint the
+  tree, their tests).
 - Every rule has one document under `docs/rules/`, written for the users of the
   rule, and a rule file under `src/rules/`, which carries the name, the
   description, and whether the rule is recommended; the list of the rules in
   `docs/rules/index.md` and the generated parts of the rule documents are
   written from these files (`pnpm run update`). `pnpm run lint:docs` fails when
-  the rule files and the documents disagree. A rule that is not implemented yet
-  is a rule idea: its rule file reports nothing, and a document under
-  `docs/rule-notes/` holds what implementing it needs, how the tree shows what
-  the rule reports and the fixtures that record what mermaid.js does. When the
-  rule is implemented, the condition moves into its code and the fixtures into
-  its tests, and that document is removed.
+  the rule files and the documents disagree.
 - Is an ESLint language plugin (the `languages` of a plugin), not a custom
   parser: it gives ESLint the tree of `@mmd-toolkit/parser`, its tokens and
   comments, and its visitor keys.
@@ -97,10 +90,8 @@ is a mistake, and which forms that look alike it does not report. The form is
 that of the rule documents of ESLint (as `no-unsafe-negation` and
 `no-unused-vars`): a one-line description, a short motivation, Rule Details with
 its sentences and then the examples of incorrect and correct code, Options, and
-the optional sections; each part of the form is taken from that precedent. What
-implementing the rule needs (the condition on the tree and the fixtures) is in a
-second document, the rule notes, until the rule is implemented. The English rule
-document:
+the optional sections; each part of the form is taken from that precedent. The
+English rule document:
 
     # @mmd-toolkit/<name>
 
@@ -146,34 +137,15 @@ document:
 
     - [<the page of the documentation, issue, or pull request of mermaid.js>](<link>)
 
-    ## Resources                        (generated, implemented rules only)
-
-The English rule notes, `docs/rule-notes/<name>.md` (the same name as the rule
-document, under `docs/rule-notes/`):
-
-    # @mmd-toolkit/<name>
-
-    Japanese version: [<name>.ja.md](./<name>.ja.md)
-
-    Notes for implementing the rule
-    [@mmd-toolkit/<name>](../rules/<name>.md).
-
-    The rule is not implemented yet. These notes are for implementing it.
-
-    ## How the tree shows it
-
-    ## Fixtures
+    ## Resources                        (generated)
 
 The Japanese document has the same parts: `英語版: [<name>.md](./<name>.md)`,
 `…を禁止する。`, `## 規則の詳細`, `この規則に**反する**コードの例:`,
 `この規則に**従う**コードの例:`, `## オプション` with
 `この規則にはオプションがない。`, `## 使わないとき`, `## 関連する規則`, and
-`## 参考`. The Japanese rule notes have `英語版: [<name>.md](./<name>.md)`,
-`規則 [@mmd-toolkit/<name>](…) を実装するための覚え書き。`,
-`この規則はまだ実装していない。` and `ここには、実装するときに要ることを書く。`,
-`## 木での現れ方`, and `## fixture`. Links from a Japanese document to another
-document point to its Japanese version (`.ja.md`). When the line with the link
-to the English version is wider than 80 columns, break it after `英語版:`.
+`## 参考`. Links from a Japanese document to another document point to its
+Japanese version (`.ja.md`). When the line with the link to the English version
+is wider than 80 columns, break it after `英語版:`.
 
 How each part is written:
 
@@ -324,52 +296,24 @@ How each part is written:
   draws something, ignores something, or gives an error. It does not use "the
   Db", "the tree", "token", or a sentence whose subject is the parser of
   mmd-toolkit; it names no node type, field, or token kind, which belong to the
-  rule notes. Where the document must say what mmd-toolkit does, it says
+  code of the rule. Where the document must say what mmd-toolkit does, it says
   mmd-toolkit for the whole and its formatter for formatting, not "this
   toolkit". It says what mermaid.js does with a mistake, as "gives no error",
   not "says nothing". A link to a known divergence of the specification is
   written only in a rule whose users meet that divergence. In Japanese,
   "この道具" and "木" are not used.
 - Sentences are short, and a paragraph has three or four sentences at most.
-- Rule notes: they start with "The rule is not implemented yet. These notes are
-  for implementing it." They exist only until the rule is implemented: then the
-  condition lives in the code of the rule and the fixtures in its tests, so
-  delete the rule notes (both languages) in the change that implements the rule.
-  The fixtures of their list move into the fixture directory of the rule,
-  `tests/fixtures/rules/<name>/`, as copies under `valid/<diagram>/` or
-  `invalid/<diagram>/`, each named after its fixture (`<name>-input.mmd`); the
-  test checks that a copy is, byte for byte, the input of its fixture. An input
-  written only for the rule goes directly under `valid/` or `invalid/`. A
-  fixture file holds no character that `pnpm run lint:chars` checks for (the
-  list is in `packages/spec/docs/index.md`): a corpus fixture that needs one is
-  not copied, and an input that a test needs with one is written with escapes,
-  in the test code or in a JSON fixture, never as a `.mmd` file that holds the
-  character. A rule is implemented when three facts hold together: its
-  `meta.messages` is not empty, a test `tests/rules/<name>.test.ts` exists, and
-  no rule notes exist, in either language. A rule that is not implemented has
-  rule notes in both languages. `check:docs` fails when these facts disagree.
-  The examples stay in the rule document, and the test reads them from it.
-- Resources: for an implemented rule, `update` writes the section that links to
-  the source and the tests of the rule, as the Resources section of an ESLint
-  rule document does, between its generated markers. It is not written by hand.
-  The index shows which rules are implemented in a generated column of its list
-  of rules; no sentence of the introduction says it.
-- How the tree shows it (in the rule notes): the condition, in node types,
-  fields, token kinds and values, and ranges. A common rule uses only the part
-  of the tree that every diagram type shares (Root, its tokens, comments, and
-  directives, and the shared leaf nodes); where a diagram type must supply more,
-  the section says what, and the list of diagram types in Rule Details gives it.
-  Whatever goes beyond the tree and the tokens is named as such, with the design
-  question it raises: reading the source (whitespace is not in the tree),
-  interpreting a value (HTML in a label), reading embedded data (the argument of
-  a directive), repeating a derivation of the Db (the id of a subgraph). When
-  the tree and the tokens cannot show it at all, do not describe a way to lex
-  the text again: either the tree needs to show more, which is a change of the
-  specification of the tree (the spec skill), or the rule is not kept (the
-  rule-ideas skill).
-- Fixtures (in the rule notes): "The behavior of mermaid.js that the rule relies
-  on is recorded in these fixtures of `@mmd-toolkit/tests`:", followed by the
-  fixtures that back the claims and the examples.
+- Fixtures: the examples stay in the rule document, and the test reads them from
+  it. The inputs written only for the rule are in the fixture directory of the
+  rule, `tests/fixtures/rules/<name>/`, under `valid/` or `invalid/` (the skill
+  `eslint-plugin-rules`, section 4). A fixture file holds no character that
+  `pnpm run lint:chars` checks for (the list is in
+  `packages/spec/docs/index.md`): an input that a test needs with one is written
+  with escapes, in the test code, never as a `.mmd` file that holds the
+  character.
+- Resources: `update` writes the section that links to the source and the tests
+  of the rule, as the Resources section of an ESLint rule document does, between
+  its generated markers. It is not written by hand.
 
 ## 4. Checking, before and after writing
 
@@ -383,13 +327,14 @@ write its output to a file.
    `packages/tests/src/mermaid.ts`. Every example must be accepted (a rejected
    input is a syntax error, which no rule reports), and the values in the Db
    must be the ones the document states.
-2. The condition on the tree: write the condition of How the tree shows it as
-   code over the result of `parse(text)` of `packages/parser/src/index.ts`
-   (`traverseNodes`, `root.tokens`, `root.comments`, `root.directives`), and
-   check that it matches every incorrect example and no correct example. Add
-   inputs at the boundary: with and without whitespace, `\n` and `\r\n`, the
-   same line and the next line, directives, comment lines, inside a string,
-   inside a subgraph, statements separated by `;` on one line.
+2. The condition on the tree: write the condition of the rule, in node types,
+   fields, token kinds and values, and ranges, as code over the result of
+   `parse(text)` of `packages/parser/src/index.ts` (`traverseNodes`,
+   `root.tokens`, `root.comments`, `root.directives`), and check that it matches
+   every incorrect example and no correct example. Add inputs at the boundary:
+   with and without whitespace, `\n` and `\r\n`, the same line and the next
+   line, directives, comment lines, inside a string, inside a subgraph,
+   statements separated by `;` on one line.
 3. Formatting: format every incorrect example with the formatting script, and
    check that the output does not show how mermaid.js reads it (the criteria of
    the rule-ideas skill exclude a rule for what the formatter already makes
@@ -422,16 +367,15 @@ write its output to a file.
    the examples with the output of the printer once it exists; when no choices
    are decided yet, follow the form of the flowchart printer (the statements
    after the header one level in). Check that the `expected.json` of each
-   fixture listed says what the document claims, and use only fixtures whose
+   fixture used says what the document claims, and use only fixtures whose
    `accepted` is true as examples, also for the correct examples. For every
    example and claim without a fixture, add one by the steps of the skill
    `tests`: give the smallest input that shows it and the claim of the rule
    document that the fixture answers, and add it with `pnpm run fixtures:add`,
    which records what mermaid.js does
    (`packages/tests/docs/maintaining-fixtures.md`); then record its tree in the
-   parser (the skill `parser`). Read its `expected.json` and list it in the rule
-   notes; for an implemented rule, which has no rule notes, it goes into the
-   tests of the rule. The document change is not done until the fixture exists.
+   parser (the skill `parser`). Read its `expected.json` and use it in the tests
+   of the rule. The document change is not done until the fixture exists.
 
 ## 5. Checks after writing
 
@@ -450,11 +394,9 @@ write its output to a file.
    and long links that cannot be broken are not counted. The first paragraph of
    a rule document is written the same way: the index reads it without regard to
    where its lines break.
-5. The English and Japanese documents have the same code blocks and the same
-   list of fixtures. Extract from both the lines of the code blocks and the
-   lines that list a fixture, and compare them.
-6. Every fixture listed exists under `packages/tests/fixtures`, and every
-   relative link has a target.
+5. The English and Japanese documents have the same code blocks. Extract the
+   lines of the code blocks from both, and compare them.
+6. Every relative link has a target.
 7. A change to documents only runs these checks and no tests (the skill
    `conventions`, Running tests). The exception is a change to what a test
    reads: the examples (the code blocks after the two lines of section 3) or the
@@ -467,34 +409,29 @@ write its output to a file.
 
 Each document belongs to a rule file under `src/rules/`, and the two are added,
 renamed, and removed together, as the section "Rules and their documents" of
-`docs/development.md` describes. A rule that is not implemented yet is a
-skeleton that reports nothing.
+`docs/development.md` describes.
 
 - What comes from the rule files: whether a rule exists, its name, its English
   description (`meta.docs.description`), and whether the `recommended`
   configuration enables it. Adding, renaming, or removing a rule, or changing
   the first paragraph of an English document, also changes the rule file.
-- `recommended` is `false` in the rule file of a rule that is not implemented.
-  When the rule is implemented, it is set from the decision in section 7 of the
+- `recommended` in the rule file is set from the decision in section 7 of the
   rule-ideas SKILL; a provisional decision there is made again first.
 - What `pnpm --filter @mmd-toolkit/eslint-plugin run update` writes: the title
   of every document; the notice of every document; the Resources section at the
-  end of the document of an implemented rule, between
-  `<!-- begin auto-generated rule resources -->` and
-  `<!-- end auto-generated rule resources -->`; and, in `index.md` and
+  end of every document, between `<!-- begin auto-generated rule resources -->`
+  and `<!-- end auto-generated rule resources -->`; and, in `index.md` and
   `index.ja.md`, everything between `<!-- begin auto-generated rules list -->`
   and `<!-- end auto-generated rules list -->`, one table for the common rules
   and one for each diagram type, whose rows hold the English description, the
   first paragraph of the Japanese document, a ✅ for a rule that `recommended`
   enables, a 🔧 for a rule that has a fix, a 💡 for a rule that offers
-  suggestions, and a 🚧 for a rule that is not implemented yet. Do not write
-  these parts by hand; after a change of the first paragraph of a Japanese
-  document, run `update`.
+  suggestions. Do not write these parts by hand; after a change of the first
+  paragraph of a Japanese document, run `update`.
 - What is written by hand in the index: what comes before the generated list
   (the introduction, with the sentence that says `recommended` enables the rules
   marked ✅, and the section on rule ids). The criteria for `recommended` are in
-  `docs/development.md`, not in the index. Which rules are implemented is the 🚧
-  column of the generated list, not a sentence.
+  `docs/development.md`, not in the index.
 - When a document is removed, check with `grep` that no other document refers to
   it.
 - A rule is implemented with the skill `eslint-plugin-rules`, which follows the
@@ -529,9 +466,6 @@ skeleton that reports nothing.
 - When a document moves, its rule is renamed (section 6): change the sentence of
   Rule Details that names the diagram types and its relative links, and run
   `update`, which writes its title and its row in the index.
-- The rule notes move and are removed with their rule document; change the link
-  to the rule document in them. `update` and `check:docs` read `docs/rules/`
-  only and do not touch the rule notes.
 
 ## 9. The result of the work
 

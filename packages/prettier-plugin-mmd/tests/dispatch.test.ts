@@ -9,7 +9,7 @@ import type { AstPath, Doc } from "prettier"
 import { builders } from "prettier/doc"
 import * as prettier from "prettier"
 import type * as ParserModule from "@mmd-toolkit/parser"
-import { ParseError, UnsupportedDiagramError } from "@mmd-toolkit/parser"
+import { ParseError } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../src/index.ts"
 import plugin from "../src/index.ts"
 import * as printers from "../src/printers/index.ts"
@@ -23,9 +23,15 @@ vi.mock("@mmd-toolkit/parser", async (importOriginal) => ({
   parse,
 }))
 
-/** Throws the parser's error for an unsupported diagram type. */
-function throwUnsupported(): never {
-  throw new UnsupportedDiagramError("er")
+/**
+ * Makes `parse` the parser's own, for the `error` pseudo-diagram, whose
+ * printer prints the text as written.
+ */
+async function useRealParser(): Promise<void> {
+  const actual = await vi.importActual<typeof ParserModule>(
+    "@mmd-toolkit/parser",
+  )
+  parse.mockImplementation(actual.parse)
 }
 
 beforeEach(() => {
@@ -183,29 +189,37 @@ describe("dispatch to diagram printers", () => {
       return ["printed", hardline]
     }
 
-    parse.mockImplementation((text: string) => stubRoot(text, "ErrorDiagram"))
+    const table = printers.diagramPrinters
+    parse.mockImplementation((text: string) =>
+      stubRoot(text, "FlowchartDiagram"),
+    )
     vi.spyOn(printers, "diagramPrinters", "get").mockReturnValue({
-      ErrorDiagram: printStub,
+      ...table,
+      FlowchartDiagram: printStub,
     })
     // The comment makes `Root.comments` non-empty, which Prettier must not
     // treat as its own comments.
     const input = "%% a comment\nstub\n"
     expect(parse.getMockImplementation()?.(input).comments).toHaveLength(1)
     expect(await formatMermaid(input)).toBe("printed\n")
-    expect(seen).toEqual(["ErrorDiagram"])
+    expect(seen).toEqual(["FlowchartDiagram"])
   })
 
   it("formats with a cursor position, which walks the tree", async () => {
     // Prettier walks the tree to find the node at the cursor. It must visit
     // only child nodes, not objects such as `loc`.
     /** Prints the body as one word and the line break at the end of the text. */
-    function printErrorDiagram(): Doc {
+    function printStubbed(): Doc {
       return ["printed", hardline]
     }
 
-    parse.mockImplementation((text: string) => stubRoot(text, "ErrorDiagram"))
+    const table = printers.diagramPrinters
+    parse.mockImplementation((text: string) =>
+      stubRoot(text, "FlowchartDiagram"),
+    )
     vi.spyOn(printers, "diagramPrinters", "get").mockReturnValue({
-      ErrorDiagram: printErrorDiagram,
+      ...table,
+      FlowchartDiagram: printStubbed,
     })
     const result = await prettier.formatWithCursor("error\n", {
       cursorOffset: 2,
@@ -216,58 +230,33 @@ describe("dispatch to diagram printers", () => {
     expect(result.cursorOffset).toBeGreaterThanOrEqual(0)
   })
 
-  it("does not take inherited properties of the printer table as printers", async () => {
-    parse.mockImplementation((text: string) => stubRoot(text, "toString"))
-    const input = "toString  \n"
-    expect(await formatMermaid(input)).toBe(input)
-  })
-
-  it("prints a parsed diagram type without a printer unchanged", async () => {
-    parse.mockImplementation((text: string) =>
-      stubRoot(text, "UnprintedDiagram"),
-    )
-    const input = "erDiagram\n  A ||--o{ B : has  \n\n\n"
-    expect(await formatMermaid(input)).toBe(input)
-  })
-
-  describe("a diagram type the parser does not support is printed unchanged", () => {
+  describe("the error pseudo-diagram is printed as written", () => {
     const inputs = [
-      "erDiagram\n  A ||--o{ B : has  \n\n\n  %% comment\n",
-      "erDiagram\n\tA ||--o{ B : has",
-      "\n\n---\ntitle: T\n---\nerDiagram\n  A ||--o{ B : has\n",
-      "%%{init: {'theme': 'dark'}}%%\nerDiagram\n  A ||--o{ B : has\n",
+      "error\n  %% has  \n\n\n  %% comment\n",
+      "error\n\t%% has",
+      "\n\n---\ntitle:   T\n---\nerror\n  %% has\n",
+      "%%{init: {'theme': 'dark'}}%%\nerror\n  %% has\n",
     ]
-    it("when the parser reports it by name only", async () => {
-      // Two installed copies of the parser would defeat `instanceof`.
-      parse.mockImplementation(() => {
-        throw Object.assign(new Error("er"), {
-          name: "UnsupportedDiagramError",
-        })
-      })
-      const input = "erDiagram\n  A ||--o{ B : has  \n"
-      expect(await formatMermaid(input)).toBe(input)
-    })
-
     it.each(inputs)("standalone file %j", async (input) => {
-      parse.mockImplementation(throwUnsupported)
+      await useRealParser()
       expect(await formatMermaid(input)).toBe(input)
     })
 
     it("inside Markdown list items and block quotes", async () => {
-      parse.mockImplementation(throwUnsupported)
+      await useRealParser()
       const markdown = [
         "- item",
         "",
         "  ```mermaid",
-        "  erDiagram",
-        "    A ||--o{ B : has",
+        "  error",
+        "    %% has",
         "",
         "    %% comment",
         "  ```",
         "",
         "> ```mermaid",
-        "> erDiagram",
-        ">     A ||--o{ B : has",
+        "> error",
+        ">     %% has",
         "> ```",
         "",
       ].join("\n")
@@ -277,58 +266,42 @@ describe("dispatch to diagram printers", () => {
     })
 
     it("inside Markdown, is left to Prettier as code it does not format", async () => {
-      parse.mockImplementation(throwUnsupported)
+      await useRealParser()
       const markdown = [
         "- item",
         "",
         "  ```mermaid",
-        "  erDiagram  ",
+        "  error  ",
         "",
-        "    A ||--o{ B : has\t",
+        "    %% has\t",
         "  ```",
         "",
       ].join("\n")
       const formatted = await formatMarkdown(markdown)
       expect(formatted).toBe(await formatMarkdownWithoutPlugin(markdown))
       expect(formatted).toBe(
-        "- item\n\n  ```mermaid\n  erDiagram\n\n    A ||--o{ B : has\n  ```\n",
+        "- item\n\n  ```mermaid\n  error\n\n    %% has\n  ```\n",
       )
     })
 
     it("inside Markdown, keeps blank lines at the end of the block", async () => {
       // Prettier strips trailing line breaks from every embedded document,
       // so the plugin declines the block instead of printing it.
-      parse.mockImplementation(throwUnsupported)
-      const markdown = "```mermaid\nerDiagram\n  A ||--o{ B : has\n\n\n```\n"
+      await useRealParser()
+      const markdown = "```mermaid\nerror\n  %% has\n\n\n```\n"
       const formatted = await formatMarkdown(markdown)
       expect(formatted).toBe(await formatMarkdownWithoutPlugin(markdown))
       expect(formatted).toBe(markdown)
     })
   })
 
-  describe("a parsed diagram type without a printer is left to Prettier inside Markdown", () => {
-    it.each([
-      "```mermaid\nerDiagram\n  A ||--o{ B : has\n\n\n```\n",
-      "- item\n\n  ```mermaid\n  erDiagram  \n\n    A ||--o{ B : has\t\n  ```\n",
-      "> ```mmd\n> erDiagram\n>\n>   A ||--o{ B : has\n> ```\n",
-    ])("%j", async (markdown) => {
-      parse.mockImplementation((text: string) =>
-        stubRoot(text, "UnprintedDiagram"),
-      )
-      expect(await formatMarkdown(markdown)).toBe(
-        await formatMarkdownWithoutPlugin(markdown),
-      )
-      expect(parse).toHaveBeenCalledTimes(1)
-    })
-  })
-
   it("prints the whole text unchanged even if the root does not cover it", async () => {
     // A root may span only from the first to the last token.
-    const input = "\n%% leading\nerDiagram\n  A ||--o{ B : has\n\n%% trailing\n"
-    const first = input.indexOf("erDiagram")
+    const input = "\n%% leading\nerror\n  %% has\n\n%% trailing\n"
+    const first = input.indexOf("error")
     const last = input.indexOf("has") + 3
     parse.mockImplementation((text: string) => ({
-      ...stubRoot(text, "UnprintedDiagram"),
+      ...stubRoot(text, "ErrorDiagram"),
       range: [first, last],
     }))
     expect(await formatMermaid(input)).toBe(input)
@@ -338,19 +311,19 @@ describe("dispatch to diagram printers", () => {
     // Prettier normalizes line endings to "\n" before parsing and converts
     // them to `endOfLine` after printing. mermaid.js also treats "\r\n" and
     // "\r" as "\n", so the diagram does not change.
-    const input = "erDiagram\r\n  A ||--o{ B : has\r  %% c\r\n"
+    const input = "error\r\n  %% has\r  %% c\r\n"
     it.each([
-      [{}, "erDiagram\n  A ||--o{ B : has\n  %% c\n"],
-      [{ endOfLine: "crlf" }, "erDiagram\r\n  A ||--o{ B : has\r\n  %% c\r\n"],
-      [{ endOfLine: "auto" }, "erDiagram\r\n  A ||--o{ B : has\r\n  %% c\r\n"],
+      [{}, "error\n  %% has\n  %% c\n"],
+      [{ endOfLine: "crlf" }, "error\r\n  %% has\r\n  %% c\r\n"],
+      [{ endOfLine: "auto" }, "error\r\n  %% has\r\n  %% c\r\n"],
     ] as const)("with %j", async (options, expected) => {
-      parse.mockImplementation(throwUnsupported)
+      await useRealParser()
       expect(await formatMermaid(input, "diagram.mmd", options)).toBe(expected)
     })
 
     it("and a byte order mark is kept", async () => {
-      parse.mockImplementation(throwUnsupported)
-      const withBom = "\uFEFFerDiagram\n  A ||--o{ B : has\n"
+      await useRealParser()
+      const withBom = "\uFEFFerror\n  %% has\n"
       expect(await formatMermaid(withBom)).toBe(withBom)
     })
   })

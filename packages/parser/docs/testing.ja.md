@@ -339,7 +339,6 @@ fixture の入力と並べて `packages/tests/fixtures/<diagram>/<fixture 名>/`
   拒否も木と同じだけ記録され、
   報告する位置が変わればファイルの変化として現れます。
 - fixture は 2 つのうちどちらか一方を持ちます。
-  図種にまだ対応していないときは、どちらも持ちません。
   両方を持つ fixture がないことを、ファイルだけを見るテストで確かめます。
 - どの木やエラーが変わっても、そのファイルの変化として現れます。
   `packages/parser` で `pnpm run test:update` を走らせると、

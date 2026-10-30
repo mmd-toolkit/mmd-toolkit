@@ -69,9 +69,9 @@ function fileOf(fixture: Fixture, file: string): string {
  * the steps between the normalizer of a new diagram type and the recording of
  * its trees (the skill `tests`, adding a diagram type): the fixtures of
  * `common/` that are detected as one have a summary and no tree, since the
- * reference implementation does not read the diagram type
- * (`UnsupportedDiagramError`). A type leaves the list when the parser records
- * its trees, and the list is empty between two diagram types.
+ * reference implementation does not read the diagram type yet. A type leaves
+ * the list when the parser records its trees, and the list is empty between two
+ * diagram types.
  */
 const DIAGRAM_TYPES_WITHOUT_RECORDED_TREES: readonly string[] = []
 

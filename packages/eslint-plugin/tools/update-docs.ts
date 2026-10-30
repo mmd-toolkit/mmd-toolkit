@@ -3,8 +3,8 @@
  * plugin (see `rule-docs.ts`). Run it after adding a rule or changing its
  * `meta.docs`: `pnpm --filter @mmd-toolkit/eslint-plugin run update:docs`.
  *
- * It first lists what does not match between the rules and their documents
- * and notes. A rule without its documents leaves nothing to generate the list
+ * It first lists what does not match between the rules and their documents.
+ * A rule without its documents leaves nothing to generate the list
  * from (the Japanese description is the first paragraph of the Japanese
  * document), so when there is a mismatch, it writes nothing and fails.
  *

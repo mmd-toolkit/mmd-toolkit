@@ -14,8 +14,7 @@ mermaid-js とは無関係の第三者プロジェクトです。
 ツリーの項目を選ぶとソースの対応範囲が強調表示され、
 ソースのカーソルを動かすと対応する項目が選択されます。
 
-公開予定URL:
-[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。
+公開URL: [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。
 
 操作方法は[Playgroundの使い方](../playground/README.ja.md)を参照してください。
 
@@ -24,9 +23,6 @@ mermaid-js とは無関係の第三者プロジェクトです。
 ```sh
 npm install @mmd-toolkit/parser
 ```
-
-このパッケージは、まだ npm に公開していません。
-mermaid.js のすべての図種に対応してから公開します。
 
 ES モジュールで、Node.js `^20.19.0 || ^22.13.0 || >=24` が要ります。
 
@@ -121,35 +117,43 @@ const tokenCount = root.tokens.length // 8
 
 ## 対応している図
 
-- flowchart: `flowchart-v2`（`flowchart` と `graph`）、 `flowchart-elk`、
-  `swimlane`（`swimlane-beta`）。
-- シーケンス図: `sequence`（`sequenceDiagram`）。
-- クラス図: `classDiagram`（`classDiagram` と `classDiagram-v2`）。
-- 状態図: `stateDiagram`（`stateDiagram` と `stateDiagram-v2`）。
-- ER 図: `er`（`erDiagram`）。
-- Gantt チャート: `gantt`（`gantt`）。
-- journey 図: `journey`（`journey`）。
-- 要求図: `requirement`（`requirementDiagram`）。
-- mindmap: `mindmap`（`mindmap`）。
-- timeline: `timeline`（`timeline`）。
-- sankey 図: `sankey`（`sankey` と `sankey-beta`）。
-- XY チャート: `xychart`（`xychart` と `xychart-beta`）。
-- 四象限チャート: `quadrantChart`（`quadrantChart`）。
-- ブロック図: `block`（`block-beta` と `block`）。
-- kanban 図: `kanban`（`kanban`）。
-- C4 図: `C4Context`、`C4Container`、`C4Component`、`C4Dynamic`、
-  `C4Deployment`（`c4`）。
-- Venn 図: `venn`（`venn-beta`）。
-- Ishikawa 図: `ishikawa`（`ishikawa` と `ishikawa-beta`）。
-- Agentflow 図: `agentflow`（`agentflow-beta`）。
-- Usecase 図: `usecase`（`usecase-beta`）。
-  [ノードの型](../spec/docs/ast/usecase.ja.md)を参照。
-- 円グラフ: `pie`（`pie`）。
-  [ノードの型](../spec/docs/ast/pie.ja.md)を参照。
-- mermaid.js の `error` 疑似図種。
+| 図                             | 図種 id（ヘッダー）                                                                                                                                 | ノード                                                         |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| flowchart                      | `flowchart-v2`（`flowchart`、`graph`）、`flowchart-elk`（`flowchart-elk`）、`swimlane`（`swimlane-beta`）                                           | [`ast/flowchart.md`](../spec/docs/ast/flowchart.ja.md)         |
+| シーケンス図                   | `sequence`（`sequenceDiagram`）                                                                                                                     | [`ast/sequence.md`](../spec/docs/ast/sequence.ja.md)           |
+| クラス図                       | `classDiagram`（`classDiagram`、`classDiagram-v2`）                                                                                                 | [`ast/class.md`](../spec/docs/ast/class.ja.md)                 |
+| 状態図                         | `stateDiagram`（`stateDiagram`、`stateDiagram-v2`）                                                                                                 | [`ast/state.md`](../spec/docs/ast/state.ja.md)                 |
+| ER 図                          | `er`（`erDiagram`）                                                                                                                                 | [`ast/er.md`](../spec/docs/ast/er.ja.md)                       |
+| Gantt チャート                 | `gantt`（`gantt`）                                                                                                                                  | [`ast/gantt.md`](../spec/docs/ast/gantt.ja.md)                 |
+| journey 図                     | `journey`（`journey`）                                                                                                                              | [`ast/journey.md`](../spec/docs/ast/journey.ja.md)             |
+| 要求図                         | `requirement`（`requirementDiagram`）                                                                                                               | [`ast/requirement.md`](../spec/docs/ast/requirement.ja.md)     |
+| mindmap                        | `mindmap`（`mindmap`）                                                                                                                              | [`ast/mindmap.md`](../spec/docs/ast/mindmap.ja.md)             |
+| timeline                       | `timeline`（`timeline`）                                                                                                                            | [`ast/timeline.md`](../spec/docs/ast/timeline.ja.md)           |
+| sankey 図                      | `sankey`（`sankey`、`sankey-beta`）                                                                                                                 | [`ast/sankey.md`](../spec/docs/ast/sankey.ja.md)               |
+| XY チャート                    | `xychart`（`xychart`、`xychart-beta`）                                                                                                              | [`ast/xychart.md`](../spec/docs/ast/xychart.ja.md)             |
+| 四象限チャート                 | `quadrantChart`（`quadrantChart`）                                                                                                                  | [`ast/quadrant.md`](../spec/docs/ast/quadrant.ja.md)           |
+| ブロック図                     | `block`（`block-beta`、`block`）                                                                                                                    | [`ast/block.md`](../spec/docs/ast/block.ja.md)                 |
+| kanban 図                      | `kanban`（`kanban`）                                                                                                                                | [`ast/kanban.md`](../spec/docs/ast/kanban.ja.md)               |
+| C4 図                          | `c4`（`C4Context`、`C4Container`、`C4Component`、`C4Dynamic`、`C4Deployment`）                                                                      | [`ast/c4.md`](../spec/docs/ast/c4.ja.md)                       |
+| Venn 図                        | `venn`（`venn-beta`）                                                                                                                               | [`ast/venn.md`](../spec/docs/ast/venn.ja.md)                   |
+| Ishikawa 図                    | `ishikawa`（`ishikawa`、`ishikawa-beta`）                                                                                                           | [`ast/ishikawa.md`](../spec/docs/ast/ishikawa.ja.md)           |
+| Agentflow 図                   | `agentflow`（`agentflow-beta`）                                                                                                                     | [`ast/agentflow.md`](../spec/docs/ast/agentflow.ja.md)         |
+| Usecase 図                     | `usecase`（`usecase-beta`）                                                                                                                         | [`ast/usecase.md`](../spec/docs/ast/usecase.ja.md)             |
+| 円グラフ                       | `pie`（`pie`）                                                                                                                                      | [`ast/pie.md`](../spec/docs/ast/pie.ja.md)                     |
+| gitgraph 図                    | `gitGraph`（`gitGraph`）                                                                                                                            | [`ast/gitgraph.md`](../spec/docs/ast/gitgraph.ja.md)           |
+| info 図                        | `info`（`info`）                                                                                                                                    | [`ast/info.md`](../spec/docs/ast/info.ja.md)                   |
+| packet 図                      | `packet`（`packet`、`packet-beta`）                                                                                                                 | [`ast/packet.md`](../spec/docs/ast/packet.ja.md)               |
+| architecture 図                | `architecture`（`architecture-beta`）                                                                                                               | [`ast/architecture.md`](../spec/docs/ast/architecture.ja.md)   |
+| radar 図                       | `radar`（`radar-beta`）                                                                                                                             | [`ast/radar.md`](../spec/docs/ast/radar.ja.md)                 |
+| treemap 図                     | `treemap`（`treemap`、`treemap-beta`）                                                                                                              | [`ast/treemap.md`](../spec/docs/ast/treemap.ja.md)             |
+| railroad 図                    | `railroad`（`railroad-beta`）、`railroadEbnf`（`railroad-ebnf-beta`）、`railroadAbnf`（`railroad-abnf-beta`）、`railroadPeg`（`railroad-peg-beta`） | [`ast/railroad.md`](../spec/docs/ast/railroad.ja.md)           |
+| Wardley マップ                 | `wardley`（`wardley-beta`）                                                                                                                         | [`ast/wardley.md`](../spec/docs/ast/wardley.ja.md)             |
+| Cynefin 図                     | `cynefin`（`cynefin-beta`）                                                                                                                         | [`ast/cynefin.md`](../spec/docs/ast/cynefin.ja.md)             |
+| eventmodeling 図               | `eventmodeling`（`eventmodeling`）                                                                                                                  | [`ast/eventmodeling.md`](../spec/docs/ast/eventmodeling.ja.md) |
+| treeview                       | `treeView`（`treeView-beta`）                                                                                                                       | [`ast/treeview.md`](../spec/docs/ast/treeview.ja.md)           |
+| mermaid.js の `error` 疑似図種 | `error`（`error`）                                                                                                                                  | [`ErrorDiagram`](../spec/docs/ast.ja.md#errordiagram)          |
 
-`parse()` は、mermaid.js 12.2.0 のほかの図種も見分けますが、
-それらには `UnsupportedDiagramError` を投げます。
+これで mermaid.js 12.2.0 のすべての図種です。
 
 ## API
 
@@ -221,11 +225,9 @@ ESTree と同じく `range` と `loc` を持ちます。
 - `ParseError` は、入力を拒否するときに投げます。
   `index`、`range`、`loc` を持つ `SyntaxError` です。
   位置の決め方は [`docs/error-positions.ja.md`](./docs/error-positions.ja.md)。
-- `UnsupportedDiagramError` は、図種を見分けたが、
-  まだ対応していないときに投げます。
-  `diagramType` がその図種です。
 
-どちらも `name` を設定しているので、`instanceof` を使わずに見分けられます。
+`ParseError` は `name` を設定しているので、
+`instanceof` を使わずに見分けられます。
 
 ```ts
 import { parse, ParseError } from "@mmd-toolkit/parser"
@@ -247,27 +249,9 @@ try {
 `Root`、`FlowchartVertex`、`Identifier` など、
 すべてのノードの TypeScript の型と、
 図種 id の合併型 `DiagramType` を公開しています。
-名前と欄は、仕様の [`ast.md`](../spec/docs/ast.ja.md)、
-[`ast/flowchart.md`](../spec/docs/ast/flowchart.ja.md)、
-[`ast/sequence.md`](../spec/docs/ast/sequence.ja.md)、
-[`ast/class.md`](../spec/docs/ast/class.ja.md)、
-[`ast/state.md`](../spec/docs/ast/state.ja.md)、
-[`ast/er.md`](../spec/docs/ast/er.ja.md)、
-[`ast/gantt.md`](../spec/docs/ast/gantt.ja.md)、
-[`ast/journey.md`](../spec/docs/ast/journey.ja.md)、
-[`ast/requirement.md`](../spec/docs/ast/requirement.ja.md)、
-[`ast/mindmap.md`](../spec/docs/ast/mindmap.ja.md)、
-[`ast/timeline.md`](../spec/docs/ast/timeline.ja.md)、
-[`ast/sankey.md`](../spec/docs/ast/sankey.ja.md)、
-[`ast/xychart.md`](../spec/docs/ast/xychart.ja.md)、
-[`ast/quadrant.md`](../spec/docs/ast/quadrant.ja.md)、
-[`ast/block.md`](../spec/docs/ast/block.ja.md)、
-[`ast/kanban.md`](../spec/docs/ast/kanban.ja.md)、
-[`ast/c4.md`](../spec/docs/ast/c4.ja.md)、
-[`ast/venn.md`](../spec/docs/ast/venn.ja.md)、
-[`ast/ishikawa.md`](../spec/docs/ast/ishikawa.ja.md)、
-[`ast/agentflow.md`](../spec/docs/ast/agentflow.ja.md)、
-[`ast/pie.md`](../spec/docs/ast/pie.ja.md) のものです。
+名前と欄は、仕様の [`ast.md`](../spec/docs/ast.ja.md) と、
+各図のノードの文書のものです。
+各図のノードの文書は、[対応している図](#対応している図)の表から辿れます。
 
 ## 木を辿る
 
@@ -473,28 +457,7 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
 ## 文書
 
 - 仕様: [`ast.md`](../spec/docs/ast.ja.md)（木）、
-  [`ast/flowchart.md`](../spec/docs/ast/flowchart.ja.md)（flowchart のノード）、
-  [`ast/sequence.md`](../spec/docs/ast/sequence.ja.md)（シーケンス図のノード）、
-  [`ast/class.md`](../spec/docs/ast/class.ja.md)（クラス図のノード）、
-  [`ast/state.md`](../spec/docs/ast/state.ja.md)（状態図のノード）、
-  [`ast/er.md`](../spec/docs/ast/er.ja.md)（ER 図のノード）、
-  [`ast/gantt.md`](../spec/docs/ast/gantt.ja.md)（Gantt チャートのノード）、
-  [`ast/journey.md`](../spec/docs/ast/journey.ja.md)（journey 図のノード）、
-  [`ast/requirement.md`](../spec/docs/ast/requirement.ja.md)（要求図のノード）、
-  [`ast/mindmap.md`](../spec/docs/ast/mindmap.ja.md)（mindmap のノード）、
-  [`ast/timeline.md`](../spec/docs/ast/timeline.ja.md)（timeline のノード）、
-  [`ast/sankey.md`](../spec/docs/ast/sankey.ja.md)（sankey 図のノード）、
-  [`ast/xychart.md`](../spec/docs/ast/xychart.ja.md)（XY チャートのノード）、
-  [`ast/quadrant.md`](../spec/docs/ast/quadrant.ja.md)
-  （四象限チャートのノード）、
-  [`ast/block.md`](../spec/docs/ast/block.ja.md)（ブロック図のノード）、
-  [`ast/kanban.md`](../spec/docs/ast/kanban.ja.md)（kanban 図のノード）、
-  [`ast/c4.md`](../spec/docs/ast/c4.ja.md)（C4 図のノード）、
-  [`ast/venn.md`](../spec/docs/ast/venn.ja.md)（venn 図のノード）、
-  [`ast/ishikawa.md`](../spec/docs/ast/ishikawa.ja.md)（Ishikawa 図のノード）、
-  [`ast/agentflow.md`](../spec/docs/ast/agentflow.ja.md) （Agentflow
-  図のノード）、
-  [`ast/pie.md`](../spec/docs/ast/pie.ja.md)（円グラフのノード）、
+  各図のノードの文書（[対応している図](#対応している図)の表から辿れます）、
   [`common.md`](../spec/docs/common.ja.md)（すべての図に共通の規則）。
 - [`docs/tokens.ja.md`](./docs/tokens.ja.md): トークンと根の一覧。
   [`docs/positions.ja.md`](./docs/positions.ja.md): 位置、ノードの範囲、

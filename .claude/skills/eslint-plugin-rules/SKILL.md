@@ -28,9 +28,8 @@ is reported.
    that a decision cannot hold (the condition cannot be read from the tree, a
    fix or a suggestion cannot be checked), do not decide otherwise: take the
    evidence back to that decision.
-2. The rule notes (`docs/rule-notes/<name>.md`) while the rule is not
-   implemented, and the English document of the rule, which holds the examples
-   that the tests read.
+2. The English document of the rule, which holds the examples that the tests
+   read.
 3. The section Policies and criteria of the eslint-plugin skill
    (`.claude/skills/eslint-plugin/SKILL.md`), and the skill `conventions`.
 4. The tree: `packages/spec/docs/ast.md` and
@@ -50,20 +49,21 @@ after writing it.
   Db that receives it and record what it is given.
 - Check each condition for reporting or not reporting, each message, each fix,
   and each suggestion with an input for every case it distinguishes. For each
-  sentence of the document of the rule, and of the notes that decided it, list
-  the cases that the sentence distinguishes (which statement the mistake stands
-  in, where in a line, which separator or whitespace stands next to it, which
-  context it is in) and the rules of the language that meet it at the place it
-  names (a directive, an ignored `;`, a comment line, an empty line, a line
-  separator, an empty description block). Give each case an input, a fixture of
-  the rule, named after the case. Run mermaid.js once on each input, and compare
-  the report of the rule with what it does, in both directions: a mistake that
-  is not reported, and a report that is not a mistake. A case that mermaid.js
-  rejects gets no fixture. No input is chosen by a random source or by a number,
-  and no command generates inputs. A failure that the comparison finds is closed
-  by the fixture of its case (section 4), and by a sentence of the specification
-  where the specification did not state the reading. Say in the report which
-  document passages were read and which inputs were added.
+  sentence of the document of the rule, and of the notes of the rule in section
+  7 of the rule-ideas skill, list the cases that the sentence distinguishes
+  (which statement the mistake stands in, where in a line, which separator or
+  whitespace stands next to it, which context it is in) and the rules of the
+  language that meet it at the place it names (a directive, an ignored `;`, a
+  comment line, an empty line, a line separator, an empty description block).
+  Give each case an input, a fixture of the rule, named after the case. Run
+  mermaid.js once on each input, and compare the report of the rule with what it
+  does, in both directions: a mistake that is not reported, and a report that is
+  not a mistake. A case that mermaid.js rejects gets no fixture. No input is
+  chosen by a random source or by a number, and no command generates inputs. A
+  failure that the comparison finds is closed by the fixture of its case
+  (section 4), and by a sentence of the specification where the specification
+  did not state the reading. Say in the report which document passages were read
+  and which inputs were added.
 - A rule whose condition depends on something defined anywhere in the diagram
   (ids, vertices that a statement creates) needs inputs where the definition
   comes after the use and where it comes before it, and a statement that creates
@@ -124,6 +124,18 @@ after writing it.
   back to rule-ideas, and offering no suggestion is an ordinary conclusion: do
   not add a condition or a check to keep it, and do not parse the result of an
   edit or decide it per known divergence.
+- The condition is written over the tree and the tokens: node types, fields,
+  token kinds and values, and ranges. A common rule uses only the part of the
+  tree that every diagram type shares (Root, its tokens, comments, and
+  directives, and the shared leaf nodes). Whatever goes beyond the tree and the
+  tokens is named as such in the comment above the rule in its file, with the
+  design question it raises: reading the source (whitespace is not in the tree),
+  interpreting a value (HTML in a label), reading embedded data (the argument of
+  a directive), repeating a derivation of the Db (the id of a subgraph). When
+  the tree and the tokens cannot show it at all, do not write a way to lex the
+  text again: either the tree needs to show more, which is a change of the
+  specification of the tree (the spec skill), or the rule is not kept (the
+  rule-ideas skill).
 - Use the helpers of `src/utils/` before writing another. When a helper rests on
   an assumption that a new rule breaks, read the tree to decide it (not the
   text), and check the other rules that use the helper again.
@@ -220,10 +232,9 @@ before the work is reported as done.
 
 ## 5. Finish the change
 
-- For a rule that is implemented now: give it its messages and its handlers, add
-  its test, move the fixtures of its rule notes into its fixture directory, and
-  remove the rule notes in both languages, in the same change. Set `recommended`
-  as decided. Then run `update` and `check:docs`.
+- For a new rule: give it its messages and its handlers, add its test and its
+  fixtures, and write its documents in both languages, in the same change. Set
+  `recommended` as decided. Then run `update` and `check:docs`.
 - When the behavior of a rule changes, change its English document and its
   Japanese document with it (the eslint-plugin skill).
 - Before reporting the work as done, run these checks once, and say which

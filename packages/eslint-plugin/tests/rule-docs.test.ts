@@ -95,6 +95,17 @@ describe("rule example directives", () => {
     expect(mismatches(`${directory}/`)).toEqual([])
   })
 
+  it("reports a rule that has no test file", () => {
+    const testsDirectory = mkdtempSync(join(tmpdir(), "mmd-rule-tests-"))
+    try {
+      expect(mismatches(`${directory}/`, `${testsDirectory}/`)).toContain(
+        `The rule flowchart-no-undef has no ${testsDirectory}/flowchart-no-undef.test.ts`,
+      )
+    } finally {
+      rmSync(testsDirectory, { recursive: true, force: true })
+    }
+  })
+
   it.each(["en", "ja"] as const)(
     "rejects a missing directive in the last correct %s example too",
     (language) => {

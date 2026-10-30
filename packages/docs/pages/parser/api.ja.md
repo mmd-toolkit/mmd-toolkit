@@ -89,30 +89,19 @@ if (body.type === "FlowchartDiagram") {
 報告する範囲の決め方は、
 [GitHubのエラー位置の規則][error-positions]で説明しています。
 
-### `UnsupportedDiagramError`
-
-`UnsupportedDiagramError`は`Error`を継承します。
-図の種類は認識できたものの、
-パーサーがその種類に対応していない場合にthrowされます。
-`name`は`"UnsupportedDiagramError"`、
-`diagramType`は検出された図の識別子（`DiagramType`）です。
-`message`は解析できなかった理由を表します。
-
 ### エラーの扱い
 
-公開エラークラスを使って種類を区別できます。
+公開エラークラスで、解析エラーをほかのエラーと区別できます。
 次の未完成のフローチャートでは、`ParseError`の分岐に入ります。
 
 ```ts
-import { parse, ParseError, UnsupportedDiagramError } from "@mmd-toolkit/parser"
+import { parse, ParseError } from "@mmd-toolkit/parser"
 
 try {
   parse("flowchart LR\n  A -->\n")
 } catch (error) {
   if (error instanceof ParseError) {
     console.error(error.message, error.range)
-  } else if (error instanceof UnsupportedDiagramError) {
-    console.error(error.message, error.diagramType)
   } else {
     throw error
   }

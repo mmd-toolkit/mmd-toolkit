@@ -12,21 +12,22 @@ mermaid-js とは無関係です。
 `mmd` は Mermaid の図のテキストに使われる拡張子 `.mmd` を指します。
 同じ略称を使う MultiMarkdown や MikuMikuDance とは関係ありません。
 
-いま対応している図種は flowchart、sequence、class、state、ER、Gantt、journey、
-requirement、mindmap、 timeline、sankey、xychart、quadrant、block、kanban、C4、
-Venn、Ishikawa、 agentflow、pie、usecase、gitgraph、info で、
-ほかの図種は順に対応します。
-フォーマッター、リンター、パーサーは、まだ npm に公開していません。
-mermaid.js のすべての図種に対応してから公開します。
+mermaid.js のすべての図種に対応しています。
+フォーマッター、リンター、パーサーは npm に公開しています。
 仕様とテストは、このリポジトリの中で使うもので、公開しません。
+
+## ドキュメント
+
+[ドキュメントサイト](https://mmd-toolkit.github.io/mmd-toolkit/)に、
+フォーマッター、リンター、パーサーの使い方、互換性のリファレンス、
+lint の規則の文書があります。
 
 ## Playground
 
 ブラウザーでMermaidのテキストを編集し、構文木やトークン、
 Prettierによる整形結果を確認できます。
 
-公開予定URL:
-[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。
+公開URL: [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。
 
 **Examples**でサンプルを選ぶか、**Source**にテキストを貼り付けます。
 編集に合わせて、**AST**と**Formatted**の表示が更新されます。
@@ -45,6 +46,8 @@ Prettierによる整形結果を確認できます。
 | [`@mmd-toolkit/parser`](./packages/parser)               | Mermaid のテキストを、位置を持つ構文木にする。リンターなどのツールのためのもの。     |
 | [`@mmd-toolkit/spec`](./packages/spec)                   | Mermaid のテキストがどう解析されるかを、実装によらない仕様として読む。               |
 | [`@mmd-toolkit/tests`](./packages/tests)                 | 構文の実装を、mermaid.js の実際の挙動と比べてテストする。                            |
+| [`@mmd-toolkit/docs`](./packages/docs)                   | ガイドと lint の規則の文書から、ドキュメントサイトを作る。                           |
+| [`@mmd-toolkit/playground`](./packages/playground)       | ブラウザーでパーサーとフォーマッターを試す。                                         |
 
 ## 保証していること
 

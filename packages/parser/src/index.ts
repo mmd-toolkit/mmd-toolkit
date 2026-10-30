@@ -398,7 +398,7 @@ export type {
   IshikawaLiteral,
   IshikawaTreeNode,
 } from "./ast/ishikawa.ts"
-export { ParseError, UnsupportedDiagramError } from "./errors.ts"
+export { ParseError } from "./errors.ts"
 export { parse } from "./parse.ts"
 export type { Visitor } from "./traverse.ts"
 export { traverseNodes } from "./traverse.ts"

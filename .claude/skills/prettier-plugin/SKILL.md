@@ -110,7 +110,9 @@ the printer, make the list of choices and ask for a decision.
 How it is built (under `src/printers/`):
 
 - Add the body node type of the diagram and its printer to `diagramPrinters` in
-  `index.ts`. Dispatch goes by type.
+  `index.ts`. Dispatch goes by type. The table has an entry for every body type
+  of the parser, so the type checker fails when the printer of a new diagram
+  type is not added.
 - What every diagram type shares is in shared modules; use them, and do not copy
   them into a diagram's printer. `blocks.ts` prints the statements of a block,
   the comments and directives between them, the `;` that separate them, empty

@@ -27,16 +27,18 @@ this document describes how to apply them.
 - The decisions are recorded in the repository by the following procedures,
   which the same person may carry out next:
   - The rule documents (`packages/eslint-plugin/docs/rules/`) are written with
-    the procedure of the eslint-plugin SKILL. Each document belongs to a rule
-    file under `packages/eslint-plugin/src/rules/`; a rule is added, renamed, or
-    removed with its document, as the eslint-plugin SKILL describes. When a
-    document of a dropped rule exists, it is deleted with its rule file by the
-    same procedure.
+    the procedure of the eslint-plugin SKILL, and the rules
+    (`packages/eslint-plugin/src/rules/`) are implemented with the procedure of
+    the eslint-plugin-rules SKILL. Each document belongs to a rule file; a rule
+    is added, renamed, or removed with its document in one change, as those
+    SKILLs describe. When a dropped rule exists, its rule file and its document
+    are deleted together by the same procedures.
   - Missing supporting fixtures are requested from the tests package, with the
     smallest input and the claim that the fixture answers; the tests package
     adds them and records what mermaid.js does
-    (`packages/tests/docs/maintaining-fixtures.md`), and the names are then
-    listed in the rule notes.
+    (`packages/tests/docs/maintaining-fixtures.md`). The fixture is then used in
+    the examples of the rule document and in the tests of the rule (the
+    eslint-plugin SKILL, step 4 of section 4).
 - For each claim, show whether it was run (checked by running it), read (checked
   by reading), or unchecked. When a claim turns out to be wrong, withdraw it in
   those words.

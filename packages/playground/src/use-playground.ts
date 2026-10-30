@@ -137,10 +137,7 @@ export function usePlayground(): Playground {
       parseStatus.value = "ready"
       parseMessage.value = ""
     } catch (error) {
-      parseStatus.value =
-        error instanceof Error && error.name === "UnsupportedDiagramError"
-          ? "unsupported"
-          : "error"
+      parseStatus.value = "error"
       parseMessage.value =
         error instanceof Error ? error.message : "Unable to parse this input."
       if (

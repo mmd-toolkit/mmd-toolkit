@@ -1,33 +1,16 @@
 import type { AstPath, Doc, Options, ParserOptions, Printer } from "prettier"
 import { visitorKeys } from "@mmd-toolkit/parser"
-import { utils } from "prettier/doc"
-import type { MermaidAst, MermaidDocument } from "./parser.ts"
+import type { FormattedDocument, MermaidAst } from "./parser.ts"
 import { formatFrontmatterYaml } from "./printers/frontmatter-yaml.ts"
 import { isPathOfType } from "./printers/paths.ts"
 import { printRoot } from "./printers/root.ts"
-
-const { replaceEndOfLine } = utils
-
-/**
- * Prints the whole text as written.
- *
- * It prints `originalText` rather than a node's range, so that nothing is
- * lost if a range does not cover leading or trailing trivia. Line breaks
- * become literal lines, which keep every byte including trailing whitespace.
- *
- * Only standalone files get here: an embedded document that would be printed
- * as written is declined while parsing (see `NotFormattedError`).
- */
-function printVerbatim(options: ParserOptions<MermaidAst>): Doc {
-  return replaceEndOfLine(options.originalText)
-}
 
 /**
  * Checks for the node `mermaidParser` returns, which Prettier keeps as the
  * root of the tree it prints.
  */
-function isMermaidDocument(node: MermaidAst): node is MermaidDocument {
-  return node.type === "FormattedDocument" || node.type === "VerbatimDocument"
+function isFormattedDocument(node: MermaidAst): node is FormattedDocument {
+  return node.type === "FormattedDocument"
 }
 
 /**
@@ -43,8 +26,6 @@ function getVisitorKeys(node: MermaidAst): string[] {
   switch (node.type) {
     case "FormattedDocument":
       return ["root"]
-    case "VerbatimDocument":
-      return []
     default:
       return [...visitorKeys[node.type]]
   }
@@ -63,8 +44,8 @@ function embed(
   if (
     node.type !== "Root" ||
     node.frontmatter === null ||
-    !isMermaidDocument(document) ||
-    document.type !== "FormattedDocument"
+    !isFormattedDocument(document) ||
+    document.textRules?.printsAsWritten
   ) {
     return null
   }
@@ -104,12 +85,11 @@ export const mermaidPrinter: Printer<MermaidAst> = {
     print: (path: AstPath<MermaidAst>) => Doc,
   ): Doc {
     const document = path.root
-    if (!isMermaidDocument(document)) {
+    if (!isFormattedDocument(document)) {
       throw new Error(
         `prettier-plugin-mmd: the top node is a ${JSON.stringify(document.type)} node, not a document`,
       )
     }
-    if (document.type === "VerbatimDocument") return printVerbatim(options)
     if (isPathOfType(path, "FormattedDocument")) {
       return path.call(print, "root")
     }
@@ -122,7 +102,8 @@ export const mermaidPrinter: Printer<MermaidAst> = {
         document.source,
         undefined,
         document.textRules?.plan?.(document.source, options),
-        document.textRules?.keepsPrefix?.(document.source),
+        document.textRules?.printsAsWritten === true ||
+          document.textRules?.keepsPrefix?.(document.source),
       )
     }
     return document.printDiagram(path, options, print, document.source)

@@ -80,7 +80,7 @@ test("formats automatically, follows indentation, and retains state on theme cha
   expect(page.url()).toBe(url)
 })
 
-test("distinguishes rejected and unsupported input, including empty EOF errors", async ({
+test("distinguishes rejected input, including empty EOF errors", async ({
   page,
 }) => {
   await edit(page, "flowchart LR\n A-->")
@@ -91,19 +91,6 @@ test("distinguishes rejected and unsupported input, including empty EOF errors",
   await expect(
     page.getByRole("heading", { name: "Unable to format", exact: true }),
   ).toBeVisible()
-  await page.getByRole("tab", { name: "AST", exact: true }).click()
-  await edit(page, 'pie\n "A": 1\n')
-  await expect(
-    page.getByRole("heading", { name: "Not supported yet" }),
-  ).toBeVisible()
-  await page.getByRole("tab", { name: "Formatted", exact: true }).click()
-  await expect(
-    page.getByRole("textbox", {
-      name: "Formatted Mermaid",
-      exact: true,
-      includeHidden: true,
-    }),
-  ).toBeAttached()
   await page.getByRole("tab", { name: "AST", exact: true }).click()
   await edit(page, "")
   await expect(
@@ -467,17 +454,13 @@ test("opens official examples beside their diagram families without scrolling th
   await pieMenu
     .getByRole("menuitem", { name: "Basic Pie Chart", exact: true })
     .click()
-  await expect(
-    page.getByRole("heading", { name: "Not supported yet" }),
-  ).toBeVisible()
+  await expect(page.locator(".type-badge")).toHaveText("pie")
   const pieSource = exampleGroups.find((group) => group.name === "Pie")!
     .examples[0].source
   await expect.poll(() => savedSource(page)).toBe(pieSource)
   const sharedUrl = page.url()
   await page.reload()
-  await expect(
-    page.getByRole("heading", { name: "Not supported yet" }),
-  ).toBeVisible()
+  await expect(page.locator(".type-badge")).toHaveText("pie")
   await expect.poll(() => savedSource(page)).toBe(pieSource)
   expect(page.url()).toBe(sharedUrl)
 })

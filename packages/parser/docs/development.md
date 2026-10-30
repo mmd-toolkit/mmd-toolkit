@@ -35,21 +35,9 @@ read from the source text directly:
 - the end of the text;
 - diagram type detection, for every diagram type of mermaid.js 12.2.0.
 
-The diagram bodies implemented so far are the `error` pseudo-diagram, the
-flowchart (`flowchart-v2`, `flowchart-elk`, and `swimlane`), the sequence
-diagram (`sequence`), the class diagram (`classDiagram`), the state diagram
-(`stateDiagram`), the entity relationship diagram (`er`), the Gantt chart
-(`gantt`), the user journey diagram (`journey`), the requirement diagram
-(`requirement`), the mindmap (`mindmap`), the timeline (`timeline`), the sankey
-diagram (`sankey`), the XY chart (`xychart`), the quadrant chart
-(`quadrantChart`), the block diagram (`block`), the kanban diagram (`kanban`),
-C4 (`c4`), venn (`venn`), Ishikawa (`ishikawa`), agentflow (`agentflow`),
-usecase (`usecase`), pie (`pie`), gitgraph (`gitGraph`), info (`info`), packet
-(`packet`), architecture (`architecture`), radar (`radar`), and treemap
-(`treemap`), and railroad (`railroad`, `railroadEbnf`, `railroadAbnf`,
-`railroadPeg`), Wardley (`wardley`), Cynefin (`cynefin`), and eventmodeling
-(`eventmodeling`), and treeview (`treeView`). Every detected type is
-implemented.
+The parser implements the body of every diagram type of mermaid.js 12.2.0 and of
+the `error` pseudo-diagram; the README lists them in
+[Supported diagrams](../README.md#supported-diagrams).
 
 ## How a diagram's parser is built
 

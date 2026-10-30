@@ -297,9 +297,8 @@ in `packages/tests/fixtures/<diagram>/<fixture name>/`, and
   for an input that mermaid.js rejects as well, where the general rules put it.
   A rejection is thus recorded as fully as a tree, and a change of where it is
   reported shows as a change of the file.
-- A fixture has one of the two, or neither when its diagram type is not
-  supported yet. A test looks at the files alone and checks that no fixture has
-  both.
+- A fixture has one of the two. A test looks at the files alone and checks that
+  no fixture has both.
 - A change of any tree or error shows as a change of its file.
   `pnpm run test:update`, in `packages/parser`, runs the fixture test alone with
   `-u` and writes the files anew.
