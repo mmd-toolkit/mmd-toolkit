@@ -17,6 +17,7 @@ import {
   mismatches,
   mmdCodeBlocks,
   RULE_DOCS_DIR,
+  renderDocuments,
   ruleDocumentPath,
 } from "../tools/rule-docs.ts"
 
@@ -158,4 +159,83 @@ describe("rule example directives", () => {
       )
     },
   )
+})
+
+/** The line of the table in `index` that holds `link`, or an empty text. */
+function rowOf(index: string | undefined, link: string): string {
+  return (index ?? "").split("\n").find((line) => line.includes(link)) ?? ""
+}
+
+describe("a rule without a Japanese document", () => {
+  const name = "flowchart-no-undef"
+  let directory: string
+
+  beforeEach(() => {
+    directory = mkdtempSync(join(tmpdir(), "mmd-rule-docs-"))
+    for (const language of ["en", "ja"] as const) {
+      writeFileSync(
+        `${directory}/index${language === "en" ? ".md" : ".ja.md"}`,
+        readFileSync(
+          `${RULE_DOCS_DIR}index${language === "en" ? ".md" : ".ja.md"}`,
+        ),
+      )
+      for (const ruleName of Object.keys(rules)) {
+        if (language === "ja" && ruleName === name) continue
+        const path = ruleDocumentPath(`${directory}/`, ruleName, language)
+        writeFileSync(
+          path,
+          readFileSync(ruleDocumentPath(RULE_DOCS_DIR, ruleName, language)),
+        )
+      }
+    }
+  })
+
+  afterEach(() => rmSync(directory, { recursive: true, force: true }))
+
+  /** The English document without the line that links to the Japanese one. */
+  function withoutJapaneseLink(document: string): string {
+    const start = document.indexOf("Japanese version:")
+    const end = document.indexOf(".ja.md)", start) + ".ja.md)".length
+    return document.slice(0, start) + document.slice(end).trimStart()
+  }
+
+  it("is reported when its English document links to the missing one", () => {
+    const englishPath = ruleDocumentPath(`${directory}/`, name, "en")
+    expect(mismatches(`${directory}/`)).toEqual([
+      `${englishPath} links to ${ruleDocumentPath(`${directory}/`, name, "ja")}, which does not exist`,
+    ])
+  })
+
+  describe("whose English document links to no Japanese one", () => {
+    beforeEach(() => {
+      const englishPath = ruleDocumentPath(`${directory}/`, name, "en")
+      writeFileSync(
+        englishPath,
+        withoutJapaneseLink(readFileSync(englishPath, "utf8")),
+      )
+    })
+
+    it("is accepted", () => {
+      expect(mismatches(`${directory}/`)).toEqual([])
+    })
+
+    it("has no generated Japanese document, and its row of the Japanese index links to the English one with the English description", async () => {
+      const documents = await renderDocuments(`${directory}/`)
+      expect([...documents.keys()]).not.toContain(
+        ruleDocumentPath(`${directory}/`, name, "ja"),
+      )
+      const description = rules[name]?.meta?.docs?.description
+      const japaneseRow = rowOf(
+        documents.get(`${directory}/index.ja.md`),
+        `[${name}](./${name}.md)`,
+      )
+      expect(japaneseRow).toContain(String(description))
+      expect(
+        rowOf(
+          documents.get(`${directory}/index.md`),
+          `[${name}](./${name}.md)`,
+        ),
+      ).toContain(String(description))
+    })
+  })
 })

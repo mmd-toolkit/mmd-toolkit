@@ -27,6 +27,12 @@ What holds for the package `packages/eslint-plugin`:
   reading the text again in the rule. Besides the rules, the package holds what
   does not depend on a rule (the package, the language that gives ESLint the
   tree, their tests).
+- The English document of a rule is the original. A Japanese document may stand
+  next to it and may be missing, and `check:docs` fails only for a Japanese
+  document that has no English original. When a rule document has no Japanese
+  version, or one older than the English, write the Japanese version then; when
+  writing or changing the English document, write the Japanese in the same
+  change. Add the language lines to both documents when the Japanese is written.
 - Every rule has one document under `docs/rules/`, written for the users of the
   rule, and a rule file under `src/rules/`, which carries the name, the
   description, and whether the rule is recommended; the list of the rules in
@@ -47,9 +53,9 @@ What holds for the package `packages/eslint-plugin`:
    and which it does not, and when a rule is common. Read them every time: the
    criteria change.
 2. The skill `conventions` (`.claude/skills/conventions/SKILL.md`): English
-   documents with a Japanese pair, no invisible characters, prose wrapped by
-   Prettier, `mmd` as the info string of code blocks that hold Mermaid text,
-   links to mermaid.js source.
+   documents with a Japanese pair made by the AI session, no invisible
+   characters, prose wrapped by Prettier, `mmd` as the info string of code
+   blocks that hold Mermaid text, links to mermaid.js source.
 3. The tree: `packages/spec/docs/ast.md` and
    `packages/spec/docs/ast/<diagram>.md`. The condition of a rule is written
    with the node types, fields, and token kinds defined there.
@@ -139,7 +145,10 @@ English rule document:
 
     ## Resources                        (generated)
 
-The Japanese document has the same parts: `英語版: [<name>.md](./<name>.md)`,
+The line `Japanese version: …` is written only when the Japanese document
+exists; an English document without one has no such line, since the site would
+fail on a link to a missing page (`check:docs` reports the link). The Japanese
+document has the same parts: `英語版: [<name>.md](./<name>.md)`,
 `…を禁止する。`, `## 規則の詳細`, `この規則に**反する**コードの例:`,
 `この規則に**従う**コードの例:`, `## オプション` with
 `この規則にはオプションがない。`, `## 使わないとき`, `## 関連する規則`, and
@@ -153,13 +162,16 @@ How each part is written:
   the rule id, because the title holds it. The title is generated: when a new
   document is written, any first line is replaced by `update` (section 6).
 - The line with the link to the other language is for readers of the repository;
-  the documentation site leaves it out.
+  the documentation site leaves it out. An English document has it only when its
+  Japanese version exists.
 - The first paragraph after the line of the other language is one short sentence
   that starts with Disallow (`…を禁止する。` in Japanese), as the description of
   an ESLint rule does. The English sentence is the `meta.docs.description` of
   the rule, word for word, and `check:docs` fails when the two differ; the
-  Japanese sentence is the description of the rule in `index.ja.md`. Nothing
-  else, such as a list, comes between the title and this sentence.
+  Japanese sentence is the description of the rule in `index.ja.md`; a rule
+  without a Japanese document is listed there with its English document and its
+  English description. Nothing else, such as a list, comes between the title and
+  this sentence.
 - The notice: the part between `<!-- begin auto-generated rule notice -->` and
   `<!-- end auto-generated rule notice -->`, after the first paragraph, says
   whether the `recommended` configuration enables the rule, whether it has a
@@ -201,7 +213,7 @@ How each part is written:
   `###` heading stands before the examples either, so that they do not look as
   if they belonged to it. A code block opens with a line that is exactly
   ` ```mmd ` and closes with a line that is exactly ` ``` `. `check:docs` fails
-  when the `mmd` code blocks of the Japanese document are not those of the
+  when a Japanese document exists and its `mmd` code blocks are not those of the
   English document, in the same order: every Mermaid example, in the examples
   and elsewhere, is in both documents, unchanged.
 - Rule Details: a few short sentences before the examples, in the words of the
@@ -394,8 +406,8 @@ write its output to a file.
    and long links that cannot be broken are not counted. The first paragraph of
    a rule document is written the same way: the index reads it without regard to
    where its lines break.
-5. The English and Japanese documents have the same code blocks. Extract the
-   lines of the code blocks from both, and compare them.
+5. When a Japanese document exists, it has the same code blocks as the English
+   one. Extract the lines of the code blocks from both, and compare them.
 6. Every relative link has a target.
 7. A change to documents only runs these checks and no tests (the skill
    `conventions`, Running tests). The exception is a change to what a test
@@ -424,10 +436,11 @@ renamed, and removed together, as the section "Rules and their documents" of
   `index.ja.md`, everything between `<!-- begin auto-generated rules list -->`
   and `<!-- end auto-generated rules list -->`, one table for the common rules
   and one for each diagram type, whose rows hold the English description, the
-  first paragraph of the Japanese document, a ✅ for a rule that `recommended`
-  enables, a 🔧 for a rule that has a fix, a 💡 for a rule that offers
-  suggestions. Do not write these parts by hand; after a change of the first
-  paragraph of a Japanese document, run `update`.
+  first paragraph of the Japanese document (the English description, with a link
+  to the English document, for a rule that has no Japanese document), a ✅ for a
+  rule that `recommended` enables, a 🔧 for a rule that has a fix, a 💡 for a
+  rule that offers suggestions. Do not write these parts by hand; after a change
+  of the first paragraph of a Japanese document, run `update`.
 - What is written by hand in the index: what comes before the generated list
   (the introduction, with the sentence that says `recommended` enables the rules
   marked ✅, and the section on rule ids). The criteria for `recommended` are in

@@ -234,7 +234,13 @@ rule, named after the file in camel case (`flowchartNoIgnoredText` in
 `flowchart-no-ignored-text.ts`). Its name in the plugin is the name of its file
 without `.ts`, its id is that name after the namespace
 (`@mmd-toolkit/flowchart-no-ignored-text`), and its documents are
-`docs/rules/<name>.md` and `docs/rules/<name>.ja.md`.
+`docs/rules/<name>.md`, the original, and `docs/rules/<name>.ja.md`, which a
+rule may lack: an English document may stand alone. A change made with an AI
+agent includes the Japanese document, because the agent instructions of this
+repository have the agent write it. A change written by hand may leave the
+Japanese out, and an agent adds it afterwards, also to a document that is
+missing its Japanese version or has one older than the English. Only a Japanese
+document without its English original is wrong.
 
 A rule is in the `recommended` configuration when its reports are nearly always
 mistakes to fix: wherever it reports, mermaid.js reads the text differently from
@@ -274,13 +280,15 @@ pnpm --filter @mmd-toolkit/eslint-plugin run check:docs
   the `recommended` configuration enables, a 🔧 for the rules that have a fix
   (`meta.fixable`), a 💡 for the rules that offer suggestions
   (`meta.hasSuggestions`). The English description is `meta.docs.description`;
-  the Japanese one is the first paragraph of the Japanese document.
-- In each rule document, in both languages, the title (`# @mmd-toolkit/<name>`),
+  the Japanese one is the first paragraph of the Japanese document. A rule
+  without a Japanese document has a row in the Japanese index that links to its
+  English document, with the English description.
+- In each rule document, in each language, the title (`# @mmd-toolkit/<name>`),
   and everything between `<!-- begin auto-generated rule notice -->` and
   `<!-- end auto-generated rule notice -->` after the first paragraph: whether
   the `recommended` configuration enables the rule, whether it has a fix, and
   whether it offers suggestions.
-- In each rule document, in both languages, everything between
+- In each rule document, in each language, everything between
   `<!-- begin auto-generated rule resources -->` and
   `<!-- end auto-generated rule resources -->` at its end: the Resources
   section, with links to the source and the test of the rule.
@@ -299,26 +307,31 @@ not add it to the fixture itself.
 
 The rest of the documents is written by hand. `check:docs` writes nothing and
 fails when `src/rules/index.ts` or a generated part is out of date, when a rule
-has no document in one of the languages or no test file, when a document belongs
-to no rule, when the first paragraph of an English document is not
-`meta.docs.description` of its rule, when the `mmd` code blocks of a Japanese
-document are not those of the English one, in the same order, when a code block
-does not start with its rule's enabling comment. Line breaks inside a first
-paragraph do not matter.
+has no English document or no test file, when a document belongs to no rule (a
+Japanese document without its English original is one), when the first paragraph
+of an English document is not `meta.docs.description` of its rule, when an
+English document links to a Japanese one that does not exist, when the `mmd`
+code blocks of a Japanese document are not those of the English one, in the same
+order, when a code block does not start with its rule's enabling comment. Line
+breaks inside a first paragraph do not matter.
 
 When the rules and the documents do not match in one of these ways, `update`
 writes `src/rules/index.ts` but none of the generated parts of the documents,
-and fails: the list in the index takes the Japanese descriptions from the
-documents, so it cannot be made while a document is missing. Fix the documents
-and run `update` again.
+and fails: the list in the index takes the descriptions from the documents, so
+it cannot be made while an English document is missing. Fix the documents and
+run `update` again.
 
 To add a rule:
 
 1. Add its file under `src/rules/`, with its `meta` (`type`, `docs.description`,
    `docs.recommended`, `docs.url`, `schema`, `messages`) and its handlers.
-2. Write its documents in both languages. The first paragraph of the English
-   document is `meta.docs.description`, word for word. Begin every `mmd` example
-   with the rule-enabling comment described above.
+2. Write its English document, the original, and its Japanese document, which a
+   change written by hand may leave out: an agent adds it afterwards. The first
+   paragraph of the English document is `meta.docs.description`, word for word.
+   Begin every `mmd` example with the rule-enabling comment described above. An
+   English document without a Japanese version has no line
+   `Japanese version: …`; the line is added to both documents when the Japanese
+   is written.
 3. Add its test, `tests/rules/<name>.test.ts`, and its fixtures.
 4. Run `update`, then `check:docs`: `update` writes the Resources section of its
    documents and its row in the index.

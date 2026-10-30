@@ -134,12 +134,20 @@ function paragraphsOf(text: string): string[] {
     .filter((paragraph) => paragraph !== "")
 }
 
+/** The words that open the line that links to the other language. */
+const LANGUAGE_LINE_STARTS = ["Japanese version:", "英語版:"]
+
 /**
  * The first paragraph of a rule document, after its title and the line that
- * links to the other language: the one sentence that describes the rule.
+ * links to the other language, which an English document has only when its
+ * Japanese version exists: the one sentence that describes the rule.
  */
 export function firstParagraph(document: string): string {
-  const paragraph = paragraphsOf(document)[2]
+  const paragraphs = paragraphsOf(document)
+  const hasLanguageLine = LANGUAGE_LINE_STARTS.some((start) =>
+    paragraphs[1]?.startsWith(start),
+  )
+  const paragraph = paragraphs[hasLanguageLine ? 2 : 1]
   if (paragraph === undefined) {
     throw new Error("A rule document has no first paragraph")
   }
@@ -194,6 +202,15 @@ export function oneLine(paragraph: string): string {
     text += joinsWords ? ` ${line}` : line
   }
   return text
+}
+
+/** Whether the rule `name` has a document in `language` under `docsDir`. */
+function hasDocument(
+  docsDir: string,
+  name: string,
+  language: DocumentLanguage,
+): boolean {
+  return existsSync(ruleDocumentPath(docsDir, name, language))
 }
 
 /** The description of a rule in `language`. */
@@ -320,12 +337,15 @@ function renderList(docsDir: string, language: DocumentLanguage): string {
     )
     for (const name of names) {
       const rule = ruleOf(name)
-      const link = `[${name}](./${name}${SUFFIX[language]})`
+      // A rule without a Japanese document appears in the Japanese list with
+      // its English document and its English description.
+      const rowLanguage = hasDocument(docsDir, name, language) ? language : "en"
+      const link = `[${name}](./${name}${SUFFIX[rowLanguage]})`
       const recommended = isRecommended(rule) ? "✅" : ""
       const fix = hasFix(rule) ? "🔧" : ""
       const suggestions = hasSuggestions(rule) ? "💡" : ""
       lines.push(
-        `| ${link} | ${descriptionOf(docsDir, name, rule, language)} | ${recommended} | ${fix} | ${suggestions} |`,
+        `| ${link} | ${descriptionOf(docsDir, name, rule, rowLanguage)} | ${recommended} | ${fix} | ${suggestions} |`,
       )
     }
   }
@@ -436,8 +456,9 @@ async function formatMarkdown(text: string, path: string): Promise<string> {
 
 /**
  * Every document with generated parts, by its path, as it should be: the
- * index and every rule document under `docsDir`, in both languages. Render
- * only when `mismatches` finds nothing.
+ * index and every rule document under `docsDir`, in each language in which it
+ * exists. The English documents are the originals; a Japanese document is
+ * rendered when it exists. Render only when `mismatches` finds nothing.
  */
 export async function renderDocuments(
   docsDir: string = RULE_DOCS_DIR,
@@ -445,6 +466,7 @@ export async function renderDocuments(
   const documents = new Map<string, string>()
   for (const language of ["en", "ja"] as const) {
     const path = indexPath(docsDir, language)
+    if (!existsSync(path)) continue
     const index = replaceBetween(
       readFileSync(path, "utf8"),
       LIST_BEGIN,
@@ -454,6 +476,7 @@ export async function renderDocuments(
     )
     documents.set(path, await formatMarkdown(index, path))
     for (const name of Object.keys(rules)) {
+      if (!hasDocument(docsDir, name, language)) continue
       const rulePath = ruleDocumentPath(docsDir, name, language)
       documents.set(
         rulePath,
@@ -496,11 +519,12 @@ function documentsUnder(
 /**
  * What does not match between the rules and their documents under `docsDir`
  * and their tests under `testsDir`: a rule without a test, which the generated
- * link to it would miss, a rule without a document in each language, a
+ * link to it would miss, a rule without an English document (the original), a
  * document without a rule, an English document whose first paragraph is not
- * the rule's `meta.docs.description`, a Japanese document whose Mermaid code
+ * the rule's `meta.docs.description`, an English document that links to a
+ * Japanese version that does not exist, a Japanese document whose Mermaid code
  * blocks are not those of the English one, and an example without its
- * rule-enabling comment.
+ * rule-enabling comment. A rule may lack its Japanese document.
  */
 export function mismatches(
   docsDir: string = RULE_DOCS_DIR,
@@ -515,7 +539,7 @@ export function mismatches(
     for (const language of ["en", "ja"] as const) {
       const path = ruleDocumentPath(docsDir, name, language)
       if (!existsSync(path)) {
-        problems.push(`The rule ${name} has no ${path}`)
+        if (language === "en") problems.push(`The rule ${name} has no ${path}`)
         continue
       }
       // Both correct and incorrect examples opt in to the site's diagnostics.
@@ -541,7 +565,14 @@ export function mismatches(
       )
     }
     const japanesePath = ruleDocumentPath(docsDir, name, "ja")
-    if (!existsSync(japanesePath)) continue
+    if (!existsSync(japanesePath)) {
+      if (english.includes(`(./${name}${SUFFIX.ja})`)) {
+        problems.push(
+          `${englishPath} links to ${japanesePath}, which does not exist`,
+        )
+      }
+      continue
+    }
     const englishBlocks = mmdCodeBlocks(english)
     const japaneseBlocks = mmdCodeBlocks(readFileSync(japanesePath, "utf8"))
     if (

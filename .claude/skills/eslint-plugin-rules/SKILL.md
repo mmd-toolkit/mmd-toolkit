@@ -236,7 +236,8 @@ before the work is reported as done.
   fixtures, and write its documents in both languages, in the same change. Set
   `recommended` as decided. Then run `update` and `check:docs`.
 - When the behavior of a rule changes, change its English document and its
-  Japanese document with it (the eslint-plugin skill).
+  Japanese document with it; write the Japanese document if it is missing or
+  older than the English one (the eslint-plugin skill).
 - Before reporting the work as done, run these checks once, and say which
   failures are not caused by the change (while working, run only what the change
   can affect, as the table above says):
