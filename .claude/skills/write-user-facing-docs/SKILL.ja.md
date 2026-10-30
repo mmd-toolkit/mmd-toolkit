@@ -8,7 +8,8 @@ description: ユーザー向けドキュメントの執筆・修正で、
 
 # ユーザー向けドキュメントの執筆
 
-文書の形式と検査には、リポジトリの [conventions](../conventions/SKILL.ja.md) を使う。
+文書の形式と検査には、
+リポジトリの [conventions](../conventions/SKILL.ja.md) を使う。
 このスキルでは、説明の意味と構成を扱う。
 
 ## ページで伝える内容を定める
