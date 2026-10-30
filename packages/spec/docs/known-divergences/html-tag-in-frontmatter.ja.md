@@ -527,7 +527,7 @@ div-html-frontmatter-value は両方が受理し、bare 名の引用符だけが
   [usecase 文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
   は引用ラベルと JSON を説明します。
   2026-10-22 に mermaid-js/mermaid の issue と PR を `usecase title` で検索し、
-  この受理挙動を保守者が欠陥と判断したと示す報告は、
+  この受理挙動をメンテナーが欠陥と判断したと示す報告は、
   調べた結果にはありませんでした。
   [PR #8048](https://github.com/mermaid-js/mermaid/pull/8048) は Type:
   Enhancement で、2026-08-14 にマージ済みで閉じています。
@@ -539,7 +539,7 @@ div-html-frontmatter-value は両方が受理し、bare 名の引用符だけが
   [構文文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/pie.md)
   は、フロントマターの区切りをまたぐ HTML タグを述べません。
   2026-10-23 に `pie`、`pie frontmatter`、`pie HTML` で検索しましたが、
-  この区切りをまたぐ書き換えへの保守者の判断は見つかりませんでした。
+  この区切りをまたぐ書き換えへのメンテナーの判断は見つかりませんでした。
   共通の不透明なフロントマターの除外が差異を決めます。
 
 gitgraph の
@@ -606,7 +606,7 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
   [#6620](https://github.com/mermaid-js/mermaid/issues/6620) は ABNF
   の図種の提案（open、 Discussion Needed）です。
   どちらも、これらの前処理の境界について、
-  保守者が defect と判断した事実ではありません。
+  メンテナーが defect と判断した事実ではありません。
   この差異はその判断でなく既存の共通規則に従います。
   調べた結果だけで、ほかに関連する issue がないとは断定しません。
 
@@ -647,7 +647,7 @@ event modeling data、eventmodeling accTitle、
 eventmodeling validator で検索しました。
 2026-04-16 に merged となった
 [PR #7588](https://github.com/mermaid-js/mermaid/pull/7588) は validator
-の登録を追加し、この境目に関する保守者の判断ではありません。
+の登録を追加し、この境目に関するメンテナーの判断ではありません。
 確認した結果にはその判断はなく、既存の直接の規則を適用します。
 網羅的な検索だとはしません。
 
