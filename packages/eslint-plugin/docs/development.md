@@ -28,23 +28,6 @@ parser from its build in `lib/`: rebuild it with
 
 ## The tests
 
-| File                               | What it checks                            |
-| ---------------------------------- | ----------------------------------------- |
-| `tests/language.test.ts`           | Language, through ESLint                  |
-| `tests/snapshot.test.ts`           | Where ESLint sees nodes, tokens, comments |
-| `tests/token-store.test.ts`        | Token methods of the source code          |
-| `tests/inline-config.test.ts`      | Comments that configure ESLint            |
-| `tests/markdown.test.ts`           | Code blocks in Markdown                   |
-| `tests/diagram-rules.test.ts`      | Selectors of the rules                    |
-| `tests/subgraph-ids.test.ts`       | Subgraph ids from the tree                |
-| `tests/compact-range.test.ts`      | Ranges compacted across line terminators  |
-| `tests/removal.test.ts`            | Whole-line removal ranges                 |
-| `tests/suggestion-history.test.ts` | Removals of an earlier setter             |
-| `tests/rule-cases.test.ts`         | Examples of the rule documents            |
-| `tests/rule-docs.test.ts`          | Checks of the rule documents              |
-| `tests/rules-index.test.ts`        | The list of the rules                     |
-| `tests/rules/<rule>.test.ts`       | Each rule                                 |
-
 - `tests/language.test.ts`: The inputs of `tests/language-inputs.ts` (see
   below), fixtures of the conformance corpus of `@mmd-toolkit/tests`, run
   through ESLint: a rejected input is reported at the place of the parser's
@@ -103,25 +86,24 @@ parser from its build in `lib/`: rebuild it with
   each suggestion's expected output written as template literals with escapes in
   the test source.
 
-The tests of the language do not run on the whole corpus, which holds one input
-for each claim of the specification and is tested one by one by the parser and
-the corpus tests. `tests/language-inputs.ts` lists the fixtures that they run
-on, each for one case that the language treats on its own: the diagram that the
-parser reads, a text that it rejects, the line terminators that the positions
-count, a byte order mark, frontmatter, and the parts of the text that are not
-nodes (a directive, a comment of each mark, a token that spans lines, an ignored
-`;`, a fragment of a string). The test checks that each fixture is a case of its
-kind. To cover another case, add the fixture with the case that it answers; do
-not add inputs of a case that is covered.
+The tests of the language do not run on the whole corpus, which the parser and
+the corpus tests check one input at a time. `tests/language-inputs.ts` lists the
+fixtures that they run on, each for one case that the language treats on its
+own: the diagram that the parser reads, a text that it rejects, the line
+terminators that the positions count, a byte order mark, frontmatter, and the
+parts of the text that are not nodes (a directive, a comment of each mark, a
+token that spans lines, an ignored `;`, a fragment of a string). The test checks
+that each fixture is a case of its kind. To cover another case, add the fixture
+with the case that it answers; do not add inputs of a case that is covered.
 
 Tests of rules use eslint-snapshot-rule-tester (see [Snapshots](#snapshots)).
 The tests of the language use it where a snapshot shows the result best.
 
 The rules in the tests of the language only observe: they report what ESLint
-gives them, so that the tests show what a rule of the plugin will see. They are
-not rules of the plugin. These tests, and the tests of the rules, start from
-`LANGUAGE_CONFIG` of `tests/helpers.ts`: the recommended configuration without
-its rules, so that the rules that it enables add no reports of their own.
+gives them. They are not rules of the plugin. These tests, and the tests of the
+rules, start from `LANGUAGE_CONFIG` of `tests/helpers.ts`: the recommended
+configuration without its rules, so that the rules that it enables add no
+reports of their own.
 
 ## The fixtures of the rules
 
@@ -132,8 +114,7 @@ case, also in a subdirectory, and a file or a directory whose name starts with
 `_` is not. The name of the file says what the case is for.
 
 - The input files belong to the rule tests; they need no matching corpus
-  fixture. Put each input under `valid/` or `invalid/`, optionally in a
-  subdirectory such as `flowchart/`, and name it after its case.
+  fixture.
 - No fixture file holds a carriage return, alone or in a CRLF, or a character
   that `pnpm run lint:chars` checks for (the list is in
   [`packages/spec/docs/index.md`](../../spec/docs/index.md)). Such inputs are
@@ -164,8 +145,8 @@ reports is valid and has no snapshot.
 
 The tester supports Mocha and Jest, not vitest. `tests/setup.ts` makes it take
 its Jest path: the tester then needs only `afterAll` and
-`expect.getState().testPath`, which vitest provides with `globals: true`. Two
-things follow:
+`expect.getState().testPath`, which vitest provides with `globals: true`. As a
+result:
 
 - `vitest -u` does not update the snapshots: the tester reads `--update` from
   `process.argv`, which does not reach the workers of vitest. The script
@@ -176,8 +157,7 @@ things follow:
   root of the repository, and whatever `CI` the shell has: `tests/setup.ts` sets
   `CI=true` for the tester unless `UPDATE_SNAPSHOTS=true`. A missing snapshot
   fails the test. A snapshot that no test case uses any more is neither reported
-  nor removed by such a run; `test:update` drops it, because it writes every
-  snapshot again.
+  nor removed by such a run; `test:update` drops it.
 - To write only the snapshots that are missing, for a case that was added, run
   `UPDATE_SNAPSHOTS=true npx vitest run <test file>` in the package: the
   snapshots that exist are kept and compared.
@@ -227,13 +207,12 @@ The tester has three more limits, which decide where an input is tested:
 
 ## Rules and their documents
 
-The rules are the files under `src/rules/`: a common rule in
-`src/rules/<name>.ts` for each rule, where the name of a rule of a diagram type
-starts with the diagram (`flowchart-no-ignored-text`). Each file exports one
-rule, named after the file in camel case (`flowchartNoIgnoredText` in
-`flowchart-no-ignored-text.ts`). Its name in the plugin is the name of its file
-without `.ts`, its id is that name after the namespace
-(`@mmd-toolkit/flowchart-no-ignored-text`), and its documents are
+The rules are the files `src/rules/<name>.ts`, one for each rule; the name of a
+rule of a diagram type starts with the diagram (`flowchart-no-ignored-text`).
+Each file exports one rule, named after the file in camel case
+(`flowchartNoIgnoredText` in `flowchart-no-ignored-text.ts`). Its name in the
+plugin is the name of its file without `.ts`, its id is that name after the
+namespace (`@mmd-toolkit/flowchart-no-ignored-text`), and its documents are
 `docs/rules/<name>.md`, the original, and `docs/rules/<name>.ja.md`, which a
 rule may lack: an English document may stand alone. A change made with an AI
 agent includes the Japanese document, because the agent instructions of this
@@ -297,13 +276,10 @@ Every `mmd` code block in a rule document starts with
 `%% eslint @mmd-toolkit/<name>: error`, where `<name>` is the name of the rule,
 such as `flowchart-no-undef`. Put it on its own line without indentation, before
 the diagram header and any Mermaid directives. Include it in correct examples
-too: the documentation site's `twoslash-eslint` renderer uses the comment to
-enable that rule and show actual diagnostics. Parser acceptance and site
-rendering checks include this line. The snapshot test helper removes only this
-comment: its tester enables the rule under `rule-to-test/`, so enabling it under
-`@mmd-toolkit/` too would duplicate every report. When comparing an example with
-its formatted corpus fixture, remove only this leading configuration comment; do
-not add it to the fixture itself.
+too: the `twoslash-eslint` renderer of the documentation site uses the comment
+to enable that rule and show its diagnostics. The snapshot test helper removes
+only this comment: its tester enables the rule under `rule-to-test/`, so
+enabling it under `@mmd-toolkit/` too would duplicate every report.
 
 The rest of the documents is written by hand. `check:docs` writes nothing and
 fails when `src/rules/index.ts` or a generated part is out of date, when a rule
@@ -378,16 +354,8 @@ These choices hold for every rule, so that the rules read alike:
   exception is the `;` that mermaid.js ignores (an `IgnoredSemicolon` token, by
   the rule of `style` and `classDef` lines): `oneOfTwoRemovals` removes it with
   the statement that it follows.
-- The snapshot test of a rule is one call of `testRule(name, rule)`. It checks
-  the reports, fixes, and suggestions on the examples of the English document
-  and the inputs of the rule's fixture directory. A rule test does not run
-  mermaid.js. Use ESLint's `RuleTester` for inputs with a carriage return or
-  with a character that `pnpm run lint:chars` checks for (U+2028, U+2029,
-  U+00A0, and the like): write the input as a template literal with escapes in
-  `code`, list the expected reports in `errors`, and write the full expected
-  text of the fix as a template literal in the `output` of the case, and that of
-  each suggestion in the `output` of the suggestion. The fixture files and
-  snapshots of ordinary inputs remain the main cases of the rule.
+- The snapshot test of a rule is one call of `testRule(name, rule)` (see
+  [The tests](#the-tests)). A rule test does not run mermaid.js.
 
 ## Types for rules
 
