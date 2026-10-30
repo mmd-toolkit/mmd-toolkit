@@ -280,8 +280,8 @@ diagram; an imported common rule does not establish how the diagram uses it.
   `classDiagram-v2` are both detected as `classDiagram`. The diagram type's
   fixtures go in one directory, whatever ids it has. The diagram-type naming
   rules are in [conventions](../conventions/SKILL.md#code).
-- A clone of mermaid.js at the tag of the pinned version (outside the
-  repository, for example `../mermaid`; how to make it is in `tools/README.md`).
+- A clone of mermaid.js at the tag of the pinned version (how to make it is in
+  `tools/README.md`).
 
 ### 5.2 The normalizer
 

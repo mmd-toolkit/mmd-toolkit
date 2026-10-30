@@ -14,6 +14,7 @@ export default [
       "**/lib/",
       "packages/tests/fixtures/",
       ".claude/worktrees/",
+      ".work/",
     ],
   },
   {

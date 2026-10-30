@@ -87,13 +87,56 @@ function triggerKey(event: KeyboardEvent): void {
   void openMenu(event.key === "ArrowUp" ? exampleGroups.length - 1 : 0)
 }
 
+/**
+ * The element before (-1) or after (1) `element` in document order among the
+ * links, buttons, form controls, and elements with a `tabindex` that are
+ * enabled, rendered, and have no negative `tabindex`. This is the tab sequence
+ * of this app's header, not the browser's general one: scrollable regions,
+ * `inert` subtrees, and positive `tabindex` values are not considered, and the
+ * header has none. Null when `element` is not in the list or has no neighbour
+ * in that direction.
+ */
+function tabbableBeside(
+  element: HTMLElement | null,
+  direction: -1 | 1,
+): HTMLElement | null {
+  if (!element) return null
+  const tabbable = Array.from(
+    document.querySelectorAll<HTMLElement>(
+      "a[href], button, input, select, textarea, [tabindex]",
+    ),
+  ).filter(
+    (candidate) =>
+      candidate.tabIndex >= 0 &&
+      !candidate.matches(":disabled") &&
+      candidate.getClientRects().length > 0,
+  )
+  const index = tabbable.indexOf(element)
+  return index < 0 ? null : (tabbable[index + direction] ?? null)
+}
+
+/**
+ * Tab and Shift+Tab leave the menu to the control beside the trigger, as if the
+ * trigger had the focus. The focus is moved here rather than by the native Tab
+ * action: the menu leaves the DOM when it closes, and browsers differ in where
+ * a native Tab continues from when the element that had the focus is gone.
+ */
+function leaveMenu(event: KeyboardEvent): void {
+  event.preventDefault()
+  const target = tabbableBeside(trigger.value, event.shiftKey ? -1 : 1)
+  closeMenu()
+  ;(target ?? trigger.value)?.focus()
+}
+
 /** Moves between diagram families and opens their sample submenus. */
 function groupKey(event: KeyboardEvent): void {
   cancelHover()
-  if (event.key === "Escape" || event.key === "Tab") {
-    // Tab keeps its native action after focus returns to the trigger, allowing
-    // navigation to the adjacent header control instead of trapping focus.
-    if (event.key === "Escape") event.preventDefault()
+  if (event.key === "Tab") {
+    leaveMenu(event)
+    return
+  }
+  if (event.key === "Escape") {
+    event.preventDefault()
     closeMenu(true)
     return
   }
@@ -124,7 +167,7 @@ function sampleKey(event: KeyboardEvent): void {
     return
   }
   if (event.key === "Tab") {
-    closeMenu(true)
+    leaveMenu(event)
     return
   }
   const count = group.value?.examples.length ?? 0

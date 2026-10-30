@@ -296,9 +296,8 @@ mermaid.js を読むこと（3.1）と木の案（3.3 の項目 4）は fixture 
 
 ### 3.1 mermaid.js を読む
 
-pin した版の mermaid.js のソースを、リポジトリの外に置く。
-pin した版のタグで clone する。
-手順は、tools/README.md の、入力を集めるための clone の手順と同じ。
+ソースは、pin した版のタグの mermaid.js の clone で読む。
+作り方は `tools/README.md` にある。
 仕様からのリンクは、
 すべて `packages/spec/docs/index.md` に記録した commit の permalink にする。
 

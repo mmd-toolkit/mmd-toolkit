@@ -39,6 +39,7 @@ export default [
       "packages/prettier-plugin-mmd/tests/fixtures/",
       "packages/eslint-plugin/tests/fixtures/",
       ".claude/worktrees/",
+      ".work/",
       // Candidate reports to mermaid.js, kept apart from the documents of the
       // packages and not linted.
       "tmp/report-candidate/",

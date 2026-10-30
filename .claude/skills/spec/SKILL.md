@@ -288,10 +288,9 @@ not get a second fixture for an input that the collection already has.
 
 ### 3.1 Reading mermaid.js
 
-Keep the source of the pinned mermaid.js outside the repository, cloned at the
-tag of the pinned version as tools/README.md describes for collecting inputs.
-Every link from the specification is a permalink to the commit recorded in
-`packages/spec/docs/index.md`.
+Read the source in a clone of mermaid.js at the tag of the pinned version (how
+to make it is in `tools/README.md`). Every link from the specification is a
+permalink to the commit recorded in `packages/spec/docs/index.md`.
 
 #### Jison diagrams
 

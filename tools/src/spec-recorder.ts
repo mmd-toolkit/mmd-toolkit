@@ -47,6 +47,7 @@ import {
 import path from "node:path"
 import { pathToFileURL } from "node:url"
 import ts from "typescript"
+import { relativeWithSlashes } from "./paths.ts"
 
 /** A test that ended with an error, so that some of its inputs may be missing. */
 export interface RecordedFailure {
@@ -354,7 +355,7 @@ export async function recordSpecFile(
   // path of the copy.
   const fileDir = path.join(
     realpathSync(workDir),
-    encodeURIComponent(path.relative(mermaidSource, file)),
+    encodeURIComponent(relativeWithSlashes(mermaidSource, file)),
   )
   mkdirSync(fileDir, { recursive: true })
   const copy = writeCopyWithStubs(file, mermaidSource, fileDir)
@@ -918,13 +919,10 @@ function writeCopyWithStubs(
   let copied = 0
   for (const specifier of moduleSpecifiers(sourceFile)) {
     const key = specifier.text.startsWith(".")
-      ? path
-          .relative(
-            mermaidSource,
-            path.resolve(path.dirname(file), specifier.text),
-          )
-          .split(path.sep)
-          .join("/")
+      ? relativeWithSlashes(
+          mermaidSource,
+          path.resolve(path.dirname(file), specifier.text),
+        )
       : specifier.text
     const exports = STUBBED_MODULES[key]
     if (!exports) {

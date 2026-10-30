@@ -303,7 +303,6 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
   図種の fixture は、図種 ID がいくつあっても 1 つのディレクトリに置く。
   図種名の規則は [conventions](../conventions/SKILL.ja.md#コード) にある。
 - pin した版のタグの mermaid.js の clone。
-  リポジトリの外（例えば `../mermaid`）に置く。
   作り方は `tools/README.md` にある。
 
 ### 5.2 正規化関数

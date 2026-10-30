@@ -47,6 +47,7 @@ import {
 import type { DiagramType } from "../packages/tests/src/index.ts"
 import { belongsIn, isDiagramType } from "./src/diagrams.ts"
 import { fixtureKey, readFixtures } from "./src/fixture-store.ts"
+import { relativeWithSlashes } from "./src/paths.ts"
 import { recordSpecFile } from "./src/spec-recorder.ts"
 
 /** An input found in the checkout, before names are given. */
@@ -545,7 +546,7 @@ async function specCandidates(
   try {
     const failures: string[] = []
     for (const file of files) {
-      const relative = path.relative(checkout, file)
+      const relative = relativeWithSlashes(checkout, file)
       const prefix = `spec-${kebab(path.basename(file).replace(/\.spec\.[jt]s$/u, ""))}`
       const recording = await recordSpecFile(file, mermaidSource, workDir)
       console.log(
@@ -553,7 +554,7 @@ async function specCandidates(
           `${recording.failures.length} tests ended with an error`,
       )
       const allowed = (
-        ERRORS_AFTER_THEIR_INPUT[path.relative(mermaidSource, file)] ?? []
+        ERRORS_AFTER_THEIR_INPUT[relativeWithSlashes(mermaidSource, file)] ?? []
       ).map((entry) => ({ ...entry, used: false }))
       for (const failure of recording.failures) {
         const entry = allowed.find(
@@ -644,7 +645,7 @@ async function docCandidates(
         source: {
           kind: "mermaid",
           ref,
-          path: path.relative(checkout, file),
+          path: relativeWithSlashes(checkout, file),
           line: start + 1,
         },
       })

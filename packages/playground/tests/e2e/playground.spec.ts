@@ -355,10 +355,21 @@ test("loads examples from a cascading menu with keyboard navigation and Undo", a
   await expect(
     page.getByRole("button", { name: "Share", exact: true }),
   ).toBeFocused()
+  const repositoryLink = page.getByRole("link", {
+    name: "View repository on GitHub",
+    exact: true,
+  })
   await trigger.press("Enter")
   await page.keyboard.press("Shift+Tab")
   await expect(menu).toBeHidden()
-  await expect(trigger).not.toBeFocused()
+  await expect(repositoryLink).toBeFocused()
+  await trigger.press("Enter")
+  await page.keyboard.press("ArrowRight")
+  await expect(flowchartMenu.getByRole("menuitem").first()).toBeFocused()
+  await page.keyboard.press("Shift+Tab")
+  await expect(menu).toBeHidden()
+  await expect(flowchartMenu).toBeHidden()
+  await expect(repositoryLink).toBeFocused()
 })
 
 test("opens official examples beside their diagram families without scrolling the page", async ({
