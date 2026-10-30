@@ -81,8 +81,6 @@ against the pinned mermaid.js and the fixtures.
 
 ## 1. What to read first
 
-The criteria change, so read these each time work starts.
-
 1. The section Policies and criteria; AGENTS.md (Project, Principles, Shared
    interfaces); the skill `conventions`. The tree is a shared interface, so the
    result of a change to it says what parser, prettier-plugin, and eslint-plugin

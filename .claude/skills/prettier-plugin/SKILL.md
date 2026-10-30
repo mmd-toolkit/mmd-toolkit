@@ -28,8 +28,7 @@ update the printers when mermaid.js is updated.
 ## 1. What to read first
 
 1. The section Policies and criteria of this document, the Principles of
-   AGENTS.md, and the skill `conventions`. The criteria change, so read them
-   every time.
+   AGENTS.md, and the skill `conventions`.
 2. The specification of the diagram type:
    `packages/spec/docs/diagrams/<diagram>.md` and the tree,
    `packages/spec/docs/ast.md` and `packages/spec/docs/ast/<diagram>.md`. The

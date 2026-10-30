@@ -27,7 +27,6 @@ mermaid.js の更新のときに printer を直す手順。
 ## 1. 最初に読むもの
 
 1. この文書の「方針と基準」の節、AGENTS.md の Principles、SKILL `conventions`。
-   基準は変わるので、毎回読む。
 2. 図種の仕様: `packages/spec/docs/diagrams/<図種>.md` と、
    木の定義 `packages/spec/docs/ast.md` と `packages/spec/docs/ast/<図種>.md`。
    printer の規則は、ここにあるノードの型、欄、トークンの種類で書く。

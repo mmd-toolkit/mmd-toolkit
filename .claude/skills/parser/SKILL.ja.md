@@ -56,7 +56,6 @@ pin した mermaid.js の更新を扱う。
    mermaid.js のソースを挙動の出どころにしない）、
    AGENTS.md の「Shared interfaces」と「Principles」（読みやすさ、あるべき形）、
    SKILL `conventions`（正規表現を使わない、見えない文字、文書の決まり）。
-   基準は変わるので、作業のたびに読む。
 2. `packages/parser/docs/development.md`（パーサーの作りと道具）、
    `docs/tokens.md` と `docs/positions.md`（木のトークン、位置、不変条件）、
    `docs/testing.md`（テストが何を確かめるか）、

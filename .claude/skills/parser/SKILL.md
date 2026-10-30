@@ -52,8 +52,7 @@ type.
    specification alone, not taking behavior from the source of mermaid.js);
    "Shared interfaces" and "Principles" in AGENTS.md (readability, the proper
    form); and the skill `conventions` (no regular expressions, invisible
-   characters, the documents). The criteria change, so read them for each piece
-   of work.
+   characters, the documents).
 2. `packages/parser/docs/development.md` (how the parser is built, and the
    tools), `docs/tokens.md` and `docs/positions.md` (the tokens, the positions,
    and the invariants of the tree), `docs/testing.md` (what the tests check),

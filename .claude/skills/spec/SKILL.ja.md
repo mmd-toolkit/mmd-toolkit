@@ -85,8 +85,6 @@ description:
 
 ## 1. 最初に読むもの
 
-基準は変わるので、作業を始めるたびに読む。
-
 1. 「方針と基準」の節、AGENTS.md（Project、Principles、Shared interfaces）、
    SKILL `conventions`。
    木は共有のインターフェースである。
