@@ -1,6 +1,6 @@
 {
   "name": "@mmd-toolkit/parser",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Lossless, position-aware parser for the Mermaid diagram syntax (.mmd)",
   "license": "MIT",
   "repository": {
