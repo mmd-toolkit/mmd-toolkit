@@ -18,10 +18,9 @@ description:
 pin した mermaid.js の更新を扱う。
 図種の実装は、字句解析器、再帰下降パーサー、fixture に対するテスト、
 記録した木からなる。
-これまでの作業の履歴がなくても、同じ品質に届くように書く。
 パッケージの方針と基準は「方針と基準」の節にある。
 どのパッケージにも当たるものは、AGENTS.md と SKILL `conventions` にある。
-例は flowchart のもので、手順そのものは図種によらない。
+手順は図種によらない。
 
 ## 方針と基準
 
@@ -34,7 +33,7 @@ pin した mermaid.js の更新を扱う。
   mermaid.js のソースは仕様の記述を確かめるために読んでよいが、
   実装する挙動の出どころにしてはならない。
   仕様に書かれていないことは mermaid のコードから補わず、
-  仕様の所有者に不足として上げる。
+  仕様の欠落として扱う（4.2 節の手順 2）。
 - AST を、同じノード名と欄名で TypeScript の型として実装する。
   `docs/ast.md` の共通部は `ast.ts` に、
   `docs/ast/<図>.md` の図種ごとのノードは `ast/<図>.ts` に置く。
@@ -49,22 +48,15 @@ pin した mermaid.js の更新を扱う。
   木から組んだ Db を各 fixture が記録した Db と比べることである。
   テストは mermaid.js も生成した入力も動かさず、
   このパッケージのどのコマンドも動かさない。
-  パーサーの文書の、挙動を定める各文は、その文が分ける場合ごとと、
-  その文の名指す場所で接するほかの規則ごとに、
-  fixture を持つ（AGENTS.md の Principles）。
-  コーパスに欠けている場合は、fixture で閉じる。
+  パーサーの文書の、挙動を定める各文は、その場合ごとに fixture を持つ（3 節）。
 
 ## 1. 最初に読むもの
 
-1. 方針と基準。
+1. この文書の「方針と基準」の節（仕様だけから実装し、
+   mermaid.js のソースを挙動の出どころにしない）、
+   AGENTS.md の「Shared interfaces」と「Principles」（読みやすさ、あるべき形）、
+   SKILL `conventions`（正規表現を使わない、見えない文字、文書の決まり）。
    基準は変わるので、作業のたびに読む。
-   - この文書の「方針と基準」の節。
-     仕様だけから実装することと、
-     mermaid.js のソースを挙動の出どころにしないことがある。
-   - AGENTS.md の「Shared interfaces」と「Principles」。
-     読みやすさとあるべき形がある。
-   - SKILL `conventions`。
-     正規表現を使わないこと、見えない文字、文書の決まりがある。
 2. `packages/parser/docs/development.md`（パーサーの作りと道具）、
    `docs/tokens.md` と `docs/positions.md`（木のトークン、位置、不変条件）、
    `docs/testing.md`（テストが何を確かめるか）、
@@ -123,11 +115,7 @@ pin した mermaid.js の更新を扱う。
 ## 3. 確かめ方（すべての作業で）
 
 - mermaid.js の挙動についての主張は、自分のものも、ほかから来たものも、
-  書く前に確かめる。
-  パーサーのテストは、mermaid.js も生成した入力も動かさず、
-  fixture が記録したものにパーサーを従わせる。
-  主張の確かめに mermaid.js が要るときは、
-  リポジトリの外（scratchpad）の probe で動かす。
+  書く前に、リポジトリの外（scratchpad）の probe で確かめる。
   probe は `node --conditions=source` で走らせるスクリプトで、
   `packages/tests` のソースから `runMermaidWithEmbeddedData` と `dbFromTree`
   を読み込む。
@@ -152,14 +140,11 @@ pin した mermaid.js の更新を扱う。
   その文の名指す場所で接するほかの規則（ディレクティブ、無視される `;`、
   コメント行、空行、行区切り、空の説明ブロック）を挙げ、
   コーパスに欠けている場合ごとに fixture を頼む（AGENTS.md の Principles）。
-  確かさは、欠けている場合を足すことで得て、
-  ある場合の入力を増やすことでは決して得ない。
+  fixture のある場合に入力を足さない。
 - 結果では、主張ごとに、実行して確かめたか、コードや文書を読んで確かめたか、
   確かめていないかを区別して示す。
 - 新しく対応した図や既存のパーサーの性能レビューを依頼されたら、
-  [parser-performance-review](../parser-performance-review/SKILL.md) を使う。
-  単独で実測する再現はレビューの報告であり、
-  ここで述べる fixture に基づく適合性テストとは分ける。
+  [parser-performance-review](../parser-performance-review/SKILL.ja.md) を使う。
 - 変更が影響しうるものだけを回す（SKILL `conventions` の「テストの実行」）。
   作業の途中では、変えたコードの部分に対応するテストのファイルを、
   `packages/parser` で `npx vitest run <ファイル>` として回す。
@@ -422,7 +407,6 @@ flowchart のファイルが手本になる。
 | `tests/helpers/reference-inputs.ts`  | 参照入力のための図種の単位        |
 | `tests/<図種>.test.ts`               | 木とトークンの単体テスト          |
 
-このテストの手順は、すべての図種に使う。
 記録前の probe（4.7 節）と `tests/fixtures.test.ts` は、
 受理の判定に `@mmd-toolkit/tests` の `fixtureAccepts` を使う。
 共有の `DIVERGENCE_PROPERTIES` 表が、
@@ -489,7 +473,6 @@ fixture を図種と名前で引用して読み込む。
 `range`、`loc` は、
 `parse-error.json` に置く（`docs/testing.md` の「記録したパースの結果」）。
 fixture のテストが、各結果をそのファイルと比べる。
-拒否も木と同じだけ記録される。
 パーサーが拒否を報告する位置も、結果の一部である。
 
 記録は既定の parse(text) の結果とし、
@@ -547,8 +530,6 @@ parse() に設定の引数やオプションを足さない。
    pnpm run diff-trees <ディレクトリ>/ast-before <図種>
    ```
 
-   test:update が書くことになる、
-   すべての未記録の fixture を probe に通しておく。
    生の木と読み込んだ JSON ではなく、
    シリアライズした記録かバイト列のハッシュを比べ、新規・変更・削除を分ける。
 
@@ -604,7 +585,6 @@ pnpm run format:check
 ```
 
 全体は、作業を終えたと報告する前に 1 回だけ回し、変更のたびには回さない。
-全体は、生成した入力を回さない（SKILL `conventions` の「テストの実行」）。
 
 すべての fixture が fixture のテストを通り、
 記録した木が `@mmd-toolkit/tests` の木の検査を通って、
@@ -615,8 +595,9 @@ pnpm run format:check
 
 `.md` と `.ja.md` を同じ変更で直す。
 
-- `packages/parser/README.md`: 対応している図種、型の説明の仕様へのリンク。
-- `docs/development.md`: 実装済みのもの、その図種のパーサーの作り。
+- `packages/parser/README.md`: 「対応している図」の表の、その図の行。
+  図種 id、ヘッダー、ノードの文書を書く。
+- `docs/development.md`: その図種のパーサーの作り。
 - `docs/testing.md`: fixture の一覧、図種のテストが確かめること。
 - `docs/error-positions.md`: その図種の位置。
 
@@ -630,7 +611,6 @@ pnpm run format:check
 実装したもの（ファイルごと）、見つけた仕様の欠落と、そのうち残っているもの、
 テストの件数と結果、記録した結果の数（新しいもの、変わったものの種類ごとの数）、
 公開した型、直した文書。
-主張ごとに、実行して確かめたか、読んで確かめたか、確かめていないかを示す。
 
 ## 5. 最初の一致を採る字句規則、隠れた形式、意味による受理条件
 
@@ -712,8 +692,8 @@ pnpm run format:check
   宣言された形の共通検査を広げ、
   対応するすべての図種で共通の fixture ループから呼ぶ。
   一方向の差異で、`fixture.expected` が受理を記録し、Db が null でない場合は、
-  `tests/helpers/reference-inputs.ts` に参照入力を置き、
-  その Db を記録された Db と比べる。
+  `tests/helpers/reference-inputs.ts` に、
+  Db が記録された Db と一致する参照入力を置く。
   共有の表が指定の読みを必須とする場合は、tests パッケージに、
   共通の指定の読みの経路でコーパスの `specified.json` を作るよう頼む。
   申告を `tests/helpers/known-divergences.ts` に足す。
@@ -744,6 +724,9 @@ pnpm run format:check
    `src/detection.ts`、`src/ast.ts` の `DiagramType`、
    `tests/types.test.ts` の `allDiagramTypes`、
    `tests/detection.test.ts` を直す。
+   増えた ID は、
+   まず `tests/fixtures.test.ts` の `DIAGRAM_TYPES_WITHOUT_BODY` に入れる。
+   次に本体を書き（4 節）、本体を足す変更で、上の箇所を直し、ID を一覧から消す。
 4. 仕様の一覧を写した表が、仕様と一致するかを確かめる。
    flowchart と class では、
    両者が共有する `src/unicode-letters.ts` の文字の範囲である。

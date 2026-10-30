@@ -297,8 +297,8 @@ in `packages/tests/fixtures/<diagram>/<fixture name>/`, and
   for an input that mermaid.js rejects as well, where the general rules put it.
   A rejection is thus recorded as fully as a tree, and a change of where it is
   reported shows as a change of the file.
-- A fixture has one of the two. A test looks at the files alone and checks that
-  no fixture has both.
+- A fixture has one of the two, or neither while its diagram type has no body
+  (below). A test looks at the files alone and checks that no fixture has both.
 - A change of any tree or error shows as a change of its file.
   `pnpm run test:update`, in `packages/parser`, runs the fixture test alone with
   `-u` and writes the files anew.
@@ -325,6 +325,12 @@ Whoever adds fixtures therefore:
    the parser tests pass with any recorded tree, so only these show a tree that
    breaks a condition or gives another Db;
 4. commits them with the fixtures.
+
+A diagram type whose fixtures the corpus has and whose body the parser does not
+have yet is in `DIAGRAM_TYPES_WITHOUT_BODY` of `tests/fixtures.test.ts`. A
+fixture that its recorded reading accepts as such a type has no record and is
+not checked; the test that looks for files left behind names a record of it. The
+change that adds the body removes the type from the list.
 
 When a fixture is renamed or removed, its old files go with it. The test that
 looks for files left behind names any that remain.
