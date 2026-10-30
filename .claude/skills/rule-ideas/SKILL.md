@@ -11,43 +11,31 @@ description:
 
 How to find candidate rules for `@mmd-toolkit/eslint-plugin` (an ESLint language
 plugin for Mermaid diagram text) and decide whether to keep each one, its name,
-and its scope. It is written so that the same decisions can be made from this
-document alone, without the conversation history or memory. The adoption
-criteria themselves are in "Policies and criteria" in section 2; the rest of
-this document describes how to apply them.
+its scope, and whether `recommended` enables it. The adoption criteria are in
+"Policies and criteria" in section 2.
 
 ## 1. What this procedure covers, and how to work
 
-- This procedure decides which rules exist, their names, their scope, and
-  whether the `recommended` configuration enables them. The decisions are shown
-  in the form of section 6.
-- The procedure itself writes no file of the repository, except the record of
-  the decisions on `recommended` in section 7 of this document. Working scripts
-  and their output are kept in a working directory outside the repository.
-- The decisions are recorded in the repository by the following procedures,
-  which the same person may carry out next:
-  - The rule documents (`packages/eslint-plugin/docs/rules/`) are written with
-    the procedure of the eslint-plugin SKILL, and the rules
-    (`packages/eslint-plugin/src/rules/`) are implemented with the procedure of
-    the eslint-plugin-rules SKILL. Each document belongs to a rule file; a rule
-    is added, renamed, or removed with its document in one change, as those
-    SKILLs describe. When a dropped rule exists, its rule file and its document
-    are deleted together by the same procedures.
-  - Missing supporting fixtures are requested from the tests package, with the
-    smallest input and the claim that the fixture answers; the tests package
-    adds them and records what mermaid.js does
-    (`packages/tests/docs/maintaining-fixtures.md`). The fixture is then used in
-    the examples of the rule document and in the tests of the rule (the
+- Show the decisions in the form of section 6. This procedure writes no file of
+  the repository except the records in sections 7 and 8 of this document; keep
+  working scripts and their output in a working directory outside the
+  repository.
+- The decisions are recorded in the repository by these procedures:
+  - The rule documents (`packages/eslint-plugin/docs/rules/`) follow the
+    eslint-plugin SKILL, and the rules (`packages/eslint-plugin/src/rules/`) the
+    eslint-plugin-rules SKILL. A rule is added, renamed, or removed (also when
+    dropped) with its document in one change.
+  - Request a missing supporting fixture from the tests package with the
+    smallest input and the claim that it answers
+    (`packages/tests/docs/maintaining-fixtures.md`). The fixture is used in the
+    examples of the rule document and in the tests of the rule (the
     eslint-plugin SKILL, step 4 of section 4).
-- For each claim, show whether it was run (checked by running it), read (checked
-  by reading), or unchecked. When a claim turns out to be wrong, withdraw it in
-  those words.
-- The specification can change. Read the current file again before relying on
-  it.
+- Mark each claim as run (checked by running it), read (checked by reading), or
+  unchecked. Withdraw a wrong claim in those words.
+- Read the current specification before relying on it.
 - When the working tree is shared with other work:
-  - Do not touch a file that someone else is editing. When two people touch the
-    same file, the changes of one are lost, and waiting until the edits stop
-    does not prevent that.
+  - Do not touch a file that someone else is editing: the changes of one of the
+    two are lost, also when you wait until the edits stop.
   - Read the target before deleting or replacing it.
   - Do not change the git staging area, and do not use git mv or git rm.
 
@@ -57,46 +45,39 @@ this document describes how to apply them.
 
 - A rule reports a mistake of the author that mermaid.js accepts without a word
   and reads as something other than what was meant: a typing mistake, something
-  left unclosed, broken JSON, an id used twice. Each rule is checked by running
-  the pinned mermaid.js on an example of ordinary writing, and by formatting the
+  left unclosed, broken JSON, an id used twice. Check each rule by running the
+  pinned mermaid.js on an example of ordinary writing, and by formatting the
   example.
 - For each case that a rule reports, the output of mermaid.js loses, replaces,
-  leaves without effect, or adds something, and the case names it: which value
-  or which text. An earlier `accTitle` replaced, text on a direction line
-  dropped, a closer that has no effect on the shape, and a state that no
-  statement writes are such facts. A value outside the range or the words that
-  the documentation of mermaid.js defines, as a score above 5 or an unknown word
-  of `excludes`, has no effect, and that documentation is the ground. Writing
-  that mermaid.js reads by its grammar, with nothing lost, is no rule, also when
-  the author probably meant another syntax: `Write ::icon(fa fa-book)` on the
-  line of a node is the node `Write ::icon` with the label `fa fa-book`, as
-  `X(Foo)` shows `Foo` and not `X`.
+  leaves without effect, or adds something, and the case names which value or
+  text: an earlier `accTitle` replaced, text on a direction line dropped, a
+  closer with no effect on the shape, a state that no statement writes. A value
+  outside the range or the words that the documentation of mermaid.js defines (a
+  score above 5, an unknown word of `excludes`) has no effect, on the ground of
+  that documentation. Writing that mermaid.js reads by its grammar, with nothing
+  lost, is no rule, also when the author probably meant another syntax:
+  `Write ::icon(fa fa-book)` on the line of a node is the node `Write ::icon`
+  with the label `fa fa-book`.
 - The package holds no rule of these kinds:
   - A stylistic rule: mermaid.js reads the text as written, and only a later
     edit would break it.
   - A rule for text that is obscure on purpose.
-  - A rule for a defect of mermaid.js: the author writes something correct and
-    meaningful and mermaid.js misreads it (`subgraph Front end`, CSS in a
-    label). The author has nothing to fix, and a rule could only tell how to
-    avoid the defect; the rule would rest on a defect of the implementation, not
-    on the definition of the language, so users of a version with the defect
-    fixed would keep getting reports that call correct text a mistake; and the
-    place to fix it is a report to mermaid.js, which a lint rule that absorbs it
-    leaves undone. Whether such a thing is reported to mermaid.js is a separate
-    question, which the user decides. A case is such a defect only where the
-    author has nothing to fix: the text is written as the documentation of
-    mermaid.js shows, and no other way of writing avoids the loss (a URL with a
-    fragment in `links`). Where the documentation shows a form that loses
-    nothing, the case stays a mistake (`note left of A:hi`, which the
-    documentation writes with a space after the `:`). Such a defect is left out
-    of the condition of a kept rule where the tree tells it apart from the
-    mistake; where the tree does not, it stays reported with the mistake, as
-    section 7 says (the text `direction LR` inside a label).
+  - A rule for a defect of mermaid.js: the author writes correct, meaningful
+    text and mermaid.js misreads it (`subgraph Front end`, CSS in a label). The
+    author has nothing to fix; the rule would rest on the implementation, not on
+    the language, so it would call correct text a mistake once the defect is
+    fixed; and the fix belongs in mermaid.js. A case is such a defect only where
+    the text is written as the documentation of mermaid.js shows and no other
+    way of writing avoids the loss (a URL with a fragment in `links`); where the
+    documentation shows a form that loses nothing, it stays a mistake
+    (`note left of A:hi`; the documentation puts a space after the `:`). A kept
+    rule leaves such a defect out of its condition where the tree tells it apart
+    from the mistake, and otherwise reports it with the mistake, as section 7
+    says (the text `direction LR` inside a label).
   - A rule whose condition also matches a way of writing that an author means
     (`A[Issue #123; fixed]` has the same form as the entity `#9829;`).
-  - A rule for what the formatter of this project already makes visible: when
-    the formatted text shows how mermaid.js reads it (`A---orders` is printed as
-    `A ---o rders`), a rule would only be a second thing to maintain.
+  - A rule for what the formatter of this project makes visible (`A---orders` is
+    printed as `A ---o rders`): it would be a second thing to maintain.
   - For now, a rule for a mistake that comes from not knowing the syntax, where
     the specification's grammar or text says that the way of writing means
     something else (`A"Start"` without brackets, `;` between styles).
@@ -105,8 +86,7 @@ this document describes how to apply them.
   same; otherwise it belongs to a diagram type, and its name starts with
   `<diagram>-` (document `docs/rules/<diagram>-<name>.md`).
 
-Read them before every decision. The rest of this section shows how they are
-applied, by example.
+Read them before every decision.
 
 ### Examples of decisions (run)
 
@@ -336,71 +316,60 @@ Dropped:
 
 ### Questions for unclear cases
 
-1. Is the input something that a person who is simply drawing a diagram writes?
-   Does it only copy an unusual example of the specification?
+1. Is the input something that a person who is simply drawing a diagram writes,
+   not a copy of an unusual example of the specification?
 2. Does mermaid, now, give a result different from what was written? If only a
    later edit breaks it, the rule is stylistic.
 3. Does the condition of the rule also match a documented correct way of
-   writing, or a way of writing that an author means? If it does, the rule
-   cannot report without false positives, so it is not kept. Always run one
-   intended way of writing through mermaid as an example that is not reported.
+   writing, or a way of writing that an author means? If it does, the rule is
+   not kept. Always run one intended way of writing through mermaid as an
+   example that is not reported.
 4. Does the specification's grammar or text say that the way of writing means
    something else? If it does, and an author who knows the syntax would not
-   write it, it is not kept for now. Even then, mistakes that an author who
-   knows the syntax makes by accident (an unclosed block, a typo, a reused id)
-   are kept.
-5. Does formatting the reported example make the way mermaid reads it visible?
-   If it does, the rule is not kept (it would be a second thing to maintain
-   beside the formatter). The formatter does not change the Db, so it does not
-   fix the mistake, but after formatting the author can see it. Formatting is
-   described in section 4. Weak hints, such as indentation that does not line up
-   or a difference in where spaces go, do not count as visible.
+   write it, it is not kept for now. Mistakes that such an author makes by
+   accident (an unclosed block, a typo, a reused id) are kept.
+5. Does formatting the reported example (section 4) make the way mermaid reads
+   it visible? If it does, the rule is not kept. Weak hints, such as indentation
+   that does not line up or a difference in where spaces go, do not count.
 6. Does the author write correctly, with a sensible meaning, while mermaid reads
-   it wrongly? When, thinking normally, the behavior looks like a bug, it is not
-   a rule. This does not depend on whether the maintainers of mermaid treat it
-   as a bug, whether its docs mention it, or whether it will be fixed; those are
-   facts to record with the decision. A rule is kept only for an author's
-   mistake that mermaid accepts silently. Whether to report a behavior to
-   mermaid is a separate decision, which the user makes for what can be shown
-   with evidence. To record the facts: (a) read the section of mermaid's docs
-   for that syntax and the warnings at the top of the page; (b) search the
-   issues and pull requests by title (`in:title`) and by body, with the words as
-   separate terms, and record the words; (c) say whether the wrong result is
-   what the user sees in the drawn diagram, not only a value in the Db. For
-   borderline cases (an empty `%%` line, whitespace at the end of a line), ask
-   for a decision, with the reasons on both sides.
-7. When you cannot decide, ask for a decision, with the reasons on both sides.
+   it wrongly? If the behavior looks like a bug, it is not a rule, whether or
+   not the maintainers of mermaid treat it as one, its docs mention it, or it
+   will be fixed. Record those facts with the decision: (a) read the section of
+   mermaid's docs for that syntax and the warnings at the top of the page; (b)
+   search the issues and pull requests by title (`in:title`) and by body, with
+   the words as separate terms, and record the words; (c) say whether the user
+   sees the wrong result in the drawn diagram, not only in the Db. Reporting the
+   behavior to mermaid is outside this procedure and needs evidence.
+7. When you cannot decide (an empty `%%` line, whitespace at the end of a line),
+   ask for a decision, with the reasons on both sides.
 
 ## 3. Where to look for ideas
 
 - The specification: `packages/spec/docs/common.md` and
-  `packages/spec/docs/diagrams/<diagram>.md`. Pick up the examples of accepted
-  but surprising readings that are written as consequences of the rules.
+  `packages/spec/docs/diagrams/<diagram>.md`, for the accepted but surprising
+  readings written as consequences of the rules.
 - Fixtures: `packages/tests/fixtures/<diagram>/` (`input.mmd`, `expected.json`,
-  `ast.json`). Those whose names start with `lex-`, `gram-`, or `db-` record
-  many surprising readings.
+  `ast.json`), above all those whose names start with `lex-`, `gram-`, or `db-`.
 - The formatter's limits: `packages/prettier-plugin-mmd/docs/<diagram>.md` and
-  `docs/compatibility.md`. They list the places where one space or one `;`
-  changes the meaning.
+  `docs/compatibility.md`, which list where one space or one `;` changes the
+  meaning.
 - Existing rules: `packages/eslint-plugin/docs/rules/`. Do not propose the same
   rule again.
 - Your own search: start from an author's mistakes (an unclosed block, a typo, a
   reused id, broken configuration JSON, leftovers of commenting out) and run
-  mermaid. Starting from the unusual examples of the specification tends to give
-  only inputs that are obscure on purpose. When you find an ordinary way of
-  writing that mermaid reads wrongly (the ordinary word `end` in a subgraph name
-  taking the line break, for example), show it in the result as a candidate
+  mermaid; the unusual examples of the specification give mostly inputs that are
+  obscure on purpose. Show an ordinary way of writing that mermaid reads wrongly
+  (the word `end` in a subgraph name taking the line break) as a candidate
   mermaid bug, not as a rule.
 
 ## 4. Checking with mermaid and parse()
 
 Put the following script in a working directory outside the repository as
-`probe.mts`, and replace `<repo>` with the absolute path of the root of the
-repository. Package names are not resolved from a file outside the repository,
-so the source files are imported by absolute path. The extension must be `.mts`
-(the script uses a top-level `await`). Node removes the type annotations before
-it runs the script, so an import of types only is written as `import type`, and
-`enum`, `namespace`, and parameter properties are not used.
+`probe.mts` (`.mts` for its top-level `await`), with `<repo>` replaced by the
+absolute path of the root of the repository: a file outside the repository does
+not resolve package names. Node removes the type annotations before running it,
+so a change to it writes an import of types only as `import type` and uses no
+`enum`, `namespace`, or parameter properties.
 
 ```ts
 import { readFileSync } from "node:fs"
@@ -461,26 +430,24 @@ for (const input of inputs) {
 }
 ```
 
-- Put the inputs in a JSON file. Written directly in the shell, `\n` and quotes
-  go wrong, so create the file with `json.dump` in Python or similar. Inputs
-  that need whitespace at the end of a line are made exactly this way too.
-- Run `node <working directory>/probe.mts <cases.json>`, from any directory.
-  Write the output to a file and read it from there. When the machine is busy,
-  starting can take several minutes.
+- Write the inputs to a JSON file with `json.dump` in Python or similar, not in
+  the shell, where `\n`, quotes, and whitespace at the end of a line go wrong.
+- Run `node <working directory>/probe.mts <cases.json>`, and read the output
+  from a file.
 - For each candidate, run these three together:
   - an example that is reported (ordinary writing)
   - an example that is not reported (the corrected writing)
   - an intended way of writing (question 3 of section 2; for example `#9829;` or
     `R&D`)
-- Each claim of a condition or a suggestion is checked with an input for each
-  case that the claim distinguishes, and for each other rule that meets it at
-  the place it names (a directive, an ignored `;`, a comment line, an empty
-  line, a line separator, an empty description block), as Running tests in the
+- Check each claim of a condition or a suggestion with an input for each case
+  that the claim distinguishes, and for each other rule that meets it at the
+  place it names (a directive, an ignored `;`, a comment line, an empty line, a
+  line separator, an empty description block), as Running tests in the
   conventions SKILL says. The inputs are chosen from these cases; none is
   generated.
-- Before the table of the cases of a rule is shown, check it against the kinds
-  of case below. Add a row for each kind that a sentence of the document
-  touches, and run it through mermaid.js before the sentence states it:
+- Before showing the table of the cases of a rule, check it against these kinds
+  of case, add a row for each kind that a sentence of the document touches, and
+  run it through mermaid.js before the sentence states it:
   - a statement that takes its value from a later line, with an empty line, a
     comment line, or a directive between them (a second `accTitle:` that takes
     the line after `%% c` or after `%%{init: {}}%%`);
@@ -511,30 +478,22 @@ for (const input of inputs) {
     outside ASCII), and line ends written as CRLF;
   - data that mermaid.js does not read at all (four items of gantt data), where
     no rule reports.
-- `runMermaid` gives a Db summary for every diagram type that mermaid.js detects
-  (a normalizer is registered for each, in
-  `packages/tests/src/normalizers/index.ts`), and `parse()` reads every diagram
-  type. Whether the result changes is judged by comparing the Db summaries,
-  besides acceptance and rejection.
-- How the tree shows what a rule reports is checked by applying the condition to
-  the result of `parse()`. Write the condition with the fields of nodes, the
-  kinds and values of tokens, `Root.comments`, and `Root.directives`. Do not
-  write a condition that lexes the text again. When the value of a leaf node has
-  to be searched, say so explicitly. When the tree and the tokens cannot show
-  it, say so.
+- Judge whether the result changes by acceptance, rejection, and the Db summary
+  that `runMermaid` gives for every diagram type (the normalizers are in
+  `packages/tests/src/normalizers/index.ts`).
+- Check how the tree shows what a rule reports by applying the condition to the
+  result of `parse()`. Write the condition with the fields of nodes, the kinds
+  and values of tokens, `Root.comments`, and `Root.directives`, never by lexing
+  the text again. Say so when the value of a leaf node has to be searched, or
+  when the tree and the tokens cannot show it.
 
 ### Checking by formatting (question 5 of section 2)
 
-Run the reported example through the formatter and see whether the way mermaid
-reads it becomes visible. Put the following script in the working directory as
-`format.mts`, replace `<repo>` with the absolute path of the root of the
-repository, and run it like the probe. prettier is imported by absolute path,
-from the copy that the plugin's package depends on. The plugin imports
-`@mmd-toolkit/parser`, which resolves to the built `packages/parser/lib`, not to
-the parser's source. When the parser's source has changed, rebuild it with
-`pnpm --filter @mmd-toolkit/parser run build` before running the script;
-otherwise the text is formatted by an old parser. The probe imports the parser's
-source directly and is not affected.
+Put the following script in the working directory as `format.mts`, replace
+`<repo>`, and run it like the probe; it imports the prettier that the plugin's
+package depends on. The plugin uses the built `packages/parser/lib`, so after
+the parser's source changes, run `pnpm --filter @mmd-toolkit/parser run build`
+first.
 
 ```ts
 import { readFileSync } from "node:fs"
@@ -555,8 +514,6 @@ for (const input of inputs) {
 }
 ```
 
-Example: `A---orders` becomes `A ---o rders` (run).
-
 ## 5. Common rule or rule of a diagram type
 
 The condition is the last item of "Policies and criteria" in section 2. Even
@@ -565,14 +522,11 @@ common when the lexer of a diagram type absorbs or rejects the input.
 
 How to check:
 
-1. Take the list of all diagram types from the table of the specification's
-   `packages/spec/docs/detection.md` (every entry in the order of detection,
-   with the first word of each diagram type). Do not use a list written by hand.
-2. For each diagram type, make the smallest diagram that starts with that first
-   word, and check that mermaid accepts it. The following 22 diagrams were
-   checked to be accepted by the pinned mermaid.js (run; in parentheses, the
-   diagram type id that mermaid returned). For a diagram type not listed, make
-   one and check it at the time.
+1. Take the diagram types and their first words from the table of
+   `packages/spec/docs/detection.md`, not from a list written by hand.
+2. For each, make the smallest diagram that starts with that word and check that
+   mermaid accepts it. The pinned mermaid.js accepts these (run; in parentheses,
+   the diagram type id it returns); make the others when needed:
    - `sequenceDiagram`, a line break, `A->>B: hi` (sequence)
    - `classDiagram`, a line break, `class A` (classDiagram)
    - `stateDiagram-v2`, a line break, `[*] --> A` (stateDiagram)
@@ -600,32 +554,28 @@ How to check:
      (radar)
    - `treemap-beta`, a line break, `"A"`, a line break, `  "B": 1` (treemap)
    - `info` (info)
-3. Put the same construct in each diagram, run them through mermaid, and compare
-   acceptance and rejection for each diagram type. A diagram type that rejects
-   it needs no rule.
-4. Whether the result changes in a diagram type that accepts it is checked by
-   reading the lexer rules of that diagram type in the build of the pinned
-   mermaid.
+3. Put the construct in each diagram and run them through mermaid. A diagram
+   type that rejects it needs no rule.
+4. For a diagram type that accepts it, read its lexer rules in the build of the
+   pinned mermaid to see whether the result changes.
    - They are in
      `node_modules/.pnpm/mermaid@<version>/node_modules/mermaid/dist/chunks/mermaid.core/`.
-     Depending on the diagram type, the file name has one of these forms:
+     The file name has one of these forms:
      - `<name>Diagram-*.mjs` (sequenceDiagram, pieDiagram, and others)
      - `<name>-definition-*.mjs` (timeline, mindmap, kanban)
      - `diagram-*.mjs` without a name (packet, radar, treemap, and others). Find
        it with `grep -l` for the diagram type id.
-   - The lexer rules of a jison diagram are listed as regular expressions of the
-     form `/^(?:...)/`, so extract the relevant rules with `grep -o`.
-   - The chunk of a Langium diagram has no jison lexer rules (pie, gitgraph,
-     info, and architecture had none of that form; run). Comparing acceptance
-     and rejection does not tell whether the Db changes, so treat it as
-     unchecked.
+   - Extract the lexer rules of a jison diagram, regular expressions of the form
+     `/^(?:...)/`, with `grep -o`.
+   - A Langium diagram has no such rules (pie, gitgraph, info, architecture;
+     run); treat whether its Db changes as unchecked.
 5. Example: a line that holds only `%%`.
    - Only flowchart-v2 makes the vertex `%%` (run).
    - er and sankey reject it (run).
    - sequence, classDiagram, stateDiagram, gantt, journey, timeline, mindmap,
      kanban, c4, quadrantChart, and xychart have a lexer rule that reads a line
      starting with `%%` as a comment (run; extracted with grep).
-   - So this rule became a rule of flowchart.
+   - So this rule is a rule of flowchart.
 
 ## 6. What a decision shows
 
@@ -638,10 +588,9 @@ For each rule decided, show:
 - Why: how mermaid reads the input, why it happens in ordinary writing, and why
   the result differs from what was written.
 - An example that is reported, an example that is not reported, and an intended
-  way of writing, each with the result of mermaid (run). The inputs must be
-  accepted. The examples are ordinary writing: a lead-in added only to check the
-  behavior (such as an earlier description) is not put in an example, but shown
-  in the text of the reason and in the fixtures.
+  way of writing, each accepted, in ordinary writing, with the result of mermaid
+  (run); a lead-in added only to check the behavior (such as an earlier
+  description) goes in the reason and the fixtures, not in the example.
 - How the tree shows it: which node, field, or token finds it, with the result
   checked on `parse()` (run).
 - The supporting fixtures: their names if they exist; otherwise the smallest
@@ -649,10 +598,9 @@ For each rule decided, show:
 - Whether the `recommended` configuration enables it, and why, decided by
   section 7.
 - Its suggestions, or why it has none, decided by section 8.
-- Its options, and an option considered for later with the condition under which
-  it would be added, recorded in the table below. The rule document's Options
-  section says only what the rule has now; an option considered for later is not
-  written there.
+- Its options, and an option considered for later with the condition for adding
+  it, recorded in the table below; the rule document names only the options that
+  the rule has.
 
 Show what was decided to be dropped as well, with the name and the item of
 "Policies and criteria" in section 2 under which it was dropped.
@@ -670,58 +618,48 @@ Decisions about options:
 
 ## 7. Whether `recommended` enables a rule
 
-Once a rule is kept, decide whether the `recommended` configuration enables it.
-As is usual for ESLint plugins, `recommended` is the set of rules that nearly
-every user wants on: rules whose reports are nearly always mistakes to fix.
-Every rule of this plugin reports such a mistake (the first item of "Policies
-and criteria" in section 2), so a rule is enabled unless it fails one of these
-four criteria:
+`recommended` is the set of rules whose reports are nearly always mistakes to
+fix. Every rule reports such a mistake (section 2), so a kept rule is enabled
+unless it fails one of these criteria:
 
 1. **Every report is a fact.** At every place the rule reports, mermaid.js reads
    the text differently from what the author meant: it drops the text, reads it
-   as something else, rejects it, or replaces an earlier value. A rule that also
-   reports places that mermaid.js reads as the author meant is not enabled.
+   as something else, rejects it, or replaces an earlier value.
 2. **No intended way of writing is reported.** No form that an author writes on
-   purpose matches the condition. A kept rule normally meets this, since it is
-   also a criterion for keeping a rule; a rule for which a doubt about it
-   remains is not enabled.
+   purpose matches the condition. A kept rule normally meets this; a rule for
+   which a doubt remains is not enabled.
 3. **The reports do not rest on behavior of mermaid.js that is expected to
-   change.** A rule is not enabled when a pull request that fixes the behavior
-   it relies on is open, or when the maintainers of mermaid.js say they will fix
-   it: once mermaid.js changes, users of the new version would get reports that
-   are no longer facts.
+   change.** No pull request that fixes the behavior is open, and the
+   maintainers of mermaid.js have not said they will fix it: once mermaid.js
+   changes, the reports would no longer be facts.
 4. **The fix is clear.** An author who gets a report knows what to write
    instead.
 
-Behavior that looks like a defect of mermaid.js and is reported together with
-the mistake, because it lies in the same node, does not keep a rule out (the
-text `direction LR` inside a label, which flowchart-no-ignored-text reports
-together with the text on a direction line). mermaid.js drops that text too, so
-the report is a fact (criterion 1), and the author avoids it by rewriting the
-text (criterion 4); the rule is just not kept for it.
+A defect of mermaid.js reported with the mistake because it lies in the same
+node does not keep a rule out (the text `direction LR` inside a label, which
+flowchart-no-ignored-text reports with the text on a direction line): mermaid.js
+drops that text too (criterion 1), and the author avoids it by rewriting the
+text (criterion 4).
 
-Each rule is judged on its own, against its document, case by case:
+Judge each rule against its document, case by case:
 
-1. For criterion 1, each case that the document distinguishes is checked for a
-   reported place that mermaid.js reads as the author meant, also the cases that
-   the document itself names as reported although mermaid.js reads them as
-   written.
-2. For criterion 2, each case is checked with the question of section 2: the
-   report says what the output loses, replaces, leaves without effect, or adds,
-   with no guess about what the author meant, and no way of writing that the
-   documentation of mermaid.js shows is reported. Where an author may write the
-   form on purpose, as an empty block left to be filled in, the note says what
-   the report states then.
-3. For criterion 3, the issues and the pull requests of mermaid.js are searched
-   for each rule, and the words and what they found are recorded.
-4. For criterion 4, the document is checked for what it says to write instead.
+1. Criterion 1: check each case that the document distinguishes, also those that
+   the document names as reported although mermaid.js reads them as written.
+2. Criterion 2: check each case with the question of section 2: the report says
+   what the output loses, replaces, leaves without effect, or adds, with no
+   guess about what the author meant, and reports no way of writing that the
+   documentation of mermaid.js shows. Where an author may write the form on
+   purpose, as an empty block left to be filled in, the note says what the
+   report states then.
+3. Criterion 3: search the issues and the pull requests of mermaid.js for each
+   rule, and record the words and what they found.
+4. Criterion 4: check that the document says what to write instead.
 
-The decision is recorded in the table below, with the reason for a rule that is
-not enabled, and the notes after the table give what was checked for each
-criterion. The rule file sets `recommended` from this table. The common rules
-are enabled: each meets the four criteria in every diagram type (run in every
-diagram type, as their notes say), and their documents describe every diagram
-type.
+The table below records the decision, with the reason for a rule that is not
+enabled, and the rule file sets `recommended` from it. The notes after it give
+what was checked for each criterion. The common rules are enabled: each meets
+the criteria in every diagram type (run in every diagram type), and their
+documents describe every diagram type.
 
 Decisions:
 
@@ -919,15 +857,14 @@ Decisions:
 
 The notes give, for each rule or each group of rules that share their cases,
 what was checked for criteria 1 to 4, in that order. The readings of criterion 1
-are those that the documents state, which were run through mermaid.js when the
-documents were written; "run" marks a reading run again for this decision. The
-searches run over the issues and the pull requests of mermaid-js/mermaid; the
-words are quoted, and a search with no item named finds nothing that changes the
-reading.
+are those that the documents state; "run" marks a reading run through mermaid.js
+for this decision. The searches run over the issues and the pull requests of
+mermaid-js/mermaid; the words are quoted, and what they find does not change the
+reading except where this document says that it does.
 
 The title and description rules, `<diagram>-no-duplicate-title` and
 `<diagram>-no-duplicate-description` of flowchart, sequence, class, state, er,
-gantt, journey, and requirement (16 rules):
+gantt, journey, and requirement:
 
 1. Each reported statement replaces the value set before it: the line form and
    the block form; `accTitle:` or `accDescr:` with no text, which takes the next
@@ -950,7 +887,7 @@ gantt, journey, and requirement (16 rules):
 4. Keep one statement; the rules of flowchart suggest removing either.
 
 The empty block rules, `<diagram>-no-empty-description-block` of flowchart,
-sequence, state, er, gantt, journey, and requirement (7 rules):
+sequence, state, er, gantt, journey, and requirement:
 
 1. The block has no effect: after a description, the block leaves it, and with
    no description before it, the description stays empty. A block of only
@@ -962,7 +899,7 @@ sequence, state, er, gantt, journey, and requirement (7 rules):
 4. Write the description, or remove the block.
 
 The unclosed block rules, `<diagram>-no-unclosed-description-block` of
-flowchart, sequence, state, er, and requirement (5 rules):
+flowchart, sequence, state, er, and requirement:
 
 1. A block that a `}` of a shape, a data block, a body, or JSON closes takes the
    lines up to it, and a block without a `}` (flowchart, sequence, state) leaves
@@ -1069,7 +1006,6 @@ declarations of an id into the first, which keeps its title, direction, and
 position (read in `addSubGraph`; run); `TD` and `TB` are one direction, as the
 documentation says; (2) none; (3) the searches of the direction rules above; (4)
 write one `direction` statement for each subgraph.
-agentflow-no-duplicate-direction reports the same fact.
 
 flowchart-no-redefined-subgraph: (1) the declarations of one subgraph id are
 merged into the first, which keeps its title, direction, and position, so a
@@ -1111,7 +1047,7 @@ with the frontmatter ([#7989](https://github.com/mermaid-js/mermaid/pull/7989),
 merged), which keeps the reading; (4) close the directive with `}%%`. The rule
 is common: the shared preprocessing removes the directive before the lexer of
 any diagram type reads the text, and a diagram type that rejects what is left
-gives no report (run in the 44 headers of the detection table).
+gives no report (run in every header of the detection table).
 
 no-invalid-init-directive: (1) the settings of every init directive are dropped,
 or, for a name in another case, the settings of that directive (run in every
@@ -1123,19 +1059,16 @@ directive after `%%}%%` on its line drops only its own settings when text
 follows the line and those of every init directive on the last line, which the
 document states; (3) "init trailing comma", "init directive ignored", "directive
 case sensitive", "init json", "json5", "trailing comma init"; (4) correct the
-JSON, or write the name in lower case. The name follows the words of the rules
-of ESLint itself: a form written incorrectly, so that it does not work as meant,
-is invalid there, as in no-invalid-regexp and valid-typeof (a misspelled type
-name that silently matches nothing); both reported forms, JSON that is not valid
-and a name in another case, are such forms, and the fix is to write them
-correctly.
+JSON, or write the name in lower case. The name follows ESLint, where invalid is
+a form written incorrectly that does not work as meant (no-invalid-regexp,
+valid-typeof), as both reported forms are.
 
 no-duplicate-init-key: (1) the earlier value of a key that one object of the
 JSON holds twice is lost (run in every diagram type); (2) none: a key written
 again with an equal value, and the keys of two init directives, which the
 documentation combines with the last value of each key, are not reported, and
 only JSON that mermaid.js reads is checked; (3) "init duplicate key", "init
-json": nothing; (4) keep one of the two members.
+json"; (4) keep one of the two members.
 
 class-no-inline-comment: see the paragraph after these notes.
 
@@ -1193,11 +1126,10 @@ as a date, which it is not: the chart is not drawn, or the task has no length
 [#4165](https://github.com/mermaid-js/mermaid/issues/4165) (open) concerns a
 missing comma before the start; (4) the document names the form, in lower case
 at the front, followed by a comma. The names gantt-no-invalid-tag,
-xychart-no-invalid-orientation, and block-no-invalid-direction follow the words
-of the rules of ESLint itself, as no-invalid-init-directive does: each reports a
-value written incorrectly (in another case, without its comma, with whitespace,
-or in a place where it cannot stand), which silently does not work as meant, as
-in valid-typeof and no-invalid-regexp; the fix is to write it correctly.
+xychart-no-invalid-orientation, and block-no-invalid-direction use invalid as
+no-invalid-init-directive does: each reports a value written incorrectly (in
+another case, without its comma, with whitespace, or in a place where it cannot
+stand).
 
 journey-no-empty-person: (1) the journey and its legend get a person with an
 empty name; (2) none: `Make tea: 5:`, with the people left to be written, adds a
@@ -1244,9 +1176,9 @@ The timeline rules, timeline-no-duplicate-title,
 timeline-no-duplicate-description, and timeline-no-empty-description-block, have
 the notes of the title, description, and empty block rules above; their cases
 are those of journey, with a title that takes the whole next line after `title`
-at the end of a line, and an empty block before a period or an event (run). The
-searches "timeline title", "timeline section", "timeline accTitle", "timeline
-colon", and "timeline hash" found nothing that changes the reading.
+at the end of a line, and an empty block before a period or an event (run).
+Searches: "timeline title", "timeline section", "timeline accTitle", "timeline
+colon", and "timeline hash".
 
 sankey-no-invalid-value: (1) a value with no number at its start is `NaN`, and
 the link has no size; text after the number is dropped, as `"1,234"`, which is 1
@@ -1264,8 +1196,7 @@ deleted with its space kept is the slip reported, as for
 journey-no-empty-person; (3) "sankey" in titles; (4) write the name, or remove
 the record.
 
-The XY chart rules have these notes; the searches were "xychart" in titles and
-in the text, and found nothing that changes the readings but what is named.
+The XY chart rules. Searches: "xychart" in titles and in the text.
 
 - xychart-no-duplicate-title, xychart-no-duplicate-description,
   xychart-no-empty-description-block: the notes of the title, description, and
@@ -1289,10 +1220,9 @@ in the text, and found nothing that changes the readings but what is named.
   rule checks only the plots after it, where the reading is the same now and
   with that change; (4) write as many values as categories.
 
-The quadrant chart rules have these notes; the searches were "quadrant" and
-"quadrantChart" in titles and in the text, also with the words point, classDef,
-coordinates, x-axis, range, lexer, comma, number, NaN, hex, and radius, and
-found nothing that changes the readings: the open
+The quadrant chart rules. Searches: "quadrant" and "quadrantChart" in titles and
+in the text, also with the words point, classDef, coordinates, x-axis, range,
+lexer, comma, number, NaN, hex, and radius: the open
 [#8084](https://github.com/mermaid-js/mermaid/pull/8084) changes only how the
 texts are wrapped when drawn, and
 [#7608](https://github.com/mermaid-js/mermaid/issues/7608) (open) asks for other
@@ -1328,12 +1258,11 @@ ranges of the axes.
   for other ranges, which would not make `0,3` a number; (4) write the decimal
   point.
 
-The block diagram rules have these notes; the searches were "block" in titles
-and in the text, also with the words chain, composite, class, styles, columns,
-shape, arrow, redefined, whitespace, duplicate, comma, width, edge, before,
-direction, label, and link, and found nothing that changes the readings: the
-open [#8279](https://github.com/mermaid-js/mermaid/pull/8279) changes a `style`
-for an id that no block has, which mermaid.js now rejects, and
+The block diagram rules. Searches: "block" in titles and in the text, also with
+the words chain, composite, class, styles, columns, shape, arrow, redefined,
+whitespace, duplicate, comma, width, edge, before, direction, label, and link:
+the open [#8279](https://github.com/mermaid-js/mermaid/pull/8279) changes a
+`style` for an id that no block has, which mermaid.js now rejects, and
 [#8310](https://github.com/mermaid-js/mermaid/pull/8310) (open) adds the
 accessibility statements.
 [#5588](https://github.com/mermaid-js/mermaid/issues/5588) (open, in triage)
@@ -1377,18 +1306,14 @@ maintainer has said it will change.
   sides, and a width equal to the one the block has are not reported; (4) close
   the shape with its pair, write the same line on both sides and the start
   marker on the second arrow, and write the width where the block is declared on
-  its own. The name block-no-useless-width follows the words of the rules of
-  ESLint itself: there, a value written that has no effect on the result is
-  useless, as in no-useless-assignment (a value assigned and never used) and
-  no-useless-backreference (a backreference written to match that can match
-  nothing), while unused names what is declared and never read. The width is
-  read by the grammar (`node SIZE`) and left out of the block by the action of
-  the edge (`nodeStatement link node`), so it is a value given that has no
-  effect.
+  its own. The name block-no-useless-width follows ESLint, where useless is a
+  written value with no effect (no-useless-assignment, no-useless-backreference)
+  and unused a declaration never read: the grammar reads the width
+  (`node SIZE`), and the action of the edge (`nodeStatement link node`) leaves
+  it out of the block.
 
-The kanban rules have these notes; the searches were "kanban" in titles and in
-the text, also with the words metadata, priority, duplicate, and icon, and found
-nothing that changes the readings:
+The kanban rules. Searches: "kanban" in titles and in the text, also with the
+words metadata, priority, duplicate, and icon:
 [#8117](https://github.com/mermaid-js/mermaid/issues/8117) (open) proposes a key
 `status`, which mermaid.js does not read now.
 
@@ -1402,30 +1327,28 @@ nothing that changes the readings:
   empty are not reported; (4) write the key and the value as the documentation
   writes them. Both rules read the YAML of the metadata, which the tree keeps as
   written, as mermaid.js reads it (JSON_SCHEMA of js-yaml). Their conditions,
-  for writing the documents and the fixtures again: the key rule reports each
-  key of the metadata of a column or an item that is not one of the six,
-  compared with its case after YAML has read it (a key in quotes too), with the
-  blocks of one node read as one, as mermaid.js joins them; the priority rule
-  reports the priority of an item that is not one of the five, as `high`,
-  `" High "`, `Urgent`, `0`, another number, or a list, and not one that is
-  missing, `null`, `false`, or empty, and not the priority of a column, which
-  mermaid.js does not keep. Both are held until after the release; they are not
-  dropped. Their documents and fixtures are kept outside the repository for now,
-  and are written again from this note and from runs of mermaid.js if they are
-  lost. Reading the YAML needs a dependency of the plugin, and the lint rules
-  before the release serve mainly to check the shape of the tree, so whether to
-  add one is decided after the release; the dependency would then be
-  yaml-eslint-parser. A misspelled key in the data of a flowchart node, as
-  `A@{ shpe: circle }`, which gives the node no shape without an error (run), is
-  a candidate of the same kind and is held in the same way.
+  for writing the documents and the fixtures: the key rule reports each key of
+  the metadata of a column or an item that is not one of the six, compared with
+  its case after YAML has read it (a key in quotes too), with the blocks of one
+  node read as one, as mermaid.js joins them; the priority rule reports the
+  priority of an item that is not one of the five, as `high`, `" High "`,
+  `Urgent`, `0`, another number, or a list, and not one that is missing, `null`,
+  `false`, or empty, and not the priority of a column, which mermaid.js does not
+  keep. Both are held until after the release; they are not dropped. Their
+  documents and fixtures are not in the repository; they are written from this
+  note and from runs of mermaid.js. Reading the YAML needs a dependency of the
+  plugin, and the lint rules before the release serve mainly to check the shape
+  of the tree, so whether to add one is decided after the release; the
+  dependency would then be yaml-eslint-parser. A misspelled key in the data of a
+  flowchart node, as `A@{ shpe: circle }`, which gives the node no shape without
+  an error (run), is a candidate of the same kind and is held in the same way.
 - kanban-no-duplicate-section: (1) every column of one id lists every item of
   that id, so the items are drawn once for each column (run); (2) none: columns
   of one id with no item are not reported; (4) give each column its own id.
 
-The C4 rules have these notes; the searches were "C4" in titles and the words
-duplicate, undefined, UpdateLayoutConfig, UpdateElementStyle before, attribute
-case, accTitle, sprite, and offset, and found nothing that changes the readings
-but what the rows above name.
+The C4 rules. Searches: "C4" in titles and the words duplicate, undefined,
+UpdateLayoutConfig, UpdateElementStyle before, attribute case, accTitle, sprite,
+and offset.
 
 - c4-no-duplicate-title, c4-no-duplicate-description: the notes of the title and
   description rules above; `accTitle:` is not compared, since it sets the
@@ -1455,17 +1378,13 @@ but what the rows above name.
   of declarations are not reported; (3) "UpdateElementStyle", "UpdateRelStyle":
   [#8087](https://github.com/mermaid-js/mermaid/pull/8087) (open) checks the
   colours, which does not change which value is kept; (4) give each field once,
-  with a named attribute for one field. A style update written twice loses the
-  earlier value of each field that both give (`$bgColor="red"`, then
-  `$bgColor="blue"`, keeps only `blue`; run); only updates that give other
-  fields lose nothing.
+  with a named attribute for one field.
 
-The venn rules have these notes; the searches were "venn" in titles,
-"venn-beta", and "venn" with the words style, stroke-width, text, title,
-duplicate, comment, union label, and px, and found nothing that changes the
-readings: the open [#8089](https://github.com/mermaid-js/mermaid/pull/8089)
-sorts the names of a target before the drawing looks up its style or its area,
-which the Db already sorts; the open
+The venn rules. Searches: "venn" in titles, "venn-beta", and "venn" with the
+words style, stroke-width, text, title, duplicate, comment, union label, and px:
+the open [#8089](https://github.com/mermaid-js/mermaid/pull/8089) sorts the
+names of a target before the drawing looks up its style or its area, which the
+Db already sorts; the open
 [#8471](https://github.com/mermaid-js/mermaid/pull/8471) makes a diagram with no
 set an error; [#8076](https://github.com/mermaid-js/mermaid/issues/8076) and
 [#7692](https://github.com/mermaid-js/mermaid/issues/7692) (open) concern where
@@ -1492,8 +1411,8 @@ SVG was drawn).
   other with its name as written (run for the Db; the drawing read); (2) none: a
   value that the target already has, a property that it has not had, and the
   five properties are not reported; (4) give each property once, and write one
-  of the five. The name venn-no-invalid-style-key follows the words of ESLint
-  itself, as the invalid names above.
+  of the five. The name venn-no-invalid-style-key uses invalid as the names
+  above do.
 - venn-no-undef: (1) the text node of an area that no statement declares is not
   placed, and a style for it styles nothing (run for the areas of the layout;
   read in `renderTextNodes` and in the lookups of the styles); (2) none: an area
@@ -1504,11 +1423,10 @@ SVG was drawn).
   none: a space before `%%` and a `%%` inside a label or a quoted name are not
   reported; (4) remove the character, or complete the statement.
 
-The agentflow rules have these notes; the searches were "agentflow" in titles,
-"agentflow-beta", and "agentflow" with the words connector, flow title,
-direction, accDescr, duplicate, and shape, and found nothing that changes the
-readings: [#8443](https://github.com/mermaid-js/mermaid/pull/8443), merged after
-the pinned version, draws `[/…/]` as an input, so that
+The agentflow rules. Searches: "agentflow" in titles, "agentflow-beta", and
+"agentflow" with the words connector, flow title, direction, accDescr,
+duplicate, and shape: [#8443](https://github.com/mermaid-js/mermaid/pull/8443),
+merged after the pinned version, draws `[/…/]` as an input, so that
 agentflow-no-redefined-vertex would miss a change to or from it, but would
 report nothing that changes nothing.
 
@@ -1549,10 +1467,9 @@ report nothing that changes nothing.
   `L_A_B_0`) is an id of the diagram and is not reported, since it reaches what
   it names (run).
 
-The usecase rules have these notes; the searches were "usecase" and "use case"
-in titles, and "usecase" with the words duplicate, classDef, metadata,
-direction, accDescr, animate, and animation, and found nothing that changes the
-readings: [#8392](https://github.com/mermaid-js/mermaid/issues/8392) and
+The usecase rules. Searches: "usecase" and "use case" in titles, and "usecase"
+with the words duplicate, classDef, metadata, direction, accDescr, animate, and
+animation: [#8392](https://github.com/mermaid-js/mermaid/issues/8392) and
 [#8402](https://github.com/mermaid-js/mermaid/pull/8402), both open, concern the
 guillemets of include and extend.
 
@@ -1595,9 +1512,8 @@ guillemets of include and extend.
   them in another order is not reported; (4) write one `classDef` for each
   class.
 
-The pie rules have these notes; the searches were "pie duplicate label", "pie
-same label", "pie" with title in titles, "pie accDescr", and "populateCommonDb",
-and found nothing that changes the readings:
+The pie rules. Searches: "pie duplicate label", "pie same label", "pie" with
+title in titles, "pie accDescr", and "populateCommonDb":
 [#6485](https://github.com/mermaid-js/mermaid/pull/6485) (closed, not merged)
 says of the Langium parsers that only the last value of a title is taken, as
 intended. [#7855](https://github.com/mermaid-js/mermaid/pull/7855) (open) moves
@@ -1622,10 +1538,9 @@ mermaid.js is updated.
   (read in `valueConverter.ts`; run); the frontmatter is not read, and the title
   document states what follows from that.
 
-The gitgraph rules have these notes; the searches were "gitGraph duplicate",
-"gitGraph commit id", "gitGraph id", "gitGraph parent", "gitGraph message",
-"gitGraph tag", and "gitGraph title", and found nothing that changes the
-readings: besides #6707 below, the items concern merges (as
+The gitgraph rules. Searches: "gitGraph duplicate", "gitGraph commit id",
+"gitGraph id", "gitGraph parent", "gitGraph message", "gitGraph tag", and
+"gitGraph title": besides #6707 below, the items concern merges (as
 [#7950](https://github.com/mermaid-js/mermaid/pull/7950), open, which adds
 merges of more parents), the layout, and clicks.
 
@@ -1659,16 +1574,14 @@ merges of more parents), the layout, and clicks.
 
 The packet rules have the notes of the pie rules above, since packet reads its
 titles and descriptions in the same way and draws the title (read in `parser.ts`
-and `db.ts` of packet; run). The searches were "packet title", "packet
-accDescr", "packet accTitle", "packet duplicate label", "packet contiguous",
-"packet", and "packet" in titles, and found nothing about titles or
-descriptions.
+and `db.ts` of packet; run). Searches: "packet title", "packet accDescr",
+"packet accTitle", "packet duplicate label", "packet contiguous", "packet", and
+"packet" in titles.
 
-The architecture rules have these notes; the searches were "architecture title",
-"architecture arrow", "architecture group edge", "architecture group",
-"architecture-beta group", "architecture diagram title", "architecture
-accTitle", and "architecture accDescr", and found nothing that changes the
-readings: [#7211](https://github.com/mermaid-js/mermaid/issues/7211) (open)
+The architecture rules. Searches: "architecture title", "architecture arrow",
+"architecture group edge", "architecture group", "architecture-beta group",
+"architecture diagram title", "architecture accTitle", and "architecture
+accDescr": [#7211](https://github.com/mermaid-js/mermaid/issues/7211) (open)
 concerns edges from a group around another group, and
 [#7313](https://github.com/mermaid-js/mermaid/issues/7313) (closed) the length
 of arrows.
@@ -1694,14 +1607,13 @@ of arrows.
   before or after the edge, is not reported; (4) remove `{group}`, or declare
   the service in its group.
 
-The radar rules have these notes; the searches were "radar curve", "radar
-entry", "radar duplicate", "radar ticks", "radar min max", "radar title", "radar
-accDescr", and "radar axis", and found nothing that changes the readings:
-[#8522](https://github.com/mermaid-js/mermaid/pull/8522) (open) draws equal
-bounds at the center and leaves a minimum above the maximum as it is (read in
-its changes), and [#8301](https://github.com/mermaid-js/mermaid/pull/8301) and
-[#6481](https://github.com/mermaid-js/mermaid/pull/6481) (open) add range values
-and labels of the rings.
+The radar rules. Searches: "radar curve", "radar entry", "radar duplicate",
+"radar ticks", "radar min max", "radar title", "radar accDescr", and "radar
+axis": [#8522](https://github.com/mermaid-js/mermaid/pull/8522) (open) draws
+equal bounds at the center and leaves a minimum above the maximum as it is (read
+in its changes), and [#8301](https://github.com/mermaid-js/mermaid/pull/8301)
+and [#6481](https://github.com/mermaid-js/mermaid/pull/6481) (open) add range
+values and labels of the rings.
 
 - radar-no-undef, radar-no-duplicate-entry: (1) for each declared axis, a curve
   takes the first entry that names it, so an entry of a name that no axis has
@@ -1736,9 +1648,8 @@ and labels of the rings.
   unclosed block rule reports with the condition of the usecase rule and is not
   enabled for the same reason.
 
-The treemap rules have these notes; the searches were "treemap number", "treemap
-value", "treemap title", "treemap accDescr", "treemap classDef", and "treemap
-whitespace", and found nothing that changes the readings.
+The treemap rules. Searches: "treemap number", "treemap value", "treemap title",
+"treemap accDescr", "treemap classDef", and "treemap whitespace".
 
 - treemap-no-invalid-value: (1) the value converter removes the commas and reads
   the rest with `parseFloat`, so `1_000` is 1, `1.2.3` is 1.2, and `.` is no
@@ -1766,14 +1677,12 @@ The railroad rules have the notes of the architecture rules above for titles and
 descriptions: the four dialects read their titles and descriptions in the same
 way (read in the parsers of the four dialects; run), the drawing does not show
 `title` (read in `railroadRenderer.ts`), so the title rule compares `accTitle`
-only, and every rule applies to the four diagram types of railroad. The searches
-were "railroad title", "railroad accTitle", "railroad accDescr", "railroad
-duplicate", "railroad repeat", and "railroad", and found nothing about titles or
-descriptions.
+only, and every rule applies to the four diagram types of railroad. Searches:
+"railroad title", "railroad accTitle", "railroad accDescr", "railroad
+duplicate", "railroad repeat", and "railroad".
 
-The Cynefin rules have these notes; the searches were "cynefin", "cynefin
-domain", "cynefin title", and "cynefin duplicate", and found nothing that
-changes the readings: [#7922](https://github.com/mermaid-js/mermaid/pull/7922)
+The Cynefin rules. Searches: "cynefin", "cynefin domain", "cynefin title", and
+"cynefin duplicate": [#7922](https://github.com/mermaid-js/mermaid/pull/7922)
 (open) changes the center and the boundaries of the framework and leaves the
 storing of domains and the common values as they are (read in its changes).
 
@@ -1792,9 +1701,8 @@ storing of domains and the common values as they are (read in its changes).
   Cynefin reads its titles and descriptions in the same way and draws the title
   (run).
 
-The Wardley rules have these notes; the searches were "wardley", "wardley link
-label", "wardley pipeline", "wardley evolve", "wardley annotations", and
-"wardley title", and found nothing that changes the readings:
+The Wardley rules. Searches: "wardley", "wardley link label", "wardley
+pipeline", "wardley evolve", "wardley annotations", and "wardley title":
 [#7767](https://github.com/mermaid-js/mermaid/pull/7767) (open) places labels on
 request, and [#8379](https://github.com/mermaid-js/mermaid/pull/8379) (open)
 concerns the configuration.
@@ -1837,10 +1745,9 @@ concerns the configuration.
   wardley reads its titles and descriptions in the same way and draws the title
   (run).
 
-The Event Modeling rules have these notes; the searches were "eventmodeling",
-"eventmodeling accDescr", "eventmodeling accTitle", "eventmodeling data block",
-"eventmodeling source frame", and "eventmodeling duplicate", and found nothing
-that changes the readings:
+The Event Modeling rules. Searches: "eventmodeling", "eventmodeling accDescr",
+"eventmodeling accTitle", "eventmodeling data block", "eventmodeling source
+frame", and "eventmodeling duplicate":
 [#8288](https://github.com/mermaid-js/mermaid/issues/8288) (closed) and
 [#8296](https://github.com/mermaid-js/mermaid/pull/8296) (merged, in the pinned
 version) draw the explicit sources of a reset frame;
@@ -1911,11 +1818,11 @@ validator, which the public parse does not run.
   since nothing after it is taken, and the comment text kept in the description
   is the defect in the table above.
 
-The tree view rules have these notes; the searches were "treeView", "treeview
-annotation", "treeview icon", "treeview accDescr", "treeview description",
-"treeview trailing whitespace", and "treeview class", and found nothing that
-changes the readings: [#7527](https://github.com/mermaid-js/mermaid/pull/7527)
-(merged) adds the annotations and hiding an icon,
+The tree view rules. Searches: "treeView", "treeview annotation", "treeview
+icon", "treeview accDescr", "treeview description", "treeview trailing
+whitespace", and "treeview class":
+[#7527](https://github.com/mermaid-js/mermaid/pull/7527) (merged) adds the
+annotations and hiding an icon,
 [#7840](https://github.com/mermaid-js/mermaid/pull/7840) (merged) resolves icons
 with iconify and `defaultIconPack`, and
 [#7721](https://github.com/mermaid-js/mermaid/pull/7721) (merged) adds the
@@ -1953,29 +1860,20 @@ comment at the end of a line should be supported, and
 [#6401](https://github.com/mermaid-js/mermaid/issues/6401) treats the behavior
 as intended (criterion 3).
 
-flowchart-no-unclosed-description-block is not enabled by `recommended`: its
-document names reports where mermaid.js reads the text as written.
-
 ## 8. Suggestions
 
-Once a rule is kept, decide whether it offers suggestions (edits that are
-applied only when the user picks one in the editor) or a fix, and what they are.
-A candidate edit becomes a suggestion only when it meets all five criteria
-below; where no candidate meets them, the rule offers none.
+Decide whether a kept rule offers suggestions (edits applied only when the user
+picks one in the editor) or a fix, and which. A candidate edit is a suggestion
+only when it meets the five criteria below.
 
-Offering no suggestion is better than offering one that has to be guarded. A
-candidate is offered only when the conditions under which it is right can be
-written in one or two sentences of the specification. When it would hold only
-with a parse of its result, a check for each known divergence, or an exception
-for a diagram type, it is not offered, and no condition is added to keep it. A
-rule without suggestions is enough: its message says what happens. The same
-holds for the cases within one rule: a rule need not offer an edit at every
-place that it reports. It offers the edit in the cases where the sentences of
-the specification say that the edit is right, and none in the others, where the
-edit is hard to write or its condition cannot be put in sentences, rather than
-an edit kept by an added guard. Removing a statement only when it has its lines
-to itself, and joining a range only when no comment stands in it, are such
-cases.
+Offering no suggestion is better than offering a guarded one. A candidate is
+offered only where one or two sentences of the specification state when it is
+right; one that would need a parse of its result, a check for each known
+divergence, or an exception for a diagram type is not offered, and no condition
+is added to keep it. The same holds within a rule: it offers the edit only in
+the cases that such sentences cover (removing a statement only when it has its
+lines to itself, joining a range only when no comment stands in it), and none in
+the others.
 
 1. **The candidates are few, and the reported text decides them (one to
    three).** What an edit writes is decided by the positions of the tree and its
@@ -1987,36 +1885,32 @@ cases.
    only silences the rule, whatever the author meant, is no candidate.
 3. **The conditions are written from the sentences of the specification, the
    rule no longer reports that place, and the edit writes no new mistake.** No
-   edit parses its result when the rule runs. Parsing takes about 0.04 ms a line
-   (1,600 lines take about 70 ms), so parsing the result of each suggestion
-   would cost the number of reports times the size of the diagram: a diagram of
-   1,000 lines with 100 reports would take about 9 seconds on every lint, which
-   an editor cannot afford. An edit that gives back as statements the lines that
-   a block, a directive, a backquote, or a name took (closing a block at the end
-   of the line of its `{`, closing a treeview name, closing a directive, closing
-   a backquoted name), and an edit that splits a line at a `;`, are not offered:
-   whether those lines come back as statements, and how mermaid.js reads them,
-   is known only by parsing the whole result and by checking it for the known
-   divergences, which repeat steps of the lexer of mermaid.js that the
-   specification does not state. Closing an unclosed block while it is empty is
-   no candidate: the edit writes an empty block, which
-   no-empty-description-block reports. Another rule may report the result only
-   for a mistake that the text of the author already held and the edit makes
-   visible: closing an unclosed block after an earlier description shows that
-   the text sets the description twice, which no-duplicate-description reports.
-   The tests of a rule list the rules whose reports its suggestions may make
-   visible in this way, each with the mistake it shows, and fail on a report of
-   any other rule on a result. The record of this section says it, and the
-   fixtures show it; the rule document does not.
+   edit parses its result when the rule runs: at about 0.04 ms a line, 100
+   reports in a diagram of 1,000 lines would take about 9 seconds on every lint.
+   An edit that gives back as statements the lines that a block, a directive, a
+   backquote, or a name took (closing a block at the end of the line of its `{`,
+   closing a treeview name, closing a directive, closing a backquoted name), and
+   an edit that splits a line at a `;`, are not offered: whether those lines
+   come back as statements, and how mermaid.js reads them, is known only by
+   parsing the whole result and by checking it for the known divergences, which
+   repeat steps of the lexer of mermaid.js that the specification does not
+   state. Closing an unclosed block while it is empty is no candidate: the edit
+   writes an empty block, which no-empty-description-block reports. Another rule
+   may report the result only for a mistake that the text of the author already
+   held and the edit makes visible: closing an unclosed block after an earlier
+   description shows that the text sets the description twice, which
+   no-duplicate-description reports. The tests of a rule list the rules whose
+   reports its suggestions may make visible in this way, each with the mistake
+   it shows, and fail on a report of any other rule on a result. This section
+   records them and the fixtures show them, not the rule document.
 4. **How mermaid.js reads the result is known.** The record of this section and
    the fixtures hold that reading, checked by running an example through
    mermaid.js (run). The message of a suggestion says only the edit, as
    ``Remove this `accTitle` statement.``,
    ``Remove the earlier `accTitle` statement.``, `Remove the empty block.`, and
-   `Close the block at the end of the text.`: the people who use the rule pick a
-   suggestion by its edit, and they see the result. A clause on the reading is
-   not added to the message: it says what the result shows anyway, and it would
-   be false for the second of three statements that set the same value.
+   `Close the block at the end of the text.`, not the reading: the result shows
+   it, and a clause on it would be false for the second of three statements that
+   set the same value.
 5. **The result does not hang on invisible whitespace.** An edit that changes
    the reading only through whitespace at the end of a line (a space after `%%`)
    is no candidate: an editor that removes such whitespace on saving undoes it.
@@ -2085,8 +1979,8 @@ without a directive (offered).
   statement before it ends before that space. There, the statement is removed
   with the spaces and tabs before it, up to the end of its line and without the
   line terminator, when nothing follows it on its line; with a `%%` after it, it
-  gets none. All 102 such statements in the invalid fixtures of the rules and in
-  the corpus of eventmodeling, removed so, leave a text that the parser and
+  gets none. All such statements in the invalid fixtures of the rules and in the
+  corpus of eventmodeling, removed so, leave a text that the parser and
   mermaid.js accept and that mermaid.js reads as before apart from the title and
   the description (run). Fixtures: after the header (offered), after a frame
   (offered), and with a comment after it (none).
@@ -2137,8 +2031,8 @@ without a directive (offered).
   have another statement after it
   (`eventmodeling accDescr {} tf 01 evt Bought`). There, the block is removed
   with the spaces and tabs before it on its line, and what follows it stays. All
-  16 such blocks in the invalid fixtures of the rules and the corpus of
-  eventmodeling, and the 5 inputs written for the question (after the header,
+  such blocks in the invalid fixtures of the rules and the corpus of
+  eventmodeling, and the inputs written for the question (after the header,
   after a frame, with a frame, an `accTitle:`, or a comment after it, at the end
   of the text, and a block that spans lines), removed so, leave a text that the
   parser and mermaid.js accept and that mermaid.js reads as before apart from
@@ -2199,7 +2093,7 @@ above; a rule named with none offers nothing.
   written before `B`, it is rejected; run), and keeping an edit right would need
   a check of that divergence; the split at a `;` and the closing of a backquoted
   name give back lines (criterion 3). class-no-inline-comment moves the comment
-  to a line of its own (all 23 invalid fixtures are then read as with the
+  to a line of its own (all its invalid fixtures are then read as with the
   comment line removed; run); it needs no such check, because a comment after
   other text on the line before is reported by the same rule and moved in the
   same pass. class-no-redefined-class gets none: the likely fix is a new id for

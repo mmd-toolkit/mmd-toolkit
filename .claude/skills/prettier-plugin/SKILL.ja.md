@@ -12,9 +12,6 @@ description:
 
 `prettier-plugin-mmd` に図種の printer を足す手順と、
 mermaid.js の更新のときに printer を直す手順。
-会話の履歴や記憶がなくても、この文書だけで同じ品質で進められるように書く。
-パッケージの方針と基準は「方針と基準」の節にある。
-どのパッケージにも当たるものは、AGENTS.md と SKILL `conventions` にある。
 
 ## 方針と基準
 
@@ -30,23 +27,17 @@ mermaid.js の更新のときに printer を直す手順。
 ## 1. 最初に読むもの
 
 1. この文書の「方針と基準」の節、AGENTS.md の Principles、SKILL `conventions`。
-   1 つ目には、このパッケージの責任と 4 点のテストがある。
-   2 つ目には、正しい形と、コミットしないことがある。
-   3 つ目には、正規表現を使わないこと、autofix の結果を読むこと、見えない文字、
-   英語と日本語の文書の対、文章の折り返し、
-   Mermaid のテキストのコードブロックの info string は `mmd` であることがある。
-   基準は変わるので、毎回読む。
-2. 図種の仕様: `packages/spec/docs/diagrams/<図種>.md` （字句の規則、文法、
-   Db の組み立て）と、
+2. 図種の仕様: `packages/spec/docs/diagrams/<図種>.md` と、
    木の定義 `packages/spec/docs/ast.md` と `packages/spec/docs/ast/<図種>.md`。
    printer の規則は、ここにあるノードの型、欄、トークンの種類で書く。
 3. このパッケージの文書。
    `docs/development.md` は、テストと fixture の構成、printer の作りを書く。
    `docs/<既存の図種>.md`（例: `docs/flowchart.md`）は、
    整形の規則とその理由を書く。
-   これが決定の置き場所であり、項目の立て方と、制限の書き方の手本になる。
+   決定はここに置く。
+   項目の立て方と制限の書き方の手本にもなる。
    `docs/compatibility.md` は、mermaid.js と違う箇所と、
-   書かれたまま残す箇所をどう書くかの手本になる。
+   書かれたまま残す箇所の書き方の手本になる。
 
 図種名は `conventions` の規則に従い、
 パスと fixture の分類では小文字の ASCII 英数字の 1 語、
@@ -59,7 +50,7 @@ mermaid.js の綴りを使う。
 仕様の欠落は spec の SKILL、木の変更は parser の SKILL、
 fixture は tests の SKILL で直す。
 コミットとプッシュは、求められたときだけ行う（AGENTS.md）。
-ステージはユーザーが行うので、ステージを変えず、`git mv` を使わない。
+ステージを変えず、`git mv` を使わない。
 ファイルの移動と削除は `mv` と `rm` で行う。
 
 ## 2. 始める条件（入力）
@@ -68,7 +59,7 @@ fixture は tests の SKILL で直す。
   `visitorKeys` を公開している（parser の SKILL の出力）。
   木が定まるまで、木に依存するコードを書かない。
 - `@mmd-toolkit/tests` に、
-  図種のコーパス（`packages/tests/fixtures/<図種>/`）と Db の要約関数がある。
+  図種のコーパス（`packages/tests/fixtures/<図種>/`）と Db の要約がある。
 - `checkTree` は木の条件（欄・範囲・トークン）を確かめ、
   受理は parser の木・エラーの結果と、
   `@mmd-toolkit/tests` の `fixtureAccepts` を比べて確かめる。
@@ -79,7 +70,6 @@ fixture は tests の SKILL で直す。
 ## 3. 整形方針を決める
 
 printer の規則は、項目ごとに選ばれた選択肢で決まる。
-printer を書く前に、選択肢の一覧を作り、決定を求める。
 
 1. 仕様の文法と木から、整形で変えうる箇所を列挙する。
    flowchart で項目にしたものの種類は次のとおり（例であり、図種で増減する）:
@@ -95,7 +85,6 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
    Db が変わる選択肢は、そうと書く。
 3. 選択肢ごとに、整形の前と後のテキストを mermaid.js に掛け、
    Db が変わらないことを確かめる。
-   手で書いた 1〜2 例で済ませず、
    選択肢が分ける場合ごとに fixture を置く（6 節）。
    確かめた結果を【実行】として添える。
 4. 一覧を示して決定を求め、選ばれた選択肢を実装する。
@@ -109,7 +98,6 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
 構成は次のとおり（`src/printers/` の下）:
 
 - `index.ts` の `diagramPrinters` に、図種の本体のノードの型と printer を足す。
-  dispatch は型で決まる。
   表には、parser の本体の型のすべてに項目があるので、
   新しい図種の printer を足し忘れると型検査が失敗する。
 - すべての図種に共通の部分は、共通のモジュールにある。
@@ -132,8 +120,7 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   `kept-lines.ts` は、自分の `;` を持つ行と、行の始まりと終わりを決める。
   `source.ts` の `isStructural` は、
   どのトークンがノードの構造に属するかを決める。
-  図種が、共通のモジュールがしないことを要するときは、それを広げ、
-  1 つの判定を 1 か所に保つ。
+  図種が、共通のモジュールがしないことを要するときは、それを広げる。
 - 図種ごとに、次のファイルがある。
   printer（`<図種>.ts`）は、ノードの型で振り分け、
   `blocks.ts` に `BlockRules` を渡す。
@@ -188,7 +175,7 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
    fixture を置き（6 節）、
    仕様の節を指すコメントを付けた明示の規則にする（5 節）。
 2. 実行時に整形の結果を parser で読み直して比べる仕組みは作らない。
-   規則の欠けを隠すだけで、規則にならない。
+   規則の欠けを隠すだけである。
 3. 1 つの判定は 1 か所に置く。
    例は、行の始まりと終わりの定義、隙間の要素の読み方、保つ行の判定。
    呼び出し側が守るべき暗黙の約束を残さない。
@@ -206,7 +193,6 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
 結果として、規則の文面、再現する入力、mermaid.js の結果（整形の前と後）、
 仕様の根拠を示す。
 決定した選択肢を変える規則なら、実装する前に、その根拠を示して決定を求める。
-文書より先に実装だけが残ると、決定と実装がずれる。
 
 狭い例外（例: 斜めの形の閉じ `?]` と `=]` の前には空白を置かない）も、
 同じように文書に書く。
@@ -220,14 +206,13 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   ファイルは `tests/fixtures/<図種>/<規則>/<例>-input.mmd` と `-output.mmd`、
   必要なら `-options.json`。
   出力は `pnpm --filter prettier-plugin-mmd run test:update` で書き出し、
-  差分を読んで意図した整形かを確かめる。
+  差分を読む。
   `tests/format.test.ts` が、出力の一致、冪等、木が表す Db の一致、
   埋め込みデータが書かれたままであることを確かめる。
   U+2028 や U+2029 のような不可視文字を含むテキストは、
   この package の fixture にしない。
   `tests/line-separators.test.ts` のように、テストのコードにエスケープで書き、
   書いた後にファイルのバイト列を確かめる。
-  その文字をそのまま持つのは、`packages/tests/fixtures/` のコーパスだけ。
 - Db の保ち方（`tests/db-reading.ts`。 fixture、コーパス、
   line-separators のテストが使う）: mermaid.js は動かさない。
   `dbOfText` が、テキストの木から、
@@ -243,9 +228,6 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   整形の出力であること（`describeFrontmatterChange`）も確かめる。
   データブロックを持つテキストは、mermaid.js の効果がないと Db が作れないので、
   書かれたテキストだけを確かめる。
-  データブロックのノードの型は、
-  `@mmd-toolkit/tests` の `DATA_BLOCK_NODE_TYPES` で、
-  仕様の AST の文書と同じであることはそちらのテストが保つ。
 - 記録との比較では `reading = fixture.specified ?? fixture.expected` と
   `embeddedValuesOf(fixture, reading)` を使い、読みが受理で、Db が null でなく、
   埋め込み値があるときだけ Db を比べる。
@@ -270,11 +252,9 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   図種を足したら、Markdown の中で実際に整形される例を足す。
 - コーパス: `tests/corpus.test.ts` が、
   `@mmd-toolkit/tests` の図種の fixture のうち整形するものすべてで、
-  冪等と Db の一致を確かめる。
+  例外を出さず、冪等で、Db と埋め込みデータを保つことを確かめる。
   読み込む図種を足す。
 - 整形の失敗は、コーパスの fixture が守る。
-  コーパスのテストが毎回整形する（例外を出さず、冪等で、
-  Db と埋め込みデータを保つ）。
   コーパスの fixture は `@mmd-toolkit/tests` で作る。
   `pnpm run lint` が締め出す失敗（`conventions` の SKILL にある、
   呼び出しの引数への配列の展開）は、代わりにその規則が守る。
@@ -288,11 +268,11 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   fixture は文と一緒に書き、mermaid.js で 1 回確かめる。
   失敗は、fixture と、欠けている規則を述べる文で閉じる。
   テストもコマンドも入力を生成せず、入力を乱数や数（seed、件数）で選ばない。
-- fixture は規則の文が分ける場合から作り、corpus の入力を写さず、
+- fixture は規則の文が分ける場合から作り、corpus の入力を写さない。
   異なる場合ごとに最小の入力を書き、同じ場合を示すものはまとめ、
-  corpus の入力は `[corpus fixture: ...]` で引用し、
+  corpus の入力は `[corpus fixture: ...]` で引用する。
   ファイルとエスケープで書いた入力の両方を corpus 全入力とバイトで比べて、
-  写しが 0 件であることを確かめる。
+  写しが残っていないことを確かめる。
 - `rejected-inputs`フォルダーを作らない。
   受理する差異の入力は規則のフォルダーへ置き、拒否はcorpusテストで確認する。
 - 文書のテスト（`tests/docs.test.ts`）: 規則の文書ごとに、その見出しと、
@@ -316,54 +296,103 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
     `lines.ts`、`source.ts`、`kept-lines.ts`、`common-layout.ts`、
     `hidden-forms.ts`、`flat-hidden-diagram.ts`。
     すべての図種のテスト、つまりパッケージ全体。
-  - `flowchart*.ts`: `format`、`corpus` を `-t flowchart` で。
-    `-t` なしで `markdown-flowchart`、`value-nodes`。
+  - `flowchart*.ts`: `format` と `corpus` を `-t flowchart` で。
+    `-t` なしで `markdown-flowchart`、`value-nodes`、`line-separators`、
+    `line-terminators`、`empty-description-blocks`、`accessibility-blocks`、
+    `graph-accessibility`。
   - `sequence*.ts`: `format` と `corpus` を `-t sequence` で。
-    `-t` なしで `line-separators`、`sequence-layout`、 `markdown-sequence`、
-    `value-nodes`。
+    `-t` なしで `line-separators`、`sequence-layout`、`markdown-sequence`、
+    `value-nodes`、`line-terminators`、`empty-description-blocks`。
   - `class*.ts`: `format` と `corpus` を `-t class` で。
-    `-t` なしで `markdown-class`、`value-nodes`。
+    `-t` なしで `markdown-class`、`value-nodes`、`line-separators`、
+    `line-terminators`、`empty-description-blocks`、`accessibility-revisions`。
   - `state*.ts`: `format` と `corpus` を `-t state` で。
-    `-t` なしで `line-separators`、`markdown-state`、 `value-nodes`。
+    `-t` なしで `line-separators`、`markdown-state`、`value-nodes`、
+    `line-terminators`、`empty-description-blocks`、`accessibility-revisions`。
   - `er*.ts`: `format` と `corpus` を `-t er` で。
-    `-t` なしで `line-separators`、`markdown-er`、 `value-nodes`。
+    `-t` なしで `line-separators`、`markdown-er`、`value-nodes`、
+    `line-terminators`、`empty-description-blocks`、`accessibility-revisions`。
   - `gantt*.ts`: `format` と `corpus` を `-t gantt` で。
-    `-t` なしで `line-separators`、`markdown-gantt`、 `value-nodes`。
+    `-t` なしで `line-separators`、`markdown-gantt`、`value-nodes`、
+    `line-terminators`、`empty-description-blocks`。
   - `journey*.ts`: `format` と `corpus` を `-t journey` で。
-    `-t` なしで `line-separators`、`markdown-journey`、 `value-nodes`。
+    `-t` なしで `line-separators`、`markdown-journey`、`value-nodes`、
+    `line-terminators`、`empty-description-blocks`。
   - `requirement*.ts`: `format` と `corpus` を `-t requirement` で。
-    `-t` なしで `line-separators`、`markdown-requirement`、 `value-nodes`。
+    `-t` なしで `line-separators`、`markdown-requirement`、`value-nodes`、
+    `line-terminators`、`empty-description-blocks`。
   - `mindmap*.ts`: `format` と `corpus` を `-t mindmap` で。
-    `-t` なしで `line-separators`、`markdown-mindmap`、 `value-nodes`。
+    `-t` なしで `line-separators`、`markdown-mindmap`、`value-nodes`、
+    `line-terminators`。
   - `timeline*.ts`: `format` と `corpus` を `-t timeline` で。
-    `-t` なしで `line-separators`、`markdown-timeline`、 `value-nodes`。
+    `-t` なしで `line-separators`、`markdown-timeline`、`value-nodes`、
+    `line-terminators`、`empty-description-blocks`。
   - `sankey*.ts`: `format` と `corpus` を `-t sankey` で。
-    `-t` なしで `line-separators`、`markdown-sankey`、 `value-nodes`。
+    `-t` なしで `line-separators`、`markdown-sankey`、`value-nodes`、
+    `line-terminators`、`empty-description-blocks`。
   - `xychart*.ts`: `format` と `corpus` を `-t xychart` で。
-    `-t` なしで `line-separators`、`markdown-xychart`、 `value-nodes`。
+    `-t` なしで `line-separators`、`markdown-xychart`、`value-nodes`、
+    `line-terminators`、`empty-description-blocks`。
   - `quadrant*.ts`: `format` と `corpus` を `-t quadrant` で。
-    `-t` なしで `line-separators`、`markdown-quadrant`、 `value-nodes`。
+    `-t` なしで `line-separators`、`markdown-quadrant`、`value-nodes`、
+    `line-terminators`、`empty-description-blocks`。
   - `block-*.ts`、`block.ts`: `format` と `corpus` を `-t block` で。
-    `-t` なしで `line-separators`、`markdown-block`、 `value-nodes`。
+    `-t` なしで `line-separators`、`markdown-block`、`value-nodes`、
+    `line-terminators`、`empty-description-blocks`。
   - `kanban*.ts`: `format` と `corpus` を `-t kanban` で。
-    `-t` なしで `line-separators`、`markdown-kanban`、 `value-nodes`。
+    `-t` なしで `line-separators`、`markdown-kanban`、`value-nodes`、
+    `line-terminators`。
   - `c4*.ts`: `format` と `corpus` を `-t c4` で。
     `-t` なしで `line-separators`、`line-terminators`、`markdown-c4`、
-    `value-nodes`、`dispatch`。
+    `value-nodes`、`dispatch`、`empty-description-blocks`、
+    `accessibility-revisions`、`accessibility-blocks`。
   - `venn*.ts`: `format` と `corpus` を `-t venn` で。
-    `-t` なしで `line-separators`、`markdown-venn`、 `value-nodes`。
+    `-t` なしで `line-separators`、`markdown-venn`、`value-nodes`、
+    `line-terminators`、`dispatch`。
   - `ishikawa*.ts`: `format` と `corpus` を `-t ishikawa` で。
-    `-t` なしで `ishikawa`、`markdown-ishikawa`、`value-nodes`。
+    `-t` なしで `ishikawa`、`markdown-ishikawa`、`value-nodes`、 `dispatch`、
+    `empty-description-blocks`。
   - `agentflow*.ts`: `format` と `corpus` を `-t agentflow` で。
-    `-t` なしで `agentflow`、`markdown-agentflow`、`value-nodes`、 `dispatch`。
+    `-t` なしで `agentflow`、`markdown-agentflow`、`value-nodes`、 `dispatch`、
+    `empty-description-blocks`、`accessibility-blocks`、 `graph-accessibility`。
   - `pie*.ts`: `format` と `corpus` を `-t pie` で。
-    `-t` なしで `pie`、`markdown-pie`、`value-nodes`、`dispatch`。
+    `-t` なしで `pie`、`markdown-pie`、`value-nodes`、 `dispatch`、
+    `empty-description-blocks`。
   - `gitgraph*.ts`: `format` と `corpus` を `-t gitgraph` で。
-    `-t` なしで `gitgraph`、`markdown-gitgraph`、`value-nodes`、`dispatch`。
+    `-t` なしで `gitgraph`、`markdown-gitgraph`、`value-nodes`、 `dispatch`、
+    `empty-description-blocks`。
   - `info*.ts`: `format` と `corpus` を `-t info` で。
-    `-t` なしで `info`、`markdown-info`、`value-nodes`、`dispatch`。
-  - `statement-rules.ts`、`accessibility-lines.ts`: それを使う図種、
-    ER と requirement のテスト。
+    `-t` なしで `info`、`markdown-info`、`value-nodes`、 `dispatch`、
+    `empty-description-blocks`。
+  - `architecture*.ts`: `format` と `corpus` を `-t architecture` で。
+    `-t` なしで `architecture`、`markdown-architecture`、`value-nodes`、
+    `dispatch`。
+  - `cynefin*.ts`: `format` と `corpus` を `-t cynefin` で。
+    `-t` なしで `cynefin`、`markdown-cynefin`、`value-nodes`、`dispatch`。
+  - `eventmodeling*.ts`: `format` と `corpus` を `-t eventmodeling` で。
+    `-t` なしで `eventmodeling`、`markdown-eventmodeling`、`value-nodes`、
+    `dispatch`。
+  - `packet*.ts`: `format` と `corpus` を `-t packet` で。
+    `-t` なしで `packet`、`markdown-packet`、`value-nodes`、`dispatch`。
+  - `radar*.ts`: `format` と `corpus` を `-t radar` で。
+    `-t` なしで `radar`、`markdown-radar`、`value-nodes`、`dispatch`。
+  - `railroad*.ts`: `format` と `corpus` を `-t railroad` で。
+    `-t` なしで `railroad`、`markdown-railroad`、`value-nodes`、`dispatch`。
+  - `treemap*.ts`: `format` と `corpus` を `-t treemap` で。
+    `-t` なしで `treemap`、`markdown-treemap`、`value-nodes`。
+  - `treeview*.ts`: `format` と `corpus` を `-t treeview` で。
+    `-t` なしで `treeview`、`markdown-treeview`、`value-nodes`。
+  - `usecase*.ts`: `format` と `corpus` を `-t usecase` で。
+    `-t` なしで `usecase`、`markdown-usecase`、`value-nodes`、`dispatch`、
+    `empty-description-blocks`、`accessibility-revisions`。
+  - `wardley*.ts`: `format` と `corpus` を `-t wardley` で。
+    `-t` なしで `wardley`、`markdown-wardley`、`value-nodes`。
+  - `error.ts`: `format` を `-t error/` で。
+    `-t` なしで `corpus`、`dispatch`、`failure`、`markdown`。
+  - `default-size.ts`: それを使う図種、agentflow と eventmodeling のテスト。
+  - `statement-rules.ts`: `common-layout.ts` が使うので、パッケージ全体。
+  - `accessibility-lines.ts`: それを使う図種、class、ER、requirement、
+    state のテスト。
   - `index.ts`、`parser.ts`、`printer.ts`、`root.ts`、
     `frontmatter-yaml.ts`: `dispatch`、`failure`、`markdown`、`plugin`と、
     図種ごとのファイル。
@@ -373,7 +402,6 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   規則の文書（`docs/<図種>.md`。英語と日本語）、README、
   fixture のフォルダーを読む。
   これらのどれかを変えたら、文書だけの変更でも回す。
-  ほかに文書を読むテストはない。
 - 既定の実行は `pnpm vitest run --project prettier-plugin-mmd` で、 fixture、
   コーパス、単体テスト。
   完了を報告する前に 1 回回す。
@@ -384,12 +412,12 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
 マシンの負荷が高いとき、
 またはワークスペースにこの作業と関係のない失敗があるとき:
 
-- 負荷が高いと、コーパスのテストが 5 秒の上限を過ぎて失敗することがある。
-  そのテストだけを単独で走らせ直し、通れば負荷による失敗とする。
+- 負荷が高いと、コーパスのテストが 5 秒の上限を過ぎることがある。
+  単独で走らせ直し、通れば負荷による失敗とする。
 - ワークスペースの lint やテストが、
   このパッケージの外のファイルで失敗することがある。
   このパッケージの外のファイルには触らず、結果にそう書く。
-- 実行を止めるときは、プロセスの id で止める。
+- 実行は、プロセスの id で止める。
   名前で `pkill` しない（同じ名前のほかのプロセスも止まる）。
 
 ## 7. 文書
@@ -403,8 +431,7 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   フォルダーを指す（例のない規則は `docs.test.ts` の一覧に足す）。
 - 例のコードブロックを手で写すと、fixture とずれる。
   下書き（見出しと文と、例を置く場所の印）から、
-  fixture の中身を差し込んで文書を作り、
-  `npx prettier --write` を掛ける（文章は 80 桁で折り返される）。
+  fixture の中身を差し込んで文書を作り、 `npx prettier --write` を掛ける。
 - `docs/compatibility.md` と `.ja.md`: mermaid.js と違う箇所と、
   整形が書かれたまま残す箇所を、理由とともに書く。
 - `README.md` と `.ja.md`: 対応する図種、保証と制限。
@@ -415,8 +442,7 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
 
 ## 8. 確かめ方と出力
 
-- パッケージのテストが、報告の前に 1 回通る。
-  あわせて `npx tsc --noEmit`（ルート）、自分のパッケージの `npx eslint`、
+- 報告の前に、`npx tsc --noEmit`（ルート）、自分のパッケージの `npx eslint`、
   上の文書の検査が通る。
 - 何を回し、何を回していないかを書く。
 - 結果として、項目（決定の項目、所見）ごとに次を示す: 変えたファイルと内容、
@@ -466,7 +492,7 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   先に `pnpm --filter @mmd-toolkit/parser run build` と
   `pnpm --filter @mmd-toolkit/tests run build` で作り直す。
 - 文書の例を下書きから作り直すときは、
-  下書きが最新か（ほかの人が文書を直接直していないか）を、作り直す前に確かめる。
+  下書きが最新か（文書に直接の修正が入っていないか）を、作り直す前に確かめる。
 
 ## 10. mermaid.js の更新のとき
 
@@ -490,8 +516,7 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
 ## 11. Jison の図と Langium の図
 
 - Jison の図（flowchart など）: 上の手順のとおり。
-  字句の規則は仕様の「字句の規則」の節にあり、木に現れない字句の事実は、
-  その節にある。
+  木に現れない字句の事実は、仕様の「字句の規則」の節にある。
 - Langium の図: 上の手順のとおり、仕様の AST から印字する。
   エンジン自体は印字の規則を変えない。
   図種の仕様で次を確かめる。

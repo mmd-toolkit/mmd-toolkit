@@ -11,12 +11,10 @@ description:
 # The truth from mermaid.js, and the fixtures (tests)
 
 The steps of the work on `@mmd-toolkit/tests` and `tools/`: the normalizer and
-the fixtures when a diagram type is added, keeping the fixture tools and lists
-that the other packages use, and updating the pinned mermaid.js. It is written
-so that the work can be done to the same quality from this document alone,
-without the conversation history or memory. The policies and criteria of the
-package are in section 1; what holds for every package is in AGENTS.md and in
-the skill `conventions`, which section 2 points to.
+the fixtures for a new diagram type, the fixture tools and lists that the other
+packages use, and updating the pinned mermaid.js. The policies and criteria are
+in section 1; what holds for every package is in AGENTS.md and the skill
+`conventions`.
 
 ## 1. Policies and criteria
 
@@ -35,9 +33,8 @@ the skill `conventions`, which section 2 points to.
 ## 2. What to read first
 
 1. Section 1 of this document; "Shared interfaces" and "Principles" in
-   AGENTS.md; and the skill `conventions` before writing code or a document. The
-   criteria change, so read them for every piece of work.
-2. `packages/tests/README.md`, the five documents in `packages/tests/docs/`, and
+   AGENTS.md; and the skill `conventions` before writing code or a document.
+2. `packages/tests/README.md`, the documents in `packages/tests/docs/`, and
    `tools/README.md`. The fixture format, how the expected results are obtained,
    Db summaries, the values from embedded data, and the steps for maintaining
    and collecting fixtures are there.
@@ -50,28 +47,26 @@ the skill `conventions`, which section 2 points to.
   the steps of that package's skill. When taking inputs from another package's
   tests, only read them.
 - Commit and push only when asked to (the "Principles" of AGENTS.md). Rename a
-  fixture by moving its whole directory with a plain `mv` (its `ast.json` or
-  `parse-error.json` goes with it); `git mv` would also change the staging.
+  fixture by moving its directory with a plain `mv`; `git mv` also changes the
+  staging.
 - The shared files at the root (`package.json`, `pnpm-lock.yaml`,
   `eslint.config.mjs`, `prettier.config.js`, `tsconfig.json`,
   `.github/workflows/`, `scripts/`) act on every package. Change them only when
   needed, and after a change run the checks of the whole repository
   (`pnpm run lint` and the whole test suite).
 - Put scripts and temporary files for checks in a working directory outside the
-  repository, not in the working tree.
-- Removing fixture directories may be stopped by the permission check as an
-  irreversible deletion. When something must be removed, show the list and the
-  commands, and ask for a decision.
+  repository.
+- Removing fixture directories is irreversible. When something must be removed,
+  show the list and the commands, and ask for a decision.
 - The Write tool and shell here-documents may turn an escape such as `\u00a0`
   into the real character. After writing source or documents, run
-  `node scripts/check-invisible-chars.mjs` and make sure there are no invisible
-  characters.
+  `node scripts/check-invisible-chars.mjs`.
 - Read the result of `eslint --fix` and of Prettier, as the skill `conventions`
   says.
 - Do not edit a tracked file temporarily to try something (it may be staged in
   the middle); try it in a copy outside the repository.
 - Do not change the git staging or the checked-out files (`git add`, `git mv`,
-  `stash`, `checkout`, `reset`); the staging is the user's.
+  `stash`, `checkout`, `reset`).
 - Stop only the processes that you started, and not by name (`pkill -f vitest`
   also stops every other run of the tests on the machine).
 
@@ -81,12 +76,11 @@ the skill `conventions`, which section 2 points to.
   Put the following script in the working directory outside the repository as
   `probe.mts`, replace `<repo>` with the absolute path of the root of the
   repository, and run it with `node <working directory>/probe.mts` (Node runs
-  TypeScript as it is; this works from any directory). The extension `.mts`
-  makes Node read the file as an ES module, where the top-level `await` is
-  allowed. Import the source file by its absolute path: from outside the
-  repository, the package names do not resolve. Node only removes types, so
-  write a type-only import as `import type`, and do not use `enum`, `namespace`
-  or parameter properties.
+  TypeScript as it is, from any directory). The extension `.mts` makes it an ES
+  module, where top-level `await` is allowed. Import the source file by its
+  absolute path: from outside the repository, the package names do not resolve.
+  Node only removes types, so write a type-only import as `import type`, and do
+  not use `enum`, `namespace` or parameter properties.
 
   ```ts
   import { runMermaidWithEmbeddedData } from "<repo>/packages/tests/src/mermaid.ts"
@@ -105,7 +99,7 @@ the skill `conventions`, which section 2 points to.
   something, checked by reading, or not checked.
 - Do not settle for a few hand-written examples. Where a rule acts on a value,
   try the whole set of characters at the boundary (for example, for the
-  whitespace left at the end of a style value, put each of the 23 characters of
+  whitespace left at the end of a style value, put each character of
   JavaScript's `\s` other than LF and CR (the line whitespace of the
   specification) there and run mermaid.js). Check that results do not change
   across every fixture, or every collected input.
@@ -147,15 +141,14 @@ the skill `conventions`, which section 2 points to.
   Run one file with
   `pnpm --filter @mmd-toolkit/tests exec vitest run tests/<file>`.
   `fixtures.test.ts` reads both READMEs (each known divergence has an item), so
-  it runs after a change to a README as well. The package has no sizes to raise:
-  its whole run (`pnpm --filter @mmd-toolkit/tests test`) is the run before a
-  completion is reported. `fixtures:check` runs after a change to how a result
-  is made or recorded (`src/mermaid.ts`, a normalizer, the format, the
-  generator), and before the completion of such a change is reported. After a
-  change to `src/`, rebuild `lib/` (below); the other packages run their own
-  tests of what they use. A test that reads every fixture in one test gets an
-  explicit time limit, set from its measured time alone (do not rely on the
-  default of 5 seconds).
+  it runs after a change to a README as well. The whole run of the package
+  (`pnpm --filter @mmd-toolkit/tests test`) is the run before a completion is
+  reported. `fixtures:check` runs after a change to how a result is made or
+  recorded (`src/mermaid.ts`, a normalizer, the format, the generator), and
+  before the completion of such a change is reported. The other packages run
+  their own tests of what they use. A test that reads every fixture in one test
+  gets an explicit time limit, set from its measured time alone (do not rely on
+  the default of 5 seconds).
 
 - `runMermaid()` gives back stored results for a text it has run before, keyed
   by the code of `src/` or `lib/`, so a change to the code never gets an old
@@ -181,11 +174,9 @@ the skill `conventions`, which section 2 points to.
 
 - After changing `src/`, rebuild `lib/` with
   `pnpm --filter @mmd-toolkit/tests run build`. Inside this repository, the
-  tests of the other packages, the tools and the type check read `src/` (through
-  the aliases of the vitest configurations, relative imports and the `paths` of
-  the root `tsconfig.json`), so a change to `src/` reaches their next run at
-  once. `lib/` is what the name of the package loads anywhere else, as in a
-  plain `node` script.
+  tests of the other packages, the tools and the type check read `src/`, so a
+  change to `src/` reaches their next run at once. `lib/` is what the name of
+  the package loads anywhere else, as in a plain `node` script.
 
 ## 5. Adding a diagram type
 
@@ -410,26 +401,24 @@ diagram; an imported common rule does not establish how the diagram uses it.
 8. Write the section of the diagram type in `docs/db-summaries.md` and `.ja.md`
    (what is dropped, and why).
 9. Show as the result the summary fields, and the dropped fields with their
-   reasons. The specification and the parser refer to this list
-   (`docs/db-summaries.md`).
+   reasons.
 
 ### 5.3 The fixtures
 
-1. Collect inputs from mermaid's tests that pass diagram text to that diagram
-   type's syntax, the mermaid blocks of the documentation, and the demos. For
-   Langium diagrams, those tests include the diagram type's tests in mermaid's
-   parser package. `SPEC_FILES` in `tools/collect.ts` alone lists which test
-   files each diagram type collects, with reasons for exclusions. Do not collect
-   unrelated tests or end-to-end tests. The scope is described in
+1. Collect inputs from the tests of mermaid that pass diagram text to the syntax
+   of that diagram type (for Langium diagrams, including the diagram type's
+   tests in mermaid's parser package), the mermaid blocks of the documentation,
+   and the demos. `SPEC_FILES` in `tools/collect.ts` alone lists the test files
+   each diagram type collects, with reasons for exclusions; the scope is in
    `tools/README.md`.
-2. The collection tools (`tools/collect.ts`, `tools/src/spec-recorder.ts`) take
-   the diagram type. What differs between diagram types is only which spec files
-   are read and which functions receive the text. Add to `SPEC_FILES` in
-   `collect.ts` the diagram type's spec files that pass diagram texts to
-   mermaid, with the reason for each file left out. Add the stubs of the modules
-   the spec files import and of the functions that receive the text (the
-   diagram's parser's `parse`, `Diagram.fromText`, ...) to the list in
-   `spec-recorder.ts`, which every diagram type shares.
+2. Between diagram types, the collection tools (`tools/collect.ts`,
+   `tools/src/spec-recorder.ts`) differ only in which spec files are read and
+   which functions receive the text. Add to `SPEC_FILES` in `collect.ts` the
+   diagram type's spec files that pass diagram texts to mermaid, with the reason
+   for each file left out. Add the stubs of the modules the spec files import
+   and of the functions that receive the text (the diagram's parser's `parse`,
+   `Diagram.fromText`, ...) to the list in `spec-recorder.ts`, which every
+   diagram type shares.
 3. The recorder of spec files (`tools/src/spec-recorder.ts`) runs each spec file
    against stubs. What it relies on, and what to keep when changing it or adding
    a diagram type:
@@ -553,7 +542,7 @@ diagram; an imported common rule does not establish how the diagram uses it.
    - a duplicate definition whose second value is on a semantic boundary, such
      as `-0`, in both orders: which value is retained, and whether semantic
      rejection precedes duplicate suppression;
-   - the four C4 detection words (`C4Container`, `C4Component`, `C4Dynamic`,
+   - the C4 detection words (`C4Container`, `C4Component`, `C4Dynamic`,
      `C4Deployment`) in every text field: labels, titles, accessibility titles,
      and line and block accessibility descriptions; also in EOF comments after a
      statement and on the header line, with LF-terminated controls;
@@ -564,7 +553,7 @@ diagram; an imported common rule does not establish how the diagram uses it.
    - the one-block detection skip: a second block, a block after a bare `%%{`
      line, a block after real frontmatter, a block before and a block after a
      second-scan directive as separate cases, and a block whose opening and
-     closing fences share indentation (six cases);
+     closing fences share indentation;
    - a global directive glued immediately after a keyword, with the next keyword
      or value glued after it: judge the keyword boundary in the text without
      global directives and selected semicolons;
@@ -674,9 +663,8 @@ the spec's skill). This skill does the following.
 
 1. Keep the tools and the format: the generator, `add`, `add-many`,
    `set-divergence`, `set-note`, the loader and the collection tools work as
-   `docs/maintaining-fixtures.md` describes. How to use the tools is in that
-   document. When the use of a tool changes, change that document (English and
-   Japanese) in the same change.
+   `docs/maintaining-fixtures.md` describes. When the use of a tool changes,
+   change that document (English and Japanese) in the same change.
 2. When the Known divergences of the specification
    (`packages/spec/docs/known-divergences.md`) change, update the list of
    identifiers (`KNOWN_DIVERGENCES` in `src/index.ts`, and the list in the
@@ -717,7 +705,7 @@ the spec's skill). This skill does the following.
    (prefixes such as `gram-`, `lex-`, `db-`, `tokens-`, `config-`, a name of
    what the input shows and, for many inputs of one topic, the first 8
    hexadecimal digits of the SHA-256 of the input), write in the note what the
-   input shows (not the name of the review or the run that found it), and add it
+   input shows (not the name of the review or the run it came from), and add it
    with `fixtures:add-many` (`fixtures:add` cannot set a mark). The tests of the
    implementations read the new fixture with the others; the file of the
    failure's input is then removed from the package that had it.
@@ -757,7 +745,7 @@ the spec's skill). This skill does the following.
    retained form.
 4. After checking the reference path, run the stable-generation steps of §5.3.8.
    Count marks and required readings from the current corpus after the CLI
-   operation rather than trusting a handed-down fixture count, and report any
+   operation rather than trusting a count stated elsewhere, and report any
    missing record. Keep opaque-data cases with no comparison Db explicit in
    tests and the report; do not invent a specified reading or Db to make them
    comparable.
@@ -807,7 +795,7 @@ the spec's skill). This skill does the following.
    - making DOMPurify the identity: a test checks it;
    - the Db patches (`setLink` and `addVertex` for flowchart): compare the Db
      class between the two tags;
-   - the two checks of the data block recording, and the steps of `runMermaid()`
+   - the checks of the data block recording, and the steps of `runMermaid()`
      (`docs/expected-results.md`): the tests do not check these. They are
      checked by running every fixture in step 4. `runMermaid()` throws
      `MermaidEnvironmentError` when `mermaid.parse()` accepts a text that

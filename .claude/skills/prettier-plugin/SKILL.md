@@ -11,11 +11,7 @@ description:
 # Adding the printer of a diagram type (prettier-plugin)
 
 How to add the printer of a diagram type to `prettier-plugin-mmd`, and how to
-update the printers when mermaid.js is updated. It is written so that the same
-work can be done to the same quality from this document alone, without the
-conversation history or memory. The policies and criteria of the package are in
-the section Policies and criteria; what holds for every package is in AGENTS.md
-and in the skill `conventions`.
+update the printers when mermaid.js is updated.
 
 ## Policies and criteria
 
@@ -31,23 +27,19 @@ and in the skill `conventions`.
 
 ## 1. What to read first
 
-1. The section Policies and criteria of this document (what this package is
-   responsible for, and its four tests); the Principles of AGENTS.md (the proper
-   form, no commits); and the skill `conventions` (no regular expressions,
-   reading the result of an autofix, invisible characters, English and Japanese
-   document pairs, wrapped prose, the info string `mmd` for code blocks of
-   Mermaid text). The criteria change, so read them every time.
+1. The section Policies and criteria of this document, the Principles of
+   AGENTS.md, and the skill `conventions`.
 2. The specification of the diagram type:
-   `packages/spec/docs/diagrams/<diagram>.md` (the lexical rules, the grammar,
-   how the Db is built) and the tree, `packages/spec/docs/ast.md` and
-   `packages/spec/docs/ast/<diagram>.md`. The rules of the printer are written
-   with the node types, fields, and token kinds defined there.
+   `packages/spec/docs/diagrams/<diagram>.md` and the tree,
+   `packages/spec/docs/ast.md` and `packages/spec/docs/ast/<diagram>.md`. The
+   rules of the printer are written with the node types, fields, and token kinds
+   defined there.
 3. The documents of this package: `docs/development.md` (the tests, the
-   fixtures, and how the printer is built), `docs/<an existing diagram>.md` (for
-   example `docs/flowchart.md`: the formatting rules and their reasons; this is
-   where decisions are kept, and the model for how items are set up and how
-   limits are written), and `docs/compatibility.md` (how differences from
-   mermaid.js, and text kept as written, are described).
+   fixtures, and how the printer is built); an existing `docs/<diagram>.md`,
+   such as `docs/flowchart.md` (the formatting rules and their reasons;
+   decisions are kept there, and it is the model for setting up items and
+   writing limits); and `docs/compatibility.md` (the model for describing
+   differences from mermaid.js and text kept as written).
 
 Use the diagram name defined by `conventions`: lowercase ASCII letters and
 digits in one word for paths and fixture categories, its capitalized form for
@@ -58,8 +50,8 @@ This procedure writes only to `packages/prettier-plugin-mmd` and this SKILL.
 When another package needs a change, make it with that package's SKILL (a gap in
 the specification with the spec SKILL, a change of the tree with the parser
 SKILL, fixtures with the tests SKILL). Commit and push only when asked
-(AGENTS.md). The user stages: do not change the staging area, and do not use
-`git mv`. Move and delete files with `mv` and `rm`.
+(AGENTS.md). Do not change the staging area, and do not use `git mv`. Move and
+delete files with `mv` and `rm`.
 
 ## 2. When to start (input)
 
@@ -78,8 +70,7 @@ SKILL, fixtures with the tests SKILL). Commit and push only when asked
 
 ## 3. Deciding the formatting
 
-The rules of the printer follow the choices made item by item. Before writing
-the printer, make the list of choices and ask for a decision.
+The rules of the printer follow the choices made item by item.
 
 1. From the grammar and the tree in the specification, list what formatting
    could change. The kinds of items flowchart has (as examples; a diagram type
@@ -96,9 +87,9 @@ the printer, make the list of choices and ask for a decision.
 2. Give each item its choices, examples (before and after formatting), and a
    recommendation with its reason. Say which choices change the Db.
 3. For each choice, run the text before and after formatting through mermaid.js,
-   and check that the Db does not change. Do not stop at one or two hand-written
-   examples: give each case that the choice distinguishes a fixture (section 6).
-   Attach the results, marked as checked by running.
+   and check that the Db does not change. Each case that the choice
+   distinguishes has a fixture (section 6). Attach the results, marked as
+   checked by running.
 4. Show the list, ask for a decision, and implement the choices that are made.
 5. Write each decision into the rules document `docs/<diagram>.md` (English and
    Japanese) as a rule with its reason. Write what is kept as written because it
@@ -110,9 +101,8 @@ the printer, make the list of choices and ask for a decision.
 How it is built (under `src/printers/`):
 
 - Add the body node type of the diagram and its printer to `diagramPrinters` in
-  `index.ts`. Dispatch goes by type. The table has an entry for every body type
-  of the parser, so the type checker fails when the printer of a new diagram
-  type is not added.
+  `index.ts`. The table has an entry for every body type of the parser, so the
+  type checker fails when the printer of a new diagram type is not added.
 - What every diagram type shares is in shared modules; use them, and do not copy
   them into a diagram's printer. `blocks.ts` prints the statements of a block,
   the comments and directives between them, the `;` that separate them, empty
@@ -131,8 +121,7 @@ How it is built (under `src/printers/`):
   if compaction is unavailable. `kept-lines.ts` holds the lines that keep a `;`
   of their own and where a line starts and ends; `source.ts` decides which
   tokens belong to the structure of a node (`isStructural`). When a diagram type
-  needs something they do not do, extend them, so that one decision stays in one
-  place.
+  needs something they do not do, extend them.
 - Each diagram type has its printer (`<diagram>.ts`), which dispatches on its
   node types and gives `blocks.ts` its `BlockRules` (its kept lines, where a
   statement's printed text ends, which statements hold statements, which are
@@ -179,7 +168,7 @@ Steps when writing:
    fixture (section 6), and make it an explicit rule with a comment that points
    to the section of the specification (section 5).
 2. Do not build a check that parses the formatted result again at run time and
-   compares it. It only hides a missing rule; it is not a rule.
+   compares it; it only hides a missing rule.
 3. Keep each decision in one place (for example, where a line starts and ends,
    how a gap is read, which lines are kept). Leave no unwritten promise that
    callers must keep.
@@ -197,8 +186,7 @@ and an example to that rule in `docs/<diagram>.md` (and to
 wording of the rule, an input that shows it, mermaid.js's results before and
 after formatting, and the reason in the specification. A rule that changes a
 decided choice needs a decision before it is implemented; ask for it with that
-evidence. An implementation without the document leaves the decision and the
-code apart.
+evidence.
 
 Write a narrow exception (for example, no space before the closing `?]` or `=]`
 of a slanted shape) into the document in the same way.
@@ -211,13 +199,12 @@ built is in `docs/development.md`.
 - Fixtures (`tests/fixtures/<diagram>/<rule>/<example>-input.mmd`,
   `-output.mmd`, and `-options.json` when needed): one folder per rule. Write
   the outputs with `pnpm --filter prettier-plugin-mmd run test:update`, and read
-  the diff to check that the formatting is the intended one.
-  `tests/format.test.ts` checks the outputs, idempotence, that the Db that the
-  tree denotes is the same, and that the embedded data is as written. A text
-  with invisible characters (U+2028, U+2029) is not a fixture of this package:
-  write it with escapes in test code, as `tests/line-separators.test.ts` does,
-  and check the bytes of the file after writing it. Only the corpus in
-  `packages/tests/fixtures/` holds such text.
+  the diff. `tests/format.test.ts` checks the outputs, idempotence, that the Db
+  that the tree denotes is the same, and that the embedded data is as written. A
+  text with invisible characters (U+2028, U+2029) is not a fixture of this
+  package: write it with escapes in test code, as
+  `tests/line-separators.test.ts` does, and check the bytes of the file after
+  writing it.
 - How the Db is kept (`tests/db-reading.ts`, used by the fixture, corpus, and
   line-separator tests): mermaid.js is not run. `dbOfText` builds the Db from
   the tree of the text with `dbFromTree` of `@mmd-toolkit/tests`, with the
@@ -229,9 +216,7 @@ built is in `docs/development.md`.
   the same before and after, and the frontmatter is as written or as Prettier's
   YAML formatter prints it (`describeFrontmatterChange`). A text with a data
   block has no Db without mermaid.js's effects, so only its written text is
-  checked. The node types of the data blocks are `DATA_BLOCK_NODE_TYPES` of
-  `@mmd-toolkit/tests`, which its own test keeps the same as the AST documents
-  of the specification.
+  checked.
 - Recorded comparisons use `reading = fixture.specified ?? fixture.expected` and
   `embeddedValuesOf(fixture, reading)`, comparing the Db only when the reading
   is accepted, its Db is non-null and its embedded values are available.
@@ -253,13 +238,12 @@ built is in `docs/development.md`.
   (`tests/dispatch.test.ts`, `failure.test.ts`, `markdown.test.ts`,
   `markdown-flowchart.test.ts`). For a new diagram type, add an example that is
   formatted inside Markdown.
-- The corpus: `tests/corpus.test.ts` checks idempotence and the Db on every
-  fixture of the diagram type in `@mmd-toolkit/tests` that the plugin formats.
-  Add the diagram type to what it loads.
-- A failure of the printer is guarded by a fixture of the corpus, which the
-  corpus test formats on every run (formatting does not throw, is idempotent,
-  and keeps the Db and the embedded data); the fixtures of the corpus are made
-  in `@mmd-toolkit/tests`. A failure that `pnpm run lint` rules out (an array
+- The corpus: `tests/corpus.test.ts` checks, on every fixture of the diagram
+  type in `@mmd-toolkit/tests` that the plugin formats, that formatting does not
+  throw, is idempotent, and keeps the Db and the embedded data. Add the diagram
+  type to what it loads.
+- A failure of the printer is guarded by a fixture of the corpus, made in
+  `@mmd-toolkit/tests`. A failure that `pnpm run lint` rules out (an array
   spread into the arguments of a call, in the `conventions` skill) is guarded by
   that rule instead.
 - Fixtures answer sentences. Every sentence of the rules documents
@@ -270,12 +254,12 @@ built is in `docs/development.md`.
   block, and whatever else the sentence's own words name. The fixtures are
   written with the sentence and checked against mermaid.js once. A failure is
   closed by a fixture and by the sentence that states the rule it shows to be
-  missing. No test and no command generates inputs, and no input is chosen by a
+  missing. No test or command generates inputs, and no input is chosen by a
   random source or by a number (a seed, a count).
-- Fixtures come from the cases of the rule sentences, never copies of corpus
-  inputs; write minimal inputs for distinct cases, merge fixtures that answer
-  the same case, cite corpus inputs as `[corpus fixture: ...]` instead, and
-  compare both file and escaped fixture inputs with all corpus inputs byte for
+- Fixtures come from the cases of the rule sentences, not from copies of corpus
+  inputs: write a minimal input for each distinct case, merge fixtures that
+  answer the same case, and cite corpus inputs as `[corpus fixture: ...]`.
+  Compare the file and escaped fixture inputs with all corpus inputs byte for
   byte to confirm that no copies remain.
 - No `rejected-inputs` folder: accepted divergence inputs belong to their rule
   folders, and the corpus test covers rejected inputs.
@@ -297,54 +281,102 @@ Running tests; this is what belongs to this package):
     `source.ts`, `kept-lines.ts`, `common-layout.ts`, `hidden-forms.ts`,
     `flat-hidden-diagram.ts`): the tests of every diagram type, that is, the
     whole package.
-  - `flowchart*.ts`: `format`, `corpus` with `-t flowchart`; and, without `-t`,
-    `markdown-flowchart` and `value-nodes`.
+  - `flowchart*.ts`: `format` and `corpus` with `-t flowchart`; and, without
+    `-t`, `markdown-flowchart`, `value-nodes`, `line-separators`,
+    `line-terminators`, `empty-description-blocks`, `accessibility-blocks`, and
+    `graph-accessibility`.
   - `sequence*.ts`: `format` and `corpus` with `-t sequence`; and, without `-t`,
-    `line-separators`, `sequence-layout`, `markdown-sequence`, and
-    `value-nodes`.
+    `line-separators`, `sequence-layout`, `markdown-sequence`, `value-nodes`,
+    `line-terminators`, and `empty-description-blocks`.
   - `class*.ts`: `format` and `corpus` with `-t class`; and, without `-t`,
-    `markdown-class` and `value-nodes`.
+    `markdown-class`, `value-nodes`, `line-separators`, `line-terminators`,
+    `empty-description-blocks`, and `accessibility-revisions`.
   - `state*.ts`: `format` and `corpus` with `-t state`; and, without `-t`,
-    `line-separators`, `markdown-state`, and `value-nodes`.
+    `line-separators`, `markdown-state`, `value-nodes`, `line-terminators`,
+    `empty-description-blocks`, and `accessibility-revisions`.
   - `er*.ts`: `format` and `corpus` with `-t er`; and, without `-t`,
-    `line-separators`, `markdown-er`, and `value-nodes`.
+    `line-separators`, `markdown-er`, `value-nodes`, `line-terminators`,
+    `empty-description-blocks`, and `accessibility-revisions`.
   - `gantt*.ts`: `format` and `corpus` with `-t gantt`; and, without `-t`,
-    `line-separators`, `markdown-gantt`, and `value-nodes`.
+    `line-separators`, `markdown-gantt`, `value-nodes`, `line-terminators`, and
+    `empty-description-blocks`.
   - `journey*.ts`: `format` and `corpus` with `-t journey`; and, without `-t`,
-    `line-separators`, `markdown-journey`, and `value-nodes`.
+    `line-separators`, `markdown-journey`, `value-nodes`, `line-terminators`,
+    and `empty-description-blocks`.
   - `requirement*.ts`: `format` and `corpus` with `-t requirement`; and, without
-    `-t`, `line-separators`, `markdown-requirement`, and `value-nodes`.
+    `-t`, `line-separators`, `markdown-requirement`, `value-nodes`,
+    `line-terminators`, and `empty-description-blocks`.
   - `mindmap*.ts`: `format` and `corpus` with `-t mindmap`; and, without `-t`,
-    `line-separators`, `markdown-mindmap`, and `value-nodes`.
+    `line-separators`, `markdown-mindmap`, `value-nodes`, and
+    `line-terminators`.
   - `timeline*.ts`: `format` and `corpus` with `-t timeline`; and, without `-t`,
-    `line-separators`, `markdown-timeline`, and `value-nodes`.
+    `line-separators`, `markdown-timeline`, `value-nodes`, `line-terminators`,
+    and `empty-description-blocks`.
   - `sankey*.ts`: `format` and `corpus` with `-t sankey`; and, without `-t`,
-    `line-separators`, `markdown-sankey`, and `value-nodes`.
+    `line-separators`, `markdown-sankey`, `value-nodes`, `line-terminators`, and
+    `empty-description-blocks`.
   - `xychart*.ts`: `format` and `corpus` with `-t xychart`; and, without `-t`,
-    `line-separators`, `markdown-xychart`, and `value-nodes`.
+    `line-separators`, `markdown-xychart`, `value-nodes`, `line-terminators`,
+    and `empty-description-blocks`.
   - `quadrant*.ts`: `format` and `corpus` with `-t quadrant`; and, without `-t`,
-    `line-separators`, `markdown-quadrant`, and `value-nodes`.
+    `line-separators`, `markdown-quadrant`, `value-nodes`, `line-terminators`,
+    and `empty-description-blocks`.
   - `block.ts`, `block-*.ts`: `format` and `corpus` with `-t block`; and,
-    without `-t`, `line-separators`, `markdown-block`, and `value-nodes`.
+    without `-t`, `line-separators`, `markdown-block`, `value-nodes`,
+    `line-terminators`, and `empty-description-blocks`.
   - `kanban*.ts`: `format` and `corpus` with `-t kanban`; and, without `-t`,
-    `line-separators`, `markdown-kanban`, and `value-nodes`.
+    `line-separators`, `markdown-kanban`, `value-nodes`, and `line-terminators`.
   - `c4*.ts`: `format` and `corpus` with `-t c4`; and, without `-t`,
-    `line-separators`, `line-terminators`, `markdown-c4`, `value-nodes`, and
-    `dispatch`.
+    `line-separators`, `line-terminators`, `markdown-c4`, `value-nodes`,
+    `dispatch`, `empty-description-blocks`, `accessibility-revisions`, and
+    `accessibility-blocks`.
   - `venn*.ts`: `format` and `corpus` with `-t venn`; and, without `-t`,
-    `line-separators`, `markdown-venn`, and `value-nodes`.
+    `line-separators`, `markdown-venn`, `value-nodes`, `line-terminators`, and
+    `dispatch`.
   - `ishikawa*.ts`: `format` and `corpus` with `-t ishikawa`; and, without `-t`,
-    `ishikawa`, `markdown-ishikawa`, and `value-nodes`.
+    `ishikawa`, `markdown-ishikawa`, `value-nodes`, `dispatch`, and
+    `empty-description-blocks`.
   - `agentflow*.ts`: `format` and `corpus` with `-t agentflow`; and, without
-    `-t`, `agentflow`, `markdown-agentflow`, `value-nodes`, and `dispatch`.
+    `-t`, `agentflow`, `markdown-agentflow`, `value-nodes`, `dispatch`,
+    `empty-description-blocks`, `accessibility-blocks`, and
+    `graph-accessibility`.
   - `pie*.ts`: `format` and `corpus` with `-t pie`; and, without `-t`, `pie`,
-    `markdown-pie`, `value-nodes`, and `dispatch`.
+    `markdown-pie`, `value-nodes`, `dispatch`, and `empty-description-blocks`.
   - `gitgraph*.ts`: `format` and `corpus` with `-t gitgraph`; and, without `-t`,
-    `gitgraph`, `markdown-gitgraph`, `value-nodes`, and `dispatch`.
+    `gitgraph`, `markdown-gitgraph`, `value-nodes`, `dispatch`, and
+    `empty-description-blocks`.
   - `info*.ts`: `format` and `corpus` with `-t info`; and, without `-t`, `info`,
-    `markdown-info`, `value-nodes`, and `dispatch`.
-  - `statement-rules.ts`, `accessibility-lines.ts`: the tests of the diagram
-    types that use them, ER and requirement.
+    `markdown-info`, `value-nodes`, `dispatch`, and `empty-description-blocks`.
+  - `architecture*.ts`: `format` and `corpus` with `-t architecture`; and,
+    without `-t`, `architecture`, `markdown-architecture`, `value-nodes`, and
+    `dispatch`.
+  - `cynefin*.ts`: `format` and `corpus` with `-t cynefin`; and, without `-t`,
+    `cynefin`, `markdown-cynefin`, `value-nodes`, and `dispatch`.
+  - `eventmodeling*.ts`: `format` and `corpus` with `-t eventmodeling`; and,
+    without `-t`, `eventmodeling`, `markdown-eventmodeling`, `value-nodes`, and
+    `dispatch`.
+  - `packet*.ts`: `format` and `corpus` with `-t packet`; and, without `-t`,
+    `packet`, `markdown-packet`, `value-nodes`, and `dispatch`.
+  - `radar*.ts`: `format` and `corpus` with `-t radar`; and, without `-t`,
+    `radar`, `markdown-radar`, `value-nodes`, and `dispatch`.
+  - `railroad*.ts`: `format` and `corpus` with `-t railroad`; and, without `-t`,
+    `railroad`, `markdown-railroad`, `value-nodes`, and `dispatch`.
+  - `treemap*.ts`: `format` and `corpus` with `-t treemap`; and, without `-t`,
+    `treemap`, `markdown-treemap`, and `value-nodes`.
+  - `treeview*.ts`: `format` and `corpus` with `-t treeview`; and, without `-t`,
+    `treeview`, `markdown-treeview`, and `value-nodes`.
+  - `usecase*.ts`: `format` and `corpus` with `-t usecase`; and, without `-t`,
+    `usecase`, `markdown-usecase`, `value-nodes`, `dispatch`,
+    `empty-description-blocks`, and `accessibility-revisions`.
+  - `wardley*.ts`: `format` and `corpus` with `-t wardley`; and, without `-t`,
+    `wardley`, `markdown-wardley`, and `value-nodes`.
+  - `error.ts`: `format` with `-t error/`; and, without `-t`, `corpus`,
+    `dispatch`, `failure`, and `markdown`.
+  - `default-size.ts`: the tests of the diagram types that use it, agentflow and
+    eventmodeling.
+  - `statement-rules.ts`: the whole package, since `common-layout.ts` uses it.
+  - `accessibility-lines.ts`: the tests of the diagram types that use it: class,
+    ER, requirement, and state.
   - `index.ts`, `parser.ts`, `printer.ts`, `root.ts`, `frontmatter-yaml.ts`:
     `dispatch`, `failure`, `markdown`, `plugin`, and the files of each diagram
     type.
@@ -353,7 +385,7 @@ Running tests; this is what belongs to this package):
 - The test that reads documents: `tests/docs.test.ts` reads the rules documents
   (`docs/<diagram>.md`, English and Japanese), the READMEs, and the fixture
   folders. Run it after a change to any of them, also a change to documents
-  only. No other test reads a document.
+  only.
 - The default run is `pnpm vitest run --project prettier-plugin-mmd`: the
   fixtures, the corpus, and the unit tests. Run it once before reporting the
   work as done.
@@ -363,12 +395,12 @@ Running tests; this is what belongs to this package):
 
 When the machine is under load or the workspace has unrelated failures:
 
-- Under load, a corpus test may fail by going over its 5-second limit. Run that
-  test alone again; if it passes, the failure came from the load.
+- Under load, a corpus test may exceed its 5-second limit. Run it alone again;
+  if it passes, the failure came from the load.
 - Workspace lint or tests may fail in a file outside this package. Do not touch
   files outside this package; say so in the results.
-- To stop a run, stop it by its process id. Do not `pkill` by name (that stops
-  other processes with the same name too).
+- Stop a run by its process id. Do not `pkill` by name (that stops other
+  processes with the same name too).
 
 ## 7. Documents
 
@@ -382,8 +414,7 @@ When the machine is under load or the workspace has unrelated failures:
   without examples goes on the list in `docs.test.ts`).
 - Example blocks copied by hand drift from the fixtures. Make the document from
   a draft (the headings, the prose, and marks where examples go) by inserting
-  the content of the fixtures, then run `npx prettier --write` (prose is wrapped
-  at 80 columns).
+  the content of the fixtures, then run `npx prettier --write`.
 - `docs/compatibility.md` and `.ja.md`: where the plugin differs from
   mermaid.js, and where formatting keeps text as written, with the reasons.
 - `README.md` and `.ja.md`: the supported diagram types, the guarantees and
@@ -395,8 +426,8 @@ When the machine is under load or the workspace has unrelated failures:
 
 ## 8. Checks and output
 
-- The run of the package passes once before the report, with `npx tsc --noEmit`
-  (at the root), `npx eslint` on this package, and the document checks above.
+- Before the report, `npx tsc --noEmit` (at the root), `npx eslint` on this
+  package, and the document checks above pass.
 - Say what was run and what was not.
 - Show as the result, for each item of the decision or each finding: the files
   changed and how, the results on the reproducing inputs (acceptance kept, the
@@ -447,7 +478,7 @@ When the machine is under load or the workspace has unrelated failures:
   `pnpm --filter @mmd-toolkit/parser run build` and
   `pnpm --filter @mmd-toolkit/tests run build`.
 - Before making a document again from its draft, check that the draft is current
-  (that nobody has edited the document directly).
+  (that the document has not been edited directly).
 
 ## 10. When mermaid.js is updated
 
@@ -471,9 +502,8 @@ When the machine is under load or the workspace has unrelated failures:
 
 ## 11. Jison diagrams and Langium diagrams
 
-- Jison diagrams (such as flowchart): as above. The lexical rules are in the
-  specification's lexical sections, which hold the lexical facts that the tree
-  does not show.
+- Jison diagrams (such as flowchart): as above. The lexical facts that the tree
+  does not show are in the specification's lexical sections.
 - Langium diagrams: as above, from the specification's AST. The engine itself
   changes no printing rule. Check the diagram's specification for:
   - First-match priority and keyword/component boundaries.

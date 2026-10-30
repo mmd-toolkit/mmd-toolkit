@@ -13,10 +13,8 @@ description:
 How to write the documents of the rules of `@mmd-toolkit/eslint-plugin` (an
 ESLint language plugin for Mermaid diagram text) so that every claim in them is
 checked against mermaid.js, the tree of `@mmd-toolkit/parser`, and the fixtures.
-It is written so that the same documents can be written from this file alone,
-without the conversation history or memory. The implementation of the rules is
-in the skill `eslint-plugin-rules`; each document belongs to a rule file under
-`src/rules/`, which section 6 deals with.
+The implementation of the rules is in the skill `eslint-plugin-rules`; each
+document belongs to a rule file under `src/rules/`, which section 6 deals with.
 
 ## Policies and criteria
 
@@ -27,25 +25,27 @@ What holds for the package `packages/eslint-plugin`:
   reading the text again in the rule. Besides the rules, the package holds what
   does not depend on a rule (the package, the language that gives ESLint the
   tree, their tests).
+- The English document of a rule is the original. A Japanese document may stand
+  next to it and may be missing, and `check:docs` fails only for a Japanese
+  document that has no English original. When a rule document has no Japanese
+  version, or one older than the English, write the Japanese version then; when
+  writing or changing the English document, write the Japanese in the same
+  change. Add the language lines to both documents when the Japanese is written.
 - Every rule has one document under `docs/rules/`, written for the users of the
   rule, and a rule file under `src/rules/`, which carries the name, the
   description, and whether the rule is recommended; the list of the rules in
   `docs/rules/index.md` and the generated parts of the rule documents are
   written from these files (`pnpm run update`). `pnpm run lint:docs` fails when
   the rule files and the documents disagree.
-- Is an ESLint language plugin (the `languages` of a plugin), not a custom
-  parser: it gives ESLint the tree of `@mmd-toolkit/parser`, its tokens and
-  comments, and its visitor keys.
-- A rule reads the tree and the tokens; it does not lex the text again. How the
-  tree shows what a rule reports is checked by applying the condition to the
-  result of `parse()`.
+- The package is an ESLint language plugin (the `languages` of a plugin), not a
+  custom parser: it gives ESLint the tree of `@mmd-toolkit/parser`, its tokens
+  and comments, and its visitor keys.
 
 ## 1. What to read first
 
 1. The section Policies and criteria above, and the criteria of the rule-ideas
    skill (`.claude/skills/rule-ideas/SKILL.md`): which rules the package holds
-   and which it does not, and when a rule is common. Read them every time: the
-   criteria change.
+   and which it does not, and when a rule is common.
 2. The skill `conventions` (`.claude/skills/conventions/SKILL.md`): English
    documents with a Japanese pair, no invisible characters, prose wrapped by
    Prettier, `mmd` as the info string of code blocks that hold Mermaid text,
@@ -62,11 +62,10 @@ What holds for the package `packages/eslint-plugin`:
 
 Which rules exist, their names, and their scope are decided first, with the
 procedure and the criteria of the rule-ideas skill
-(`.claude/skills/rule-ideas/SKILL.md`); this procedure writes the document of a
-rule decided that way. When checking shows that the condition does not hold,
-that the tree and the tokens cannot show it, or that an example is rejected by
-mermaid.js, the rule cannot be written as decided: do not write the document,
-and take the evidence back to the decision about the rule.
+(`.claude/skills/rule-ideas/SKILL.md`). When checking shows that the condition
+does not hold, that the tree and the tokens cannot show it, or that an example
+is rejected by mermaid.js, the rule cannot be written as decided: do not write
+the document, and take the evidence back to the decision about the rule.
 
 ## 2. Where a document goes, and the rule id
 
@@ -90,8 +89,7 @@ is a mistake, and which forms that look alike it does not report. The form is
 that of the rule documents of ESLint (as `no-unsafe-negation` and
 `no-unused-vars`): a one-line description, a short motivation, Rule Details with
 its sentences and then the examples of incorrect and correct code, Options, and
-the optional sections; each part of the form is taken from that precedent. The
-English rule document:
+the optional sections. The English rule document:
 
     # @mmd-toolkit/<name>
 
@@ -139,27 +137,35 @@ English rule document:
 
     ## Resources                        (generated)
 
-The Japanese document has the same parts: `英語版: [<name>.md](./<name>.md)`,
+The line `Japanese version: …` is written only when the Japanese document
+exists; an English document without one has no such line, since the site would
+fail on a link to a missing page (`check:docs` reports the link). The Japanese
+document has the same parts: `英語版: [<name>.md](./<name>.md)`,
 `…を禁止する。`, `## 規則の詳細`, `この規則に**反する**コードの例:`,
 `この規則に**従う**コードの例:`, `## オプション` with
 `この規則にはオプションがない。`, `## 使わないとき`, `## 関連する規則`, and
 `## 参考`. Links from a Japanese document to another document point to its
-Japanese version (`.ja.md`). When the line with the link to the English version
-is wider than 80 columns, break it after `英語版:`.
+Japanese version (`.ja.md`), or to its English document when it has no Japanese
+version (`check:docs` reports a link whose target does not exist). When the line
+with the link to the English version is wider than 80 columns, break it after
+`英語版:`.
 
 How each part is written:
 
-- The title is the full rule id (`# @mmd-toolkit/<name>`). There is no line for
-  the rule id, because the title holds it. The title is generated: when a new
-  document is written, any first line is replaced by `update` (section 6).
+- The title is the full rule id (`# @mmd-toolkit/<name>`). The title is
+  generated: when a new document is written, any first line is replaced by
+  `update` (section 6).
 - The line with the link to the other language is for readers of the repository;
-  the documentation site leaves it out.
+  the documentation site leaves it out. An English document has it only when its
+  Japanese version exists.
 - The first paragraph after the line of the other language is one short sentence
   that starts with Disallow (`…を禁止する。` in Japanese), as the description of
   an ESLint rule does. The English sentence is the `meta.docs.description` of
   the rule, word for word, and `check:docs` fails when the two differ; the
-  Japanese sentence is the description of the rule in `index.ja.md`. Nothing
-  else, such as a list, comes between the title and this sentence.
+  Japanese sentence is the description of the rule in `index.ja.md`; a rule
+  without a Japanese document is listed there with its English document and its
+  English description. Nothing else, such as a list, comes between the title and
+  this sentence.
 - The notice: the part between `<!-- begin auto-generated rule notice -->` and
   `<!-- end auto-generated rule notice -->`, after the first paragraph, says
   whether the `recommended` configuration enables the rule, whether it has a
@@ -182,15 +188,13 @@ How each part is written:
   `mmd` code block, including correct examples and examples outside these two
   groups, starts with `%% eslint @mmd-toolkit/<name>: error`, using the rule
   documented on that page. Write the comment without indentation, before the
-  diagram header and any Mermaid directives. It enables `twoslash-eslint`
-  diagnostics on the documentation site, which shows the reports when the reader
-  points at the code; do not add an `eslint-check` fence marker or rely on the
-  renderer to enable rules. `check:docs` rejects missing or different leading
-  comments in either language. After this comment, each code block is the
-  formatted input of a fixture (step 4 of section 4), and the prose quotes an
-  example as the code block writes it (`A --> B`, not `A-->B`, where the
-  formatter prints the spaces), and refers to a line by what it holds, not by
-  counting.
+  diagram header and any Mermaid directives. It enables the `twoslash-eslint`
+  diagnostics of the documentation site; do not add an `eslint-check` fence
+  marker. `check:docs` rejects missing or different leading comments in either
+  language. After this comment, each code block is the formatted input of a
+  fixture (step 4 of section 4), and the prose quotes an example as the code
+  block writes it (`A --> B`, not `A-->B`, where the formatter prints the
+  spaces), and refers to a line by what it holds, not by counting.
 - The examples are test cases. The tests of the rule read the English document:
   the `mmd` code blocks after the line "Examples of **incorrect** code for this
   rule:" up to the line "Examples of **correct** code for this rule:" are the
@@ -201,7 +205,7 @@ How each part is written:
   `###` heading stands before the examples either, so that they do not look as
   if they belonged to it. A code block opens with a line that is exactly
   ` ```mmd ` and closes with a line that is exactly ` ``` `. `check:docs` fails
-  when the `mmd` code blocks of the Japanese document are not those of the
+  when a Japanese document exists and its `mmd` code blocks are not those of the
   English document, in the same order: every Mermaid example, in the examples
   and elsewhere, is in both documents, unchanged.
 - Rule Details: a few short sentences before the examples, in the words of the
@@ -259,8 +263,7 @@ How each part is written:
     it. A sentence of Rule Details says it only when the correct examples cannot
     show it, and only when it has been checked with mermaid.js.
   - Nothing about fixes or suggestions: the generated notice says that the rule
-    has a fix or suggestions, and the message of each suggestion, which the
-    editor shows, says what it does.
+    has them, and the message of each suggestion says what it does.
   - A common rule that has something to say for some diagram types says it in a
     list in Rule Details, one item for each such diagram type, without a heading
     and without a code block. When a diagram type is supported, its item is
@@ -268,14 +271,13 @@ How each part is written:
 - Options: "This rule has no options." for a rule without options. The section
   says only what the rule has now. An option that may come later is recorded
   with the decision in the rule-ideas SKILL, not in the rule document.
-- When Not To Use It: written only when there is something real to say; no
-  section is written for a sentence that would fit any rule.
-- Related Rules: only when the document has related rules, as a list of links.
+- When Not To Use It: no section is written for a sentence that would fit any
+  rule.
+- Related Rules: a list of links.
 - Further Reading: only a list of links to what the people who use the rule can
   read, the pages of the documentation of mermaid.js, its issues, and its pull
-  requests, without prose. A permalink to the source of mermaid.js is not for
-  them: it is kept in the record of the rule in the rule-ideas skill, not in the
-  rule document. A rule with no such link has no Further Reading section.
+  requests, without prose. A permalink to the source of mermaid.js is kept in
+  the record of the rule in the rule-ideas skill, not in the rule document.
 - Which sentence goes where. A sentence about what mermaid.js does is checked
   against these cases, in this order:
   - It stays in Rule Details when it tells apart, among forms that the people
@@ -303,25 +305,22 @@ How each part is written:
   written only in a rule whose users meet that divergence. In Japanese,
   "この道具" and "木" are not used.
 - Sentences are short, and a paragraph has three or four sentences at most.
-- Fixtures: the examples stay in the rule document, and the test reads them from
-  it. The inputs written only for the rule are in the fixture directory of the
-  rule, `tests/fixtures/rules/<name>/`, under `valid/` or `invalid/` (the skill
-  `eslint-plugin-rules`, section 4). A fixture file holds no character that
-  `pnpm run lint:chars` checks for (the list is in
+- Fixtures: the inputs written only for the rule are in the fixture directory of
+  the rule, `tests/fixtures/rules/<name>/`, under `valid/` or `invalid/` (the
+  skill `eslint-plugin-rules`, section 4). A fixture file holds no character
+  that `pnpm run lint:chars` checks for (the list is in
   `packages/spec/docs/index.md`): an input that a test needs with one is written
   with escapes, in the test code, never as a `.mmd` file that holds the
   character.
 - Resources: `update` writes the section that links to the source and the tests
-  of the rule, as the Resources section of an ESLint rule document does, between
-  its generated markers. It is not written by hand.
+  of the rule, between its generated markers. It is not written by hand.
 
 ## 4. Checking, before and after writing
 
 The scripts that run mermaid.js, parse a text, and format it are in section 4 of
 the rule-ideas skill (`.claude/skills/rule-ideas/SKILL.md`). Put them outside
-the repository and run them with `node <file>`. Calls to mermaid.js are
-serialized and slow; with many inputs, run the script in the background and
-write its output to a file.
+the repository and run them with `node <file>`; with many inputs, run the script
+in the background and write its output to a file.
 
 1. What mermaid.js does: run every example through `runMermaid(text)` of
    `packages/tests/src/mermaid.ts`. Every example must be accepted (a rejected
@@ -343,36 +342,28 @@ write its output to a file.
    has changed, rebuild it with `pnpm --filter @mmd-toolkit/parser run build`
    first, or the examples are formatted by the old parser. The formatted output
    of each incorrect example is part of the result of the work (section 9).
-4. Examples and fixtures: the diagram content of every example comes from a
-   fixture of `packages/tests/fixtures` and is the output of formatting the
-   `input.mmd` of that fixture with prettier-plugin-mmd and its default options,
-   without the line terminator at the end, when the output ends with one (it
-   does not when the text ends inside an unclosed directive) (the skill
-   `conventions`: a Mermaid example is written as the formatter prints it;
-   formatting does not change the Db, so the fixture records how mermaid.js
-   reads the example). Choose the fixture whose input is the text to show,
-   format its input with the formatting script, and use the output as it is,
-   also where the formatter leaves a line as written. Check it by formatting the
-   input of the fixture and comparing the output with the example after removing
-   only its leading ESLint configuration comment. Keep that comment when
-   checking the published example with the parser or the site's renderer. The
-   snapshot test helper removes only this comment because its tester enables the
-   same rule under `rule-to-test/`; enabling it under `@mmd-toolkit/` too would
-   duplicate every report. The comment belongs to the published example, not to
-   the corpus fixture. Do not change the fixture to add it. An example kept as
-   written on purpose, where the presence or absence of whitespace is the point,
-   is the only exception, and the document says so. When prettier-plugin-mmd has
-   no printer for the diagram type yet, write each example by hand in the form
-   that the formatting choices decided for that diagram type give, and compare
-   the examples with the output of the printer once it exists; when no choices
-   are decided yet, follow the form of the flowchart printer (the statements
-   after the header one level in). Check that the `expected.json` of each
-   fixture used says what the document claims, and use only fixtures whose
-   `accepted` is true as examples, also for the correct examples. For every
-   example and claim without a fixture, add one by the steps of the skill
-   `tests`: give the smallest input that shows it and the claim of the rule
-   document that the fixture answers, and add it with `pnpm run fixtures:add`,
-   which records what mermaid.js does
+4. Examples and fixtures: the diagram content of every example is the output of
+   formatting the `input.mmd` of the fixture of `packages/tests/fixtures` whose
+   input is the text to show, with the formatting script (prettier-plugin-mmd,
+   default options), without the final line terminator when the output ends with
+   one (it does not when the text ends inside an unclosed directive). The
+   fixture records how mermaid.js reads the example (the skill `conventions`: a
+   Mermaid example is written as the formatter prints it). Use the output as it
+   is, also where the formatter leaves a line as written. Compare the example
+   with the output after removing only its leading ESLint configuration comment;
+   keep that comment when checking the published example with the parser or the
+   site's renderer. The snapshot test helper removes only this comment, because
+   its tester enables the same rule under `rule-to-test/` and enabling it under
+   `@mmd-toolkit/` too would duplicate every report. The comment belongs to the
+   published example, not to the corpus fixture: do not change the fixture to
+   add it. An example kept as written on purpose, where the presence or absence
+   of whitespace is the point, is the only exception, and the document says so.
+   Check that the `expected.json` of each fixture used says what the document
+   claims, and use only fixtures whose `accepted` is true, also for the correct
+   examples. For every example and claim without a fixture, add one by the steps
+   of the skill `tests`: give the smallest input that shows it and the claim of
+   the rule document that the fixture answers, and add it with
+   `pnpm run fixtures:add`, which records what mermaid.js does
    (`packages/tests/docs/maintaining-fixtures.md`); then record its tree in the
    parser (the skill `parser`). Read its `expected.json` and use it in the tests
    of the rule. The document change is not done until the fixture exists.
@@ -394,10 +385,8 @@ write its output to a file.
    and long links that cannot be broken are not counted. The first paragraph of
    a rule document is written the same way: the index reads it without regard to
    where its lines break.
-5. The English and Japanese documents have the same code blocks. Extract the
-   lines of the code blocks from both, and compare them.
-6. Every relative link has a target.
-7. A change to documents only runs these checks and no tests (the skill
+5. Every relative link has a target.
+6. A change to documents only runs these checks and no tests (the skill
    `conventions`, Running tests). The exception is a change to what a test
    reads: the examples (the code blocks after the two lines of section 3) or the
    rule files. Then run `tests/rule-cases.test.ts` and the test of the rule,
@@ -424,10 +413,11 @@ renamed, and removed together, as the section "Rules and their documents" of
   `index.ja.md`, everything between `<!-- begin auto-generated rules list -->`
   and `<!-- end auto-generated rules list -->`, one table for the common rules
   and one for each diagram type, whose rows hold the English description, the
-  first paragraph of the Japanese document, a ✅ for a rule that `recommended`
-  enables, a 🔧 for a rule that has a fix, a 💡 for a rule that offers
-  suggestions. Do not write these parts by hand; after a change of the first
-  paragraph of a Japanese document, run `update`.
+  first paragraph of the Japanese document (the English description, with a link
+  to the English document, for a rule that has no Japanese document), a ✅ for a
+  rule that `recommended` enables, a 🔧 for a rule that has a fix, a 💡 for a
+  rule that offers suggestions. Do not write these parts by hand; after a change
+  of the first paragraph of a Japanese document, run `update`.
 - What is written by hand in the index: what comes before the generated list
   (the introduction, with the sentence that says `recommended` enables the rules
   marked ✅, and the section on rule ids). The criteria for `recommended` are in
@@ -462,7 +452,7 @@ renamed, and removed together, as the section "Rules and their documents" of
 ## 8. Removing or moving a document
 
 - Use `rm` and plain `mv`. Do not use git for this (`git mv`, `git rm`, or any
-  change to the staging area): the user stages.
+  change to the staging area).
 - When a document moves, its rule is renamed (section 6): change the sentence of
   Rule Details that names the diagram types and its relative links, and run
   `update`, which writes its title and its row in the index.

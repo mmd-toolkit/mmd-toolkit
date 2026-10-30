@@ -75,9 +75,6 @@ Correctness is defined by the pinned mermaid.js.
    reproduced byte for byte.
 4. Formatting is idempotent and does not change the Db.
 
-The diagram types are done one at a time; flowchart, sequence, class, and state
-are done. Release only after every diagram type is done.
-
 ## What each package is responsible for
 
 The policies and criteria of a package are in the section Policies and criteria
@@ -113,8 +110,8 @@ package.
 
 ## Shared interfaces
 
-Changing one of these affects the packages that use it; tell them before
-changing it.
+A change to one of these reaches the packages that use it; change them in the
+same change.
 
 | Interface                                       | Defined in | Used by                                |
 | ----------------------------------------------- | ---------- | -------------------------------------- |
@@ -131,7 +128,7 @@ changing it.
 - Do not take a claim at face value, whoever makes it. Check it against the
   specification and against what mermaid.js actually does before acting.
 - Do not write code that depends on a shared interface before it has been
-  defined and announced. Do the independent parts first.
+  defined. Do the independent parts first.
 - Objections to a design are made with the code open, not from memory, and with
   evidence: code, mermaid's actual output, or the place in the specification.
   When shown to be wrong, withdraw.
@@ -151,8 +148,10 @@ changing it.
   - No invisible characters written literally (`pnpm run lint:chars`). The
     fixtures of the conformance corpus are the only exception.
   - Every Markdown document is in English with a `.ja.md` pair, changed in the
-    same change, and a link to the source of mermaid.js is a permalink of the
-    pinned commit (`pnpm run lint:docs`).
+    same change; write the Japanese where it is missing or older
+    (`pnpm run lint:docs` lists both; `CHANGELOG.md` has no pair). A link to the
+    source of mermaid.js is a permalink of the pinned commit
+    (`pnpm run lint:docs`).
   - Prose is wrapped at 80 columns: in English by Prettier
     (`pnpm run format:check`), in Japanese by the author and checked by
     `pnpm run lint:ja`.

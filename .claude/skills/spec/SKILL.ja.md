@@ -3,19 +3,16 @@ name: spec
 description:
   Write and maintain the syntax specification under packages/spec/docs/ (the
   diagram documents, the tree documents, and the shared documents) and the
-  fixtures that back its claims. Use when a diagram type is added (step 3 of the
-  plan), when a gap in the specification is found, for example while
-  implementing the parser, when fixtures are needed to back a claim or a rule
-  idea, and when mermaid.js is upgraded.
+  fixtures that back its claims. Use when a diagram type is added, when a gap in
+  the specification is found, for example while implementing the parser, when
+  fixtures are needed to back a claim or a rule idea, and when mermaid.js is
+  upgraded.
 ---
 
 # 仕様の書き方（spec）
 
 `packages/spec/docs/` の仕様を、
 すべての主張を pin した mermaid.js と fixture で確かめて書く手順。
-会話の履歴や記憶がなくても、この文書だけで同じ品質で進められるように書く。
-パッケージの方針と基準は「方針と基準」の節にある。
-どのパッケージにも当たるものは、AGENTS.md と SKILL `conventions` にある。
 
 ## 方針と基準
 
@@ -85,32 +82,19 @@ description:
   mermaid.js の実装が正規表現であっても、受理条件は文と文法で書く。
   AST は表と文で定義し、型は言語に依存しない語（整数、文字列、
   ノードの列）で書く。
-  parser の `ast.ts` はその定義の実装であって、定義の出どころではない。
-  仕様は実装言語に依存しない文書にする。
 
 ## 1. 最初に読むもの
 
-基準は変わるので、作業を始めるたびに読む。
-
-1. 方針と基準。
-   - この文書の「方針と基準」の節: 木の定義の原則（ノードの型の名前、
-     共通の葉のノード、型は位置で文法が許すもので決める）、 4 節、
-     すべての主張に fixture、記号を作らない、仕様にコードを書かない。
-   - AGENTS.md の Project: 正しさの基準と、Known divergences の例外。
-   - AGENTS.md の Principles。
-   - SKILL `conventions`: 日英の対、見えない文字、Prettier の折り返し、
-     Mermaid のテキストのコードブロックは `mmd`、
-     mermaid.js のソースへの permalink。
-   - AGENTS.md の Shared interfaces: 木の定義は parser、prettier-plugin、
-     eslint-plugin が使う。
-     そのため、変えることはそれらのパッケージの変更でもあり、作業の結果に、
-     それぞれが直す点を書く。
+1. 「方針と基準」の節、AGENTS.md（Project、Principles、Shared interfaces）、
+   SKILL `conventions`。
+   木は共有のインターフェースである。
+   木を変えた結果には、parser、prettier-plugin、eslint-plugin が直す点を書く。
 2. 作業の結果では、主張ごとに、実行して確かめたか（mermaid.js、parser）、
    読んで確かめたか（mermaid.js のソース、文書）、
    確かめていないかを区別して示す。
 3. `packages/spec/docs/index.md` （適合、図種の文書の 4 節、書き方の約束、
    pin した commit）、 `common.md`、`ast.md`、
-   既存の図種の `diagrams/<図種>.md` と `ast/<図種>.md`。
+   ほかの図種の `diagrams/<図種>.md` と `ast/<図種>.md`。
    木の原則とその理由は、`ast.md` の「設計の目標」と「共通の葉のノード」にある。
 4. `packages/tests/docs/maintaining-fixtures.md`（fixture のコマンドと規則）と
    `packages/tests/README.md`（fixture の形）。
@@ -121,7 +105,8 @@ description:
 そのパッケージの SKILL の手順で直す。
 
 ユーザーが言わないかぎり、git の操作（コミット、ステージ、ステージを戻す、
-`git mv`）をせず、追跡されているファイルを一時的に書き換えない。
+`git mv`）をしない。
+試すために追跡されているファイルを書き換えず、リポジトリの外の写しを書き換える。
 
 ## 2. 道具
 
@@ -134,9 +119,9 @@ Node は TypeScript をそのまま、どのディレクトリからでも実行
 Node は消せる型だけを取り除く。
 型だけの import は `import type` で書き、 `enum`、`namespace`、
 引数のプロパティは使わない。
-mermaid.js の呼び出しは直列で遅い（1 件に数十ミリ秒、
-fixtures:check の全件で 1〜2 分）。
-入力が多いときはバックグラウンドで動かし、出力をファイルに書く。
+mermaid.js の呼び出しは直列で遅い（1 件に数十ミリ秒）。
+入力が多いときはバックグラウンドで動かし、
+出力を作業用のディレクトリのファイルに書く。
 
 ### 2.1 mermaid.js で入力を確かめる
 
@@ -178,10 +163,10 @@ mermaid.js がテキストを拒否するときは、それは undefined を返�
 // Lists the fixtures whose input contains a text, with what mermaid.js did:
 //   node <this file> "<text>"
 import { loadFixtures } from "<repo>/packages/tests/src/index.ts"
-import type { DiagramType } from "<repo>/packages/tests/src/index.ts"
+import { diagramIds, isDiagramType } from "<repo>/tools/src/diagrams.ts"
 
-// The fixture directories; add a diagram type here when its directory exists.
-const diagrams: DiagramType[] = ["common", "flowchart", "sequence", "class"]
+// The fixture directories: one per diagram type, and `common`.
+const diagrams = Object.keys(diagramIds).filter(isDiagramType)
 
 const wanted = process.argv[2]!
 for (const diagram of diagrams) {
@@ -219,7 +204,7 @@ pnpm run -s fixtures:check
 - 同じ入力の fixture が既にあれば、その項目は飛ばされる。
 - `note` は、仕様のどの節のどの規則の例か（`flowchart.md Strings: …`）と、
   何が起きるかを書く。
-  理由まで仕様と照らす（7 節）。
+  理由まで仕様と照らし、注記は `fixtures:set-note` で直す。
 - 共通の規則の例は `common`、図種の例は図種のディレクトリに置く。
   名前は、規則の種類と、入力が示すことで付ける。
   規則の種類は、`lex-`、`gram-`、`db-`、`tokens-`、`config-`、`entity-`、
@@ -227,9 +212,8 @@ pnpm run -s fixtures:check
 
 ### 2.4 仕様の文書を確かめる
 
-仕様の文書と fixture の変更は、
-次のように確かめる（SKILL `conventions` の「テストの実行」を参照）。
-書いた後に毎回、リポジトリのルートで次を通す。
+書いた後に毎回、
+リポジトリのルートで次を通す（SKILL `conventions` の「テストの実行」）。
 
 ```sh
 npx prettier --write packages/spec
@@ -238,14 +222,18 @@ pnpm run -s lint:docs
 pnpm run -s lint:chars
 ```
 
-`pnpm run lint:docs` は、日英の対のほかに、仕様の文書と、
-parser と tests の文書（`packages/parser/docs`、
-`packages/tests/docs`）のリンク、アンカー、
-fixture の引用（`[fixture:` の後で行が折り返されたものも読む）、
-日英の引用の集合、見出しの構造を確かめる（`scripts/check-doc-citations.mjs`）。
-検査の対象の文書の mermaid.js へのリンクが、
-すべて `packages/spec/docs/index.md` に記録した commit を指していることも、
-`scripts/check-mermaid-links.mjs` で確かめる。
+`pnpm run lint:docs` は、仕様、parser、tests の文書のリンク、アンカー、
+fixture の引用が何も指さないとき、
+mermaid.js へのリンクが pin した commit を指さないとき、
+英語の原本のない `.ja.md` があるときに失敗する。
+pin した commit は `packages/spec/docs/index.md` に記録してある。
+検査は、順に `scripts/check-doc-citations.mjs`、
+`scripts/check-mermaid-links.mjs`、`scripts/check-ja-docs.mjs` にある。
+引用の検査は `[fixture:` の後で折り返された引用も読み、
+行ごとの検索はそれを取りこぼす。
+日本語版が無い文書、英語版より古い日本語版、
+引用か見出しの構造が違う日本語版（behind）は、一覧するだけである。
+仕様の文書がそうなら、そのとき日本語版を、同じ引用と見出しの構造で書く。
 
 `packages/tests` で `pnpm run -s fixtures:check` も通す（fixture
 を足したとき）。
@@ -253,14 +241,8 @@ fixture の引用（`[fixture:` の後で行が折り返されたものも読む
 記録した結果と違うものがあれば失敗する。
 
 ほかのパッケージのテストは回さない。
-parser、整形器、lint は、変更を取り込むときに自分のテストを回す。
-仕様を読む parser のテストが 1 つある。
 `packages/parser/tests/types.test.ts` は `docs/known-divergences/`
-の文書を並べるので、既知の差異の文書を足したか除いたときは、
-作業の結果（3.6）にそう書く。
-3.5 の場合は、文を書くときに mermaid.js で 1 回確かめて fixture にし、
-`fixtures:check` がそれをもう一度回す。
-入力を生成するテストやコマンドはない。
+の文書を並べるので、それを足したか除いたときは、出力（3.6）にそう書く。
 
 ### 2.5 文書を書き換えるスクリプト
 
@@ -274,24 +256,21 @@ parser、整形器、lint は、変更を取り込むときに自分のテスト
 - ファイルごとに、すべての置き換えが済んでから書く。
   途中で止まったときは、どのファイルが書かれたかを確かめ、
   書かれたファイルの分を外してから流し直す（二重に足さない）。
-- 書いた後に `npx prettier --write` で折り返し直す。
 - Write ツールとシェルのヒアドキュメントは `\uXXXX`
   を実際の文字に変えることがある。
-  見えない文字は文書に書かない（SKILL `conventions`）。
-  書いた後に `pnpm run lint:chars` を通す。
+  `pnpm run lint:chars`（2.4）がそれを見つける。
 - バッククォートを含む例のコードスパンは、
   2 重のバッククォートで囲む（``A["`x`"]``）。
   1 重のままだと、Prettier が前後の空白を詰めて壊す。
   書いた後に、描画した形を一度確かめる。
 
-## 3. 図種を足すとき（工程 3）
+## 3. 図種を足すとき
 
-入力: その図種の工程 1 と 2（tests の SKILL）。
-Db の正規化関数と、収集した fixture。
-mermaid.js を読むこと（3.1）と木の案（3.3 の項目 4）は fixture が要らないので、
+入力: その図種の Db の正規化関数と、収集した fixture。
+tests の SKILL の 5.2 と 5.3 で作る。
+mermaid.js を読むこと（3.1）と木の案（3.3 の項目 3）は fixture が要らないので、
 収集の間に始めてよい。
-主張は、そのために書いた入力で確かめ（2.1）、
-収集した fixture が届いてから fixture にする。
+主張は、そのために書いた入力で確かめ（2.1）、収集が済んでから fixture にする。
 収集にすでにある入力に、主張のための 2 つ目の fixture を作らないためである。
 
 ### 3.1 mermaid.js を読む
@@ -313,22 +292,9 @@ mermaid.js を読むこと（3.1）と木の案（3.3 の項目 4）は fixture 
      click の状態と dir の状態でも当たる。
    - トークンを返さない規則。
      flowchart の例: `"click"[\s]+` は状態に入るだけで、
-     語 `click` は文法に見えない。
-     仕様ではそれを `click` の単位とし、クリックの文を始めるだけとする。
-     mermaid.js がそれをほかの位置で、何もないものとして、
-     あるいはたまたま文法が受け付けるクリックの id として読む入力は、
-     既知の差異 `click-reserved-word`（known-divergences.md）である。
+     語 `click` は文法に見えない（既知の差異 `click-reserved-word`）。
      `""`、空の括弧の付いた `call`、`accDescr {}` の規則も、
-     トークンを返さないので、
-     mermaid.js はこれらの空の形を多くの場所で受理する。
-     これらは値の中にも、どの 2 つの単位の間にも現れ、
-     木にはそこにそれらを置く場所がない。
-     そのため、仕様では、文法が受け付けない単位として読み、
-     既知の差異 `tokenless-empty-forms` とする。
-     読まれないことは、拒否する理由にならない。
-     方向の文の周りで mermaid.js が捨てるテキストは、
-     FlowchartIgnoredText のノードで、
-     文が始まる位置の空の説明ブロックは文である。
+     トークンを返さない（`tokenless-empty-forms`）。
    - 空の文字列に一致しうる規則（`[^\s\n]*` など）。
      テキストの終わりで空のトークンを返し、入力を拒否させる。
    - `[\s]+` のように改行を含む空白の規則。
@@ -340,9 +306,8 @@ mermaid.js を読むこと（3.1）と木の案（3.3 の項目 4）は fixture 
    例外を投げる箇所（文法の外の拒否）を探す。
    テキストではなくブラウザに依る値（`window.CSS` や `document`）も探す。
    sequence の例: box の色。
-   そのような値は木では決めない。
-   サイトの設定と同じく外から与える値として、
-   `@mmd-toolkit/tests` の `docs/db-from-tree/<図種>.md` が書く。
+   そのような値は、サイトの設定と同じく外から与えられる。
+   `@mmd-toolkit/tests` の `docs/db-from-tree/<図種>.md` がそう書き、
    それは tests のスキルの手順で書く。
 4. 前処理の順序（common.md の Reading a source）と、
    検出（detection.md）を確かめる。
@@ -473,9 +438,8 @@ index.md の「How to read a diagram document」の 4 節で書く。
    各規則がどのノードを作るかを表にする。
    文法が受理した後で mermaid.js が拒否する入力を、
    それを決めるものすべてとともに書く（Rejections outside the grammar）。
-   意味上の受理条件を、書かれた文に対する直接の規則で述べ、
-   各条件の判断に要る比較値と状態の変化を含め、
-   受理に不要な派生値だけを tests の要約に委ねる。
+   意味上の受理条件を、それに要る比較値と状態の変化とともに、
+   書かれた文に対する直接の規則で述べる。
    テキストの外のサイト設定に依る条件は、既定値と、
    変更された設定を持つ側がそれを適用し、残りは木だけで決めることを述べる。
 4. Known divergences: known-divergences.md の識別子のうち、
@@ -512,17 +476,12 @@ index.md の「How to read a diagram document」の 4 節で書く。
    子の欄は `ast.md` の Nodes の 2 つの文のどちらかで書く。
    英語では ``Child fields: `a`, `b`.`` か `No child fields.`、
    日本語では ``子の欄: `a`、`b`。`` か `子の欄はありません。` である。
-2. 各単位のトークンの種類は、
-   parser が `packages/parser/docs/tokens/<diagram>.md` で定め、
-   仕様の文書はそれに言及しない。
-   仕様は字句構造と文法の単位を挙げ、
-   parser はそれから各単位に種類を与える（3.7 の項目 1）。
-3. 葉のノードの型は、その位置で文法が許すもので決める（「方針と基準」の節、
+2. 葉のノードの型は、その位置で文法が許すもので決める（「方針と基準」の節、
    ast.md の Shared leaf nodes）。
-4. ノードの形は、書く前に、図種の全体について 1 回で決める。
+3. ノードの形は、書く前に、図種の全体について 1 回で決める。
    まず、リポジトリの外に案を書く。
    案には、すべてのノードの型とその欄と、判断が要る点を挙げる。
-   判断が要る点は、次の 4 つに分ける。
+   判断が要る点は、次のように分ける。
    名前、mermaid.js が読まないテキストをノードにするか拒否するか、
    既知の差異の候補、共通の部分（`ast.md`、`common.md`、
    共通の葉のノード）の変更。
@@ -535,7 +494,7 @@ index.md の「How to read a diagram document」の 4 節で書く。
    決めたら、すべての欄を原則と照らす。
    決めた形が原則や mermaid.js と食い違うと分かったら、
    変える前に根拠を添えてそれを示す。
-5. 値は範囲のテキストで、値のトークンと範囲は、
+4. 値は範囲のテキストで、値のトークンと範囲は、
    mermaid.js が値として読むテキストを、
    mermaid.js が読む空白を含めて覆う（ast.md の Nodes と Tokens）。
    sequence のタイトル、class のジェネリクスの型、
@@ -566,8 +525,8 @@ index.md の「How to read a diagram document」の 4 節で書く。
    `fixtures:set-divergence` で識別子を付ける。
    どの識別子かは、known-divergences.md の定義に当てはめて決め、
    同じ種類の既存の fixture に合わせる。
-6. corpus の場合を他パッケージへ渡すときは、入力を別の fixture に写さず、
-   既存の fixture を引用する。
+6. ほかのパッケージの作業が corpus の場合を要るときは、
+   入力を別の fixture に写さず、既存の fixture を引用する。
 
 ### 3.5 規則を確かめる
 
@@ -585,38 +544,24 @@ index.md の「How to read a diagram document」の 4 節で書く。
    parser の `parse()` と `dbOf()` で 1 回確かめる（2.1）。
    parser がまだ読まない図種では、mermaid.js の結果を、文が言うことと比べる。
    そのうえで、場合ごとに、文が引く fixture を持たせる（3.4）。
-   その場合を記録した既存の fixture か、新しく足した fixture である。
    場合ごとに少なくとも 1 つを引き、同じ場合の fixture を全部は引かない。
 3. 文が説明しない場合を種類に分け、種類ごとに 1 つの規則で説明する。
    例外を足していく形ではなく、 mermaid.js の仕組みを 1 つの規則として書く。
    flowchart の例: mermaid.js がトークンを読まず、木に置く場所もない空の文字列、
    空の呼び出し、空の説明ブロックは、それらが現れるどの場所についても、
-   場所ごとの規則ではなく、 1 つの既知の差異として扱った。
+   場所ごとの規則ではなく、 1 つの既知の差異として扱う。
 4. 受理・拒否は 1 つの基準で決める（AGENTS.md の Project 1
    と「方針と基準」の節）。
    mermaid.js が受理・拒否するものを受理・拒否し、
    受理した入力には mermaid.js の Db を与える。
-   mermaid.js が受理する入力を拒否するには、2 つの事実が要る。
-   mermaid.js が受理すること、そして書かれたものを置く場所が木にないことである。
-   そのため、書き手が書き、mermaid.js が読まない形を見つけたら、まず、
-   木にそれをノードとして置く場所があるかを調べる。
-   置き場所は、FlowchartIgnoredText のような図の葉のノードか、
-   文が始まる位置の空の説明ブロックのような文である。
-   置く場所がないところだけ、入力を既知の差異として拒否し、
-   木に置く場所がない理由を仕様に書く。
-   mermaid.js が受理するが、書き手が意図しない読み方をする入力も、
-   同じように受理する。
-   木は書かれたものを示し、Db は mermaid.js のものである。
+   書き手が書き、mermaid.js が読まないか、書き手の意図と違って読むテキストは、
+   ノードで持ち（3.8 の項目 2）、入力を受理する。
    sequence の例: `title` の後に改行があると、次の行を題として読む。
    `create destroy A` は A を作る。
-   そのような入力は mermaid.js の結果とともに一覧にし、
-   lint の規則の候補として報告する。
-   書かれたものと違う意味になることは、拒否する理由にならない。
-   mermaid.js の読み方が、構文の規則ではなく、
-   字句解析器の規則の順番やパイプラインから生じるときも、
-   ノードで持てるかを先に問う。
-   ノードで持てないところだけ、直接の規則を書き、それで読み方が違う入力を、
-   3.8 のとおりに既知の差異として提案する。
+   そのような入力は、mermaid.js の結果とともに lint の規則の候補として挙げる。
+   mermaid.js の読み方が何から来るにせよ、ノードで持てないところだけ、
+   入力を拒否するか、違って読む直接の規則を書き、
+   既知の差異として提案する（3.8）。
    sequence の例: `%%` から始まるコメントは、その前の文字を取らない。
 5. 形を新しい場所で受理する前と、規則を一般化する前に、
    規則が当たるところを次のとおり挙げ、それから書く。
@@ -650,9 +595,9 @@ index.md の「How to read a diagram document」の 4 節で書く。
    報告している内容、確かめた日付）。
    状態は、ラベルと返信の事実で書く。
    `Type: Bug / Error` のような、報告の書式が付けるラベルを、
-   保守者の判断として書かない。
+   メンテナーの判断として書かない。
    承認された、不具合だ、と書くのは、`Status: Approved` のラベルがあるか、
-   保守者の返信がそう述べるときだけにする。
+   メンテナーの返信がそう述べるときだけにする。
    見つからなければ、使った検索語とともに報告し、仕様には挙動だけを書く。
 
 ### 3.6 出力
@@ -660,7 +605,7 @@ index.md の「How to read a diagram document」の 4 節で書く。
 作業の結果として、変えた節、足した fixture の名前、parser が直す点（受理、
 トークン、Db の導出）、parser に `ast.json` が要る fixture を示す。
 
-引き継ぎには、次の責務を含める。
+出力には、ほかのパッケージの次の手順も示す。
 
 - `checkTree` は、[tests §6](../tests/SKILL.ja.md#6-langium-の図)に従う。
 - 差異の形の検査は、
@@ -672,9 +617,8 @@ index.md の「How to read a diagram document」の 4 節で書く。
 
 ### 3.7 parser が仕様を読む前の点検
 
-parser は仕様だけを源として読む。
-図種の文書を渡す前に、その図種について次の点検をする。
-各点検の結果を出力に書く（3.6）。
+parser は仕様だけから書く。
+その前に、図種について次の点検をし、各点検の結果を出力に書く（3.6）。
 
 1. **単位の名前。**
    字句構造と文法の単位の名前を、文法の規則の名前も含めて一覧にする。
@@ -698,7 +642,7 @@ parser は仕様だけを源として読む。
    印の文字の間や値の中のディレクティブの例。
 5. **閉じていない形。**
    閉じる部分なしに受理される形のノード（テキストの終わりの説明ブロック）は、
-   前の図種と同じく `closed` の欄を持つ。
+   `closed` の欄を持つ。
 6. **木の文書はそれだけで読める。**
    各ノードは、`ast/<diagram>.md` に自分の節と欄の表を持つ。
    「`<OtherDiagram>Node` と同じ」と書いた節を作らない。
@@ -717,10 +661,7 @@ parser は仕様だけを源として読む。
    値として（mermaid.js が読む空白。空白だけの値も）、
    列の null の要素として（`,` の間の空の項目）、
    トークンとして（`:` があるかどうか）持つ。
-   どのノードもトークンも持てないところだけ、
-   `ast/<diagram>.md` のその欄の説明がその理由を述べ、
-   Db がそれをソースから読むことは、
-   tests の `docs/db-from-tree/<図種>.md` が述べる。
+   どのノードもトークンも持てないものは、3.3 の項目 4 のとおりに書く。
 9. **範囲。**
    「任意の文字」は、どれも、改行、U+2028、U+2029 を含むかどうか、
    できるだけ多く読むか少なく読むか、
@@ -802,9 +743,8 @@ fixture でキーがないことが一度もない欄も、ある入力ではな
 
 ### 3.8 既知の差異を提案するとき
 
-既知の差異は、AGENTS.md の Project 1 の 1 つ目の問いに答えた後でだけ提案する。
-新しい識別子でも、既存の識別子への入力の追加でも、
-提案には次の 4 つの答えを書く。
+既知の差異の提案には、新しい識別子でも、既存の識別子への入力の追加でも、
+次の 4 つの答えを書く（AGENTS.md の Project 1）。
 答えのない提案は、決めない。
 
 1. **テキスト。**
@@ -852,7 +792,7 @@ parser、フォーマッター、規則を実装するとき、レビューす�
 3. 3.5 の手順で、その入力が関わる文の場合を挙げ、
    それぞれを mermaid.js で 1 回確かめる。
 4. 規則を書く。
-   木の定義に関わるときは、3.3 の 4 に従う。
+   木の定義に関わるときは、3.3 の項目 3 に従う。
 5. fixture を足し（3.4）、対照の例も足す。
 6. 3.6 のとおり結果を示す。
 
@@ -899,41 +839,3 @@ fixture の追加だけが要るとき（規則のアイディアの根拠など
 4. Known divergences の各識別子が、まだ成り立つかを確かめる。
 5. detection.md の検出器の順序と一覧を、新しい版と照らす。
 6. 3.6 のとおり結果を示す。
-
-## 7. 避ける誤り
-
-- 例を手で書いて決めた規則は、境界の入力で外れる。
-  → 3.5 のとおり、文ごとの場合と接する規則の場合を挙げ、
-  それぞれに fixture を持たせる。
-- 入力の先頭が合う既存の fixture でも、拒否の例でありうる。
-  → 足りるとする前に、`accepted` と値を読む。
-- Prettier は `[fixture:` の後で引用を折り返すので、
-  行ごとの検索は引用を取りこぼす。
-  → 行ごとに検索せず、`pnpm run lint:docs` の検査（2.4）を使う。
-- fixture の注記に書いた理由が、規則の順序と合わないことがある。
-  → 注記も仕様の主張として確かめ、`fixtures:set-note` で直す。
-- 検査の作業ファイルをリポジトリの中に書くと、
-  あるいは追跡されているファイルを一時的に書き換えると、作業ツリーが変わる。
-  → 出力先はすべて、リポジトリの外の作業用のディレクトリの絶対パスにする。
-  書き換えを試すときは、そのディレクトリに写してから書き換える。
-- `add-many` は、`accepted` が合わなくても止まらない。
-  → 出力の一覧を読む。
-
-## 8. Jison、Langium、Chevrotain
-
-3.1 の該当する手順を使う。
-Langium では、[Langium の図](#langium-の図) の項目 6 で、
-3.2 の Detection を書く前に、共通の前処理と検出の境界を確定する。
-実際の terminal の優先順とキーワード境界、隠れた terminal の範囲と LF の消費、
-使われる value converter、 wrapper の受理の門を確定し、
-書かれた構文と結果の公開や意味の検査を区別する。
-それを 3.2〜3.7 の文、木、明示した fixture の場合、引き継ぎに適用する。
-回復した木は受理の根拠ではなく、
-Db が空でも書かれた構文を捨てる根拠にはならない。
-処理系固有の調査はこの手順に置き、
-Mermaid のソースを見ずに実装が従える直接の規則を渡す。
-
-Chevrotain は、その手順と、mode、順序つきの一致、`longer_alt`、書かれた境界、
-エラー処理の確認を使う。
-実際の処理系を調べる。
-Jison の境界も Langium の service の構成も、自動的に適用されるわけではない。

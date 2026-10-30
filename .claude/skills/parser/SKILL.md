@@ -16,11 +16,10 @@ description:
 The steps of the work on `@mmd-toolkit/parser`: implementing a diagram type from
 the specification alone (its lexer, its recursive-descent parser, the tests on
 the fixtures, the recorded trees), following added fixtures and changed rules,
-and updating the pinned mermaid.js. It is written so that the same quality is
-reached without the history of earlier work. The policies and criteria of the
-package are in the section Policies and criteria; what holds for every package
-is in AGENTS.md and in the skill `conventions`. The examples are those of the
-flowchart; the steps do not depend on the diagram type.
+and updating the pinned mermaid.js. The policies and criteria of the package are
+in the section Policies and criteria; what holds for every package is in
+AGENTS.md and in the skill `conventions`. The steps do not depend on the diagram
+type.
 
 ## Policies and criteria
 
@@ -30,9 +29,8 @@ flowchart; the steps do not depend on the diagram type.
   implements comes from the specification (`docs/common.md`, `docs/ast.md`,
   `docs/ast/*.md`, `docs/diagrams/*.md`) and the fixtures. mermaid.js's source
   may be read to check what the specification says, never as the source of a
-  behavior to implement. When the specification is silent on something, the
-  parser does not fill the gap from mermaid's code; it reports the gap to the
-  specification's owner.
+  behavior to implement. What the specification leaves open is not filled from
+  mermaid's code; it is a gap in the specification (4.2, step 2).
 - Implements the AST as TypeScript types with the same node names and field
   names: the shared part of `docs/ast.md` in `ast.ts`, and each diagram's nodes
   of `docs/ast/<diagram>.md` in `ast/<diagram>.ts`.
@@ -46,9 +44,7 @@ flowchart; the steps do not depend on the diagram type.
   (`checkTree`), and the Db that it builds from them against the Db that each
   fixture records. The tests run neither mermaid.js nor generated inputs, and no
   command of this package does. Each sentence of the parser's documents that
-  defines a behavior has a fixture for each case it distinguishes and for each
-  other rule that meets it at its place (AGENTS.md, Principles); a case that the
-  corpus lacks is closed by a fixture.
+  defines a behavior has a fixture for each of its cases (section 3).
 
 ## 1. What to read first
 
@@ -56,8 +52,7 @@ flowchart; the steps do not depend on the diagram type.
    specification alone, not taking behavior from the source of mermaid.js);
    "Shared interfaces" and "Principles" in AGENTS.md (readability, the proper
    form); and the skill `conventions` (no regular expressions, invisible
-   characters, the documents). The criteria change, so read them for each piece
-   of work.
+   characters, the documents).
 2. `packages/parser/docs/development.md` (how the parser is built, and the
    tools), `docs/tokens.md` and `docs/positions.md` (the tokens, the positions,
    and the invariants of the tree), `docs/testing.md` (what the tests check),
@@ -109,10 +104,8 @@ flowchart; the steps do not depend on the diagram type.
 ## 3. How to check (in every piece of work)
 
 - Check every claim about the behavior of mermaid.js, your own or another's,
-  before writing it. The tests of the parser run neither mermaid.js nor
-  generated inputs: they hold the parser to what the fixtures record. When a
-  claim needs mermaid.js, run it in a probe outside the repository (in the
-  scratchpad), a script run with `node --conditions=source` that imports
+  before writing it, in a probe outside the repository (in the scratchpad), a
+  script run with `node --conditions=source` that imports
   `runMermaidWithEmbeddedData` and `dbFromTree` from the sources of
   `packages/tests`: the first gives the acceptance and the Db of mermaid.js for
   an input, the second the Db built from the parser's tree of the same input.
@@ -134,16 +127,13 @@ flowchart; the steps do not depend on the diagram type.
   or changed, list the cases that it distinguishes and the other rules that meet
   it at the place that it names (a directive, an ignored `;`, a comment line, an
   empty line, a line separator, an empty description block), and ask for a
-  fixture of each case that the corpus lacks (AGENTS.md, Principles). More
-  assurance comes from a case that is missing, never from more inputs of a case
-  that is there.
+  fixture of each case that the corpus lacks (AGENTS.md, Principles). Do not add
+  inputs to a case that has a fixture.
 - In every result, show for each claim whether it was checked by running
   something, checked by reading code or documents, or not checked.
 - For a requested performance review of a newly supported diagram or an existing
   parser, use
-  [parser-performance-review](../parser-performance-review/SKILL.md). Its
-  standalone measured reproductions are review reports, separate from the
-  fixture-based conformance tests described here.
+  [parser-performance-review](../parser-performance-review/SKILL.md).
 - Run what a change can affect (the skill `conventions`, Running tests). While
   working, run the test files that go with the changed part of the code, in
   `packages/parser` (`npx vitest run <files>`; a diagram's part of
@@ -374,12 +364,12 @@ add, or to add a `case` of the diagram to:
 | `tests/helpers/reference-inputs.ts`    | the diagram's units for the references |
 | `tests/<diagram>.test.ts`              | unit tests of the tree and tokens      |
 
-Use these test steps for every diagram type. Pre-record probes (4.7) and
-`tests/fixtures.test.ts` use `fixtureAccepts` from `@mmd-toolkit/tests` for
-acceptance. Its shared `DIVERGENCE_PROPERTIES` table defines each identifier's
-acceptance direction and specified-reading requirement. A missing required
-`specified.json` is an error that fails the probe or test. Specified readings
-decide acceptance when present; unmarked fixtures use `expected.json`.
+Pre-record probes (4.7) and `tests/fixtures.test.ts` use `fixtureAccepts` from
+`@mmd-toolkit/tests` for acceptance. Its shared `DIVERGENCE_PROPERTIES` table
+defines each identifier's acceptance direction and specified-reading
+requirement. A missing required `specified.json` is an error that fails the
+probe or test. Specified readings decide acceptance when present; unmarked
+fixtures use `expected.json`.
 
 For `embedded-data-opaque`, follow the specified reading in either acceptance
 direction and retain the derived title and unaffected embedded values supplied
@@ -434,9 +424,8 @@ Steps:
 The parse result of every fixture is recorded next to its input: the tree of an
 accepted input in `ast.json`, and the `message`, `range`, and `loc` of the
 `ParseError` of a rejected one in `parse-error.json` (`docs/testing.md`,
-Recorded parse results). The fixture test compares each result with its file. A
-rejection is thus recorded as fully as a tree: where the parser reports it is
-part of the result.
+Recorded parse results). The fixture test compares each result with its file;
+where the parser reports a rejection is part of the result.
 
 Records contain the default `parse(text)` result, while
 `outcomeOf(fixture.input, fixture.config)` applies only external site settings
@@ -489,7 +478,6 @@ for acceptance without adding configuration parameters or options to `parse()`.
    pnpm run diff-trees <directory>/ast-before <diagram>
    ```
 
-   Every missing record that `test:update` would write must have been probed.
    Compare serialized records or their byte hashes, not a live tree against
    parsed JSON, and separate new, changed and removed results.
 
@@ -542,7 +530,7 @@ pnpm run format:check
 ```
 
 Run the whole suite once, before the work is reported as done, not after each
-change. It runs no generated inputs (the skill `conventions`, Running tests).
+change.
 
 The work is done when every fixture passes the fixture test, the recorded trees
 pass the tree check of `@mmd-toolkit/tests` and give the Db that the corpus
@@ -553,10 +541,9 @@ each of its cases (section 3).
 
 Change the `.md` and the `.ja.md` in the same change.
 
-- `packages/parser/README.md`: the supported diagrams, and the links to the
-  specification for the types.
-- `docs/development.md`: what is implemented, and how the diagram's parser is
-  built.
+- `packages/parser/README.md`: the row of the diagram in Supported diagrams,
+  with its type ids, headers, and node document.
+- `docs/development.md`: how the diagram's parser is built.
 - `docs/testing.md`: the list of fixtures, and what the tests of the diagram
   check.
 - `docs/error-positions.md`: the positions in the diagram.
@@ -570,8 +557,7 @@ Run `npx prettier --write` on them, and pass `pnpm run lint:docs` and
 Show as the result: what was implemented, file by file; the gaps in the
 specification that were found, and which of them are still open; the number of
 tests and their results; the number of recorded results (new, and changed, by
-kind); the exported types; the changed documents. For each claim, show whether
-it was run, read, or not checked.
+kind); the exported types; the changed documents.
 
 ## 5. First-match lexical rules, hidden forms and semantic acceptance
 
@@ -684,7 +670,10 @@ skill). The parser does not change behavior before the specification does.
 3. When diagram type ids are added or changed: following `detection.md` and the
    DiagramType of `ast.md`, fix `src/detection.ts`, `DiagramType` in
    `src/ast.ts`, `allDiagramTypes` in `tests/types.test.ts`, and
-   `tests/detection.test.ts`.
+   `tests/detection.test.ts`. An added id first goes into
+   `DIAGRAM_TYPES_WITHOUT_BODY` of `tests/fixtures.test.ts`; then write its body
+   (section 4), and make these fixes and remove the id from the list in the
+   change that adds the body.
 4. Check that tables copied from lists of the specification (in the flowchart,
    the letter ranges of `src/unicode-letters.ts`, which flowchart and class
    share) still agree with it.

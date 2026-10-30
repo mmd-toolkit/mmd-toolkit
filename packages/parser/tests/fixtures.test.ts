@@ -12,11 +12,13 @@
  * The files: for an input that the parser accepts, the tree, as
  * `JSON.stringify(root, null, 2)`, locations included, in `ast.json`; for an
  * input that it rejects, the `message`, `range`, and `loc` of the
- * `ParseError`, in `parse-error.json`. A missing file fails the test (`update: "none"` in
- * `vitest.config.ts`); `vitest --update=new` (`pnpm run test:record`) writes
- * the missing files, and `vitest -u` (`pnpm run test:update`) writes the
- * files anew. Only this test writes these two files; the other files of a
- * fixture belong to `@mmd-toolkit/tests`.
+ * `ParseError`, in `parse-error.json`. A missing file fails the test
+ * (`update: "none"` in `vitest.config.ts`); `vitest --update=new`
+ * (`pnpm run test:record`) writes the missing files, and `vitest -u`
+ * (`pnpm run test:update`) writes the files anew. Only this test writes these
+ * two files; the other files of a fixture belong to `@mmd-toolkit/tests`. A
+ * fixture of a diagram type in `DIAGRAM_TYPES_WITHOUT_BODY` has neither file
+ * and is not checked.
  *
  * The parser does not tell a known divergence apart; the `knownDivergence`
  * mark of a fixture alone decides what acceptance is expected.
@@ -259,6 +261,22 @@ function checkAcceptance(fixture: Fixture, outcome: Outcome): void {
   expectDivergenceForm(fixture, outcome)
 }
 
+/**
+ * The diagram types of mermaid.js that this parser has no body for yet, in the
+ * steps between the fixtures of a new diagram type and its parser (the skill
+ * `parser`, updating mermaid.js). A type leaves the list in the change that
+ * adds its body, and the list is empty between two diagram types.
+ */
+const DIAGRAM_TYPES_WITHOUT_BODY: readonly string[] = []
+
+/** Whether the recorded reading of `fixture` accepts it as a type of `DIAGRAM_TYPES_WITHOUT_BODY`. */
+function readsAsTypeWithoutBody(fixture: Fixture): boolean {
+  const reading = fixture.specified ?? fixture.expected
+  return (
+    reading.accepted && DIAGRAM_TYPES_WITHOUT_BODY.includes(reading.diagramType)
+  )
+}
+
 /** The fixtures of each recorded diagram, read once for all the checks of this file. */
 const fixturesByDiagram = new Map<DiagramType, readonly Fixture[]>()
 for (const diagram of RECORDED_DIAGRAMS) {
@@ -283,6 +301,9 @@ for (const diagram of RECORDED_DIAGRAMS) {
     })
 
     for (const fixture of fixtures) {
+      // Recorded and checked once the body exists; a record of such a fixture
+      // is reported below as left behind.
+      if (readsAsTypeWithoutBody(fixture)) continue
       const parsed = parsedOf(fixture.input)
       const record = recordOf(parsed)
       recordedFiles.set(fixture.name, record.file)

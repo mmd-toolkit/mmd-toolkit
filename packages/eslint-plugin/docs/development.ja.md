@@ -33,23 +33,6 @@ parser が変わったら、
 
 ## テスト
 
-| ファイル                           | 確かめること                                |
-| ---------------------------------- | ------------------------------------------- |
-| `tests/language.test.ts`           | 言語（ESLint を通す）                       |
-| `tests/snapshot.test.ts`           | ESLint がノード・トークン・コメントを見る所 |
-| `tests/token-store.test.ts`        | ソースコードのトークンの方法                |
-| `tests/inline-config.test.ts`      | ESLint を設定するコメント                   |
-| `tests/markdown.test.ts`           | Markdown のコードブロック                   |
-| `tests/diagram-rules.test.ts`      | 規則のセレクター                            |
-| `tests/subgraph-ids.test.ts`       | 木から求める subgraph の id                 |
-| `tests/compact-range.test.ts`      | 行末をまたいで詰める範囲                    |
-| `tests/removal.test.ts`            | 行全体を消す範囲                            |
-| `tests/suggestion-history.test.ts` | 先の設定を消す提案                          |
-| `tests/rule-cases.test.ts`         | 規則の文書の例                              |
-| `tests/rule-docs.test.ts`          | 規則の文書の検査                            |
-| `tests/rules-index.test.ts`        | 規則の一覧                                  |
-| `tests/rules/<規則>.test.ts`       | 各規則                                      |
-
 - `tests/language.test.ts`: `tests/language-inputs.ts`（下を参照）の入力、
   つまり `@mmd-toolkit/tests` の適合コーパスの fixture を ESLint に掛ける。
   拒否される入力は、parser のエラーの位置で報告される。
@@ -113,8 +96,7 @@ parser が変わったら、
   エスケープを使うテンプレートリテラルで書く。
 
 言語のテストは、コーパスの全体には掛けません。
-コーパスは、仕様の主張ごとに入力を 1 つ持ちます。
-parser とコーパスのテストが、それを 1 つずつ確かめています。
+コーパスは、parser とコーパスのテストが 1 入力ずつ確かめています。
 `tests/language-inputs.ts` が、それらが掛かる fixture を、
 言語がそれだけで扱う場合ごとに 1 つ挙げます。
 場合は、parser が読む図、拒否するテキスト、位置が数える行終端子、
@@ -130,8 +112,7 @@ eslint-snapshot-rule-tester
 言語のテストは、スナップショットが結果をいちばんよく示すところで使います。
 
 言語のテストの中の規則は、観察するだけです。
-ESLint から渡されたものを報告し、プラグインの規則が何を見るかを、
-テストが示すようにします。
+ESLint から渡されたものを報告します。
 プラグインの規則ではありません。
 これらのテストと規則のテストは、
 `tests/helpers.ts` の `LANGUAGE_CONFIG` から始めます。
@@ -150,12 +131,10 @@ ESLint から渡されたものを報告し、プラグインの規則が何を�
 
 - 入力のファイルは規則のテストが持ち、
   対応するコーパスの fixture は必要ありません。
-  `valid/` か `invalid/` の下に置き、場合に合わせて名前を付けます。
-  `flowchart/` のような下位のディレクトリに置いてもかまいません。
 - fixture のファイルに、CR（単独のものも CRLF の中のものも）と、
   `pnpm run lint:chars` が調べる文字は入れません。
   その一覧は、
-  [`packages/spec/docs/index.ja.md`](../../spec/docs/index.ja.md) にあります。
+  [`packages/spec/docs/index.md`](../../spec/docs/index.md) にあります。
   そのような入力は、ESLint の `RuleTester` で検査します。
   `code`、fix の `output`、各提案の `output` はテンプレートリテラルにし、
   入力の行終端子を保ちます。
@@ -190,7 +169,7 @@ ESLint から渡されたものを報告し、プラグインの規則が何を�
 `tests/setup.ts` は、テスターに Jest の道を取らせます。
 そのときテスターが使うのは `afterAll` と `expect.getState().testPath` だけで、
 vitest は `globals: true` でそれを用意します。
-このため、次の 2 つが起きます。
+このため、次のようになります。
 
 - `vitest -u` ではスナップショットが更新されません。
   テスターは `--update` を `process.argv` から読み、
@@ -205,7 +184,7 @@ vitest は `globals: true` でそれを用意します。
   ないスナップショットは、テストを失敗させます。
   どのテストケースも使わなくなったスナップショットは、
   そのような実行では報告も削除もされません。
-  `test:update` はすべてのスナップショットを書き直すので、それを落とします。
+  `test:update` はそれを落とします。
 - 足したケースの、ないスナップショットだけを書くには、
   パッケージで `UPDATE_SNAPSHOTS=true npx vitest run <テストファイル>`
   を実行します。
@@ -262,16 +241,20 @@ vitest は `globals: true` でそれを用意します。
 
 ## 規則と文書
 
-規則は `src/rules/` の下のファイルです。
-規則ごとに `src/rules/<名前>.ts` を置き、図種の規則の名前は、
-その図種で始めます（`flowchart-no-ignored-text`）。
+規則は `src/rules/<名前>.ts` のファイルで、規則ごとに 1 つです。
+図種の規則の名前は、その図種で始めます（`flowchart-no-ignored-text`）。
 各ファイルは、ファイル名を camel case にした名前で、
 規則を 1 つ export します（`flowchart-no-ignored-text.ts` なら
 `flowchartNoIgnoredText`）。
 プラグインでの名前は、`.ts` を除いたファイル名です。
 id は、名前空間の後にその名前を続けたものです。
 たとえば `@mmd-toolkit/flowchart-no-ignored-text` です。
-文書は `docs/rules/<名前>.md` と `docs/rules/<名前>.ja.md` です。
+文書は、原本の `docs/rules/<名前>.md` と、
+規則が持たないことのある `docs/rules/<名前>.ja.md` です。
+英語の文書だけでもかまいません。
+日本語の文書を誰がいつ書くかは、
+[CONTRIBUTING.ja.md](../../../CONTRIBUTING.ja.md) にあります。
+間違いなのは、英語の原本のない日本語の文書だけです。
 
 規則が `recommended` の設定に入るのは、
 報告がほぼいつも直すべき誤りであるときです。
@@ -316,12 +299,14 @@ pnpm --filter @mmd-toolkit/eslint-plugin run check:docs
   提案を出す規則（`meta.hasSuggestions`）の 💡 を持ちます。
   英語の説明は `meta.docs.description`、
   日本語の説明は日本語の文書の最初の段落です。
-- 各規則の文書（英日）の、題（`# @mmd-toolkit/<名前>`）と、
+  日本語の文書のない規則は、日本語の索引では、
+  英語の文書へのリンクと英語の説明で載ります。
+- 各規則の文書（言語ごと）の、題（`# @mmd-toolkit/<名前>`）と、
   最初の段落の後の `<!-- begin auto-generated rule notice -->` から
   `<!-- end auto-generated rule notice -->` まで。
   `recommended` の設定がその規則を有効にするかどうかと、
   自動修正を持つかどうかと、提案を出すかどうかを書きます。
-- 各規則の文書（英日）の、
+- 各規則の文書（言語ごと）の、
   末尾の `<!-- begin auto-generated rule resources -->` から
   `<!-- end auto-generated rule resources -->` まで。
   リソースの節で、規則のソースとテストへのリンクを書きます。
@@ -332,30 +317,27 @@ pnpm --filter @mmd-toolkit/eslint-plugin run check:docs
 字下げせず、それだけで 1 行にし、
 図のヘッダーや Mermaid のディレクティブより前に置きます。
 従う例にも入れます。
-サイトの `twoslash-eslint` は、このコメントで規則を有効にし、
-実際の診断を表示します。
-parser の受理とサイトの表示の検査では、この行も含めます。
+サイトの `twoslash-eslint` は、このコメントで規則を有効にし、診断を表示します。
 スナップショットのテストヘルパーだけは、このコメントを除きます。
 テスターが規則を `rule-to-test/` の下で有効にするため、
 `@mmd-toolkit/` の下でも有効にすると、すべての報告が二重になるからです。
-コーパスの fixture を整形したものと例を比べるときは、
-先頭の設定コメントだけを除きます。
-fixture 自体には、このコメントを足しません。
 
 文書のほかの部分は手で書きます。
 `check:docs` は何も書かず、次のときに失敗します。
 `src/rules/index.ts` か生成する部分が最新でないとき、
-規則にどちらかの言語の文書かテストのファイルがないとき、
-どの規則のものでもない文書があるとき、英語の文書の最初の段落が、
-その規則の `meta.docs.description` でないとき、
+規則に英語の文書かテストのファイルがないとき、
+どの規則のものでもない文書（英語の原本のない日本語の文書を含む）があるとき、
+英語の文書の最初の段落が、その規則の `meta.docs.description` でないとき、
+規則の文書が、同じディレクトリのない文書（たとえば、
+日本語版のない規則の日本語版）へリンクしているとき、
 日本語の文書の `mmd` のコードブロックが、英語の文書と同じ順に同じでないとき、
 コードブロックが、その規則を有効にするコメントで始まっていないときです。
 最初の段落の中の改行は問いません。
 
 規則と文書がこのように食い違うと、 `update` は `src/rules/index.ts` だけを書き、
 文書の生成する部分は書かずに失敗します。
-索引の一覧は日本語の説明を文書から取るので、
-文書が欠けているあいだは一覧を作れないためです。
+索引の一覧は説明を文書から取るので、
+英語の文書が欠けているあいだは一覧を作れないためです。
 文書を直してから、`update` をもう一度実行します。
 
 規則を足すには、次のようにします。
@@ -363,9 +345,12 @@ fixture 自体には、このコメントを足しません。
 1. `src/rules/` の下に、規則のファイルを足す。
    ファイルは、`meta`（`type`、`docs.description`、`docs.recommended`、
    `docs.url`、`schema`、`messages`）とハンドラーを持つ。
-2. 英日の文書を書く。
+2. 原本である英語の文書と、日本語の文書を、
+   [CONTRIBUTING.ja.md](../../../CONTRIBUTING.ja.md)のとおりに書く。
    英語の文書の最初の段落は、`meta.docs.description` と一字一句同じにする。
    すべての `mmd` の例を、上記の規則を有効にするコメントで始める。
+   日本語版のない英語の文書には、`Japanese version: …` の行を置かない。
+   日本語の文書を書くときに、その行を両方の文書に足す。
 3. テスト `tests/rules/<名前>.test.ts` と fixture を足す。
 4. `update` を実行し、続けて `check:docs` を実行する。
    `update` は、文書のリソースの節と、索引のその規則の行を書く。
@@ -419,16 +404,9 @@ fixture 自体には、このコメントを足しません。
   これは、
   `style` 行と `classDef` 行の決まりによる `IgnoredSemicolon` のトークンで、
   `oneOfTwoRemovals` は、これを前の文と一緒に消します。
-- 規則のスナップショットテストは、`testRule(name, rule)` の 1 回の呼び出しです。
-  英語の文書の例と規則の fixture の入力で、報告と自動修正と提案を確かめます。
+- 規則のスナップショットテストは、
+  `testRule(name, rule)` の 1 回の呼び出しです（[テスト](#テスト)を参照）。
   規則のテストは、mermaid.js を動かしません。
-  CR を持つ入力と、`pnpm run lint:chars` が調べる文字（U+2028、U+2029、
-  U+00A0 など）を持つ入力は、ESLint の `RuleTester` を使います。
-  `code` に、エスケープを使うテンプレートリテラルで入力を書き、
-  `errors` に期待する報告を書きます。
-  自動修正の期待するテキストの全文は、ケースの `output` に、各提案のものは、
-  その提案の `output` に、テンプレートリテラルで書きます。
-  通常の入力では、fixture のファイルとスナップショットを使います。
 
 ## 規則の型
 

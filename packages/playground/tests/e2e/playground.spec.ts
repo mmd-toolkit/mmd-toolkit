@@ -487,7 +487,13 @@ test("opens official examples beside their diagram families without scrolling th
 test("loads only local browser assets at the Pages path", async ({ page }) => {
   const failures: string[] = []
   const errors: string[] = []
-  page.on("requestfailed", (request) => failures.push(request.url()))
+  page.on("requestfailed", (request) => {
+    // A request the browser itself cancelled, for a worker it replaced or a
+    // navigation, is not a failed load; Firefox reports such cancellations here.
+    const reason = request.failure()?.errorText ?? ""
+    if (!/aborted|cancel/iu.test(reason))
+      failures.push(`${request.url()} (${reason})`)
+  })
   page.on("pageerror", (error) => errors.push(error.message))
   const requests: string[] = []
   page.on("request", (request) => requests.push(request.url()))

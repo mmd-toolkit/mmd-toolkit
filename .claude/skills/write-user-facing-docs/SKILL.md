@@ -9,9 +9,8 @@ description:
 
 # Writing user-facing documentation
 
-Use the repository's [conventions](../../../.claude/skills/conventions/SKILL.md)
-for document format and checks. This skill covers the meaning and organization
-of the explanation.
+Use the repository's [conventions](../conventions/SKILL.md) for document format
+and checks. This skill covers the meaning and organization of the explanation.
 
 ## Establish what the page should communicate
 

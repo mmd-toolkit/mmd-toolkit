@@ -135,11 +135,33 @@ function paragraphsOf(text: string): string[] {
 }
 
 /**
+ * The documents of the same directory that `document` links to, as the file
+ * names the links give (`./name.md` and `./name.ja.md`), without any heading.
+ */
+function siblingLinks(document: string): string[] {
+  const targets: string[] = []
+  for (const part of document.split("](./").slice(1)) {
+    const end = part.indexOf(")")
+    const target = part.slice(0, end).split("#")[0] ?? ""
+    if (target.endsWith(".md")) targets.push(target)
+  }
+  return targets
+}
+
+/** The words that open the line that links to the other language. */
+const LANGUAGE_LINE_STARTS = ["Japanese version:", "英語版:"]
+
+/**
  * The first paragraph of a rule document, after its title and the line that
- * links to the other language: the one sentence that describes the rule.
+ * links to the other language, which an English document has only when its
+ * Japanese version exists: the one sentence that describes the rule.
  */
 export function firstParagraph(document: string): string {
-  const paragraph = paragraphsOf(document)[2]
+  const paragraphs = paragraphsOf(document)
+  const hasLanguageLine = LANGUAGE_LINE_STARTS.some((start) =>
+    paragraphs[1]?.startsWith(start),
+  )
+  const paragraph = paragraphs[hasLanguageLine ? 2 : 1]
   if (paragraph === undefined) {
     throw new Error("A rule document has no first paragraph")
   }
@@ -194,6 +216,15 @@ export function oneLine(paragraph: string): string {
     text += joinsWords ? ` ${line}` : line
   }
   return text
+}
+
+/** Whether the rule `name` has a document in `language` under `docsDir`. */
+function hasDocument(
+  docsDir: string,
+  name: string,
+  language: DocumentLanguage,
+): boolean {
+  return existsSync(ruleDocumentPath(docsDir, name, language))
 }
 
 /** The description of a rule in `language`. */
@@ -277,20 +308,20 @@ export function diagramOf(name: string): string | null {
   return DIAGRAM_ORDER.find((diagram) => name.startsWith(`${diagram}-`)) ?? null
 }
 
-/** The rule names by group: the common rules, then each diagram in `DIAGRAM_ORDER`, each in the order of `rules`. */
-function groupsOf(): Map<string | null, string[]> {
+/** The rule names `names` by group: the common rules, then each diagram in `DIAGRAM_ORDER`, each in the given order. */
+function groupsOf(names: readonly string[]): Map<string | null, string[]> {
   const groups = new Map<string | null, string[]>([
     [null, []],
     ...DIAGRAM_ORDER.map((diagram): [string, string[]] => [diagram, []]),
   ])
-  for (const name of Object.keys(rules)) {
+  for (const name of names) {
     const group = groups.get(diagramOf(name))
     if (group === undefined) {
       throw new Error(`The diagram of ${name} is not in DIAGRAM_ORDER`)
     }
     group.push(name)
   }
-  return new Map([...groups].filter(([, names]) => names.length > 0))
+  return new Map([...groups].filter(([, group]) => group.length > 0))
 }
 
 /** The rule, which `rules` holds for every name it lists. */
@@ -300,8 +331,12 @@ function ruleOf(name: string): RuleDefinition {
   return rule
 }
 
-/** The generated list of the rules, between its markers, before formatting. */
-function renderList(docsDir: string, language: DocumentLanguage): string {
+/** The generated list of the rules `names`, between its markers, before formatting. */
+function renderList(
+  docsDir: string,
+  language: DocumentLanguage,
+  names: readonly string[],
+): string {
   const words = WORDS[language]
   const lines = [
     LIST_BEGIN,
@@ -312,20 +347,23 @@ function renderList(docsDir: string, language: DocumentLanguage): string {
     "",
     words.suggestionsLegend,
   ]
-  for (const [diagram, names] of groupsOf()) {
+  for (const [diagram, group] of groupsOf(names)) {
     lines.push("", `## ${diagram ?? words.commonRules}`, "")
     lines.push(
       `| ${words.rule} | ${words.description} | ✅ | 🔧 | 💡 |`,
       "| --- | --- | --- | --- | --- |",
     )
-    for (const name of names) {
+    for (const name of group) {
       const rule = ruleOf(name)
-      const link = `[${name}](./${name}${SUFFIX[language]})`
+      // A rule without a Japanese document appears in the Japanese list with
+      // its English document and its English description.
+      const rowLanguage = hasDocument(docsDir, name, language) ? language : "en"
+      const link = `[${name}](./${name}${SUFFIX[rowLanguage]})`
       const recommended = isRecommended(rule) ? "✅" : ""
       const fix = hasFix(rule) ? "🔧" : ""
       const suggestions = hasSuggestions(rule) ? "💡" : ""
       lines.push(
-        `| ${link} | ${descriptionOf(docsDir, name, rule, language)} | ${recommended} | ${fix} | ${suggestions} |`,
+        `| ${link} | ${descriptionOf(docsDir, name, rule, rowLanguage)} | ${recommended} | ${fix} | ${suggestions} |`,
       )
     }
   }
@@ -436,24 +474,29 @@ async function formatMarkdown(text: string, path: string): Promise<string> {
 
 /**
  * Every document with generated parts, by its path, as it should be: the
- * index and every rule document under `docsDir`, in both languages. Render
+ * index and the document of every rule in `names` (all the rules by default)
+ * under `docsDir`, in each language in which it exists. The English documents
+ * are the originals; a Japanese document is rendered when it exists. Render
  * only when `mismatches` finds nothing.
  */
 export async function renderDocuments(
   docsDir: string = RULE_DOCS_DIR,
+  names: readonly string[] = Object.keys(rules),
 ): Promise<Map<string, string>> {
   const documents = new Map<string, string>()
   for (const language of ["en", "ja"] as const) {
     const path = indexPath(docsDir, language)
+    if (!existsSync(path)) continue
     const index = replaceBetween(
       readFileSync(path, "utf8"),
       LIST_BEGIN,
       LIST_END,
-      renderList(docsDir, language),
+      renderList(docsDir, language, names),
       path,
     )
     documents.set(path, await formatMarkdown(index, path))
-    for (const name of Object.keys(rules)) {
+    for (const name of names) {
+      if (!hasDocument(docsDir, name, language)) continue
       const rulePath = ruleDocumentPath(docsDir, name, language)
       documents.set(
         rulePath,
@@ -496,11 +539,14 @@ function documentsUnder(
 /**
  * What does not match between the rules and their documents under `docsDir`
  * and their tests under `testsDir`: a rule without a test, which the generated
- * link to it would miss, a rule without a document in each language, a
+ * link to it would miss, a rule without an English document (the original), a
  * document without a rule, an English document whose first paragraph is not
- * the rule's `meta.docs.description`, a Japanese document whose Mermaid code
- * blocks are not those of the English one, and an example without its
- * rule-enabling comment.
+ * the rule's `meta.docs.description`, a link from a document to another
+ * document of the same directory that does not exist (an English document that
+ * links to a Japanese version that does not exist, a Japanese document that
+ * links to the Japanese version of a rule that has none), a Japanese document
+ * whose Mermaid code blocks are not those of the English one, and an example
+ * without its rule-enabling comment. A rule may lack its Japanese document.
  */
 export function mismatches(
   docsDir: string = RULE_DOCS_DIR,
@@ -515,7 +561,7 @@ export function mismatches(
     for (const language of ["en", "ja"] as const) {
       const path = ruleDocumentPath(docsDir, name, language)
       if (!existsSync(path)) {
-        problems.push(`The rule ${name} has no ${path}`)
+        if (language === "en") problems.push(`The rule ${name} has no ${path}`)
         continue
       }
       // Both correct and incorrect examples opt in to the site's diagnostics.
@@ -554,11 +600,19 @@ export function mismatches(
     }
   }
   for (const { name, language } of documentsUnder(docsDir)) {
+    const path = ruleDocumentPath(docsDir, name, language)
+    // The list in the index is generated: a stale link there is what `update`
+    // rewrites, so it is not a mismatch that stops `update`.
     if (name === "index") continue
+    for (const target of siblingLinks(readFileSync(path, "utf8"))) {
+      if (!existsSync(`${docsDir}${target}`)) {
+        problems.push(
+          `${path} links to ${docsDir}${target}, which does not exist`,
+        )
+      }
+    }
     if (!(name in rules)) {
-      problems.push(
-        `${ruleDocumentPath(docsDir, name, language)} is the document of no rule`,
-      )
+      problems.push(`${path} is the document of no rule`)
     }
   }
   return problems

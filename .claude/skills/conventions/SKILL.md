@@ -76,14 +76,15 @@ The procedures of a package are in the skill of that package.
   names without such a link are not enough. The pinned commit is recorded once
   in `packages/spec/docs/index.md`. `pnpm run lint:docs` fails when a link to
   mermaid.js in a Markdown document points anywhere else.
-- Every Markdown document in the repository (READMEs, everything under
-  `packages/spec/docs/`, this document) is written in English, with a Japanese
-  version of the same content next to it as `<name>.ja.md`. Both are updated in
-  the same change: a change to an English document is not done until the
-  `.ja.md` carries the same change. `pnpm run lint:docs` (part of
-  `pnpm run lint` and CI) fails when a document has no pair. Generated tool
-  files such as `.changeset/README.md` are exempt; `scripts/markdown-files.mjs`
-  lists what the check covers.
+- Every Markdown document (READMEs, everything under `packages/spec/docs/`, this
+  document) is in English with a Japanese version of the same content next to
+  it, `<name>.ja.md`, changed in the same change. Write the Japanese where it is
+  missing or older than the English. `pnpm run lint:docs` lists those, and the
+  pairs whose fixture citations or headings differ; it fails only on a `.ja.md`
+  without an English original. An English document without a Japanese version
+  has no `Japanese version:` line; add the lines to both when writing the
+  Japanese. Exempt: `.changeset/README.md` and the `CHANGELOG.md` that
+  changesets writes (`scripts/markdown-files.mjs` lists what the check covers).
 - Prose in Markdown documents is wrapped at 80 columns by Prettier
   (`proseWrap: "always"` in `prettier.config.js`). Run `pnpm run format` after
   editing a document; `pnpm run format:check` fails otherwise. Do not write a
@@ -120,8 +121,8 @@ The procedures of a package are in the skill of that package.
 
 ## Running tests
 
-The tests of a package take minutes, and several pieces of work share one
-machine. Run what a change can affect, not everything after every change.
+The tests of a package take minutes. Run what a change can affect, not
+everything after every change.
 
 - A change to documents only (Markdown, comments): run the document checks
   (`pnpm run lint:docs`, `pnpm run lint:chars`, `pnpm run format:check`), and,
@@ -136,23 +137,19 @@ machine. Run what a change can affect, not everything after every change.
 - The tests of a package run fixed inputs only: the fixtures of the corpus, the
   fixtures of the package, and the inputs of past failures. No test generates
   its inputs, and no command does.
-- The tests of the parser and of the formatter do not run mermaid.js. A claim
-  about what mermaid.js reads is checked against the Db that the corpus records
-  for the fixture. The Db of a tree is built by `dbFromTree` of
-  `packages/tests`, which the corpus checks against mermaid.js; the formatter
-  compares the Db built from the tree before and after formatting (for a corpus
-  input, with the recorded Db). mermaid.js runs in the corpus checks only.
+- The tests of the parser and of the formatter run no generated inputs and do
+  not run mermaid.js. The parser takes its inputs and expected results from the
+  conformance corpus (`packages/tests/fixtures/`), so that a parser in any
+  language is checked with the same fixtures. The formatter uses its own
+  fixtures (pairs of input and output) and the inputs of the corpus, and
+  compares the Db of the tree before and after formatting, for a corpus input
+  also with the recorded Db; the Db of a tree is built by `dbFromTree` of
+  `packages/tests`. Whether a fixture records what mermaid.js does is checked in
+  `packages/tests`, the only place that runs mermaid.js.
 - The linter tests do not run mermaid.js. They check the reports and suggestion
   outputs on rule fixtures and document examples. Inputs that need invisible
   characters use ESLint's `RuleTester`, with template literals and escapes for
   the input and expected output in the test source.
-- The tests of the parser run no generated inputs and do not run mermaid.js.
-  What a parser must do is stated by the specification and by the conformance
-  corpus (`packages/tests/fixtures/`): an input, whether mermaid.js accepts it,
-  and what mermaid.js reads. A parser in any language is checked with the same
-  fixtures, so the tests of the parser take their inputs and their expected
-  results from the corpus. A check of the corpus itself (that what a fixture
-  records is what mermaid.js does) belongs to `packages/tests`.
 - The inputs that check a behavior are fixtures, and every fixture answers a
   sentence. Every sentence that defines a behavior (in the specification, in the
   parser's documents of tokens and positions, in the documents of `dbFromTree`,
@@ -169,9 +166,8 @@ machine. Run what a change can affect, not everything after every change.
   are finite and each is named. No input of a test or a review is chosen by a
   random source or by a number (a seed, a count, a sample). `Math.random` is
   reported by the lint; a hand-written generator is caught in review.
-- A result that was just reported for the same state of the tree is not run
-  again by someone else; a check of another kind (other inputs, another method)
-  is.
+- A result already reported for the same state of the tree is not run again; a
+  check of another kind (other inputs, another method) is.
 - The report says what was run and what was not.
 - A report of a change in behavior (acceptance, the tree, the Db, formatting, a
   rule) goes to review with a table of its cases: for each sentence the change
@@ -182,21 +178,11 @@ machine. Run what a change can affect, not everything after every change.
 
 ## Why the inputs are fixtures, and not generated
 
-Three other ways of choosing inputs are not used here: tests that generate their
-inputs, random mutation of fixtures, and an exploration that puts each of a
-fixed set of strings at each place collected from the corpus. The reasons:
-
-- Count is not assurance. A product of places and strings multiplies a few dozen
-  lexical rules by the number of contexts each appears in, costs hours of
-  machine time, and finds little that the rule's own example, written as the
-  host, does not find.
-- Reading the sentences finds what a product cannot. Listing the cases of each
-  defining sentence and checking that each has a fixture finds missing
-  citations, wrong definitions, unreachable rules copied from mermaid's lexer,
-  suggestions that change the Db, and holes in the tree check. A product of
-  places and strings reads no sentence, so it sees none of these.
-- A mechanism stands in for a habit. When inputs can be generated, a change can
-  be reported as done without anyone listing the cases of the sentence that
-  defines it. The rule therefore names the habit, not a tool: write the
-  sentence, list its cases, give each a fixture, cite them, and let the review
-  read the sentence again.
+Generated inputs, random mutation of fixtures, and products of a fixed set of
+strings over the places of the corpus are not used: a product repeats one rule
+per context, costs hours, and finds little beyond the rule's own example;
+reading the sentences finds missing citations, wrong definitions, unreachable
+rules, and holes in the tree check, which no product sees; and a generator lets
+a change be reported done without anyone listing the cases of its sentence. The
+rule names the habit: write the sentence, list its cases, give each a fixture,
+cite them, and let the review read the sentence again.

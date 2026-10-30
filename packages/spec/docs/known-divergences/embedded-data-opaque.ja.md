@@ -760,7 +760,7 @@ ELK の配置設定を提案する
   [usecase 文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
   は JSON の表を説明します。
   2026-10-22 に mermaid-js/mermaid の issue と PR を `usecase JSON` で検索し、
-  この受理挙動を保守者が欠陥と判断したと示す報告は、
+  この受理挙動をメンテナーが欠陥と判断したと示す報告は、
   調べた結果にはありませんでした。
   [PR #8048](https://github.com/mermaid-js/mermaid/pull/8048) は Type:
   Enhancement で、2026-08-14 にマージ済みで閉じています。
@@ -776,7 +776,7 @@ ELK の配置設定を提案する
   [構文文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/pie.md)
   は、この隠れた本文の検証を定めません。
   2026-10-23 に `pie`、`pie YAML`、`pie frontmatter` で検索しましたが、
-  その本文の検証を必要とする保守者の判断は見つかりませんでした。
+  その本文の検証を必要とするメンテナーの判断は見つかりませんでした。
   この仕様は、共通の不透明なデータの方針を先頭のフロントマターに適用します。
 
 gitgraph の
@@ -800,7 +800,8 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
   `info accTitle` で issue と PR を検索しました。
   [#7601](https://github.com/mermaid-js/mermaid/issues/7601) は info/showInfo
   の描画を報告し、 open、Type: Bug / Error、Status: Triage でした。
-  検査した結果には、この構文の拒否を決める info 固有の保守者の判断はありません。
+  検査した結果には、
+  この構文の拒否を決める info 固有のメンテナーの判断はありません。
   この節は既存の直接の規則に従います。
 
 - pin の
@@ -855,7 +856,7 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
   [#6620](https://github.com/mermaid-js/mermaid/issues/6620) は ABNF
   の図種の提案（open、 Discussion Needed）です。
   どちらも、これらの前処理の境界について、
-  保守者が defect と判断した事実ではありません。
+  メンテナーが defect と判断した事実ではありません。
   この差異はその判断でなく既存の共通規則に従います。
   調べた結果だけで、ほかに関連する issue がないとは断定しません。
 
@@ -896,7 +897,7 @@ event modeling data、eventmodeling accTitle、
 eventmodeling validator で検索しました。
 2026-04-16 に merged となった
 [PR #7588](https://github.com/mermaid-js/mermaid/pull/7588) は validator
-の登録を追加し、この境目に関する保守者の判断ではありません。
+の登録を追加し、この境目に関するメンテナーの判断ではありません。
 確認した結果にはその判断はなく、既存の直接の規則を適用します。
 網羅的な検索だとはしません。
 

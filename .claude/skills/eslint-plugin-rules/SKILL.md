@@ -15,19 +15,16 @@ How to implement, change, or remove a rule of `@mmd-toolkit/eslint-plugin` so
 that what the rule reports is a fact about the pinned mermaid.js, and the rule
 reads the tree as a tool uses it. The layout of the package, the choices that
 every rule follows, and the tests and the fixtures are described in
-`packages/eslint-plugin/docs/development.md`; this procedure does not copy them.
-It adds the rules of the work itself: what is checked, in what order, and what
-is reported.
+`packages/eslint-plugin/docs/development.md`.
 
 ## 1. What to read first
 
 1. The decision about the rule, made with the rule-ideas skill
    (`.claude/skills/rule-ideas/SKILL.md`): that the rule is kept, its name and
    scope, whether `recommended` enables it, whether it has a fix, and whether it
-   offers suggestions. These are not decided here. When the implementation shows
-   that a decision cannot hold (the condition cannot be read from the tree, a
-   fix or a suggestion cannot be checked), do not decide otherwise: take the
-   evidence back to that decision.
+   offers suggestions. When the implementation shows that a decision cannot hold
+   (the condition cannot be read from the tree, a fix or a suggestion cannot be
+   checked), take the evidence back to that decision.
 2. The English document of the rule, which holds the examples that the tests
    read.
 3. The section Policies and criteria of the eslint-plugin skill
@@ -39,8 +36,8 @@ is reported.
 
 ## 2. Check the facts independently of the rule
 
-What a rule reports is a fact about mermaid.js. The rule is not evidence for
-itself, so check the fact with something that does not use the rule, before and
+What a rule reports is a fact about mermaid.js, and the rule is not evidence for
+itself: check the fact with something that does not use the rule, before and
 after writing it.
 
 - Define the fact in terms of mermaid.js alone: the Db with the statement
@@ -62,8 +59,7 @@ after writing it.
   chosen by a random source or by a number, and no command generates inputs. A
   failure that the comparison finds is closed by the fixture of its case
   (section 4), and by a sentence of the specification where the specification
-  did not state the reading. Say in the report which document passages were read
-  and which inputs were added.
+  did not state the reading.
 - A rule whose condition depends on something defined anywhere in the diagram
   (ids, vertices that a statement creates) needs inputs where the definition
   comes after the use and where it comes before it, and a statement that creates
@@ -142,15 +138,12 @@ after writing it.
 - One decision in one place. Do not make a constant of what is used once or what
   gains no meaning from a name, do not keep a check that can never hold (check
   it against the specification), and do not repeat a branch that a single choice
-  of operands would make unnecessary. When asked to tidy a rule, make it
-  smarter, not shorter: the aim is that each decision is made once, and a line
-  count is not the aim. Show that the behavior has not changed by running the
-  old and the new version on the same fixtures and comparing the reports, the
-  fixes, and the suggestions, besides the snapshots.
-- A defect found in your own code is fixed without waiting to be told. An
-  objection to a design that was decided for you is stated once, before
-  implementing, with the code open; if the answer does not change, implement
-  what was asked.
+  of operands would make unnecessary. Tidying a rule makes it smarter, not
+  shorter. Show that the behavior has not changed by running the old and the new
+  version on the same fixtures and comparing the reports, the fixes, and the
+  suggestions, besides the snapshots.
+- An objection to a decided design is stated once, before implementing, with the
+  code open; if the answer does not change, implement the design as decided.
 
 ## 4. Tests and fixtures
 
@@ -159,13 +152,13 @@ after writing it.
   the rule's fixture directory are its cases. They check whether the rule
   reports and the text that each fix and each suggestion produces.
 - Name each input after the case that it checks, and keep an input for each case
-  that a sentence of the rule document distinguishes. Review the cases against
-  the sentence; the tests do not hold a separate document-to-input map.
+  that a sentence of the rule document distinguishes; the tests do not hold a
+  separate document-to-input map.
 - Keep the leading `%% eslint @mmd-toolkit/<rule>: error` comment in every
-  document example, correct or incorrect, as the eslint-plugin skill requires.
-  The parser and site checks read it with this comment; only the snapshot test
-  helper removes it to avoid enabling the rule twice under the tester's alias
-  and `@mmd-toolkit/`. When renaming a rule, update both documents' comments.
+  document example, correct or incorrect (the eslint-plugin skill). Only the
+  snapshot test helper removes it, to avoid enabling the rule twice under the
+  tester's alias and `@mmd-toolkit/`. When renaming a rule, update the comments
+  of both documents.
 - When the behavior changes (the condition, a message, a fix, or a suggestion),
   add the fixtures of the change in the same change, after checking each input
   against mermaid.js. A scratch check does not replace a test input.
@@ -182,9 +175,9 @@ after writing it.
   any other line break as an actual line break. A tab and whitespace at the end
   of a line may be written as `\t` and `\u0020`, which shows in the code the
   whitespace that a case is about. State the expected reports in `errors`, and
-  the full output text of the fix and of each suggestion. These cases do not
-  read the corpus. Whitespace at the end of a line is not among those
-  characters: it stays in a fixture file, where `.editorconfig` keeps it.
+  the full output text of the fix and of each suggestion. Whitespace at the end
+  of a line is not among those characters: it stays in a fixture file, where
+  `.editorconfig` keeps it.
 - Regenerate snapshots with `test:update` when an output intentionally changes.
   Read the differences and account for each one. When adding a case, keep
   existing snapshots and add only its missing snapshot: in the package, run
@@ -224,11 +217,8 @@ treats on its own. Run them when the change reaches the language, the source
 code, a handler of a diagram type, or the parser, and not after a change to one
 rule.
 
-The rule tests take their inputs from the rule fixture directories and the
-English documents. Their snapshots record the reports and the outputs of fixes
-and suggestions; the exceptional `RuleTester` cases keep escaped inputs and
-expected outputs in the test source. A case found by section 2 gets a test input
-before the work is reported as done.
+A case that section 2 finds gets a test input before the work is reported as
+done.
 
 ## 5. Finish the change
 
@@ -236,35 +226,31 @@ before the work is reported as done.
   fixtures, and write its documents in both languages, in the same change. Set
   `recommended` as decided. Then run `update` and `check:docs`.
 - When the behavior of a rule changes, change its English document and its
-  Japanese document with it (the eslint-plugin skill).
+  Japanese document with it; write the Japanese document if it is missing or
+  older than the English one (the eslint-plugin skill).
 - Before reporting the work as done, run these checks once, and say which
-  failures are not caused by the change (while working, run only what the change
-  can affect, as the table above says):
+  failures are not caused by the change:
   - in `packages/eslint-plugin`: `npx vitest run` (the whole suite) and
     `pnpm run check:docs`;
   - from the root of the repository: `npx eslint packages/eslint-plugin` (ESLint
     run inside the package misses the configuration of the root),
     `pnpm run lint:docs`, `pnpm run lint:chars`, `pnpm run format:check`, and
     `npx tsc --noEmit`.
-- Do not commit, push, or change the staging area: committing and pushing wait
-  for the user's word, and the user stages (`git mv` and `git rm` change the
-  staging area). Use plain `rm` and `mv`. Put work files outside the repository.
+- Do not commit, push, or change the staging area (`git mv` and `git rm` change
+  it). Use plain `rm` and `mv`. Put work files outside the repository.
 
 ## 6. Report
 
-Report the result to the one who asked for it. For each behavior, say whether it
-was checked by running something, checked by reading, or not checked. Give what
-changed in the rule, its inputs and snapshots, with a reason for each snapshot
-difference; the document passages that were read and the inputs that were added;
-what was run and what was not; and what remains open or unverified. Have the
-result reviewed, fix what the review finds (section 7), and report again until
-the review finds nothing.
+For each behavior, say whether it was checked by running something, checked by
+reading, or not checked. Give what changed in the rule, its inputs and
+snapshots, with a reason for each snapshot difference; the document passages
+that were read and the inputs that were added; what was run and what was not;
+and what remains open or unverified. Fix what a review finds (section 7) and
+report again until the review finds nothing.
 
 ## 7. Fix what the review finds
 
-Many rounds on one item are a sign that something goes wrong: a fix that closes
-one point, or a review that did not say everything at once. So, for each
-finding:
+For each finding:
 
 1. Check that the finding is right, with the code open and mermaid.js (section
    2). If it is not, do not fix it: return it with the evidence.

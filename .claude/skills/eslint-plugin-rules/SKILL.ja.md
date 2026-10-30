@@ -2,11 +2,11 @@
 name: eslint-plugin-rules
 description:
   Implement, change, or remove a rule of @mmd-toolkit/eslint-plugin (the rule
-  file under src/rules/, its messages and suggestions, its tests and fixtures).
-  Use when a rule has been decided with the rule-ideas skill and is to be
-  implemented, when the condition, the messages, or the suggestions of a rule
-  change, and when the tests or the fixtures of a rule are added. The documents
-  of the rules are in the eslint-plugin skill.
+  file under src/rules/, its messages, fixes, and suggestions, its tests and
+  fixtures). Use when a rule has been decided with the rule-ideas skill and is
+  to be implemented, when the condition, the messages, the fixes, or the
+  suggestions of a rule change, and when the tests or the fixtures of a rule are
+  added. The documents of the rules are in the eslint-plugin skill.
 ---
 
 # 規則の実装（eslint-plugin-rules）
@@ -15,10 +15,7 @@ description:
 規則が報告するものが、固定した mermaid.js についての事実であり、規則が、
 道具が使う形で木を読むようにする。
 パッケージの構成、どの規則も従う選択、テストと fixture は、
-`packages/eslint-plugin/docs/development.md` に書いてあり、
-この手順はそれを写さない。
-この手順が足すのは、作業そのものの決まり、つまり、何を、どの順で確かめ、
-何を報告するかである。
+`packages/eslint-plugin/docs/development.md` に書いてある。
 
 ## 1. 最初に読むもの
 
@@ -26,10 +23,8 @@ description:
    rule-ideas の SKILL （`.claude/skills/rule-ideas/SKILL.md`）で決まる。
    規則を持つこと、名前と範囲、`recommended` で有効にするか、fix を持つか、
    提案を持つか。
-   これらはここでは決めない。
    実装してみて、決定が成り立たないと分かったら（条件が木から読めない、
-   fix や提案が確かめられない、など）、別の決定をせずに、
-   その根拠を持って決定に戻る。
+   fix や提案が確かめられない、など）、その根拠を持って決定に戻る。
 2. テストが読む例を持つ、規則の英語の文書。
 3. SKILL `eslint-plugin` の「方針と基準」の節と、 SKILL `conventions`。
    前者は `.claude/skills/eslint-plugin/SKILL.md` にある。
@@ -39,9 +34,9 @@ description:
 
 ## 2. 規則とは独立に、事実を確かめる
 
-規則が報告するものは、mermaid.js についての事実である。
+規則が報告するものは mermaid.js についての事実で、
 規則は自分自身の証拠にならない。
-そこで、規則を書く前と書いた後に、規則を使わない方法で事実を確かめる。
+規則を書く前と書いた後に、規則を使わない方法で事実を確かめる。
 
 - 事実を、mermaid.js だけで言えるように定める。
   文を取り除いた Db、Db の関数が受け取る値、入力を受理するか、など。
@@ -62,7 +57,6 @@ description:
   乱数や数で入力を選ばず、入力を生成する命令も使わない。
   比べで見つけた失敗は、その場合の fixture（4 節）で閉じ、
   仕様がその読み方を述べていなければ、仕様の文でも閉じる。
-  報告には、読んだ文と、足した入力を書く。
 - 図のどこにあってもよい定義に条件が依る規則（id、文が作る頂点など）には、
   定義が使う所の後にある入力と前にある入力、それを作る文が、
   名指す文の前にある入力と後ろにある入力が要る。
@@ -91,6 +85,12 @@ description:
   const text = "flowchart LR\n  A accDescr {}\n"
   for (const message of linter.verify(text, config, "probe.mmd")) {
     console.log(message.ruleId, message.line, message.column, message.message)
+    if (message.fix !== undefined) {
+      const { range, text: replacement } = message.fix
+      const applied =
+        text.slice(0, range[0]) + replacement + text.slice(range[1])
+      console.log(" fix:", JSON.stringify(applied))
+    }
     for (const suggestion of message.suggestions ?? []) {
       const { range, text: replacement } = suggestion.fix
       const applied =
@@ -140,13 +140,11 @@ description:
   1 回しか使わないもの、名前を付けても意味が増えないものを定数にしない。
   決して成り立たない確かめを残さない（仕様で確かめる）。
   オペランドの選び方を 1 つにすれば要らなくなる分岐を、繰り返さない。
-  規則を整えるよう頼まれたら、短くではなく、賢くする。
-  目的は、判断が 1 度だけされることで、行数ではない。
+  規則を整えるときは、短くではなく、賢くする。
   振る舞いが変わっていないことは、スナップショットに加えて、
   古い版と新しい版を同じ fixture に当て、報告と fix と提案を比べて示す。
-- 自分のコードの欠陥は、言われるのを待たずに直す。
-  自分に決められた設計への異論は、実装の前に、コードを開いて 1 度だけ述べる。
-  答えが変わらなければ、頼まれたものを実装する。
+- 決まった設計への異論は、実装の前に、コードを開いて 1 度だけ述べる。
+  答えが変わらなければ、決まったとおりに実装する。
 
 ## 4. テストと fixture
 
@@ -156,13 +154,13 @@ description:
   各 fix と各提案が作るテキストを確かめる。
 - 入力は、確かめる場合に合わせて名前を付け、
   規則の文書の文が分ける場合ごとに入力を持つ。
-  レビューでは、文と場合を照らす。
   テストに、文書と入力を対応させる別の表は置かない。
-- eslint-plugin の SKILL に従い、従う例も反する例も、
-  先頭の `%% eslint @mmd-toolkit/<規則>: error` コメントを残す。
-  parser とサイトの検査は、このコメントを含めて読む。
-  スナップショットのテストヘルパーだけは、規則を二重に有効にしないよう、
-  このコメントを除く。
+- 従う例も反する例も、
+  先頭の `%% eslint @mmd-toolkit/<規則>: error` コメントを残す（SKILL
+  `eslint-plugin`）。
+  スナップショットのテストヘルパーだけは、これを除く。
+  テスターの別名と `@mmd-toolkit/`
+  の両方で規則が有効になるのを避けるためである。
   規則の名前を変えるときは、英日の文書のコメントも更新する。
 - 振る舞いが変わるとき（条件、メッセージ、fix、提案）は、
   その変更の中で fixture を足し、足す前に各入力で mermaid.js を確かめる。
@@ -183,7 +181,6 @@ description:
   タブと行末の空白は、`\t` と `\u0020` で書いてよい。
   そう書くと、ケースが対象にする空白がコードの中で見える。
   `errors` に期待する報告を書き、fix と各提案の出力は全文を指定する。
-  この場合はコーパスを読まない。
   行末の空白は、そのような文字ではない。
   fixture のファイルに置き、`.editorconfig` が保つ。
 - 出力を意図して変えたときは、`test:update` を使う。
@@ -225,10 +222,6 @@ SKILL `conventions` の決まり（テストの実行）に従う。
 言語、ソースコード、図種のハンドラー、parser に変更が及ぶときに回し、
 規則 1 つの変更のたびには回さない。
 
-規則のテストは、規則の fixture と英語の文書から入力を取る。
-スナップショットは、報告と、fix と提案の出力を記録する。
-例外の `RuleTester` の場合は、テストのソースに、
-エスケープを使う入力と期待する出力を書く。
 2 節で見つけた場合は、作業の完了を報告する前にテストの入力を足す。
 
 ## 5. 変更を仕上げる
@@ -238,37 +231,33 @@ SKILL `conventions` の決まり（テストの実行）に従う。
   これを同じ変更の中で行う。
   `recommended` は決定のとおりにする。
   それから `update` と `check:docs` を動かす。
-- 規則の振る舞いを変えたら、
-  英語の文書と日本語の文書も一緒に直す（SKILL `eslint-plugin`）。
+- 規則の振る舞いを変えたら、英語の文書と日本語の文書を一緒に直す。
+  日本語の文書がない、または英語より古いときは、書く（SKILL `eslint-plugin`）。
 - 作業の完了を報告する前に、次の検査を 1 回動かし、変更による失敗でないものは、
-  そう言う（作業の途中は、上の表のとおり、変更が影響しうるものだけを回す）。
+  そう言う。
   - `packages/eslint-plugin` の中で、
     `npx vitest run`（テストの全体）と `pnpm run check:docs`。
   - リポジトリのルートから、
     `npx eslint packages/eslint-plugin` （パッケージの中で動かす ESLint は、
     ルートの設定を読まない）、 `pnpm run lint:docs`、`pnpm run lint:chars`、
     `pnpm run format:check`、 `npx tsc --noEmit`。
-- コミットも push も、ステージの変更もしない。
-  コミットと push はユーザーの言葉を待ち、
-  ステージはユーザーが行う（`git mv` と `git rm` はステージを変える）。
+- コミットも push も、
+  ステージの変更もしない（`git mv` と `git rm` はステージを変える）。
   `rm` と `mv` をそのまま使う。
   作業用のファイルはリポジトリの外に置く。
 
 ## 6. 報告
 
-結果を、頼んだ人に報告する。
 振る舞いごとに、動かして確かめたか、読んで確かめたか、確かめていないかを言う。
 規則、入力、スナップショットの変更と、差ごとの理由を示す。
 読んだ文書の一節と足した入力、回したものと回していないもの、
 まだ開いているものと確かめていないものを出す。
-結果をレビューに掛け、指摘を直し、また報告する。
-これを、レビューが何も指摘しなくなるまで続ける（7 節）。
+レビューの指摘を直し（7 節）、また報告する。
+これを、レビューが何も指摘しなくなるまで続ける。
 
 ## 7. review の指摘を直す
 
-1 つの項目で何回も繰り返すのは、何かがうまくいっていない印である。
-指摘の 1 点だけを塞ぐ直しか、review が 1 回で言い切っていないか、である。
-そこで、指摘ごとに次のことをする。
+指摘ごとに次のことをする。
 
 1. 指摘が正しいかを、コードを開き、mermaid.js で確かめる（2 節）。
    正しくなければ、直さずに、根拠を付けて返す。

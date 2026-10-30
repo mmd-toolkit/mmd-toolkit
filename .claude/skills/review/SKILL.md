@@ -6,8 +6,8 @@ description:
   everything it is going to find. Use before reviewing a change, before
   re-reviewing a fix, and when a review is repeated more than twice on the same
   item. It names the inputs a review takes from the sentences, the checks it
-  runs on documents, how a finding is classified and reported, and how a
-  reviewer runs things on a shared machine.
+  runs on documents, how a finding is classified and reported, and how a review
+  runs things on the machine.
 ---
 
 # Reviewing a change
@@ -172,9 +172,8 @@ Every review has a section on proper form, also when the behavior is right:
   versions of the dependencies), and read each changed line asking whether a
   more standard or shorter way exists there. A setting that lags the runtime (a
   `lib` older than what the `engines` run) is itself a finding. This is a way of
-  reading, not a list of patterns: a review that passed `[...runs].reverse()`
-  where `runs.toReversed()` was available had checked correctness and the items
-  above, and not asked the question.
+  reading, not a list of patterns (`[...runs].reverse()` where
+  `runs.toReversed()` is available).
 
 ## 5. Findings and the report
 
@@ -202,11 +201,11 @@ Every review has a section on proper form, also when the behavior is right:
 - The report says what the reviewer did not look at and why, so that nobody
   reads a pass as exhaustive.
 
-## 6. Running things on a shared machine
+## 6. Running things on the machine
 
 - Fix the number of concurrent processes before a parallel run, children
-  included (8 to 16), and announce before probing a system limit. Hitting the
-  per-user process limit kills other people's runs.
+  included (8 to 16), and do not probe a system limit: hitting the per-user
+  process limit kills the other runs on the machine.
 - A copy of code that runs mermaid.js runs with the result store disabled
   (`MMD_TOOLKIT_MERMAID_CACHE=disabled`), unless the copy reads the tree's own
   `packages/tests` and so shares its key.

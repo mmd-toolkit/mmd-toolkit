@@ -163,7 +163,7 @@ mermaid.js の字句解析器は、空白が後に続くすべての `click` で
 `click` の単位はクリック文の最初の単位としてだけ受理され、
 それ以外の場所に `click` の単位がある入力は拒否されます。
 
-mermaid.js の保守者は `click` を予約語として扱い、
+mermaid.js のメンテナーは `click` を予約語として扱い、
 ほかの場所での使い方を不具合として扱っています（下を参照）。
 これは既知の差異の 3
 つ目の理由に当たります（[known-divergences.ja.md](../known-divergences.ja.md)
