@@ -80,18 +80,15 @@ The procedures of a package are in the skill of that package.
   `packages/spec/docs/`, this document) is written in English, and its Japanese
   version with the same content stands next to it as `<name>.ja.md`. Both are
   updated in the same change: a change to an English document is not done until
-  the `.ja.md` carries the same change. The reason is the reader: text written
-  by agents is long and wordy, and the maintainer reads it in Japanese, because
-  in another language it takes too long to understand. A document may arrive
-  without a Japanese version, or with one older than the English; write the
-  Japanese then. `pnpm run lint:docs` (part of `pnpm run lint` and CI) lists
-  both cases; it fails on a `.ja.md` that has no English original, not on a
-  missing or older Japanese version. An English document whose Japanese version
-  does not exist yet has no `Japanese version:` line; add the language lines to
-  both documents when writing the Japanese. Generated files are exempt:
-  `.changeset/README.md` and the `CHANGELOG.md` that changesets writes into each
-  published package at release; `scripts/markdown-files.mjs` lists what the
-  check covers.
+  the `.ja.md` carries the same change. A document may arrive without a Japanese
+  version, or with one older than the English; write the Japanese then.
+  `pnpm run lint:docs` (part of `pnpm run lint` and CI) lists both cases; it
+  fails on a `.ja.md` that has no English original, not on a missing or older
+  Japanese version. An English document whose Japanese version does not exist
+  yet has no `Japanese version:` line; add the language lines to both documents
+  when writing the Japanese. Generated files are exempt: `.changeset/README.md`
+  and the `CHANGELOG.md` that changesets writes into each published package at
+  release; `scripts/markdown-files.mjs` lists what the check covers.
 - Prose in Markdown documents is wrapped at 80 columns by Prettier
   (`proseWrap: "always"` in `prettier.config.js`). Run `pnpm run format` after
   editing a document; `pnpm run format:check` fails otherwise. Do not write a
