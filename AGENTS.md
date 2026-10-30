@@ -150,15 +150,12 @@ changing it.
     result of every autofix.
   - No invisible characters written literally (`pnpm run lint:chars`). The
     fixtures of the conformance corpus are the only exception.
-  - Every Markdown document is written in English. Its Japanese version
-    (`<name>.ja.md`) is produced by the maintainers from the English one, so a
-    contribution needs only the English, and the maintainers bring the Japanese
-    up to date afterwards. A change that edits a Japanese document edits its
-    English original too; a `.ja.md` without an English original is an error.
-    `pnpm run lint:docs` lists the documents whose Japanese version is missing
-    or older than the English, and checks that a link to the source of
-    mermaid.js is a permalink of the pinned commit. The `CHANGELOG.md` that
-    changesets writes has no Japanese version.
+  - Every Markdown document is in English with a `.ja.md` pair, changed in the
+    same change. When a document has no Japanese version, or its Japanese
+    version is older than the English, write the Japanese: `pnpm run lint:docs`
+    lists both. It fails on a `.ja.md` without an English original, and it
+    checks that a link to the source of mermaid.js is a permalink of the pinned
+    commit. The `CHANGELOG.md` that changesets writes has no Japanese version.
   - Prose is wrapped at 80 columns: in English by Prettier
     (`pnpm run format:check`), in Japanese by the author and checked by
     `pnpm run lint:ja`.
