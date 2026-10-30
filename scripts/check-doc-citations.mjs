@@ -109,10 +109,7 @@ for (const file of files) {
     }
   }
 }
-// A Japanese version that cites other fixtures or has another heading structure
-// than its English original is behind the English; this is information for
-// whoever writes the Japanese versions, not a failure, since an English-only
-// change is accepted.
+// Japanese versions behind their English (see the top of this file).
 const behind = []
 for (const file of files) {
   if (!file.endsWith(".ja.md")) continue
