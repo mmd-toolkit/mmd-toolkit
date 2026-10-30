@@ -14,10 +14,8 @@ description:
 図種を 1 つ足すときの正規化関数と fixture、
 ほかのパッケージのために fixture の道具と一覧を保つこと、
 pin した mermaid.js の更新を扱う。
-会話の履歴や記憶がなくても、この文書だけで同じ品質で進められるように書く。
 このパッケージの方針と基準は 1 の節にある。
-すべてのパッケージに当たるものは AGENTS.md と SKILL `conventions` にあり、
-2 の節がそれを指す。
+すべてのパッケージに当たるものは AGENTS.md と SKILL `conventions` にある。
 
 ## 1. 方針と基準
 
@@ -37,8 +35,7 @@ pin した mermaid.js の更新を扱う。
 
 1. この文書の 1 の節、AGENTS.md の「共有するインターフェース」と「行動原則」、
    コードや文書を書く前に SKILL `conventions`。
-   基準は変わるので、作業のたびに読む。
-2. `packages/tests/README.md` と `packages/tests/docs/` の 5 つの文書、
+2. `packages/tests/README.md` と `packages/tests/docs/` の文書、
    `tools/README.md`。
    fixture の形式、期待値の求め方、Db の要約、埋め込まれたデータの値、
    fixture の保守と収集の手順はそこにある。
@@ -53,7 +50,6 @@ pin した mermaid.js の更新を扱う。
   ほかのパッケージのテストから入力を取るときは、読むだけにする。
 - コミットと push は、求められたときだけ行う（AGENTS.md の「行動原則」）。
   fixture の改名は、ディレクトリごと通常の `mv` で行う。
-  `ast.json` や `parse-error.json` も一緒に動く。
   `git mv` はステージも変える。
 - ルートの共有ファイルは、すべてのパッケージに効く。
   共有ファイルは、`package.json`、`pnpm-lock.yaml`、`eslint.config.mjs`、
@@ -61,22 +57,19 @@ pin した mermaid.js の更新を扱う。
   `scripts/` である。
   必要なときだけ変え、
   変えたらリポジトリ全体の検査（`pnpm run lint` と全体のテスト）を通す。
-- 確かめのためのスクリプトや一時ファイルは、作業ツリーではなく、
+- 確かめのためのスクリプトや一時ファイルは、
   リポジトリの外の作業用のディレクトリに置く。
-- fixture のディレクトリを消すと、
-  権限の判定で止められることがある（取り消せない削除）。
+- fixture のディレクトリを消すことは取り消せない。
   消す必要があるときは、消すものの一覧とコマンドを示して決定を求める。
 - Write ツールとシェルのヒアドキュメントは、
   `\u00a0` のようなエスケープを実際の文字に変えることがある。
-  ソースや文書を書いたら `node scripts/check-invisible-chars.mjs` を実行し、
-  見えない文字がないことを確かめる。
+  ソースや文書を書いたら `node scripts/check-invisible-chars.mjs` を実行する。
 - `eslint --fix` と Prettier の結果は、SKILL `conventions` のとおり必ず読む。
 - 追跡されているファイルを一時的に書き換えて試さない。
   途中でステージされることがある。
   試すときは、リポジトリの外の写しで行う。
 - git のステージと、チェックアウトされたファイルを変えない（`git add`、
   `git mv`、`stash`、`checkout`、`reset`）。
-  ステージはユーザーのものである。
 - 止めてよいプロセスは、自分で起動したものだけで、
   名前では止めない（`pkill -f vitest` は、
   その機械で動くほかのテストの実行もすべて止める）。
@@ -89,9 +82,8 @@ pin した mermaid.js の更新を扱う。
   次のスクリプトを `probe.mts` として置き、
   `<repo>` をリポジトリのルートの絶対パスに置き換えて、
   `node <作業用のディレクトリ>/probe.mts` で動かす。
-  Node は TypeScript をそのまま実行し、どのディレクトリから実行しても動く。
-  拡張子を `.mts` にすると、Node はファイルを ES モジュールとして読み、
-  top-level の `await` が使える。
+  Node は TypeScript をそのまま、どのディレクトリからでも実行する。
+  拡張子を `.mts` にすると ES モジュールになり、top-level の `await` が使える。
   ソースファイルは絶対パスで import する。
   リポジトリの外のファイルからは、パッケージ名が解決されないため。
   Node は型を取り除くだけなので、型だけの import は `import type` で書き、
@@ -115,7 +107,7 @@ pin した mermaid.js の更新を扱う。
 - 例を手で数個書いて済ませない。
   規則が値に効く境界は、文字の集合を全部回して確かめる。
   例えば、style の値の末尾に残る空白は、
-  JavaScript の `\s` から LF と CR を除いた 23 文字（仕様の行の空白）を 1
+  JavaScript の `\s` から LF と CR を除いた文字（仕様の行の空白）を 1
   つずつ置いて mermaid.js に通して確かめる。
   fixture の全件や、収集した入力の全件に対して、
   前後で結果が変わらないことを確かめる。
@@ -162,11 +154,10 @@ pin した mermaid.js の更新を扱う。
   `pnpm --filter @mmd-toolkit/tests exec vitest run tests/<ファイル>` で回す。
   `fixtures.test.ts` は 2 つの README を読む（既知の差異ごとに項目がある）ので、
   README を変えたときにも回す。
-  このパッケージには大きくする量がない。
-  完了を報告する前の実行は、全体（`pnpm --filter @mmd-toolkit/tests test`）。
+  完了を報告する前の実行は、
+  パッケージ全体（`pnpm --filter @mmd-toolkit/tests test`）。
   `fixtures:check` は、結果の作り方か記録の仕方（`src/mermaid.ts`、正規化関数、
   形式、生成器）を変えた後と、その変更の完了を報告する前に回す。
-  `src/` を変えたら `lib/` を作り直す（下）。
   ほかのパッケージは、使うものについての自分のテストを回す。
   全件を 1 つのテストで読むテストには、
   単独の所要時間を測って時間制限を明示する（既定の 5 秒に頼らない）。
@@ -199,8 +190,7 @@ pin した mermaid.js の更新を扱う。
 - `src/` を変えたら、
   `pnpm --filter @mmd-toolkit/tests run build` で `lib/` を作り直す。
   このリポジトリの中では、ほかのパッケージのテスト、ツール、型検査は、
-  `src/` を読む（vitest の設定の alias、相対の import、
-  ルートの `tsconfig.json` の `paths` による）。
+  `src/` を読む。
   そのため、`src/` の変更は、それらの次の実行にすぐ届く。
   `lib/` は、それ以外の所でパッケージの名前が読み込むもので、
   たとえば素の `node` のスクリプトから読まれる。
@@ -321,21 +311,21 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    ほかの Db メソッドが読むというだけで、解析・検証用の状態を残さず、
    値を代入しない keyword、捨てる AST の値、build 定数から欄を作らない。
    空の要約も正しい結果である。
-   次のものは落とす候補として必ず問う。
-   括弧に、flowchart と sequence での例を書く。
+   次のものは落とす候補として必ず問う（括弧の中は flowchart と sequence
+   での例）。
    - 描画から導く値、描画が埋める値（`domId`、
      sequence の `actorCnt` と `rectData`）。
    - ほかの欄から一意に導ける値（`textStyles`、
      sequence のメッセージの `id` とノートの一覧）。
    - サイト設定でだけ変わる値（`securityLevel: loose` のときだけ付く
      `haveCallback`）。
-     構文が決める欄で、サイト設定でも変わるものは含め、
-     Db のパッチがほかの設定のときの値を記録する class のリンクの target は、
-     `securityLevel: sandbox` のときに `_top` になる。
+     構文が決める欄で、サイト設定でも変わるものは含める。
+     Db のパッチが、ほかの設定のときの値を記録する（class のリンクの target は、
+     `securityLevel: sandbox` のときに `_top` になる）。
      `securityLevel` を変えて全件を流し、要約が変わらないことを確かめる。
    - 整形が変える空白が値に残る場所（style の値の末尾の空白）。
      その図種の整形の方針と照らす。
-     出典は `packages/prettier-plugin-mmd/docs/<図種>.md` です。
+     方針は `packages/prettier-plugin-mmd/docs/<図種>.md` にある。
      落とす前に、
      mermaid.js がその空白を読まないことを確かめる（sequence の空白だけの題は、
      描画が題として場所を取るので落とさない）。
@@ -381,7 +371,7 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    決める根拠は、
    AGENTS.md の正しさの基準（受理する入力の Db は mermaid.js と一致する）と、
    要約は構文が決める情報だけを持つこと（`docs/db-summaries.md`）、
-   使う側への影響（仕様と parser が参照する要約の欄、木からの Db の導出）。
+   使う側への影響（仕様の Db の正規化の節、parser が Db を導く方法）。
    分からない形（データブロックの記録など）は、
    リポジトリの外の作業用のディレクトリで試作して確かめてから決める。
 4. `packages/tests/src/normalizers/<図種>.ts` に正規化関数を書き、
@@ -450,21 +440,18 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
 8. `docs/db-summaries.md` と `.ja.md` に、その図種の節（何を落とし、
    なぜか）を書く。
 9. 結果として、要約の欄の一覧と、落とした欄とその理由を示す。
-   仕様と parser は、この一覧を参照する（`docs/db-summaries.ja.md`）。
 
 ### 5.3 fixture
 
-1. 入力は、その図種の構文に図のテキストを渡す mermaid のテストと、
+1. 入力は、
+   その図種の構文に図のテキストを渡す mermaid のテスト（Langium の図種では、
+   mermaid の parser パッケージのその図種のテストも含む）と、
    docs の mermaid のブロック、demos から集める。
-   Langium の図種では、
-   そのテストに mermaid の parser パッケージのその図種のテストも含める。
-   図種ごとに集めるテストファイルの一覧と除外の理由は、
-   `tools/collect.ts` の `SPEC_FILES` だけが持つ。
-   無関係なテストや e2e は集めない。
-   範囲は `tools/README.md` で説明する。
-2. 収集の道具（`tools/collect.ts`、`tools/src/spec-recorder.ts`）は、
-   図種を引数に取る。
-   図種ごとに違うのは、読む spec ファイルと、テキストを受け取る関数だけ。
+   集めるテストファイルの一覧と除外の理由は `tools/collect.ts` の `SPEC_FILES`
+   だけが持ち、範囲は `tools/README.md` にある。
+2. 図種の間で収集の道具（`tools/collect.ts`、
+   `tools/src/spec-recorder.ts`）が違うのは、読む spec ファイルと、
+   テキストを受け取る関数だけ。
    `collect.ts` の `SPEC_FILES` に、その図種の spec ファイルのうち、
    図のテキストを mermaid に渡すものを足す。
    除くファイルには理由を書く。
@@ -598,7 +585,7 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    - 重複した定義の 2 度目に、`-0` のような意味上の境目の値を置く場合。
      両方の順で、どの値が残るか、
      意味上の拒否が重複を捨てる前に起きるかを調べる。
-   - C4 検出の 4 語（`C4Container`、`C4Component`、`C4Dynamic`、
+   - C4 検出の語（`C4Container`、`C4Component`、`C4Dynamic`、
      `C4Deployment`）を、すべてのテキストの欄に置く場合。
      label、title、accTitle、accDescr の行とブロックを含める。
      文の後とヘッダーの行で、EOF で終わるコメントにも置く。
@@ -607,7 +594,7 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
      VT、FF、NBSP、BOM、U+1680、U+2000〜U+200A、U+202F、U+205F、 U+3000、LS、
      PS をそれぞれ空白だけの行とヘッダーの直前に置く。
      ASCII の空白・タブの対照も含める。
-   - 検出がブロックを 1 つ飛ばす場合の 6 通り。
+   - 検出がブロックを 1 つ飛ばす場合。
      2 つ目のブロック、裸の `%%{` 行の後、本物の frontmatter の後、
      二度目の directive 読みの前と後を別々に、
      開きと閉じが同じ字下げの形を調べる。
@@ -722,8 +709,9 @@ tests の生成器（`fixtures:add-many` など）で足す（方針と手順は
 1. 道具と形式を保つ。
    生成器、`add`、`add-many`、`set-divergence`、`set-note`、ローダー、
    収集の道具が、`docs/maintaining-fixtures.md` に書いたとおりに動くようにする。
-   道具の使い方は、その文書にある。
+
    使い方を変えたら、その文書（英日）を同じ変更で直す。
+
 2. 仕様の Known divergences
    （`packages/spec/docs/known-divergences.md`）が変わったら、
    識別子の一覧（`src/index.ts` の `KNOWN_DIVERGENCES`、
@@ -746,7 +734,7 @@ tests の生成器（`fixtures:add-many` など）で足す（方針と手順は
    tests と tools の中に旧名の参照がないことを grep で確かめる。
    仕様の本文の参照は、spec の SKILL の手順で直す。
 4. parser が失敗した入力（review、生成した入力、
-   差分テストが見つけたもの）を残すときは、コーパスの fixture にする。
+   差分テストから得たもの）を残すときは、コーパスの fixture にする。
    parser のファイルに残した失敗の入力は、ほかの実装のためには残らず、
    fixture は、すべての実装が確かめるためである。
    フォーマッターと規則の入力は、それぞれのパッケージに残す。
@@ -766,7 +754,8 @@ tests の生成器（`fixtures:add-many` など）で足す（方針と手順は
    名前は既存の付け方に合わせる（`gram-`、`lex-`、`db-`、`tokens-`、
    `config-` などの接頭辞と、示すものの名前。同じ話題の入力が多いときは、
    入力の SHA-256 の先頭 8 桁の 16 進数を付ける）。
-   note には、何を示す入力かを書く（見つけた review や実行の呼び名は書かない）。
+   note には、
+   何を示す入力かを書く（入力の出どころの review や実行の呼び名は書かない）。
    `fixtures:add-many` で足す（`fixtures:add` には印の指定がない）。
    実装のテストは、新しい fixture をほかの fixture と同じに読む。
    そのあと、失敗の入力のファイルは、それを持っていたパッケージから消す。
@@ -808,7 +797,7 @@ tests の生成器（`fixtures:add-many` など）で足す（方針と手順は
    既存の共有経路を拡張する。
    図種固有の読み方を加えたり、道具が新しい保持形式を扱うと決めつけたりしない。
 4. 参照経路を確かめてから、§5.3.8 の安定した生成の手順を行う。
-   伝えられた fixture 数を信じず、CLI の操作後の現在の corpus から、
+   別の所で述べられた件数を信じず、CLI の操作後の現在の corpus から、
    印と必須の読みを数え、足りない記録を報告する。
    比較する Db のない opaque-data の場合は、テストと報告で明示する。
    比較できるようにするための指定読みや Db を作り上げない。
@@ -861,7 +850,7 @@ tests の生成器（`fixtures:add-many` など）で足す（方針と手順は
    - DOMPurify を恒等にする差し替え: テストが確かめる。
    - Db のパッチ（flowchart では `setLink` と `addVertex`）: 2 つのタグの間で Db
      クラスを比べる。
-   - データブロックの記録の 2 つの検査と、
+   - データブロックの記録の検査と、
      `runMermaid()` の手順（`docs/expected-results.md`）: テストは確かめない。
      4 の全件の実行で確かめる。
      `runMermaid()` は、`mermaid.parse()` が受理し、

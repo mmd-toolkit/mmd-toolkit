@@ -2,10 +2,9 @@
 
 Japanese version: [README.ja.md](./README.ja.md)
 
-Command-line tools for the people who maintain the fixtures of
-`@mmd-toolkit/tests`: regenerating them, adding and marking them, collecting
-inputs from mermaid.js. Run them through the package scripts of
-`packages/tests`; the commands and rules are in
+Command-line tools for the fixtures of `@mmd-toolkit/tests`: regenerating them,
+adding and marking them, collecting inputs from mermaid.js. Run them through the
+package scripts of `packages/tests`; the commands and rules are in
 [maintaining-fixtures.md](../packages/tests/docs/maintaining-fixtures.md).
 
 | File          | Script                                                                                                                     |
@@ -24,12 +23,11 @@ inputs the new version brings.
 
 Of the test files, it reads mermaid's tests that pass diagram text to that
 diagram type's syntax, including the diagram type's tests in mermaid's parser
-package for Langium diagrams. `SPEC_FILES` in `collect.ts` alone lists which
-test files each diagram type collects, with reasons for exclusions. Texts in
+package for Langium diagrams. `SPEC_FILES` in `collect.ts` alone lists the test
+files each diagram type collects, with reasons for exclusions. Texts in
 unrelated test files of mermaid, such as `mermaid.spec.ts`,
 `mermaidAPI.spec.ts`, `diagram.spec.ts`, the tests under `rendering-util` and
-the end-to-end tests, are not collected: the inputs come from the diagram's own
-test files, its documentation and the demos.
+the end-to-end tests, are not collected.
 
 1. Clone mermaid at the tag of the pinned version (`mermaid@` followed by the
    version of the `mermaid` devDependency in `packages/tests/package.json`):
@@ -59,9 +57,8 @@ test files, its documentation and the demos.
      to `expect`. It may have stopped before some of its parse calls, so inputs
      would be missing without a trace. The recorder's stubs
      (`src/spec-recorder.ts`) accept any use except being turned into a string,
-     which would put the stub into a recorded text, so an upstream test that
-     needs more makes itself seen here. Extend the stubs to cover what the
-     listed tests use, and collect again;
+     which would put the stub into a recorded text. Extend the stubs to cover
+     what the listed tests use, and collect again;
    - a recorded text that contains `NaN`: arithmetic on a stub gives `NaN`, so a
      stub may have produced it;
    - a test file that imports a module the recorder has no stub for;
@@ -93,4 +90,4 @@ test files, its documentation and the demos.
 
 Existing fixtures keep their names, since a name depends only on the input and
 the file it was first found in. An input that mermaid no longer has stays a
-fixture until someone removes it by hand.
+fixture until it is removed by hand.
