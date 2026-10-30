@@ -1,6 +1,6 @@
 {
   "name": "@mmd-toolkit/eslint-plugin",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "ESLint language plugin for the Mermaid diagram syntax (.mmd files and mermaid code blocks in Markdown)",
   "license": "MIT",
   "repository": {
