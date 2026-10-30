@@ -20,14 +20,29 @@ const trigger = useTemplateRef<HTMLButtonElement>("trigger")
 const groupRefs: (HTMLButtonElement | null)[] = []
 const sampleRefs: (HTMLButtonElement | null)[] = []
 let hoverTimer: ReturnType<typeof setTimeout> | undefined
+/** Where the pointer last moved to, anywhere in the document, to tell a movement from a synthetic hover. */
+let pointer: { x: number; y: number } | null = null
+
+/** Records the pointer position of a real movement. */
+function trackPointer(event: MouseEvent): void {
+  pointer = { x: event.clientX, y: event.clientY }
+}
 
 /** Cancels a sibling switch when the pointer reaches the submenu or leaves the list. */
 function cancelHover(): void {
   clearTimeout(hoverTimer)
 }
 
-/** Gives diagonal pointer movement time to reach the existing submenu. */
-function hoverGroup(index: number): void {
+/**
+ * Gives diagonal pointer movement time to reach the existing submenu. A
+ * `mouseenter` at the position of the last movement is not a movement: browsers
+ * also send it when the menu is drawn under a resting pointer, and acting on it
+ * would take the focus from a keyboard user.
+ */
+function hoverGroup(index: number, event: MouseEvent): void {
+  if (pointer && pointer.x === event.clientX && pointer.y === event.clientY)
+    return
+  trackPointer(event)
   cancelHover()
   if (groupIndex.value === null || groupIndex.value === index) {
     chooseGroup(index)
@@ -208,10 +223,14 @@ function focusOut(event: FocusEvent): void {
     closeMenu()
 }
 
-onMounted(() => document.addEventListener("pointerdown", outsidePointer))
+onMounted(() => {
+  document.addEventListener("pointerdown", outsidePointer)
+  document.addEventListener("mousemove", trackPointer)
+})
 onBeforeUnmount(() => {
   cancelHover()
   document.removeEventListener("pointerdown", outsidePointer)
+  document.removeEventListener("mousemove", trackPointer)
 })
 </script>
 
@@ -263,7 +282,7 @@ onBeforeUnmount(() => {
         :aria-controls="groupIndex === index ? 'examples-submenu' : undefined"
         :style="`anchor-name: --example-family-${index}`"
         tabindex="-1"
-        @mouseenter="hoverGroup(index)"
+        @mouseenter="hoverGroup(index, $event)"
         @click="chooseGroup(index, true)"
       >
         {{ family.name }}

@@ -47,7 +47,7 @@ import {
 import path from "node:path"
 import { pathToFileURL } from "node:url"
 import ts from "typescript"
-import { relativeWithSlashes } from "./paths.ts"
+import { relativeWithSlashes } from "../../packages/tests/src/paths.ts"
 
 /** A test that ended with an error, so that some of its inputs may be missing. */
 export interface RecordedFailure {

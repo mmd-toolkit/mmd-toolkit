@@ -33,6 +33,7 @@ import {
 import type { DiagramType } from "../src/index.ts"
 import { loadFixture } from "../src/index.ts"
 import type { MermaidConfig, MermaidRun } from "../src/mermaid.ts"
+import { relativeWithSlashes } from "../src/paths.ts"
 import type { RunMermaidOptions } from "../src/run-mermaid-options.ts"
 import {
   detectDiagramType,
@@ -537,11 +538,13 @@ describe("a store that cannot be written", () => {
     const tree = path.join(directory, "tree")
     mkdirSync(path.join(tree, "src"), { recursive: true })
     writeFileSync(path.join(tree, "pnpm-lock.yaml"), "")
+    for (const file of ["mermaid-run-store.ts", "paths.ts"]) {
+      copyFileSync(
+        path.join(import.meta.dirname, "..", "src", file),
+        path.join(tree, "src", file),
+      )
+    }
     const copy = path.join(tree, "src", "mermaid-run-store.ts")
-    copyFileSync(
-      path.join(import.meta.dirname, "..", "src", "mermaid-run-store.ts"),
-      copy,
-    )
     const { defaultMermaidRunStore: made } = (await import(
       pathToFileURL(copy).href
     )) as { defaultMermaidRunStore: typeof defaultMermaidRunStore }
@@ -903,7 +906,7 @@ describe("codeIdentityOf", () => {
       reached.add(file)
       for (const imported of runtimeImportsOf(path.join(source, file))) {
         waiting.push(
-          path.relative(
+          relativeWithSlashes(
             source,
             path.resolve(path.dirname(path.join(source, file)), imported),
           ),

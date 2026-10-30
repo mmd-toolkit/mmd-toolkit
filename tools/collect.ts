@@ -44,10 +44,10 @@ import {
   detectDiagramType,
   mermaidVersion,
 } from "../packages/tests/src/mermaid.ts"
+import { relativeWithSlashes } from "../packages/tests/src/paths.ts"
 import type { DiagramType } from "../packages/tests/src/index.ts"
 import { belongsIn, isDiagramType } from "./src/diagrams.ts"
 import { fixtureKey, readFixtures } from "./src/fixture-store.ts"
-import { relativeWithSlashes } from "./src/paths.ts"
 import { recordSpecFile } from "./src/spec-recorder.ts"
 
 /** An input found in the checkout, before names are given. */

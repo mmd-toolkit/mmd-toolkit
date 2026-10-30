@@ -25,6 +25,7 @@ import { fileURLToPath } from "node:url"
 import { deserialize, serialize } from "node:v8"
 import { deflateSync, inflateSync } from "node:zlib"
 import type { EmbeddedValues, MermaidOutcome, MermaidRun } from "./mermaid.ts"
+import { relativeWithSlashes } from "./paths.ts"
 import type { RunMermaidOptions } from "./run-mermaid-options.ts"
 
 /**
@@ -105,6 +106,7 @@ export const RESULT_FILES: readonly string[] = [
   "normalizers/usecase.ts",
   "normalizers/venn.ts",
   "normalizers/xychart.ts",
+  "paths.ts",
   "rejections.ts",
   "run-mermaid-options.ts",
   "summary-number.ts",
@@ -979,15 +981,19 @@ function repositoryRootOf(directory: string): string | undefined {
 
 /**
  * The files of the code in `codeDirectory` that decide a result, relative to
- * it: the {@link RESULT_FILES} of `src/`, or every file of `lib/`, where the
- * build bundles them into files named by hashes.
+ * it, with `/` between the parts on every operating system: the
+ * {@link RESULT_FILES} of `src/`, or every file of `lib/`, where the build
+ * bundles them into files named by hashes.
  */
 function resultFilesIn(codeDirectory: string): string[] {
   if (path.basename(codeDirectory) === "src") return [...RESULT_FILES]
   return readdirSync(codeDirectory, { recursive: true, withFileTypes: true })
     .filter((entry) => entry.isFile())
     .map((entry) =>
-      path.relative(codeDirectory, path.join(entry.parentPath, entry.name)),
+      relativeWithSlashes(
+        codeDirectory,
+        path.join(entry.parentPath, entry.name),
+      ),
     )
     .sort()
 }
