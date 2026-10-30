@@ -1,7 +1,9 @@
 // Reports the state of the Japanese versions of the Markdown documents.
-// English is the source: a contributor writes the English document, and the
-// maintainers produce the Japanese version next to it (`<name>.ja.md`)
-// afterwards. The check fails only when a `.ja.md` has no English original.
+// English is the source. The Japanese version next to a document
+// (`<name>.ja.md`) is written by the AI agents that follow the agent
+// instructions of this repository, so a change written by hand may lack it
+// until an agent adds it. The check fails only when a `.ja.md` has no English
+// original.
 // Documents without a Japanese version, and Japanese versions whose English
 // original was committed after them, are listed as information and do not fail
 // the check. Only committed history is read: a change in the working tree is
