@@ -77,14 +77,18 @@ The procedures of a package are in the skill of that package.
   in `packages/spec/docs/index.md`. `pnpm run lint:docs` fails when a link to
   mermaid.js in a Markdown document points anywhere else.
 - Every Markdown document in the repository (READMEs, everything under
-  `packages/spec/docs/`, this document) is written in English, with a Japanese
-  version of the same content next to it as `<name>.ja.md`. Both are updated in
-  the same change: a change to an English document is not done until the
-  `.ja.md` carries the same change. `pnpm run lint:docs` (part of
-  `pnpm run lint` and CI) fails when a document has no pair. Generated files are
-  exempt: `.changeset/README.md` and the `CHANGELOG.md` that changesets writes
-  into each published package at release; `scripts/markdown-files.mjs` lists
-  what the check covers.
+  `packages/spec/docs/`, this document) is written in English, and its Japanese
+  version with the same content stands next to it as `<name>.ja.md`. The
+  Japanese is produced from the English by the maintainers, that is, by whoever
+  follows these skills: when you change an English document, write the same
+  change into the `.ja.md` in the same change; a change to an English document
+  is not done until the `.ja.md` carries it. A contribution written by hand
+  changes the English only. `pnpm run lint:docs` (part of `pnpm run lint` and
+  CI) lists the documents whose Japanese version is missing or older than the
+  English, which is the list to work through, and fails only on a `.ja.md` that
+  has no English original. Generated files are exempt: `.changeset/README.md`
+  and the `CHANGELOG.md` that changesets writes into each published package at
+  release; `scripts/markdown-files.mjs` lists what the check covers.
 - Prose in Markdown documents is wrapped at 80 columns by Prettier
   (`proseWrap: "always"` in `prettier.config.js`). Run `pnpm run format` after
   editing a document; `pnpm run format:check` fails otherwise. Do not write a

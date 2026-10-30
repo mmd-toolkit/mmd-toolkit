@@ -25,8 +25,9 @@ pnpm run format:check
 ```
 
 - `pnpm test` は、全パッケージのテストを実行します。
-- `pnpm run lint` は、ESLint、型検査、英語の文書に日本語の対があることの検査、
-  不可視文字の検査を実行します。
+- `pnpm run lint` は、ESLint、型検査、文書の検査、不可視文字の検査を実行します。
+  文書は英語で書きます。
+  日本語版は保守者が足すので、英語の文書の変更に日本語版は要りません。
 - `pnpm run format:check` は、Prettier で整形を検査します。
   `pnpm run format` は整形を適用します。
 - `pnpm run update` は、ソースから生成するファイルを書きます。
