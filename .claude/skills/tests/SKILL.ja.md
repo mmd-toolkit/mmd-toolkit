@@ -499,7 +499,7 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    これは demos のページが import する `mermaid.esm.mjs` を作り、 demos を配る。
    demos のページを開いて照らす。
 5. 収集した入力には `config` を付けない。
-   名前は `<出どころ>-<ファイル>-<入力の SHA-256 の先頭 8 桁>`
+   名前は `<出どころ>-<ファイル>-<入力の SHA-256 の先頭 8 桁の 16 進数>`
    （`docs/maintaining-fixtures.md`）。
 6. `fixtures:add-many <図種> <ファイル> --dry-run` で試し、
    出力を読んでから本番を実行する。
