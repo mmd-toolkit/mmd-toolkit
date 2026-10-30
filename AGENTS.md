@@ -75,9 +75,6 @@ Correctness is defined by the pinned mermaid.js.
    reproduced byte for byte.
 4. Formatting is idempotent and does not change the Db.
 
-The diagram types are done one at a time; flowchart, sequence, class, and state
-are done. Release only after every diagram type is done.
-
 ## What each package is responsible for
 
 The policies and criteria of a package are in the section Policies and criteria
@@ -113,8 +110,8 @@ package.
 
 ## Shared interfaces
 
-Changing one of these affects the packages that use it; tell them before
-changing it.
+A change to one of these reaches the packages that use it; change them in the
+same change.
 
 | Interface                                       | Defined in | Used by                                |
 | ----------------------------------------------- | ---------- | -------------------------------------- |
