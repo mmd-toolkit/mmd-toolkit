@@ -152,9 +152,12 @@ test("shares and reloads large input with a long URL", async ({ page }) => {
   )
   await expect(page.locator(".type-badge")).toHaveText("flowchart-v2")
   await page.getByRole("button", { name: "Share", exact: true }).click()
-  await expect(
-    page.getByLabel("Share this input", { exact: true }),
-  ).toHaveValue(page.url())
+  // The page compresses the source itself and replaces the hash with its own
+  // result, which can differ in bytes from the one encoded here, so the URL is
+  // read once the share link exists rather than before.
+  const shareLink = page.getByLabel("Share this input", { exact: true })
+  await expect(shareLink).not.toHaveValue("")
+  expect(await shareLink.inputValue()).toBe(page.url())
   expect(await savedSource(page)).toBe(source)
   await page.reload()
   await expect(page.locator(".source-pane .pane-footer")).toContainText(

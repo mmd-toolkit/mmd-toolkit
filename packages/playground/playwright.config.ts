@@ -6,10 +6,6 @@ export default defineConfig({
   workers: 1,
   retries: 0,
   reporter: "list",
-  // Assertions wait longer than the 5 s default: the tests that share and
-  // reload a 1 MB source compress it in the page, and Firefox and WebKit on a
-  // loaded CI runner take more than 5 s for that and for a reparse after Apply.
-  expect: { timeout: 15_000 },
   use: {
     baseURL: "http://localhost:4175/mmd-toolkit/playground/",
     trace: "retain-on-failure",
