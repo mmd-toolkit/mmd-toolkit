@@ -128,7 +128,7 @@ same change.
 - Do not take a claim at face value, whoever makes it. Check it against the
   specification and against what mermaid.js actually does before acting.
 - Do not write code that depends on a shared interface before it has been
-  defined and announced. Do the independent parts first.
+  defined. Do the independent parts first.
 - Objections to a design are made with the code open, not from memory, and with
   evidence: code, mermaid's actual output, or the place in the specification.
   When shown to be wrong, withdraw.

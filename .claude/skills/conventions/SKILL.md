@@ -138,13 +138,13 @@ everything after every change.
   fixtures of the package, and the inputs of past failures. No test generates
   its inputs, and no command does.
 - The tests of the parser and of the formatter run no generated inputs and do
-  not run mermaid.js: their inputs and expected results come from the
-  conformance corpus (`packages/tests/fixtures/`), which records for each input
-  whether mermaid.js accepts it and what it reads, so that a parser in any
-  language is checked with the same fixtures. A claim about what mermaid.js
-  reads is checked against the recorded Db; the Db of a tree is built by
-  `dbFromTree` of `packages/tests`, and the formatter compares the Db before and
-  after formatting. Whether a fixture records what mermaid.js does is checked in
+  not run mermaid.js. The parser takes its inputs and expected results from the
+  conformance corpus (`packages/tests/fixtures/`), so that a parser in any
+  language is checked with the same fixtures. The formatter uses its own
+  fixtures (pairs of input and output) and the inputs of the corpus, and
+  compares the Db of the tree before and after formatting, for a corpus input
+  also with the recorded Db; the Db of a tree is built by `dbFromTree` of
+  `packages/tests`. Whether a fixture records what mermaid.js does is checked in
   `packages/tests`, the only place that runs mermaid.js.
 - The linter tests do not run mermaid.js. They check the reports and suggestion
   outputs on rule fixtures and document examples. Inputs that need invisible
