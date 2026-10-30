@@ -246,7 +246,11 @@ describe("a rule without a Japanese document", () => {
     })
 
     it("has no generated Japanese document, and its row of the Japanese index links to the English one with the English description", async () => {
-      const documents = await renderDocuments(`${directory}/`)
+      const documents = await renderDocuments(`${directory}/`, [
+        name,
+        "flowchart-no-redefined-vertex",
+        "no-unclosed-directive",
+      ])
       expect([...documents.keys()]).not.toContain(
         ruleDocumentPath(`${directory}/`, name, "ja"),
       )

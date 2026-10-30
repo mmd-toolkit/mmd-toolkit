@@ -308,20 +308,20 @@ export function diagramOf(name: string): string | null {
   return DIAGRAM_ORDER.find((diagram) => name.startsWith(`${diagram}-`)) ?? null
 }
 
-/** The rule names by group: the common rules, then each diagram in `DIAGRAM_ORDER`, each in the order of `rules`. */
-function groupsOf(): Map<string | null, string[]> {
+/** The rule names `names` by group: the common rules, then each diagram in `DIAGRAM_ORDER`, each in the given order. */
+function groupsOf(names: readonly string[]): Map<string | null, string[]> {
   const groups = new Map<string | null, string[]>([
     [null, []],
     ...DIAGRAM_ORDER.map((diagram): [string, string[]] => [diagram, []]),
   ])
-  for (const name of Object.keys(rules)) {
+  for (const name of names) {
     const group = groups.get(diagramOf(name))
     if (group === undefined) {
       throw new Error(`The diagram of ${name} is not in DIAGRAM_ORDER`)
     }
     group.push(name)
   }
-  return new Map([...groups].filter(([, names]) => names.length > 0))
+  return new Map([...groups].filter(([, group]) => group.length > 0))
 }
 
 /** The rule, which `rules` holds for every name it lists. */
@@ -331,8 +331,12 @@ function ruleOf(name: string): RuleDefinition {
   return rule
 }
 
-/** The generated list of the rules, between its markers, before formatting. */
-function renderList(docsDir: string, language: DocumentLanguage): string {
+/** The generated list of the rules `names`, between its markers, before formatting. */
+function renderList(
+  docsDir: string,
+  language: DocumentLanguage,
+  names: readonly string[],
+): string {
   const words = WORDS[language]
   const lines = [
     LIST_BEGIN,
@@ -343,13 +347,13 @@ function renderList(docsDir: string, language: DocumentLanguage): string {
     "",
     words.suggestionsLegend,
   ]
-  for (const [diagram, names] of groupsOf()) {
+  for (const [diagram, group] of groupsOf(names)) {
     lines.push("", `## ${diagram ?? words.commonRules}`, "")
     lines.push(
       `| ${words.rule} | ${words.description} | ✅ | 🔧 | 💡 |`,
       "| --- | --- | --- | --- | --- |",
     )
-    for (const name of names) {
+    for (const name of group) {
       const rule = ruleOf(name)
       // A rule without a Japanese document appears in the Japanese list with
       // its English document and its English description.
@@ -470,12 +474,14 @@ async function formatMarkdown(text: string, path: string): Promise<string> {
 
 /**
  * Every document with generated parts, by its path, as it should be: the
- * index and every rule document under `docsDir`, in each language in which it
- * exists. The English documents are the originals; a Japanese document is
- * rendered when it exists. Render only when `mismatches` finds nothing.
+ * index and the document of every rule in `names` (all the rules by default)
+ * under `docsDir`, in each language in which it exists. The English documents
+ * are the originals; a Japanese document is rendered when it exists. Render
+ * only when `mismatches` finds nothing.
  */
 export async function renderDocuments(
   docsDir: string = RULE_DOCS_DIR,
+  names: readonly string[] = Object.keys(rules),
 ): Promise<Map<string, string>> {
   const documents = new Map<string, string>()
   for (const language of ["en", "ja"] as const) {
@@ -485,11 +491,11 @@ export async function renderDocuments(
       readFileSync(path, "utf8"),
       LIST_BEGIN,
       LIST_END,
-      renderList(docsDir, language),
+      renderList(docsDir, language, names),
       path,
     )
     documents.set(path, await formatMarkdown(index, path))
-    for (const name of Object.keys(rules)) {
+    for (const name of names) {
       if (!hasDocument(docsDir, name, language)) continue
       const rulePath = ruleDocumentPath(docsDir, name, language)
       documents.set(

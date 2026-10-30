@@ -290,7 +290,7 @@ Rule Details は、文の後に、反するコードと従うコードの例を�
 - 参考（Further Reading）: 規則を使う人が読めるもの、
   つまり mermaid.js の文書の頁、issue、PR へのリンクの一覧だけを、
   散文なしで書く。
-  mermaid.js のソースの permalink は、使う人向けではないので規則の文書に置かず、
+  mermaid.js のソースの permalink は規則の文書に置かず、
   rule-ideas の SKILL の規則の記録に置く。
 - どの文をどこに置くか。
   mermaid.js がすることについての文を、次に順に当てる。

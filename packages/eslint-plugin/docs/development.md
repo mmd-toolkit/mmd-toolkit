@@ -214,12 +214,9 @@ Each file exports one rule, named after the file in camel case
 plugin is the name of its file without `.ts`, its id is that name after the
 namespace (`@mmd-toolkit/flowchart-no-ignored-text`), and its documents are
 `docs/rules/<name>.md`, the original, and `docs/rules/<name>.ja.md`, which a
-rule may lack: an English document may stand alone. A change made with an AI
-agent includes the Japanese document, because the agent instructions of this
-repository have the agent write it. A change written by hand may leave the
-Japanese out, and an agent adds it afterwards, also to a document that is
-missing its Japanese version or has one older than the English. Only a Japanese
-document without its English original is wrong.
+rule may lack: an English document may stand alone. Who writes the Japanese
+document, and when, is in [CONTRIBUTING.md](../../../CONTRIBUTING.md). Only a
+Japanese document without its English original is wrong.
 
 A rule is in the `recommended` configuration when its reports are nearly always
 mistakes to fix: wherever it reports, mermaid.js reads the text differently from
@@ -302,13 +299,12 @@ To add a rule:
 
 1. Add its file under `src/rules/`, with its `meta` (`type`, `docs.description`,
    `docs.recommended`, `docs.url`, `schema`, `messages`) and its handlers.
-2. Write its English document, the original, and its Japanese document, which a
-   change written by hand may leave out: an agent adds it afterwards. The first
-   paragraph of the English document is `meta.docs.description`, word for word.
-   Begin every `mmd` example with the rule-enabling comment described above. An
-   English document without a Japanese version has no line
-   `Japanese version: …`; the line is added to both documents when the Japanese
-   is written.
+2. Write its English document, the original, and its Japanese document, as
+   [CONTRIBUTING.md](../../../CONTRIBUTING.md) describes. The first paragraph of
+   the English document is `meta.docs.description`, word for word. Begin every
+   `mmd` example with the rule-enabling comment described above. An English
+   document without a Japanese version has no line `Japanese version: …`; the
+   line is added to both documents when the Japanese is written.
 3. Add its test, `tests/rules/<name>.test.ts`, and its fixtures.
 4. Run `update`, then `check:docs`: `update` writes the Resources section of its
    documents and its row in the index.

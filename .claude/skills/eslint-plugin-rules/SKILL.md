@@ -152,7 +152,8 @@ after writing it.
   the rule's fixture directory are its cases. They check whether the rule
   reports and the text that each fix and each suggestion produces.
 - Name each input after the case that it checks, and keep an input for each case
-  that a sentence of the rule document distinguishes.
+  that a sentence of the rule document distinguishes; the tests do not hold a
+  separate document-to-input map.
 - Keep the leading `%% eslint @mmd-toolkit/<rule>: error` comment in every
   document example, correct or incorrect (the eslint-plugin skill). Only the
   snapshot test helper removes it, to avoid enabling the rule twice under the
