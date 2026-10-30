@@ -81,9 +81,10 @@ The procedures of a package are in the skill of that package.
   version of the same content next to it as `<name>.ja.md`. Both are updated in
   the same change: a change to an English document is not done until the
   `.ja.md` carries the same change. `pnpm run lint:docs` (part of
-  `pnpm run lint` and CI) fails when a document has no pair. Generated tool
-  files such as `.changeset/README.md` are exempt; `scripts/markdown-files.mjs`
-  lists what the check covers.
+  `pnpm run lint` and CI) fails when a document has no pair. Generated files are
+  exempt: `.changeset/README.md` and the `CHANGELOG.md` that changesets writes
+  into each published package at release; `scripts/markdown-files.mjs` lists
+  what the check covers.
 - Prose in Markdown documents is wrapped at 80 columns by Prettier
   (`proseWrap: "always"` in `prettier.config.js`). Run `pnpm run format` after
   editing a document; `pnpm run format:check` fails otherwise. Do not write a

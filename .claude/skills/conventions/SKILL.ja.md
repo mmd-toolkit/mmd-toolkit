@@ -92,7 +92,9 @@ AGENTS.md は、それぞれを 1 行で述べ、守らせる検査の名前を�
   英語版を変えたら、`.ja.md` に同じ変更が入るまでその変更は完了ではない。
   `pnpm run lint:docs` は、対になっていない文書があると失敗する。
   この検査は `pnpm run lint` と CI に含まれる。
-  `.changeset/README.md` のようなツールが生成したファイルは対象外。
+  ツールが生成したファイルは対象外。
+  `.changeset/README.md` と、
+  changesets がリリース時に公開パッケージごとに書く `CHANGELOG.md` である。
   検査の対象は `scripts/markdown-files.mjs` が定める。
 - Markdown 文書の文章は、Prettier が 80 桁で折り返す。
   設定は `prettier.config.js` の `proseWrap: "always"`。

@@ -20,6 +20,9 @@ const skipPaths = new Set([
   path.join(".claude", "worktrees"),
   path.join("tmp", "report-candidate"),
 ])
+// Changesets writes the CHANGELOG.md of each published package at release; it
+// has no Japanese version.
+const skipFiles = new Set(["CHANGELOG.md"])
 
 /**
  * Collects the Markdown files under `dir`, as paths relative to `root`,
@@ -31,7 +34,7 @@ function walk(root, dir, out) {
     if (statSync(full).isDirectory()) {
       if (!skipDirs.has(name) && !skipPaths.has(path.relative(root, full)))
         walk(root, full, out)
-    } else if (name.endsWith(".md")) {
+    } else if (name.endsWith(".md") && !skipFiles.has(name)) {
       out.push(path.relative(root, full))
     }
   }

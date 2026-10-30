@@ -159,7 +159,9 @@ flowchart、sequence、class、state が済んでいる。
     自動修正の結果は必ず読む。
   - 不可視文字を実際の文字として書かない（`pnpm run lint:chars`）。
     例外は、適合コーパスの fixture だけ。
-  - Markdown 文書は英語で書き、`.ja.md` の対を同じ変更で直す。
+  - Markdown 文書は英語で書き、
+    `.ja.md` の対を同じ変更で直す（changesets が書く `CHANGELOG.md`
+    だけは例外）。
     mermaid.js のソースへのリンクは、
     pin したコミットのパーマリンクにする（`pnpm run lint:docs`）。
   - 文章は 80 桁で折り返す。
