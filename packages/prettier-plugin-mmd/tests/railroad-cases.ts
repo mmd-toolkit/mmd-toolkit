@@ -10,6 +10,22 @@ interface RailroadCase {
 
 export const railroadCases: readonly RailroadCase[] = [
   {
+    name: "railroad/comments/ir-call-constructor-break-tabs",
+    input:
+      'railroad-beta\nr=sequence%% constructor  \n(terminal("a"),terminal("b"));\n',
+    output:
+      'railroad-beta\n\tr = sequence %% constructor  \n\t\t(\n\t\t\tterminal("a"),\n\t\t\tterminal("b")\n\t\t);\n',
+    options: { useTabs: true, tabWidth: 0, printWidth: 30 },
+  },
+  {
+    name: "railroad/comments/ir-call-constructor-break-zero",
+    input:
+      'railroad-beta\nr=sequence%% constructor  \n(terminal("a"),terminal("b"));\n',
+    output:
+      'railroad-beta\nr = sequence %% constructor  \n(\nterminal("a"),\nterminal("b")\n);\n',
+    options: { tabWidth: 0, printWidth: 30 },
+  },
+  {
     name: "railroad/comments/ir-call-comment-tail-tabs",
     input:
       'railroad-beta\nr=sequence( %% opening  \nterminal("a"), %% next\t\nterminal("b") %% close  \n);\n',

@@ -1256,7 +1256,8 @@ railroad-peg-beta
 ### コメント
 
 独立したコメントは本文で1段、見出し前で第1列に置きます。
-inline は左右と接触と分離を保ち、通常の分離 gap は1 space にします。
+通常の IR 呼出し以外では、inline は左右と接触と分離を保ち、
+通常の分離 gap は1 space にします。
 mark、内容、末尾空白、block の継続列、順序を保ちます。
 line comment の後の operand と終端は次行に残します。
 全方言に `%%`、IR に `/* */`、EBNF に `/* */` と `(* *)`、
@@ -1271,7 +1272,25 @@ comma や閉じ括弧の前のコメントは引数の後ろに残します。
 line comment の後ろのトークンは後の行に置きます。
 独立したコメント行は引数の段に順序を保って置き、空行は1つまでにします。
 constructor と開き括弧の間のコメントは、その間に残します。
-タブや幅0の字下げでも、コメントの内容と末尾空白を保ちます。
+その位置に改行があれば、両方の括弧を継続行として字下げし、
+引数をさらに1段深く置きます。
+改行のない IR 呼出しの隙間では、
+constructor と開き括弧の間のコメントの両側に1 space を置きます。
+引数前のコメントは、その引数の通常の区切りの後に置き、
+引数まで1 space を置きます。
+comma や閉じ括弧の前のコメントは、前に1 space、後ろに空白なしで置きます。
+ただし折返しで閉じ括弧を独立した行へ移すことはできます。
+既存の改行の隣でも同じ外側空白を使い、コメントを越えて句読点を移しません。
+タブや幅0の字下げでも、コメントの連なりの内容、内部の接触、継続列、
+末尾空白を保ちます。
+
+[fixture: railroad/comments/ir-call-inline-spacing]
+
+[fixture: railroad/comments/ir-call-constructor-nested]
+
+[test: railroad/comments/ir-call-constructor-break-tabs]
+
+[test: railroad/comments/ir-call-constructor-break-zero]
 
 [fixture: railroad/long-lines/ir-comments-kept]
 
@@ -1282,6 +1301,15 @@ constructor と開き括弧の間のコメントは、その間に残します�
 [fixture: railroad/comments/ir-call-own-lines]
 
 [fixture: railroad/comments/ir-leaf-value-comments]
+
+出力
+([comments/ir-call-inline-spacing-output.mmd](../tests/fixtures/railroad/comments/ir-call-inline-spacing-output.mmd)):
+
+```mmd
+railroad-beta
+  leaf = terminal /* call */ (/* before */ "x" /* close */);
+  list = sequence(terminal("a") /* comma */, /* next */ terminal("b"));
+```
 
 [test: railroad/comments/ir-call-comment-tail-tabs]
 
@@ -1381,7 +1409,7 @@ railroad-peg-beta
 ### 共有 directive
 
 Root directive を source span から元の所有位置に1回印字します。
-同じ印字行の中では、両側の接触・分離を保ちます。
+通常の IR 呼出しの隙間以外では、同じ印字行の中で両側の接触・分離を保ちます。
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
@@ -1390,8 +1418,9 @@ Root directive を source span から元の所有位置に1回印字します。
 一律の空白追加が、共有処理後の文字列、repeat の部品、numeric value、
 predicate の operand を変えるためです。
 
-通常の IR 呼出しの隙間は、コメントと同じ折返し位置を使います。
+通常の IR 呼出しの隙間は、コメントと同じ外側空白と折返し位置を使います。
 directive を引数のそばに保ち、呼出しの折返しを止めません。
+内容と、同じ連なりの他の項目との接触は元のままにします。
 
 [fixture: railroad/long-lines/ir-directive-kept]
 

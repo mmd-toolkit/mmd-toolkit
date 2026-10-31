@@ -43,7 +43,7 @@ Lexical structure）。
 [fixture: indentation/written-indentation-dropped]
 ヘッダーは、前に空白が書かれていても 1 列目に置きます。
 [fixture: indentation/header-leading-whitespace]
-`accDescr` ブロックの行のように、書かれたまま残すテキストの行は、列も残します。
+`accDescr` ブロックの後ろのテキスト行は、その文より 1 段深く置きます。
 ブロックを閉じる `}` は、
 その文の段に置きます（[複数行の値](#複数行の値)を参照）。
 [fixture: indentation/description-block-under-a-section]
@@ -363,10 +363,13 @@ section の中でも、同じ period の event を読み取りやすくするた
 [test: U+2028 inside a period before a later event]
 [test: U+2029 inside a period before a later event]
 
-その間のコメント行と指令の行は、中に残して 1 行目より 1 段深く置き、
-連続する空行は 1 つにします。 [fixture: periods-and-events/comment-lines-inside]
+event 行の間のコメント行と指令の行は、次の event の `:` と同じ列にそろえます。
+`:` が通常の継続行の字下げを使うときは、これらの行も同じ字下げを使います。
+文の中の連続する空行は 1 つにします。
+[fixture: periods-and-events/comment-lines-inside]
 [fixture: periods-and-events/empty-lines-inside]
 [fixture: periods-and-events/directive-line-inside]
+[fixture: periods-and-events/continuation-trivia]
 period の後ろのコメントは行に残し、
 前の空白は period の一部なので書かれたままです。
 [fixture: periods-and-events/comment-after-period]
@@ -479,7 +482,7 @@ timeline
 ```mmd
 timeline
   2004 : Facebook
-    # c
+       # c
        : Google
   %% d
   2005 : YouTube
@@ -528,9 +531,11 @@ title の後ろの event を読む人がどう読むかは、整形の問題で�
 
 period の event と同じく、各 event は書かれた行に残します。
 後ろの event 行も文の字下げで始め、同列の event が入れ子に見えないようにします。
+event の間のコメント行と指令の行も、同じ字下げを使います。
 section の中でも同じです。 [fixture: event-statements/several-events]
 [fixture: event-statements/events-of-an-event-statement-on-the-line]
 [fixture: event-statements/several-events-in-a-section]
+[fixture: event-statements/peer-trivia]
 
 入力
 ([event-statements/after-title-input.mmd](../tests/fixtures/timeline/event-statements/after-title-input.mmd)):
@@ -741,7 +746,7 @@ journey と同じ形です。
 `{` を空白 1 つの後ろに置き（書かれたとおりに、
 キーワードに接していてもかまいません）、
 `{` の行にあるテキストは両側に空白 1 つ、その後ろに `}` を置きます。
-テキストが後ろの行から始まるときは、その行を書かれたまま残し、
+後ろのテキスト行はその文より 1 段深く置き、
 `}` はその文の段に置きます（[複数行の値](#複数行の値)を参照）。
 [fixture: accessibility-statements/block-text-on-opening-line]
 [fixture: accessibility-statements/block-inner-whitespace-kept]
@@ -787,8 +792,8 @@ accDescr {
 ```mmd
 timeline
   accDescr {
-   a
-  b
+    a
+    b
   }
 ```
 
@@ -804,7 +809,8 @@ timeline
 [fixture: empty-description-blocks/inner-whitespace-collapsed]
 [fixture: empty-description-blocks/touching-kept]
 [fixture: empty-description-blocks/blank-lines-inside]
-指令かコメント行のあるブロックは、書かれたまま印字します。
+指令かコメント行のあるブロックは、その内容を残し、
+後ろのテキスト行を[複数行の値](#複数行の値)の規則で字下げします。
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
 ヘッダーの後ろでも、自分の行に置きます。
 [fixture: empty-description-blocks/after-header]
@@ -938,12 +944,32 @@ T
 
 ### 複数行の値
 
-`accDescr` ブロックの行は、改行と中の空白も含めて書かれたまま残します。
-改行は Db に入りますが、行頭の空白は入らないので、残すのは選択で、
-値のテキストは整形しないからです。
+`accDescr` ブロックの後ろのテキスト行は、その文より 1 段深く置きます。
+置き換えるのは、LF の直後の ASCII の空白とタブだけです。
+Db の setter はこの字下げを捨てるので、section の中でも、
+テキストをブロックの内側にそろえられます。
 [fixture: multi-line-values/description-block-lines-kept]
-このようなブロックの中のコメントは、テキストの一部です。
+[fixture: indentation/description-block-under-a-section]
+これらの行にも設定した字下げを使います。
+[fixture: multi-line-values/description-four-spaces]
+[fixture: multi-line-values/description-tabs]
+[fixture: multi-line-values/description-zero-width]
+
+テキスト、改行、行末の空白とタブは残します。
+開始行のテキストはその行に残し、テキスト内の空行も空行のまま残します。
+[fixture: multi-line-values/description-line-ending-whitespace]
+ブロック内の hash コメントはテキストなので、同じ字下げを使います。
+`%%` のコメント行もテキストにそろえます。
 [fixture: multi-line-values/comment-line-inside-block-kept]
+[fixture: multi-line-values/description-percent-comment-line]
+指令は、内部の字下げも含め、内容全体を書かれたまま残します。
+[fixture: multi-line-values/description-directive-lines]
+コメントか指令だけのブロックも同じ字下げを使い、閉じる括弧は文の段に置きます。
+[fixture: multi-line-values/description-comment-only-lines]
+[fixture: multi-line-values/description-directive-only-lines]
+テキスト行の中の U+2028 と U+2029 は書かれたまま残します。
+[test: U+2028 inside a description line]
+[test: U+2029 inside a description line]
 
 入力
 ([multi-line-values/description-block-lines-kept-input.mmd](../tests/fixtures/timeline/multi-line-values/description-block-lines-kept-input.mmd)):
@@ -962,7 +988,7 @@ accDescr {
 ```mmd
 timeline
   accDescr {
-  a
+    a
     b
   }
 ```

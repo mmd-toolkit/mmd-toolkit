@@ -9,7 +9,7 @@ import type {
 import type { Doc } from "prettier"
 import { builders } from "prettier/doc"
 import type { AtomLayout, GapRule } from "./atoms.ts"
-import type { ItemRun } from "./gap.ts"
+import type { Gap, ItemRun } from "./gap.ts"
 import { readGap } from "./gap.ts"
 import { layoutCommonDescription, layoutCommonLine } from "./common-layout.ts"
 import { protectHiddenGaps } from "./hidden-forms.ts"
@@ -30,7 +30,7 @@ import {
   walk,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
-import { printAsWritten, withLeading, withTrailing } from "./lines.ts"
+import { printAsWritten } from "./lines.ts"
 import {
   findStructuralToken,
   findTokenStartingAt,
@@ -313,16 +313,18 @@ function printCall(source: Source, expression: RailroadExpression): Doc {
       )
       expectValue(comma, ",")
       contents.push(
-        printCallGap(source, previousEnd, comma.range[0], "", "inline"),
+        printCallGap(
+          readGap(source, previousEnd, comma.range[0], true),
+          "",
+          "comma",
+        ),
         ",",
       )
       previousEnd = comma.range[1]
     }
     contents.push(
       printCallGap(
-        source,
-        previousEnd,
-        argument.range[0],
+        readGap(source, previousEnd, argument.range[0], true),
         valueCall ? "" : index === 0 ? softline : line,
         "leading",
       ),
@@ -330,58 +332,59 @@ function printCall(source: Source, expression: RailroadExpression): Doc {
     )
     previousEnd = argument.range[1]
   }
+  const constructorGap = readGap(
+    source,
+    keyword.range[1],
+    opening.range[0],
+    true,
+  )
+  const call: Doc = [
+    printCallGap(constructorGap, "", "constructor"),
+    "(",
+    indent(contents),
+    printCallGap(
+      readGap(source, previousEnd, closing.range[0], true),
+      valueCall ? "" : softline,
+      "closing",
+    ),
+    ")",
+  ]
   return group(
     [
       printAsWritten(source, ...keyword.range),
-      printCallGap(source, keyword.range[1], opening.range[0], "", "inline"),
-      "(",
-      indent(contents),
-      printCallGap(
-        source,
-        previousEnd,
-        closing.range[0],
-        valueCall ? "" : softline,
-        "closing",
-      ),
-      ")",
+      constructorGap.breaksLine && hasCallTrivia(constructorGap)
+        ? indent(call)
+        : call,
     ],
     { shouldBreak },
   )
 }
 
-/** Native padding permits call breaks; shared gaps retain trivia and its sides. */
+/**
+ * IR call padding is ordinary whitespace, so trivia uses readable outside
+ * spacing at each syntactic boundary (diagrams/railroad.md, IR grammar;
+ * docs/railroad.md, Comments and Global directives).
+ */
 function printCallGap(
-  source: Source,
-  start: number,
-  end: number,
+  gap: Gap,
   ordinary: Doc,
-  placement: "leading" | "inline" | "closing",
+  placement: "leading" | "constructor" | "comma" | "closing",
 ): Doc {
-  const gap = readGap(source, start, end, true)
-  if (gap.trailing === null && gap.lines.length === 0 && gap.leading === null)
-    return ordinary
+  if (!hasCallTrivia(gap)) return ordinary
   if (!gap.breaksLine) {
     const run = gap.leading ?? gap.trailing!
-    if (placement === "leading")
-      return [
-        ordinary === "" ? "" : softline,
-        ordinary === ""
-          ? run.spaceBefore
-            ? " "
-            : ""
-          : ifBreak("", run.spaceBefore ? " " : ""),
-        withLeading(run, ""),
-      ]
+    if (placement === "leading") return [ordinary, run.doc, " "]
     return [
-      withTrailing("", run),
+      " ",
+      run.doc,
       placement === "closing"
-        ? ifBreak(ordinary, run.spaceAfter ? " " : "")
-        : run.spaceAfter
+        ? ifBreak(ordinary, "")
+        : placement === "constructor"
           ? " "
           : "",
     ]
   }
-  const trivia: Doc[] = [withTrailing("", gap.trailing)]
+  const trivia: Doc[] = gap.trailing === null ? [] : [" ", gap.trailing.doc]
   let previous = gap.trailing
   for (const item of gap.lines) {
     trivia.push(triviaBreak(previous, item.blankBefore), item.run.doc)
@@ -392,12 +395,17 @@ function printCallGap(
     previous = gap.leading
   }
   const after =
-    placement !== "closing" && gap.leading !== null
-      ? gap.leading.spaceAfter
+    gap.leading !== null
+      ? placement === "leading" || placement === "constructor"
         ? " "
         : ""
       : triviaBreak(previous, gap.leading === null && gap.blankAfter)
   return placement === "closing" ? [indent(trivia), after] : [trivia, after]
+}
+
+/** Whitespace-only gaps collapse to their ordinary call separator. */
+function hasCallTrivia(gap: Gap): boolean {
+  return gap.trailing !== null || gap.lines.length > 0 || gap.leading !== null
 }
 
 /** A literal break keeps comment tails while adopting this call's indentation. */

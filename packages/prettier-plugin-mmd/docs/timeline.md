@@ -41,10 +41,9 @@ was indented with, and a period that is indented more than the one before it is
 another period (diagrams/timeline.md, Lexical structure). [fixture:
 indentation/written-indentation-dropped] The header stands at the first column,
 also where whitespace was written before it. [fixture:
-indentation/header-leading-whitespace] The lines of a text that is kept as
-written, such as the lines of an `accDescr` block, keep their columns, and the
-`}` that closes a block stands at the level of its statement (see
-[Multi-line values](#multi-line-values)). [fixture:
+indentation/header-leading-whitespace] The later text lines of an `accDescr`
+block stand one level inside its statement, and the `}` that closes it stands at
+the statement level (see [Multi-line values](#multi-line-values)). [fixture:
 indentation/description-block-under-a-section] Later event colons align under
 the period's colon where it directly follows the period on its line (see
 [Periods and events](#periods-and-events)). [fixture:
@@ -349,11 +348,13 @@ periods-and-events/colon-alignment-directive-boundary] [fixture:
 periods-and-events/colon-alignment-written-period] [test: U+2028 inside a period
 before a later event] [test: U+2029 inside a period before a later event]
 
-Comment lines and directive lines inside a period and its events stay inside it,
-one level deeper than its first line, and a run of empty lines inside it becomes
-one. [fixture: periods-and-events/comment-lines-inside] [fixture:
+Comment lines and directive lines between event lines align with the next event
+colon. When the colons use ordinary continuation indentation, these lines use
+that indentation too. A run of empty lines inside the statement becomes one.
+[fixture: periods-and-events/comment-lines-inside] [fixture:
 periods-and-events/empty-lines-inside] [fixture:
-periods-and-events/directive-line-inside] A comment after a period stays on its
+periods-and-events/directive-line-inside] [fixture:
+periods-and-events/continuation-trivia] A comment after a period stays on its
 line, with the whitespace before it, which is part of the period. [fixture:
 periods-and-events/comment-after-period]
 
@@ -462,7 +463,7 @@ Output
 ```mmd
 timeline
   2004 : Facebook
-    # c
+       # c
        : Google
   %% d
   2005 : YouTube
@@ -510,9 +511,11 @@ event-statements/empty-lines-before]
 
 As for a period, each event stays on the line on which it was written. Later
 event lines use the statement's indentation, so peer events do not look nested.
+Comment lines and directive lines between those events use the same indentation.
 This also applies within a section. [fixture: event-statements/several-events]
 [fixture: event-statements/events-of-an-event-statement-on-the-line] [fixture:
-event-statements/several-events-in-a-section]
+event-statements/several-events-in-a-section] [fixture:
+event-statements/peer-trivia]
 
 Input
 ([event-statements/after-title-input.mmd](../tests/fixtures/timeline/event-statements/after-title-input.mmd)):
@@ -713,8 +716,8 @@ accessibility-statements/special-characters-in-text]
 
 An `accDescr` block with text has the `{` after one space (or touching the
 keyword, as written), the text on the line of the `{` between one space on each
-side, and the `}` after it; where the text starts on a later line, its lines are
-kept as written and the `}` stands at the level of the statement (see
+side, and the `}` after it; later text lines stand one level inside the
+statement and the `}` stands at its level (see
 [Multi-line values](#multi-line-values)). [fixture:
 accessibility-statements/block-text-on-opening-line] [fixture:
 accessibility-statements/block-inner-whitespace-kept] [fixture:
@@ -760,8 +763,8 @@ Output
 ```mmd
 timeline
   accDescr {
-   a
-  b
+    a
+    b
   }
 ```
 
@@ -776,7 +779,8 @@ empty-description-blocks/empty-whitespace-interiors] [test: timeline Unicode and
 tab interiors] [fixture: empty-description-blocks/inner-whitespace-collapsed]
 [fixture: empty-description-blocks/touching-kept] [fixture:
 empty-description-blocks/blank-lines-inside] A block with a directive or a
-comment line is printed as written. [fixture:
+comment line keeps that content, with later text lines indented as described in
+[Multi-line values](#multi-line-values). [fixture:
 empty-description-blocks/with-directive-or-comment-line-kept] It stands on a
 line of its own, also after the header. [fixture:
 empty-description-blocks/after-header]
@@ -911,12 +915,29 @@ T
 
 ### Multi-line values
 
-The lines of an `accDescr` block are kept as written, with the line breaks and
-the whitespace inside. The line breaks are in the Db, but the whitespace at the
-start of a line is not, so keeping it is a choice: the text of a value is not
-formatted. [fixture: multi-line-values/description-block-lines-kept] A comment
-inside such a block is part of the text. [fixture:
-multi-line-values/comment-line-inside-block-kept]
+Indent later text lines of an `accDescr` block one level inside the statement,
+replacing only ASCII spaces and tabs immediately after a line feed. The Db
+setter drops that indentation, so this keeps text inside its block, including
+under a section. [fixture: multi-line-values/description-block-lines-kept]
+[fixture: indentation/description-block-under-a-section] The configured
+indentation applies to these lines too. [fixture:
+multi-line-values/description-four-spaces] [fixture:
+multi-line-values/description-tabs] [fixture:
+multi-line-values/description-zero-width]
+
+Keep the text, its line breaks and its trailing spaces and tabs. Text on the
+opening line stays there, and empty lines inside the text stay empty. [fixture:
+multi-line-values/description-line-ending-whitespace] A hash comment inside the
+block is text and receives the same indentation; a `%%` comment line also aligns
+with the text. [fixture: multi-line-values/comment-line-inside-block-kept]
+[fixture: multi-line-values/description-percent-comment-line] A directive keeps
+its complete contents, including its interior indentation. [fixture:
+multi-line-values/description-directive-lines] A block holding only comments or
+directives uses the same indentation, with its closer at statement level.
+[fixture: multi-line-values/description-comment-only-lines] [fixture:
+multi-line-values/description-directive-only-lines] U+2028 and U+2029 within a
+text line remain as written. [test: U+2028 inside a description line] [test:
+U+2029 inside a description line]
 
 Input
 ([multi-line-values/description-block-lines-kept-input.mmd](../tests/fixtures/timeline/multi-line-values/description-block-lines-kept-input.mmd)):
@@ -935,7 +956,7 @@ Output
 ```mmd
 timeline
   accDescr {
-  a
+    a
     b
   }
 ```

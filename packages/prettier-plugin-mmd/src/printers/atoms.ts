@@ -26,7 +26,7 @@ export interface Atom {
   readonly doc?: Doc
   /** Indentation before a later-line atom; empty when its range owns it. */
   readonly writtenIndentation?: string
-  /** Alignment added to the statement's indentation on a later line. */
+  /** Alignment of a later-line atom and its preceding own-line trivia. */
   readonly statementPadding?: string
 }
 
@@ -161,6 +161,10 @@ export function printAtoms(
 
   for (const atom of layout.atoms) {
     const text = source.text.slice(atom.start, atom.end)
+    const alignedIndentation =
+      atom.statementPadding === undefined
+        ? undefined
+        : indentation.statement + atom.statementPadding
     if (previous !== undefined) {
       if (layout.writtenGapsBefore?.has(atom.start) === true) {
         // An explicitly aligned atom after a hidden form keeps the consumed
@@ -211,7 +215,11 @@ export function printAtoms(
           gapOffset = gap.trailing.range[1]
         }
         for (const line of gap.lines) {
-          breakCurrentLine(line.blankBefore, false, indentation.trivia)
+          breakCurrentLine(
+            line.blankBefore,
+            false,
+            indentation.trivia ?? alignedIndentation,
+          )
           currentWrittenBreak = keepsBreaks
             ? literalBreaksBetween(source, gapOffset, line.run.range[0])
             : undefined
@@ -222,10 +230,7 @@ export function printAtoms(
         breakCurrentLine(
           gap.blankAfter,
           layout.outdented.has(atom.start),
-          atom.writtenIndentation ??
-            (atom.statementPadding === undefined
-              ? undefined
-              : indentation.statement + atom.statementPadding),
+          atom.writtenIndentation ?? alignedIndentation,
         )
         currentWrittenBreak = keepsBreaks
           ? literalBreaksBetween(

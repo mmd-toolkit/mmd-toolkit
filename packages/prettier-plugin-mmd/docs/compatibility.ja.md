@@ -927,6 +927,12 @@ mermaid.js は、timeline の period、event、title、section の名前の空�
   [fixture: timeline/multi-line-statements/comment-line-inside-kept]
   [fixture: timeline/statements-one-per-line/ignored-semicolon-line-kept]
 
+`accDescr` ブロックの後ろのテキスト行は、
+Db の setter が捨てる LF 直後の空白とタブだけを置き換えて字下げします。
+テキスト、改行、行末の空白、指令の内容は書かれたまま残します。
+[fixture: timeline/multi-line-values/description-line-ending-whitespace]
+[fixture: timeline/multi-line-values/description-directive-lines]
+
 ## 文字や引用符で決まる sankey の行
 
 mermaid.js は sankey 図を CSV として読みます。
@@ -2321,12 +2327,20 @@ railroad/source-order/peg-duplicates] [fixture: railroad/title/ir-trim]
 leaf constructor は引用値と一緒に保ちます。
 通常のコメントと global directive は、引数との境界を保ちながら折り返します。
 値の中の semicolon は折返しを止めません。
+呼出しの隙間では、コメントと directive の外側空白を統一し、内容、内部の接触、
+元の改行を保ちます。
+constructor の後ろに改行があれば、両方の括弧を継続行として字下げし、
+引数をさらに1段深く置きます。
 native hidden form と無視される semicolon は、保護した配置を使います。
 EBNF、ABNF、PEG は平坦な配置を保ちます。
 [fixture: railroad/long-lines/ir-expression-grammar]
 [fixture: railroad/long-lines/ir-written-breaks]
 [fixture: railroad/long-lines/ir-unary-width]
 [fixture: railroad/long-lines/ir-comments-kept]
+[fixture: railroad/comments/ir-call-inline-spacing]
+[fixture: railroad/comments/ir-call-comment-lines]
+[fixture: railroad/comments/ir-call-constructor-nested]
+[fixture: railroad/global-directives/ir-call-boundaries]
 [fixture: railroad/long-lines/ir-directive-kept]
 [fixture: railroad/long-lines/ir-hidden-kept]
 [fixture: railroad/long-lines/ir-semicolon-kept]

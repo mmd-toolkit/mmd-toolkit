@@ -1,0 +1,8 @@
+railroad-beta
+  r = sequence(
+    terminal("a"),
+    optional %% nested
+      (
+        terminal("b")
+      )
+  );

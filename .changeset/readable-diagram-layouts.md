@@ -3,5 +3,5 @@
 ---
 
 Improve the readability of `eventmodeling` data and note declarations, nested
-`railroad` calls, and `timeline` continuation events while preserving their
-meaning.
+`railroad` calls and comments, and `timeline` continuation events and
+description blocks while preserving their meaning.

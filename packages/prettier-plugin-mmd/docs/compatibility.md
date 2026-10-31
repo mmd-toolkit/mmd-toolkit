@@ -865,6 +865,12 @@ formatting keeps them as they are written. See
   timeline/multi-line-statements/comment-line-inside-kept] [fixture:
   timeline/statements-one-per-line/ignored-semicolon-line-kept]
 
+An `accDescr` block indents later text lines by replacing only spaces and tabs
+immediately after LF, which the Db setter discards. Its text, line breaks,
+trailing whitespace and directive contents remain as written. [fixture:
+timeline/multi-line-values/description-line-ending-whitespace] [fixture:
+timeline/multi-line-values/description-directive-lines]
+
 ## Sankey lines that the characters or the quotes decide
 
 mermaid.js reads a sankey diagram as CSV: it rejects a tab, a character outside
@@ -2166,12 +2172,19 @@ structure, without splitting values or adding trailing commas. Calls with
 multiple arguments retain authored multiline grouping. Leaf constructors stay
 together with their quoted values. Ordinary comments and global directives
 retain their argument boundaries while the call wraps; semicolons inside values
-do not prevent wrapping. Native hidden forms and ignored semicolons retain their
-protected layout. EBNF, ABNF and PEG keep their flat layout. [fixture:
-railroad/long-lines/ir-expression-grammar] [fixture:
-railroad/long-lines/ir-written-breaks] [fixture:
+do not prevent wrapping. Call gaps use canonical outside spaces for comments and
+directives, preserving their contents, internal contacts and written line
+breaks. After a line break following a constructor, both parentheses use
+continuation indentation, with their arguments one level deeper. Native hidden
+forms and ignored semicolons retain their protected layout. EBNF, ABNF and PEG
+keep their flat layout. [fixture: railroad/long-lines/ir-expression-grammar]
+[fixture: railroad/long-lines/ir-written-breaks] [fixture:
 railroad/long-lines/ir-unary-width] [fixture:
 railroad/long-lines/ir-comments-kept] [fixture:
+railroad/comments/ir-call-inline-spacing] [fixture:
+railroad/comments/ir-call-comment-lines] [fixture:
+railroad/comments/ir-call-constructor-nested] [fixture:
+railroad/global-directives/ir-call-boundaries] [fixture:
 railroad/long-lines/ir-directive-kept] [fixture:
 railroad/long-lines/ir-hidden-kept] [fixture:
 railroad/long-lines/ir-semicolon-kept] [fixture: railroad/long-lines/ebnf-width]

@@ -1235,23 +1235,39 @@ railroad-peg-beta
 
 ### Comments
 
-Standalone comments use one body step, or column one before the header. Inline
-comments keep their side and touching/separated boundaries; ordinary separated
-gaps become one space. Preserve marks, text, tails, block continuation columns
-and source order. A line comment leaves its following operand or terminator on
-the next line. Every dialect has `%%`; IR also has `/* */`, EBNF `/* */` and
-`(* *)`, ABNF `;` line comments, and PEG `#` line comments. Bare ABNF `;` is
-punctuation; `//` is not a native comment. Text owned by a value stays in that
-value. These choices preserve ownership and prevent a line comment from taking
-code.
+Standalone comments use one body step, or column one before the header. Outside
+ordinary IR calls, inline comments keep their side and touching/separated
+boundaries; ordinary separated gaps become one space. Preserve marks, text,
+tails, block continuation columns and source order. A line comment leaves its
+following operand or terminator on the next line. Every dialect has `%%`; IR
+also has `/* */`, EBNF `/* */` and `(* *)`, ABNF `;` line comments, and PEG `#`
+line comments. Bare ABNF `;` is punctuation; `//` is not a native comment. Text
+owned by a value stays in that value. These choices preserve ownership and
+prevent a line comment from taking code.
 
 Inside an ordinary IR call, a block comment before an argument moves with that
 argument when the call wraps. Comments before a comma or the closing parenthesis
 remain after their argument; a line comment keeps the following token on a later
 line. Standalone comment lines keep their order at the argument level, with at
 most one empty line. A comment between the constructor and its opening
-parenthesis stays between them. Preserve each comment's contents and trailing
-whitespace, including with tabs or zero-width indentation.
+parenthesis stays between them; a line break there indents both parentheses as a
+continuation, with the arguments one level deeper. Within an unbroken IR call
+gap, put one space on both sides of comments between a constructor and its
+opener. Comments before an argument use that argument's ordinary separator
+before them and one space after them. Comments before a comma or closer use one
+space before them and none after them; wrapping can still move the closer to its
+own line. Apply the same outside spacing beside existing line breaks without
+moving punctuation across comments. Preserve each comment run's contents,
+internal contacts, continuation columns and trailing whitespace, including with
+tabs or zero-width indentation.
+
+[fixture: railroad/comments/ir-call-inline-spacing]
+
+[fixture: railroad/comments/ir-call-constructor-nested]
+
+[test: railroad/comments/ir-call-constructor-break-tabs]
+
+[test: railroad/comments/ir-call-constructor-break-zero]
 
 [fixture: railroad/long-lines/ir-comments-kept]
 
@@ -1262,6 +1278,15 @@ whitespace, including with tabs or zero-width indentation.
 [fixture: railroad/comments/ir-call-own-lines]
 
 [fixture: railroad/comments/ir-leaf-value-comments]
+
+Output
+([comments/ir-call-inline-spacing-output.mmd](../tests/fixtures/railroad/comments/ir-call-inline-spacing-output.mmd)):
+
+```mmd
+railroad-beta
+  leaf = terminal /* call */ (/* before */ "x" /* close */);
+  list = sequence(terminal("a") /* comma */, /* next */ terminal("b"));
+```
 
 [test: railroad/comments/ir-call-comment-tail-tabs]
 
@@ -1360,16 +1385,18 @@ railroad-peg-beta
 ### Global directives
 
 Print every Root directive from its source span once at its owner position.
-Within a printed line, keep whether each side touches or is separated. When
-formatting splits units that were on the same line, a directive in their gap
-moves with the following unit: its right boundary stays touching or separated,
-while its left contact is broken. Use one body step for ordinary standalone
-directives. Do not format their contents as JSON or collect them before the
-header. Uniform added spaces can change strings, repeat components, numeric
-values and predicate operands after common removal.
+Outside ordinary IR call gaps, keep whether each side touches or is separated
+within a printed line. When formatting splits units that were on the same line,
+a directive in their gap moves with the following unit: its right boundary stays
+touching or separated, while its left contact is broken. Use one body step for
+ordinary standalone directives. Do not format their contents as JSON or collect
+them before the header. Uniform added spaces can change strings, repeat
+components, numeric values and predicate operands after common removal.
 
-Ordinary IR call gaps use the same wrapped placement as comments; the directive
-stays beside its argument rather than preventing the call from wrapping.
+Ordinary IR call gaps use the same outside spacing and wrapped placement as
+comments; the directive stays beside its argument rather than preventing the
+call from wrapping. Its contents and contacts with other items in its run remain
+written.
 
 [fixture: railroad/long-lines/ir-directive-kept]
 

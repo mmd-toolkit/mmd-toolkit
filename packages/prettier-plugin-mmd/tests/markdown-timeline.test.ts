@@ -38,4 +38,14 @@ describe("a timeline in a Markdown code block", () => {
       await formatTwice("```mermaid\ntimeline\na : e  \nb : f\n```\n"),
     ).toBe("```mermaid\ntimeline\n  a : e  \n  b : f\n```\n")
   })
+
+  it("indents description text in a list item and keeps its trailing spaces", async () => {
+    expect(
+      await formatTwice(
+        "- item\n\n  ```mermaid\n  timeline\n  section S\n  accDescr {\n  first  \n   second\n  }\n  ```\n",
+      ),
+    ).toBe(
+      "- item\n\n  ```mermaid\n  timeline\n    section S\n      accDescr {\n        first  \n        second\n      }\n  ```\n",
+    )
+  })
 })

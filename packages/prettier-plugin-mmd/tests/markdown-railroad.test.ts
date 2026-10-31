@@ -46,13 +46,13 @@ const cases: readonly MarkdownCase[] = [
   {
     name: "railroad Markdown: ir-wrapped-comment",
     input:
-      '```mermaid\nrailroad-beta\nr=sequence(/* keep */ terminal("first terminal"), terminal("second terminal"));\n```\n',
+      '```mermaid\nrailroad-beta\nr=sequence/* call */(/* keep */terminal("first terminal")/* comma */ ,terminal("second terminal"));\n```\n',
     output:
-      '```mermaid\nrailroad-beta\n  r = sequence(\n    /* keep */ terminal("first terminal"),\n    terminal("second terminal")\n  );\n```\n',
+      '```mermaid\nrailroad-beta\n  r = sequence /* call */ (\n    /* keep */ terminal("first terminal") /* comma */,\n    terminal("second terminal")\n  );\n```\n',
     payloadInput:
-      'railroad-beta\nr=sequence(/* keep */ terminal("first terminal"), terminal("second terminal"));',
+      'railroad-beta\nr=sequence/* call */(/* keep */terminal("first terminal")/* comma */ ,terminal("second terminal"));',
     payloadOutput:
-      'railroad-beta\n  r = sequence(\n    /* keep */ terminal("first terminal"),\n    terminal("second terminal")\n  );\n',
+      'railroad-beta\n  r = sequence /* call */ (\n    /* keep */ terminal("first terminal") /* comma */,\n    terminal("second terminal")\n  );\n',
     options: { printWidth: 20 },
   },
   {
