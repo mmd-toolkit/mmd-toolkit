@@ -32,6 +32,30 @@ const cases: readonly MarkdownCase[] = [
     options: {},
   },
   {
+    name: "railroad Markdown: ir-wrapped-list",
+    input:
+      '- item\n\n  ```mermaid\n  railroad-beta\n  r=sequence(terminal("first"),terminal("second"));\n  ```\n',
+    output:
+      '- item\n\n  ```mermaid\n  railroad-beta\n    r = sequence(\n      terminal("first"),\n      terminal("second")\n    );\n  ```\n',
+    payloadInput:
+      'railroad-beta\nr=sequence(terminal("first"),terminal("second"));',
+    payloadOutput:
+      'railroad-beta\n  r = sequence(\n    terminal("first"),\n    terminal("second")\n  );\n',
+    options: { printWidth: 30 },
+  },
+  {
+    name: "railroad Markdown: ir-wrapped-comment",
+    input:
+      '```mermaid\nrailroad-beta\nr=sequence/* call */(/* keep */terminal("first terminal")/* comma */ ,terminal("second terminal"));\n```\n',
+    output:
+      '```mermaid\nrailroad-beta\n  r = sequence /* call */ (\n    /* keep */ terminal("first terminal") /* comma */,\n    terminal("second terminal")\n  );\n```\n',
+    payloadInput:
+      'railroad-beta\nr=sequence/* call */(/* keep */terminal("first terminal")/* comma */ ,terminal("second terminal"));',
+    payloadOutput:
+      'railroad-beta\n  r = sequence /* call */ (\n    /* keep */ terminal("first terminal") /* comma */,\n    terminal("second terminal")\n  );\n',
+    options: { printWidth: 20 },
+  },
+  {
     name: "railroad Markdown: ebnf-list",
     input:
       '- item\n\n  ```mermaid\n  railroad-ebnf-beta\n  accDescr {\n   first\n     continuation\n  }\n  r::=( "fenced" );\n  ```\n',

@@ -2,10 +2,15 @@ import type {
   Node,
   RailroadBodyItem,
   RailroadDiagram,
+  RailroadExpression,
   RailroadIgnoredText,
   RailroadRule,
 } from "@mmd-toolkit/parser"
+import type { Doc } from "prettier"
+import { builders } from "prettier/doc"
 import type { AtomLayout, GapRule } from "./atoms.ts"
+import type { Gap, ItemRun } from "./gap.ts"
+import { readGap } from "./gap.ts"
 import { layoutCommonDescription, layoutCommonLine } from "./common-layout.ts"
 import { protectHiddenGaps } from "./hidden-forms.ts"
 import {
@@ -17,6 +22,7 @@ import {
   collectAtoms,
   collectValueNodes,
   expectToken,
+  expectValue,
   layoutKeywordHeader,
   keptAsWritten,
   layoutOnVerbatimStyleLine,
@@ -24,11 +30,25 @@ import {
   walk,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
+import { printAsWritten } from "./lines.ts"
 import {
   findStructuralToken,
   findTokenStartingAt,
+  findTokenEndingBefore,
+  findTokensBetween,
   findTriviaBetween,
 } from "./source.ts"
+
+const {
+  group,
+  hardline,
+  ifBreak,
+  indent,
+  line,
+  literalline,
+  markAsRoot,
+  softline,
+} = builders
 
 /** Written text leaves retain spelling, quotes and physical value columns. */
 export const railroadValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
@@ -79,6 +99,15 @@ export function layoutRailroadStatement(
       value.type === "RailroadIgnoredText",
   )
   const grammaticalSemicolons = grammaticalSemicolonsOf(source)
+  // The shared word-line guard above protects actual line-rule selections.
+  // Ordinary IR values can contain semicolons without freezing their calls.
+  const wrapsCalls =
+    statement.type === "RailroadRule" &&
+    source.root.diagramType === "railroad" &&
+    hidden.length === 0 &&
+    !findTokensBetween(source, start, end).some((token) =>
+      source.ignoredSemicolons.has(token.range[0]),
+    )
   let layout: AtomLayout
   switch (statement.type) {
     case "RailroadIgnoredText":
@@ -112,6 +141,7 @@ export function layoutRailroadStatement(
         values,
         hidden,
         grammaticalSemicolons,
+        wrapsCalls,
       )
       break
     default:
@@ -122,13 +152,15 @@ export function layoutRailroadStatement(
   return protectHiddenGaps(
     {
       ...layout,
-      atoms: protectSemicolonPrefixes(
-        source,
-        start,
-        end,
-        layout.atoms,
-        grammaticalSemicolons,
-      ),
+      atoms: wrapsCalls
+        ? layout.atoms
+        : protectSemicolonPrefixes(
+            source,
+            start,
+            end,
+            layout.atoms,
+            grammaticalSemicolons,
+          ),
     },
     hidden,
   )
@@ -146,23 +178,39 @@ function layoutRule(
   values: readonly Node[],
   hidden: readonly RailroadIgnoredText[],
   grammaticalSemicolons: ReadonlySet<number>,
+  wrapsCalls: boolean,
 ): AtomLayout {
   const [start, end] = statement.range
+  const hasTextualSemicolon = source.text
+    .slice(start, end)
+    .split("")
+    .some(
+      (character, index) =>
+        character === ";" && !grammaticalSemicolons.has(start + index),
+    )
   // Textual semicolons retain their source segments; ordinary required
   // terminators alone do not prevent structural padding from joining.
   if (
+    !wrapsCalls &&
     source.text.slice(start, end).includes("\n") &&
-    (source.text
-      .slice(start, end)
-      .split("")
-      .some(
-        (character, index) =>
-          character === ";" && !grammaticalSemicolons.has(start + index),
-      ) ||
+    (hasTextualSemicolon ||
       findSemicolonLines(source).has(lineStartOf(source, end - 1)))
   )
     return keptAsWritten(start, end)
+  // Native IR padding is independent of columns. Only ordinary gaps take
+  // width-based call layout; hidden forms and protected segments keep
+  // their existing atom path (diagrams/railroad.md, IR grammar;
+  // docs/railroad.md, Long lines).
   const atoms = collectAtoms(source, start, end, values, [
+    ...(wrapsCalls
+      ? [
+          {
+            start: statement.definition.range[0],
+            end: statement.definition.range[1],
+            doc: printCall(source, statement.definition),
+          },
+        ]
+      : []),
     { start: end - 1, end },
   ])
   const rules = new Map<number, GapRule>()
@@ -202,4 +250,167 @@ function layoutRule(
       rules.set(member.range[0], "space")
   })
   return { atoms, rules, outdented, joinedBefore, lineBreaks: "kept" }
+}
+
+/** Width-dependent IR calls retain each authored constructor and value. */
+function printCall(source: Source, expression: RailroadExpression): Doc {
+  if (expression.type === "StringLiteral")
+    return printAsWritten(source, ...expression.range)
+  let arguments_: readonly RailroadExpression[]
+  let shouldBreak = false
+  let valueCall = false
+  switch (expression.type) {
+    case "RailroadSequenceCall":
+    case "RailroadChoiceCall":
+      arguments_ = expression.arguments.map((member) => member.expression)
+      shouldBreak =
+        expression.arguments.length > 1 &&
+        source.text.slice(...expression.range).includes("\n")
+      break
+    case "RailroadOptionalCall":
+    case "RailroadOneOrMoreCall":
+    case "RailroadZeroOrMoreCall":
+      arguments_ = [expression.element]
+      break
+    case "RailroadTerminalCall":
+      arguments_ = [expression.value]
+      valueCall = true
+      break
+    case "RailroadNonterminalCall":
+      arguments_ = [expression.name]
+      valueCall = true
+      break
+    case "RailroadSpecialCall":
+      arguments_ = [expression.text]
+      valueCall = true
+      break
+    default:
+      throw new Error(
+        `prettier-plugin-mmd: ${expression.type} is not an IR call`,
+      )
+  }
+  const keyword = expectToken(
+    findTokenStartingAt(source, expression.range[0]),
+    "an IR constructor",
+  )
+  const opening = expectToken(
+    findStructuralToken(source, keyword.range[1]),
+    "an IR call opening parenthesis",
+  )
+  expectValue(opening, "(")
+  const closing = expectToken(
+    findTokenEndingBefore(source, expression.range[1]),
+    "an IR call closing parenthesis",
+  )
+  expectValue(closing, ")")
+  const contents: Doc[] = []
+  let previousEnd = opening.range[1]
+  for (const [index, argument] of arguments_.entries()) {
+    if (index > 0) {
+      const comma = expectToken(
+        findStructuralToken(source, previousEnd),
+        "an IR argument comma",
+      )
+      expectValue(comma, ",")
+      contents.push(
+        printCallGap(
+          readGap(source, previousEnd, comma.range[0], true),
+          "",
+          "comma",
+        ),
+        ",",
+      )
+      previousEnd = comma.range[1]
+    }
+    contents.push(
+      printCallGap(
+        readGap(source, previousEnd, argument.range[0], true),
+        valueCall ? "" : index === 0 ? softline : line,
+        "leading",
+      ),
+      printCall(source, argument),
+    )
+    previousEnd = argument.range[1]
+  }
+  const constructorGap = readGap(
+    source,
+    keyword.range[1],
+    opening.range[0],
+    true,
+  )
+  const call: Doc = [
+    printCallGap(constructorGap, "", "constructor"),
+    "(",
+    indent(contents),
+    printCallGap(
+      readGap(source, previousEnd, closing.range[0], true),
+      valueCall ? "" : softline,
+      "closing",
+    ),
+    ")",
+  ]
+  return group(
+    [
+      printAsWritten(source, ...keyword.range),
+      constructorGap.breaksLine && hasCallTrivia(constructorGap)
+        ? indent(call)
+        : call,
+    ],
+    { shouldBreak },
+  )
+}
+
+/**
+ * IR call padding is ordinary whitespace, so trivia uses readable outside
+ * spacing at each syntactic boundary (diagrams/railroad.md, IR grammar;
+ * docs/railroad.md, Comments and Global directives).
+ */
+function printCallGap(
+  gap: Gap,
+  ordinary: Doc,
+  placement: "leading" | "constructor" | "comma" | "closing",
+): Doc {
+  if (!hasCallTrivia(gap)) return ordinary
+  if (!gap.breaksLine) {
+    const run = gap.leading ?? gap.trailing!
+    if (placement === "leading") return [ordinary, run.doc, " "]
+    return [
+      " ",
+      run.doc,
+      placement === "closing"
+        ? ifBreak(ordinary, "")
+        : placement === "constructor"
+          ? " "
+          : "",
+    ]
+  }
+  const trivia: Doc[] = gap.trailing === null ? [] : [" ", gap.trailing.doc]
+  let previous = gap.trailing
+  for (const item of gap.lines) {
+    trivia.push(triviaBreak(previous, item.blankBefore), item.run.doc)
+    previous = item.run
+  }
+  if (gap.leading !== null) {
+    trivia.push(triviaBreak(previous, gap.blankAfter), gap.leading.doc)
+    previous = gap.leading
+  }
+  const after =
+    gap.leading !== null
+      ? placement === "leading" || placement === "constructor"
+        ? " "
+        : ""
+      : triviaBreak(previous, gap.leading === null && gap.blankAfter)
+  return placement === "closing" ? [indent(trivia), after] : [trivia, after]
+}
+
+/** Whitespace-only gaps collapse to their ordinary call separator. */
+function hasCallTrivia(gap: Gap): boolean {
+  return gap.trailing !== null || gap.lines.length > 0 || gap.leading !== null
+}
+
+/** A literal break keeps comment tails while adopting this call's indentation. */
+function triviaBreak(previous: ItemRun | null, blank = false): Doc {
+  const boundary =
+    previous?.endsWithWhitespace === true ? markAsRoot(literalline) : hardline
+  return blank ? [boundary, hardline] : boundary
 }

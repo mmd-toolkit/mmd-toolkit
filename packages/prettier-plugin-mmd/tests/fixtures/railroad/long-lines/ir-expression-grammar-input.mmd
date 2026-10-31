@@ -1,0 +1,9 @@
+railroad-beta
+    title Expression Grammar
+    expression = sequence(
+        nonterminal("term"),
+        zeroOrMore(sequence(
+            choice(terminal("+"), terminal("-")),
+            nonterminal("term")
+        ))
+    ) ;

@@ -184,8 +184,9 @@ flowchart LR
 - `useTabs` と `tabWidth` で字下げを決めます。
   既定は空白 2 つです。
 - `endOfLine` で改行コードを決めます。
-- `printWidth` は効きません。
-  行を折り返すことはありません。
+- `printWidth` で `railroad-beta` の複合呼び出しを折り返します。
+  ほかの図の行は折り返しません。
+  詳細は[長い行](./docs/railroad.ja.md#長い行)を参照してください。
 
 ## 整形しない場合
 

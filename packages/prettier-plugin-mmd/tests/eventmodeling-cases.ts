@@ -43,7 +43,7 @@ export const eventmodelingCases: readonly EventmodelingCase[] = [
       "eventmodeling accDescr {a\rb}\rtf 01 evt Alpha [[D]]\rdata D {\rx\r}\r",
     options: {},
     output:
-      "eventmodeling accDescr {a\nb}\n  tf 01 evt Alpha [[D]]\n  data D {\nx\n}\n",
+      "eventmodeling accDescr {a\nb}\n  tf 01 evt Alpha [[D]]\ndata D {\nx\n}\n",
   },
   {
     name: "eventmodeling/line-terminators-and-unicode/crlf-block-and-common-to-lf",
@@ -51,7 +51,7 @@ export const eventmodelingCases: readonly EventmodelingCase[] = [
       "eventmodeling accTitle: A\r\ntf 01 evt Alpha [[D]]\r\ndata D {\r\nx\r\n}\r\n",
     options: {},
     output:
-      "eventmodeling accTitle: A\n  tf 01 evt Alpha [[D]]\n  data D {\nx\n}\n",
+      "eventmodeling accTitle: A\n  tf 01 evt Alpha [[D]]\ndata D {\nx\n}\n",
   },
   {
     name: "eventmodeling/line-terminators-and-unicode/configured-crlf-output",
@@ -87,7 +87,7 @@ export const eventmodelingCases: readonly EventmodelingCase[] = [
       "eventmodeling tf 01 evt Alpha [[D]] data D {\nx\n}\u2028tf 02 evt Beta",
     options: {},
     output:
-      "eventmodeling\n  tf 01 evt Alpha [[D]]\n  data D {\nx\n}\u2028  tf 02 evt Beta\n",
+      "eventmodeling\n  tf 01 evt Alpha [[D]]\ndata D {\nx\n}\u2028  tf 02 evt Beta\n",
   },
   {
     name: "eventmodeling/line-terminators-and-unicode/common-unicode-edges-kept",

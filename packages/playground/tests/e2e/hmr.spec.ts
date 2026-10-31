@@ -30,6 +30,15 @@ test.beforeAll(async () => {
     resolve: {
       alias: [
         {
+          find: /^prettier$/u,
+          replacement: fileURLToPath(
+            new URL(
+              "../../node_modules/prettier/standalone.mjs",
+              import.meta.url,
+            ),
+          ),
+        },
+        {
           find: /^prettier\/doc$/u,
           replacement: fileURLToPath(
             new URL("../../node_modules/prettier/doc.mjs", import.meta.url),
@@ -44,6 +53,11 @@ test.beforeAll(async () => {
           replacement: join(directory, "formatter/index.ts"),
         },
       ],
+    },
+    optimizeDeps: {
+      ...config.optimizeDeps,
+      // The copied formatter loads lazily; prepare its runtime imports before HMR.
+      include: ["prettier", "prettier/doc"],
     },
     server: {
       port: 0,

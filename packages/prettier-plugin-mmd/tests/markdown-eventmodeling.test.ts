@@ -32,6 +32,17 @@ const cases: readonly MarkdownCase[] = [
     options: {},
   },
   {
+    name: "eventmodeling Markdown: data-declaration",
+    input:
+      "- item\n\n  ```mermaid\n  eventmodeling tf 074evt Host [[D]]\n    data D {\n     x\n  }\n  ```\n",
+    output:
+      "- item\n\n  ```mermaid\n  eventmodeling\n    tf 074 evt Host [[D]]\n  data D {\n     x\n  }\n  ```\n",
+    payloadInput: "eventmodeling tf 074evt Host [[D]]\n  data D {\n   x\n}",
+    payloadOutput:
+      "eventmodeling\n  tf 074 evt Host [[D]]\ndata D {\n   x\n}\n",
+    options: {},
+  },
+  {
     name: "eventmodeling Markdown: list",
     input:
       "- item\n\n  ```mermaid\n  eventmodeling gwt 082 given evt Before then cmd After\n  ```\n",
@@ -47,9 +58,9 @@ const cases: readonly MarkdownCase[] = [
     input:
       "> ```mmd\n> eventmodeling note 081 {\n>    written columns\n> }\n> ```\n",
     output:
-      "> ```mmd\n> eventmodeling\n>   note 081 {\n>    written columns\n> }\n> ```\n",
+      "> ```mmd\n> eventmodeling\n> note 081 {\n>    written columns\n> }\n> ```\n",
     payloadInput: "eventmodeling note 081 {\n   written columns\n}",
-    payloadOutput: "eventmodeling\n  note 081 {\n   written columns\n}\n",
+    payloadOutput: "eventmodeling\nnote 081 {\n   written columns\n}\n",
     options: {},
   },
   {

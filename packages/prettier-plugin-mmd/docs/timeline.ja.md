@@ -43,12 +43,13 @@ Lexical structure）。
 [fixture: indentation/written-indentation-dropped]
 ヘッダーは、前に空白が書かれていても 1 列目に置きます。
 [fixture: indentation/header-leading-whitespace]
-`accDescr` ブロックの行のように、書かれたまま残すテキストの行は、列も残します。
+`accDescr` ブロックの後ろのテキスト行は、その文より 1 段深く置きます。
 ブロックを閉じる `}` は、
 その文の段に置きます（[複数行の値](#複数行の値)を参照）。
 [fixture: indentation/description-block-under-a-section]
-period とその event の 2 行目以降は、
-1 行目より 1 段深く置きます（[period と event](#period-と-event)を参照）。
+同じ行で period の直後に `:` が続くとき、
+後ろの行の event の `:`
+をその下にそろえます（[period と event](#period-と-event)を参照）。
 [fixture: indentation/event-lines-under-a-section]
 
 入力
@@ -292,7 +293,7 @@ timeline
 timeline
   2004 : Facebook
 
-    : Google
+       : Google
 ```
 
 ### period と event
@@ -335,15 +336,40 @@ event が `Facebook` から `Facebook ` になります。
 [fixture: periods-and-events/event-on-the-line-after-the-period]
 [fixture: periods-and-events/events-on-both]
 
-period とその event の 2 行目以降は、1 行目より 1 段深く置きます。
-flowchart の文の 2 行目以降と同じ規則です。
-mermaid.js の文書は、各 `:` を period の `:` の下にそろえますが、
-それには period の幅を数える必要があり、タブや全角文字ではその幅が決まりません。
+最初の `:` が period と同じ行で直後に続くとき、
+後ろの行の event の `:` をその下にそろえます。
+section の中でも、同じ period の event を読み取りやすくするためです。
+整列用の空白では、タブをタブ位置として残し、
+全角文字を含む残りのテキストには Prettier の表示幅を使います。
+中にある指令も含め、period に書かれたテキストの幅を数えます。
+そのテキストが印字で表示されるためです。
+`tabWidth: 0` でも設定した字下げを使います。
+[fixture: periods-and-events/events-on-later-lines]
+[corpus fixture: timeline/docs-syntax-timeline-1b6ef8c6]
 [fixture: periods-and-events/later-lines-in-a-section]
-その間のコメント行と指令の行は、中に残して 2 行目以降の段に置き、
-連続する空行は 1 つにします。 [fixture: periods-and-events/comment-lines-inside]
+[fixture: periods-and-events/colon-alignment-tabs]
+[fixture: periods-and-events/colon-alignment-wide-period]
+[fixture: periods-and-events/colon-alignment-zero-width]
+[fixture: periods-and-events/colon-alignment-written-period]
+
+最初の `:` が後ろの行にあるか、period との間に指令があるときは、
+通常の継続行の字下げである 1 段深い位置を使います。
+書かれたテキストに改行、U+2028 または U+2029 を含む period も、
+同じ字下げを使います。
+これらの文字は行の表示に影響することがあるためです。
+[fixture: periods-and-events/event-on-the-line-after-the-period]
+[fixture: periods-and-events/colon-alignment-directive-boundary]
+[fixture: periods-and-events/colon-alignment-written-period]
+[test: U+2028 inside a period before a later event]
+[test: U+2029 inside a period before a later event]
+
+event 行の間のコメント行と指令の行は、次の event の `:` と同じ列にそろえます。
+`:` が通常の継続行の字下げを使うときは、これらの行も同じ字下げを使います。
+文の中の連続する空行は 1 つにします。
+[fixture: periods-and-events/comment-lines-inside]
 [fixture: periods-and-events/empty-lines-inside]
 [fixture: periods-and-events/directive-line-inside]
+[fixture: periods-and-events/continuation-trivia]
 period の後ろのコメントは行に残し、
 前の空白は period の一部なので書かれたままです。
 [fixture: periods-and-events/comment-after-period]
@@ -405,7 +431,7 @@ timeline
 timeline
   2004 : Facebook : Google
   2005 : YouTube
-    : Vimeo
+       : Vimeo
   2006
     : Zoom
 ```
@@ -433,8 +459,8 @@ timeline
   section Early
     2002 : LinkedIn
     2004 : Facebook
-      : Google
-      : Apple
+         : Google
+         : Apple
     2005 : YouTube
 ```
 
@@ -456,8 +482,8 @@ timeline
 ```mmd
 timeline
   2004 : Facebook
-    # c
-    : Google
+       # c
+       : Google
   %% d
   2005 : YouTube
 ```
@@ -503,10 +529,13 @@ title の後ろの event を読む人がどう読むかは、整形の問題で�
 [fixture: event-statements/directive-line-before]
 [fixture: event-statements/empty-lines-before]
 
-event の文の event は、period の event と同じに並べます。
-書かれた行に残し、文の 2 行目以降は 1 行目より 1 段深く置きます。
-[fixture: event-statements/several-events]
+period の event と同じく、各 event は書かれた行に残します。
+後ろの event 行も文の字下げで始め、同列の event が入れ子に見えないようにします。
+event の間のコメント行と指令の行も、同じ字下げを使います。
+section の中でも同じです。 [fixture: event-statements/several-events]
 [fixture: event-statements/events-of-an-event-statement-on-the-line]
+[fixture: event-statements/several-events-in-a-section]
+[fixture: event-statements/peer-trivia]
 
 入力
 ([event-statements/after-title-input.mmd](../tests/fixtures/timeline/event-statements/after-title-input.mmd)):
@@ -549,7 +578,7 @@ timeline
   2004 : a
   title T
   : e1
-    : e2 : e3
+  : e2 : e3
 ```
 
 ### title と section
@@ -717,7 +746,7 @@ journey と同じ形です。
 `{` を空白 1 つの後ろに置き（書かれたとおりに、
 キーワードに接していてもかまいません）、
 `{` の行にあるテキストは両側に空白 1 つ、その後ろに `}` を置きます。
-テキストが後ろの行から始まるときは、その行を書かれたまま残し、
+後ろのテキスト行はその文より 1 段深く置き、
 `}` はその文の段に置きます（[複数行の値](#複数行の値)を参照）。
 [fixture: accessibility-statements/block-text-on-opening-line]
 [fixture: accessibility-statements/block-inner-whitespace-kept]
@@ -763,8 +792,8 @@ accDescr {
 ```mmd
 timeline
   accDescr {
-   a
-  b
+    a
+    b
   }
 ```
 
@@ -780,7 +809,8 @@ timeline
 [fixture: empty-description-blocks/inner-whitespace-collapsed]
 [fixture: empty-description-blocks/touching-kept]
 [fixture: empty-description-blocks/blank-lines-inside]
-指令かコメント行のあるブロックは、書かれたまま印字します。
+指令かコメント行のあるブロックは、その内容を残し、
+後ろのテキスト行を[複数行の値](#複数行の値)の規則で字下げします。
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
 ヘッダーの後ろでも、自分の行に置きます。
 [fixture: empty-description-blocks/after-header]
@@ -914,12 +944,32 @@ T
 
 ### 複数行の値
 
-`accDescr` ブロックの行は、改行と中の空白も含めて書かれたまま残します。
-改行は Db に入りますが、行頭の空白は入らないので、残すのは選択で、
-値のテキストは整形しないからです。
+`accDescr` ブロックの後ろのテキスト行は、その文より 1 段深く置きます。
+置き換えるのは、LF の直後の ASCII の空白とタブだけです。
+Db の setter はこの字下げを捨てるので、section の中でも、
+テキストをブロックの内側にそろえられます。
 [fixture: multi-line-values/description-block-lines-kept]
-このようなブロックの中のコメントは、テキストの一部です。
+[fixture: indentation/description-block-under-a-section]
+これらの行にも設定した字下げを使います。
+[fixture: multi-line-values/description-four-spaces]
+[fixture: multi-line-values/description-tabs]
+[fixture: multi-line-values/description-zero-width]
+
+テキスト、改行、行末の空白とタブは残します。
+開始行のテキストはその行に残し、テキスト内の空行も空行のまま残します。
+[fixture: multi-line-values/description-line-ending-whitespace]
+ブロック内の hash コメントはテキストなので、同じ字下げを使います。
+`%%` のコメント行もテキストにそろえます。
 [fixture: multi-line-values/comment-line-inside-block-kept]
+[fixture: multi-line-values/description-percent-comment-line]
+指令は、内部の字下げも含め、内容全体を書かれたまま残します。
+[fixture: multi-line-values/description-directive-lines]
+コメントか指令だけのブロックも同じ字下げを使い、閉じる括弧は文の段に置きます。
+[fixture: multi-line-values/description-comment-only-lines]
+[fixture: multi-line-values/description-directive-only-lines]
+テキスト行の中の U+2028 と U+2029 は書かれたまま残します。
+[test: U+2028 inside a description line]
+[test: U+2029 inside a description line]
 
 入力
 ([multi-line-values/description-block-lines-kept-input.mmd](../tests/fixtures/timeline/multi-line-values/description-block-lines-kept-input.mmd)):
@@ -938,7 +988,7 @@ accDescr {
 ```mmd
 timeline
   accDescr {
-  a
+    a
     b
   }
 ```

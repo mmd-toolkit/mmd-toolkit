@@ -1,2 +1,8 @@
 railroad-beta
-  r = sequence(terminal("first"), choice(special("note"), nonterminal("r")), optional(terminal("")), oneOrMore(terminal("many")), zeroOrMore(terminal("any")));
+  r = sequence(
+    terminal("first"),
+    choice(special("note"), nonterminal("r")),
+    optional(terminal("")),
+    oneOrMore(terminal("many")),
+    zeroOrMore(terminal("any"))
+  );

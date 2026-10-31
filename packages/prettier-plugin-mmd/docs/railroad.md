@@ -99,7 +99,8 @@ metadata, standalone comments and Root directives. The default is two spaces;
 tabWidth four uses four and tabWidth zero uses zero because columns have no
 grammatical meaning. useTabs uses one tab, even at width zero. Structural
 continuation lines and standalone trivia inside a rule use two steps; a separate
-structural closer or terminator aligns with the statement. Written value
+structural closer or terminator aligns with the statement. Nested IR calls use
+their argument levels as described in [Long lines](#long-lines). Written value
 columns, hidden interiors and retained prefixes keep their own columns.
 Semicolon-protected segments start at one body step, like other flat diagrams;
 their later lines keep their written columns because these belong to the
@@ -567,9 +568,10 @@ railroad-abnf-beta
 IR prints its eight constructors as `name(...)`: sequence, choice, optional,
 oneOrMore, zeroOrMore, terminal, nonterminal and special. Ordinary gaps before
 `(` and at the inner edges are empty; argument commas have no space before and
-one after. Retain empty quoted arguments, nested calls and singleton
-sequence/choice calls. Collapsing a singleton can keep the Db but loses an
-authored call; trailing commas are not added.
+one after on a line. Long calls follow [Long lines](#long-lines). Retain empty
+quoted arguments, nested calls and singleton sequence/choice calls. Collapsing a
+singleton can keep the Db but loses an authored call; trailing commas are not
+added.
 
 [fixture: railroad/calls/ir-all]
 
@@ -589,7 +591,13 @@ Output
 
 ```mmd
 railroad-beta
-  r = sequence(terminal("first"), choice(special("note"), nonterminal("r")), optional(terminal("")), oneOrMore(terminal("many")), zeroOrMore(terminal("any")));
+  r = sequence(
+    terminal("first"),
+    choice(special("note"), nonterminal("r")),
+    optional(terminal("")),
+    oneOrMore(terminal("many")),
+    zeroOrMore(terminal("any"))
+  );
 ```
 
 ### Exceptions
@@ -668,7 +676,12 @@ Output
 
 ```mmd
 railroad-beta
-  r = sequence(terminal(""), terminal(" 	 "), nonterminal(''), special("%%literal --- <b> plain"));
+  r = sequence(
+    terminal(""),
+    terminal(" 	 "),
+    nonterminal(''),
+    special("%%literal --- <b> plain")
+  );
 ```
 
 Input (escaped):
@@ -707,10 +720,44 @@ railroad-peg-beta
 
 ### Long lines
 
-Do not wrap rules at printWidth. Structural wrapping can have the same Db in all
-four dialects; the chosen flat form follows the other flat diagrams and avoids
-extra wrapping choices across values, hidden forms, trivia and protected
-segments.
+Fit ordinary composite IR calls to printWidth. A call that fits stays on one
+line unless it has multiple arguments and was written over several lines. A call
+that does not fit or retains those written breaks puts its arguments one level
+deeper, one per line, with its closing parenthesis at the call's level. Apply
+the same choice to nested composite calls without adding trailing commas. Keep
+`terminal`, `nonterminal` and `special` together with their quoted value, even
+beyond printWidth: splitting that unit adds height without shortening the value.
+Actual newlines in values and comment gaps remain. This makes long expressions
+readable and preserves authored grouping without changing their structure.
+String contents retain their written continuation columns.
+
+[fixture: railroad/calls/ir-singletons]
+
+[fixture: railroad/long-lines/ir-expression-grammar]
+
+[fixture: railroad/long-lines/ir-written-breaks]
+
+[fixture: railroad/long-lines/ir-unary-width]
+
+[fixture: railroad/long-lines/ir-wrapped-tabs]
+
+[fixture: railroad/long-lines/ir-wrapped-zero]
+
+[fixture: railroad/multiline-values/ir-columns]
+
+Ordinary comments, global directives and semicolons inside values do not stop
+call wrapping. Keep trivia at its argument boundary as described in
+[Comments](#comments) and [Global directives](#global-directives). Native hidden
+forms and ignored semicolons keep their existing protected layout. EBNF, ABNF
+and PEG rules keep their flat layout at every printWidth.
+
+[fixture: railroad/long-lines/ir-comments-kept]
+
+[fixture: railroad/long-lines/ir-directive-kept]
+
+[fixture: railroad/long-lines/ir-hidden-kept]
+
+[fixture: railroad/long-lines/ir-semicolon-kept]
 
 [fixture: railroad/long-lines/abnf-width]
 
@@ -730,7 +777,13 @@ Output
 
 ```mmd
 railroad-beta
-  r = sequence(terminal("first long terminal"), choice(terminal("second long terminal"), nonterminal("reference")));
+  r = sequence(
+    terminal("first long terminal"),
+    choice(
+      terminal("second long terminal"),
+      nonterminal("reference")
+    )
+  );
 ```
 
 Input (escaped):
@@ -774,14 +827,15 @@ railroad-peg-beta
 
 ### Component newlines
 
-Join ordinary CR/LF gaps where the grammar reads padding: IR
+Replace ordinary CR/LF gaps where the grammar reads padding: IR
 constructor/open/argument/comma/close; EBNF
 assignment/choice/sequence/group/exception/postfix; ABNF
 assignment/choice/sequence/complete-repeat/primary/group; PEG
 assignment/choice/sequence/prefix/suffix/group. Use each gap's ordinary spacing
-rule. Do not split names, compound assignments, repeat components or numeric
-values. Comments, directives, hidden boundaries and semicolon protection keep
-their original breaks, since joining them can change acceptance or the Db.
+rule, with IR calls wrapped as in [Long lines](#long-lines). Do not split names,
+compound assignments, repeat components or numeric values. Comments, directives,
+hidden boundaries and semicolon protection keep their original breaks, since
+joining them can change acceptance or the Db.
 
 [fixture: railroad/component-newlines/abnf-components]
 
@@ -799,7 +853,10 @@ Output
 
 ```mmd
 railroad-beta
-  r = sequence(terminal("joined"), terminal("tail"));
+  r = sequence(
+    terminal("joined"),
+    terminal("tail")
+  );
 ```
 
 Input (escaped):
@@ -1178,15 +1235,62 @@ railroad-peg-beta
 
 ### Comments
 
-Standalone comments use one body step, or column one before the header. Inline
-comments keep their side, line and touching/separated boundaries; ordinary
-separated gaps become one space. Preserve marks, text, tails, block continuation
-columns and source order. A line comment leaves its following operand or
-terminator on the next line. Every dialect has `%%`; IR also has `/* */`, EBNF
-`/* */` and `(* *)`, ABNF `;` line comments, and PEG `#` line comments. Bare
-ABNF `;` is punctuation; `//` is not a native comment. Text owned by a value
-stays in that value. These choices preserve ownership and prevent a line comment
-from taking code.
+Standalone comments use one body step, or column one before the header. Outside
+ordinary IR calls, inline comments keep their side and touching/separated
+boundaries; ordinary separated gaps become one space. Preserve marks, text,
+tails, block continuation columns and source order. A line comment leaves its
+following operand or terminator on the next line. Every dialect has `%%`; IR
+also has `/* */`, EBNF `/* */` and `(* *)`, ABNF `;` line comments, and PEG `#`
+line comments. Bare ABNF `;` is punctuation; `//` is not a native comment. Text
+owned by a value stays in that value. These choices preserve ownership and
+prevent a line comment from taking code.
+
+Inside an ordinary IR call, a block comment before an argument moves with that
+argument when the call wraps. Comments before a comma or the closing parenthesis
+remain after their argument; a line comment keeps the following token on a later
+line. Standalone comment lines keep their order at the argument level, with at
+most one empty line. A comment between the constructor and its opening
+parenthesis stays between them; a line break there indents both parentheses as a
+continuation, with the arguments one level deeper. Within an unbroken IR call
+gap, put one space on both sides of comments between a constructor and its
+opener. Comments before an argument use that argument's ordinary separator
+before them and one space after them. Comments before a comma or closer use one
+space before them and none after them; wrapping can still move the closer to its
+own line. Apply the same outside spacing beside existing line breaks without
+moving punctuation across comments. Preserve each comment run's contents,
+internal contacts, continuation columns and trailing whitespace, including with
+tabs or zero-width indentation.
+
+[fixture: railroad/comments/ir-call-inline-spacing]
+
+[fixture: railroad/comments/ir-call-constructor-nested]
+
+[test: railroad/comments/ir-call-constructor-break-tabs]
+
+[test: railroad/comments/ir-call-constructor-break-zero]
+
+[fixture: railroad/long-lines/ir-comments-kept]
+
+[fixture: railroad/comments/ir-call-inline-boundaries]
+
+[fixture: railroad/comments/ir-call-comment-lines]
+
+[fixture: railroad/comments/ir-call-own-lines]
+
+[fixture: railroad/comments/ir-leaf-value-comments]
+
+Output
+([comments/ir-call-inline-spacing-output.mmd](../tests/fixtures/railroad/comments/ir-call-inline-spacing-output.mmd)):
+
+```mmd
+railroad-beta
+  leaf = terminal /* call */ (/* before */ "x" /* close */);
+  list = sequence(terminal("a") /* comma */, /* next */ terminal("b"));
+```
+
+[test: railroad/comments/ir-call-comment-tail-tabs]
+
+[test: railroad/comments/ir-call-comment-tail-zero]
 
 [fixture: railroad/comments/abnf-before-terminator]
 
@@ -1281,13 +1385,22 @@ railroad-peg-beta
 ### Global directives
 
 Print every Root directive from its source span once at its owner position.
-Within a printed line, keep whether each side touches or is separated. When
-formatting splits units that were on the same line, a directive in their gap
-moves with the following unit: its right boundary stays touching or separated,
-while its left contact is broken. Use one body step for ordinary standalone
-directives. Do not format their contents as JSON or collect them before the
-header. Uniform added spaces can change strings, repeat components, numeric
-values and predicate operands after common removal.
+Outside ordinary IR call gaps, keep whether each side touches or is separated
+within a printed line. When formatting splits units that were on the same line,
+a directive in their gap moves with the following unit: its right boundary stays
+touching or separated, while its left contact is broken. Use one body step for
+ordinary standalone directives. Do not format their contents as JSON or collect
+them before the header. Uniform added spaces can change strings, repeat
+components, numeric values and predicate operands after common removal.
+
+Ordinary IR call gaps use the same outside spacing and wrapped placement as
+comments; the directive stays beside its argument rather than preventing the
+call from wrapping. Its contents and contacts with other items in its run remain
+written.
+
+[fixture: railroad/long-lines/ir-directive-kept]
+
+[fixture: railroad/global-directives/ir-call-boundaries]
 
 [fixture: railroad/global-directives/between-rules]
 
@@ -1650,10 +1763,14 @@ railroad-peg-beta
 
 Keep every authored semicolon. Required visible rule terminators and ABNF native
 comment marks remain grammatical punctuation and are excluded from the shared
-textual-prefix scan. All other semicolons protect their source segment through
-whole crossing values/trivia. Align the first line to one body step, as in other
-flat diagrams; later lines retain their written columns with no added
-indentation. Columns have no grammatical meaning on the first line.
+textual-prefix scan. Ordinary IR rules keep semicolons inside values as text
+without preventing call wrapping. Other semicolons protect their source segment
+through whole crossing values/trivia. Align each protected segment's first line
+to one body step, as in other flat diagrams; its later lines retain their
+written columns with no added indentation. Columns have no grammatical meaning
+on the first line.
+
+[fixture: railroad/long-lines/ir-semicolon-kept]
 
 Keep an authored railroad line as written when it contains the literal string
 `style` or `classDef` after global directives have been omitted. This includes
@@ -2080,7 +2197,7 @@ Output
 
 ```mmd
 railroad-beta
-  r=terminal("a;b");
+  r = terminal("a;b");
 ```
 
 Input (escaped): `"railroad-beta\n   r=terminal(\n \"a;b\"\n);"`.
@@ -2090,9 +2207,7 @@ Output
 
 ```mmd
 railroad-beta
-  r=terminal(
- "a;b"
-);
+  r = terminal("a;b");
 ```
 
 Input (escaped): `"railroad-beta\n/*style*/r=terminal(\":\"\n)/*#*/;"`.
@@ -2864,6 +2979,10 @@ necessary. Test the complete host output separately from payload Db preservation
 so containers do not become railroad indentation.
 
 [test: railroad Markdown: ir-top-level]
+
+[test: railroad Markdown: ir-wrapped-list]
+
+[test: railroad Markdown: ir-wrapped-comment]
 
 [test: railroad Markdown: ebnf-list]
 

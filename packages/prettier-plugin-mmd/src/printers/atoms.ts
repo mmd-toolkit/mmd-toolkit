@@ -15,15 +15,19 @@ import type { Source } from "./source.ts"
 const { indent } = builders
 
 /**
- * A piece of a statement that is printed as written: a token, a node whose
- * text is a value (such as an id or a label), or a stretch of the source
- * that must keep its exact text (such as a list of styles).
+ * A source range printed as one piece: a token, a value (such as an id or a
+ * label), or a stretch that must keep its exact text (such as a list of styles).
+ * A structural range can instead carry its planned layout.
  */
 export interface Atom {
   readonly start: number
   readonly end: number
+  /** A planned structural layout; values continue to print their source. */
+  readonly doc?: Doc
   /** Indentation before a later-line atom; empty when its range owns it. */
   readonly writtenIndentation?: string
+  /** Alignment of a later-line atom and its preceding own-line trivia. */
+  readonly statementPadding?: string
 }
 
 /**
@@ -110,7 +114,8 @@ export interface PrintedAtoms {
  * inside the statement, the line stays broken, and every later line of the
  * statement starts one level deeper, except the lines of the layout's
  * outdented atoms; runs of empty lines become one. An atom's written
- * indentation overrides that level. When the layout joins line breaks, or joins
+ * indentation or statement-relative padding overrides that level. When the
+ * layout joins line breaks, or joins
  * the one before an atom (`joinedBefore`), such a line break is printed as
  * whitespace on one line is.
  */
@@ -156,6 +161,10 @@ export function printAtoms(
 
   for (const atom of layout.atoms) {
     const text = source.text.slice(atom.start, atom.end)
+    const alignedIndentation =
+      atom.statementPadding === undefined
+        ? undefined
+        : indentation.statement + atom.statementPadding
     if (previous !== undefined) {
       if (layout.writtenGapsBefore?.has(atom.start) === true) {
         // An explicitly aligned atom after a hidden form keeps the consumed
@@ -174,7 +183,7 @@ export function printAtoms(
             indentation.statement,
           )
         } else current.push(printAsWritten(source, previous.end, atom.start))
-        current.push(printAsWritten(source, atom.start, atom.end))
+        current.push(atom.doc ?? printAsWritten(source, atom.start, atom.end))
         currentEndsWithWhitespace = endsWithSpaceOrTab(text)
         previous = atom
         continue
@@ -206,7 +215,11 @@ export function printAtoms(
           gapOffset = gap.trailing.range[1]
         }
         for (const line of gap.lines) {
-          breakCurrentLine(line.blankBefore, false, indentation.trivia)
+          breakCurrentLine(
+            line.blankBefore,
+            false,
+            indentation.trivia ?? alignedIndentation,
+          )
           currentWrittenBreak = keepsBreaks
             ? literalBreaksBetween(source, gapOffset, line.run.range[0])
             : undefined
@@ -217,7 +230,7 @@ export function printAtoms(
         breakCurrentLine(
           gap.blankAfter,
           layout.outdented.has(atom.start),
-          atom.writtenIndentation,
+          atom.writtenIndentation ?? alignedIndentation,
         )
         currentWrittenBreak = keepsBreaks
           ? literalBreaksBetween(
@@ -265,7 +278,7 @@ export function printAtoms(
         )
       }
     }
-    current.push(printAsWritten(source, atom.start, atom.end))
+    current.push(atom.doc ?? printAsWritten(source, atom.start, atom.end))
     currentEndsWithWhitespace = endsWithSpaceOrTab(text)
     previous = atom
   }

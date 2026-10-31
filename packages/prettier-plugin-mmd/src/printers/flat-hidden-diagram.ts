@@ -63,6 +63,8 @@ interface FlatHiddenLayouts<Diagram extends Node, Statement extends Node> {
   readonly suffixes?: (statement: Statement) => readonly Node[]
   /** Ordinary gaps when protection keeps neighboring statements on one line. */
   readonly inlineGapBefore?: (statement: Node) => GapRule | undefined
+  /** Explicit columns for an ordinary statement's first line. */
+  readonly writtenIndentationOf?: (statement: Statement) => string | undefined
 }
 
 /** The printer and the root-prefix constraint selected with it. */
@@ -342,6 +344,12 @@ export function createFlatHiddenDiagramPrinter<
           ...(layouts.inlineGapBefore === undefined
             ? {}
             : { inlineGapBefore: layouts.inlineGapBefore }),
+          writtenIndentationOf: (item) => {
+            const statement = bodyStatements.get(item)
+            return statement === undefined
+              ? undefined
+              : layouts.writtenIndentationOf?.(statement)
+          },
           holdsStatements: (item) => nested.has(item),
         },
       )

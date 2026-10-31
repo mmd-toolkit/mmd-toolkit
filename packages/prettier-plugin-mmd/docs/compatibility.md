@@ -865,6 +865,12 @@ formatting keeps them as they are written. See
   timeline/multi-line-statements/comment-line-inside-kept] [fixture:
   timeline/statements-one-per-line/ignored-semicolon-line-kept]
 
+An `accDescr` block indents later text lines by replacing only spaces and tabs
+immediately after LF, which the Db setter discards. Its text, line breaks,
+trailing whitespace and directive contents remain as written. [fixture:
+timeline/multi-line-values/description-line-ending-whitespace] [fixture:
+timeline/multi-line-values/description-directive-lines]
+
 ## Sankey lines that the characters or the quotes decide
 
 mermaid.js reads a sankey diagram as CSV: it rejects a tab, a character outside
@@ -2161,6 +2167,30 @@ railroad/source-order/ebnf-duplicates] [fixture:
 railroad/source-order/abnf-duplicates] [fixture:
 railroad/source-order/peg-duplicates] [fixture: railroad/title/ir-trim]
 
+Ordinary composite IR calls wrap at printWidth along their nested argument
+structure, without splitting values or adding trailing commas. Calls with
+multiple arguments retain authored multiline grouping. Leaf constructors stay
+together with their quoted values. Ordinary comments and global directives
+retain their argument boundaries while the call wraps; semicolons inside values
+do not prevent wrapping. Call gaps use canonical outside spaces for comments and
+directives, preserving their contents, internal contacts and written line
+breaks. After a line break following a constructor, both parentheses use
+continuation indentation, with their arguments one level deeper. Native hidden
+forms and ignored semicolons retain their protected layout. EBNF, ABNF and PEG
+keep their flat layout. [fixture: railroad/long-lines/ir-expression-grammar]
+[fixture: railroad/long-lines/ir-written-breaks] [fixture:
+railroad/long-lines/ir-unary-width] [fixture:
+railroad/long-lines/ir-comments-kept] [fixture:
+railroad/comments/ir-call-inline-spacing] [fixture:
+railroad/comments/ir-call-comment-lines] [fixture:
+railroad/comments/ir-call-constructor-nested] [fixture:
+railroad/global-directives/ir-call-boundaries] [fixture:
+railroad/long-lines/ir-directive-kept] [fixture:
+railroad/long-lines/ir-hidden-kept] [fixture:
+railroad/long-lines/ir-semicolon-kept] [fixture: railroad/long-lines/ebnf-width]
+[fixture: railroad/long-lines/abnf-width] [fixture:
+railroad/long-lines/peg-width]
+
 Strings keep their complete source spans, including quotes, empty and
 whitespace-only values, escape spelling, HTML, entities and continuation
 columns. singleQuote does not rewrite them. ABNF backslash is ordinary content;
@@ -2185,14 +2215,16 @@ Comment forms and contents remain written: all four dialects have `%%`, IR has C
 comments, EBNF has C and ISO comments, ABNF has semicolon line comments and PEG
 has hash line comments. LS/PS remain native line-comment content. A bare ABNF
 `;` is punctuation; its terminator must meet LF or EOF immediately. Every rule's
-required visible `;` stays attached where safe, and every other authored
-semicolon stays under shared segment protection, including crossing values. The
-first line uses one body step, matching other flat diagrams; later lines keep
-their written columns. Railroad lines containing the literal string `style` or
-`classDef` after global directive removal stay as written, including every
-statement, comment, native hidden form and inner gap. They do not join their
-neighbors. A removed directive forming a word across lines keeps all those
-lines. [fixture: railroad/semicolons/ir-word-unclosed-directive-lines] [fixture:
+required visible `;` stays attached where safe. Ordinary IR rules retain
+semicolons inside values without freezing their layout; every other authored
+semicolon stays under shared segment protection, including crossing values. Each
+protected segment's first line uses one body step, matching other flat diagrams;
+its later lines keep their written columns. Railroad lines containing the
+literal string `style` or `classDef` after global directive removal stay as
+written, including every statement, comment, native hidden form and inner gap.
+They do not join their neighbors. A removed directive forming a word across
+lines keeps all those lines. [fixture:
+railroad/semicolons/ir-word-unclosed-directive-lines] [fixture:
 railroad/semicolons/ebnf-word-unclosed-directive-lines] [fixture:
 railroad/semicolons/abnf-word-unclosed-directive-lines] [fixture:
 railroad/semicolons/peg-word-unclosed-directive-lines] A line is the complete
@@ -2485,6 +2517,11 @@ configuration. [fixture: eventmodeling/inline-data/greedy-apparent-frames-kept]
 eventmodeling/data-boundaries/same-line-block-successor] [test:
 eventmodeling/line-terminators-and-unicode/block-ls-boundary-stays-outside-value]
 [fixture: eventmodeling/final-newline/final-block-padding-kept]
+
+An ordinary `data` declaration or `note` starts at column one, aligning its
+header with that closer without reindenting the payload. [fixture:
+eventmodeling/indentation/data-declaration-column-one] [fixture:
+eventmodeling/indentation/note-column-one]
 
 Common EM terminals retain keyword, delimiter and leading ASCII padding as
 values. Preserve their complete source and preceding interval, including across
