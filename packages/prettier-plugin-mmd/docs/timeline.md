@@ -45,8 +45,8 @@ indentation/header-leading-whitespace] The lines of a text that is kept as
 written, such as the lines of an `accDescr` block, keep their columns, and the
 `}` that closes a block stands at the level of its statement (see
 [Multi-line values](#multi-line-values)). [fixture:
-indentation/description-block-under-a-section] The later lines of a period and
-its events stand one level deeper than its first line (see
+indentation/description-block-under-a-section] Later event colons align under
+the period's colon where it directly follows the period on its line (see
 [Periods and events](#periods-and-events)). [fixture:
 indentation/event-lines-under-a-section]
 
@@ -285,7 +285,7 @@ Output
 timeline
   2004 : Facebook
 
-    : Google
+       : Google
 ```
 
 ### Periods and events
@@ -326,14 +326,32 @@ periods-and-events/events-on-later-lines] [fixture:
 periods-and-events/event-on-the-line-after-the-period] [fixture:
 periods-and-events/events-on-both]
 
-The later lines of a period and its events stand one level deeper than its first
-line, as the later lines of a statement do in a flowchart. Aligning each colon
-under that of the period, as the documentation of mermaid.js does by hand, would
-need the width of the period, which a tab or a wide character leaves undefined.
-[fixture: periods-and-events/later-lines-in-a-section] Comment lines and
-directive lines inside it stay inside it, at the level of its later lines, and a
-run of empty lines inside it becomes one. [fixture:
-periods-and-events/comment-lines-inside] [fixture:
+When the first colon immediately follows the period on its line, align later
+event colons under it. This makes the events of one period easy to follow,
+including inside a section. Keep tabs as tab stops in the alignment padding and
+use Prettier's display width for the remaining text, including wide characters.
+Count the period's written text, including a directive inside it, since that is
+what the printer displays. The configured indentation still applies at
+`tabWidth: 0`. [fixture: periods-and-events/events-on-later-lines] [corpus
+fixture: timeline/docs-syntax-timeline-1b6ef8c6] [fixture:
+periods-and-events/later-lines-in-a-section] [fixture:
+periods-and-events/colon-alignment-tabs] [fixture:
+periods-and-events/colon-alignment-wide-period] [fixture:
+periods-and-events/colon-alignment-zero-width] [fixture:
+periods-and-events/colon-alignment-written-period]
+
+When the first colon is on a later line, or a directive separates it from the
+period, retain the ordinary continuation indentation of one level. Periods whose
+written text contains a line break, U+2028 or U+2029 also keep that indentation,
+since those characters can affect how a line is displayed. [fixture:
+periods-and-events/event-on-the-line-after-the-period] [fixture:
+periods-and-events/colon-alignment-directive-boundary] [fixture:
+periods-and-events/colon-alignment-written-period] [test: U+2028 inside a period
+before a later event] [test: U+2029 inside a period before a later event]
+
+Comment lines and directive lines inside a period and its events stay inside it,
+one level deeper than its first line, and a run of empty lines inside it becomes
+one. [fixture: periods-and-events/comment-lines-inside] [fixture:
 periods-and-events/empty-lines-inside] [fixture:
 periods-and-events/directive-line-inside] A comment after a period stays on its
 line, with the whitespace before it, which is part of the period. [fixture:
@@ -393,7 +411,7 @@ Output
 timeline
   2004 : Facebook : Google
   2005 : YouTube
-    : Vimeo
+       : Vimeo
   2006
     : Zoom
 ```
@@ -421,8 +439,8 @@ timeline
   section Early
     2002 : LinkedIn
     2004 : Facebook
-      : Google
-      : Apple
+         : Google
+         : Apple
     2005 : YouTube
 ```
 
@@ -445,7 +463,7 @@ Output
 timeline
   2004 : Facebook
     # c
-    : Google
+       : Google
   %% d
   2005 : YouTube
 ```

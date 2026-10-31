@@ -67,10 +67,13 @@ eventmodeling tf 01 evt A %%{{x}}%%
 
 Use one configured step for ordinary body statements, two for GWT clauses and
 three for GWT items. Structural continuation lines stand one step deeper than
-their statement. Columns do not define parents, so `tabWidth: 0` adds no spaces;
-`useTabs` adds one tab per step even at width zero. Value continuations,
-metadata padding and hidden consumed-LF boundaries retain their authored
-columns.
+their statement. The first line of an ordinary `data` declaration or `note`
+instead stands at column one, aligning it with the required unindented closing
+brace while its body keeps its authored columns. A continued `data` header still
+uses the ordinary continuation level. Columns do not define parents, so
+`tabWidth: 0` adds no spaces; `useTabs` adds one tab per step even at width
+zero. Value continuations, metadata padding and hidden consumed-LF boundaries
+retain their authored columns.
 
 [fixture: eventmodeling/indentation/body-four-spaces]
 
@@ -82,6 +85,16 @@ columns.
 
 [fixture: eventmodeling/indentation/zero-width-tabs]
 
+[fixture: eventmodeling/indentation/data-declaration-column-one]
+
+[fixture: eventmodeling/indentation/data-declaration-four-spaces]
+
+[fixture: eventmodeling/indentation/data-declaration-tabs]
+
+[fixture: eventmodeling/indentation/note-column-one]
+
+[fixture: eventmodeling/declarations-and-notes/data-name-title-keep-lf]
+
 Input (escaped): `"eventmodeling\ntf 01 evt Alpha\nrf 02 cmd Beta"`.
 
 Output
@@ -91,6 +104,27 @@ Output
 eventmodeling
     tf 01 evt Alpha
     rf 02 cmd Beta
+```
+
+Output
+([indentation/data-declaration-column-one-output.mmd](../tests/fixtures/eventmodeling/indentation/data-declaration-column-one-output.mmd)):
+
+```mmd
+eventmodeling
+data AddItem01 {
+  sku: 'SHIRT-M'
+  quantity: 2
+}
+```
+
+Output
+([indentation/note-column-one-output.mmd](../tests/fixtures/eventmodeling/indentation/note-column-one-output.mmd)):
+
+```mmd
+eventmodeling
+note 01 {
+  explanation
+}
 ```
 
 ### Statements one per line
@@ -439,7 +473,7 @@ Output
 ```mmd
 eventmodeling
   tf 01 evt Alpha [[D]]
-  data D {
+data D {
 x
 }
 ```
@@ -481,7 +515,7 @@ Output
 ```mmd
 eventmodeling
   tf 01 evt Alpha [[D]]
-  data D {
+data D {
 x
 }
 ```
@@ -1063,7 +1097,7 @@ Output
 eventmodeling
   entity Shop.Alpha
   entity Shop.Alpha
-  note 99 {
+note 99 {
 unused
 }
   gwt 99
@@ -1072,13 +1106,13 @@ unused
     then
       cmd Beta
   tf 01 evt Alpha ->> 02 ->> 02 [[D]] {unused}
-  data D {
+data D {
 first
 }
-  data D {
+data D {
 second
 }
-  data Unused {
+data Unused {
 x
 }
 ```
@@ -1139,6 +1173,8 @@ padding lacks the standalone guarantee. Rejected payloads use Prettier's
 ordinary code handling.
 
 [test: eventmodeling Markdown: top-level]
+
+[test: eventmodeling Markdown: data-declaration]
 
 [test: eventmodeling Markdown: list]
 

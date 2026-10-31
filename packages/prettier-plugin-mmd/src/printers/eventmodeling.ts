@@ -27,4 +27,8 @@ export const eventmodelingPrinter: FlatHiddenPrinter =
     prefixes: (item) => ("textBefore" in item ? item.textBefore : []),
     inlineGapBefore: (item) =>
       item.type === "EventmodelingIgnoredText" ? undefined : "space",
+    // The body and its required unindented closer stay written; align the
+    // data or note header with them (docs/eventmodeling.md, Indentation and Data blocks).
+    writtenIndentationOf: (item) =>
+      classifyEventmodelingStatement(item).kind === "data" ? "" : undefined,
   })

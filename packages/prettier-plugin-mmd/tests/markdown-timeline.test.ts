@@ -19,7 +19,7 @@ describe("a timeline in a Markdown code block", () => {
         "# Title\n\n```mermaid\ntimeline TD\ntitle   T\nsection S\n2004: Facebook\n  : Google\n```\n",
       ),
     ).toBe(
-      "# Title\n\n```mermaid\ntimeline TD\n  title   T\n  section S\n    2004: Facebook\n      : Google\n```\n",
+      "# Title\n\n```mermaid\ntimeline TD\n  title   T\n  section S\n    2004: Facebook\n        : Google\n```\n",
     )
   })
 

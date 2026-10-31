@@ -99,7 +99,8 @@ metadata, standalone comments and Root directives. The default is two spaces;
 tabWidth four uses four and tabWidth zero uses zero because columns have no
 grammatical meaning. useTabs uses one tab, even at width zero. Structural
 continuation lines and standalone trivia inside a rule use two steps; a separate
-structural closer or terminator aligns with the statement. Written value
+structural closer or terminator aligns with the statement. Nested IR calls use
+their argument levels as described in [Long lines](#long-lines). Written value
 columns, hidden interiors and retained prefixes keep their own columns.
 Semicolon-protected segments start at one body step, like other flat diagrams;
 their later lines keep their written columns because these belong to the
@@ -567,9 +568,10 @@ railroad-abnf-beta
 IR prints its eight constructors as `name(...)`: sequence, choice, optional,
 oneOrMore, zeroOrMore, terminal, nonterminal and special. Ordinary gaps before
 `(` and at the inner edges are empty; argument commas have no space before and
-one after. Retain empty quoted arguments, nested calls and singleton
-sequence/choice calls. Collapsing a singleton can keep the Db but loses an
-authored call; trailing commas are not added.
+one after on a line. Long calls follow [Long lines](#long-lines). Retain empty
+quoted arguments, nested calls and singleton sequence/choice calls. Collapsing a
+singleton can keep the Db but loses an authored call; trailing commas are not
+added.
 
 [fixture: railroad/calls/ir-all]
 
@@ -589,7 +591,13 @@ Output
 
 ```mmd
 railroad-beta
-  r = sequence(terminal("first"), choice(special("note"), nonterminal("r")), optional(terminal("")), oneOrMore(terminal("many")), zeroOrMore(terminal("any")));
+  r = sequence(
+    terminal("first"),
+    choice(special("note"), nonterminal("r")),
+    optional(terminal("")),
+    oneOrMore(terminal("many")),
+    zeroOrMore(terminal("any"))
+  );
 ```
 
 ### Exceptions
@@ -668,7 +676,12 @@ Output
 
 ```mmd
 railroad-beta
-  r = sequence(terminal(""), terminal(" 	 "), nonterminal(''), special("%%literal --- <b> plain"));
+  r = sequence(
+    terminal(""),
+    terminal(" 	 "),
+    nonterminal(''),
+    special("%%literal --- <b> plain")
+  );
 ```
 
 Input (escaped):
@@ -707,10 +720,40 @@ railroad-peg-beta
 
 ### Long lines
 
-Do not wrap rules at printWidth. Structural wrapping can have the same Db in all
-four dialects; the chosen flat form follows the other flat diagrams and avoids
-extra wrapping choices across values, hidden forms, trivia and protected
-segments.
+Fit ordinary IR calls to printWidth. A call that fits stays on one line unless
+it has multiple arguments and was written over several lines. A call that does
+not fit or retains those written breaks puts its arguments one level deeper, one
+per line, with its closing parenthesis at the call's level. Apply the same
+choice to nested calls, including calls with one argument, without adding
+trailing commas. This makes long expressions readable and preserves authored
+grouping without changing their structure. String contents remain indivisible
+and retain their written continuation columns.
+
+[fixture: railroad/calls/ir-singletons]
+
+[fixture: railroad/long-lines/ir-expression-grammar]
+
+[fixture: railroad/long-lines/ir-written-breaks]
+
+[fixture: railroad/long-lines/ir-unary-width]
+
+[fixture: railroad/long-lines/ir-wrapped-tabs]
+
+[fixture: railroad/long-lines/ir-wrapped-zero]
+
+[fixture: railroad/multiline-values/ir-columns]
+
+Rules containing comments, directives, hidden forms or protected semicolons
+retain their existing gap layout, so wrapping cannot change a retained boundary.
+EBNF, ABNF and PEG rules keep their flat layout at every printWidth.
+
+[fixture: railroad/long-lines/ir-comments-kept]
+
+[fixture: railroad/long-lines/ir-directive-kept]
+
+[fixture: railroad/long-lines/ir-hidden-kept]
+
+[fixture: railroad/long-lines/ir-semicolon-kept]
 
 [fixture: railroad/long-lines/abnf-width]
 
@@ -730,7 +773,19 @@ Output
 
 ```mmd
 railroad-beta
-  r = sequence(terminal("first long terminal"), choice(terminal("second long terminal"), nonterminal("reference")));
+  r = sequence(
+    terminal(
+      "first long terminal"
+    ),
+    choice(
+      terminal(
+        "second long terminal"
+      ),
+      nonterminal(
+        "reference"
+      )
+    )
+  );
 ```
 
 Input (escaped):
@@ -774,14 +829,15 @@ railroad-peg-beta
 
 ### Component newlines
 
-Join ordinary CR/LF gaps where the grammar reads padding: IR
+Replace ordinary CR/LF gaps where the grammar reads padding: IR
 constructor/open/argument/comma/close; EBNF
 assignment/choice/sequence/group/exception/postfix; ABNF
 assignment/choice/sequence/complete-repeat/primary/group; PEG
 assignment/choice/sequence/prefix/suffix/group. Use each gap's ordinary spacing
-rule. Do not split names, compound assignments, repeat components or numeric
-values. Comments, directives, hidden boundaries and semicolon protection keep
-their original breaks, since joining them can change acceptance or the Db.
+rule, with IR calls wrapped as in [Long lines](#long-lines). Do not split names,
+compound assignments, repeat components or numeric values. Comments, directives,
+hidden boundaries and semicolon protection keep their original breaks, since
+joining them can change acceptance or the Db.
 
 [fixture: railroad/component-newlines/abnf-components]
 
@@ -799,7 +855,10 @@ Output
 
 ```mmd
 railroad-beta
-  r = sequence(terminal("joined"), terminal("tail"));
+  r = sequence(
+    terminal("joined"),
+    terminal("tail")
+  );
 ```
 
 Input (escaped):
@@ -860,10 +919,12 @@ Output
 
 ```mmd
 railroad-beta
-  r = terminal("first
+  r = terminal(
+    "first
    continuation
 
-last");
+last"
+  );
 ```
 
 Input (escaped): `"railroad-ebnf-beta\nr=\"first\n   continuation\n\nlast\";"`.
@@ -2864,6 +2925,8 @@ necessary. Test the complete host output separately from payload Db preservation
 so containers do not become railroad indentation.
 
 [test: railroad Markdown: ir-top-level]
+
+[test: railroad Markdown: ir-wrapped-list]
 
 [test: railroad Markdown: ebnf-list]
 

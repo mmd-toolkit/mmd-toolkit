@@ -1158,6 +1158,16 @@ const timelineLineSeparatorExamples: readonly (readonly [
     "timeline\n  a\u2028b : e\n",
   ],
   [
+    "U+2028 inside a period before a later event",
+    "timeline\na\u2028b : e\n: f\n",
+    "timeline\n  a\u2028b : e\n    : f\n",
+  ],
+  [
+    "U+2029 inside a period before a later event",
+    "timeline\na\u2029b : e\n: f\n",
+    "timeline\n  a\u2029b : e\n    : f\n",
+  ],
+  [
     "U+2028 before the colon of an event",
     "timeline\na\u2028: e\n",
     "timeline\n  a\u2028: e\n",

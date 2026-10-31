@@ -68,6 +68,10 @@ eventmodeling tf 01 evt A %%{{x}}%%
 
 普通の本文は設定の 1 段、GWT clause は 2 段、item は 3 段にします。
 構造の継続行はその文より 1 段深くします。
+ただし通常の `data` 宣言と `note` の最初の行は、
+無字下げ必須の閉じ波括弧と揃えて行頭に置きます。
+本文は原文の列を保ちます。
+`data` ヘッダーの継続行は通常の継続段のままです。
 列は親子を決めないため、`tabWidth: 0` では空白を足しません。
 `useTabs` では幅が 0 でも 1 段に tab を 1 個使います。
 値の継続列、metadata の空白、hidden が消費する LF の境界は保ちます。
@@ -82,6 +86,16 @@ eventmodeling tf 01 evt A %%{{x}}%%
 
 [fixture: eventmodeling/indentation/zero-width-tabs]
 
+[fixture: eventmodeling/indentation/data-declaration-column-one]
+
+[fixture: eventmodeling/indentation/data-declaration-four-spaces]
+
+[fixture: eventmodeling/indentation/data-declaration-tabs]
+
+[fixture: eventmodeling/indentation/note-column-one]
+
+[fixture: eventmodeling/declarations-and-notes/data-name-title-keep-lf]
+
 入力（escape 表記）: `"eventmodeling\ntf 01 evt Alpha\nrf 02 cmd Beta"`
 
 出力
@@ -91,6 +105,27 @@ eventmodeling tf 01 evt A %%{{x}}%%
 eventmodeling
     tf 01 evt Alpha
     rf 02 cmd Beta
+```
+
+出力
+([indentation/data-declaration-column-one-output.mmd](../tests/fixtures/eventmodeling/indentation/data-declaration-column-one-output.mmd)):
+
+```mmd
+eventmodeling
+data AddItem01 {
+  sku: 'SHIRT-M'
+  quantity: 2
+}
+```
+
+出力
+([indentation/note-column-one-output.mmd](../tests/fixtures/eventmodeling/indentation/note-column-one-output.mmd)):
+
+```mmd
+eventmodeling
+note 01 {
+  explanation
+}
 ```
 
 ### Statements one per line
@@ -437,7 +472,7 @@ body を持つ形の規則が後の閉じまで読む場合は保ちます。
 ```mmd
 eventmodeling
   tf 01 evt Alpha [[D]]
-  data D {
+data D {
 x
 }
 ```
@@ -477,7 +512,7 @@ EOF の論理 LF は明示的な末尾 LF 1 個にできます。
 ```mmd
 eventmodeling
   tf 01 evt Alpha [[D]]
-  data D {
+data D {
 x
 }
 ```
@@ -1051,7 +1086,7 @@ data の並べ替えは最初の検索結果も変える場合があります。
 eventmodeling
   entity Shop.Alpha
   entity Shop.Alpha
-  note 99 {
+note 99 {
 unused
 }
   gwt 99
@@ -1060,13 +1095,13 @@ unused
     then
       cmd Beta
   tf 01 evt Alpha ->> 02 ->> 02 [[D]] {unused}
-  data D {
+data D {
 first
 }
-  data D {
+data D {
 second
 }
-  data Unused {
+data Unused {
 x
 }
 ```
@@ -1128,6 +1163,8 @@ host は埋め込んだ出力の末尾改行と最後の code 行の padding を
 拒否された payload は Prettier の通常の code 処理に任せます。
 
 [test: eventmodeling Markdown: top-level]
+
+[test: eventmodeling Markdown: data-declaration]
 
 [test: eventmodeling Markdown: list]
 

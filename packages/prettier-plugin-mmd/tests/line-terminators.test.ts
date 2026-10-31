@@ -138,7 +138,7 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
       ": b",
       "%%{init: {}}%%",
     ],
-    "timeline TD\n  title T\n  section S\n    2004 : a\n      : b\n    %%{init: {}}%%\n",
+    "timeline TD\n  title T\n  section S\n    2004 : a\n         : b\n    %%{init: {}}%%\n",
   ],
   [
     "quadrant",

@@ -145,7 +145,8 @@ flowchart LR
 
 - `useTabs` and `tabWidth` set the indentation. The default is two spaces.
 - `endOfLine` sets the line endings.
-- `printWidth` has no effect: lines are never wrapped.
+- `printWidth` wraps ordinary calls in `railroad-beta`. Other diagram lines are
+  not wrapped. See [Long lines](./docs/railroad.md#long-lines).
 
 ## When a diagram is not formatted
 

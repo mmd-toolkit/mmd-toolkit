@@ -2,9 +2,12 @@ import type {
   Node,
   RailroadBodyItem,
   RailroadDiagram,
+  RailroadExpression,
   RailroadIgnoredText,
   RailroadRule,
 } from "@mmd-toolkit/parser"
+import type { Doc } from "prettier"
+import { builders } from "prettier/doc"
 import type { AtomLayout, GapRule } from "./atoms.ts"
 import { layoutCommonDescription, layoutCommonLine } from "./common-layout.ts"
 import { protectHiddenGaps } from "./hidden-forms.ts"
@@ -24,11 +27,14 @@ import {
   walk,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
+import { printAsWritten } from "./lines.ts"
 import {
   findStructuralToken,
   findTokenStartingAt,
   findTriviaBetween,
 } from "./source.ts"
+
+const { group, indent, join, line, softline } = builders
 
 /** Written text leaves retain spelling, quotes and physical value columns. */
 export const railroadValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
@@ -148,21 +154,40 @@ function layoutRule(
   grammaticalSemicolons: ReadonlySet<number>,
 ): AtomLayout {
   const [start, end] = statement.range
+  const hasTextualSemicolon = source.text
+    .slice(start, end)
+    .split("")
+    .some(
+      (character, index) =>
+        character === ";" && !grammaticalSemicolons.has(start + index),
+    )
   // Textual semicolons retain their source segments; ordinary required
   // terminators alone do not prevent structural padding from joining.
   if (
     source.text.slice(start, end).includes("\n") &&
-    (source.text
-      .slice(start, end)
-      .split("")
-      .some(
-        (character, index) =>
-          character === ";" && !grammaticalSemicolons.has(start + index),
-      ) ||
+    (hasTextualSemicolon ||
       findSemicolonLines(source).has(lineStartOf(source, end - 1)))
   )
     return keptAsWritten(start, end)
+  // Native IR padding is independent of columns. Only ordinary gaps take
+  // width-based call layout; trivia, hidden forms and protected segments keep
+  // their existing atom path (diagrams/railroad.md, IR grammar;
+  // docs/railroad.md, Long lines).
+  const wrapsCalls =
+    source.root.diagramType === "railroad" &&
+    !hasTextualSemicolon &&
+    hidden.length === 0 &&
+    findTriviaBetween(source, start, end).length === 0
   const atoms = collectAtoms(source, start, end, values, [
+    ...(wrapsCalls
+      ? [
+          {
+            start: statement.definition.range[0],
+            end: statement.definition.range[1],
+            doc: printCall(source, statement.definition),
+          },
+        ]
+      : []),
     { start: end - 1, end },
   ])
   const rules = new Map<number, GapRule>()
@@ -202,4 +227,53 @@ function layoutRule(
       rules.set(member.range[0], "space")
   })
   return { atoms, rules, outdented, joinedBefore, lineBreaks: "kept" }
+}
+
+/** Width-dependent IR calls retain each authored constructor and value. */
+function printCall(source: Source, expression: RailroadExpression): Doc {
+  let arguments_: Doc[]
+  let shouldBreak = false
+  switch (expression.type) {
+    case "RailroadSequenceCall":
+    case "RailroadChoiceCall":
+      arguments_ = expression.arguments.map((member) =>
+        printCall(source, member.expression),
+      )
+      shouldBreak =
+        expression.arguments.length > 1 &&
+        source.text.slice(...expression.range).includes("\n")
+      break
+    case "RailroadOptionalCall":
+    case "RailroadOneOrMoreCall":
+    case "RailroadZeroOrMoreCall":
+      arguments_ = [printCall(source, expression.element)]
+      break
+    case "RailroadTerminalCall":
+      arguments_ = [printAsWritten(source, ...expression.value.range)]
+      break
+    case "RailroadNonterminalCall":
+      arguments_ = [printAsWritten(source, ...expression.name.range)]
+      break
+    case "RailroadSpecialCall":
+      arguments_ = [printAsWritten(source, ...expression.text.range)]
+      break
+    default:
+      throw new Error(
+        `prettier-plugin-mmd: ${expression.type} is not an IR call`,
+      )
+  }
+  const keyword = expectToken(
+    findTokenStartingAt(source, expression.range[0]),
+    "an IR constructor",
+  )
+  return group(
+    [
+      printAsWritten(source, ...keyword.range),
+      "(",
+      indent([softline, join([",", line], arguments_)]),
+      softline,
+      ")",
+    ],
+    { shouldBreak },
+  )
 }

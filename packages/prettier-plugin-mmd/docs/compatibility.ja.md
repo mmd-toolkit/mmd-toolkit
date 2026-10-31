@@ -2315,6 +2315,23 @@ railroad/source-order/ir-duplicates]
 [fixture: railroad/source-order/abnf-duplicates] [fixture:
 railroad/source-order/peg-duplicates] [fixture: railroad/title/ir-trim]
 
+通常の IR 呼出しは入れ子の引数構造に沿って printWidth で折り返します。
+値は分割せず、末尾 comma は加えません。
+引数が複数ある呼出しは、元の複数行のまとまりを保ちます。
+コメント、directive、hidden form、保護された semicolon のある規則には、
+既存の gap 配置を適用します。
+EBNF、ABNF、PEG は平坦な配置を保ちます。
+[fixture: railroad/long-lines/ir-expression-grammar]
+[fixture: railroad/long-lines/ir-written-breaks]
+[fixture: railroad/long-lines/ir-unary-width]
+[fixture: railroad/long-lines/ir-comments-kept]
+[fixture: railroad/long-lines/ir-directive-kept]
+[fixture: railroad/long-lines/ir-hidden-kept]
+[fixture: railroad/long-lines/ir-semicolon-kept]
+[fixture: railroad/long-lines/ebnf-width]
+[fixture: railroad/long-lines/abnf-width]
+[fixture: railroad/long-lines/peg-width]
+
 文字列は source span 全体を保ちます。
 引用符、空値、空白だけの値、escape、HTML、entity、継続列も対象です。
 singleQuote では書き換えません。
@@ -2671,6 +2688,11 @@ native data は埋め込まれた設定として評価せず、 source から直
 [fixture: eventmodeling/data-boundaries/same-line-block-successor]
 [test: eventmodeling/line-terminators-and-unicode/block-ls-boundary-stays-outside-value]
 [fixture: eventmodeling/final-newline/final-block-padding-kept]
+
+通常の `data` 宣言と `note` は行頭から始め、payload の字下げを変えず、
+ヘッダーをその閉じと揃えます。
+[fixture: eventmodeling/indentation/data-declaration-column-one]
+[fixture: eventmodeling/indentation/note-column-one]
 
 共通の EM terminal は keyword、delimiter、前置 ASCII 空白も値に含みます。
 global directive と選ばれた semicolon を挟む場合も、

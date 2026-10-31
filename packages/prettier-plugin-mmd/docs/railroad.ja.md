@@ -104,6 +104,7 @@ railroad-peg-beta%%{!heading}%%
 useTabs は幅0でも1 tab です。
 構造の継続行と規則内の独立した trivia は2段、
 別行の構造的な閉じ括弧と終端は文の位置に揃えます。
+入れ子の IR 呼出しは[長い行](#長い行)の規則で引数の段を使います。
 値の継続列、hidden の内部と保持 prefix は元の列を保ちます。
 semicolon の保護区間の最初の行は、他の平坦な図種と同じく本文の1段に揃えます。
 2行目以降は保護された本文に属するため、書かれた列を保ちます。
@@ -578,7 +579,8 @@ IR の8 constructor を `name(...)` にします。
 sequence、choice、optional、oneOrMore、zeroOrMore、terminal、 nonterminal、
 special が対象です。
 `(` の前と括弧の内端の通常の空白を詰め、引数 comma の前を0、
-後を1 space にします。
+同じ行の後を1 space にします。
+長い呼出しは[長い行](#長い行)の規則で折り返します。
 空の引用引数、入れ子、singleton の sequence と choice も保ちます。
 singleton の削除で Db が同じでも原文の call を失うためです。
 末尾 comma は加えません。
@@ -601,7 +603,13 @@ singleton の削除で Db が同じでも原文の call を失うためです。
 
 ```mmd
 railroad-beta
-  r = sequence(terminal("first"), choice(special("note"), nonterminal("r")), optional(terminal("")), oneOrMore(terminal("many")), zeroOrMore(terminal("any")));
+  r = sequence(
+    terminal("first"),
+    choice(special("note"), nonterminal("r")),
+    optional(terminal("")),
+    oneOrMore(terminal("many")),
+    zeroOrMore(terminal("any"))
+  );
 ```
 
 ### 例外演算子
@@ -681,7 +689,12 @@ ABNF は二重引用符だけを認め、backslash を普通の文字として�
 
 ```mmd
 railroad-beta
-  r = sequence(terminal(""), terminal(" 	 "), nonterminal(''), special("%%literal --- <b> plain"));
+  r = sequence(
+    terminal(""),
+    terminal(" 	 "),
+    nonterminal(''),
+    special("%%literal --- <b> plain")
+  );
 ```
 
 入力（escape 表記）:
@@ -720,9 +733,43 @@ railroad-peg-beta
 
 ### 長い行
 
-printWidth による規則の折返しはしません。
-構造に沿う折返しでも4方言の Db は同じになり得ますが、他の平坦な図種と揃え、値、
-hidden form、trivia、保護区間をまたぐ追加の折返し方針を作らない選択です。
+通常の IR 呼出しを printWidth に収めます。
+収まる呼出しは1行に保ちますが、引数が複数あり、
+元が複数行だった呼出しは改行を残します。
+収まらない呼出しや、その改行を残す呼出しは、引数を1段深く、
+1行に一つずつ置きます。
+閉じ括弧は呼出しと同じ段に置きます。
+引数が一つの呼出しも含め、入れ子の呼出しにも同じ判断を適用します。
+末尾 comma は加えません。
+構造を保ちながら長い式を読みやすくし、書かれたまとまりを残すためです。
+文字列の内容は分割せず、継続行の元の列を保ちます。
+
+[fixture: railroad/calls/ir-singletons]
+
+[fixture: railroad/long-lines/ir-expression-grammar]
+
+[fixture: railroad/long-lines/ir-written-breaks]
+
+[fixture: railroad/long-lines/ir-unary-width]
+
+[fixture: railroad/long-lines/ir-wrapped-tabs]
+
+[fixture: railroad/long-lines/ir-wrapped-zero]
+
+[fixture: railroad/multiline-values/ir-columns]
+
+コメント、directive、hidden form、保護された semicolon のある規則には、
+既存の gap 配置を適用します。
+保持すべき境界を折返しで変えないためです。
+EBNF、ABNF、PEG の規則は printWidth によらず平坦な配置を保ちます。
+
+[fixture: railroad/long-lines/ir-comments-kept]
+
+[fixture: railroad/long-lines/ir-directive-kept]
+
+[fixture: railroad/long-lines/ir-hidden-kept]
+
+[fixture: railroad/long-lines/ir-semicolon-kept]
 
 [fixture: railroad/long-lines/abnf-width]
 
@@ -742,7 +789,19 @@ hidden form、trivia、保護区間をまたぐ追加の折返し方針を作ら
 
 ```mmd
 railroad-beta
-  r = sequence(terminal("first long terminal"), choice(terminal("second long terminal"), nonterminal("reference")));
+  r = sequence(
+    terminal(
+      "first long terminal"
+    ),
+    choice(
+      terminal(
+        "second long terminal"
+      ),
+      nonterminal(
+        "reference"
+      )
+    )
+  );
 ```
 
 入力（escape 表記）:
@@ -791,6 +850,7 @@ IR は constructor、括弧、引数、comma、EBNF は代入、選択、並び�
 postfix が対象です。
 ABNF は代入、選択、並び、完全な repeat と primary、group、 PEG は代入、選択、
 並び、prefix、suffix、group が対象です。
+IR 呼出しは[長い行](#長い行)の規則で折り返します。
 名前、複合代入記号、repeat の内部、numeric value は分割しません。
 コメント、directive、hidden の境界、保護された semicolon の改行は保ちます。
 それらの join で受理や Db が変わるためです。
@@ -811,7 +871,10 @@ ABNF は代入、選択、並び、完全な repeat と primary、group、 PEG �
 
 ```mmd
 railroad-beta
-  r = sequence(terminal("joined"), terminal("tail"));
+  r = sequence(
+    terminal("joined"),
+    terminal("tail")
+  );
 ```
 
 入力（escape 表記）:
@@ -871,10 +934,12 @@ railroad-peg-beta
 
 ```mmd
 railroad-beta
-  r = terminal("first
+  r = terminal(
+    "first
    continuation
 
-last");
+last"
+  );
 ```
 
 入力（escape 表記）:
@@ -2901,6 +2966,8 @@ container の列を railroad の字下げと混同しないよう、
 host 全体の出力と本文の Db 保持を別に検査します。
 
 [test: railroad Markdown: ir-top-level]
+
+[test: railroad Markdown: ir-wrapped-list]
 
 [test: railroad Markdown: ebnf-list]
 

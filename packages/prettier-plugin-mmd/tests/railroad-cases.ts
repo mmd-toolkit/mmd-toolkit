@@ -190,7 +190,7 @@ export const railroadCases: readonly RailroadCase[] = [
   {
     name: "railroad/line-terminators-and-unicode/ir-cr",
     input: 'railroad-beta\rr=terminal("cr\r\n continuation");\r',
-    output: 'railroad-beta\n  r = terminal("cr\n continuation");\n',
+    output: 'railroad-beta\n  r = terminal(\n    "cr\n continuation"\n  );\n',
     options: {},
   },
   {

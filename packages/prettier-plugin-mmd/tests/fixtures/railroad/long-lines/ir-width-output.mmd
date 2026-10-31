@@ -1,2 +1,14 @@
 railroad-beta
-  r = sequence(terminal("first long terminal"), choice(terminal("second long terminal"), nonterminal("reference")));
+  r = sequence(
+    terminal(
+      "first long terminal"
+    ),
+    choice(
+      terminal(
+        "second long terminal"
+      ),
+      nonterminal(
+        "reference"
+      )
+    )
+  );

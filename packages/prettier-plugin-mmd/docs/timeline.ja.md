@@ -47,8 +47,9 @@ Lexical structure）。
 ブロックを閉じる `}` は、
 その文の段に置きます（[複数行の値](#複数行の値)を参照）。
 [fixture: indentation/description-block-under-a-section]
-period とその event の 2 行目以降は、
-1 行目より 1 段深く置きます（[period と event](#period-と-event)を参照）。
+同じ行で period の直後に `:` が続くとき、
+後ろの行の event の `:`
+をその下にそろえます（[period と event](#period-と-event)を参照）。
 [fixture: indentation/event-lines-under-a-section]
 
 入力
@@ -292,7 +293,7 @@ timeline
 timeline
   2004 : Facebook
 
-    : Google
+       : Google
 ```
 
 ### period と event
@@ -335,12 +336,34 @@ event が `Facebook` から `Facebook ` になります。
 [fixture: periods-and-events/event-on-the-line-after-the-period]
 [fixture: periods-and-events/events-on-both]
 
-period とその event の 2 行目以降は、1 行目より 1 段深く置きます。
-flowchart の文の 2 行目以降と同じ規則です。
-mermaid.js の文書は、各 `:` を period の `:` の下にそろえますが、
-それには period の幅を数える必要があり、タブや全角文字ではその幅が決まりません。
+最初の `:` が period と同じ行で直後に続くとき、
+後ろの行の event の `:` をその下にそろえます。
+section の中でも、同じ period の event を読み取りやすくするためです。
+整列用の空白では、タブをタブ位置として残し、
+全角文字を含む残りのテキストには Prettier の表示幅を使います。
+中にある指令も含め、period に書かれたテキストの幅を数えます。
+そのテキストが印字で表示されるためです。
+`tabWidth: 0` でも設定した字下げを使います。
+[fixture: periods-and-events/events-on-later-lines]
+[corpus fixture: timeline/docs-syntax-timeline-1b6ef8c6]
 [fixture: periods-and-events/later-lines-in-a-section]
-その間のコメント行と指令の行は、中に残して 2 行目以降の段に置き、
+[fixture: periods-and-events/colon-alignment-tabs]
+[fixture: periods-and-events/colon-alignment-wide-period]
+[fixture: periods-and-events/colon-alignment-zero-width]
+[fixture: periods-and-events/colon-alignment-written-period]
+
+最初の `:` が後ろの行にあるか、period との間に指令があるときは、
+通常の継続行の字下げである 1 段深い位置を使います。
+書かれたテキストに改行、U+2028 または U+2029 を含む period も、
+同じ字下げを使います。
+これらの文字は行の表示に影響することがあるためです。
+[fixture: periods-and-events/event-on-the-line-after-the-period]
+[fixture: periods-and-events/colon-alignment-directive-boundary]
+[fixture: periods-and-events/colon-alignment-written-period]
+[test: U+2028 inside a period before a later event]
+[test: U+2029 inside a period before a later event]
+
+その間のコメント行と指令の行は、中に残して 1 行目より 1 段深く置き、
 連続する空行は 1 つにします。 [fixture: periods-and-events/comment-lines-inside]
 [fixture: periods-and-events/empty-lines-inside]
 [fixture: periods-and-events/directive-line-inside]
@@ -405,7 +428,7 @@ timeline
 timeline
   2004 : Facebook : Google
   2005 : YouTube
-    : Vimeo
+       : Vimeo
   2006
     : Zoom
 ```
@@ -433,8 +456,8 @@ timeline
   section Early
     2002 : LinkedIn
     2004 : Facebook
-      : Google
-      : Apple
+         : Google
+         : Apple
     2005 : YouTube
 ```
 
@@ -457,7 +480,7 @@ timeline
 timeline
   2004 : Facebook
     # c
-    : Google
+       : Google
   %% d
   2005 : YouTube
 ```

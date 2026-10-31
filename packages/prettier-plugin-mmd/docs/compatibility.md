@@ -2161,6 +2161,21 @@ railroad/source-order/ebnf-duplicates] [fixture:
 railroad/source-order/abnf-duplicates] [fixture:
 railroad/source-order/peg-duplicates] [fixture: railroad/title/ir-trim]
 
+Ordinary IR calls wrap at printWidth along their nested argument structure,
+without splitting values or adding trailing commas. Calls with multiple
+arguments retain authored multiline grouping. Rules containing comments,
+directives, hidden forms or protected semicolons retain their existing gap
+layout. EBNF, ABNF and PEG keep their flat layout. [fixture:
+railroad/long-lines/ir-expression-grammar] [fixture:
+railroad/long-lines/ir-written-breaks] [fixture:
+railroad/long-lines/ir-unary-width] [fixture:
+railroad/long-lines/ir-comments-kept] [fixture:
+railroad/long-lines/ir-directive-kept] [fixture:
+railroad/long-lines/ir-hidden-kept] [fixture:
+railroad/long-lines/ir-semicolon-kept] [fixture: railroad/long-lines/ebnf-width]
+[fixture: railroad/long-lines/abnf-width] [fixture:
+railroad/long-lines/peg-width]
+
 Strings keep their complete source spans, including quotes, empty and
 whitespace-only values, escape spelling, HTML, entities and continuation
 columns. singleQuote does not rewrite them. ABNF backslash is ordinary content;
@@ -2485,6 +2500,11 @@ configuration. [fixture: eventmodeling/inline-data/greedy-apparent-frames-kept]
 eventmodeling/data-boundaries/same-line-block-successor] [test:
 eventmodeling/line-terminators-and-unicode/block-ls-boundary-stays-outside-value]
 [fixture: eventmodeling/final-newline/final-block-padding-kept]
+
+An ordinary `data` declaration or `note` starts at column one, aligning its
+header with that closer without reindenting the payload. [fixture:
+eventmodeling/indentation/data-declaration-column-one] [fixture:
+eventmodeling/indentation/note-column-one]
 
 Common EM terminals retain keyword, delimiter and leading ASCII padding as
 values. Preserve their complete source and preceding interval, including across

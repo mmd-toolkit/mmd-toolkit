@@ -9,6 +9,7 @@ import type {
   TimelineTitleStatement,
   Token,
 } from "@mmd-toolkit/parser"
+import { util } from "prettier"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { readGap } from "./gap.ts"
 import {
@@ -89,9 +90,10 @@ export function layoutTimelineHeader(
  * - A period with its events, and the events after another statement, keep
  *   the line breaks between the units: a period and an event keep their
  *   whitespace as their text, so no event moves from line to line. The later
- *   lines of such a statement stand one level deeper (docs/timeline.md,
- *   Periods and events). The line break that is the one whitespace character
- *   after the `:` of an event is not one of them (see `layoutEvents`).
+ *   event colons align under the period's colon when it immediately follows
+ *   the period on its line (docs/timeline.md, Periods and events). The line
+ *   break that is the one whitespace character after the `:` of an event is
+ *   not one of them (see `layoutEvents`).
  * - A title, a section, and an accessibility statement written over several
  *   lines stand on one line where the lexer reads the line break as
  *   whitespace, which it does only right after a keyword; one with a comment
@@ -189,6 +191,8 @@ function layoutEvents(
   )
   const rules = new Map<number, GapRule>()
   const joinedBefore = new Set<number>()
+  const alignedColons = new Set<number>()
+  let statementPadding: string | undefined
   for (const event of statement.events) {
     const eventIndex = atoms.findIndex((atom) => atom.start === event.range[0])
     const colon = eventIndex < 1 ? undefined : atoms[eventIndex - 1]
@@ -196,6 +200,28 @@ function layoutEvents(
       throw new Error(
         `prettier-plugin-mmd: no colon before the event at offset ${event.range[0]}`,
       )
+    }
+    if (
+      event === statement.events[0] &&
+      statement.type === "TimelinePeriodStatement"
+    ) {
+      const writtenPeriod = source.text.slice(...statement.period.range)
+      if (
+        colon.start === statement.period.range[1] &&
+        !writtenPeriod.includes("\n") &&
+        !writtenPeriod.includes("\u2028") &&
+        !writtenPeriod.includes("\u2029")
+      ) {
+        // Keep tabs as tab stops and replace each remaining span by its display
+        // width, so later colons align without changing the period's value
+        // (docs/timeline.md, Periods and events).
+        statementPadding = writtenPeriod
+          .split("\t")
+          .map((part) => " ".repeat(util.getStringWidth(part)))
+          .join("\t")
+      }
+    } else if (statementPadding !== undefined) {
+      alignedColons.add(colon.start)
     }
     if (readGap(source, colon.end, event.range[0], true).breaksLine) {
       joinedBefore.add(event.range[0])
@@ -206,7 +232,9 @@ function layoutEvents(
     return keptAsWritten(start, end)
   }
   return {
-    atoms,
+    atoms: atoms.map((atom) =>
+      alignedColons.has(atom.start) ? { ...atom, statementPadding } : atom,
+    ),
     rules,
     outdented: new Set(),
     lineBreaks: "kept",
