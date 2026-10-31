@@ -125,8 +125,11 @@ vscode-textmateとvscode-onigurumaのような、ほかのTextMateのホスト�
 
 ### VS Codeの拡張機能
 
-パッケージの`lib/mermaid.tmLanguage.json`を拡張機能にコピーし、
-拡張機能の`package.json`で提供してください。
+拡張機能の`dependencies`にこのパッケージを追加し、
+`package.json`で文法を登録します。
+[`vsce`](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#using-vscodeignore)は、
+既定で本番用の依存パッケージをVSIXに含めるので、
+`path`で`node_modules`内の文法を直接指定できます。
 
 ```json
 {
@@ -142,12 +145,20 @@ vscode-textmateとvscode-onigurumaのような、ほかのTextMateのホスト�
       {
         "language": "mermaid",
         "scopeName": "source.mermaid",
-        "path": "./syntaxes/mermaid.tmLanguage.json"
+        "path": "./node_modules/@mmd-toolkit/textmate-grammar/lib/mermaid.tmLanguage.json"
       }
     ]
   }
 }
 ```
+
+`path`は、拡張機能のルートからの相対パスです。
+`.vscodeignore`を使う場合は、この文法ファイルを除外しないでください。
+
+文法ファイルだけを含めたい場合は、このパッケージを`devDependencies`に追加し、
+パッケージの`lib/mermaid.tmLanguage.json`を、
+拡張機能の`syntaxes/mermaid.tmLanguage.json`にコピーする方法もあります。
+その場合、`path`は`"./syntaxes/mermaid.tmLanguage.json"`にします。
 
 ## スコープ
 
