@@ -485,7 +485,7 @@
     "gantt-spaces": "(?!{{gap}}{{separatorCommentEnd}}){{whitespaceSeparator}}{{gap}}",
     "gantt-setting-text-start": "(?!{{separatorCommentEnd}})(?:{{entity}}|(?!{{directiveStart}})[^#;\\r\\n])",
     "gantt-setting-text-gap": "(?!{{directives}}{{separatorCommentEnd}})({{whitespaceSeparator}})(?={{gantt-setting-text-start}})",
-    "gantt-statement-start": "(?:^|\\G|(?<=\\})|(?<=\\}%%))(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
+    "gantt-statement-start": "(?:^|\\G|(?<=\\})|{{afterDirectiveEnd}})(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
     "gantt-text-end": "(?=[#;])|{{lineValueEnd}}",
     "gantt-tag": "(?:a{{directives}}c{{directives}}t{{directives}}i{{directives}}v{{directives}}e|d{{directives}}o{{directives}}n{{directives}}e|c{{directives}}r{{directives}}i{{directives}}t|m{{directives}}i{{directives}}l{{directives}}e{{directives}}s{{directives}}t{{directives}}o{{directives}}n{{directives}}e|v{{directives}}e{{directives}}r{{directives}}t)"
   }

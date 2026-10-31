@@ -666,7 +666,7 @@
   "variables": {
     "requirement-direction-prefix": "(?={{requirement-statement-start}})(?!{{directives}}(?:(?i:accTitle){{gap}}:|(?i:accDescr){{gap}}[:{]))({{lineText}})((?i:direction))({{requiredGap}})",
     "requirement-direction-suffix": "((?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}}).)*){{lineValueEnd}}",
-    "requirement-statement-start": "(?:^|\\G|(?<=\\})|(?<=\\}%%))(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
+    "requirement-statement-start": "(?:^|\\G|(?<=\\})|{{afterDirectiveEnd}})(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
     "requirement-field-suffix": "{{wordEnd}}({{gap}})(:)({{gap}})",
     "requirement-fixed-value": "(?i:low|medium|high|analysis|demonstration|inspection|test)",
     "requirement-field-text": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n])+",

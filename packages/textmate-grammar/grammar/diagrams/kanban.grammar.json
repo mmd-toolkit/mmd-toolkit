@@ -277,6 +277,6 @@
   "variables": {
     "kanban-indentation": "{{kanban-statement-start}}{{lineGap}}",
     "kanban-comment-padding": "(?:(?!{{separatorCommentEnd}})(?:[{{lws}}]|{{directive}}))*",
-    "kanban-statement-start": "(?:^|\\G|(?<=\\}%%))"
+    "kanban-statement-start": "(?:^|\\G|{{afterDirectiveEnd}})"
   }
 }

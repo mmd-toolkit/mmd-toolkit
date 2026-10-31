@@ -75,9 +75,12 @@
               "include": "#directive"
             },
             {
-              "comment": "Read the JSON at sign and balanced object in one data scope. Follows usecase.md#json-context.",
+              "comment": "Read the JSON at unit inside the data wrapper, then its outer braces and opaque balanced interior. Follows usecase.md#ordered-default-context-rules and usecase.md#json-context.",
               "begin": "(@)({{asciiGap}})(\\{)",
               "beginCaptures": {
+                "1": {
+                  "name": "punctuation.separator.at.mermaid"
+                },
                 "2": {
                   "patterns": [
                     {
@@ -940,7 +943,7 @@
     "usecase-label-end": "(?=[()\\[\\]\"']|{{usecase-arrow}})",
     "usecase-label-word": "(?:[A-Za-z_][A-Za-z0-9_]*(?:-[A-Za-z0-9_]+)+|{{usecase-number}}|{{usecase-id}})",
     "usecase-number": "(?:[0-9]+\\.[0-9]+|\\.[0-9]+)[A-Za-z]*",
-    "usecase-statement-start": "(?:^|\\G|(?<=\\}%%))[ \\t]*",
+    "usecase-statement-start": "(?:^|\\G|{{afterDirectiveEnd}})[ \\t]*",
     "usecase-style-value-end": "(?={{lineGap}}(?:(?<!\\\\),|$))|{{separatorCommentEnd}}"
   }
 }

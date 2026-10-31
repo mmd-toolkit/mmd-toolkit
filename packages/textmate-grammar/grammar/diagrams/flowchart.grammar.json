@@ -242,7 +242,7 @@
         },
         {
           "comment": "Read the spaced vertex-group ampersand, also after a directive in its preceding gap. Follows flowchart.md#the-statement-context and common.md#a-directive-is-a-token-boundary.",
-          "match": "(?:(?<=[{{ws}}])|(?<=\\}%%))&(?={{whitespaceStart}})",
+          "match": "(?:(?<=[{{ws}}])|{{afterDirectiveEnd}})&(?={{whitespaceStart}})",
           "name": "keyword.operator.mermaid"
         },
         {

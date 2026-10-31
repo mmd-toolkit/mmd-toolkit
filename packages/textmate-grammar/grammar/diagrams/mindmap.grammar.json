@@ -197,7 +197,7 @@
     }
   },
   "variables": {
-    "mindmap-statement-start": "(?:^|\\G|(?<=\\}%%)|(?<=[{{separators}}]))(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
+    "mindmap-statement-start": "(?:^|\\G|{{afterDirectiveEnd}}|(?<=[{{separators}}]))(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
     "mindmap-comment-padding": "(?:(?!{{separatorCommentEnd}})(?:[{{lws}}]|{{directive}}))*"
   }
 }
