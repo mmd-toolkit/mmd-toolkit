@@ -3,6 +3,7 @@ import type {
   RailroadBodyItem,
   RailroadDiagram,
   RailroadExpression,
+  RailroadExpressionMember,
   RailroadIgnoredText,
   RailroadRule,
 } from "@mmd-toolkit/parser"
@@ -94,17 +95,18 @@ export function layoutRailroadStatement(
   const verbatim = layoutOnVerbatimStyleLine(source, start, end)
   if (verbatim !== null) return verbatim
   const values = collectValueNodes(statement, railroadValueNodeTypes)
-  const hidden = values.filter(
-    (value): value is RailroadIgnoredText =>
-      value.type === "RailroadIgnoredText",
-  )
+  const hidden = values
+    .filter(
+      (value): value is RailroadIgnoredText =>
+        value.type === "RailroadIgnoredText",
+    )
+    .sort((a, b) => a.range[0] - b.range[0])
   const grammaticalSemicolons = grammaticalSemicolonsOf(source)
   // The shared word-line guard above protects actual line-rule selections.
   // Ordinary IR values can contain semicolons without freezing their calls.
   const wrapsCalls =
     statement.type === "RailroadRule" &&
     source.root.diagramType === "railroad" &&
-    hidden.length === 0 &&
     !findTokensBetween(source, start, end).some((token) =>
       source.ignoredSemicolons.has(token.range[0]),
     )
@@ -162,7 +164,13 @@ export function layoutRailroadStatement(
             grammaticalSemicolons,
           ),
     },
-    hidden,
+    statement.type === "RailroadRule" && wrapsCalls
+      ? hidden.filter(
+          (item) =>
+            item.range[0] < statement.definition.range[0] ||
+            item.range[1] > statement.definition.range[1],
+        )
+      : hidden,
   )
 }
 
@@ -197,9 +205,9 @@ function layoutRule(
       findSemicolonLines(source).has(lineStartOf(source, end - 1)))
   )
     return keptAsWritten(start, end)
-  // Native IR padding is independent of columns. Only ordinary gaps take
-  // width-based call layout; hidden forms and protected segments keep
-  // their existing atom path (diagrams/railroad.md, IR grammar;
+  // Native IR padding is independent of columns. Structural calls retain
+  // opaque hidden forms while laying out the grammar around them; protected
+  // segments keep their existing atom path (diagrams/railroad.md, IR grammar;
   // docs/railroad.md, Long lines).
   const atoms = collectAtoms(source, start, end, values, [
     ...(wrapsCalls
@@ -207,7 +215,7 @@ function layoutRule(
           {
             start: statement.definition.range[0],
             end: statement.definition.range[1],
-            doc: printCall(source, statement.definition),
+            doc: printCall(source, statement.definition, hidden),
           },
         ]
       : []),
@@ -252,20 +260,22 @@ function layoutRule(
   return { atoms, rules, outdented, joinedBefore, lineBreaks: "kept" }
 }
 
-/** Width-dependent IR calls retain each authored constructor and value. */
-function printCall(source: Source, expression: RailroadExpression): Doc {
+/** IR calls expose argument structure; simple quoted leaves stay together. */
+function printCall(
+  source: Source,
+  expression: RailroadExpression,
+  hidden: readonly RailroadIgnoredText[],
+): Doc {
   if (expression.type === "StringLiteral")
     return printAsWritten(source, ...expression.range)
-  let arguments_: readonly RailroadExpression[]
-  let shouldBreak = false
+  let arguments_: readonly RailroadExpression[],
+    members: readonly RailroadExpressionMember[] | undefined
   let valueCall = false
   switch (expression.type) {
     case "RailroadSequenceCall":
     case "RailroadChoiceCall":
-      arguments_ = expression.arguments.map((member) => member.expression)
-      shouldBreak =
-        expression.arguments.length > 1 &&
-        source.text.slice(...expression.range).includes("\n")
+      members = expression.arguments
+      arguments_ = members.map((member) => member.expression)
       break
     case "RailroadOptionalCall":
     case "RailroadOneOrMoreCall":
@@ -294,7 +304,10 @@ function printCall(source: Source, expression: RailroadExpression): Doc {
     "an IR constructor",
   )
   const opening = expectToken(
-    findStructuralToken(source, keyword.range[1]),
+    findStructuralToken(
+      source,
+      expression.textBeforeOpen.at(-1)?.range[1] ?? keyword.range[1],
+    ),
     "an IR call opening parenthesis",
   )
   expectValue(opening, "(")
@@ -303,18 +316,49 @@ function printCall(source: Source, expression: RailroadExpression): Doc {
     "an IR call closing parenthesis",
   )
   expectValue(closing, ")")
+  const gapOptions = { opaqueNodes: hidden }
+  const constructorGap = readGap(
+    source,
+    keyword.range[1],
+    opening.range[0],
+    true,
+    gapOptions,
+  )
+  const firstGap = readGap(
+    source,
+    opening.range[1],
+    arguments_[0].range[0],
+    true,
+    gapOptions,
+  )
+  const closingGap = readGap(
+    source,
+    arguments_.at(-1)!.range[1],
+    closing.range[0],
+    true,
+    gapOptions,
+  )
+  const breaksArguments =
+    !valueCall ||
+    hasCallTrivia(constructorGap) ||
+    hasCallTrivia(firstGap) ||
+    hasCallTrivia(closingGap)
   const contents: Doc[] = []
   let previousEnd = opening.range[1]
   for (const [index, argument] of arguments_.entries()) {
     if (index > 0) {
       const comma = expectToken(
-        findStructuralToken(source, previousEnd),
+        // Member ranges include their authored hidden forms before the comma.
+        findStructuralToken(
+          source,
+          members?.[index - 1].range[1] ?? previousEnd,
+        ),
         "an IR argument comma",
       )
       expectValue(comma, ",")
       contents.push(
         printCallGap(
-          readGap(source, previousEnd, comma.range[0], true),
+          readGap(source, previousEnd, comma.range[0], true, gapOptions),
           "",
           "comma",
         ),
@@ -324,29 +368,21 @@ function printCall(source: Source, expression: RailroadExpression): Doc {
     }
     contents.push(
       printCallGap(
-        readGap(source, previousEnd, argument.range[0], true),
-        valueCall ? "" : index === 0 ? softline : line,
+        index === 0
+          ? firstGap
+          : readGap(source, previousEnd, argument.range[0], true, gapOptions),
+        breaksArguments ? (index === 0 ? softline : line) : "",
         "leading",
       ),
-      printCall(source, argument),
+      printCall(source, argument, hidden),
     )
     previousEnd = argument.range[1]
   }
-  const constructorGap = readGap(
-    source,
-    keyword.range[1],
-    opening.range[0],
-    true,
-  )
   const call: Doc = [
     printCallGap(constructorGap, "", "constructor"),
     "(",
     indent(contents),
-    printCallGap(
-      readGap(source, previousEnd, closing.range[0], true),
-      valueCall ? "" : softline,
-      "closing",
-    ),
+    printCallGap(closingGap, breaksArguments ? softline : "", "closing"),
     ")",
   ]
   return group(
@@ -356,7 +392,7 @@ function printCall(source: Source, expression: RailroadExpression): Doc {
         ? indent(call)
         : call,
     ],
-    { shouldBreak },
+    { shouldBreak: breaksArguments },
   )
 }
 

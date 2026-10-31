@@ -568,7 +568,7 @@ railroad-abnf-beta
 IR prints its eight constructors as `name(...)`: sequence, choice, optional,
 oneOrMore, zeroOrMore, terminal, nonterminal and special. Ordinary gaps before
 `(` and at the inner edges are empty; argument commas have no space before and
-one after on a line. Long calls follow [Long lines](#long-lines). Retain empty
+one after on a line. Call layout follows [Long lines](#long-lines). Retain empty
 quoted arguments, nested calls and singleton sequence/choice calls. Collapsing a
 singleton can keep the Db but loses an authored call; trailing commas are not
 added.
@@ -593,10 +593,19 @@ Output
 railroad-beta
   r = sequence(
     terminal("first"),
-    choice(special("note"), nonterminal("r")),
-    optional(terminal("")),
-    oneOrMore(terminal("many")),
-    zeroOrMore(terminal("any"))
+    choice(
+      special("note"),
+      nonterminal("r")
+    ),
+    optional(
+      terminal("")
+    ),
+    oneOrMore(
+      terminal("many")
+    ),
+    zeroOrMore(
+      terminal("any")
+    )
   );
 ```
 
@@ -720,18 +729,28 @@ railroad-peg-beta
 
 ### Long lines
 
-Fit ordinary composite IR calls to printWidth. A call that fits stays on one
-line unless it has multiple arguments and was written over several lines. A call
-that does not fit or retains those written breaks puts its arguments one level
-deeper, one per line, with its closing parenthesis at the call's level. Apply
-the same choice to nested composite calls without adding trailing commas. Keep
-`terminal`, `nonterminal` and `special` together with their quoted value, even
-beyond printWidth: splitting that unit adds height without shortening the value.
-Actual newlines in values and comment gaps remain. This makes long expressions
-readable and preserves authored grouping without changing their structure.
-String contents retain their written continuation columns.
+Put the arguments of `sequence`, `choice`, `optional`, `oneOrMore` and
+`zeroOrMore` on later lines, one level deeper and one argument per line, with
+the closing parenthesis at the call's level. Apply this to every nested call,
+including short and singleton calls, independently of `printWidth` and authored
+padding line breaks. This consistently shows the grammar hierarchy. Add no
+trailing commas.
+
+Keep `terminal`, `nonterminal` and `special` together with their quoted value as
+a compact unit. A comment, global directive or native hidden form at any
+boundary between the constructor, opening parenthesis, value and closing
+parenthesis makes that leaf call multiline too. String contents retain their
+physical newlines and written continuation columns.
 
 [fixture: railroad/calls/ir-singletons]
+
+[fixture: railroad/comments/ir-leaf-value-comments]
+
+[fixture: railroad/comments/ir-leaf-boundary-comments]
+
+[fixture: railroad/global-directives/ir-call-boundaries]
+
+[fixture: railroad/hidden-forms/ir-unary-call-owners]
 
 [fixture: railroad/long-lines/ir-expression-grammar]
 
@@ -745,11 +764,13 @@ String contents retain their written continuation columns.
 
 [fixture: railroad/multiline-values/ir-columns]
 
-Ordinary comments, global directives and semicolons inside values do not stop
-call wrapping. Keep trivia at its argument boundary as described in
-[Comments](#comments) and [Global directives](#global-directives). Native hidden
-forms and ignored semicolons keep their existing protected layout. EBNF, ABNF
-and PEG rules keep their flat layout at every printWidth.
+Comments, global directives and native hidden forms stay at their argument
+boundaries while the surrounding calls use the structural layout. Semicolons
+inside values do not prevent it. Keep trivia contents as described in
+[Comments](#comments), [Global directives](#global-directives) and
+[Hidden forms](#hidden-forms). Lines containing `style` or `classDef`, and
+ignored semicolons, retain their protected layout. EBNF, ABNF and PEG rules keep
+their flat layout; `printWidth` controls no diagram line breaks.
 
 [fixture: railroad/long-lines/ir-comments-kept]
 
@@ -832,10 +853,10 @@ constructor/open/argument/comma/close; EBNF
 assignment/choice/sequence/group/exception/postfix; ABNF
 assignment/choice/sequence/complete-repeat/primary/group; PEG
 assignment/choice/sequence/prefix/suffix/group. Use each gap's ordinary spacing
-rule, with IR calls wrapped as in [Long lines](#long-lines). Do not split names,
-compound assignments, repeat components or numeric values. Comments, directives,
-hidden boundaries and semicolon protection keep their original breaks, since
-joining them can change acceptance or the Db.
+rule, with IR calls laid out structurally as in [Long lines](#long-lines). Do
+not split names, compound assignments, repeat components or numeric values.
+Comments, directives, hidden boundaries and semicolon protection keep their
+original breaks, since joining them can change acceptance or the Db.
 
 [fixture: railroad/component-newlines/abnf-components]
 
@@ -1246,20 +1267,20 @@ owned by a value stays in that value. These choices preserve ownership and
 prevent a line comment from taking code.
 
 Inside an ordinary IR call, a block comment before an argument moves with that
-argument when the call wraps. Comments before a comma or the closing parenthesis
+argument onto its line. Comments before a comma or the closing parenthesis
 remain after their argument; a line comment keeps the following token on a later
 line. Standalone comment lines keep their order at the argument level, with at
 most one empty line. A comment between the constructor and its opening
 parenthesis stays between them; a line break there indents both parentheses as a
-continuation, with the arguments one level deeper. Within an unbroken IR call
-gap, put one space on both sides of comments between a constructor and its
-opener. Comments before an argument use that argument's ordinary separator
+continuation, with the arguments one level deeper. Within an IR call gap written
+on one line, put one space on both sides of comments between a constructor and
+its opener. Comments before an argument use that argument's ordinary separator
 before them and one space after them. Comments before a comma or closer use one
-space before them and none after them; wrapping can still move the closer to its
-own line. Apply the same outside spacing beside existing line breaks without
-moving punctuation across comments. Preserve each comment run's contents,
-internal contacts, continuation columns and trailing whitespace, including with
-tabs or zero-width indentation.
+space before them and none after them; the closing parenthesis stands on its own
+line. Apply the same outside spacing beside existing line breaks without moving
+punctuation across comments. Preserve each comment run's contents, internal
+contacts, continuation columns and trailing whitespace, including with tabs or
+zero-width indentation.
 
 [fixture: railroad/comments/ir-call-inline-spacing]
 
@@ -1284,8 +1305,13 @@ Output
 
 ```mmd
 railroad-beta
-  leaf = terminal /* call */ (/* before */ "x" /* close */);
-  list = sequence(terminal("a") /* comma */, /* next */ terminal("b"));
+  leaf = terminal /* call */ (
+    /* before */ "x" /* close */
+  );
+  list = sequence(
+    terminal("a") /* comma */,
+    /* next */ terminal("b")
+  );
 ```
 
 [test: railroad/comments/ir-call-comment-tail-tabs]
@@ -1393,9 +1419,9 @@ ordinary standalone directives. Do not format their contents as JSON or collect
 them before the header. Uniform added spaces can change strings, repeat
 components, numeric values and predicate operands after common removal.
 
-Ordinary IR call gaps use the same outside spacing and wrapped placement as
-comments; the directive stays beside its argument rather than preventing the
-call from wrapping. Its contents and contacts with other items in its run remain
+Ordinary IR call gaps use the same outside spacing and structural placement as
+comments. A directive stays beside its argument and makes a quoted leaf call
+multiline too. Its contents and contacts with other items in its run remain
 written.
 
 [fixture: railroad/long-lines/ir-directive-kept]
@@ -1471,6 +1497,14 @@ interiors and closers keep their columns. Do not YAML/JSON-format native forms
 or print their trivia-stripped value field. Three fences can belong to one
 hidden form; a failed directive opener can remain a percent comment. Preserve
 these readings to avoid changing acceptance or moving opaque text.
+
+Inside ordinary IR calls, retain each native hidden form as one opaque item,
+including any global directive inside it. Its contents and interior columns
+remain as written while the surrounding grammar receives structural indentation.
+
+[fixture: railroad/hidden-forms/ir-call-global-inside-native]
+
+[fixture: railroad/hidden-forms/ir-call-native-yaml]
 
 [fixture: railroad/hidden-forms/abnf-fallback]
 
@@ -1553,13 +1587,15 @@ railroad-peg-beta
 
 ### Hidden boundaries
 
-Use shared hidden-gap protection for consumed LF outside node ranges, closing
-space/tab and inline contact. Ordinary rules end in required `;`, so do not
-impose another diagram's visible-EOL condition. The shared spare-LF rule applies
-to body forms; only forms belonging to the header itself use the header-edge
-exception. A statement originally on the header line retains its body boundary
-when moved; shared kept-line rules can instead keep a hidden form and its
-neighbors on that line. Keep both cases distinct.
+Outside ordinary IR call gaps, use shared hidden-gap protection for consumed LF
+outside node ranges, closing space/tab and inline contact. Inside those calls,
+keep each complete form as described in [Hidden forms](#hidden-forms). Ordinary
+rules end in required `;`, so do not impose another diagram's visible-EOL
+condition. The shared spare-LF rule applies to body forms; only forms belonging
+to the header itself use the header-edge exception. A statement originally on
+the header line retains its body boundary when moved; shared kept-line rules can
+instead keep a hidden form and its neighbors on that line. Keep both cases
+distinct.
 
 [fixture: railroad/hidden-boundaries/abnf-closing-padding]
 
@@ -1764,11 +1800,11 @@ railroad-peg-beta
 Keep every authored semicolon. Required visible rule terminators and ABNF native
 comment marks remain grammatical punctuation and are excluded from the shared
 textual-prefix scan. Ordinary IR rules keep semicolons inside values as text
-without preventing call wrapping. Other semicolons protect their source segment
-through whole crossing values/trivia. Align each protected segment's first line
-to one body step, as in other flat diagrams; its later lines retain their
-written columns with no added indentation. Columns have no grammatical meaning
-on the first line.
+without preventing structural call layout. Other semicolons protect their source
+segment through whole crossing values/trivia. Align each protected segment's
+first line to one body step, as in other flat diagrams; its later lines retain
+their written columns with no added indentation. Columns have no grammatical
+meaning on the first line.
 
 [fixture: railroad/long-lines/ir-semicolon-kept]
 

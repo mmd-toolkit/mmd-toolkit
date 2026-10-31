@@ -68,12 +68,21 @@ eventmodeling tf 01 evt A %%{{x}}%%
 
 普通のトップレベルの文は、第 1 列から始めます。
 frame、model entity、`data`、`note`、`gwt` が対象です。
-data の本文を変えず、無字下げ必須の閉じ波括弧と宣言の段をそろえるためです。
+
+固定している Mermaid は `data` と `note`
+の閉じ波括弧の前の空白を受理しないため、見出しを閉じ波括弧にそろえ、
+同じ階層の文も字下げせず、存在しない親子関係を示さないようにします。
+固定している Mermaid が閉じ波括弧の前の空白を受理するようになったら、
+本文の raw value と描画が変わらないことを確かめた上で、
+トップレベルの字下げを再検討します。
+
 GWT clause は設定の 1 段、item は 2 段にします。
 構造の継続行は、`data` ヘッダーの継続も含め、その文より 1 段深くします。
 列は親子を決めないため、`tabWidth: 0` では空白を足しません。
 `useTabs` では幅が 0 でも 1 段に tab を 1 個使います。
 値の継続列、metadata の空白、hidden が消費する LF の境界は保ちます。
+
+[fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]
 
 [fixture: eventmodeling/indentation/mixed-top-level-blocks]
 

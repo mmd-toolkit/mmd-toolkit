@@ -2167,18 +2167,25 @@ railroad/source-order/ebnf-duplicates] [fixture:
 railroad/source-order/abnf-duplicates] [fixture:
 railroad/source-order/peg-duplicates] [fixture: railroad/title/ir-trim]
 
-Ordinary composite IR calls wrap at printWidth along their nested argument
-structure, without splitting values or adding trailing commas. Calls with
-multiple arguments retain authored multiline grouping. Leaf constructors stay
-together with their quoted values. Ordinary comments and global directives
-retain their argument boundaries while the call wraps; semicolons inside values
-do not prevent wrapping. Call gaps use canonical outside spaces for comments and
-directives, preserving their contents, internal contacts and written line
-breaks. After a line break following a constructor, both parentheses use
-continuation indentation, with their arguments one level deeper. Native hidden
-forms and ignored semicolons retain their protected layout. EBNF, ABNF and PEG
-keep their flat layout. [fixture: railroad/long-lines/ir-expression-grammar]
-[fixture: railroad/long-lines/ir-written-breaks] [fixture:
+Ordinary composite IR calls always use nested argument lines, independently of
+`printWidth` and authored padding line breaks, to show the grammar hierarchy.
+Values remain whole and trailing commas are not added. Plain `terminal`,
+`nonterminal` and `special` calls keep their quoted values compact; a comment,
+global directive or native hidden form at a call boundary makes a leaf call
+multiline too. Call gaps use canonical outside spaces while preserving trivia
+contents, internal contacts and written trivia line breaks. Native hidden forms
+remain complete opaque items, including global directives inside them, while the
+grammar around them receives structural indentation. After a line break
+following a constructor, both parentheses use continuation indentation, with
+their arguments one level deeper. Semicolons inside values do not prevent this
+layout; lines containing `style` or `classDef` and ignored semicolons retain
+their protected layout. EBNF, ABNF and PEG keep their flat layout. [fixture:
+railroad/comments/ir-leaf-value-comments] [fixture:
+railroad/comments/ir-leaf-boundary-comments] [fixture:
+railroad/hidden-forms/ir-call-global-inside-native] [fixture:
+railroad/hidden-forms/ir-call-native-yaml] [fixture:
+railroad/long-lines/ir-expression-grammar] [fixture:
+railroad/long-lines/ir-written-breaks] [fixture:
 railroad/long-lines/ir-unary-width] [fixture:
 railroad/long-lines/ir-comments-kept] [fixture:
 railroad/comments/ir-call-inline-spacing] [fixture:

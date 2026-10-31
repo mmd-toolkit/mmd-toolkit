@@ -41,7 +41,19 @@ const cases: readonly MarkdownCase[] = [
       'railroad-beta\nr=sequence(terminal("first"),terminal("second"));',
     payloadOutput:
       'railroad-beta\n  r = sequence(\n    terminal("first"),\n    terminal("second")\n  );\n',
-    options: { printWidth: 30 },
+    options: {},
+  },
+  {
+    name: "railroad Markdown: ir-hidden-list",
+    input:
+      '- item\n\n  ```mermaid\n  railroad-beta\n  r=sequence(terminal("first"), %%{!keep}%%\n   terminal("second"));\n  ```\n',
+    output:
+      '- item\n\n  ```mermaid\n  railroad-beta\n    r = sequence(\n      terminal("first"), %%{!keep}%%\n      terminal("second")\n    );\n  ```\n',
+    payloadInput:
+      'railroad-beta\nr=sequence(terminal("first"), %%{!keep}%%\n terminal("second"));',
+    payloadOutput:
+      'railroad-beta\n  r = sequence(\n    terminal("first"), %%{!keep}%%\n    terminal("second")\n  );\n',
+    options: {},
   },
   {
     name: "railroad Markdown: ir-wrapped-comment",

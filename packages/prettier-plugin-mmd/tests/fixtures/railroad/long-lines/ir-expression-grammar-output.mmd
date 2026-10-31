@@ -4,7 +4,10 @@ railroad-beta
     nonterminal("term"),
     zeroOrMore(
       sequence(
-        choice(terminal("+"), terminal("-")),
+        choice(
+          terminal("+"),
+          terminal("-")
+        ),
         nonterminal("term")
       )
     )

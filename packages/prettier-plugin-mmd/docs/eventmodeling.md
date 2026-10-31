@@ -66,13 +66,21 @@ eventmodeling tf 01 evt A %%{{x}}%%
 ### Indentation
 
 Start ordinary top-level statements at column one: frames, model entities,
-`data`, `note` and `gwt`. This keeps their declarations at the same level as the
-required unindented block closers without changing the data bodies. GWT clauses
-use one configured step and items two. Structural continuation lines stand one
-step deeper than their statement, including continued `data` headers. Columns do
-not define parents, so `tabWidth: 0` adds no spaces; `useTabs` adds one tab per
-step even at width zero. Value continuations, metadata padding and hidden
-consumed-LF boundaries retain their authored columns.
+`data`, `note` and `gwt`.
+
+The pinned Mermaid requires `data` and `note` block closers at column one; the
+formatter aligns their headers there and keeps peer statements at the same level
+to avoid suggesting a hierarchy. Reconsider this choice if the pinned Mermaid
+later accepts whitespace before block closers, checking that raw body values and
+rendering remain unchanged.
+
+GWT clauses use one configured step and items two. Structural continuation lines
+stand one step deeper than their statement, including continued `data` headers.
+Columns do not define parents, so `tabWidth: 0` adds no spaces; `useTabs` adds
+one tab per step even at width zero. Value continuations, metadata padding and
+hidden consumed-LF boundaries retain their authored columns.
+
+[fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]
 
 [fixture: eventmodeling/indentation/mixed-top-level-blocks]
 

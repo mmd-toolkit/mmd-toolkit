@@ -184,9 +184,10 @@ flowchart LR
 - `useTabs` と `tabWidth` で字下げを決めます。
   既定は空白 2 つです。
 - `endOfLine` で改行コードを決めます。
-- `printWidth` で `railroad-beta` の複合呼び出しを折り返します。
-  ほかの図の行は折り返しません。
+- `printWidth` は図の改行位置を決めません。
+  `railroad-beta` の呼び出しは文法の構造に従います。
   詳細は[長い行](./docs/railroad.ja.md#長い行)を参照してください。
+  Markdown と YAML frontmatter には、Prettier が使う場合があります。
 
 ## 整形しない場合
 

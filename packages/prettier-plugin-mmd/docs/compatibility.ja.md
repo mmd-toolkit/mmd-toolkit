@@ -2321,18 +2321,26 @@ railroad/source-order/ir-duplicates]
 [fixture: railroad/source-order/abnf-duplicates] [fixture:
 railroad/source-order/peg-duplicates] [fixture: railroad/title/ir-trim]
 
-通常の IR 複合呼出しは入れ子の引数構造に沿って printWidth で折り返します。
+通常の IR 複合呼出しは、文法の階層を示すため、常に引数を入れ子の行にします。
+`printWidth` や元の空白による改行には依存しません。
 値は分割せず、末尾 comma は加えません。
-引数が複数ある呼出しは、元の複数行のまとまりを保ちます。
-leaf constructor は引用値と一緒に保ちます。
-通常のコメントと global directive は、引数との境界を保ちながら折り返します。
-値の中の semicolon は折返しを止めません。
-呼出しの隙間では、コメントと directive の外側空白を統一し、内容、内部の接触、
+通常の `terminal`、`nonterminal`、`special` は引用値とコンパクトにまとめます。
+呼出しの境界にコメント、global directive、native hidden form があれば、
+その leaf 呼出しも複数行にします。
+呼出しの隙間では外側の空白を統一し、trivia の内容、内部の接触、
 元の改行を保ちます。
+native hidden form は内部の global directive も含めて全体を opaque
+な項目として保ち、周囲の文法を構造に沿って字下げします。
 constructor の後ろに改行があれば、両方の括弧を継続行として字下げし、
 引数をさらに1段深く置きます。
-native hidden form と無視される semicolon は、保護した配置を使います。
+値の中の semicolon は、この配置を妨げません。
+`style` や `classDef` を含む行と無視される semicolon は、
+保護した配置を使います。
 EBNF、ABNF、PEG は平坦な配置を保ちます。
+[fixture: railroad/comments/ir-leaf-value-comments]
+[fixture: railroad/comments/ir-leaf-boundary-comments]
+[fixture: railroad/hidden-forms/ir-call-global-inside-native]
+[fixture: railroad/hidden-forms/ir-call-native-yaml]
 [fixture: railroad/long-lines/ir-expression-grammar]
 [fixture: railroad/long-lines/ir-written-breaks]
 [fixture: railroad/long-lines/ir-unary-width]
