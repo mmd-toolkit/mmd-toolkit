@@ -9,7 +9,8 @@ people who implement a parser or write tools for Mermaid text.
 
 This is a third-party project, not affiliated with mermaid-js. The package is
 not published to npm; the specification is the set of documents under
-[`docs/`](./docs).
+[`docs/`](./docs). Its versions are the git tags `@mmd-toolkit/spec@<version>`
+of the repository, and the changelog of the package says what changed in each.
 
 ## mermaid.js version
 

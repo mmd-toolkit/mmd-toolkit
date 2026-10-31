@@ -12,5 +12,14 @@
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "bumpVersionsWithWorkspaceProtocolOnly": true,
-  "ignore": []
+  "ignore": [
+    "@mmd-toolkit/docs",
+    "@mmd-toolkit/playground",
+    "@mmd-toolkit/tests",
+    "@mmd-toolkit/textmate-grammar"
+  ],
+  "privatePackages": {
+    "version": true,
+    "tag": true
+  }
 }
